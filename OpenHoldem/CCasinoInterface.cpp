@@ -194,46 +194,57 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
         if (_technical_autoplayer_buttons[i].IsAllin()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_autoplayer_function_raise:
         if (_technical_autoplayer_buttons[i].IsRaise()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_autoplayer_function_call:
         if (_technical_autoplayer_buttons[i].IsCall()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_autoplayer_function_check:
         if (_technical_autoplayer_buttons[i].IsCheck()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_autoplayer_function_fold:
         if (_technical_autoplayer_buttons[i].IsFold()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_hopper_function_sitin:
         if (_technical_autoplayer_buttons[i].IsSitin()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_hopper_function_sitout:
         if (_technical_autoplayer_buttons[i].IsSitout()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_hopper_function_leave:
         if (_technical_autoplayer_buttons[i].IsLeave()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_hopper_function_rematch:
         if (_technical_autoplayer_buttons[i].IsRematch()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_hopper_function_autopost:
         if (_technical_autoplayer_buttons[i].IsAutopost()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       case k_standard_function_prefold:
         if (_technical_autoplayer_buttons[i].IsPrefold()) {
           return &_technical_autoplayer_buttons[i];
         }
+        break;
       }
     }
   }

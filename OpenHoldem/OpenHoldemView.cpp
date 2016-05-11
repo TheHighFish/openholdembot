@@ -349,41 +349,49 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
   // Draw "on" buttons
-  for (int i=0; i<k_max_number_of_buttons; ++i) {
-    assert(p_casino_interface != NULL);
-	  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_fold)->IsClickable()) {
-		  DrawSpecificButtonIndicator('F', true, _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
-		  fold_drawn = true;
-	  }	else if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable()) {
-			DrawSpecificButtonIndicator('C', true, _client_rect.right-67, _client_rect.bottom-16, _client_rect.right-53, _client_rect.bottom-2);
-			call_drawn = true;
-		}	else if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()) {
-			DrawSpecificButtonIndicator('K', true, _client_rect.right-50, _client_rect.bottom-16, _client_rect.right-36, _client_rect.bottom-2);
-			check_drawn = true;
-		}	else if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
-			DrawSpecificButtonIndicator('R', true, _client_rect.right-33, _client_rect.bottom-16, _client_rect.right-19, _client_rect.bottom-2);
-			raise_drawn = true;
-		}	else if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()) {
-			DrawSpecificButtonIndicator('A', true, _client_rect.right-16, _client_rect.bottom-16, _client_rect.right-2, _client_rect.bottom-2);
-			allin_drawn = true;
-		} else if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_autopost)->IsClickable()) {
-			DrawSpecificButtonIndicator('T', true, _client_rect.left+2,  _client_rect.bottom-16, _client_rect.left+16, _client_rect.bottom-2);
-			autopost_drawn = true;
-		}	else if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_sitin)->IsClickable()) {
-			DrawSpecificButtonIndicator('I', true, _client_rect.left+19, _client_rect.bottom-16, _client_rect.left+33, _client_rect.bottom-2);
-			sitin_drawn = true;
-		}	else if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_sitout)->IsClickable()) {
-			DrawSpecificButtonIndicator('O', true, _client_rect.left+36, _client_rect.bottom-16, _client_rect.left+50, _client_rect.bottom-2);
-			sitout_drawn = true;
-		}	else if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_leave)->IsClickable()) {
-			DrawSpecificButtonIndicator('L', true, _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
-			leave_drawn = true;
-		}	else if (p_casino_interface->LogicalAutoplayerButton(k_standard_function_prefold)->IsClickable()) {
-			DrawSpecificButtonIndicator('P', true, _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
-			prefold_drawn = true;
-		}
-    // !!! To do: rematch
+  assert(p_casino_interface != NULL);
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_fold)->IsClickable()) {
+    DrawSpecificButtonIndicator('F', true, _client_rect.right - 84, _client_rect.bottom - 16, _client_rect.right - 70, _client_rect.bottom - 2);
+    fold_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable()) {
+    DrawSpecificButtonIndicator('C', true, _client_rect.right - 67, _client_rect.bottom - 16, _client_rect.right - 53, _client_rect.bottom - 2);
+    call_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()) {
+    DrawSpecificButtonIndicator('K', true, _client_rect.right - 50, _client_rect.bottom - 16, _client_rect.right - 36, _client_rect.bottom - 2);
+    check_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
+    DrawSpecificButtonIndicator('R', true, _client_rect.right - 33, _client_rect.bottom - 16, _client_rect.right - 19, _client_rect.bottom - 2);
+    raise_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()) {
+    DrawSpecificButtonIndicator('A', true, _client_rect.right - 16, _client_rect.bottom - 16, _client_rect.right - 2, _client_rect.bottom - 2);
+    allin_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_autopost)->IsClickable()) {
+    DrawSpecificButtonIndicator('T', true, _client_rect.left + 2, _client_rect.bottom - 16, _client_rect.left + 16, _client_rect.bottom - 2);
+    autopost_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_sitin)->IsClickable()) {
+    DrawSpecificButtonIndicator('I', true, _client_rect.left + 19, _client_rect.bottom - 16, _client_rect.left + 33, _client_rect.bottom - 2);
+    sitin_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_sitout)->IsClickable()) {
+    DrawSpecificButtonIndicator('O', true, _client_rect.left + 36, _client_rect.bottom - 16, _client_rect.left + 50, _client_rect.bottom - 2);
+    sitout_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_leave)->IsClickable()) {
+    DrawSpecificButtonIndicator('L', true, _client_rect.left + 53, _client_rect.bottom - 16, _client_rect.left + 67, _client_rect.bottom - 2);
+    leave_drawn = true;
+  }
+	if (p_casino_interface->LogicalAutoplayerButton(k_standard_function_prefold)->IsClickable()) {
+		DrawSpecificButtonIndicator('P', true, _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
+		prefold_drawn = true;
 	}
+  // !!! To do: rematch
+  
 	// Draw "off" buttons
   if (!fold_drawn) {
     DrawSpecificButtonIndicator('F', false, _client_rect.right - 84, _client_rect.bottom - 16, _client_rect.right - 70, _client_rect.bottom - 2);

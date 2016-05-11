@@ -46,6 +46,7 @@ void CSymbolEngineAutoplayer::InitOnStartup() {
 	_isfinalanswer = false;
 }
 
+
 void CSymbolEngineAutoplayer::ResetOnConnection() {
 	_myturnbits      = 0;
 	_issittingin     = false;
