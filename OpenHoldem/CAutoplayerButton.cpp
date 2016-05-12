@@ -20,7 +20,7 @@
 #include "CStringMatch.h"
 #include "MagicNumbers.h"
 
-CAutoplayerButton::CAutoplayerButton() {
+CAutoplayerButton::CAutoplayerButton(CString x) {
   Reset();
 }
 
@@ -29,6 +29,7 @@ CAutoplayerButton::~CAutoplayerButton() {
 
 void CAutoplayerButton::Reset() {
   _label = "";
+  _technical_name = "";
   SetClickable(false);
   _region.bottom = kUndefined;
   _region.left = kUndefined;

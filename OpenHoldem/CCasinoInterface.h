@@ -44,7 +44,6 @@ class CCasinoInterface {
   void ClickRect(RECT rect); 
  private:
 	POINT p_null;
-	// ToDo: !!!!!Sliderbar, Chatbox, etc.
  public:
   // For logical lookup of buttons
   CAutoplayerButton* LogicalAutoplayerButton(int autoplayer_function_code);

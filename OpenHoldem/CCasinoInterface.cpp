@@ -44,20 +44,28 @@ CCasinoInterface::CCasinoInterface() {
 	// dummy point for mouse and keyboard DLL
 	p_null.x = kUndefined;
 	p_null.y = kUndefined;
+  Reset();
 }
 
 CCasinoInterface::~CCasinoInterface() {
 }
 
 void CCasinoInterface::Reset() {
+  CString button_name;
   for (int i = 0; i < k_max_number_of_buttons; ++i) {
+    button_name.Format("i%dbutton", i);
     _technical_autoplayer_buttons[i].Reset();
+    _technical_autoplayer_buttons[i].SetTechnicalName(button_name);
   }
   for (int i = 0; i < k_max_betpot_buttons; ++i) {
+    button_name.Format("%sbutton", k_betpot_button_name[i]);
     _technical_betpot_buttons[i].Reset();
+    _technical_autoplayer_buttons[i].SetTechnicalName(button_name);
   }
   for (int i = 0; i < k_max_number_of_i86X_buttons; ++i) {
+    button_name.Format("i86%dbutton", i);
     _technical_i86X_spam_buttons[i].Reset();
+    _technical_autoplayer_buttons[i].SetTechnicalName(button_name);
   }
 }
 

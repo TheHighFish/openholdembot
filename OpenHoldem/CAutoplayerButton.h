@@ -23,6 +23,7 @@ class CAutoplayerButton {
   CAutoplayerButton();
   ~CAutoplayerButton();
  public:
+  void SetTechnicalName(const CString name);
   void Reset();
   bool Click();
   bool IsClickable() { 
@@ -57,8 +58,10 @@ class CAutoplayerButton {
  private:
   bool _clickable;
   RECT _region;
+  // label = logical name, e.g. "raise"
   CString _label;
-  // Hotkey
+  // technical name = tablemap-object, e.g. "i3button"
+  CString _technical_name;
 };
 
 #endif // INC_CAUTOPLAYERBUTTON_H
