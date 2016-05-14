@@ -57,7 +57,6 @@ class CAutoplayerButton {
   CCasinoHotkey _hotkey;
  private:
   bool _clickable;
-  RECT _region;
   // label = logical name, e.g. "raise"
   CString _label;
   // technical name = tablemap-object, e.g. "i3button"

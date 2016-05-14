@@ -354,11 +354,11 @@ void COpenHoldemView::DrawButtonIndicators(void) {
     DrawSpecificButtonIndicator('F', true, _client_rect.right - 84, _client_rect.bottom - 16, _client_rect.right - 70, _client_rect.bottom - 2);
     fold_drawn = true;
   }
-  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable()) {
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()) {
     DrawSpecificButtonIndicator('C', true, _client_rect.right - 67, _client_rect.bottom - 16, _client_rect.right - 53, _client_rect.bottom - 2);
     call_drawn = true;
   }
-  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()) {
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable()) {
     DrawSpecificButtonIndicator('K', true, _client_rect.right - 50, _client_rect.bottom - 16, _client_rect.right - 36, _client_rect.bottom - 2);
     check_drawn = true;
   }

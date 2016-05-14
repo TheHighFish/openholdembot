@@ -138,6 +138,7 @@ class CTablemap {
  public:
   int GetTMSymbol(CString name, int default);
   CString GetTMSymbol(CString name);
+  void GetTMRegion(const CString name, RECT *region);
  public:
 	// commonly used strings 
 	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);

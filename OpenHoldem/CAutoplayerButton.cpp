@@ -18,23 +18,24 @@
 #include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CStringMatch.h"
+#include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
 
-CAutoplayerButton::CAutoplayerButton(CString x) {
+CAutoplayerButton::CAutoplayerButton() {
   Reset();
 }
 
 CAutoplayerButton::~CAutoplayerButton() {
 }
 
+void CAutoplayerButton::SetTechnicalName(const CString name) {
+  _technical_name = name;
+}
+
 void CAutoplayerButton::Reset() {
   _label = "";
   _technical_name = "";
   SetClickable(false);
-  _region.bottom = kUndefined;
-  _region.left = kUndefined;
-  _region.right = kUndefined;
-  _region.top = kUndefined;
 }
   
 bool CAutoplayerButton::Click() {
@@ -44,8 +45,11 @@ bool CAutoplayerButton::Click() {
       write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", _label);
       return true;
     }
+    // Lookup the region
+    RECT button_region;
+    p_tablemap->GetTMRegion(_technical_name, &button_region);
     // Otherwise: click the button the normal way
-    p_casino_interface->ClickRect(_region);
+    p_casino_interface->ClickRect(button_region);
      write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Clicked button %s\n", _label);
     return true;
   } else {
