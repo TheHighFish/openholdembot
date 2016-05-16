@@ -314,3 +314,20 @@ CString CSymbolEngineChipAmounts::SymbolsProvided() {
   list += RangeOfSymbols("stack%i", kFirstChair, kLastChair);
   return list;
 }
+
+double CSymbolEngineChipAmounts::MaxActiveOpponentStack() {
+  int userchair = p_symbol_engine_userchair->userchair();
+  double max_stack = 0;
+  for (int i=0; i<kMaxNumberOfPlayers; ++i) {
+    if (!p_table_state->Player(i)->active()) {
+      continue;
+    }
+    if (i == userchair) {
+      continue;
+    }
+    if (p_table_state->Player(i)->balance() > max_stack) {
+      max_stack = p_table_state->Player(i)->balance();
+    }
+  }
+  return max_stack;
+}

@@ -365,7 +365,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
   if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
     DrawSpecificButtonIndicator('R', true, _client_rect.right - 33, _client_rect.bottom - 16, _client_rect.right - 19, _client_rect.bottom - 2);
     raise_drawn = true;
-  
+  }
   if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()) {
     DrawSpecificButtonIndicator('A', true, _client_rect.right - 16, _client_rect.bottom - 16, _client_rect.right - 2, _client_rect.bottom - 2);
     allin_drawn = true;

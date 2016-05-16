@@ -19,6 +19,7 @@
 #include "CSharedMem.h"
 #include "..\WindowFunctionsDLL\window_functions.h"
 
+// Only for testing
 #undef MESSAGEBOX_BEFORE_MINIMIZING
 
 CPopupHandler *p_popup_handler = NULL;

@@ -23,6 +23,7 @@
 #include "CSymbolEngineHistory.h"
 #include "..\CTablemap\CTablemap.h"
 #include "OpenHoldem.h"
+#include "..\WindowFunctionsDLL\window_functions.h"
 
 CBetsizeInputBox::CBetsizeInputBox() {
   // dummy point for mouse and keyboard DLL
@@ -45,6 +46,9 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   POINT	point_null = { kUndefined, kUndefined };
   CString	swag_amt;
 
+  HWND foreground_window = GetForegroundWindow();
+  CString foreground_title = WinGetTitle(foreground_window);
+   write_log(preferences.debug_autoplayer(), "[CasinoInterface] WARNING! Foreground: \"%s\"\n", foreground_title);
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Starting DoBetsize...\n");
   // In some cases only call and fold are possible.
   // Then a betsize should be skipped.
@@ -53,7 +57,7 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   // OH-script doesn't provide that and OPPL eill do that automatically.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=18125
   if (!p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
-    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize early (no (min-)raise possible).\n");
+     write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize early (no (min-)raise possible).\n");
     return false;
   }
   // swag regions are hard coded as #3 for now, due to legacy WH standard
@@ -64,14 +68,14 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   SelectText();
   // First sleep(), THEN check for stolen focus, then act
   //  NOT the other way: http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=14791
-  write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_1());
+   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_1());
   Sleep(preferences.swag_delay_1());
   // Check for stolen , and thus misswag
   if (p_casino_interface->TableLostFocus()) {
     lost_focus = true;
   }
   Clear();
-  write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_2());
+   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_2());
   Sleep(preferences.swag_delay_2());
   // Check for stolen focus, and thus misswag
   if (p_casino_interface->TableLostFocus()) {
@@ -83,13 +87,13 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   // Also adapt f$betsize for correct logging later-on
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18648
   p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, swag_adjusted);
-  write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] betsize (not adjusted): %.2f\n", total_betsize_in_dollars);
-  write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] calling keyboard.dll to enter betsize (adjusted): %s %d,%d %d,%d\n",
+   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] betsize (not adjusted): %.2f\n", total_betsize_in_dollars);
+   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] calling keyboard.dll to enter betsize (adjusted): %s %d,%d %d,%d\n",
     swag_amt, _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
   bool use_comma_instead_of_dot = p_tablemap->use_comma_instead_of_dot();
   (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), _i3_edit_region,
     swag_amt, use_comma_instead_of_dot, NULL, point_null);
-  write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_3());
+   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_3());
   Sleep(preferences.swag_delay_3());
   // Check for stolen focus, and thus misswag
   if (p_casino_interface->TableLostFocus()) {
@@ -99,16 +103,16 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   if (lost_focus) {
     // Print a very verbose warning in the log
     // Experience tell that beginenrs (and veterans) need that.
-    write_log(k_always_log_errors, "[CBetsizeInputBox] WARNING! Betsizing failed because of lost focus.\n");
-    write_log(k_always_log_errors, "[CBetsizeInputBox] Another window popped up and receives mouse and keyboard input.\n");
-    write_log(k_always_log_errors, "[CBetsizeInputBox] This might be caused by bad casino, bad hopper or by user-interaction.\n");
+     write_log(k_always_log_errors, "[CBetsizeInputBox] WARNING! Betsizing failed because of lost focus.\n");
+     write_log(k_always_log_errors, "[CBetsizeInputBox] Another window popped up and receives mouse and keyboard input.\n");
+      write_log(k_always_log_errors, "[CBetsizeInputBox] This might be caused by bad casino, bad hopper or by user-interaction.\n");
   } else {
     if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) {
-      write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Confirmation; calling keyboard.dll to press 'Enter'\n");
+       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Confirmation; calling keyboard.dll to press 'Enter'\n");
       (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
     } else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET
       && p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
-      write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Bet Confirmation: Using raise button\n");
+       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Bet Confirmation: Using raise button\n");
       if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) {
         p_casino_interface->ClickButtonSequence(k_autoplayer_function_raise,
           k_autoplayer_function_raise,
@@ -118,14 +122,14 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
       }
     } else if (p_tablemap->swagconfirmationmethod() == BETCONF_NOTHING) {
     } else {
-      write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize early (invalid betsizeconfirmationmethod).\n");
-      write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
+       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize early (invalid betsizeconfirmationmethod).\n");
+       write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
       return false;
     }
     p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_betsize), true);
   }
   int betround = p_betround_calculator->betround();
-  write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize, 'didbetsize' now: %d\n",
+   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize, 'didbetsize' now: %d\n",
     p_symbol_engine_history->didswag(betround));
   return (!lost_focus); 
 }

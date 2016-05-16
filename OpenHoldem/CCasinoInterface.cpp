@@ -22,6 +22,7 @@
 #include "CBetroundCalculator.h"
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
+#include "CMyMutex.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSessionCounter.h"
@@ -36,7 +37,7 @@
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
 #include "SwagAdjustment.h"
-#include "CMyMutex.h"
+#include "..\WindowFunctionsDLL\window_functions.h"
 
 CCasinoInterface *p_casino_interface = NULL;
 
@@ -70,9 +71,15 @@ void CCasinoInterface::Reset() {
 }
 
 bool CCasinoInterface::TableLostFocus() {
-	bool lost_focus = (GetForegroundWindow() != p_autoconnector->attached_hwnd());
+  HWND foreground_window = GetForegroundWindow();
+  HWND connected_window = p_autoconnector->attached_hwnd();
+	bool lost_focus = (foreground_window != connected_window);
   if (lost_focus) {
-     write_log(preferences.debug_autoplayer(), "[CasinoInterface] WARNING! Lost focus detected\n");
+    CString foreground_title = "";//!!!!!WinGetTitle(foreground_window);
+    CString table_title = "";//!!!!!WinGetTitle(connected_window);
+     write_log(k_always_log_errors, "[CasinoInterface] WARNING! Lost focus detected\n");
+     write_log(k_always_log_errors, "[CasinoInterface] WARNING! Foreground: \"%s\"\n", foreground_title);
+     write_log(k_always_log_errors, "[CasinoInterface] WARNING! Connected:  \"%s\"\n", table_title);
   }
   return lost_focus;
 }

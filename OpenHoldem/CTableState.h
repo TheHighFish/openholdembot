@@ -48,10 +48,6 @@ class CTableState {
   CTableTitle *TableTitle();
  public:
   void set_pot(int sidepot_index, double new_value);
-public:
-  // !!! not here, bad place
-	double calc_min_non_zero_stack() ;
-	double calc_max_stack() ;
  public:
   // !!! To do: proper encapsulation
   CLimitInfo _s_limit_info;

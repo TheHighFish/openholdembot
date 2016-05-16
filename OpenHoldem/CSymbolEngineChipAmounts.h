@@ -77,6 +77,7 @@ public:
 	double nraisbets()		{ return _nraisbets;	}
  public:
   double SortedBalance(const int rank);
+  double MaxActiveOpponentStack();
  private:
 	// private setters
 	void SetBalance(const int player, const double d);
