@@ -47,10 +47,14 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   CString	swag_amt;
 
   HWND foreground_window = GetForegroundWindow();
-  CString foreground_title;
+  CString foreground_title(" ", MAX_WINDOW_TITLE);
   WinGetTitle(foreground_window, foreground_title.GetBuffer());
-   write_log(preferences.debug_autoplayer(), "[CasinoInterface] WARNING! Foreground: \"%s\"\n", foreground_title);
+   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Foreground window: \"%s\"\n", foreground_title);
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Starting DoBetsize...\n");
+  if (!GetI3EditRegion()) {
+     write_log(k_always_log_errors, "[CBetsizeInputBox] WARNING! i3edit undefined or out of range\n");
+    return false;
+  }
   // In some cases only call and fold are possible.
   // Then a betsize should be skipped.
   // We detect this situation by missing min-raise button.
@@ -135,6 +139,17 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   return (!lost_focus); 
 }
 
+bool CBetsizeInputBox::GetI3EditRegion() {
+  p_tablemap->GetTMRegion("i3edit", &_i3_edit_region);
+  if ((_i3_edit_region.bottom < 0)
+      || (_i3_edit_region.left < 0)
+      || (_i3_edit_region.right < 0)
+      || (_i3_edit_region.top < 0)) {
+    return false;
+  }
+  return true;
+}
+
 bool CBetsizeInputBox::IsReadyToBeUsed() {
   if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
     if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
@@ -142,6 +157,9 @@ bool CBetsizeInputBox::IsReadyToBeUsed() {
     }
   }
   if (!p_tablemap->ItemExists("i3edit")) {
+    return false;
+  }
+  if (!GetI3EditRegion()) {
     return false;
   }
   return true;

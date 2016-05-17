@@ -24,6 +24,8 @@ class CBetsizeInputBox {
   // and maybe visible betsize-confirmation-button
   bool IsReadyToBeUsed();
  private:
+  bool GetI3EditRegion();
+ private:
   void SelectText();
   void Clear();
   void Confirm();
