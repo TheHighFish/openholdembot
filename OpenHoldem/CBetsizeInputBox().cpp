@@ -47,7 +47,8 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   CString	swag_amt;
 
   HWND foreground_window = GetForegroundWindow();
-  CString foreground_title = WinGetTitle(foreground_window);
+  CString foreground_title;
+  WinGetTitle(foreground_window, foreground_title.GetBuffer());
    write_log(preferences.debug_autoplayer(), "[CasinoInterface] WARNING! Foreground: \"%s\"\n", foreground_title);
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Starting DoBetsize...\n");
   // In some cases only call and fold are possible.

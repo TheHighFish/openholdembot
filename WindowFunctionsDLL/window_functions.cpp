@@ -182,8 +182,6 @@ void ResizeToTotalSize(HWND window, int new_width, int new_height) {
             // Update shared mem
 }
 
-CString WinGetTitle(HWND window) {
-  char table_title[MAX_WINDOW_TITLE];
-  GetWindowText(window, table_title, MAX_WINDOW_TITLE);
-  return table_title;
+void WinGetTitle(HWND window, char *title) {
+  GetWindowText(window, title, MAX_WINDOW_TITLE);
 }

@@ -75,8 +75,10 @@ bool CCasinoInterface::TableLostFocus() {
   HWND connected_window = p_autoconnector->attached_hwnd();
 	bool lost_focus = (foreground_window != connected_window);
   if (lost_focus) {
-    CString foreground_title = "";//!!!!!WinGetTitle(foreground_window);
-    CString table_title = "";//!!!!!WinGetTitle(connected_window);
+    CString foreground_title;
+    WinGetTitle(foreground_window, foreground_title.GetBuffer());
+    CString table_title;
+    WinGetTitle(connected_window, table_title.GetBuffer());
      write_log(k_always_log_errors, "[CasinoInterface] WARNING! Lost focus detected\n");
      write_log(k_always_log_errors, "[CasinoInterface] WARNING! Foreground: \"%s\"\n", foreground_title);
      write_log(k_always_log_errors, "[CasinoInterface] WARNING! Connected:  \"%s\"\n", table_title);

@@ -32,7 +32,7 @@ WINDOW_FUNCTIONS_API void MinimizeWindow(HWND window);
 WINDOW_FUNCTIONS_API void ResizeToClientSize(HWND window, int new_width, int new_height);
 WINDOW_FUNCTIONS_API void ResizeToTotalSize(HWND window, int new_width, int new_height);
 WINDOW_FUNCTIONS_API bool WinBelongsToExecutable(HWND window, const char* program_name);
-WINDOW_FUNCTIONS_API CString WinGetTitle(HWND window);
+WINDOW_FUNCTIONS_API void WinGetTitle(HWND window, char *title);
 WINDOW_FUNCTIONS_API bool WinIsDesktop(HWND window);
 WINDOW_FUNCTIONS_API bool WinIsMaximized(HWND window);
 WINDOW_FUNCTIONS_API bool WinIsMinimized(HWND window);
