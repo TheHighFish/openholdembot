@@ -58,7 +58,7 @@ void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
     }
     if (needs_deletion) {
        write_log(preferences.debug_formula(), 
-        "[CFunctionCollection] Deleting %s\n", p_nextObject->name());
+        "[CFunctionCollection] Going to delete %s\n", p_nextObject->name());
       Delete(p_nextObject->name());
     }
     p_nextObject = GetNext();
