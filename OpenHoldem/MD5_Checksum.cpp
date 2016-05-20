@@ -29,7 +29,13 @@
 HCRYPTPROV hCryptProv;
 typedef struct {
 	unsigned char digest[16];
-	unsigned long hHash;
+#ifdef _WIN64
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=270&t=19676
+  // http://stackoverflow.com/questions/8672887/is-there-a-define-for-64-bit-in-visual-studio-2010
+	unsigned long long hHash;
+#else
+  unsigned long hHash;
+#endif
 } MD5Context;
 
 
