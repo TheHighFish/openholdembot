@@ -547,11 +547,15 @@ void CFunctionCollection::Delete(CString name) {
     it = _function_map.find(name);
     if (it != _function_map.end()) {
        write_log(preferences.debug_formula(), 
-        "[CFunctionCollection] Deleting %s\n", name);
-       // Remove it from the lookup/table...
+        "[CFunctionCollection] Removing %s from lookuo-table\n", name);
+       // Remove it from the lookup-table...
       _function_map.erase(it);
       // ... and delete the object
+      write_log(preferences.debug_formula(),
+        "[CFunctionCollection] Deleting object %s\n", name);
       delete object_to_delete;
+      write_log(preferences.debug_formula(),
+        "[CFunctionCollection] Object %s deleted\n", name);
     }
   }
 }

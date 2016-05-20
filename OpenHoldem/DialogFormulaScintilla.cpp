@@ -1127,7 +1127,7 @@ void CDlgFormulaScintilla::DoFind(bool DirDown)
 		m_pActiveScinCtrl->SearchBackward((char *)m_FindLastSearch.GetString());
 }
 
-LONG CDlgFormulaScintilla::OnFindReplace(WPARAM, LPARAM lParam)
+LRESULT CDlgFormulaScintilla::OnFindReplace(WPARAM, LPARAM lParam)
 {
 	LPFINDREPLACE lpFindReplace = (LPFINDREPLACE) lParam;
 
@@ -1666,7 +1666,7 @@ void CDlgFormulaScintilla::OnEditSelectAll()
 	m_pActiveScinCtrl->SelectAll();
 }
 
-void CDlgFormulaScintilla::OnTimer(UINT nIDEvent) {
+void CDlgFormulaScintilla::OnTimer(UINT_PTR nIDEvent) {
 	CMenu *edit_menu = this->GetMenu()->GetSubMenu(1);
 
 	if (nIDEvent == MENU_UPDATE_TIMER) 

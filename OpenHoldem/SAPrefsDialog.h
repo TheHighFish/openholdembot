@@ -133,8 +133,8 @@ protected:
 	afx_msg void OnPhelp();
 	afx_msg void OnSelchangingPageTree(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
-	afx_msg long OnChangePage(WPARAM w, LPARAM l);
-	afx_msg long OnSetFocusWnd(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnChangePage(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnSetFocusWnd(WPARAM w, LPARAM l);
 	DECLARE_MESSAGE_MAP()
 
    CPtrArray   m_pages;
@@ -149,7 +149,7 @@ protected:
    // store info about *pDlgs that have been added to 
    // the tree - used for quick lookup of parent nodes
    // DWORDs are used because HTREEITEMs can't be... blame Microsoft
-   CMap< CSAPrefsSubDlg *, CSAPrefsSubDlg *, UINT, UINT&  > m_dlgMap;
+   CMap< CSAPrefsSubDlg *, CSAPrefsSubDlg *, UINT_PTR, UINT_PTR&  > m_dlgMap;
 
 };
 

@@ -446,7 +446,7 @@ void CMainFrame::OnFileOpen()
 	}
 }
 
-void CMainFrame::OnTimer(UINT nIDEvent) {
+void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	RECT			att_rect = {0}, wrect = {0};
 
   if (nIDEvent == HWND_CHECK_TIMER) {

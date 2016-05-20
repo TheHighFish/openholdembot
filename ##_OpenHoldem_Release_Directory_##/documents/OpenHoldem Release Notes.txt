@@ -1,4 +1,4 @@
-v9.2.0 2016-04-xx
+v9.2.0 2016-05-xx
 ==================
 NEW STUFF:
 - Implemented a new function for the DLL-level
@@ -9,6 +9,9 @@ NEW STUFF:
   when we replaced the numbered lists by arbitrary many named lists in OpenHoldem 4.x.
   As a consequence the function "getplh1k" (get pointer to 1000 handlists) got also removed.
   Thanks to Guysmo for asking about that feature.
+  [THF]
+- Improved 64-bit-support for people who want to compile OH on their own for 64-bit-systems.
+  Thanks to Davagin for providing the patch.
   [THF]
   
 BUG FIXES:
