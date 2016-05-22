@@ -21,6 +21,7 @@
 #include "MagicNumbers.h"
 
 class CCasinoInterface {
+  friend class CAllinSlider;
   friend class CAutoplayer;
   friend class CScraper;
   friend class CSymbolEngineAutoplayer;
@@ -57,8 +58,10 @@ class CCasinoInterface {
   CAutoplayerButton _technical_betpot_buttons[k_max_betpot_buttons];
   CAutoplayerButton _technical_i86X_spam_buttons[k_max_number_of_i86X_buttons];
   CAllinSlider _allin_slider;
- private:
+ protected:
+  // To be used by the slider to confirm the betsize
   CBetsizeInputBox  _betsize_input_box;
+ private:
   // Avoid returning NULL if a certain button can not be looked up.
   CAutoplayerButton _non_clickable_fake_button;
  private:

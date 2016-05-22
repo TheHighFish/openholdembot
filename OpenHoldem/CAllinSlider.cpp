@@ -16,6 +16,7 @@
 
 #include "CAutoConnector.h"
 #include "CAutoplayerTrace.h"
+#include "CBetsizeInputBox.h"
 #include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "../CTablemap/CTablemap.h"
@@ -23,6 +24,8 @@
 
 CAllinSlider::CAllinSlider() {
   ResetHandlePosition();
+  // Not really (0, 0), but (-1, -1), out of the screen
+  POINT	point_null = { kUndefined, kUndefined };
 }
 
 CAllinSlider::~CAllinSlider() {
@@ -39,77 +42,72 @@ void CAllinSlider::ResetHandlePosition() {
 }
 
 bool CAllinSlider::SlideAllin() {
-  //!!!!!
-  POINT	cur_pos = { 0 };
-  // Not really (0, 0), but (-1, -1), out of the screen
-  POINT	point_null = { kUndefined, kUndefined };
-
-  write_log(preferences.debug_autoplayer(), "[AllinSlider] Starting DoSlider...\n");
-  //if (!(p_scraper_access->i3_slider_defined && p_scraper_access->i3_handle_defined)) {
+  if (!SlideAllinPossible()) {
     write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
-    //!!!!!return false;
-  //}
-  if ((_position.x != kUndefined) && (_position.y != kUndefined)) {
+    return false;
+  }
+  write_log(preferences.debug_autoplayer(), "[AllinSlider] Starting DoSlider...\n");
+  if ((_position.x == kUndefined) || (_position.y == kUndefined)) {
     write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
     return false;
   }
   // Click and drag handle
   RECT drag_region;
-  // !!!!! Compare with old code!
-  RECT i3_handle_region, i3_slider_region; // undefined!!!!!
-  drag_region.left = _position.x + ((i3_handle_region.right - i3_handle_region.left) / 2);
-  drag_region.top = _position.y + ((i3_handle_region.bottom - i3_handle_region.top) / 2);
-  drag_region.right = _position.x + (i3_slider_region.right - i3_slider_region.left);
+  RECT _i3_handle, _i3_slider; 
+  drag_region.left = _position.x + ((_i3_handle.right - _i3_handle.left) / 2);
+  drag_region.top = _position.y + ((_i3_handle.bottom - _i3_handle.top) / 2);
+  drag_region.right = _position.x + (_i3_slider.right - _i3_slider.left);
   drag_region.bottom = drag_region.top;
 
-  write_log(preferences.debug_autoplayer(), "[AllinSlider] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
+   write_log(preferences.debug_autoplayer(), "[AllinSlider] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
+  // Not really (0, 0), but (-1, -1), out of the screen
+  POINT	point_null = { kUndefined, kUndefined };
   (theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), drag_region, NULL, point_null);
 
-  write_log(preferences.debug_autoplayer(), "[AllinSlider] Sleeping %d ms\n.", preferences.swag_delay_3());
+   write_log(preferences.debug_autoplayer(), "[AllinSlider] Sleeping %d ms\n.", preferences.swag_delay_3());
   Sleep(preferences.swag_delay_3());
 
-  // Click confirmation button //!!!!! Duplicate to Betsize-box?
-  /*
-  if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) {
-    write_log(preferences.debug_autoplayer(), "[AllinSlider] Slider Confirmation : calling keyboard.dll to press 'Enter'\n");
-    (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
-  }
-  else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET
-    && (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable() || p_casino_interface->BetsizeConfirmationButton()->IsClickable())) {
-    int confirmation_button = k_button_undefined;
-
-    // use allin button if it exists,  //!!!!!
-    // otherwise use the bet/raise button region
-    if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()) {
-      write_log(preferences.debug_autoplayer(), "[AllinSlider] Slider Confirmation : Using the allin button\n");
-      confirmation_button = k_autoplayer_function_allin;
-    }
-    else {
-      write_log(preferences.debug_autoplayer(), "[AllinSlider] Slider Confirmation : Using the raise button\n");
-      confirmation_button = k_autoplayer_function_raise;
-    }
-
-    if (p_tablemap->buttonclickmethod() == BUTTON_DOUBLECLICK) {
-      ClickButtonSequence(confirmation_button, confirmation_button, k_double_click_delay);
-    }
-    else {
-      BetsizeConfirmationButton()->Click();
-    }
-  }
-  else {
-    write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (invalid betsizeconfirmationmethod).\n");
-    return false;
-  }
-  */
+  // Click confirmation button //
+  p_casino_interface->_betsize_input_box.Confirm();
   p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
   write_log(preferences.debug_autoplayer(), "[AllinSlider] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
-
-  // reset elapsedauto symbol
   write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider.\n");
   return true;
 }
 
+bool CAllinSlider::GetSliderRegions() {
+  p_tablemap->GetTMRegion("i3slider", &_i3_slider);
+  p_tablemap->GetTMRegion("i3handle", &_i3_handle);
+  if ((_i3_slider.bottom < 0)
+    || (_i3_slider.left < 0)
+    || (_i3_slider.right < 0)
+    || (_i3_slider.top < 0)) {
+    return false;
+  }
+  if ((_i3_handle.bottom < 0)
+    || (_i3_handle.left < 0)
+    || (_i3_handle.right < 0)
+    || (_i3_handle.top < 0)) {
+    return false;
+  }
+  return true;
+}
+
 bool CAllinSlider::SlideAllinPossible() {
-  //!!!!!
+  // Required: betsize-confirmation-button, slider and handle
+  if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET) {
+    if (!p_casino_interface->BetsizeConfirmationButton()->IsClickable()) {
+      return false;
+    }
+  }
+  if (!p_tablemap->ItemExists("i3slider")) {
+    return false;
+  }
+  if (!p_tablemap->ItemExists("i3handle")) {
+    return false;
+  }
+  if (!GetSliderRegions()) {
+    return false;
+  }
   return true;
 }

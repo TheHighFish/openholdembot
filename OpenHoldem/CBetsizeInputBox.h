@@ -15,6 +15,7 @@
 #define INC_CBETSIZEINPUTBOX_H
 
 class CBetsizeInputBox {
+  friend class CAllinSlider;
  public:
   CBetsizeInputBox();
   ~CBetsizeInputBox();
@@ -23,12 +24,14 @@ class CBetsizeInputBox {
   // Depends on complete tablemap
   // and maybe visible betsize-confirmation-button
   bool IsReadyToBeUsed();
+ protected:
+  // To be used by the allin-slider
+  void Confirm();
  private:
   bool GetI3EditRegion();
  private:
   void SelectText();
   void Clear();
-  void Confirm();
  private:
   // For future use
   bool VerifyEnteredBetsize();
