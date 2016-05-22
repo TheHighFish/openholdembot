@@ -67,7 +67,7 @@ bool CAllinSlider::SlideAllin() {
    write_log(preferences.debug_autoplayer(), "[AllinSlider] Sleeping %d ms\n.", preferences.swag_delay_3());
   Sleep(preferences.swag_delay_3());
 
-  // Click confirmation button //
+  // Click confirmation button 
   p_casino_interface->_betsize_input_box.Confirm();
   p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
   write_log(preferences.debug_autoplayer(), "[AllinSlider] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
