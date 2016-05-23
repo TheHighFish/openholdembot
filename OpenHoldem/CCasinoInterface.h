@@ -43,6 +43,7 @@ class CCasinoInterface {
   bool HandleInterfacebuttonsI86();
   bool TableLostFocus();
   void ClickRect(RECT rect); 
+  void SendKey(const char ascii_key);
  private:
 	POINT p_null;
  public:

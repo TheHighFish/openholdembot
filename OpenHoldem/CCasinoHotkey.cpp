@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CCasinoHotkey.h"
 
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
 #include "StringFunctions.h"
@@ -40,7 +41,7 @@ bool CCasinoHotkey::PressHotkey() {
       "[CasinoHotkeys] Going to press non-alpha-numeric key [%x]\n",
       _key_to_be_pressed);
   }
-  //!!!!!
+  p_casino_interface->SendKey(_key_to_be_pressed);
   return true;
 }
 
@@ -49,6 +50,7 @@ void CCasinoHotkey::Set(CString key) {
   if (key == "") {
     return;
   }
+  key.MakeLower();
   // Analyze hotkey-combination
   if (key.GetLength() == 1) {
     _key_to_be_pressed = key[0];
@@ -60,10 +62,21 @@ void CCasinoHotkey::Set(CString key) {
   } else if (key.GetLength() == 1) {
     if (key.MakeLower() == "space") {
       _key_to_be_pressed = ' ';
-    } else if (key.MakeLower() == "enter") {
+    } else if (key == "enter") {
       // Enter = carriage return = 0x0D
       // https://en.wikipedia.org/wiki/ASCII
       _key_to_be_pressed = char(0x0d);
+    } else if (key == "return") {
+      // Same as "enter"
+      _key_to_be_pressed = char(0x0d);
+    } else if (key == "right") {
+      _key_to_be_pressed = VK_RIGHT;
+    } else if (key == "left") {
+      _key_to_be_pressed = VK_LEFT;
+    } else if (key == "up") {
+      _key_to_be_pressed = VK_UP;
+    } else if (key == "down") {
+      _key_to_be_pressed = VK_DOWN;
     }
   }
 }

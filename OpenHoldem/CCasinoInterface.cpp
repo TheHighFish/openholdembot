@@ -298,3 +298,13 @@ bool CCasinoInterface::AllinOptionAvailable() {
   }
   return false;
 }
+
+void CCasinoInterface::SendKey(const char ascii_key) {
+  RECT r_null;
+  r_null.bottom = kUndefined;
+  r_null.left = kUndefined;
+  r_null.right = kUndefined;
+  r_null.top = kUndefined;
+  POINT	cur_pos = { 0 };
+  (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
+}

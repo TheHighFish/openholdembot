@@ -29,11 +29,6 @@ CBetsizeInputBox::CBetsizeInputBox() {
   // dummy point for mouse and keyboard DLL
   p_null.x = kUndefined;
   p_null.y = kUndefined;
-  // dummy rectangle
-  r_null.bottom = kUndefined;
-  r_null.left = kUndefined;
-  r_null.right = kUndefined;
-  r_null.top = kUndefined;
 }
 
 CBetsizeInputBox::~CBetsizeInputBox() {
@@ -114,7 +109,7 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   } else {
     if (p_tablemap->swagconfirmationmethod() == BETCONF_ENTER) {
        write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Confirmation; calling keyboard.dll to press 'Enter'\n");
-      (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
+      p_casino_interface->SendKey(VK_RETURN);
     } else if (p_tablemap->swagconfirmationmethod() == BETCONF_CLICKBET
       && p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
        write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Bet Confirmation: Using raise button\n");
@@ -192,12 +187,12 @@ void CBetsizeInputBox::SelectText() {
 
 void CBetsizeInputBox::Clear() {
   if (p_tablemap->swagdeletionmethod() == TEXTDEL_DELETE) {
-    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text deletion; calling keyboard.dll to press 'delete'\n");
-    (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_DELETE, NULL, p_null);
+     write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text deletion; calling keyboard.dll to press 'delete'\n");
+    p_casino_interface->SendKey(VK_DELETE);
   }
   else if (p_tablemap->swagdeletionmethod() == TEXTDEL_BACKSPACE) {
-    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text deletion; calling keyboard.dll to press 'backspace'\n");
-    (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_BACK, NULL, p_null);
+     write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text deletion; calling keyboard.dll to press 'backspace'\n");
+     p_casino_interface->SendKey(VK_BACK);
   }
   else if (p_tablemap->swagdeletionmethod() == TEXTDEL_NOTHING) {
     // Nothing to do to delete the text
