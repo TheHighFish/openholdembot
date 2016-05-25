@@ -308,6 +308,9 @@ void CCasinoInterface::SendKey(const char ascii_key) {
   r_null.right = kUndefinedZero;
   r_null.top = kUndefinedZero;
   POINT	cur_pos = { 0 };
-  //!!!keybd_event(ascii_key, ascii_key, 0, NULL);
-  (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, ascii_key, GetFocus(), cur_pos);
+  // Using the SendString function to send a single character
+  char input[2];
+  input[0] = ascii_key;
+  input[1] = '\0';
+  (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), r_null, input, false, GetFocus(), cur_pos);
 }
