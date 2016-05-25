@@ -22,9 +22,11 @@ class CCasinoHotkey {
 	~CCasinoHotkey();
  public:
   bool PressHotkey();
-  void Set(CString key);
+  void SetName(CString name);
  private:
-  char _key_to_be_pressed;
+  char LookupHotkey();
+ private:
+  CString _name;
 }; 
 
 #endif // INC_CCasinoHotkey_H

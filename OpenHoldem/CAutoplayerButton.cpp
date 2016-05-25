@@ -30,6 +30,8 @@ CAutoplayerButton::~CAutoplayerButton() {
 
 void CAutoplayerButton::SetTechnicalName(const CString name) {
   _technical_name = name;
+  CString hotkey_name = name + "hotkey";
+  _hotkey.SetName(hotkey_name);
 }
 
 void CAutoplayerButton::Reset() {

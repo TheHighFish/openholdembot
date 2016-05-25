@@ -97,7 +97,9 @@ CString CTablemap::GetTMSymbol(CString name)
 void CTablemap::GetTMRegion(const CString name, RECT *region) {
   RMapCI it = _r$.find(name);
   if (it == _r$.end()) {
+#ifdef OPENHOLDEM_PROGRAM
     write_log(preferences.debug_tablemap_loader(), "[CTablemap] Could not find region %s\n", name);
+#endif
     region->bottom = kUndefined;
     region->left = kUndefined;
     region->right = kUndefined;

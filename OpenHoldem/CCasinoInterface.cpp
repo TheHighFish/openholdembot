@@ -301,10 +301,13 @@ bool CCasinoInterface::AllinOptionAvailable() {
 
 void CCasinoInterface::SendKey(const char ascii_key) {
   RECT r_null;
-  r_null.bottom = kUndefined;
-  r_null.left = kUndefined;
-  r_null.right = kUndefined;
-  r_null.top = kUndefined;
+  // !!! kUndefined causes SendKey to return early
+  // !!! keyboard-DLL is a mess.
+  r_null.bottom = kUndefinedZero;
+  r_null.left = kUndefinedZero;
+  r_null.right = kUndefinedZero;
+  r_null.top = kUndefinedZero;
   POINT	cur_pos = { 0 };
-  (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, VK_RETURN, GetFocus(), cur_pos);
+  //!!!keybd_event(ascii_key, ascii_key, 0, NULL);
+  (theApp._dll_keyboard_sendkey) (p_autoconnector->attached_hwnd(), r_null, ascii_key, GetFocus(), cur_pos);
 }
