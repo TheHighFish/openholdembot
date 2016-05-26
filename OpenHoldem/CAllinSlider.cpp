@@ -53,7 +53,7 @@ bool CAllinSlider::SlideAllin() {
   }
   // Click and drag handle
   RECT drag_region;
-  RECT _i3_handle, _i3_slider; 
+  GetSliderRegions();
   drag_region.left = _position.x + ((_i3_handle.right - _i3_handle.left) / 2);
   drag_region.top = _position.y + ((_i3_handle.bottom - _i3_handle.top) / 2);
   drag_region.right = _position.x + (_i3_slider.right - _i3_slider.left);

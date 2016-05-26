@@ -60,7 +60,6 @@
 // Harmless and impossible to be fixed (7691 cases of c4800)
 #pragma warning(disable:4800) 
 
-
 // Turn some warnings to errors, because we consider them helpful
 //
 // https://msdn.microsoft.com/en-us/library/aa231853%28v=vs.60%29.aspx
@@ -91,6 +90,9 @@
 // https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
 // expression has no effect; expected expression with side-effect
 #pragma warning(error:4555)
+// https://msdn.microsoft.com/en-us/library/axhfhh6x.aspx
+// uninitialized local variable - Stack Overflow
+#pragma warning(error:4700)
 // https://msdn.microsoft.com/pl-pl/library/c26da40e%28v=vs.71%29.aspx
 // unreachable code
 //#pragma warning(error:4702)
