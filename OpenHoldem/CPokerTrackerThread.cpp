@@ -19,7 +19,6 @@
 #include <comdef.h>
 #include "CAutoConnector.h"
 #include "CDllExtension.h"
-#include "CGameState.h"
 #include "CLevDistance.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerLookUp.h"

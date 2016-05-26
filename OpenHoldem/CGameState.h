@@ -34,7 +34,7 @@ class CGameState {
  private:
 	// private functions and variables - not available via accessors or mutators
 	void DumpState(void);
-private:
+  void AdvanceStateIndex();
 };
 
 extern CGameState *p_game_state;

@@ -26,6 +26,11 @@ BUG FIXES:
   if there was a flush aon board and we didn't contribute anything.
   Thanks to ZeeZooLaa for reporting.
   [THF]
+- The "state_index" to the current game-state at the DLL-level was always off by 1.
+  This requires ugly computions (state_index-1)&0xFF on every use.
+  This problem has now been fixed.
+  Thanks to !!! for reporting.
+  [THF]
   
 v9.1.4 2016-04-26
 ==================

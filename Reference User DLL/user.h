@@ -78,7 +78,7 @@ EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
 // avoiding the message-mess of WinHoldem,
 // no longer sending any state-messages
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18642
-EXE_IMPLEMENTS extern holdem_state  state[kNumberOfHoldemStatesForDLL];
+EXE_IMPLEMENTS extern holdem_state state[kNumberOfHoldemStatesForDLL];
 EXE_IMPLEMENTS extern int state_index;
 
 #endif // _INC_USER_H
