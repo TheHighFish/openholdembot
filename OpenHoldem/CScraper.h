@@ -32,8 +32,6 @@ class CScraper {
   // For replay-frames
 	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
  public:
-  bool GetButtonState(const int button_index);
-  bool GetButtonState(CString button_state_as_string);
   bool IsCommonAnimation();
  protected:
 	void CreateBitmaps(void);
@@ -83,7 +81,6 @@ class CScraper {
 	bool IsExtendedNumberic(CString text);
 	CString ProcessBalanceNumbersOnly(CString balance_and_or_potential_text);
  private:
-	void SetButtonState(CString *button_state, CString text);
   void ResetLimitInfo();
  private:
 #define ENT CSLock lock(m_critsec);

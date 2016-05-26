@@ -31,7 +31,6 @@ CTableState::~CTableState() {
 }
 
 void CTableState::Reset() {
-  _SCI.Reset();
   _s_limit_info.Reset();
   for (int i=0; i<kNumberOfCommunityCards; ++i) {
     _common_cards[i].ClearValue();
@@ -85,44 +84,20 @@ Card *CTableState::RiverCard() {
   return CommonCards(kIndexOfRiverCard);
 }
 
+int CTableState::NumberOfCommunityCards() {
+  int result = 0;
+  for (int i = 0; i < kNumberOfCommunityCards; ++i) {
+    if (_common_cards[i].IsKnownCard()) {
+      ++result;
+    }
+    else {
+      break;
+    }
+  }
+  return result;
+}
+
 CTableTitle *CTableState::TableTitle() {
   return &_table_title;
 }
 
-double CTableState::calc_min_non_zero_stack() 
-{
-	int playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
-	int userchair = p_symbol_engine_userchair->userchair();
-	double min_non_zero_stack = 0;
-	for (int i=0; i<kMaxNumberOfPlayers; i++) 
-	{
-		if (!(playersplayingbits & (1<<i))) continue; //skip inactive chairs 
-		if (i == userchair) continue; //skip our own chair!
-		if(_players[i].balance() > 0 && min_non_zero_stack == 0 )
-		{
-			min_non_zero_stack = _players[i].balance();
-		}
-		if(_players[i].balance() < min_non_zero_stack)
-		{
-			min_non_zero_stack = _players[i].balance();
-		}
-	}
-	return min_non_zero_stack;
-}
-
-double CTableState::calc_max_stack() 
-{
-	int playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
-	int userchair = p_symbol_engine_userchair->userchair();
-	double max_stack = 0;
-	for (int i=0; i<kMaxNumberOfPlayers; i++) 
-	{
-		if (!(playersplayingbits & (1<<i))) continue; //skip inactive chairs 
-		if (i == userchair) continue; //skip our own chair!
-		if(_players[i].balance() > max_stack)
-		{
-			max_stack = _players[i].balance();
-		}
-	}
-	return max_stack;
-}

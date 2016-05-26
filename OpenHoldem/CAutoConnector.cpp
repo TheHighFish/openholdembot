@@ -19,6 +19,7 @@
 #include "..\CTablemap\CTablemapAccess.h"
 #include "..\CTransform\CTransform.h"
 #include "CAutoplayer.h"
+#include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
@@ -29,7 +30,6 @@
 #include "CPopupHandler.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSharedMem.h"
 #include "CTableMapLoader.h"
 #include "CTableState.h"
@@ -263,6 +263,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Scraper-bitmaps created\n");
       // Clear scraper fields
 			p_table_state->Reset();
+      p_casino_interface->Reset();
 			 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Table state cleared\n");
       // Reset symbols
 			p_engine_container->ResetOnConnection();
@@ -278,7 +279,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			if (theApp._dll_scraper_process_message) {
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
       }
-      p_scraper_access->InitOnConnect();
       // Start timer that checks for continued existence of attached HWND 		
      	PMainframe()->StartTimer();
 			// Reset display
@@ -370,6 +370,7 @@ void CAutoConnector::Disconnect() {
 
 	// Clear scraper fields
 	p_table_state->Reset();
+  p_casino_interface->Reset();
 
 	// Reset symbols
 	p_engine_container->ResetOnConnection();

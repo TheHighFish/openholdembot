@@ -19,8 +19,8 @@
 #include "Bitmaps.h" 
 #include "CardFunctions.h"
 #include "CAutoconnector.h"
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
-#include "CScraperAccess.h"
 #include "CScraperPreprocessor.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -85,33 +85,6 @@ const CString CScraper::extractHandnumFromString(CString t) {
 	return resulting_handumber_digits_only;
 }
 
-bool CScraper::GetButtonState(CString button_state_as_string) {
-	CString button_state_lower_case = button_state_as_string.MakeLower();
-	return (button_state_lower_case.Left(4) == "true" 
-		|| button_state_lower_case.Left(2) == "on" 
-		|| button_state_lower_case.Left(3) == "yes" 
-		|| button_state_lower_case.Left(7) == "checked" 
-		|| button_state_lower_case.Left(3) == "lit");
-}
-
-bool CScraper::GetButtonState(int button_index) {
-	CString l_button_state = "";
-	if (button_index<=9) {
-		if (p_symbol_engine_casino->ConnectedToManualMode() && button_index == 5)	{
-			// Don't MakeLower our mm_network symbol
-			l_button_state = p_table_state->_SCI._button_state[button_index];
-		}	else {
-			// Default
-			l_button_state = p_table_state->_SCI._button_state[button_index].MakeLower();
-		}
-		return GetButtonState(l_button_state);
-	}	else if (button_index>=860)	{
-		l_button_state = p_table_state->_SCI._i86X_button_state[button_index-860];
-		return GetButtonState(l_button_state);
-	}
-	return false;
-}
-
 bool CScraper::ProcessRegion(RMapCI r_iter) {
 	__HDC_HEADER
 
@@ -125,8 +98,7 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	// If the bitmaps are different, then continue on
 	if (!BitmapsAreEqual(r_iter->second.last_bmp, r_iter->second.cur_bmp))
 	{
-
-		// Copy into "last" bitmap
+    // Copy into "last" bitmap
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
 		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
 									r_iter->second.bottom - r_iter->second.top + 1, 
@@ -202,17 +174,6 @@ bool CScraper::EvaluateNumericalRegion(double *result, const CString name) {
   return false;
 }
 
-void CScraper::SetButtonState(CString *button_state, CString text) {
-	if (text != "")
-	{
-		*button_state = text;	
-	}
-	else
-	{
-		*button_state = "false";
-	}
-}
-
 void CScraper::ScrapeInterfaceButtons() {
 	CString result;
 	// i86X-buttons
@@ -220,7 +181,7 @@ void CScraper::ScrapeInterfaceButtons() {
 	for (int i=0; i<k_max_number_of_i86X_buttons; i++) {
 		button_name.Format("i86%dstate", i);
 		if (EvaluateRegion(button_name, &result))	{
-			SetButtonState(&p_table_state->_SCI._i86X_button_state[i], result);	
+      p_casino_interface->_technical_i86X_spam_buttons[i].SetState(result);
 		}
 	}
 }
@@ -228,19 +189,16 @@ void CScraper::ScrapeInterfaceButtons() {
 void CScraper::ScrapeActionButtons() {
 	CString button_name;
 	CString result;
-	for (int i=0; i<k_max_number_of_buttons; i++)
-	{
+	for (int i=0; i<k_max_number_of_buttons; ++i)	{
 		button_name.Format("i%dstate", i);
-		if (EvaluateRegion(button_name, &result))
-		{
-			SetButtonState(&p_table_state->_SCI._button_state[i], result);	
+		if (EvaluateRegion(button_name, &result)) {
+      p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
 		}
-	}
-	// Ugly WinHoldem convention
-	// When using ManualMode, grab i5state for PT network 
-	if (p_symbol_engine_casino->ConnectedToManualMode())
-	{
-		p_tablemap->set_network(p_table_state->_SCI._button_state[5]);
+    if ((i == 5) && p_symbol_engine_casino->ConnectedToManualMode()) {
+      // Ugly WinHoldem convention
+      // When using ManualMode, grab i5state for PT network
+      p_tablemap->set_network(result);
+    }
 	}
 }
 
@@ -249,11 +207,11 @@ void CScraper::ScrapeActionButtonLabels() {
 	CString result;
   // Every button needs a label
   // No longer using any WinHoldem defaults
-	for (int i=0; i<k_max_number_of_buttons; i++)	{
-		p_table_state->_SCI._button_label[i] = "";
+	for (int i=0; i<k_max_number_of_buttons; ++i)	{
+    p_casino_interface->_technical_autoplayer_buttons[i].SetLabel("");
 		label.Format("i%dlabel", i);
 		if (EvaluateRegion(label, &result))	{
-			p_table_state->_SCI._button_label[i] = result;
+      p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(result);
 		}
 	}
 }
@@ -264,7 +222,7 @@ void CScraper::ScrapeBetpotButtons() {
 	for (int i=0; i<k_max_betpot_buttons; i++) {
     button_name.Format("%sstate", k_betpot_button_name[i]);
 		if (EvaluateRegion(button_name, &result))	{
-			SetButtonState(&p_table_state->_SCI._betpot_button_state[i], result);	
+      p_casino_interface->_technical_betpot_buttons[i].SetState(result);
 		}
 	}
 }
@@ -276,7 +234,7 @@ void CScraper::ScrapeSeatedActive() {
 	}
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		ScrapeSeated(i);
-		if (p_scraper_access->IsPlayerSeated(i))		{
+		if (p_table_state->Player(i)->seated()) {
 			ScrapeActive(i);
 		}
 	}
@@ -313,7 +271,7 @@ void CScraper::ScrapeSeated(int chair) {
 			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
 		}
 	}
-	if (p_scraper_access->IsPlayerSeated(chair)) {
+	if (p_table_state->Player(chair)->seated()) {
 		return;
 	}
 	// try u region next uXseated,
@@ -364,7 +322,7 @@ void CScraper::ScrapeActive(int chair) {
 	if (EvaluateRegion(active, &result)) {
 		p_table_state->Player(chair)->set_active(p_string_match->IsStringActive(result));
 	}
-	if (p_scraper_access->IsPlayerActive(chair)) {
+	if (p_table_state->Player(chair)->active()) {
 		return;
 	}
 	active.Format("u%dactive", chair);
@@ -388,45 +346,36 @@ void CScraper::ScrapeColourCodes() {
 
 void CScraper::ScrapeSlider() {
 	__HDC_HEADER
-
 	RMapCI handleCI, slider;
 	RMapI handleI;
 	CString text;
 	POINT handle_xy;
-
-	// find handle
+  // find handle
 	handleCI = p_tablemap->r$()->find("i3handle");
 	slider = p_tablemap->r$()->find("i3slider");
   if (handleCI!=p_tablemap->r$()->end() 
       && slider!=p_tablemap->r$()->end() 
-      && p_table_state->_SCI._button_state[3]!="false")	{
+      && p_casino_interface->BetsizeConfirmationButton()->IsClickable())	{
 		int j = slider->second.right - handleCI->second.left;
 		text = "";
-		p_table_state->_SCI._handle_found_at_xy = false;
-		for (int k=0; k<=j; k++) 
-		{
+    p_casino_interface->_allin_slider.ResetHandlePosition();
+		for (int k=0; k<=j; ++k) {
 			handleI = p_tablemap->set_r$()->find("i3handle");
 			handleI->second.left  += k;
 			handleI->second.right += k;
-
-			EvaluateRegion("i3handle", &text);
+      EvaluateRegion("i3handle", &text);
 			handleI->second.left  -= k;
 			handleI->second.right -= k;
-			if (text == "handle" || text == "true") 
-			{
+			if (text == "handle" || text == "true") {
 				handleCI = p_tablemap->r$()->find("i3handle");
 				handle_xy.x = handleCI->second.left + k;
 				handle_xy.y = handleCI->second.top;
-				p_table_state->_SCI._handle_found_at_xy = true;
-				p_table_state->_SCI._handle_xy = handle_xy;
+        p_casino_interface->_allin_slider.SetHandlePosition(handle_xy);
 				 write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
-				break;
+				return;
 			}
 		}
-		if (!p_table_state->_SCI._handle_found_at_xy)
-		{
-			 write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
-		}
+		 write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
 	}
   __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
@@ -643,11 +592,10 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
   name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
-		if (p_string_match->IsStringAllin(text)) {
-      return 0.0;
-			 write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
-		}
-		else if (	text.MakeLower().Find("out")!=-1
+		if (p_string_match->IsStringAllin(text)) { 
+       write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
+       return 0.0;
+		}	else if (	text.MakeLower().Find("out")!=-1
 				||	text.MakeLower().Find("inactive")!=-1
 				||	text.MakeLower().Find("away")!=-1 ) {
 			p_table_state->Player(chair)->set_active(false);

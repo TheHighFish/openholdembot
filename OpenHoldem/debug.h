@@ -29,7 +29,7 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP);
 void start_log();
 void stop_log();
 void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl);
-void  write_log(bool debug_settings_for_this_message, char* fmt, ...);
+void write_log(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...);
 void write_log_separator(bool debug_settings_for_this_message, char* header_message);
 int GenerateDump(EXCEPTION_POINTERS *pExceptionPointers);

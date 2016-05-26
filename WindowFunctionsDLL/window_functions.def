@@ -6,6 +6,7 @@ MinimizeWindow
 ResizeToClientSize
 ResizeToTotalSize
 WinBelongsToExecutable 
+WinGetTitle
 WinIsBring
 WinIsDesktop
 WinIsMaximized

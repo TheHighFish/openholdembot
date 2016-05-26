@@ -39,7 +39,6 @@
 #include "CPreferences.h"
 #include "CRebuyManagement.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
 #include "CStableFramesCounter.h"
@@ -85,9 +84,6 @@ void InstantiateAllSingletons() {
    write_log(preferences.debug_alltherest(), "[Singletons] Going to create CScraper\n");
   assert(!p_scraper); 
   p_scraper = new CScraper;
-   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CScraperAccess\n");
-  assert(!p_scraper_access);
-  p_scraper_access = new CScraperAccess;
    write_log(preferences.debug_alltherest(), "[Singletons] Going to create CLazyScraper\n");
   assert(!p_lazyscraper);
   p_lazyscraper = new CLazyScraper;
@@ -251,8 +247,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_tablemap)
    write_log(preferences.debug_alltherest(), "[Singletons] Deleting 13\n");
   DELETE_AND_CLEAR(p_lazyscraper)
-   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 14\n");
-  DELETE_AND_CLEAR(p_scraper_access)
    write_log(preferences.debug_alltherest(), "[Singletons] Deleting 15\n");
   DELETE_AND_CLEAR(p_scraper)
    write_log(preferences.debug_alltherest(), "[Singletons] Deleting 16\n");

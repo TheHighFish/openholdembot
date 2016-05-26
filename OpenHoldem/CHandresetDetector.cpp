@@ -15,9 +15,9 @@
 #include "CHandresetDetector.h"
 
 #include <assert.h>
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
@@ -248,7 +248,7 @@ void CHandresetDetector::GetNewSymbolValues() {
 	assert(p_symbol_engine_userchair != NULL);
 	int userchair = p_symbol_engine_userchair->userchair();
   _potsize = p_symbol_engine_chip_amounts->pot();
-  _community_cards = p_scraper_access->NumberOfCommonCards();
+  _community_cards = p_table_state->NumberOfCommunityCards();
   _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
   _bblind = p_symbol_engine_tablelimits->bblind();
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {

@@ -11,7 +11,6 @@
 //
 //*******************************************************************************
 
-
 #ifndef INC_CTABLEMAP_H
 #define INC_CTABLEMAP_H
 
@@ -137,6 +136,10 @@ class CTablemap {
   bool ItemExists(CString name);
   bool FontGroupInUse(int font_index);
  public:
+  int GetTMSymbol(CString name, int default);
+  CString GetTMSymbol(CString name);
+  void GetTMRegion(const CString name, RECT *region);
+ public:
 	// commonly used strings 
 	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);
 									                return (n>=2 && n<=10) ? n : 10; }
@@ -191,8 +194,6 @@ class CTablemap {
 	void ClearIMap();
 	void WriteSectionHeader(CArchive& ar, CString header);
 	void WarnAboutGeneralTableMapError(int error_code, int line);
-	int GetTMSymbol(CString name, int default);
-	CString GetTMSymbol(CString name);
   void ErrorHashCollision(CString name1, CString name2);
  private:
 	// private variables - use public accessors and public mutators to address these

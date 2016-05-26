@@ -537,9 +537,6 @@
     <ClCompile Include="CScraper.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
-    <ClCompile Include="CScraperAccess.cpp">
-      <Filter>Source Files\Scraper</Filter>
-    </ClCompile>
     <ClCompile Include="CScraperPreprocessor.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
@@ -717,9 +714,6 @@
     <ClCompile Include="SLimitInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CScrapedActionInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WebSafeColours.cpp">
       <Filter>Source Files\CTransform</Filter>
     </ClCompile>
@@ -761,6 +755,18 @@
     </ClCompile>
     <ClCompile Include="CHeartbeatDelay.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CAutoplayerButton.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CBetsizeInputBox().cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CAllinSlider.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CCasinoHotkey.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1366,9 +1372,6 @@
     <ClInclude Include="CScraper.h">
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
-    <ClInclude Include="CScraperAccess.h">
-      <Filter>Header Files\Scraper</Filter>
-    </ClInclude>
     <ClInclude Include="CScraperPreprocessor.h">
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
@@ -1576,9 +1579,6 @@
     <ClInclude Include="SLimitInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CScrapedActionInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CSymbolengineMTTInfo.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
@@ -1620,6 +1620,18 @@
     </ClInclude>
     <ClInclude Include="CHeartbeatDelay.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CAutoplayerButton.h">
+      <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="CBetsizeInputBox.h">
+      <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="CAllinSlider.h">
+      <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="CCasinoHotkey.h">
+      <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

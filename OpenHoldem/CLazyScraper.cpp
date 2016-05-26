@@ -15,10 +15,10 @@
 #include "CLazyScraper.h"
 
 #include "CAutoplayer.h"
+#include "CCasinoInterface.h"
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineGameType.h"
@@ -168,7 +168,7 @@ bool CLazyScraper::NeedInterfaceButtons() {
 }
 
 bool CLazyScraper::NeedBetpotButtons() {
-	return (p_scraper_access->IsMyTurn()
+	return (p_casino_interface->IsMyTurn()
 		&& (p_symbol_engine_gametype->isnl() || p_symbol_engine_gametype->ispl()));
 }
 
@@ -201,7 +201,7 @@ bool CLazyScraper::NeedCommunityCards() {
 
 void CLazyScraper::ScrapeUnknownPlayerNames() {
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		if (p_scraper_access->IsPlayerSeated(i) 
+		if (p_table_state->Player(i)->seated()
 			  && (p_table_state->Player(i)->name() == "")) {
 			p_scraper->ScrapeName(i);
 		}
@@ -211,13 +211,13 @@ void CLazyScraper::ScrapeUnknownPlayerNames() {
 bool CLazyScraper::NeedColourCodes() {
   // Scrape colour-codes at the beginning of a session 
   // and at my turn -- that's enough.
-  return (p_scraper_access->IsMyTurn()
+  return (p_casino_interface->IsMyTurn()
     || (p_handreset_detector->hands_played() <= 1));
 }
 
 bool CLazyScraper::NeedMTTRegions() {
   // return when it is our turn
   // or if we have played less than 3 hands (for possible mtt detect)
-  return (p_scraper_access->IsMyTurn()
+  return (p_casino_interface->IsMyTurn()
 	  || p_handreset_detector->hands_played() < 3);
 }

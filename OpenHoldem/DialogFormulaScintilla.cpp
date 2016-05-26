@@ -1249,7 +1249,6 @@ BOOL CDlgFormulaScintilla::DestroyWindow()
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_FORMULA, false);
 
 	return CDialog::DestroyWindow();
-	return 0;
 }
 
 void CDlgFormulaScintilla::PostNcDestroy()

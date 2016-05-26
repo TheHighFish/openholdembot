@@ -96,8 +96,10 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -194,9 +196,13 @@
   <ItemGroup>
     <ClCompile Include="AllinAdjustment.cpp" />
     <ClCompile Include="BetpotCalculations.cpp" />
+    <ClCompile Include="CAllinSlider.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CAutoplayerButton.cpp" />
+    <ClCompile Include="CBetsizeInputBox().cpp" />
     <ClCompile Include="CBlindGuesser.cpp" />
     <ClCompile Include="CBlindLevels.cpp" />
+    <ClCompile Include="CCasinoHotkey.cpp" />
     <ClCompile Include="CFileSystemMonitor.cpp" />
     <ClCompile Include="CFlagsToolbar.cpp" />
     <ClCompile Include="CHandHistoryAction.cpp" />
@@ -221,7 +227,6 @@
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
-    <ClCompile Include="CScrapedActionInterface.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
     <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
@@ -368,7 +373,6 @@
     <ClCompile Include="Bitmaps.cpp" />
     <ClCompile Include="CLazyScraper.cpp" />
     <ClCompile Include="CScraper.cpp" />
-    <ClCompile Include="CScraperAccess.cpp" />
     <ClCompile Include="CScraperPreprocessor.cpp" />
     <ClCompile Include="CardFunctions.cpp" />
     <ClCompile Include="CFilenames.cpp" />
@@ -476,9 +480,13 @@
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
+    <ClInclude Include="CAllinSlider.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="CAutoplayerButton.h" />
+    <ClInclude Include="CBetsizeInputBox.h" />
     <ClInclude Include="CBlindGuesser.h" />
     <ClInclude Include="CBlindLevels.h" />
+    <ClInclude Include="CCasinoHotkey.h" />
     <ClInclude Include="CFileSystemMonitor.h" />
     <ClInclude Include="CFlagsToolbar.h" />
     <ClInclude Include="CGrammar.h" />
@@ -505,7 +513,6 @@
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
-    <ClInclude Include="CScrapedActionInterface.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
@@ -669,7 +676,6 @@
     <ClInclude Include="CReplayFrame.h" />
     <ClInclude Include="Bitmaps.h" />
     <ClInclude Include="CScraper.h" />
-    <ClInclude Include="CScraperAccess.h" />
     <ClInclude Include="CScraperPreprocessor.h" />
     <ClInclude Include="..\CTablemap\CTablemap.h" />
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />

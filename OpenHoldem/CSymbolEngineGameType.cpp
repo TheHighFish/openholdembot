@@ -15,9 +15,9 @@
 #include "CSymbolEngineGameType.h"
 
 #include <assert.h>
+#include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CTableState.h"
 #include "debug.h"
@@ -70,12 +70,8 @@ void CSymbolEngineGameType::ResetOnHeartbeat() {
     // Known type. Can't go back to FL/PL.
     return;
   }
-  // p_scraper_access->GetNeccessaryTablemapObjects()
-  // already executed in heartbeat-thread.
-  // Therefore we can access this info.
-  if (p_scraper_access->allin_option_available) {
+  if (p_casino_interface->AllinOptionAvailable()) {
     _gametype = kGametypeNL;
-
   } else if (isfl()) {
     // FL or unknown ATM.
     // Might also be PL, but there is no good way to detect.

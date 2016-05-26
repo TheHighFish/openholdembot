@@ -1,6 +1,13 @@
-v9.2.0 2016-05-xx
+v9.2.0 2016-05-29
 ==================
 NEW STUFF:
+- Supporting now hotkeys to execute actions at the table.
+  Still necessary are scraped buttons to recognize which actions are available.
+  If then a TM-symbol s$iXbuttonhotkey or s$betpotX_Yhotkey is present OpenHoldem
+  will click the specified keys.
+  Valid options are a..z, 0..9, Space, Return, Enter (same as Return), 
+  Left, Right, Up, Down and F1 .. F12.
+  [THF]
 - Implemented a new function for the DLL-level
   EXE_IMPLEMENTS void __stdcall ParseHandList(const char* name_of_list, const char* list_body);
   This function makes it possible to change hand-lists at run-time.

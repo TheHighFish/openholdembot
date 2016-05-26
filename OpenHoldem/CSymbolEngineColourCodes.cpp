@@ -17,7 +17,6 @@
 #include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"

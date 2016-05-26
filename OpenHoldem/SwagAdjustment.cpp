@@ -215,7 +215,7 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
 }
 
 double MaximumBetsizeDueToMaxOppStack() {
-	double maximum = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_table_state->calc_max_stack();
+	double maximum = p_symbol_engine_chip_amounts->call() + p_table_state->User()->bet() + p_symbol_engine_chip_amounts->MaxActiveOpponentStack();
 	 write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MaximumBetsizeDueToMaxOppStack: %.2f\n", maximum);
 	assert(maximum > 0);
 	return maximum;

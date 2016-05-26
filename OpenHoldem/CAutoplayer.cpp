@@ -30,7 +30,6 @@
 #include "CRebuyManagement.h"
 #include "CReplayFrame.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
@@ -148,7 +147,7 @@ bool CAutoplayer::DoBetPot(void) {
 				success = p_casino_interface->ClickButtonSequence(i, k_autoplayer_function_raise, preferences.swag_delay_3());
 			}	else {
 				// Default: click only betpot
-				success = p_casino_interface->ClickButton(i);				
+				success = p_casino_interface->LogicalAutoplayerButton(i)->Click();
 			}
       if (!success) {
         // Backup action> try yo swag betpot_X_Y
@@ -267,7 +266,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
       continue;
     }
 		if (p_function_collection->Evaluate(k_standard_function_names[i])) 	{
-			if (p_casino_interface->ClickButton(i)) 			{
+			if (p_casino_interface->LogicalAutoplayerButton(i)->Click()) 			{
 				p_autoplayer_trace->Print(ActionConstantNames(i), true);
 				p_symbol_engine_history->RegisterAction(i);
 				return true;
@@ -342,7 +341,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	else 
     for (int i=k_hopper_function_sitin; i<=k_hopper_function_autopost; ++i)	{
 		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
-			if (p_casino_interface->ClickButton(i)) {
+			if (p_casino_interface->LogicalAutoplayerButton(i)->Click()) {
 				executed_secondary_function = i;
 				break;
 			}
@@ -425,7 +424,7 @@ bool CAutoplayer::DoAllin(void) {
 		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
 	}	else {
     // Clicking only max (or allin), but not raise
-		success = p_casino_interface->ClickButton(k_autoplayer_function_allin);
+		success = p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->Click();
     p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
   }
 	if (!success) {
@@ -450,14 +449,12 @@ bool CAutoplayer::DoAllin(void) {
 void CAutoplayer::DoAutoplayer(void) {
 	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Starting Autoplayer cadence...\n");
   CheckBringKeyboard();
-  p_scraper_access->GetNeccessaryTablemapObjects();
    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
-		p_scraper_access->NumberOfVisibleButtons(),
+		p_casino_interface->NumberOfVisibleAutoplayerButtons(),
 		p_symbol_engine_autoplayer->GetFCKRAString());
-		
 	// Care about i86X regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
-	if (HandleInterfacebuttonsI86())	{
+	if (p_casino_interface->HandleInterfacebuttonsI86())	{
      write_log(preferences.debug_autoplayer(), "[AutoPlayer] Interface buttons (popups) handled\n");
     action_sequence_needs_to_be_finished = true;
 	  goto AutoPlayerCleanupAndFinalization;
@@ -527,13 +524,11 @@ bool CAutoplayer::DoBetsize() {
 
 bool CAutoplayer::DoPrefold(void) {
 	assert(p_function_collection->EvaluateAutoplayerFunction(k_standard_function_prefold) != 0);
-	if (!p_table_state->User()->HasKnownCards())
-	{
+	if (!p_table_state->User()->HasKnownCards()) {
 		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold skipped. No known cards.\n");
 		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");
 	}
-	if (p_casino_interface->ClickButton(k_standard_function_prefold))
-	{
+	if (p_casino_interface->LogicalAutoplayerButton(k_standard_function_prefold)->Click())	{
 		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
 		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
@@ -541,12 +536,3 @@ bool CAutoplayer::DoPrefold(void) {
 	return false;
 }
 
-bool CAutoplayer::HandleInterfacebuttonsI86(void) {
-	for (int i=0; i<k_max_number_of_i86X_buttons; ++i) {
-		if (p_casino_interface->ClickI86ButtonIfAvailable(i))	{
-			return true;
-		}
-	}
-	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No interface button (i86X) to be handled.\n");
-	return false;
-}

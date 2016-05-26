@@ -20,7 +20,6 @@
 #include "CFunctionCollection.h"
 #include "CIteratorThread.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEnginePrwin.h"

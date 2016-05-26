@@ -45,6 +45,7 @@
 #include <math.h>
 #include <windows.h>
 #include "window_functions.h"
+#include "..\OpenHoldem\MagicNumbers.h"
 #include "Psapi.h"
 
 RECT desktop_dimensions;
@@ -109,7 +110,7 @@ bool WinIsTaskManager(HWND window) {
   return WinBelongsToExecutable(window, "taskmgr.exe");
 }
 
-bool WinBelongsToExecutable(HWND window, const char* programName) {
+bool WinBelongsToExecutable(HWND window, const char* program_name) {
   if (window) {
     DWORD dwProcessId = 0;
     DWORD dwThreadId = GetWindowThreadProcessId(window, &dwProcessId);
@@ -119,7 +120,7 @@ bool WinBelongsToExecutable(HWND window, const char* programName) {
       bool match = false;
       char nameProc[MAX_PATH];
       if (GetProcessImageFileName(hProcess, nameProc, MAX_PATH)) {
-        match = strstr(nameProc, programName) != NULL;
+        match = strstr(nameProc, program_name) != NULL;
       }
       CloseHandle(hProcess);
       return match;
@@ -179,4 +180,8 @@ void ResizeToTotalSize(HWND window, int new_width, int new_height) {
     new_width, new_height,
     true);	// true = Redraw the table.
             // Update shared mem
+}
+
+void WinGetTitle(HWND window, char *title) {
+  GetWindowText(window, title, MAX_WINDOW_TITLE);
 }

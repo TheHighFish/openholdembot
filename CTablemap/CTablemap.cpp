@@ -94,6 +94,24 @@ CString CTablemap::GetTMSymbol(CString name)
 	return it->second.text.GetString();
 }
 
+void CTablemap::GetTMRegion(const CString name, RECT *region) {
+  RMapCI it = _r$.find(name);
+  if (it == _r$.end()) {
+#ifdef OPENHOLDEM_PROGRAM
+    write_log(preferences.debug_tablemap_loader(), "[CTablemap] Could not find region %s\n", name);
+#endif
+    region->bottom = kUndefined;
+    region->left = kUndefined;
+    region->right = kUndefined;
+    region->top = kUndefined;
+  } else {
+    region->bottom = it->second.bottom;
+    region->left = it->second.left;
+    region->right = it->second.right;
+    region->top = it->second.top;
+  }
+}
+
 #define ENT CSLock lock(m_critsec);
 
 const bool CTablemap::i$_insert(const STablemapImage s) 
