@@ -20,6 +20,10 @@ NEW STUFF:
 - Improved 64-bit-support for people who want to compile OH on their own for 64-bit-systems.
   Thanks to Davagin for providing the patch.
   [THF]
+- The autoconnector-thread accessed the flags-toolbar,
+  which gets created by the GUI-thread and could be uninitialized.
+  Thanks to ZeeZooLaa for reporting this race-condition.
+  [THF]
   
 BUG FIXES:
 - NumberOfUnknownSuitedOvercards also counted the unused rankbit below ace-low

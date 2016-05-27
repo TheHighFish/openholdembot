@@ -55,7 +55,7 @@ CGameState::CGameState() {
   // and the index will be right.
   // Previously we initialized to 0
   // and the index was always 1 off.
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=19100&start=30#p138362
 	state_index = kMaxIndex;
 }
 

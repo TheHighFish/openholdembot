@@ -228,6 +228,21 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 		 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Could not grab mutex; early exit\n");
 		return false; 
 	}
+  // Potential race-condition, as some objects
+  // (especially GUI objects) get created by another thread.
+  // We just skip connection if OH is not yet initialized.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19706
+  if (p_table_positioner == NULL) return false;
+  if (p_autoplayer == NULL) return false;
+  if (p_casino_interface == NULL) return false;
+  if (p_engine_container == NULL) return false;
+  if (p_flags_toolbar == NULL) return false;
+  if (p_scraper == NULL) return false;
+  if (p_sharedmem == NULL) return false;
+  if (p_tablemap == NULL) return false;
+  if (p_tablemap_loader == NULL) return false;
+  if (p_table_state == NULL) return false;
+  if (p_table_positioner == NULL) return false;
   // Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of tablemaps loaded: %i\n",
