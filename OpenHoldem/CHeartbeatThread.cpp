@@ -97,6 +97,13 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 		}
     LogMemoryUsage("Begin of heartbeat thread cycle");
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
+    if (!p_autoconnector->IsConnected()) {
+      // Not connected
+      AutoConnect();
+    }
+    // No "else" here
+    // We want one fast scrape immediately after connection
+    // without any heartbeat-sleeping.
 		if (p_autoconnector->IsConnected()) {
 			if (IsWindow(p_autoconnector->attached_hwnd()))	{
         ScrapeEvaluateAct();
@@ -105,9 +112,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 				p_autoplayer->EngageAutoplayer(false);
 				p_autoconnector->Disconnect();
 			}			
-		}	else {
-			// Not connected
-      AutoConnect();
 		}
     _heartbeat_delay.FlexibleSleep();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");

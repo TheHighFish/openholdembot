@@ -248,12 +248,9 @@ void CFlagsToolbar::CreateFlagsToolbar(void)
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER17, &tbi);
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER18, &tbi);
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER19, &tbi);
-	_tool_bar.EnableDocking(CBRS_ALIGN_ANY);
 	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
-
 	// Title of floating flags toolbar
 	_tool_bar.SetWindowText("Flags");
-
 	assert((void*)_tool_bar != NULL);
 }
 
