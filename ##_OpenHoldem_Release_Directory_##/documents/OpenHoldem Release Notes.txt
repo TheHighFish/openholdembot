@@ -1,4 +1,4 @@
-v9.2.0 2016-05-29
+v9.2.0 2016-06-07
 ==================
 NEW STUFF:
 - Supporting now hotkeys to execute actions at the table.
@@ -20,10 +20,6 @@ NEW STUFF:
 - Improved 64-bit-support for people who want to compile OH on their own for 64-bit-systems.
   Thanks to Davagin for providing the patch.
   [THF]
-- The autoconnector-thread accessed the flags-toolbar,
-  which gets created by the GUI-thread and could be uninitialized.
-  Thanks to ZeeZooLaa for reporting this race-condition.
-  [THF]
   
 BUG FIXES:
 - NumberOfUnknownSuitedOvercards also counted the unused rankbit below ace-low
@@ -35,6 +31,11 @@ BUG FIXES:
   This problem has now been fixed.
   Thanks to Termitapalahermita and Davagin for reporting.
   [THF]
+- The autoconnector-thread accessed the flags-toolbar,
+  which gets created by the GUI-thread and could be uninitialized.
+  Thanks to ZeeZooLaa for reporting this race-condition.
+  [THF]
+  
   
 v9.1.4 2016-04-26
 ==================
