@@ -17,6 +17,7 @@
 #include <math.h>
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
+#include "CFunction.h"
 #include "CFunctionCollection.h"
 #include "CParserSymbolTable.h"
 #include "CParseTreeTerminalNode.h"
@@ -45,16 +46,14 @@ void CParseTreeOperatorNode::MakeUnaryOperator(int node_type, TPParseTreeNode fi
 }
 
 void CParseTreeOperatorNode::MakeBinaryOperator(int node_type, TPParseTreeNode first_sibbling,
-	TPParseTreeNode second_sibbling)
-{
+	  TPParseTreeNode second_sibbling) {
 	_node_type = node_type;
 	_first_sibbling = first_sibbling;
 	_second_sibbling = second_sibbling;
 }
 
 void CParseTreeOperatorNode::MakeTernaryOperator(int node_type, TPParseTreeNode first_sibbling,
-	TPParseTreeNode second_sibbling, TPParseTreeNode third_sibbling)
-{
+	  TPParseTreeNode second_sibbling, TPParseTreeNode third_sibbling) {
 	_node_type = node_type;
 	_first_sibbling = first_sibbling;
 	_second_sibbling = second_sibbling;
@@ -179,6 +178,19 @@ double CParseTreeOperatorNode::EvaluateUnaryExpression(bool log_symbol) {
   }
 }
 
+void CParseTreeOperatorNode::ErrorDivisionByZero(int relative_line, TPParseTreeNode second_sibbling) {
+  CString second_operand = second_sibbling->Serialize();
+  CString message;
+  message.Format("Division by zero.\n\n"
+    "Function: %s\n"
+    "Relative line: %i\n"
+    "Divisor: %s",
+    CFunction::CurrentlyEvaluatedFunction()->name(),
+    relative_line,
+    second_operand);
+  OH_MessageBox_Error_Warning(message);
+}
+
 double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
   assert(_first_sibbling  != NULL);
   assert(_second_sibbling != NULL);
@@ -217,14 +229,14 @@ double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {
 		  return value_of_first_sibbling * value_of_second_sibbling;
 	  case kTokenOperatorDivision: 
 		  if (value_of_second_sibbling == 0) {
-			  OH_MessageBox_Error_Warning("Division by zero.");
+        ErrorDivisionByZero(_relative_line_number, _second_sibbling);
 			  return kUndefined;
 		  } else {
 			  return value_of_first_sibbling / value_of_second_sibbling;
 		  }
 	  case kTokenOperatorModulo: 
       if (value_of_second_sibbling == 0) {
-			  OH_MessageBox_Error_Warning("Division by zero.");
+        ErrorDivisionByZero(_relative_line_number, _second_sibbling);
 			  return kUndefined;
 		  } else {
 			  return (unsigned long)value_of_first_sibbling 

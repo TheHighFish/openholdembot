@@ -35,6 +35,9 @@ class CFunction: public COHScriptObject{
   // For debugging output
   CString Serialize();
   void Dump();
+  static CFunction* CurrentlyEvaluatedFunction() {
+    return _currently_evaluated_function;
+  }
  protected:
   // For OpenPPL, which evaluates f$preflop, ...
   // instead of f$beep, f$alli, ...
@@ -45,6 +48,9 @@ class CFunction: public COHScriptObject{
  private:
   double _cached_result;
   bool _is_result_cached;
+ private:
+  static CFunction* _currently_evaluated_function;
+  CFunction* _previously_evaluated_function;
 };
 
 #endif INC_CFUNCTION_H

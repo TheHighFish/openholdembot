@@ -50,7 +50,7 @@ class CParseTreeOperatorNode: public CParseTreeNode {
   double EvaluateTernaryExpression(bool log);
   double EvaluateSibbling(TPParseTreeNode first_second_or_third_sibbling, bool log);
  private:
-  //bool IsBinaryIdentifier();
+  void ErrorDivisionByZero(int relative_line, TPParseTreeNode second_sibbling);
  private:
   bool SecondSibblingIsUserVariableToBeSet();
 };

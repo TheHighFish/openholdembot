@@ -24,6 +24,9 @@
 int recursion_depth = 0;
 const int kMaxRecursionDepth = 100;
 
+CFunction dummy_function("undefined (probably debug-tab)", "", kUndefined);
+CFunction* CFunction::_currently_evaluated_function = &dummy_function;
+
 CFunction::CFunction(
     CString new_name, 
     CString new_function_text,
@@ -66,6 +69,11 @@ double CFunction::Evaluate(bool log /* = false */) {
 	  ++recursion_depth;
 	  return kUndefinedZero;
   }
+  // Keep track of the currently evaluated function
+  // to be able generate better error-messages in other modules
+  // (CParseTreeOperatorNode, division by zero)
+  _previously_evaluated_function = _currently_evaluated_function;
+  _currently_evaluated_function = this;
   // Result already cached
   if (_is_result_cached) {
     if (log) {
@@ -94,6 +102,7 @@ double CFunction::Evaluate(bool log /* = false */) {
     // Else: keep _cached_result as 0.0
   }
   --recursion_depth;
+  _currently_evaluated_function = _previously_evaluated_function;
   return _cached_result;
 }
 
