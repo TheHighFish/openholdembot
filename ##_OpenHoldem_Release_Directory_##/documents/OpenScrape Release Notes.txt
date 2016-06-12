@@ -1,3 +1,9 @@
+v9.2.1 2016-xx-xx
+==================
+NEW stuff:
+- Support for betpot-buttons and hotkeys.
+  [THF]
+
 v9.1.0 2016-02-16
 ==================
 BUG FIXES:

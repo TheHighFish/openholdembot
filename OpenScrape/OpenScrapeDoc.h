@@ -21,24 +21,28 @@ int	const num_z$strings = 3;
 char * const z$strings[num_z$strings] = 
     { "clientsizemin", "clientsizemax", "targetsize" };
 
-int	const num_s$strings = 67;
-char * const s$strings[num_s$strings] = 
-    { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
-	  "titletext7", "titletext8", "titletext9", 
-	  "!titletext", "!titletext0", "!titletext1", "!titletext2", "!titletext3", "!titletext4", "!titletext5", "!titletext6",
-	  "!titletext7", "!titletext8", "!titletext9", 
-	  "ttlimits", "ttlimits0", "ttlimits1", "ttlimits2", "ttlimits3", "ttlimits4", "ttlimits5", "ttlimits6",
-	  "ttlimits7", "ttlimits8", "ttlimits9", 
-	  "c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", "c0limits6", "c0limits7", 
-	  "c0limits8", "c0limits9", 
-	  "sitename", "network", "nchairs", "potmethod",  
-	  "defaultlabels", "t0type", "t1type", "t2type", "t3type", 
-	  "betsizeselectionmethod", "betsizedeletionmethod", "betsizeconfirmationmethod", "betsizeinterpretationmethod",
-    "buttonclickmethod", "allinconfirmationmethod", "balancenumbersonly", "scraperdll", 
-    "scraperpreprocessordll", "chipscrapemethod", "cardscrapemethod", "islobby",
-    "use_comma_instead_of_dot"};
+int	const num_s$strings = 84;
+char * const s$strings[num_s$strings] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
+	"titletext7", "titletext8", "titletext9", 
+	"!titletext", "!titletext0", "!titletext1", "!titletext2", "!titletext3", "!titletext4", "!titletext5", "!titletext6",
+	"!titletext7", "!titletext8", "!titletext9", 
+	"ttlimits", "ttlimits0", "ttlimits1", "ttlimits2", "ttlimits3", "ttlimits4", "ttlimits5", "ttlimits6",
+	"ttlimits7", "ttlimits8", "ttlimits9", 
+	"c0limits", "c0limits0", "c0limits1", "c0limits2", "c0limits3", "c0limits4", "c0limits5", "c0limits6", "c0limits7", 
+	"c0limits8", "c0limits9", 
+	"sitename", "network", "nchairs", "potmethod",  
+	"defaultlabels", "t0type", "t1type", "t2type", "t3type", 
+	"betsizeselectionmethod", "betsizedeletionmethod", "betsizeconfirmationmethod", "betsizeinterpretationmethod",
+  "buttonclickmethod", "allinconfirmationmethod", "balancenumbersonly", "scraperdll", 
+  "scraperpreprocessordll", "chipscrapemethod", "cardscrapemethod", "islobby",
+  "use_comma_instead_of_dot",
+  "i0buttonhotkey", "i1buttonhotkey", "i2buttonhotkey", "i3buttonhotkey", "i4buttonhotkey",
+  "i5buttonhotkey", "i6buttonhotkey", "i7buttonhotkey", "i8buttonhotkey", "i9buttonhotkey",
+  "betpot_2_1buttonhotkey", "betpot_1_1buttonhotkey", "betpot_3_4buttonhotkey", "betpot_2_3buttonhotkey",
+  "betpot_1_2buttonhotkey", "betpot_1_3buttonhotkey", "betpot_1_4buttonhotkey",
+};
 
-int	const num_r$strings = 398;
+int	const num_r$strings = 412;
 
 char * const r$strings[num_r$strings] =
 	{	"c0cardface0", "c0cardface1", "c0cardface2", "c0cardface3", "c0cardface4", 
@@ -62,6 +66,11 @@ char * const r$strings[num_r$strings] =
 		"i0state", "i1state", "i2state", "i3state", "i4state", "i5state", "i6state", "i7state", "i8state", "i9state", 
 		"i3handle", "i3slider",	"i3edit",
 		// 42
+    "betpot_2_1button", "betpot_1_1button", "betpot_3_4button", "betpot_2_3button",
+    "betpot_1_2button", "betpot_1_3button", "betpot_1_4button",
+    "betpot_2_1state", "betpot_1_1state", "betpot_3_4state", "betpot_2_3state",
+    "betpot_1_2state", "betpot_1_3state", "betpot_1_4state",
+    // 14
 		"i860button", "i861button", "i862button", "i863button", "i864button", "i865button", "i866button", "i867button", "i868button", "i869button", 
 		"i860state", "i861state", "i862state", "i863state", "i864state", "i865state", "i866state", "i867state", "i868state", "i869state", 
 		"p0active", "p1active", "p2active", "p3active", "p4active", "p5active", "p6active", "p7active", "p8active", "p9active", 
