@@ -99,11 +99,26 @@ void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, 
     case k_autoplayer_function_allin:
       action_name = "RaiseMax";
       break;
+    case k_autoplayer_function_betpot_2_1:
+      action_name = "RaiseTwoPot";
+      break;
     case k_autoplayer_function_betpot_1_1:
       action_name = "RaisePot";
       break;
+    case k_autoplayer_function_betpot_3_4:
+      action_name = "RaiseThreeFourthPot";
+      break;
+    case k_autoplayer_function_betpot_2_3:
+      action_name = "RaiseTwoThirdPot";
+      break;
     case k_autoplayer_function_betpot_1_2:
       action_name = "RaiseHalfPot";
+      break;
+    case k_autoplayer_function_betpot_1_3:
+      action_name = "RaiseThirdPot";
+      break;
+    case k_autoplayer_function_betpot_1_4:
+      action_name = "RaiseFourthPot";
       break;
     case k_autoplayer_function_raise:
       action_name = "Raise";
@@ -148,14 +163,9 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
       betsize);
   } else if (decision < -1000) {
     // Large negative values: action constants
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_beep);
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_allin);
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_betpot_1_1);
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_betpot_1_2);
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_raise);
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_call);
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_check);
-    CheckIfDecisionMatchesElementaryAction(decision, k_autoplayer_function_fold);
+    for (int action = k_autoplayer_function_beep; action <= k_autoplayer_function_fold; ++action) {
+      CheckIfDecisionMatchesElementaryAction(decision, action);
+    }
   } else {
     // This can only be undefined == 0.0
     assert(decision == kUndefinedZero);
