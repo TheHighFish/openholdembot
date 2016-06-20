@@ -21,7 +21,7 @@ int	const num_z$strings = 3;
 char * const z$strings[num_z$strings] = 
     { "clientsizemin", "clientsizemax", "targetsize" };
 
-int	const num_s$strings = 84;
+int	const num_s$strings = 85;
 char * const s$strings[num_s$strings] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
 	"titletext7", "titletext8", "titletext9", 
 	"!titletext", "!titletext0", "!titletext1", "!titletext2", "!titletext3", "!titletext4", "!titletext5", "!titletext6",
@@ -40,6 +40,7 @@ char * const s$strings[num_s$strings] = { "titletext", "titletext0", "titletext1
   "i5buttonhotkey", "i6buttonhotkey", "i7buttonhotkey", "i8buttonhotkey", "i9buttonhotkey",
   "betpot_2_1buttonhotkey", "betpot_1_1buttonhotkey", "betpot_3_4buttonhotkey", "betpot_2_3buttonhotkey",
   "betpot_1_2buttonhotkey", "betpot_1_3buttonhotkey", "betpot_1_4buttonhotkey",
+  "betpotmethod",
 };
 
 int	const num_r$strings = 412;
