@@ -1,3 +1,15 @@
+v9.2.1 2016-06-07
+==================
+BUG FIXES:
+- OpenPPL supported only BetPot and BetHalfPot (like Shanky) but not all the other betpot-actions.
+  Thanks to Johnny for reporting.
+  [THF]
+- Hand and board expressions containing "10" instead of "T"
+  caused a crash. This has now been fixed and a warning added.
+  Thanks to Chucknevermuck for reporting.
+  [THF]
+
+
 v9.2.0 2016-06-07
 ==================
 NEW STUFF:
