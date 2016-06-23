@@ -17,6 +17,7 @@
 #include "CSymbolEngineCards.h"
 #include "CSymbolEnginePokerval.h"
 #include "CardFunctions.h"
+#include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CTableState.h"
 #include "StringFunctions.h"
@@ -251,22 +252,27 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
 	return result;
 }
 
-int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(CString card_expression)
-{
+int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(CString card_expression) {
 	int result = 1;
 	int length = card_expression.GetLength();
-
-	for (int i=0; i<length; i++)
-	{
-		char next_character = card_expression[i];
-		if (!IsCardRankCharacter(next_character))
-		{
-			// The expression might contain suits,
-			// so simply continue on unexpected characters
-			continue;
-		}
-		int rank = CardRankCharacterToCardRank(next_character);
-		result *= prime_coded_card_ranks[rank];
+  for (int i = 0; i < length; i++) {
+    char next_character = card_expression[i];
+    if (!IsCardRankCharacter(next_character)) {
+      // The expression might contain suits,
+      // so simply continue on unexpected characters
+      continue;
+    }
+    int rank = CardRankCharacterToCardRank(next_character);
+    if (rank == kUndefined) {
+      // Hand expression might fior example contain "10" instead of "T"
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19774
+      CString message;
+      message.Format("Invalid character \"%c\" in hand- or board-expression.\n", next_character);
+      CParseErrors::Error(message);
+      break;
+    } else {
+      result *= prime_coded_card_ranks[rank];
+    }
 	}
 	return result;
 }
