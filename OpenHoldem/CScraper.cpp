@@ -485,6 +485,8 @@ int CScraper::ScrapeCard(CString name) {
     "[CScraper] Not nocard, no cards and no cardbacks.\n");
    write_log(k_always_log_errors,
     "[CScraper] Defaulting to nocard\n");
+   write_log(k_always_log_errors,
+     "[CScraper] Please revisit your cards, especially nocard-regions.\n");
   // For some time we tried to be smart and returned
   //   * CARD_BACK for players
   //   * CARD_NOCARD for board-cards
