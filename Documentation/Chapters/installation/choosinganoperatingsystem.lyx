@@ -86,62 +86,44 @@ OpenHoldem has been originally designed to work best on the 32-bit versions
 
 \begin_layout Standard
 OpenHoldem works at any later version of Windows too, but we recommend you
- avoid 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Windows Vista
-\end_layout
-
-\end_inset
-
-Vista or its dependents (
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Windows 7
-\end_layout
-
-\end_inset
-
-Windows 7, etc).
+ avoid Vista or its dependents (Windows 7, etc).
  These operating systems add a lot of useless cruft and bloatware that is
  not useful in this hobby.
  Most of the poker botters you will interact with in the community use Windows
  2000 or Windows XP as well, so as you learn and exchange ideas, it is useful
  to be on the same platform.
  This is especially true of Table Maps.
- A TableMap designed for 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Windows XP
-\end_layout
-
-\end_inset
-
-Windows XP is not very likely to work on Vista.
+ A TableMap designed for Windows XP is not very likely to work on Vista.
 \end_layout
 
 \begin_layout Standard
 Finally, as you scale your botting operation up, you want to keep things
  as lightweight as possible to best utilize the limited computing resources
  at your disposal.
- For this reason, 
-\begin_inset Index idx
-status open
+ For this reason, Windows 2000 or a minimalistic installation of Windows
+ XP is often the choice of poker botters due to its very lean profile.
+\end_layout
 
-\begin_layout Plain Layout
+\begin_layout Itemize
 Windows 2000
 \end_layout
 
-\end_inset
+\begin_layout Itemize
+Windows XP
+\end_layout
 
-Windows 2000 or a minimalistic installation of Windows XP is often the choice
- of poker botters due to its very lean profile.
+\begin_layout Itemize
+Windows Vista: this operating system requires more resources then Windows
+ XP, it needs at least XXX MB RAM.
+ But its aero theme provides a major advantage: scraping overlapping tables.
+\end_layout
+
+\begin_layout Itemize
+Windows 7/8
+\end_layout
+
+\begin_layout Itemize
+Windows 10
 \end_layout
 
 \end_body
