@@ -43,7 +43,8 @@ class CFormulaParser {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
   void ParseSingleFormula(CString name, CString function_text, int starting_line);
   void ParseSingleFormula(CString function_text, int starting_line);
-  void ParseOpenPPLLibraryIfNeeded();
+  void ParseDefaultLibraries();
+  void ParseLibrary(CString library_path);
  public:
   static CString CurrentFunctionName();
   bool IsParsing()	{ return _is_parsing; }

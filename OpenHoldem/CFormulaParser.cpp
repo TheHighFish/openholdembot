@@ -72,35 +72,33 @@ void CFormulaParser::FinishParse() {
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
    write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
-  ParseOpenPPLLibraryIfNeeded();
   ParseFile(formula_file);
 }
 
-void CFormulaParser::ParseOpenPPLLibraryIfNeeded() {
+void CFormulaParser::ParseDefaultLibraries() {
+  ParseLibrary(p_filenames->OpenPPLLibraryPath());
+  ParseLibrary(p_filenames->CustomLibraryPath());
+}
+
+void CFormulaParser::ParseLibrary(CString library_path) {
   assert(p_function_collection != NULL);
-  if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
-     write_log(preferences.debug_parser(), 
-	    "[FormulaParser] OpenPPL-library already correctly loaded. Nothing to do.\n");
-    return;
-  }
   assert(p_filenames != NULL);
-  CString openPPL_path = p_filenames->OpenPPLLibraryPath();
-  if (_access(openPPL_path, F_OK) != 0) {
+  if (_access(library_path, F_OK) != 0) {
     // Using a message-box instead of silent logging, as OpenPPL is mandatory 
     // and we expect the user to supervise at least the first test.
     CString message;
-    message.Format("Can not load \"%s\".\nFile not found.\n", openPPL_path);
+    message.Format("Can not load \"%s\".\nFile not found.\n", library_path);
     OH_MessageBox_Error_Warning(message);
-    p_function_collection->SetOpenPPLLibraryLoadingState(false);
+    p_function_collection->SetOpenPPLLibraryLoadingState(false); //??????!!!!!
     return;
   }
-  CFile openPPL_file(openPPL_path, 
+  CFile library_file(library_path,
     CFile::modeRead | CFile::shareDenyWrite);
    write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Going to load and parse OpenPPL-library\n");
-  CArchive openPPL_archive(&openPPL_file, CArchive::load); 
-  ParseFile(openPPL_archive);
-  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
+  CArchive library_archive(&library_file, CArchive::load); 
+  ParseFile(library_archive);
+  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false); //!!!!!
 }
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {
