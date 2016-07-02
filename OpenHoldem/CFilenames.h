@@ -19,21 +19,30 @@ class CFilenames {
 	CFilenames();
 	~CFilenames();
  public:
-	CString OpenHoldemDirectory();
-	CString IniFilePath();
-	CString TableMapWildcard();
-	CString LogsDirectory();
+  // Directories
+  CString BotlogicDirectory();
+  CString LogsDirectory();
+  CString OpenHoldemDirectory();
+  CString PathOfExecutable();
+  CString ReplaySessionDirectory();
+  CString ScraperDirectory();
+public:
+  // Filenames
 	CString LogFilename();
 	CString MiniDumpFilename();
-	CString ScraperDirectory();
-	CString ReplaySessionDirectory();
 	CString ReplayBitmapFilename(int frame_number);
 	CString ReplayHTMLFilename(int frame_number);
-	CString PathOfExecutable();
 	CString ExecutableFilename();
 	CString PureExecutableFilename();
+public:
+  // Paths
+  CString IniFilePath();
   CString VersusPath();
   CString OpenPPLLibraryPath();
+  CString CustomLibraryPath();
+public:
+  // Others
+  CString TableMapWildcard();
  public:
 	void SwitchToOpenHoldemDirectory();
   bool Exists(CString filename_or_pattern);
