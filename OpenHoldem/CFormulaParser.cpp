@@ -47,6 +47,7 @@ CString _function_name;
 
 CFormulaParser::CFormulaParser() {
   _is_parsing = false;
+  _is_parsing_read_only_function_library = false;
 }
 
 CFormulaParser::~CFormulaParser() {
@@ -89,7 +90,7 @@ void CFormulaParser::ParseLibrary(CString library_path) {
     CString message;
     message.Format("Can not load \"%s\".\nFile not found.\n", library_path);
     OH_MessageBox_Error_Warning(message);
-    p_function_collection->SetOpenPPLLibraryLoadingState(false); //??????!!!!!
+    p_function_collection->SetOpenPPLLibraryLoadingState(false); 
     return;
   }
   CFile library_file(library_path,
@@ -97,8 +98,10 @@ void CFormulaParser::ParseLibrary(CString library_path) {
    write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Going to load and parse OpenPPL-library\n");
   CArchive library_archive(&library_file, CArchive::load); 
+  _is_parsing_read_only_function_library = true;
   ParseFile(library_archive);
-  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false); //!!!!!
+  _is_parsing_read_only_function_library = false;
+  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
 }
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {

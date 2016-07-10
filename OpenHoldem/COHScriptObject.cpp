@@ -21,6 +21,7 @@ COHScriptObject::COHScriptObject() {
 	_name = "";
 	_function_text = "";
   _starting_line_of_function = 0;
+  _is_read_only = false;
 }
 
 COHScriptObject::COHScriptObject(
