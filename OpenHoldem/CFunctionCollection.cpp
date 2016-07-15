@@ -42,7 +42,7 @@ void CFunctionCollection::DeleteAll(bool delete_read_only_library_functions, boo
    write_log(preferences.debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
   if (!_openPPL_library_correctly_loaded) {
-    delete_read_only_library_functions = true;
+    //!!!!!delete_read_only_library_functions = true;
   }
   COHScriptObject *p_nextObject = GetFirst();
   while (p_nextObject != NULL) {
@@ -144,6 +144,8 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
    write_log(preferences.debug_formula(), 
 	  "[CFunctionCollection] Adding %s -> %i\n", name, new_function);
    if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) { 
+      write_log(preferences.debug_formula(),
+       "[CFunctionCollection] Making function read-only\n");
      new_function->SetAsReadOnlyLibraryFunction();
    }
   _function_map[name] = new_function;

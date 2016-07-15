@@ -38,7 +38,7 @@ CParseTreeNode::~CParseTreeNode() {
     // Be carefull with open-ended when-conditions.
     // They create graphs, no longer pure trees/
     // The 3rd node is reachable on two paths.
-    delete _third_sibbling;
+    delete _third_sibbling; //!!!!! Here crash
     _third_sibbling = NULL;
   }
 }

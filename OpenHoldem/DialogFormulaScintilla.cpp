@@ -562,8 +562,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
 
   p_OH_script_object = p_function_collection->GetFirst();
   while (p_OH_script_object != NULL) {
-    if (p_OH_script_object->IsList())
-    {
+    if (p_OH_script_object->IsList()) {
       hItem = m_FormulaTree.InsertItem(p_OH_script_object->name(), parent);
       m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(
         p_OH_script_object->name()));
@@ -576,7 +575,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   p_OH_script_object = p_function_collection->GetFirst();
   while (p_OH_script_object != NULL) {
     m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-    if (p_OH_script_object->IsUserDefinedFunction()) {
+    if (p_OH_script_object->IsUserDefinedFunction() && !p_OH_script_object->IsReadOnlyLibrarySymbol()) {
       AddFunctionToTree(parent, p_OH_script_object->name());
     }
     p_OH_script_object = p_function_collection->GetNext();
