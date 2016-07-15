@@ -8,6 +8,9 @@ BUG FIXES:
   caused a crash. This has now been fixed and a warning added.
   Thanks to Chucknevermuck for reporting.
   [THF]
+- Improved HaveNutStraightDraw.
+  Thanks to ChuckNeverMuck for helping.
+  [THF]
 
 
 v9.2.0 2016-06-07
