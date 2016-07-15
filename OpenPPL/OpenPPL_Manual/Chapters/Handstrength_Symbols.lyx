@@ -1397,7 +1397,18 @@ HaveNutStraightDraw
 \begin_layout Plain Layout
 True, if we have a draw to the best straight; this means: if we hit, no
  better straight is possible.
- E.g.87 at a board of 643.
+ E.g.87 at a board of 653.
+ A nut straight draw requires 
+\begin_inset Quotes eld
+\end_inset
+
+at least 7 outs
+\begin_inset Quotes erd
+\end_inset
+
+ according to Shankys definition.
+ Therefore straight draws get discounted if there is a flush draw possible.
+ Use HaveUnDiscountedNutStraightDraw if you don't worry about possible flushes.
 \end_layout
 
 \end_inset

@@ -392,6 +392,9 @@ RaiseMax
 ##HINT_There_Is_No_Set_On_The_Board##
 -1
 
+##HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw##
+False
+
 ##HINT_Nothing_To_Do_But_All_OK##
 0
 
@@ -1645,6 +1648,9 @@ OR ThirdFlopCard == TurnCard
 
 ##FlushPossible##
 (nsuitedcommon >= 3)
+
+##FlushDrawPossible##
+(nsuitedcommon >= 2)
 
 ##FlushOnBoard##
 (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit)
@@ -2933,8 +2939,12 @@ AND (BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightForVillai
 + GetBestPossibleStraightIfTwoHitsTheBoard
 
 ##HaveNutStraightDraw##
- 	 ( (nsuitedcommon < 2) AND (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) )
-AND NOT HaveStraight
+WHEN FlushDrawPossible RETURN HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw FORCE
+WHEN HaveNutStraight RETURN True FORCE
+WHEN HaveUnDiscountedNutStraightDraw RETURN True FORCE
+
+##HaveUnDiscountedNutStraightDraw##
+(NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) 
 
 ##HaveInsideNutStraightDraw##
    (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
