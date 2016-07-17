@@ -932,7 +932,7 @@ void CDlgFormulaScintilla::OnNew() {
       newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, p);
     }
   } else {
-    // The added functions stazs in the collection 
+    // The added functions stays in the collection 
     // until a new profile gets loaded, until it gets overwritten]
     // or until the ebtire collection gets released
     CFunction *p_new_function = new CFunction(newdlg.CSnewname, 
