@@ -11,6 +11,9 @@ BUG FIXES:
 - Improved HaveNutStraightDraw.
   Thanks to ChuckNeverMuck for helping.
   [THF]
+- The initialization of OpenPPL history symbols did not get executed
+  for OH-script-profiles. Thanks to FK1 for reporting.
+  [THF]
 
 
 v9.2.0 2016-06-07
