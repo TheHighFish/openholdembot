@@ -42,6 +42,14 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 
 void CAutoplayerFunctions::CalcPrimaryFormulas() {
    write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulas()\n");
+  // First do the calculation of memory/history-symbols,
+  //   * exactly once per my turn
+  //   * when we have stable frames (isfinal-answer == true)
+  //   * shortly before the main OpenPPL-evaluations
+  // Unfortunately doing this in CSymbolEngineOpenPPL::ResetOnMyTurn() 
+  // did not work as expected.
+  assert(p_symbol_engine_autoplayer->isfinalanswer());
+  p_symbol_engine_open_ppl->InitMemorySymbols();
   if (p_function_collection->IsOpenPPLProfile()) {
     CalcPrimaryFormulasOpenPPL();
     CalculateOpenPPLBackupActions();
@@ -67,14 +75,6 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
    write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOpenPPL()\n");
   bool trace_needed = preferences.trace_enabled();
    write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
-  // First do the calculation of memory/history-symbols,
-  //   * exactly once per my turn
-  //   * when we have stable frames (isfinal-answer == true)
-  //   * shortly before the main OpenPPL-evaluations
-  // Unfortunately doing this in CSymbolEngineOpen::PPLResetOnMyTurn() 
-  // did not work as expected.
-  assert(p_symbol_engine_autoplayer->isfinalanswer());
-  p_symbol_engine_open_ppl->InitMemorySymbols();
   // Now do the main evaluation
   int betround = p_betround_calculator->betround();
 	if (betround < kBetroundPreflop || betround > kBetroundRiver) {
