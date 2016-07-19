@@ -1879,16 +1879,6 @@ PairOnFlop AND SecondFlopCard  == ThirdFlopCard AND SecondFlopCard  > FirstFlopC
 PairOnFlop AND SecondFlopCard  == ThirdFlopCard AND SecondFlopCard  < FirstFlopCard  ? SecondFlopCard :
 -1
 
-// Shanky is a bit inconsistent with the naming
-// So we provide both SecondTopFlopCardPairedOnRiver and SecondTopFlopCardPairedOnRiver,
-// same for turn. "SecondTopFlopCardPairedOnRiver" is the "standard" here.
-
-##SecondTopFlopCardPairedOnRiver##
-SecondTopFlopCardPairedOnRiver
-
-##SecondTopFlopCardPairedOnTurn##
-SecondTopFlopCardPairedOnTurn
-
 ##SecondTopFlopCardPairedOnRiver##
 (SecondTopFlopCard == RiverCard)
 
