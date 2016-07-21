@@ -288,8 +288,8 @@ void CFunctionCollection::ExecuteSelftest() {
   CString function_text = kSelftestFunction;
   CFunction *p_function = new CFunction(name, 
     function_text, kNoAbsoluteLineNumberExists); 
-  Add((COHScriptObject *)p_function);
   p_function->Parse();
+  p_function->SetAsReadOnlyLibraryFunction();
   CSelftestParserEvaluator selftest;
   selftest.Test();
   // The function stays in the collection until the very end
