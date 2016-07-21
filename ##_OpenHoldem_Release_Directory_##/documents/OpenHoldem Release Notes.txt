@@ -1,4 +1,4 @@
-v9.2.1 2016-06-07
+v9.2.1 2016-07-21
 ==================
 BUG FIXES:
 - OpenPPL supported only BetPot and BetHalfPot (like Shanky) but not all the other betpot-actions.
