@@ -1,3 +1,20 @@
+v9.2.2 2016-07-24
+==================
+BUG FIXES:
+- OpenHoldem could crash when deleting (reloading, parsing, applying) a formula.
+  Open-ended when-conditions are usually reachable on two paths:
+  a) from the OEWC above, if this OEWC was false
+  b) from the sequence of when-conditions with actions above
+     if none of these actions could be taken.
+  However when deleting a parse-tree each node must be deleted exactly once.
+  Care has been taken for OEWCs, but the identification of OEWCs
+  failed on a half-way destructed parse-tree.
+  So some OEWCs could be deleted twice which caused an access violation.
+  Thanks to JohnNash, Kkfc, Dolar and Salem for reporting the problem 
+  and to Sagan, Gezs, BadHabit and Darkmund for providing log-files and crashing formulas.
+  [THF]
+
+
 v9.2.1 2016-07-21
 ==================
 BUG FIXES:
