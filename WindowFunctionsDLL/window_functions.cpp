@@ -170,6 +170,8 @@ void ResizeToClientSize(HWND window, int new_width, int new_height) {
   int new_total_height = CalculateTotalHeightForClientHeight(
     window, new_height);
   ResizeToTotalSize(window, new_total_width, new_total_height);
+  //!!!!!
+  SetWindowPos(NULL, NULL, 0, 0, 0, 0, 0);
 }
 
 void ResizeToTotalSize(HWND window, int new_width, int new_height) {

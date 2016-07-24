@@ -21,6 +21,7 @@
 #include "ManualModeDlg.h"
 
 #include "..\OpenHoldem\MagicNumbers.h"
+#include "..\WindowFunctionsDLL\window_functions.h"
 #include "ManualMode.h"
 #include "poker_defs.h"
 #include "debug.h"
@@ -176,6 +177,9 @@ CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg
 
 	// Save startup directory
 	::GetCurrentDirectory(sizeof(startup_path) - 1, startup_path);
+
+  //!!!!!
+  ResizeToClientSize(NULL, 574, 335);
 }
 
 void CManualModeDlg::DoDataExchange(CDataExchange* pDX) 

@@ -79,7 +79,7 @@ CString CParseTreeTerminalNodeNumber::Serialize() {
     return Number2CString(_constant_value);
   } else {
     // Unhandled note-type, probably new and therefore not yet handled
-    write_log(k_always_log_errors, "[CParseTreeTerminalNode] ERROR: Unhandled node-tzpe %i in serialiyation of parse-tree\n",
+    write_log(k_always_log_errors, "[CParseTreeTerminalNode] ERROR: Unhandled node-type %i in serialization of parse-tree\n",
       _node_type);
     return "";
   }
