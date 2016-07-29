@@ -58,6 +58,13 @@ CString CFilenames::OpenHoldemDirectory() {
 	return _startup_path;
 }
 
+CString CFilenames::BotlogicDirectory() {
+  assert(_startup_path != "");
+  CString bot_logic_dir = CString(_startup_path) + "bot_logic\\";
+  Log("BotLogicDirectory", (char*)bot_logic_dir.GetString());
+  return bot_logic_dir;
+}
+
 CString CFilenames::IniFilePath() {
 	// We need the complete path here,
 	// otherwise the file would be expected in the default location,
@@ -221,10 +228,16 @@ CString CFilenames::VersusPath() {
 }
 
 CString CFilenames::OpenPPLLibraryPath() {
-  CString result = OpenHoldemDirectory() + "\\OpenPPL_Library.ohf";
+  CString result = BotlogicDirectory() + "\\OpenPPL_Library.ohf";
   Log("OpenPPLLibraryPath", result.GetString());
 	return result;
 }   
+
+CString CFilenames::CustomLibraryPath() {
+  CString result = BotlogicDirectory() + "\\custom_function_library.ohf";
+  Log("CustomLibraryPath", result.GetString());
+  return result;
+}
 
 bool CFilenames::Exists(CString filename_or_pattern) {
   // https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418%28v=vs.85%29.aspx

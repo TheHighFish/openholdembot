@@ -10,6 +10,7 @@
 
 Local $pre_created_release_dir = "##_OpenHoldem_Release_Directory_##"
 Local $new_openholdem_dir      = "OpenHoldem_7.x.y"
+Local $new_bot_logic_dir       = $new_openholdem_dir & "\bot_logic"
 Local $new_vmware_keyboard_dir = $new_openholdem_dir & "\Keyboard_DLL_VmWare_Unity_Mode"
 Local $binary_dir              = "Release"
 Local $binary_optimized_dir    = "Release - Optimized"
@@ -63,7 +64,7 @@ CopyNeededFile($binary_dir, $new_vmware_keyboard_dir, "Keyboard_DLL_VmWare_Unity
 FileDelete($new_openholdem_dir & "\*.exp")
 FileDelete($new_openholdem_dir & "\*.pdb")
 ; Add the OpenPPL-library
-CopyNeededFile($openppl_library_dir, $new_openholdem_dir, "OpenPPL_Library.ohf")
+CopyNeededFile($openppl_library_dir, $new_bot_logic_dir, "OpenPPL_Library.ohf")
 ; Add OpenPPL_Manual.chm and symbol_pokertracker.pdf
 CopyNeededFile($openppl_manual_dir, $new_openholdem_dir, "OpenPPL_Manual.chm")
 CopyNeededFile($openholdem_manual_dir, $new_openholdem_dir, "OpenHoldem_Manual.chm")

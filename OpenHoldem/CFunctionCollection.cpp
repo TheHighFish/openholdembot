@@ -38,18 +38,18 @@ CFunctionCollection::~CFunctionCollection() {
   assert(_function_map.size() == 0);
 }
 
-void CFunctionCollection::DeleteAll(bool open_ppl, bool user_defined) {
+void CFunctionCollection::DeleteAll(bool delete_read_only_library_functions, bool delete_user_defined) {
    write_log(preferences.debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
   if (!_openPPL_library_correctly_loaded) {
-    open_ppl = true;
+    delete_read_only_library_functions = true;
   }
   COHScriptObject *p_nextObject = GetFirst();
   while (p_nextObject != NULL) {
     bool needs_deletion = false;
-    if (open_ppl && p_nextObject->IsOpenPPLSymbol()) {
+    if (delete_read_only_library_functions && p_nextObject->IsReadOnlyLibrarySymbol()) {
       needs_deletion = true;
-    } else if (user_defined && !p_nextObject->IsOpenPPLSymbol()) {
+    } else if (delete_user_defined && !p_nextObject->IsReadOnlyLibrarySymbol()) {
       // The debug-tab must not be deleted.
       // It is a global object that is NOT in the function-collection
       // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
@@ -130,10 +130,19 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
 	    "[CFunctionCollection] Invalid empty name\n");
     return;
   }
+#ifdef _DEBUG
+  if (name == "f$custom_test") {
+    // Just to be able to set a debugging break-point in debug-mode
+    // that gets triggered only for the custom-library.
+    // (And we can't do NULL; because of error 4555.)
+    name.Append("");
+  }
+#endif
   if (Exists(name)) {
      write_log(preferences.debug_formula(), 
 	    "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     Delete(name);
+    return;
   }
   if (CheckForOutdatedFunction(name) || CheckForMisspelledOpenPPLMainFunction(name)) {
     // Ignore it
@@ -143,6 +152,11 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   }
    write_log(preferences.debug_formula(), 
 	  "[CFunctionCollection] Adding %s -> %i\n", name, new_function);
+   if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) { 
+      write_log(preferences.debug_formula(),
+       "[CFunctionCollection] Making function read-only\n");
+     new_function->SetAsReadOnlyLibraryFunction();
+   }
   _function_map[name] = new_function;
 }
 
@@ -274,11 +288,11 @@ void CFunctionCollection::ExecuteSelftest() {
   CString function_text = kSelftestFunction;
   CFunction *p_function = new CFunction(name, 
     function_text, kNoAbsoluteLineNumberExists); 
-  Add((COHScriptObject *)p_function);
   p_function->Parse();
+  p_function->SetAsReadOnlyLibraryFunction();
   CSelftestParserEvaluator selftest;
   selftest.Test();
-  // The function stazs in the collection until the very end
+  // The function stays in the collection until the very end
   // and then gets released together with the OpenPPL-symbols.
 }
 
@@ -492,7 +506,8 @@ void CFunctionCollection::Save(CArchive &ar) {
   // We already saved the standard-functions
   next_object = GetFirst();
   while (next_object != NULL) {
-    if (next_object->IsUserDefinedFunction()) {
+    if (next_object->IsUserDefinedFunction()
+        && !next_object->IsReadOnlyLibrarySymbol()) {
       SaveObject(ar, next_object);
     }
     next_object = GetNext();
@@ -505,8 +520,9 @@ void CFunctionCollection::SaveObject(
   CSLock lock(m_critsec);
   if (function_or_list == NULL) return;
   // Don't save OpenPPL-symbols from the OpenPPL-library
+  // or other read-only library functions
   // to user-defined bot-logic files
-  if (function_or_list->IsOpenPPLSymbol()) return;
+  if (function_or_list->IsReadOnlyLibrarySymbol()) return;
   ar.WriteString(function_or_list->Serialize());
 }
 
@@ -592,8 +608,11 @@ bool CFunctionCollection::ParseAll() {
   p_formula_parser->InitNewParse();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
-    if (p_oh_script_object->IsFunction() || p_oh_script_object->IsList()) {
-      p_oh_script_object->Parse();
+    // Skip library functions which got already parsed at start-up
+    if (!p_oh_script_object->IsReadOnlyLibrarySymbol()) {
+      if (p_oh_script_object->IsFunction() || p_oh_script_object->IsList()) {
+        p_oh_script_object->Parse();
+      }
     }
     p_oh_script_object = GetNext();  
   }

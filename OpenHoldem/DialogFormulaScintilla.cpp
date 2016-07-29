@@ -562,8 +562,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
 
   p_OH_script_object = p_function_collection->GetFirst();
   while (p_OH_script_object != NULL) {
-    if (p_OH_script_object->IsList())
-    {
+    if (p_OH_script_object->IsList()) {
       hItem = m_FormulaTree.InsertItem(p_OH_script_object->name(), parent);
       m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(
         p_OH_script_object->name()));
@@ -576,7 +575,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   p_OH_script_object = p_function_collection->GetFirst();
   while (p_OH_script_object != NULL) {
     m_FormulaTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD);
-    if (p_OH_script_object->IsUserDefinedFunction()) {
+    if (p_OH_script_object->IsUserDefinedFunction() && !p_OH_script_object->IsReadOnlyLibrarySymbol()) {
       AddFunctionToTree(parent, p_OH_script_object->name());
     }
     p_OH_script_object = p_function_collection->GetNext();
@@ -933,7 +932,7 @@ void CDlgFormulaScintilla::OnNew() {
       newhtitem = m_FormulaTree.InsertItem(newdlg.CSnewname, p);
     }
   } else {
-    // The added functions stazs in the collection 
+    // The added functions stays in the collection 
     // until a new profile gets loaded, until it gets overwritten]
     // or until the ebtire collection gets released
     CFunction *p_new_function = new CFunction(newdlg.CSnewname, 
