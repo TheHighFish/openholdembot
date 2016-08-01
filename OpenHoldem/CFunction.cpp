@@ -105,7 +105,11 @@ double CFunction::Evaluate(bool log /* = false */) {
       }
       p_autoplayer_trace->Indent(false);
     }
-    // Else: keep _cached_result as 0.0
+    else {
+      // keep _cached_result as 0.0
+      write_log(preferences.debug_formula(),
+        "[CFunction] Parse-tree fot function is NULL\n");
+    }
   }
   --recursion_depth;
   _currently_evaluated_function = _previously_evaluated_function;
