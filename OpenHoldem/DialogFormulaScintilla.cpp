@@ -2306,11 +2306,11 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "ac_dealposx (x=0-9)", "returns deal position of specified chair");
 
 	mainParent = parent = AddSymbolTitle("Table stats symbols", "Note: the setting for [y minutes] can be found in Edit/Preferences, and defaults to 15 minutes.", hCatItem);
-	AddSymbol(parent, "floppct", "percentage of players seeing the flop for the last y minutes");
-	AddSymbol(parent, "turnpct", "percentage of players seeing the turn for the last y minutes");
-	AddSymbol(parent, "riverpct", "percentage of players seeing the river for the last y minutes");
-	AddSymbol(parent, "avgbetspf", "average number of bets preflop for the last y minutes");
-	AddSymbol(parent, "tablepfr", "pfr percentage preflop for the last y minutes");
+	AddSymbol(parent, "floppct", "percentage of players seeing the flop for the last 15 hands");
+	AddSymbol(parent, "turnpct", "percentage of players seeing the turn for the last 15 hands");
+	AddSymbol(parent, "riverpct", "percentage of players seeing the river for the last 15 hands");
+	AddSymbol(parent, "avgbetspf", "average number of bets preflop for the last 15 hands");
+	AddSymbol(parent, "tablepfr", "pfr percentage preflop for the last 15 hands");
 	AddSymbol(parent, "maxbalance", "my highest balance during the session");
 	AddSymbol(parent, "handsplayed", "number of hands played this session by this OpenHoldem instance");
   AddSymbol(parent, "handsplayed_headsup", "number of consecutive hands played headsup");

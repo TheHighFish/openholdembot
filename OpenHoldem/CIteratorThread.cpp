@@ -405,6 +405,7 @@ void CIteratorThread::InitIteratorLoop() {
 	_wontplay = p_function_collection->Evaluate("f$prwin_wontplay", true);
 	_mustplay = p_function_collection->Evaluate("f$prwin_mustplay", true);
 	_topclip = p_function_collection->Evaluate("f$prwin_topclip", true);
+  //!!!!! test
 
 	// Call prw1326 callback if needed
 	if (_prw1326.useme==1326 
