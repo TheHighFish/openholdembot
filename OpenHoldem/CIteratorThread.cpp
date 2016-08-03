@@ -401,10 +401,10 @@ void CIteratorThread::InitIteratorLoop() {
 	}
 
 	//Weighted prwin only for nopponents <=13
-	_willplay = p_function_collection->Evaluate("f$prwin_willplay");
-	_wontplay = p_function_collection->Evaluate("f$prwin_wontplay");
-	_mustplay = p_function_collection->Evaluate("f$prwin_mustplay");
-	_topclip = p_function_collection->Evaluate("f$prwin_topclip");
+	_willplay = p_function_collection->Evaluate("f$prwin_willplay", true);
+	_wontplay = p_function_collection->Evaluate("f$prwin_wontplay", true);
+	_mustplay = p_function_collection->Evaluate("f$prwin_mustplay", true);
+	_topclip = p_function_collection->Evaluate("f$prwin_topclip", true);
 
 	// Call prw1326 callback if needed
 	if (_prw1326.useme==1326 
