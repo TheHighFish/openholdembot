@@ -142,7 +142,6 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
      write_log(preferences.debug_formula(), 
 	    "[CFunctionCollection] Name %s already exists. Deleting it\n", name);
     Delete(name);
-    return;
   }
   if (CheckForOutdatedFunction(name) || CheckForMisspelledOpenPPLMainFunction(name)) {
     // Ignore it

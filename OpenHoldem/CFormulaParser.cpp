@@ -38,7 +38,9 @@
 #include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
 
+#ifdef _DEBUG
 #undef DEBUG_PARSER
+#endif
 
 CFormulaParser *p_formula_parser = NULL;
 
@@ -315,8 +317,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
       "[FormulaParser] Parsing f$function\n");
     function_body =	ParseFunctionBody();
     CheckForExtraTokensAfterEndOfFunction();
-  }
-  else if (_function_name.Left(4) == "list") {
+  } else if (_function_name.Left(4) == "list") {
     // ##listXYZ##
      write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
@@ -349,10 +350,12 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
 	  function_text, starting_line);
   p_new_function->SetParseTree(function_body);
   p_function_collection->Add((COHScriptObject*)p_new_function);
+  assert(p_function_collection->Exists(_function_name));
   // Care about operator precendence
   _parse_tree_rotator.Rotate(p_new_function);
 #ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
+  p_function_collection->LookUp(_function_name)->Dump();
 #endif
 }
 
