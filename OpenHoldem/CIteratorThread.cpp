@@ -364,7 +364,7 @@ void CIteratorThread::CalculateTotalWeights()
 
 void CIteratorThread::InitNumberOfIterations() {
 	_iterations_required = p_function_collection->Evaluate(
-		k_standard_function_names[k_prwin_number_of_iterations]);
+		k_standard_function_names[k_prwin_number_of_iterations], true);
 }
 
 void CIteratorThread::InitIteratorLoop() {

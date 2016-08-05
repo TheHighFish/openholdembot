@@ -106,9 +106,9 @@ double CFunction::Evaluate(bool log /* = false */) {
       p_autoplayer_trace->Indent(false);
     }
     else {
+      // Undefined, parse-tree-node is NULL
       // keep _cached_result as 0.0
-      write_log(preferences.debug_formula(),
-        "[CFunction] Parse-tree fot function is NULL\n");
+      p_autoplayer_trace->Add(_name, kUndefinedZero);
     }
   }
   --recursion_depth;

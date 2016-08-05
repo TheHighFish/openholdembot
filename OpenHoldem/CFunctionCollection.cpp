@@ -269,9 +269,6 @@ void CFunctionCollection::SetEmptyDefaultBot() {
   CSLock lock(m_critsec);
   DeleteAll(false, true);
   _title = "NoName";
-  // Adding empty standard-functions
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
-  CheckForDefaultFormulaEntries();
   // After setting the bot we should parse it so that OH can evaluate and act
   ParseAll();
   // Parser, function-collection and library initialized 
@@ -603,6 +600,8 @@ bool CFunctionCollection::ParseAll() {
    write_log(preferences.debug_formula(), 
     "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
+  // Adding empty standard-functions
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
   CheckForDefaultFormulaEntries();
   p_formula_parser->InitNewParse();
   COHScriptObject *p_oh_script_object = GetFirst();

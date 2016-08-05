@@ -67,7 +67,6 @@ void CFormulaParser::InitNewParse() {
 }
 
 void CFormulaParser::FinishParse() {
-  p_function_collection->CheckForDefaultFormulaEntries();
   p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   _is_parsing = false;
 }
@@ -76,6 +75,7 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
    write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   ParseFile(formula_file);
+  p_function_collection->CheckForDefaultFormulaEntries();
 }
 
 void CFormulaParser::ParseDefaultLibraries() {
