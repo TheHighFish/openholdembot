@@ -18,6 +18,7 @@
 #include <math.h>
 #include "CFunctionCollection.h"
 #include "CIteratorThread.h"
+#include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolenginePokerval.h"
 #include "CTableState.h"
@@ -146,7 +147,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 
 void CSymbolEnginePrwin::CalculateNOpponents() {
 	_nopponents_for_prwin = p_function_collection->Evaluate(
-		"f$prwin_number_of_opponents", true);
+		"f$prwin_number_of_opponents", preferences.log_prwin_functions());
 	if (_nopponents_for_prwin > MAX_OPPONENTS) {
 		_nopponents_for_prwin = MAX_OPPONENTS;
 	}

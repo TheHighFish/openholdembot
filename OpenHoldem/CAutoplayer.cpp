@@ -278,8 +278,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
 
 bool CAutoplayer::ExecuteBeep() {
 	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecuteBeep (if f$beep is true)\n");
-	if (p_function_collection->Evaluate(k_standard_function_names[k_autoplayer_function_beep]))
-	{
+	if (p_function_collection->Evaluate(k_standard_function_names[k_autoplayer_function_beep]))	{
 		// Pitch standard: 440 Hz, 1/2 second
 		// http://en.wikipedia.org/wiki/A440_%28pitch_standard%29
 		Beep(440, 500);

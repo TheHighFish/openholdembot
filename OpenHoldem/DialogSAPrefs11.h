@@ -36,8 +36,10 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 public:
-	CButton m_EnableTrace;
-	CButton m_EnableBasicInfo, m_EnableErrorLogging, m_EnableDLLLogging;
+	CButton m_LogHopperFunctions;
+  CButton m_LogPrwinFunctions;
+  CButton m_LogIniFunctions; 
+  CButton m_LogICMFunctions;
 	CEdit   m_MaximumLogSize;
 	CSpinButtonCtrl m_MaximumLogSize_Spin;
 	virtual BOOL OnInitDialog();

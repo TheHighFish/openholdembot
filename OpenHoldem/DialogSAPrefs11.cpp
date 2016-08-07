@@ -38,10 +38,10 @@ CDlgSAPrefs11::~CDlgSAPrefs11() {
 
 void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX) {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LOG_BASIC_INFO, m_EnableBasicInfo);
-	DDX_Control(pDX, IDC_ENABLE_TRACE, m_EnableTrace);
-	DDX_Control(pDX, IDC_ENABLE_ERROR_LOGGiNG, m_EnableErrorLogging);
-	DDX_Control(pDX, IDC_ENABLE_DLL_LOGGiNG, m_EnableDLLLogging);
+	DDX_Control(pDX, IDC_LOG_BASIC_INFO, m_LogPrwinFunctions);
+	DDX_Control(pDX, IDC_ENABLE_TRACE, m_LogHopperFunctions);
+	DDX_Control(pDX, IDC_ENABLE_ERROR_LOGGiNG, m_LogIniFunctions);
+	DDX_Control(pDX, IDC_ENABLE_DLL_LOGGiNG, m_LogICMFunctions);
 
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE, m_MaximumLogSize);
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE_SPIN, m_MaximumLogSize_Spin);
@@ -51,14 +51,10 @@ BOOL CDlgSAPrefs11::OnInitDialog() {
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	m_EnableTrace.SetCheck(preferences.trace_enabled() ? BST_CHECKED : BST_UNCHECKED);
-	m_EnableDLLLogging.SetCheck(preferences.dll_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
-
-  // Always mark basic logging and error logging as enabled
-	// m_EnableBasicInfo.SetCheck(preferences.basic_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
-  // m_EnableErrorLogging.SetCheck(preferences.error_logging_enabled() ? BST_CHECKED : BST_UNCHECKED);
-  m_EnableBasicInfo.SetCheck(BST_CHECKED);
-  m_EnableErrorLogging.SetCheck(BST_CHECKED);
+	m_LogHopperFunctions.SetCheck(preferences.log_hopper_functions() ? BST_CHECKED : BST_UNCHECKED);
+	m_LogICMFunctions.SetCheck(preferences.log_icm_functions() ? BST_CHECKED : BST_UNCHECKED);
+	m_LogPrwinFunctions.SetCheck(preferences.log_prwin_functions() ? BST_CHECKED : BST_UNCHECKED);
+  m_LogIniFunctions.SetCheck(preferences.log_ini_functions() ? BST_CHECKED : BST_UNCHECKED);
 
 	text.Format("%d", preferences.log_max_logsize());
 	text.Format("%d", preferences.log_max_logsize());
@@ -75,14 +71,10 @@ BOOL CDlgSAPrefs11::OnInitDialog() {
 void CDlgSAPrefs11::OnOK() {
 	CString			text = "";
 
-	preferences.SetValue(k_prefs_trace_enabled, m_EnableTrace.GetCheck()==BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_dll_logging_enabled, m_EnableDLLLogging.GetCheck()==BST_CHECKED ? true : false);
-
-  // Always mark basic logging and error logging as enabled
-  // preferences.SetValue(k_prefs_basic_logging_enabled, m_EnableBasicInfo.GetCheck()==BST_CHECKED ? true : false);
-	// preferences.SetValue(k_prefs_error_logging_enabled, m_EnableErrorLogging.GetCheck()==BST_CHECKED ? true : false);
-  preferences.SetValue(k_prefs_basic_logging_enabled, true);
-	preferences.SetValue(k_prefs_error_logging_enabled, true);
+	preferences.SetValue(k_prefs_log_hopper_functions, m_LogHopperFunctions.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_log_icm_functions, m_LogICMFunctions.GetCheck()==BST_CHECKED ? true : false);
+  preferences.SetValue(k_prefs_log_prwin_functions, m_LogPrwinFunctions.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_log_ini_functions, m_LogIniFunctions.GetCheck()==BST_CHECKED ? true : false);
 
 	m_MaximumLogSize.GetWindowText(text);
 	preferences.SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));

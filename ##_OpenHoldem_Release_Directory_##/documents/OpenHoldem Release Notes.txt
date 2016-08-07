@@ -1,3 +1,29 @@
+v9.2.3 2016-08-xx
+==================
+NEW STUFF:
+- Scraping custom regions at the DLL-level.
+  [ZeeZooLaa]
+- Advanced logging options for hopper functions, ini, prwin and icm functions.
+  [THF]
+- Supporting a "bot_logic"-directory and another library "custom_function_library.ohf".
+	//*****************************************************************************
+	//
+	// This library is for custom user-defined functions.
+	//   * to keep the bot-logic clean
+	//   * to keep the standardized OpenPL-library as is.
+	//   * to share technical functions between multiple bots without copy-and-paste.
+	//
+	// This file will be loaded after the OpenPPL-library and before user-defined bot-logic.
+	//
+	// The functions in this library will be read-only. They will be loaded once,
+	// won't be shown in the editor and won't be saved on exit (similar to OpenPPL).
+	//
+	//*****************************************************************************
+  [THF]
+  
+BUG FIXES:
+
+
 v9.2.2 2016-07-24
 ==================
 BUG FIXES:

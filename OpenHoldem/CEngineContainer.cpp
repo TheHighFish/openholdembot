@@ -340,6 +340,7 @@ void CEngineContainer::ResetOnNewRound() {
 
 void CEngineContainer::ResetOnMyTurn() {
 	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
+  p_autoplayer_trace->Clear(); //!!!!!
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
 		_symbol_engines[i]->ResetOnMyTurn();
 	}

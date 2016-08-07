@@ -154,9 +154,6 @@ CString CAutoplayerTrace::Indentation() {
 }
 
 void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary_formulas) {
-  if (!preferences.trace_enabled()) {
-    return;
-  }
   CSLock lock(log_critsec);
   if (full_log_for_primary_formulas) {
     // This information is only meaningful for playing decision f$all .. f$fold
@@ -268,8 +265,7 @@ void CAutoplayerTrace::LogSecondaryAction(const char *action_taken) {
 }
 
 void CAutoplayerTrace::LogAutoPlayerTrace() {
-  if (!preferences.trace_enabled() 
-      || (_symboltrace_collection.GetSize() <= 0)) {
+  if (_symboltrace_collection.GetSize() <= 0) {
     return;
   }
   write_log_separator(true, "Autoplayer Trace");

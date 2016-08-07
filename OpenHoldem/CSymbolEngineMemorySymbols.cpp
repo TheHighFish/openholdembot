@@ -122,7 +122,7 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
     result = atof(right_hand_value);
   } else {
     result = CParseTreeTerminalNodeIdentifier::EvaluateIdentifier(
-      right_hand_value, preferences.trace_enabled());
+      right_hand_value, true); // !!!!! Needs function parameter
   }
    write_log(preferences.debug_memorysymbols(), 
     "[CSymbolEngineMemorySymbols] Evaluating %s -> %.3f\n",

@@ -62,19 +62,15 @@ void CAutoplayerFunctions::CalcPrimaryFormulas() {
 
 void CAutoplayerFunctions::CalcPrimaryFormulasOHScript() {
    write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOHScript()\n");
-  bool trace_needed = preferences.trace_enabled();
-   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
 	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; i++) {
-		double result = p_function_collection->Evaluate(k_standard_function_names[i], trace_needed);
+		double result = p_function_collection->Evaluate(k_standard_function_names[i], kAlwaysLogAutoplayerFunctions);
 		 write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Primary formulas; %s: %f\n", 
 			k_standard_function_names[i], result);
 	}
 }
 
 void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
-   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOpenPPL()\n");
-  bool trace_needed = preferences.trace_enabled();
-   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Trace enabled: %s\n", Bool2CString(preferences.trace_enabled()));
+  write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulasOpenPPL()\n");
   // Now do the main evaluation
   int betround = p_betround_calculator->betround();
 	if (betround < kBetroundPreflop || betround > kBetroundRiver) {
@@ -83,7 +79,7 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
     return;
   }
   double decision = p_function_collection->Evaluate(k_OpenPPL_function_names[betround], 
-    trace_needed);
+    kAlwaysLogAutoplayerFunctions);
    write_log(preferences.debug_formula(), 
     "[CAutoplayerFunctions] Decision (non-translated) = %.2f\n", decision);
   TranslateOpenPPLDecisionToAutoplayerFunctions(decision);
@@ -290,9 +286,9 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
 
 void CAutoplayerFunctions::CalcSecondaryFormulas(void) {
 	for (int i=k_hopper_function_sitin; i<=k_standard_function_betsize_enable_rounding; ++i) {
-		double result = p_function_collection->Evaluate(k_standard_function_names[i], true);
+		double result = p_function_collection->Evaluate(k_standard_function_names[i]);
 		 write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
-			k_standard_function_names[i], result);
+			  k_standard_function_names[i], result);
 	}
 }
 

@@ -124,7 +124,7 @@ bool CDllExtension::IsLoaded() {
   double result = kUndefined;
 	p_engine_container->EvaluateSymbol(name_of_single_symbol__not_expression, 
     &result, 
-    preferences.dll_logging_enabled());
+    kAlwaysLogDLLMessages);
 	return result;
 }
 
@@ -152,7 +152,7 @@ void __stdcall WriteLog(char* fmt, ...) {
 	// http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
 	va_list args;
   va_start(args, fmt);
-	write_log_vl(preferences.dll_logging_enabled(), fmt, args);
+	write_log_vl(kAlwaysLogDLLMessages, fmt, args);
 	va_end(args);
 }
 
