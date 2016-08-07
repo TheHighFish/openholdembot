@@ -179,7 +179,7 @@ CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg
 	::GetCurrentDirectory(sizeof(startup_path) - 1, startup_path);
 
   //!!!!!
-  //ResizeToClientSize(NULL, 574, 335);
+  ResizeToClientSize(NULL, 574, 335);
 }
 
 void CManualModeDlg::DoDataExchange(CDataExchange* pDX) 
