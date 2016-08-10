@@ -7,8 +7,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nplayersseated")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nplayersseated") >= 0) && (gws("nplayersseated") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nplayersseated")
+    POSTCONDITION ((gws("nplayersseated") >= 0) && (gws("nplayersseated") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nplayersseated")
 END_TESTCASE
 
 
@@ -17,8 +17,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nplayersactive")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nplayersactive") >= 0) && (gws("nplayersactive") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nplayersactive")
+    POSTCONDITION ((gws("nplayersactive") >= 0) && (gws("nplayersactive") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nplayersactive")
 END_TESTCASE
 
 
@@ -27,8 +27,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nplayersdealt")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nplayersdealt") >= 0) && (gws("nplayersdealt") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nplayersdealt")
+    POSTCONDITION ((gws("nplayersdealt") >= 0) && (gws("nplayersdealt") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nplayersdealt")
 END_TESTCASE
 
 
@@ -37,8 +37,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nplayersplaying")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nplayersplaying") >= 0) && (gws("nplayersplaying") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nplayersplaying")
+    POSTCONDITION ((gws("nplayersplaying") >= 0) && (gws("nplayersplaying") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nplayersplaying")
 END_TESTCASE
 
 
@@ -47,8 +47,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nplayersblind")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nplayersblind") >= 0) && (gws("nplayersblind") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nplayersblind")
+    POSTCONDITION ((gws("nplayersblind") >= 0) && (gws("nplayersblind") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nplayersblind")
 END_TESTCASE
 
 
@@ -57,8 +57,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsseated")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsseated") >= 0) && (gws("nopponentsseated") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsseated")
+    POSTCONDITION ((gws("nopponentsseated") >= 0) && (gws("nopponentsseated") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsseated")
 END_TESTCASE
 
 
@@ -67,8 +67,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsseated for known userchair")
     PRECONDITION (gws("nopponentsseated") >= 0)
-    POSTCONDITION ((gws("nopponentsseated") >= 0) && (gws("nopponentsseated") <= 19))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsseated userchair")
+    POSTCONDITION ((gws("nopponentsseated") >= 0) && (gws("nopponentsseated") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsseated, userchair")
 END_TESTCASE
 
 
@@ -77,8 +77,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsactive")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsactive") >= 0) && (gws("nopponentsactive") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsactive")
+    POSTCONDITION ((gws("nopponentsactive") >= 0) && (gws("nopponentsactive") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsactive")
 END_TESTCASE
 
 
@@ -87,8 +87,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsdealt")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsdealt") >= 0) && (gws("nopponentsdealt") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsdealt")
+    POSTCONDITION ((gws("nopponentsdealt") >= 0) && (gws("nopponentsdealt") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsdealt")
 END_TESTCASE
 
 
@@ -97,8 +97,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsplaying")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsplaying") >= 0) && (gws("nopponentsplaying") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsplaying")
+    POSTCONDITION ((gws("nopponentsplaying") >= 0) && (gws("nopponentsplaying") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsplaying")
 END_TESTCASE
 
 
@@ -107,8 +107,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsblind")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsblind") >= 0) && (gws("nopponentsblind") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsblind")
+    POSTCONDITION ((gws("nopponentsblind") >= 0) && (gws("nopponentsblind") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsblind")
 END_TESTCASE
 
 
@@ -117,8 +117,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentschecking")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentschecking") >= 0) && (gws("nopponentschecking") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentschecking")
+    POSTCONDITION ((gws("nopponentschecking") >= 0) && (gws("nopponentschecking") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentschecking")
 END_TESTCASE
 
 
@@ -127,8 +127,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentscalling")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentscalling") >= 0) && (gws("nopponentscalling") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentscalling")
+    POSTCONDITION ((gws("nopponentscalling") >= 0) && (gws("nopponentscalling") < gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentscalling")
 END_TESTCASE
 
 
@@ -137,8 +137,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentstruelyraising")
     PRECONDITION (gws("myturnbits") > 0)
-    POSTCONDITION ((gws("nopponentstruelyraising") >= 0) && (gws("nopponentstruelyraising") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentstruelyraising myturnbits")
+    POSTCONDITION ((gws("nopponentstruelyraising") >= 0) && (gws("nopponentstruelyraising") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentstruelyraising, myturnbits")
 END_TESTCASE
 
 
@@ -147,8 +147,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsbetting")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsbetting") >= 0) && (gws("nopponentsbetting") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsbetting")
+    POSTCONDITION ((gws("nopponentsbetting") >= 0) && (gws("nopponentsbetting") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsbetting")
 END_TESTCASE
 
 
@@ -157,8 +157,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentsfolded")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentsfolded") >= 0) && (gws("nopponentsfolded") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentsfolded")
+    POSTCONDITION ((gws("nopponentsfolded") >= 0) && (gws("nopponentsfolded") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsfolded")
 END_TESTCASE
 
 
@@ -167,8 +167,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nplayerscallshort")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nplayerscallshort") >= 0) && (gws("nplayerscallshort") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nplayerscallshort")
+    POSTCONDITION ((gws("nplayerscallshort") >= 0) && (gws("nplayerscallshort") <= gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nplayerscallshort")
 END_TESTCASE
 
 
@@ -177,8 +177,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nchairsdealtright")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nchairsdealtright") >= 0) && (gws("nchairsdealtright") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nchairsdealtright")
+    POSTCONDITION ((gws("nchairsdealtright") >= 0) && (gws("nchairsdealtright") < gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nchairsdealtright")
 END_TESTCASE
 
 
@@ -187,8 +187,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nchairsdealtleft")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nchairsdealtleft") >= 0) && (gws("nchairsdealtleft") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nchairsdealtleft")
+    POSTCONDITION ((gws("nchairsdealtleft") >= 0) && (gws("nchairsdealtleft") < gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nchairsdealtleft")
 END_TESTCASE
 
 
@@ -297,8 +297,8 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol nopponentstruelyraising")
     PRECONDITION (true)
-    POSTCONDITION ((gws("nopponentstruelyraising") >= 0) && (gws("nopponentstruelyraising") <= 10))
-    SYMBOLS_POSSIBLY_AFFECTED ("nopponentstruelyraising")
+    POSTCONDITION ((gws("nopponentstruelyraising") >= 0) && (gws("nopponentstruelyraising") < gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentstruelyraising")
 END_TESTCASE
 
 BEGIN_TESTCASE
@@ -306,6 +306,6 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol opponent_chair_headsup")
     PRECONDITION (gws("nopponentsplaying") == 1)
-    POSTCONDITION ((gws("opponent_chair_headsup") >= 0) && (gws("opponent_chair_headsup") <= 9))
-    SYMBOLS_POSSIBLY_AFFECTED ("opponent_chair_headsup")
+    POSTCONDITION ((gws("opponent_chair_headsup") >= 0) && (gws("opponent_chair_headsup") < gws("nchairs")))
+    SYMBOLS_POSSIBLY_AFFECTED ("nchairs, nopponentsplaying, opponent_chair_headsup")
 END_TESTCASE
