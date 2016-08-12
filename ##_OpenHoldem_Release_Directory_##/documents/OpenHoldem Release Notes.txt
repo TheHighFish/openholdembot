@@ -22,6 +22,9 @@ NEW STUFF:
   [THF]
   
 BUG FIXES:
+- Improved GameIsHeadsup for tournaments where players who sitout get dealt.
+  Thanks to MustBeatIp for the code.
+  [THF]
 
 
 v9.2.2 2016-07-24

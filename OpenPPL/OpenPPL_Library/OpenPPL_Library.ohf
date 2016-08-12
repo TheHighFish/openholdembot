@@ -3503,7 +3503,10 @@ AlwaysTrue
 //*****************************************************************************
 
 ##GameIsHeadsUp##
-WHEN nplayersdealt = 2 RETURN True FORCE
+// Players in tournaments get always dealt even if they are sitting out.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19778
+WHEN istournament AND (nplayersseated = 2) RETURN True FORCE
+WHEN (NOT istournament) AND (nplayersdealt = 2) RETURN True FORCE
 
 ##PlayersAtStartOfThisRound##
 (betround == ConstBetRoundPreflop) ? nplayersround1 :
