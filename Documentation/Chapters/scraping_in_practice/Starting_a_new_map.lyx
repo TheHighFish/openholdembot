@@ -104,7 +104,7 @@ No Limit Hold'em - Logged in as
 .
  Once you have defined these two items and put this map into your scraper
  folder OpenHoldem will be able to connect to the table even if it does
- not yet acrape anything.
+ not yet scrape anything.
  but the autoplayer button should become active -- and you will get lots
  of warnings at load-time because of an incomplete map.
 \end_layout
@@ -129,7 +129,7 @@ r$pXactive to determine if a player is sitting in.
 
 \begin_layout Itemize
 r$p0cardback, r$pXcardface0nocard and r$pXcardface1nocard.
- They are usually ease to do hashes and you can now recognize all cards
+ It is usually easy to do these hashes and you can now recognize all cards
  except your own hole-cards.
 \end_layout
 

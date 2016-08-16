@@ -75,13 +75,13 @@ figs-within-sections
 \begin_body
 
 \begin_layout Section
-First thing’s first: connect to the poker window
+First things first: connect to the poker window
 \end_layout
 
 \begin_layout Standard
 Start a casino, and open up a play money table.
  For the greatest part of building a table map you could even use “observer”
- mode if you like; only few things like buttons will require a 
+ mode if you like; only a few things like buttons will require a 
 \begin_inset Quotes eld
 \end_inset
 

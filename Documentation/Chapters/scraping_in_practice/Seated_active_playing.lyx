@@ -107,7 +107,7 @@ playing
 \end_layout
 
 \begin_layout Standard
-OpenHoldem will scrape above information in this order and much depends
+OpenHoldem will scrape the above information in this order and much depends
  on getting this information right.
  For example if a player is not even seated, then OpenHoldem will be smart
  and avoid the costly scraping of cards and especially names.
@@ -134,7 +134,7 @@ nocard
 \end_inset
 
 -regions.
- These regions got introduced for two reasons: if a player holds no cards
+ These regions were introduced for two reasons: if a player holds no cards
  we can avoid the somewhat costly scraping for card-faces which usually
  requires fuzzy fonts.
  As an additional benefit we get improved error-detection in debug-mode,
@@ -143,13 +143,13 @@ nocard
 
 \begin_layout Itemize
 cardfaces (or alternatively ranks plus suits): this information can sometimes
- be done with hashes or images, if the cards get always displayed the same
+ be done with hashes or images, if the cards are always displayed the same
  way: but often the display will differ a little bit and you will need text-scra
 ping (fuzzy fonts).
 \end_layout
 
 \begin_layout Standard
-In practice it looks like that:
+In practice it looks like this:
 \end_layout
 
 \begin_layout Standard
