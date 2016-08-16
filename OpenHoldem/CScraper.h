@@ -30,7 +30,10 @@ class CScraper {
 	~CScraper(void);
  public:
   // For replay-frames
-	const HBITMAP		entire_window_cur() { return _entire_window_cur; }
+	const HBITMAP	entire_window_cur() { return _entire_window_cur; }
+ public:
+  // For scraping custom regions at the DLL-level
+  bool EvaluateRegion(CString name, CString *result);
  public:
   bool IsCommonAnimation();
  protected:
@@ -75,7 +78,6 @@ class CScraper {
 	const double DoChipScrape(RMapCI r_iter);
  private:
 	bool ProcessRegion(RMapCI r_iter);
-	bool EvaluateRegion(CString name, CString *result);
   void EvaluateTrueFalseRegion(bool *result, const CString name);
   bool EvaluateNumericalRegion(double *result, const CString name);
 	bool IsExtendedNumberic(CString text);

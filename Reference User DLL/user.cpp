@@ -63,6 +63,15 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
 	if (strncmp(pquery,"dll$mynumber",12)==0) {
 		return 12345.67;
   }
+  if (strncmp(pquery, "dll$scrape", 12) == 0) {
+    char* scraped_result;
+    int result_lenght;
+    scraped_result = ScrapeTableMapRegion("p0balance", result_lenght);
+    if (scraped_result != nullptr) {
+      MessageBox(0, scraped_result, "Scraped custom region", 0);
+      LocalFree(scraped_result);
+    }
+  }
 	return 0;
 }
 

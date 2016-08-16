@@ -129,7 +129,7 @@ bool CSymbolEngineCasino::EvaluateSymbol(const char *name, double *result, bool 
 
 CString CSymbolEngineCasino::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
-  // e.g. "dll$, pl_chair$, ....
+  // e.g. "dll$, pl_chair$, ....//!!!!!
   return "chair$ chairbit$ sitename$ network$ nchairs ";
 }
 
