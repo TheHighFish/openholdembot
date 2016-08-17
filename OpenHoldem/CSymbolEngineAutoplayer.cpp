@@ -153,7 +153,8 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
 	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
 	unsigned int additional_frames_to_wait = 0;
-  double desired_delay_in_seconds = p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay);
+  CString delay_function = k_standard_function_names[k_standard_function_delay];
+  double desired_delay_in_seconds = p_function_collection->Evaluate(delay_function, preferences.log_delay_function());
   if (preferences.scrape_delay() > 0 && desired_delay_in_seconds > 0) {  
     additional_frames_to_wait = desired_delay_in_seconds / preferences.scrape_delay();
   }
@@ -161,7 +162,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
 	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait) {
 		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%.0f ms)\n", 
-      p_function_collection->EvaluateAutoplayerFunction(k_standard_function_delay));
+       p_function_collection->Evaluate(delay_function, preferences.log_delay_function()));
 		_isfinalanswer = false;
 	}
 }

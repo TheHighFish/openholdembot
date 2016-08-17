@@ -227,7 +227,6 @@ BOOL CreateBMPFile(const char *szFile, HBITMAP hBMP) {
     }
     bret=TRUE;
 
-
 to_return:
     ;
     // Free memory.
@@ -239,31 +238,39 @@ to_return:
     return bret;
 }
 
-void start_log(void) {
-	if (log_fp!=NULL)
-		return;
+void delete_log() {
+  // Log file must not be open
+  CString fn = p_filenames->LogFilename();
+  remove(fn.GetString());
+}
 
+void clear_log() {
+  stop_log();
+  delete_log();
+  start_log();
+}
+
+void start_log(void) {
+  if (log_fp != NULL) {
+    return;
+  }
 	CSLock lock(log_critsec);
 
 	CString fn = p_filenames->LogFilename();
 	// Check, if file exists and size is too large
 	struct stat file_stats = { 0 };
-	if (stat(fn.GetString(), &file_stats) == 0)
-	{
+	if (stat(fn.GetString(), &file_stats) == 0) {
 		unsigned long int max_file_size = 1E06 * preferences.log_max_logsize();
 		size_t file_size = file_stats.st_size;
-		if (file_size > max_file_size)
-		{
-			remove(fn.GetString());
+		if (file_size > max_file_size) {
+      delete_log();
 		}
 	}
-
-	// Append (or create) log
+  // Append (or create) log
 	if ((log_fp = _fsopen(fn.GetString(), "a", _SH_DENYWR)) != 0) {
 		write_log_separator(k_always_log_basic_information, "LOG FILE OPEN");
 		fflush(log_fp);
 	}
-
 }
 
 void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl) {

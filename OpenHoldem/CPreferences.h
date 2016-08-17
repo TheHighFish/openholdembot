@@ -98,6 +98,7 @@ enum
   k_prefs_log_prwin_functions,
   k_prefs_log_ini_functions,
 	k_prefs_log_icm_functions,
+  k_prefs_log_delay_function,
 	k_prefs_disable_msgbox,
 	k_prefs_validator_stop_on_error,
 	k_prefs_validator_use_heuristic_rules,
@@ -220,6 +221,7 @@ public:
   const bool log_ini_functions()    { return prefs_numerical_values[k_prefs_log_ini_functions]; }
   const bool log_prwin_functions()  { return prefs_numerical_values[k_prefs_log_prwin_functions]; }
   const bool log_icm_functions()    { return prefs_numerical_values[k_prefs_log_icm_functions]; }
+  const bool log_delay_function()   { return prefs_numerical_values[k_prefs_log_delay_function]; }
  
 	// Debugging
 	const bool	debug_autoconnector() { return prefs_numerical_values[k_prefs_debug_autoconnector]; }

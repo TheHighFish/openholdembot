@@ -40,6 +40,7 @@ public:
   CButton m_LogPrwinFunctions;
   CButton m_LogIniFunctions; 
   CButton m_LogICMFunctions;
+  CButton m_LogDelayFunction;
 	CEdit   m_MaximumLogSize;
 	CSpinButtonCtrl m_MaximumLogSize_Spin;
 	virtual BOOL OnInitDialog();

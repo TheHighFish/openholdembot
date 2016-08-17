@@ -5,6 +5,8 @@ NEW STUFF:
   [ZeeZooLaa]
 - Advanced logging options for hopper functions, ini, prwin and icm functions.
   [THF]
+- New menu-command to clear the log-file.
+  {THF]}
 - Supporting a "bot_logic"-directory and another library "custom_function_library.ohf".
 	//*****************************************************************************
 	//
@@ -22,8 +24,8 @@ NEW STUFF:
   [THF]
   
 BUG FIXES:
-- Improved GameIsHeadsup for tournaments where players who sitout get dealt.
-  Thanks to MustBeatIp for the code.
+- Replaced GameIsHeadsUp by HandIsHeadsup and TableIsHeadsup to suit both cash-games and tournaments.
+  Thanks to MustBeatIp for bringing up the problem.
   [THF]
 
 

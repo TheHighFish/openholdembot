@@ -154,7 +154,8 @@ BEGIN
         MENUITEM "&Preferences\tCtrl+P",        ID_EDIT_PREFERENCES
         MENUITEM SEPARATOR
         MENUITEM "&Tag Log-File\tF5",           ID_EDIT_TAGLOG
-        MENUITEM "&View Log-file\tF6",          ID_EDIT_VIEWLOG
+        MENUITEM "&View Log-File\tF6",          ID_EDIT_VIEWLOG
+        MENUITEM "&Clear Log-File",             ID_EDIT_CLEARLOG
         MENUITEM SEPARATOR
         MENUITEM "View Scraper &Output\tF11",   ID_VIEW_SCRAPEROUTPUT
         MENUITEM "Shoot &Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
@@ -164,10 +165,10 @@ BEGIN
         MENUITEM "&Load\tF3",                   ID_DLL_LOAD
         MENUITEM "Load &Specific File...\tF4",  ID_DLL_LOADSPECIFICFILE
     END
-    MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
+    MENUITEM "&Problem Solver",                 ID_HELP_PROBLEMSOLVER
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Help\tF1",                   ID_HELP_HELP
+        MENUITEM "Open&Holdem Manual\tF1",      ID_HELP_HELP
         MENUITEM "&OpenPPL Manual\tF2",         ID_HELP_OPEN_PPL
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
@@ -209,7 +210,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Help\tF1",                   ID_HELP_HELP
+        MENUITEM "Open&Holdem Manual\tF1",      ID_HELP_HELP
         MENUITEM "&OpenPPL Manual",             ID_HELP_OPEN_PPL
         MENUITEM "&Forums",                     ID_HELP_FORUMS
         MENUITEM SEPARATOR
@@ -686,14 +687,15 @@ IDD_SAPREFS11 DIALOGEX 0, 0, 219, 182
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Advanced Logging",IDC_STATIC,0,0,205,80
+    GROUPBOX        "Advanced Logging",IDC_STATIC,0,0,205,96
     CONTROL         "Hopper Functions",IDC_LOG_BASIC_INFO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,16,88,9
     CONTROL         "Ini Functions",IDC_ENABLE_TRACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,32,139,8
     CONTROL         "PrWin Functions",IDC_ENABLE_ERROR_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,48,105,8
     CONTROL         "ICM Functions",IDC_ENABLE_DLL_LOGGiNG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,64,105,8
-    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,90,116,8
-    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,88,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,88,11,14
+    CONTROL         "Delay Function", IDC_ENABLE_DELAY_LOGGiNG, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 80, 105, 8
+    LTEXT           "Erase old logs larger than (MB)",IDC_STATIC,6,106,116,8
+    EDITTEXT        IDC_MAXIMUM_LOGSIZE,163,104,31,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_MAXIMUM_LOGSIZE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,194,104,11,14
 END
 
 IDD_SAPREFS12 DIALOGEX 0, 0, 221, 242
@@ -1242,6 +1244,7 @@ BEGIN
     ID_MAIN_TOOLBAR_HELP    "Help\nHelp"
     ID_EDIT_VIEWLOG         "View the log-file of the current OpenHoldem-instance"
     ID_EDIT_TAGLOG          "Leave a stamp in the log-file for more easy review"
+    ID_EDIT_CLEARLOG        "Empties the log-file  of the current OpenHoldem-instance"
 END
 
 STRINGTABLE

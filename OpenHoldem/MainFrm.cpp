@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_EDIT_PREFERENCES, &CMainFrame::OnEditPreferences)
 	ON_COMMAND(ID_EDIT_VIEWLOG, &CMainFrame::OnEditViewLog)
 	ON_COMMAND(ID_EDIT_TAGLOG, &CMainFrame::OnEditTagLog)
+  ON_COMMAND(ID_EDIT_CLEARLOG, &CMainFrame::OnEditClearLog)
 	ON_COMMAND(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnScraperOutput)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
 	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
@@ -291,6 +292,10 @@ void CMainFrame::OnEditViewLog()
 void CMainFrame::OnEditTagLog() {
 	 write_log(k_always_log_basic_information,
 		"[*** ATTENTION ***] User tagged this situation for review\n");
+}
+
+void CMainFrame::OnEditClearLog() {
+  clear_log();
 }
 
 // Menu -> Edit -> View Scraper Output
@@ -558,9 +563,9 @@ void CMainFrame::OnUpdateMenuFileEdit(CCmdUI* pCmdUI) {
 
 void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI) {
 	if (p_dll_extension->IsLoaded()) {
-		pCmdUI->SetText("&Unload\tF4");
+		pCmdUI->SetText("&Unload\tF3");
   } else {
-		pCmdUI->SetText("&Load\tF4");
+		pCmdUI->SetText("&Load\tF3");
   }
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }

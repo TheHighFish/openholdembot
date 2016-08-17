@@ -42,6 +42,7 @@ void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_ENABLE_TRACE, m_LogHopperFunctions);
 	DDX_Control(pDX, IDC_ENABLE_ERROR_LOGGiNG, m_LogIniFunctions);
 	DDX_Control(pDX, IDC_ENABLE_DLL_LOGGiNG, m_LogICMFunctions);
+  DDX_Control(pDX, IDC_ENABLE_DELAY_LOGGiNG, m_LogDelayFunction);
 
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE, m_MaximumLogSize);
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE_SPIN, m_MaximumLogSize_Spin);
@@ -55,6 +56,7 @@ BOOL CDlgSAPrefs11::OnInitDialog() {
 	m_LogICMFunctions.SetCheck(preferences.log_icm_functions() ? BST_CHECKED : BST_UNCHECKED);
 	m_LogPrwinFunctions.SetCheck(preferences.log_prwin_functions() ? BST_CHECKED : BST_UNCHECKED);
   m_LogIniFunctions.SetCheck(preferences.log_ini_functions() ? BST_CHECKED : BST_UNCHECKED);
+  m_LogDelayFunction.SetCheck(preferences.log_delay_function() ? BST_CHECKED : BST_UNCHECKED);
 
 	text.Format("%d", preferences.log_max_logsize());
 	text.Format("%d", preferences.log_max_logsize());
@@ -75,6 +77,7 @@ void CDlgSAPrefs11::OnOK() {
 	preferences.SetValue(k_prefs_log_icm_functions, m_LogICMFunctions.GetCheck()==BST_CHECKED ? true : false);
   preferences.SetValue(k_prefs_log_prwin_functions, m_LogPrwinFunctions.GetCheck()==BST_CHECKED ? true : false);
 	preferences.SetValue(k_prefs_log_ini_functions, m_LogIniFunctions.GetCheck()==BST_CHECKED ? true : false);
+  preferences.SetValue(k_prefs_log_delay_function, m_LogDelayFunction.GetCheck() == BST_CHECKED ? true : false);
 
 	m_MaximumLogSize.GetWindowText(text);
 	preferences.SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));
