@@ -3503,10 +3503,26 @@ AlwaysTrue
 //*****************************************************************************
 
 ##GameIsHeadsUp##
+msgbox$ERROR_N_NGameIsHeadsUp_Bgot_Breplaced_Bby_BHandIsHeadsup_Band_BTableIsHeadsup_D
+
+##HandIsHeadsup##
+TwoPlayersCompetingForThisPot
+
+##TableIsHeadsup##
+WHEN istournament AND OnlyTwoPlayersLeftAtTournamentTable RETURN True FORCE
+WHEN (NOT istournament) AND (nplayersdealt = 2) RETURN True FORCE
+
+##TwoPlayersCompetingForThisPot##
+// Just to create some verbosity in HandIsHeadsup
+WHEN nplayersplaying = 2 RETURN True FORCE
+
+##OnlyTwoPlayersLeftAtTournamentTable##
+// Just to create some verbosity in HandIsHeadsup
+WHEN (not istournament) RETURN False FORCE
 // Players in tournaments get always dealt even if they are sitting out.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19778
-WHEN istournament AND (nplayersseated = 2) RETURN True FORCE
-WHEN (NOT istournament) AND (nplayersdealt = 2) RETURN True FORCE
+// So we check seated players
+WHEN (nplayersseated = 2) RETURN True FORCE
 
 ##PlayersAtStartOfThisRound##
 (betround == ConstBetRoundPreflop) ? nplayersround1 :
