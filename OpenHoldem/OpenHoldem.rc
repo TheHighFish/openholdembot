@@ -174,7 +174,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
         MENUITEM SEPARATOR
-        MENUITEM "&About this program...",      ID_APP_ABOUT
+        MENUITEM "&About This Program...",      ID_APP_ABOUT
     END
 END
 
