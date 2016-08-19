@@ -29,8 +29,7 @@ struct STablemapSize {
 	int	    height;
 };
 
-typedef std::pair<
-  CString, STablemapSize> ZPair;
+typedef std::pair<CString, STablemapSize> ZPair;
 typedef std::map<CString, STablemapSize> ZMap;
 typedef ZMap::iterator ZMapI;
 typedef ZMap::const_iterator ZMapCI;
