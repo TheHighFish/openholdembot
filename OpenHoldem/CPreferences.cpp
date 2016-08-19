@@ -81,11 +81,11 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"restore_position_and_focus",
 	"use_auto_replay",
 	"replay_record",
-	"log_kopper_functions",
-	"log_prwin_functions",
-	"log_ini_functions",
-	"log_icm_functions",
   "log_delay_function",
+  "log_icm_functions",
+  "log_ini_functions",
+	"log_hopper_functions",
+	"log_prwin_functions",
 	"disable_msgbox",
 	"validator_stop_on_error",
 	"validator_use_heuristic_rules",
@@ -129,7 +129,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"scraper_zoom",
 	"popup_blocker",
 	// doubles
-  // Only on double left, just to check for outdated ICM-config
+  // Only one double left, just to check for outdated ICM-config
 	"icm_prize1",
 	//
 	// Finally an empty string
@@ -139,8 +139,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"",
 };
 
-const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] =
-{
+const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] = {
 	"dll_name",
 	"pt_ip_addr",
 	"pt_port",
@@ -160,12 +159,10 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] =
 	"",
 };
 
-void CPreferences::LoadPreferences()
-{
+void CPreferences::LoadPreferences() {
 	_preferences_heading = "Preferences";
 	InitDefaults();
 	ReadPreferences();
-  CheckForOutdatedICMConfig();
 }
 
 
@@ -185,20 +182,16 @@ void CPreferences::CheckForOutdatedICMConfig() {
 //
 // Private method to initialize the default values
 //
-void CPreferences::InitDefaults(void)
-{
+void CPreferences::InitDefaults(void) {
 	// General initialization
 	// that fits most values and purposes
-	for (int i=0; i<k_prefs_last_numerical_value; i++)
-	{
+	for (int i=0; i<k_prefs_last_numerical_value; i++) {
 		prefs_numerical_values[i] = 0.0;	// 0 for ints and false for bools
 	}
-	for (int i=0; i<k_prefs_last_CString_value; i++)
-	{
+	for (int i=0; i<k_prefs_last_CString_value; i++) {
 		prefs_CString_values[i] = "";
 	}
-
-	// Initialization of data that requires special values
+  // Initialization of data that requires special values
 	// Bools
 	prefs_numerical_values[k_prefs_engage_autoplayer] = true;
 	prefs_numerical_values[k_prefs_restore_position_and_focus] = false;
@@ -209,8 +202,7 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
 	prefs_numerical_values[k_prefs_configurationcheck_input_settings] = true;
 	prefs_numerical_values[k_prefs_configurationcheck_font_settings] = true;
-
-	// Ints
+  // Ints
 	prefs_numerical_values[k_prefs_formula_dx] = 640;
 	prefs_numerical_values[k_prefs_formula_dy] = 400;
 	prefs_numerical_values[k_prefs_scraper_dx] = 340;
@@ -230,10 +222,8 @@ void CPreferences::InitDefaults(void)
 	prefs_numerical_values[k_prefs_rebuy_minimum_time_to_next_try] = 30;
 	prefs_numerical_values[k_prefs_lazy_scraping_when_to_scrape] = k_lazy_scraping_always;
 	prefs_numerical_values[k_prefs_table_positioner_options] = k_position_tables_tiled;
-
-	// Doubles
+  // Doubles
 	prefs_numerical_values[k_prefs_icm_prize1] = kUndefinedZero;
-	
 	// CString
 	prefs_CString_values[k_prefs_pt_ip_addr] = "127.0.0.1";
 	prefs_CString_values[k_prefs_pt_port] = "5432";
@@ -247,33 +237,32 @@ void CPreferences::InitDefaults(void)
 // Private methods to access the registry
 //
 
-void CPreferences::ReadPreferences()
-{
+void CPreferences::ReadPreferences() {
 	// Then read the registry values and overwrite the defaults if defined
-	for (int i=0; i<k_prefs_last_numerical_value; i++)
-	{
+	for (int i=0; i<k_prefs_last_numerical_value; i++)	{
 		assert(k_registry_keys_for_numerical_values[i] != "");
+     write_log(debug_preferences(), "[CPreferences] Reading %2i. (numerical) %s\n", 
+      i, k_registry_keys_for_numerical_values[i]);
 		ReadReg(k_registry_keys_for_numerical_values[i], &prefs_numerical_values[i]); 
 	}
-	for (int i=0; i<k_prefs_last_CString_value; i++)
-	{
+	for (int i=0; i<k_prefs_last_CString_value; i++) {
 		assert(k_registry_keys_for_CStrings[i] != "");
+     write_log(debug_preferences(), "[CPreferences] Reading %2i. (textual) %s\n",
+      i, k_registry_keys_for_CStrings[i]);
 		ReadReg(k_registry_keys_for_CStrings[i], &prefs_CString_values[i]);
 	}
 }
 
-void CPreferences::ReadReg(const LPCTSTR registry_key, CString *registry_value)
-{
+void CPreferences::ReadReg(const LPCTSTR registry_key, CString *registry_value) {
 	CString value;
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
 		*registry_value = value;
 	 write_log(debug_preferences(), "[CPreferences] %s = %s\n",
-		registry_key, registry_value);
+		registry_key, registry_value->GetString());
 }
 
-void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
-{
+void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value) {
 	CString value;
 	value = AfxGetApp()->GetProfileString(_preferences_heading, registry_key);
 	if (!value.IsEmpty())
@@ -282,13 +271,11 @@ void CPreferences::ReadReg(const LPCTSTR registry_key, double *registry_value)
 		registry_key, Number2CString(*registry_value));
 }
 
-void CPreferences::WriteReg(const LPCTSTR registry_key, const CString &registry_value)
-{
+void CPreferences::WriteReg(const LPCTSTR registry_key, const CString &registry_value) {
 	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, registry_value);
 }
 
-void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_value)
-{
+void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_value) {
 	CString str;
 	str.Format("%.2f", registry_value);
 	AfxGetApp()->WriteProfileString(_preferences_heading, registry_key, str);
@@ -296,8 +283,7 @@ void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_va
 
 #define ENT CSLock lock(m_critsec);
 
-void CPreferences::SetValue(int index_of_variable, CString value)
-{
+void CPreferences::SetValue(int index_of_variable, CString value) {
 	ENT 
 	AssertRange(index_of_variable, 0, k_prefs_last_CString_value);
 	prefs_CString_values[index_of_variable] = value;
@@ -306,17 +292,13 @@ void CPreferences::SetValue(int index_of_variable, CString value)
 		k_registry_keys_for_CStrings[index_of_variable], value);
 }
 
-void CPreferences::SetValue(int index_of_variable, double value)
-{
+void CPreferences::SetValue(int index_of_variable, double value) {
 	ENT 
 	AssertRange(index_of_variable, 0, k_prefs_last_numerical_value);
 	prefs_numerical_values[index_of_variable] = value;
-	if (IsInteger(value))
-	{
+	if (IsInteger(value))	{
 		WriteReg(k_registry_keys_for_numerical_values[index_of_variable], int(value));
-	}
-	else
-	{
+	}	else {
 		WriteReg(k_registry_keys_for_numerical_values[index_of_variable], value);
 	}
 	 write_log(debug_preferences(), "[CPreferences] %s = %s\n",

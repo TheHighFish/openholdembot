@@ -83,7 +83,7 @@ double CFunction::Evaluate(bool log /* = false */) {
   // Result already cached
   if (_is_result_cached) {
     if (log) {
-       write_log(preferences.debug_auto_trace(),
+       write_log(preferences.debug_formula(),
         "[CFunction] %s -> %.3f [cached]\n", _name, _cached_result);
       p_autoplayer_trace->Add(_name, _cached_result);  
     }
@@ -104,11 +104,12 @@ double CFunction::Evaluate(bool log /* = false */) {
           log_line, _cached_result, _starting_line_of_function);
       }
       p_autoplayer_trace->Indent(false);
-    }
-    else {
+    } else {
       // Undefined, parse-tree-node is NULL
       // keep _cached_result as 0.0
-      p_autoplayer_trace->Add(_name, kUndefinedZero);
+      if (log) {
+        p_autoplayer_trace->Add(_name, kUndefinedZero, true);
+      }
     }
   }
   --recursion_depth;

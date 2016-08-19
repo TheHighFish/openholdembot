@@ -88,14 +88,19 @@ int CAutoplayerTrace::Add(CString symbol) {
   return (_number_of_log_lines - 1); 
 }
 
-void CAutoplayerTrace::Add(CString symbol, double value) {
+void CAutoplayerTrace::Add(CString symbol, double value, bool undefined /* = false */) {
   ENT
    write_log(preferences.debug_auto_trace(),
     "[CAutoplayerTrace] Add (%s, %.3f)\n",
     symbol, value);
   if (!SymbolNeedsToBeLogged(symbol)) return;
   CString new_message;
-  if (COHScriptObject::IsFunction(symbol)
+  if (undefined) {
+    // For empty functions with NULL parse-tree
+    assert(value == kUndefinedZero);
+    new_message.Format("%s%s = %.3f [undefined]",
+      Indentation(), symbol, value);
+  } else if (COHScriptObject::IsFunction(symbol)
       || COHScriptObject::IsOpenPPLSymbol(symbol)) {
     // Function with known value a priori
     new_message.Format("%s%s = %.3f [cached]",

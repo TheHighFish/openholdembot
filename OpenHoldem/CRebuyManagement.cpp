@@ -133,7 +133,7 @@ void CRebuyManagement::ExecuteRebuyScript() {
 	// We assume, the autoplayer does that.
 	//
 	// Build command-line-options for rebuy-script
-	 write_log(preferences.debug_rebuy(), "[CRebuyManagement] ExecuteRebuyScript");
+	 write_log(preferences.debug_rebuy(), "[CRebuyManagement] ExecuteRebuyScript\n");
 	CString Casino;
 	if (p_tablemap->s$()->find("sitename") != p_tablemap->s$()->end()) 	{
 		Casino = p_tablemap->s$()->find("sitename")->second.text.GetString();

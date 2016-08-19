@@ -120,17 +120,19 @@ BOOL COpenHoldemApp::InitInstance() {
 	if (!AfxOleInit())
 		return FALSE;
 	AfxEnableControlContainer();
-
-	free((void*)m_pszProfileName);
-	m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
-	preferences.LoadPreferences();
-	
+  
 	// Classes
 	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter, which is necessary for 
 	// the filename of the log (oh_0.log, etc).
 	start_log();
+  // Load preferences immediately after creation of the log-file
+  // We might want to to log the preferences too.
+  free((void*)m_pszProfileName);
+  m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
+  preferences.LoadPreferences();
+
 	InstantiateAllSingletons();
   p_formula_parser->ParseDefaultLibraries();
 

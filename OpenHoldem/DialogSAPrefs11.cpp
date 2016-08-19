@@ -38,11 +38,11 @@ CDlgSAPrefs11::~CDlgSAPrefs11() {
 
 void CDlgSAPrefs11::DoDataExchange(CDataExchange* pDX) {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LOG_BASIC_INFO, m_LogPrwinFunctions);
-	DDX_Control(pDX, IDC_ENABLE_TRACE, m_LogHopperFunctions);
-	DDX_Control(pDX, IDC_ENABLE_ERROR_LOGGiNG, m_LogIniFunctions);
-	DDX_Control(pDX, IDC_ENABLE_DLL_LOGGiNG, m_LogICMFunctions);
-  DDX_Control(pDX, IDC_ENABLE_DELAY_LOGGiNG, m_LogDelayFunction);
+	DDX_Control(pDX, IDC_LOG_PRWIN_FUNCTIONS, m_LogPrwinFunctions);
+	DDX_Control(pDX, IDC_LOG_HOPPER_FUNCTIONS, m_LogHopperFunctions);
+	DDX_Control(pDX, IDC_LOG_INI_FUNCTIONS, m_LogIniFunctions);
+	DDX_Control(pDX, IDC_LOG_ICM_FUNCTIONS, m_LogICMFunctions);
+  DDX_Control(pDX, IDC_LOG_DELAY_FUNCTION, m_LogDelayFunction);
 
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE, m_MaximumLogSize);
 	DDX_Control(pDX, IDC_MAXIMUM_LOGSIZE_SPIN, m_MaximumLogSize_Spin);

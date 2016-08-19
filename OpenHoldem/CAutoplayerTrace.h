@@ -22,7 +22,7 @@ class CAutoplayerTrace {
    ~CAutoplayerTrace();
  public:
   void Clear();
-  void Add(CString symbol, double value);
+  void Add(CString symbol, double value, bool undefined = false);
   // Logging function, value currently unknown
   // Returning index (line number in log)
   int  Add(CString symbol); 

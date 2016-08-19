@@ -19,29 +19,25 @@
 #include "StringFunctions.h"
 
 // global preferences constants
-enum
-{
+enum {
 	k_AutoConnector_Connect_Never		= 0,
 	k_AutoConnector_Connect_Once		= 1,
 	k_AutoConnector_Connect_Permanent	= 2,
 };
 
-enum
-{
+enum {
 	k_lazy_scraping_always = 0,
 	k_lazy_scraping_myturn = 1,
 	k_lazy_scraping_cards  = 2,
 };
 
-enum
-{
+enum {
 	k_popup_disabled = 0,
 	k_popup_minimize = 1,
 	k_popup_kill     = 2,
 };
 
-enum
-{
+enum {
 	// Numerical values
 	// This includes bools, ints and doubles
 	//
@@ -94,11 +90,11 @@ enum
 	k_prefs_restore_position_and_focus,
 	k_prefs_use_auto_replay,
 	k_prefs_replay_record,
-	k_prefs_log_hopper_functions,
-  k_prefs_log_prwin_functions,
-  k_prefs_log_ini_functions,
-	k_prefs_log_icm_functions,
   k_prefs_log_delay_function,
+	k_prefs_log_hopper_functions,
+  k_prefs_log_icm_functions,
+  k_prefs_log_ini_functions,
+  k_prefs_log_prwin_functions,
 	k_prefs_disable_msgbox,
 	k_prefs_validator_stop_on_error,
 	k_prefs_validator_use_heuristic_rules,
@@ -149,8 +145,7 @@ enum
 	k_prefs_last_numerical_value,
 };
 
-enum
-{
+enum {
 	// String Values
 	k_prefs_dll_name,
 	k_prefs_pt_ip_addr,
@@ -168,15 +163,16 @@ enum
 	k_prefs_last_CString_value,
 };
 
-class CPreferences
-{
-public:
+class CPreferences {
+ public:
 	// public functions
 	CPreferences();
 	~CPreferences();
+ public:
+  // Has to be called immediately after the log-file has been opened.
+  // Must not be called in the constructor (too early for log)
 	void LoadPreferences();
-
-public:
+ public:
 	// public accessors
 	// We keep one accessor per variable,
 	// because it would be inconvenient to have only few accessors
@@ -217,12 +213,12 @@ public:
 	const bool disable_msgbox() { return prefs_numerical_values[k_prefs_disable_msgbox]; }
 	const int log_max_logsize() { return prefs_numerical_values[k_prefs_log_max_logsize]; }
 
+  const bool log_delay_function() { return prefs_numerical_values[k_prefs_log_delay_function]; }
   const bool log_hopper_functions() { return prefs_numerical_values[k_prefs_log_hopper_functions]; }
+  const bool log_icm_functions() { return prefs_numerical_values[k_prefs_log_icm_functions]; }
   const bool log_ini_functions()    { return prefs_numerical_values[k_prefs_log_ini_functions]; }
   const bool log_prwin_functions()  { return prefs_numerical_values[k_prefs_log_prwin_functions]; }
-  const bool log_icm_functions()    { return prefs_numerical_values[k_prefs_log_icm_functions]; }
-  const bool log_delay_function()   { return prefs_numerical_values[k_prefs_log_delay_function]; }
- 
+   
 	// Debugging
 	const bool	debug_autoconnector() { return prefs_numerical_values[k_prefs_debug_autoconnector]; }
 	const bool	debug_autoplayer() { return prefs_numerical_values[k_prefs_debug_autoplayer]; }
@@ -320,31 +316,28 @@ public:
 	const CString path_ohf()	{ return prefs_CString_values[k_prefs_path_ohf]; }
 	const CString path_tm()		{ return prefs_CString_values[k_prefs_path_tm]; }
 	const CString path_dll()	{ return prefs_CString_values[k_prefs_path_dll]; }
-
-public:
+ public:
 	// public mutators
 	void SetValue(int index_of_variable, CString value);
 	// double has to handle ints and bools too,
 	// otherwise we get an "error c2668  ambiguous call to overloaded function"
 	// http://msdn.microsoft.com/en-us/library/da60x087.aspx
 	void SetValue(int index_of_variable, double value);
-private:
+ private:
   void CheckForOutdatedICMConfig();
-
-private:
+ private:
 	// private variables - use public accessors and public mutators to address these
 	CString	    prefs_CString_values[k_prefs_last_CString_value];
 	double      prefs_numerical_values[k_prefs_last_numerical_value];
-
-private:
+ private:
 	// private functions and variables - not available via accessors or mutators
+  void ReadPreferences();
 	void InitDefaults();
-	void ReadPreferences();
 	void ReadReg(const LPCTSTR registry_key, CString *registry_value);
 	void ReadReg(const LPCTSTR registry_key, double *registry_value);
 	void WriteReg(const LPCTSTR registry_key, const CString &registry_value);
 	void WriteReg(const LPCTSTR registry_key, const double registry_value);
-
+ private:
 	CCritSec		m_critsec;
 	CString			_preferences_heading;
 };
