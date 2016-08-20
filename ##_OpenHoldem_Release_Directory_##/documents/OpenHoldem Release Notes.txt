@@ -1,5 +1,12 @@
 v9.2.3 2016-08-20
 ==================
+
+MAINTENANCE:
+- Improved lazy scraper (costly name-scraping)
+  [FqFq]
+
+v9.2.3 2016-08-20
+==================
 NEW STUFF:
 - Scraping custom regions at the DLL-level.
   [ZeeZooLaa]
