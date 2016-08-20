@@ -19,9 +19,11 @@
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineGameType.h"
+#include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "debug.h"
@@ -185,7 +187,17 @@ bool CLazyScraper::NeedAllPlayerNames() {
 	// It is enough if we do this until our turn, because
 	// * at our turn we have stable frames
 	// * new players after our turn can't affect the current hand
-	return (!p_symbol_engine_history->DidActThisHand());
+  if (p_symbol_engine_history->DidActThisHand()) {
+    return false;
+  }
+  // We can also stop scraping names if we see new cards 
+  // after a hand-reset because then a poterntial new player
+  // can no longer join the game.
+  if ((p_symbol_engine_time->elapsedhand() > 2)
+      && (p_symbol_engine_active_dealt_playing->nplayersdealt() >= 2)) {
+    return false;
+  }
+  return true;
 }
 
 bool CLazyScraper::NeedUnknownPlayerNames() {
