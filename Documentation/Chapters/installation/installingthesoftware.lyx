@@ -95,7 +95,7 @@ Since you do not have an installer to do the work for you, there are several
 Create your “OpenHoldem” base directory.
  For purposes of this walkthrough, we will create this directory as “c:
 \backslash
-mpb” (“My Poker Bot” – clever, eh?).
+mpb” (“My Poker Bot” -- clever, eh?).
  You can make this directory anything you want, however
 \end_layout
 
@@ -130,6 +130,26 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Enumerate
+OpenHoldem got created with MicroSoft Visual Studio 2015 Community Edition
+ and needs some extra MicroSoft DLLs (dynamic link libraries).
+ Therefore you have to install the redistributable runtime-library from
+ MicroSoft: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.microsoft.com/en-us/download/details.aspx?id=48145
+\end_layout
+
+\end_inset
+
+.
+ You need the 32-bit-version, even if you have a 64-bit-system, because
+ OpenHoldem still supports older machines with 32 bits.
 \end_layout
 
 \end_body
