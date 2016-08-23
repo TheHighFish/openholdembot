@@ -11,6 +11,9 @@ BUG FIXES:
 MAINTENANCE:
 - Improved lazy scraper (costly name-scraping)
   [FqFq]
+- Improved OpenPPL-symbol HaveFlushDraw for single flush-card in hand.
+  Thanks to ChuckNeverMuck for the discussion.
+  [THF]
   
 
 v9.2.3 2016-08-20
