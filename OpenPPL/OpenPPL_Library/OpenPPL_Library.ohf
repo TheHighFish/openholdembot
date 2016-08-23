@@ -2552,14 +2552,30 @@ OR `((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
 // 
 // Good one, contributing 2 cards
-  (((nsuited == 4) AND (nsuitedcommon == 2))
+WHEN HaveFlushDrawContributingTwoCards RETURN True FORCE		
 // Best one
-OR HaveNutFlushDraw
+WHEN HaveNutFlushDraw RETURN True FORCE	
 // Contributing only single card:
-//  * Headsup: at least Third-best
-//  * 3-handed: at least Second-best
-//  * 4-handed: only nut-flush
-OR ((nsuited >= 4) AND (nsuitedcommon >2) AND (NumberOfUnknownSuitedOvercards < (3 - nopponentsplaying))))
+WHEN HaveGoodFlushDrawContributingOnlyOneCard RETURN True FORCE	
+
+##HaveFlushDrawContributingTwoCards##
+WHEN (((nsuited == 4) AND (nsuitedcommon == 2)) RETURN True FORCE
+
+##HaveGoodFlushDrawContributingOnlyOneCard##
+// The quality of flush-draws with just one card in hand
+// depends on the probability of an opponent holding a better card
+// depends on the number of opponents.
+// http://www.maxinmontreal.com/forums/viewforum.php?f=156
+WHEN (NOT HaveAnyFlushDrawContributingOnlyOneCard) RETURN False FORCE
+// Headsup: at least fifth-best
+WHEN ((nopponentsplaying = 1) AND (NumberOfUnknownSuitedOvercards <= 4)) RETURN True FORCE
+// 3-handed: at least third-best
+WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN True FORCE
+// 4-handed: at least second-best
+WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN True FORCE
+
+##HaveAnyFlushDrawContributingOnlyOneCard##
+WHEN ((nsuited >= 4) AND (nsuitedcommon > 2)) RETURN True FORCE
 
 ##HaveFullHouse##
 isfullhouse OR HaveQuads
@@ -2567,7 +2583,6 @@ isfullhouse OR HaveQuads
 ##HaveNothing##
 NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
 // AND NOT HaveBackdoorStraightDraw
-
 
 ##HaveNutFlush##
     HaveNutStraightFlush
@@ -2579,7 +2594,6 @@ OR [HaveFlush AND (NumberOfUnknownSuitedOvercards == 0)]
 ##HaveNutFlushDraw##
     HaveNutStraightFlush
 OR [(nsuited >= 4) AND (NumberOfUnknownSuitedOvercards == 0)]
-
 
 ##HaveNutStraight##
 [ishistraight OR HaveNutStraightFlush]
