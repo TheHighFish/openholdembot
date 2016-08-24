@@ -366,8 +366,12 @@ NegativeNumber:
           "Its meaning gets usually detected by function context\n"
           "(WHEN-condition), but this is not possible in the debug-tab.\n"
           "\n"
-          "Defaulting to modulo.\n",
+          "Defaulting to percentage.\n"
+          "\n"
+          "If you want to use modulo-operations in the debug-tab\n"
+          "then please choose the operator MOD.",
           "Warning");
+        RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPercentage);
       }
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorModulo);
 		case '&': 
