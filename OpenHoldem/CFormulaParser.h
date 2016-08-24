@@ -49,6 +49,7 @@ class CFormulaParser {
   static CString CurrentFunctionName();
   bool IsParsing()	                      { return _is_parsing; }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
+  bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }
  private:
   void ParseFile(CArchive & formula_file);
  private:
@@ -93,6 +94,11 @@ class CFormulaParser {
   CString _token;
   bool _is_parsing;
   bool _is_parsing_read_only_function_library;
+  // The operator % can mean both modulo (OH-script) and percentage (OpenPPL).
+  // Its meaning gets detected by function context.
+  // But we can't do so in the debug-tab, so we want to throw a warning.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19973&p=140389#p140389
+  bool _is_parsing_debug_tab;
 };
 
 extern CFormulaParser *p_formula_parser;

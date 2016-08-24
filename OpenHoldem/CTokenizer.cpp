@@ -16,8 +16,10 @@
 
 #include "assert.h"
 #include "CardFunctions.h"
+#include "CFormulaparser.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
+#include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
 
 // Global vars to be used by static accessors
@@ -92,13 +94,11 @@ int CTokenizer::GetToken()
 	return next_token;
 }
 
-int CTokenizer::LookAhead(bool expect_action /*= false */)
-{
+int CTokenizer::LookAhead(bool expect_action /*= false */) {
   if (_additional_percentage_operator_pushed_back) {
     return kTokenOperatorPercentage;
   }
-	if (!_last_token_pushed_back)
-	{
+	if (!_last_token_pushed_back)	{
 		_last_token = ScanForNextToken();
 	}
 	// Not yet accepted: treat it like "pushed back"
@@ -354,6 +354,21 @@ NegativeNumber:
 			if (_inside_OpenPPL_function) {
 				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPercentage);
 			}
+      assert(p_formula_parser != NULL);
+      if (p_formula_parser->IsParsingDebugTab()) {
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19973&p=140389#p140389
+        OH_MessageBox_Error_Warning("Operator % in debug-tab detected.\n"
+          "\n"
+          "This opertor can mean\n"
+          "  * modulo (OH-script)\n"
+          "  * percentage (OpenPPl)\n"
+          "\n"
+          "Its meaning gets usually detected by function context\n"
+          "(WHEN-condition), but this is not possible in the debug-tab.\n"
+          "\n"
+          "Defaulting to modulo.\n",
+          "Warning");
+      }
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorModulo);
 		case '&': 
 			IF_NEXT_CHARACTER_RETURN_OPERATOR('&', kTokenOperatorLogicalAnd)

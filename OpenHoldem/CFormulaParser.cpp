@@ -50,6 +50,7 @@ CString _function_name;
 CFormulaParser::CFormulaParser() {
   _is_parsing = false;
   _is_parsing_read_only_function_library = false;
+  _is_parsing_debug_tab = false;
 }
 
 CFormulaParser::~CFormulaParser() {
@@ -813,6 +814,7 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
 
 void CFormulaParser::ParseDebugTab(CString function_text) {
   assert(p_debug_tab != NULL);
+  _is_parsing_debug_tab = true;
   p_debug_tab->Clear();
   CString next_line;
   int separator_index = 0;
@@ -836,5 +838,6 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     assert(p_debug_tab != NULL);
     p_debug_tab->AddExpression(expression_text, expression);
   }
+  _is_parsing_debug_tab = false;
 }
 
