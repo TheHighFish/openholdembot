@@ -1,4 +1,4 @@
-v9.2.4 2016-08-xx
+v9.2.4 2016-08-25
 ==================
 BUG FIXES:
 - Too many handreset-indicators at different heartbeats
@@ -7,12 +7,21 @@ BUG FIXES:
   This has now been prevented.
   Thanks to MustBeatIt for reporting.
   [THF]
+- Fixing a race-condition in enhanced PrWin. 
+  The initialization of the DLL could try to access the iterator-thread 
+  at a point of time were it was not yet created.
+  [ZeeZoolaa]
   
 MAINTENANCE:
 - Improved lazy scraper (costly name-scraping)
   [FqFq]
 - Improved OpenPPL-symbol HaveFlushDraw for single flush-card in hand.
   Thanks to ChuckNeverMuck for the discussion.
+  [THF]
+- OppontsIsAllin And NumberOfOpponentsAllin consider now only players
+  who bet their full stack, but not opponents who bet so much that we 
+  can only fold or call (allin-decision).
+  Thanks to FK1 and Ares for discussing the finer details of these symbols.
   [THF]
   
 

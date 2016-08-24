@@ -31,9 +31,8 @@
 // See OpenHoldem.cpp for the implementation of this class
 //
 
-class COpenHoldemApp : public CWinApp 
-{
-public:
+class COpenHoldemApp : public CWinApp {
+ public:
 	COpenHoldemApp();
 	~COpenHoldemApp();
 	void MyLoadStdProfileSettings(UINT nMaxMRU);
@@ -41,30 +40,27 @@ public:
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 	virtual int ExitInstance();
-
-public:
+ public:
 	void UnloadScraperDLL();
 	void StoreLastRecentlyUsedFileList();
-private:
+ private:
 	void LoadLastRecentlyUsedFileList();
 	void OpenLastRecentlyUsedFile();
-
-public:
-	mouse_process_message_t		_dll_mouse_process_message;
-	mouse_click_t				_dll_mouse_click;
-	mouse_clickdrag_t			_dll_mouse_click_drag;
-	keyboard_process_message_t	_dll_keyboard_process_message;
-	keyboard_sendstring_t		_dll_keyboard_sendstring;
-	keyboard_sendkey_t			_dll_keyboard_sendkey;
-
-	HMODULE				_mouse_dll;
-	HMODULE				_keyboard_dll;
-
-	HMODULE							_scraper_dll;
-	scraper_process_message_t		_dll_scraper_process_message;
-	scraper_override_t				_dll_scraper_override;
-private:
+ public:
+	mouse_process_message_t	_dll_mouse_process_message;
+	mouse_click_t           _dll_mouse_click;
+	mouse_clickdrag_t       _dll_mouse_click_drag;
+	keyboard_process_message_t _dll_keyboard_process_message;
+	keyboard_sendstring_t   _dll_keyboard_sendstring;
+	keyboard_sendkey_t      _dll_keyboard_sendkey;
+	HMODULE	_mouse_dll;
+	HMODULE	_keyboard_dll;
+  HMODULE	_scraper_dll;
+	scraper_process_message_t	_dll_scraper_process_message;
+	scraper_override_t _dll_scraper_override;
+ private:
 	void FinishInitialization();
+  void InitializeThreads();
 };
 
 extern COpenHoldemApp theApp;
