@@ -361,7 +361,7 @@ NegativeNumber:
           "\n"
           "This opertor can mean\n"
           "  * modulo (OH-script)\n"
-          "  * percentage (OpenPPl)\n"
+          "  * percentage (OpenPPL)\n"
           "\n"
           "Its meaning gets usually detected by function context\n"
           "(WHEN-condition), but this is not possible in the debug-tab.\n"
