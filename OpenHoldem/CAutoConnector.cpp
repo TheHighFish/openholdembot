@@ -221,17 +221,14 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 	BOOL				bFound = false;
 	CFileFind   hFile;
 
-	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Connect(..)\n");
-  ASSERT(_autoconnector_mutex->m_hObject != NULL); 
-	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
-	if (!_autoconnector_mutex->Lock(500))	{
-		 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Could not grab mutex; early exit\n");
-		return false; 
-	}
   // Potential race-condition, as some objects
   // (especially GUI objects) get created by another thread.
   // We just skip connection if OH is not yet initialized.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19706
+  // 
+  // We have to check and return very early, we must not do this
+  // after locking the mutex, otherwiese we block other instances forever.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407&p=140417#p140417
   if (p_table_positioner == NULL) return false;
   if (p_autoplayer == NULL) return false;
   if (p_casino_interface == NULL) return false;
@@ -243,6 +240,13 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
   if (p_tablemap_loader == NULL) return false;
   if (p_table_state == NULL) return false;
   if (p_table_positioner == NULL) return false;
+	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Connect(..)\n");
+  ASSERT(_autoconnector_mutex->m_hObject != NULL); 
+	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
+	if (!_autoconnector_mutex->Lock(500))	{
+		 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Could not grab mutex; early exit\n");
+		return false; 
+	}
   // Clear global list for holding table candidates
 	g_tlist.RemoveAll();
 	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of tablemaps loaded: %i\n",
@@ -349,8 +353,7 @@ void CAutoConnector::Disconnect() {
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
-   // Looks unnecessary and might lead to freezing
-	//!!!!!_autoconnector_mutex->Lock(INFINITE);
+  _autoconnector_mutex->Lock(INFINITE);
 
 	// Make sure autoplayer is off
 	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
@@ -379,7 +382,7 @@ void CAutoConnector::Disconnect() {
 
 	// Release mutex as soon as possible, after critical work is done
 	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
-	//!!!!!_autoconnector_mutex->Unlock();	
+	_autoconnector_mutex->Unlock();	
 
 	// Delete bitmaps
 	p_scraper->DeleteBitmaps();

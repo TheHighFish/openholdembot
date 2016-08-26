@@ -1,3 +1,16 @@
+v9.2.5 2016-08-26
+==================
+BUG FIXES:
+- The combination of changed initialization of threads (ZereZoolaa)
+  to fix a race-condition between DLL and iterator thread
+  and extra sanity-checks (THF) could cause the auto-connector
+  to exit early and leave the autoconnector-mutex locked,
+  which then blocked all other instances.
+  This has now been fixed.
+  Thanks to Johnny and Hugo1 for reporting.
+  [THF]
+  
+
 v9.2.4 2016-08-25
 ==================
 BUG FIXES:
