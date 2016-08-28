@@ -36,13 +36,30 @@ const double kMinimumtimeBetweenTwoHeartbeats = 4.0;
 
 CHandresetDetector::CHandresetDetector() {
    write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Executing constructor\n");
-	playercards[0] = CARD_UNDEFINED;
-	playercards[1] = CARD_UNDEFINED;
+  _is_handreset_on_this_heartbeat = false;
 	dealerchair = kUndefined;
+  last_dealerchair = kUndefined;
 	handnumber = "";
-	_is_handreset_on_this_heartbeat = false;
+  last_handnumber = "";
   _hands_played = 0;
   _hands_played_headsup = 0;
+  _last_potsize = kUndefinedZero;
+  _potsize = kUndefinedZero;
+  _community_cards = kUndefined;
+  _last_community_cards = kUndefined;
+  _nopponentsplaying = kUndefined;
+  _last_nopponentsplaying = kUndefined;
+  _bblind = kUndefinedZero;
+  _last_bblind = kUndefinedZero;
+  _small_blind_existed_last_hand = false;
+  for (int i = 0; i<kNumberOfCardsPerPlayer; i++) {
+    playercards[i] = CARD_NOCARD;
+    last_playercards[i] = CARD_NOCARD;  
+  }
+  for (int i = 0; i < p_tablemap->nchairs(); ++i) {
+    _balance[i] = kUndefinedZero;
+    _last_balance[i] = kUndefinedZero;
+  }
 }
 
 CHandresetDetector::~CHandresetDetector() {
@@ -267,7 +284,7 @@ void CHandresetDetector::GetNewSymbolValues() {
 			playercards[i] = CARD_UNDEFINED;
 		}
 	}
-  for (int i=0; i<kMaxNumberOfPlayers; ++i) {
+  for (int i=0; i<p_tablemap->nchairs(); ++i) {
     _balance[i] = p_table_state->Player(i)->balance();
   }
 }
@@ -284,6 +301,9 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
 		last_playercards[i] = playercards[i];
 	}
+  for (int i = 0; i < p_tablemap->nchairs(); ++i) {
+    _last_balance[i] = _balance[i];
+  }
 }
 
 void CHandresetDetector::OnNewHeartbeat() {

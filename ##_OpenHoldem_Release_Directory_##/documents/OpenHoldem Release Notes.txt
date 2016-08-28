@@ -1,3 +1,13 @@
+v9.2.5 2016-09-xx
+==================
+BUG FIXES:
+- The handreset-detector contained an undefined variable that could cause 
+  a trigger to fire incorrectly (but usually didn't cause an incorrect
+  handreset, as more than one trigger is necessary)
+  Thanks to smartbet for reporting.
+  [THF]
+
+
 v9.2.5 2016-08-26
 ==================
 BUG FIXES:
