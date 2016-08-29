@@ -6,12 +6,18 @@ NEW STUFF:
   (theme, borders, titlebar, ...).
   Thanks to Todamach for reporting incompatibilities with Win7.
   [THF]
+BUG FIXES: 
+- Fix for broken dealer-command "N" in macro-definition.
+  Thanks to ZeeZooLaa for reporting.
+  [THF]
+
 
 v9.1.1 2016-04-01
 =================
 NEW STUFF:
 - Full support for Windows 10 and probably all other modern versions of Windows.
   [THF]
+  
 
 v4.4.1 2014-02-10
 =================
@@ -20,6 +26,7 @@ BUG FIXES:
   Thanks to PokerKid1 for reporting.
   [THF]
 
+  
 v4.4.0 2014-01-14
 =================
 NEW STUFF:
@@ -30,6 +37,7 @@ NEW STUFF:
   after a first click to any button-region.
   [THF]
 
+  
 v4.0.0 2013-01-26
 =================
 MAINTENANCE:
@@ -37,16 +45,16 @@ MAINTENANCE:
   Thanks to BotForSale for the patch.
   [THF]
 
+  
 v2.1.9.2 2011-12-24
 ===================
 BUG FIXES: 
 - allin-bug: sum of bets and balances should be now correct. 
   Thanks to Pingvvino for reporting. [THF]
 
+  
 v2.0.0 2009-05-22
 =================
-BUG FIXES:
-
 MAINTENANCE:
 - Migrated from SEH exception handling to Minidump exception handling. [OpenHoldem]
 - Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
