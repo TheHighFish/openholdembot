@@ -165,23 +165,31 @@ int CalculateTotalHeightForClientHeight(HWND window, int desired_client_height) 
 void ResizeToClientSize(HWND window, int new_width, int new_height) {
   assert(new_width > 0);
   assert(new_height > 0);
+  assert(window != NULL);
   int new_total_width = CalculateTotalWidthForClientWidth(
     window, new_width);
   int new_total_height = CalculateTotalHeightForClientHeight(
     window, new_height);
   ResizeToTotalSize(window, new_total_width, new_total_height);
-  //!!!!!
-  SetWindowPos(NULL, NULL, 0, 0, 0, 0, 0);
 }
 
 void ResizeToTotalSize(HWND window, int new_width, int new_height) {
+  assert(new_width > 0);
+  assert(new_height > 0);
+  assert(window != NULL);
   RECT old_position;
   GetWindowRect(window, &old_position);
+  if (old_position.left < 0) {
+    old_position.left = 0;
+  }
+  if (old_position.top < 0) {
+    old_position.top = 0;
+  }
   MoveWindow(window,
     old_position.left, old_position.top,
     new_width, new_height,
     true);	// true = Redraw the table.
-            // Update shared mem
+            // Update shared mem !!!!
 }
 
 void WinGetTitle(HWND window, char *title) {

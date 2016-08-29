@@ -27,8 +27,10 @@
 #define LIMIT_FL		2
 
 // Window Size
-#define MM_WIDTH		580
-#define MM_HEIGHT		360
+// Defaults for Windows 10
+// GUI will be resized later for perfect clientsize
+#define MM_WIDTH		590
+#define MM_HEIGHT		374
 
 // Startup path
 extern char	startup_path[MAX_PATH];
@@ -58,33 +60,33 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	HICON		m_hIcon;
 	CPen		black_pen, green_pen, red_pen, blue_pen, white_dot_pen, white_pen, null_pen;
-	CBrush		white_brush, gray_brush, red_brush, yellow_brush;
-	LOGFONT		lf;
+	CBrush	white_brush, gray_brush, red_brush, yellow_brush;
+	LOGFONT	lf;
 	CFont		cFont, cFont_sm;
 
 	CardMask			used_cards;
-	unsigned int		card[25];  // aligns with enum above 0-19 player cards, 20-24 common cards
-	bool				seated[10], active[10];
-	bool				dealer[10];
+	unsigned int	card[25];  // aligns with enum above 0-19 player cards, 20-24 common cards
+	bool			    seated[10], active[10];
+	bool				  dealer[10];
 	CString				playername[10];
 	CString				playerbalance[10];
 	CString				playerbet[10];
 	double				pot;
-	bool				buttonstate[10]; // fold, call, check, raise, allin, sotout, leave table, prefold, autopost
+	bool				  buttonstate[10]; // fold, call, check, raise, allin, sotout, leave table, prefold, autopost
 	CString				handnumber;
 	CString				sblind;
 	CString				bblind;
 	CString				bbet;
 	CString				ante;
-	int					limit;
+	int					  limit;
 	CString				network;
-	bool				istournament;
+	bool				  istournament;
 
 	double				raise_amount;
 
 	// For tracking right click locations
-	int					click_loc;
-	int					click_chair;
+	int					  click_loc;
+	int					  click_chair;
 
 	CBitmap				all_cards;
 	CString				macro_text;
