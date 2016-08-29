@@ -38,7 +38,6 @@ typedef struct {
 	CString	NegativeTitleText_0_9[10];
 	STablemapRegion	TablePoint[10];
 	int			TablePointCount;
-
 } t_tablemap_connection_data;
 
 std::map<int, t_tablemap_connection_data> tablemap_connection_data;

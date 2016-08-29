@@ -56,7 +56,7 @@ CHandresetDetector::CHandresetDetector() {
     playercards[i] = CARD_NOCARD;
     last_playercards[i] = CARD_NOCARD;  
   }
-  for (int i = 0; i < p_tablemap->nchairs(); ++i) {
+  for (int i = 0; i < kMaxNumberOfPlayers; ++i) {
     _balance[i] = kUndefinedZero;
     _last_balance[i] = kUndefinedZero;
   }
