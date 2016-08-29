@@ -1985,14 +1985,16 @@ void CManualModeDlg::OnSitInPlayer()
 	InvalidateRect(NULL, true);
 }
 
-void CManualModeDlg::OnDealerHere() 
-{ 
-	for (int i=0; i<kMaxNumberOfPlayers; i++) 
-	{
-		dealer[i] = false;
-	}
-	dealer[click_chair] = true;
-	InvalidateRect(NULL, true);
+void CManualModeDlg::OnDealerHere() { 
+  SetDealerPosition(click_chair);
+}
+
+void CManualModeDlg::SetDealerPosition(int chair) {
+  for (int i = 0; i<kMaxNumberOfPlayers; i++) {
+    dealer[i] = false;
+  }
+  dealer[chair] = true;
+  InvalidateRect(NULL, true);
 }
 
 void CManualModeDlg::OnFold() 
@@ -2079,7 +2081,7 @@ void CManualModeDlg::OnBnClickedMacro()
 {
 	int	chair = -1;
   int cards_seen = 0;
-  int com_card=0, dealer_pos;
+  int com_card=0;
   unsigned int c;
 
   CardMask_RESET(used_cards);
@@ -2092,9 +2094,13 @@ void CManualModeDlg::OnBnClickedMacro()
     }
 		switch (next_char) {
       case 'N': // Button
-        dealer_pos = chair;
-        // No break
-        // Continue with code below
+        ++chair;
+        SetDealerPosition(chair);
+        seated[chair] = true;
+        active[chair] = true;
+        card[P0C0 + 2 * chair] = CARD_BACK;
+        card[P0C1 + 2 * chair] = CARD_BACK;
+        break;
       case 'P': // Player
       case 'b': // Small blind
       case 'B': // Big blind 

@@ -213,4 +213,5 @@ private:
 	void SetAllPossibleButtons();
 	void HandleButtonClick(int click_loc);
 	void ExecuteSwag();
+  void SetDealerPosition(int chair);
 };
