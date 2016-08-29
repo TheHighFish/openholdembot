@@ -2077,8 +2077,7 @@ void CManualModeDlg::OnBnClickedPplus()
 	}
 }
 
-void CManualModeDlg::OnBnClickedMacro() 
-{
+void CManualModeDlg::OnBnClickedMacro() {
 	int	chair = -1;
   int cards_seen = 0;
   int com_card=0;
@@ -2092,24 +2091,22 @@ void CManualModeDlg::OnBnClickedMacro()
 			clear_scrape_areas();
       continue;
     }
-		switch (next_char) {
+    switch (next_char) {
       case 'N': // Button
+      case 'b': // Small blind
+      case 'B': // Big blind 
+      case 'P': // Player
         ++chair;
-        SetDealerPosition(chair);
         seated[chair] = true;
         active[chair] = true;
         card[P0C0 + 2 * chair] = CARD_BACK;
         card[P0C1 + 2 * chair] = CARD_BACK;
         break;
-      case 'P': // Player
-      case 'b': // Small blind
-      case 'B': // Big blind 
-        ++chair;
-			  seated[chair] = true;
-			  active[chair] = true;
-			  card[P0C0 + 2*chair] = CARD_BACK; 
-			  card[P0C1 + 2*chair] = CARD_BACK; 
-			  break;
+    }
+		switch (next_char) {
+      case 'N': // Button
+        SetDealerPosition(chair);
+        break;
       case 'p': // Not seated
         ++chair;
 			  seated[chair] = true;
