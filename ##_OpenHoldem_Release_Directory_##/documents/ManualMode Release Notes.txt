@@ -4,6 +4,7 @@ NEW STUFF:
 - Auto-adapting the clientsize to support all operating-systems
   out of the box, independent of their window configuration
   (theme, borders, titlebar, ...).
+  Thanks to Todamach for reporting incompatibilities with Win7.
   [THF]
 
 v9.1.1 2016-04-01
