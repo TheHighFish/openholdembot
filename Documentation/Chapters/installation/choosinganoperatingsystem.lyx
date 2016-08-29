@@ -183,6 +183,17 @@ Windows 7
 \emph default
 : considered more stable as Windows Vista and according to a poll preferred
  by 40% of all botters nowadys.
+ One common 
+\begin_inset Quotes eld
+\end_inset
+
+problem
+\begin_inset Quotes erd
+\end_inset
+
+ with Windows 7 however is its restrictice user account control (UAC).
+ Most people finally chose to run OpenHoldem (and other botting software
+ like hopper and Bring) as administrator.
 \end_layout
 
 \begin_layout Itemize

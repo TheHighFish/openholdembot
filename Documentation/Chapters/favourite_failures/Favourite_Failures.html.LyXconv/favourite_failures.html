@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2016-08-20"/>
+<meta name="create-date" content="2016-08-29"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -454,10 +454,49 @@ This code basically says: &ldquo;do prefold, if is is preflop and I don’t have
 This way mis-scrapes will not be able to defeat your fine strategy. Instead a mis-scrape will only keep f$prefold false and delay the folding of trash. The same problem might occur in all functions that might act on unstable frames (when it is not your turn), especially f$prefold, f$sitin, f$sitout, f$leave, f$rebuy and f$chat.
 </div>
 <div class="Remark*">
-This failure gets now prevented too, as OpenHoldem will will only execute f$prefold if both cards are known. However: as you can see lots of things could go wrong if you are careless. Therefore it is always a good idea to keep these potential pitfalls in mind and prefer a conservative style of coding your bot.
+This failure gets now prevented too, as OpenHoldem will will execute f$prefold only if both cards are known. However: as you can see lots of things could go wrong if you are careless. Therefore it is always a good idea to keep these potential pitfalls in mind and prefer a conservative style of coding your bot.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-24"></a>
+<a class="toc" name="toc-Section-24"></a>OpenHoldem acts, but nothing happens (Windows 7)
+</h2>
+<div class="Unindented">
+Some people reported that OpenHoldem acts, but nothing happens. The casino did not react. As it turned out this problem was caused by Windows user account control (UAC). OpenHoldem (or Bring) simply missed the right to generate mouse-clicks and keyboard-events. To fix this just modify the permissions like below.
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="Images/UAC_bring_settings.png" alt="figure Images/UAC_bring_settings.png" style="max-width: 336px; max-height: 461px;"/>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+If all else fails run OpenHoldem as administrator.
+</div>
+<div class="Indented">
+<div class="float">
+<div class="table">
+<img class="embedded" src="Images/UAC_OH_settings_01.png" alt="figure Images/UAC_OH_settings_01.png" style="max-width: 337px; max-height: 485px;"/>
+
+</div>
+
+</div>
+
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="Images/UAC_OH_settings_02.png" alt="figure Images/UAC_OH_settings_02.png" style="max-width: 577px; max-height: 545px;"/>
+
+</div>
+
+</div>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-25"></a>
 </h2>
 
 </div>

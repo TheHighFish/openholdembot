@@ -1260,11 +1260,101 @@ This way mis-scrapes will not be able to defeat your fine strategy.
 \end_layout
 
 \begin_layout Remark*
-This failure gets now prevented too, as OpenHoldem will will only execute
- f$prefold if both cards are known.
+This failure gets now prevented too, as OpenHoldem will will execute f$prefold
+ only if both cards are known.
  However: as you can see lots of things could go wrong if you are careless.
  Therefore it is always a good idea to keep these potential pitfalls in
  mind and prefer a conservative style of coding your bot.
+\end_layout
+
+\begin_layout Section
+OpenHoldem acts, but nothing happens (Windows 7)
+\end_layout
+
+\begin_layout Standard
+Some people reported that OpenHoldem acts, but nothing happens.
+ The casino did not react.
+ As it turned out this problem was caused by Windows user account control
+ (UAC).
+ OpenHoldem (or Bring) simply missed the right to generate mouse-clicks
+ and keyboard-events.
+ To fix this just modify the permissions like below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/UAC_bring_settings.JPG
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If all else fails run OpenHoldem as administrator.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/UAC_OH_settings_01.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/UAC_OH_settings_02.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
