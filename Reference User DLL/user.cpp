@@ -68,7 +68,11 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
     int result_lenght;
     scraped_result = ScrapeTableMapRegion("p0balance", result_lenght);
     if (scraped_result != nullptr) {
-      MessageBox(0, scraped_result, "Scraped custom region", 0);
+      // The TEXT() macro supports both ASCII and Unicode.
+      // For the people who use Unicode but don't understand the "error".
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=19999
+      // http://stackoverflow.com/questions/15498070/what-does-t-stands-for-in-a-cstring
+      MessageBox(0, scraped_result, TEXT("Scraped custom region"), 0);
       LocalFree(scraped_result);
     }
   }

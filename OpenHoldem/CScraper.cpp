@@ -413,7 +413,9 @@ int CScraper::ScrapeCardByRankAndSuit(CString base_name) {
 			EvaluateRegion(rank, &rank_result);
 			if (IsRankString(rank_result))
 			{
-				if (rank_result == "10") rank_result = "T";
+        if (rank_result == "10") {
+          rank_result = "T";
+        }
 				CString card_str = rank_result + suit_result;
 				return CardString2CardNumber(card_str);
 			}
