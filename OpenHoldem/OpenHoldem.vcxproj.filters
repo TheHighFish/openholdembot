@@ -759,13 +759,13 @@
     <ClCompile Include="CAutoplayerButton.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
-    <ClCompile Include="CBetsizeInputBox().cpp">
-      <Filter>Source Files\AutoPlayer</Filter>
-    </ClCompile>
     <ClCompile Include="CAllinSlider.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
     <ClCompile Include="CCasinoHotkey.cpp">
+      <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="CBetsizeInputBox.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
   </ItemGroup>

@@ -203,7 +203,7 @@
     <ClCompile Include="CAllinSlider.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CAutoplayerButton.cpp" />
-    <ClCompile Include="CBetsizeInputBox().cpp" />
+    <ClCompile Include="CBetsizeInputBox.cpp" />
     <ClCompile Include="CBlindGuesser.cpp" />
     <ClCompile Include="CBlindLevels.cpp" />
     <ClCompile Include="CCasinoHotkey.cpp" />
