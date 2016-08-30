@@ -372,6 +372,7 @@ void CScraper::ScrapeSlider() {
 				handle_xy.y = handleCI->second.top;
         p_casino_interface->_allin_slider.SetHandlePosition(handle_xy);
 				 write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
+        __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 				return;
 			}
 		}

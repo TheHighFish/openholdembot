@@ -1,10 +1,17 @@
+v9.2.7 2016-09-xx
+==================
+BUG FIXES:
+- OH was leaking one GDI-object per successfully scraped i3slider.
+  Thanks to Narfal for reporting and for providing replay-frames and TM.
+  [THF]
+
 v9.2.6 2016-08-30
 ==================
 BUG FIXES:
 - The handreset-detector contained an undefined variable that could cause 
   a trigger to fire incorrectly (but usually didn't cause an incorrect
   handreset, as more than one trigger is necessary)
-  Thanks to smartbet for reporting.
+  Thanks to SmartBet for reporting.
   [THF]
 - Fixed a race-condition in the auto-connector, which updated the main GUI,
   but the main GUI gets created by another thread and the creation could
