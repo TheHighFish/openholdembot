@@ -153,4 +153,7 @@
 #include "MagicNumbers.h"
 #include "..\StructsDefines\structs_defines.h"
 
+// To avoid some race-conditions
+#define WAIT_FOR_CONDITION(condition) { while (!(condition)) { Sleep(250); } }
+
 #endif //INC_STDAFX_H

@@ -298,7 +298,12 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			if (theApp._dll_scraper_process_message) {
 				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
       }
+      // The main GUI gets created by another thread.
+      // This can be slowed down if there are popups (parse-errors).
+      // Handle the race-condition
+      WAIT_FOR_CONDITION(PMainframe() != NULL)
       // Start timer that checks for continued existence of attached HWND 		
+      assert(PMainframe() != NULL);
      	PMainframe()->StartTimer();
 			// Reset display
 			PMainframe()->ResetDisplay();
