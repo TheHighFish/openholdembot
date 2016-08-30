@@ -161,6 +161,7 @@ CString CAutoplayerTrace::Indentation() {
 void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary_formulas) {
   CSLock lock(log_critsec);
   if (full_log_for_primary_formulas) {
+    LogPlayers();
     // This information is only meaningful for playing decision f$all .. f$fold
     LogBasicInfo(action_taken);
   } else {
@@ -195,7 +196,6 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   CString	fcra_formula_status;
   int		userchair = p_symbol_engine_userchair->userchair();
   int		betround  = p_betround_calculator->betround();
-
   // player cards
   if (p_symbol_engine_userchair->userchair_confirmed()) {
     for (int i=0; i<=1; i++) {
@@ -203,7 +203,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
       pcards.Append(card->ToString());
     }
   } else {
-	pcards = "....";
+  	pcards = "....";
   }
   // common cards
   comcards = "";
@@ -237,7 +237,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
 	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin) ? "A" : ".");
   // More verbose summary in the log
   // The old WinHoldem format was a complete mess
-  write_log_separator(true, "Basic Info");
+  write_log_separator(k_always_log_basic_information, "Basic Info");
    write_log(k_always_log_basic_information, "  Version:       %s\n",    VERSION_TEXT); 
    write_log(k_always_log_basic_information, "  Chairs:        %5d\n",   p_tablemap->nchairs());
    write_log(k_always_log_basic_information, "  Userchair:     %5d\n",   userchair);
@@ -256,11 +256,26 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
    write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
    write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());
    write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);
-  write_log_separator(true, "");
+  write_log_separator(k_always_log_basic_information, "");
   // Also show "BestAction" in the statusbar.
   // This needs to be set exactly once to avoid multiple evaluations 
   // of the autoplayer functions
   p_openholdem_statusbar->SetLastAction(BestAction());
+}
+
+void CAutoplayerTrace::LogPlayers() {
+  write_log_separator(k_always_log_basic_information, "Players");
+  // Logging all players at the table
+  // starting at userchair (hero), so that we can easily see all raises behind him
+  int	userchair = p_symbol_engine_userchair->userchair();
+  int nchairs = p_tablemap->nchairs();
+  for (int i = 0; i < nchairs; ++i) {
+    int chair = (userchair + i) % nchairs;
+    CString data;
+    data.Format("Chair %2i  %s\n", chair, p_table_state->Player(chair)->DataDump());
+    write_log(k_always_log_basic_information, data.GetBuffer());
+  }
+  write_log_separator(k_always_log_basic_information, "");
 }
 
 void CAutoplayerTrace::LogSecondaryAction(const char *action_taken) {

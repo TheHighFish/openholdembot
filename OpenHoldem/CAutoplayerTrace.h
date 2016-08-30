@@ -36,6 +36,7 @@ class CAutoplayerTrace {
   CString BestAction();
  private:
   void LogBasicInfo(const char *action_taken);
+  void LogPlayers();
   void LogSecondaryAction(const char *action_taken);
   void LogAutoPlayerTrace();
   bool SymbolNeedsToBeLogged(CString name);

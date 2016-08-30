@@ -64,6 +64,9 @@ class CPlayer {
   void set_seated(bool is_seated) { _seated = is_seated; }
   void set_active(bool is_active) { _active = is_active; }
   void set_dealer(bool is_dealer) { _dealer = is_dealer; }
+ public:
+  // For the log-file
+  CString DataDump();
  private:
   CString _name;
   double  _balance;

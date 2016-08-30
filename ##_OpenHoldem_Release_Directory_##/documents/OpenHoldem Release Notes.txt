@@ -1,10 +1,15 @@
-v9.2.5 2016-09-xx
+v9.2.6 2016-08-30
 ==================
 BUG FIXES:
 - The handreset-detector contained an undefined variable that could cause 
   a trigger to fire incorrectly (but usually didn't cause an incorrect
   handreset, as more than one trigger is necessary)
   Thanks to smartbet for reporting.
+  [THF]
+- Fixed a race-condition in the auto-connector, which updated the main GUI,
+  but the main GUI gets created by another thread and the creation could
+  get delayed e.g. by popups due to parse-errors.
+  Now we verify that the GUI exists and wait if needed.
   [THF]
 
 

@@ -96,3 +96,43 @@ bool CPlayer::PostingBothBlinds() {
   return (_seated && _active && HasAnyCards()
     && IsApproximatellyEqual(bet_in_cents, both_blinds_in_cents));
 }
+
+CString CPlayer::DataDump() {
+  CString result = "";
+  // 20 digits, right alighned
+  result.Format("%20s", name());
+  result += "  ";
+  // Seated, active, playing, dealer
+  if (seated()) {
+    result += "S";
+  }
+  else {
+    result += "-";
+  }
+  if (active()) {
+    result += "A";
+  }
+  else {
+    result += "-";
+  }
+  if (HasAnyCards()) {
+    result += "P";
+  }
+  else {
+    result += "-";
+  }
+  if (dealer()) {
+    result += "D";
+  }
+  else {
+    result += "-";
+  }
+  result += "  ";
+  // Money: currentbet and balance
+  CString money;
+  money.Format("%12.2f  %12.2f", bet(), balance());
+  result += money;
+  return result;
+
+
+}
