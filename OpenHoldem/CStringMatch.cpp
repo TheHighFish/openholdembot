@@ -34,18 +34,10 @@ const bool CStringMatch::IsNumeric(const CString t) { // !!! needs to be changed
     if (CString(t[i]).FindOneOf("$0123456789,.¢ckm") == kUndefined) {
       return false;
     }
-    if (t[i] == '.') {
-      ++num_dots;
-    }
-    if (num_dots > 0 && isdigit(t[i])) {
-      nums_after_dot++;
-    }
-	}
-  if (num_dots != 0 && num_dots != 1) {
-    return false;
-  }
-  if (num_dots > 0 && nums_after_dot != 2) {
-    return false;
+    // Rest of IsNumeric significantly simplified
+    // * there are casinos with 1 or 2 digits after the last dot
+    // * there are casinos with multiple dots like $3.456.123.8
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19658
   }
   return true;
 }
