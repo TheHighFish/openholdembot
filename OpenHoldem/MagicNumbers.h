@@ -137,6 +137,7 @@ int DefaultButtonNumber(int button_code);
 const int k_max_number_of_font_groups_in_tablemap = 8;
 const int k_max_number_of_hash_groups_in_tablemap = 4;
 const int k_max_number_of_titletexts = 10;
+const int k_max_number_of_tablepoints = 10;
 
 // GUI
 // Width just like ManualMode

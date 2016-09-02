@@ -368,6 +368,7 @@
     <ClCompile Include="CAutoConnectorThread.cpp" />
     <ClCompile Include="CTableMapLoader.cpp" />
     <ClCompile Include="CTablePositioner.cpp" />
+	<ClCompile Include="CTablepointChecker.cpp" />
     <ClCompile Include="CDllExtension.cpp" />
     <ClCompile Include="CPokerTrackerLookUp.cpp" />
     <ClCompile Include="CPokerTrackerThread.cpp" />
@@ -672,6 +673,7 @@
     <ClInclude Include="CAutoConnectorThread.h" />
     <ClInclude Include="CTableMapLoader.h" />
     <ClInclude Include="CTablePositioner.h" />
+	<ClInclude Include="CTablepointChecker.h" />
     <ClInclude Include="CConfigurationCheck.h" />
     <ClInclude Include="CProblemSolver.h" />
     <ClInclude Include="CVersionInfo.h" />

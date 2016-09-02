@@ -19,26 +19,13 @@
 #include "CFileSystemMonitor.h"
 #include "CPreferences.h"
 #include "CTablemapCompletenessChecker.h"
+#include "CTablePointChecker.h"
 #include "MagicNumbers.h"
 #include "..\CTablemap\CTablemapAccess.h"
-#include "..\CTransform\CTransform.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
 CTableMapLoader *p_tablemap_loader = NULL;
-
-typedef struct {
-	CString	FilePath;
-	CString	SiteName;
-	int	    ClientSizeMinX, ClientSizeMinY;
-	int	    ClientSizeMaxX, ClientSizeMaxY;
-	CString	TitleText;
-	CString	TitleText_0_9[10];
-	CString	NegativeTitleText;
-	CString	NegativeTitleText_0_9[10];
-	STablemapRegion	TablePoint[10];
-	int			TablePointCount;
-} t_tablemap_connection_data;
 
 std::map<int, t_tablemap_connection_data> tablemap_connection_data;
 
@@ -167,7 +154,7 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 	// Extract tablepoints r$tablepoint0..9
 	s = "";
 	int tpcount = 0;
-	for (int i=0; i<10; ++i) {
+	for (int i=0; i<k_max_number_of_tablepoints; ++i) {
 		s.Format("tablepoint%d", i);
 		if (p_tablemap_access->GetTableMapRegion(s, &tablemap_connection_data[_number_of_tablemaps_loaded].TablePoint[i])) {
 		  ++tpcount;
@@ -183,14 +170,9 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 // as it has to be called by the callback-function 
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title) {
-	bool			good_pos_title = false, good_neg_title = false; 
-  bool      good_table_points = false;
-	int				width = 0, height = 0, x = 0, y = 0;
-	HDC				hdcScreen = NULL, hdcCompatible = NULL;
-	HBITMAP		hbmScreen = NULL, hOldScreenBitmap = NULL;
-	BYTE			*pBits = NULL, alpha = 0, red = 0, green = 0, blue = 0;
-	CTransform	trans;
-	CString			s;
+	bool good_pos_title = false, good_neg_title = false; 
+  bool good_table_points = false;
+	CString	s;
 
 	 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Check_TM_Against_Single_Window(..)\n");
 	 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Checking map nr. %d\n", MapIndex);
@@ -248,92 +230,18 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Negative title found -> window is no match.\n"); 
 		return false;
 	}
-
-  // tablepoint routine 
-  if (tablemap_connection_data[MapIndex].TablePointCount > 0) {
-    for (int i=0; i<tablemap_connection_data[MapIndex].TablePointCount; i++) {
-      // Allocate heap space for BITMAPINFO
-      BITMAPINFO  *bmi;
-      int         info_len = sizeof(BITMAPINFOHEADER) + 1024;
-      bmi = (BITMAPINFO *) HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
-
-      // Check table points for match
-      width = r.right - r.left;
-      height = r.bottom - r.top;
-      hdcScreen = GetDC(h);
-      hdcCompatible = CreateCompatibleDC(hdcScreen);
-      hbmScreen = CreateCompatibleBitmap(hdcScreen, width, height);
-      hOldScreenBitmap = (HBITMAP) SelectObject(hdcCompatible, hbmScreen);
-      BitBlt(hdcCompatible, 0, 0, width, height, hdcScreen, 0, 0, SRCCOPY);
-
-      // Populate BITMAPINFOHEADER
-      bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
-      bmi->bmiHeader.biBitCount = 0;
-      GetDIBits(hdcCompatible, hbmScreen, 0, 0, NULL, bmi, DIB_RGB_COLORS);
-
-      // Get the actual argb bit information
-      bmi->bmiHeader.biHeight = -bmi->bmiHeader.biHeight;
-      pBits = new BYTE[bmi->bmiHeader.biSizeImage];
-      GetDIBits(hdcCompatible, hbmScreen, 0, height, pBits, bmi, DIB_RGB_COLORS);
-
-      good_table_points = true;
-      x = tablemap_connection_data[MapIndex].TablePoint[i].left;
-      y = tablemap_connection_data[MapIndex].TablePoint[i].top;
-
-      int pbits_loc = y*width*4 + x*4;
-      alpha = pBits[pbits_loc + 3];
-      red = pBits[pbits_loc + 2];
-      green = pBits[pbits_loc + 1];
-      blue = pBits[pbits_loc + 0];
-
-      COLORREF Color = tablemap_connection_data[MapIndex].TablePoint[i].color;
-      // positive radius
-      if (tablemap_connection_data[MapIndex].TablePoint[i].radius >= 0)
-      {
-         if (!trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
-                               GetRValue(Color),
-                               GetGValue(Color),
-                               GetBValue(Color),
-                               tablemap_connection_data[MapIndex].TablePoint[i].radius,
-                               alpha, red, green, blue)) {
-            good_table_points = false;
-         }
-      }
-      // negative radius (logical not)
-      else {
-         if (trans.IsInARGBColorCube((Color>>24)&0xff, // function GetAValue() does not exist
-                              GetRValue(Color),
-                              GetGValue(Color),
-                              GetBValue(Color),
-                              -tablemap_connection_data[MapIndex].TablePoint[i].radius,
-                              alpha, red, green, blue))
-         {
-            good_table_points = false;
-         }
-      }
-
-      // Clean up
-      HeapFree(GetProcessHeap(), NULL, bmi);
-      delete []pBits;
-      SelectObject(hdcCompatible, hOldScreenBitmap);
-      DeleteObject(hbmScreen);
-      DeleteDC(hdcCompatible);
-      ReleaseDC(h, hdcScreen);
-
-      if (!good_table_points) {
-          write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Not all tablepoints match.\n");
-         return false;
-      }
-    }
-	}
-
+  // tablepoints
+  CTablepointChecker tablepoint_checker;
+  if (!tablepoint_checker.CheckTablepoints(h, MapIndex, r)) {
+     write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Not all tablepoints match.\n");
+    return false;
+  }
 	 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Window ia a match\n");
 	return true;
 }
 
 void CTableMapLoader::ReloadAllTablemapsIfChanged() {
-	if (p_filesystem_monitor->AnyChanges())
-	{		
+	if (p_filesystem_monitor->AnyChanges())	{		
 		// Since OpenHoldem 4.0.0 there is no longer any possibility 
 		// for manual connection; i.e. no possibility for re-connection.
 		// Therefore the file-system-monitor does now dis-connect
@@ -346,9 +254,7 @@ void CTableMapLoader::ReloadAllTablemapsIfChanged() {
 		 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Tablemaps changed; going to reload.\n");
 		p_autoconnector->Disconnect();
 		ParseAllTableMapsToLoadConnectionData();
-	}
-	else
-	{
+	}	else {
 		 write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] All tablemaps unchanged; nothing to do.\n");
 	}
 }

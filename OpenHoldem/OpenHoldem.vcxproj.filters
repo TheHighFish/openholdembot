@@ -513,6 +513,9 @@
     <ClCompile Include="CTablePositioner.cpp">
       <Filter>Source Files\AutoConnector</Filter>
     </ClCompile>
+	<ClCompile Include="CTablepointChecker.cpp">
+      <Filter>Source Files\AutoConnector</Filter>
+    </ClCompile>
     <ClCompile Include="CPokerTrackerLookUp.cpp">
       <Filter>Source Files\PokerTracker</Filter>
     </ClCompile>
@@ -967,6 +970,9 @@
     </None>
     <None Include="OpenHoldem.def">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="CTablepointChecker.h">
+      <Filter>Header Files\AutoConnector</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

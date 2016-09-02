@@ -40,6 +40,21 @@ class CTableMapLoader {
 	int		_number_of_tablemaps_loaded;
 };
 
+typedef struct {
+  CString	FilePath;
+  CString	SiteName;
+  int	    ClientSizeMinX, ClientSizeMinY;
+  int	    ClientSizeMaxX, ClientSizeMaxY;
+  CString	TitleText;
+  CString	TitleText_0_9[10];
+  CString	NegativeTitleText;
+  CString	NegativeTitleText_0_9[10];
+  STablemapRegion	TablePoint[10];
+  int			TablePointCount;
+} t_tablemap_connection_data;
+
+extern std::map<int, t_tablemap_connection_data> tablemap_connection_data;
+
 extern CTableMapLoader *p_tablemap_loader;
 
 #endif // INC_CTABLEMAPLOADER_H
