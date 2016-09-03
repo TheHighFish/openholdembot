@@ -169,6 +169,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 			tablelisthold.crect.top = crect.top;
 			tablelisthold.crect.right = crect.right;
 			tablelisthold.crect.bottom = crect.bottom;
+      tablelisthold.tablemap_index = tablemap_index;
 			g_tlist.Add(tablelisthold);
 		}
 	}
@@ -355,15 +356,14 @@ void CAutoConnector::Disconnect() {
   // as an updating dialog without a connected table can crash.
   CDlgScraperOutput::DestroyWindowSafely();
 
+  // Make sure autoplayer is off
+  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
+  p_autoplayer->EngageAutoplayer(false);
+
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
   _autoconnector_mutex->Lock(INFINITE);
-
-	// Make sure autoplayer is off
-	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
-	p_autoplayer->EngageAutoplayer(false);
-
 	p_engine_container->ResetOnDisconnection();
 
 	// Send "disconnect" to scraper DLL, if loaded

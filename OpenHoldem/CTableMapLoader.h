@@ -37,7 +37,7 @@ class CTableMapLoader {
 	void ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap);
  private:
 	bool	tablemaps_in_scraper_folder_already_parsed;
-	int		_number_of_tablemaps_loaded;
+	int	_number_of_tablemaps_loaded;
 };
 
 typedef struct {

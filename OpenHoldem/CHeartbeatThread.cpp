@@ -36,6 +36,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableMapLoader.h"
+#include "CTablepointChecker.h"
 #include "CTablePositioner.h"
 #include "CValidator.h"
 #include "DialogScraperOutput.h"
@@ -82,6 +83,7 @@ void CHeartbeatThread::StartThread() {
 }
 
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
+  CTablepointChecker tablepoint_checker;
 	pParent = static_cast<CHeartbeatThread*>(pParam);
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
@@ -105,16 +107,18 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     // We want one fast scrape immediately after connection
     // without any heartbeat-sleeping.
 		if (p_autoconnector->IsConnected()) {
-			if (IsWindow(p_autoconnector->attached_hwnd()))	{
+      // !!!!! To be improved. Don#r disconnect after the first mismatch
+      if (tablepoint_checker.CheckTablepointsOfCurrentTablemap()) {
+        p_autoconnector->Disconnect();
+      } else if (IsWindow(p_autoconnector->attached_hwnd()))	{
         ScrapeEvaluateAct();
       } else {
 				// Table disappeared
-				p_autoplayer->EngageAutoplayer(false);
 				p_autoconnector->Disconnect();
 			}			
 		}
     _heartbeat_delay.FlexibleSleep();
-		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
+		 write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
 	}
 }
 

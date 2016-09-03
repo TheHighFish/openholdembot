@@ -15,6 +15,7 @@
 #include "stdafx.h"
 #include "CTablepointChecker.h"
 
+#include "CAutoConnector.h"
 #include "CPreferences.h"
 #include "CTableMapLoader.h"
 #include "..\CTransform\CTransform.h"
@@ -114,5 +115,9 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
 }
 
 bool CTablepointChecker::CheckTablepointsOfCurrentTablemap() {
+  assert(p_autoconnector != NULL);
+  HWND current_table = p_autoconnector->attached_hwnd();
+  CRect rect;
+  GetClientRect(current_table, &rect);
   return true;
 }

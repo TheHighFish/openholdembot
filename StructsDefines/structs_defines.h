@@ -97,9 +97,10 @@ enum FileType { FTnone=1, FTlist, FTfunc };
 struct STableList 
 {
 	HWND		hwnd;
-	CString		title;
-	CString		path;
+	CString	title;
+	CString	path;
 	RECT		crect;
+  int     tablemap_index;
 };
 
 //prwin 1326 chair structure    Matrix 2008-04-29

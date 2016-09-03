@@ -457,7 +457,6 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   if (nIDEvent == HWND_CHECK_TIMER) {
  	  if (!IsWindow(p_autoconnector->attached_hwnd())) { 		
  	    // Table disappeared 		
- 	    p_autoplayer->EngageAutoplayer(false); 		
  	    p_autoconnector->Disconnect(); 		 		
     }
  	} else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
