@@ -94,18 +94,13 @@
 
 enum FileType { FTnone=1, FTlist, FTfunc };
 
-struct STableList 
-{
+struct STableList {
 	HWND		hwnd;
-	CString	title;
-	CString	path;
-	RECT		crect;
   int     tablemap_index;
 };
 
 //prwin 1326 chair structure    Matrix 2008-04-29
-struct sprw1326_chair
-{
+struct sprw1326_chair {
 	int			level;			// indicates significance level for 'always consider'
 	int			limit;			// max index into significance array - used for computational efficiency
 	int			ignore;			// if non-zero no weighting will be applied to this chair

@@ -15,6 +15,8 @@
 #ifndef INC_TABLEPOINTCHECKER_H
 #define INC_TABLEPOINTCHECKER_H
 
+const int kMaxToleratedHeartbeatsWithMismatchingTablepointsBeforeDisconnect = 10;
+
 class CTablepointChecker {
  public:
   CTablepointChecker();
@@ -22,6 +24,9 @@ class CTablepointChecker {
  public:
   bool CheckTablepoints(HWND window_candidate, int tablemap_index, RECT r);
   bool CheckTablepointsOfCurrentTablemap();
+  bool TablepointsMismatchedTheLastNHeartbeats();
+ private:
+  static int _number_of_mismatches_the_last_N_heartbeats;
 };
 
 #endif // INC_TABLEPOINTCHECKER_H

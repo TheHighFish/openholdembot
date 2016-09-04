@@ -405,8 +405,6 @@ void CIteratorThread::InitIteratorLoop() {
   _mustplay = p_function_collection->Evaluate("f$prwin_mustplay", preferences.log_prwin_functions());
 	_willplay = p_function_collection->Evaluate("f$prwin_willplay", preferences.log_prwin_functions());
 	_wontplay = p_function_collection->Evaluate("f$prwin_wontplay", preferences.log_prwin_functions());
-	//!!!!! test
-
 	// Call prw1326 callback if needed
 	if (_prw1326.useme==1326 
 		  && _prw1326.usecallback==1326 

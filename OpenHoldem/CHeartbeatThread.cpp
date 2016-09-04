@@ -107,15 +107,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     // We want one fast scrape immediately after connection
     // without any heartbeat-sleeping.
 		if (p_autoconnector->IsConnected()) {
-      // !!!!! To be improved. Don#r disconnect after the first mismatch
-      if (tablepoint_checker.CheckTablepointsOfCurrentTablemap()) {
+      if (!IsWindow(p_autoconnector->attached_hwnd())) {
+        // Table disappeared
         p_autoconnector->Disconnect();
-      } else if (IsWindow(p_autoconnector->attached_hwnd()))	{
-        ScrapeEvaluateAct();
+      } else if (tablepoint_checker.TablepointsMismatchedTheLastNHeartbeats()) {
+        p_autoconnector->Disconnect();
       } else {
-				// Table disappeared
-				p_autoconnector->Disconnect();
-			}			
+        ScrapeEvaluateAct();
+      } 		
 		}
     _heartbeat_delay.FlexibleSleep();
 		 write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");

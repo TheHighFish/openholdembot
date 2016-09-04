@@ -163,12 +163,6 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 		}	else {
 			 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
 			tablelisthold.hwnd = hwnd;
-			tablelisthold.title = title;
-			tablelisthold.path = p_tablemap_loader->GetTablemapPathToLoad(tablemap_index);
-			tablelisthold.crect.left = crect.left;
-			tablelisthold.crect.top = crect.top;
-			tablelisthold.crect.right = crect.right;
-			tablelisthold.crect.bottom = crect.bottom;
       tablelisthold.tablemap_index = tablemap_index;
 			g_tlist.Add(tablelisthold);
 		}
@@ -274,7 +268,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
       CheckIfWindowMatchesMoreThanOneTablemap(_attached_hwnd);
 			assert(p_tablemap != NULL);
-			CString tablemap_to_load = g_tlist[SelectedItem].path.GetString();
+      CString tablemap_to_load = p_tablemap_loader->GetTablemapPathToLoad(g_tlist[SelectedItem].tablemap_index);
 			 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Selected tablemap: %s\n", tablemap_to_load);
 			p_tablemap->LoadTablemap(tablemap_to_load);
 			 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap successfully loaded\n");
