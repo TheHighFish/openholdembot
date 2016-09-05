@@ -62,7 +62,7 @@ LRESULT COpenHoldemHopperCommunication::OnConnectMessage(WPARAM, LPARAM hwnd)
 LRESULT COpenHoldemHopperCommunication::OnDisconnectMessage(WPARAM, LPARAM)
 {
 	 write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8003: OnDisconnectMessage\n");
-	p_autoconnector->Disconnect();
+	p_autoconnector->Disconnect("disconnected by hopper");
 	return true;
 }
 

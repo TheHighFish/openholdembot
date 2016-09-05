@@ -109,9 +109,9 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 		if (p_autoconnector->IsConnected()) {
       if (!IsWindow(p_autoconnector->attached_hwnd())) {
         // Table disappeared
-        p_autoconnector->Disconnect();
+        p_autoconnector->Disconnect("table disappeared");
       } else if (tablepoint_checker.TablepointsMismatchedTheLastNHeartbeats()) {
-        p_autoconnector->Disconnect();
+        p_autoconnector->Disconnect("table theme changed (tablepoints)");
       } else {
         ScrapeEvaluateAct();
       } 		

@@ -170,15 +170,17 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
   return true;  // keep processing through entire list of windows
 }
 
-void CAutoConnector::WriteLogTableReset() {
+void CAutoConnector::WriteLogTableReset(CString event_and_reason) {
   // Log a new connection, plus the version-info
   // (because of all the guys who report "bugs" of outdated versions)
 	 write_log(k_always_log_basic_information,
 		"\n"
 		"==============================================\n"
-		"%s"
-		"TABLE RESET\n"
+		"%s\n"
+    "==============================================\n"
+		"%s"    // Version info already contains a newline
 		"==============================================\n",
+    event_and_reason,
 		p_version_info->GetVersionInfo());
 }
 
@@ -304,7 +306,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			PMainframe()->ResetDisplay();
       // log OH title bar text and table reset
 			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
-      WriteLogTableReset();
+      WriteLogTableReset("NEW CONNECTION");
       p_table_positioner->ResizeToTargetSize();
 			p_table_positioner->PositionMyWindow();
 			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
@@ -343,7 +345,7 @@ void CAutoConnector::LoadScraperDLL() {
 	}
 }
 
-void CAutoConnector::Disconnect() {
+void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	 write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
 
   // First close scraper-output-dialog,
@@ -406,7 +408,9 @@ void CAutoConnector::Disconnect() {
 	if (m_ScraperOutputDlg)	{
 		m_ScraperOutputDlg->Reset();
 	}
-	WriteLogTableReset();
+  CString message;
+  message.Format("DISCONNECTION -- %s", reason_for_disconnection);
+	WriteLogTableReset(message);
 
 	// Close OH, when table disappears and leaving enabled in preferences.
 	if (preferences.autoconnector_close_when_table_disappears()) {

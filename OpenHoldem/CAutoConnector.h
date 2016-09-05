@@ -24,7 +24,7 @@ class CAutoConnector {
 	~CAutoConnector();
  public:
 	bool Connect(HWND targetHWnd);
-	void Disconnect();
+	void Disconnect(CString reason_for_disconnection);
 	bool IsConnected();
 	double TimeSincelast_failed_attempt_to_connect(); // seconds
  public:
@@ -34,7 +34,7 @@ class CAutoConnector {
 	int SelectTableMapAndWindow(int Choices);
 	int SelectTableMapAndWindowAutomatically(int Choices);
 	void LoadScraperDLL();
-	void WriteLogTableReset();
+	void WriteLogTableReset(CString event_and_reason);
  private:
 	void Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_index, HWND targetHWnd);
   void CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd);
