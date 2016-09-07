@@ -438,6 +438,7 @@
 #define IDC_LOG_ICM_FUNCTIONS           1409
 #define IDC_LOG_INI_FUNCTIONS           1410
 #define IDC_LOG_PRWIN_FUNCTIONS         1411
+#define IDC_DEBUG_TABLEPOINTS           1412
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -547,7 +548,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         33000
-#define _APS_NEXT_CONTROL_VALUE         1412
+#define _APS_NEXT_CONTROL_VALUE         1413
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
