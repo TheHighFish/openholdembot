@@ -30,7 +30,7 @@ CTablepointChecker::~CTablepointChecker() {
 }
 
 bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_index, RECT r) {
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] CheckTablepoints()\n");
+   write_log(preferences.debug_tablepoints(), "[CTablepointChecker] CheckTablepoints()\n");
   // Function for checking tablepoints of not connected tables.
   // taking an extra screenshot
   // !! Might be reafactored if we manage to change the scraper
@@ -82,7 +82,7 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
           tablemap_connection_data[tablemap_index].TablePoint[i].radius,
           alpha, red, green, blue)) 
         {
-          write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
+           write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
           good_table_points = false;
         }
       }
@@ -95,7 +95,7 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
           -tablemap_connection_data[tablemap_index].TablePoint[i].radius,
           alpha, red, green, blue))
         {
-          write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
+           write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
           good_table_points = false;
         }
       }
@@ -107,12 +107,12 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
       DeleteDC(hdcCompatible);
       ReleaseDC(window_candidate, hdcScreen);
       if (!good_table_points) {
-        write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
+         write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
         return false;
       }
     }
   }
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
+   write_log(preferences.debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
   return true;
 }
 
@@ -135,13 +135,13 @@ bool CTablepointChecker::CheckTablepointsOfCurrentTablemap() {
       assert(p_scraper != NULL);
       p_scraper->EvaluateRegion(tablepointX, &tablepoint_result);
       if (tablepoint_result != "true") {
-        write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
-        write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
+         write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
+         write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
         return false;
       }
     }
   }
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
+   write_log(preferences.debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
   return true;
 }
 
@@ -151,7 +151,7 @@ bool CTablepointChecker::TablepointsMismatchedTheLastNHeartbeats() {
   } else {
     ++_number_of_mismatches_the_last_N_heartbeats;
   }
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Tablepoints failed %i heartbeats in a row\n",
+   write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Tablepoints failed %i heartbeats in a row\n",
     _number_of_mismatches_the_last_N_heartbeats);
   if (_number_of_mismatches_the_last_N_heartbeats > kMaxToleratedHeartbeatsWithMismatchingTablepointsBeforeDisconnect) {
     return true;

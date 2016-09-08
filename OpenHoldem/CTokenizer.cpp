@@ -25,7 +25,7 @@
 // Global vars to be used by static accessors
 int line_absolute = 1;
 int line_relative = 1;
-const int kMaxSizeOfToken = 256;
+const int kMaxSizeOfToken = 1024;
 char last_token_string[kMaxSizeOfToken];
 char* input_buffer;
 int  _token_start_pointer;
