@@ -126,7 +126,7 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
        write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Valid options are: \"enter\", \"click bet\", \"nothing\"\n");
       return false;
     }
-    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_betsize), true);
+    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_betsize), kAlwaysLogAutoplayerFunctions);
   }
   int betround = p_betround_calculator->betround();
    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize, 'didbetsize' now: %d\n",

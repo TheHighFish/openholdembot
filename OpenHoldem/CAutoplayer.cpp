@@ -160,6 +160,7 @@ bool CAutoplayer::DoBetPot(void) {
       }
 		}
     if (success) {
+      p_autoplayer_trace->Print(ActionConstantNames(i), kAlwaysLogAutoplayerFunctions);
 			// Register the action
 			// Treat betpot like swagging, i.e. raising a user-defined amount
 			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
@@ -213,44 +214,36 @@ bool CAutoplayer::AnySecondaryFormulaTrue() {
 
 bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] ExecutePrimaryFormulasIfNecessary()\n");
-	if (!AnyPrimaryFormulaTrue())
-	{
+	if (!AnyPrimaryFormulaTrue())	{
 		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] No primary formula true. Nothing to do\n");
 		return false;
 	}
 	// Execute beep (if necessary) independent of all other conditions (mutex, etc.)
 	// and with autoplayer-actions.
 	ExecuteBeep();
-
-	assert(p_symbol_engine_autoplayer->isfinalanswer());
+  assert(p_symbol_engine_autoplayer->isfinalanswer());
 	assert(p_symbol_engine_autoplayer->ismyturn());
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
 	// This function will ALWAYS try to click a button,
 	// so we can handle the preparation once at the very beginning.
 	CMyMutex mutex;
-
-	if (!mutex.IsLocked())
-	{
+  if (!mutex.IsLocked()) {
 		return false;
 	}
 
 	PrepareActionSequence();
 
-	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin))
-	{
-		if (DoAllin())
-		{
+	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin))	{
+		if (DoAllin()) {
 			return true;
 		}
 		// Else continue with swag and betpot
 	}
-	if (DoBetPot())
-	{
+	if (DoBetPot())	{
 		return true;
 	}
-	if (DoBetsize())
-	{
+	if (DoBetsize()) {
 		return true;
 	}
 	return ExecuteRaiseCallCheckFold();
@@ -267,7 +260,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
     }
 		if (p_function_collection->Evaluate(k_standard_function_names[i])) 	{
 			if (p_casino_interface->LogicalAutoplayerButton(i)->Click()) 			{
-				p_autoplayer_trace->Print(ActionConstantNames(i), true);
+				p_autoplayer_trace->Print(ActionConstantNames(i), kAlwaysLogAutoplayerFunctions);
 				p_symbol_engine_history->RegisterAction(i);
 				return true;
 			}
@@ -348,7 +341,7 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	}
 	if (executed_secondary_function != kUndefined) {
 		FinishActionSequenceIfNecessary();
-		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
+		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), preferences.log_hopper_functions());
 		return true;
 	}
 	action_sequence_needs_to_be_finished = false;
@@ -420,16 +413,15 @@ bool CAutoplayer::DoAllin(void) {
 		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
 			k_autoplayer_function_raise, preferences.swag_delay_3());
 
-		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
+		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), kAlwaysLogAutoplayerFunctions);
 	}	else {
     // Clicking only max (or allin), but not raise
 		success = p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->Click();
-    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
+    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), kAlwaysLogAutoplayerFunctions);
   }
 	if (!success) {
     // Try the slider
 		success = p_casino_interface->UseSliderForAllin();
-		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), true);
   }
   if (!success) {
 		// Last case: try to swagging the balance
@@ -487,7 +479,7 @@ void CAutoplayer::DoAutoplayer(void) {
 	}
   // Gotos are usually considered bad code.
   // Here it simplifies the control-flow.
- AutoPlayerCleanupAndFinalization:  
+AutoPlayerCleanupAndFinalization:  
 	FinishActionSequenceIfNecessary();
 	 write_log(preferences.debug_autoplayer(), "[AutoPlayer] ...ending Autoplayer cadence.\n");
 }
