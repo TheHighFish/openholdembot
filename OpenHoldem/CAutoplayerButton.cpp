@@ -52,7 +52,7 @@ bool CAutoplayerButton::Click() {
     p_tablemap->GetTMRegion(_technical_name, &button_region);
     // Otherwise: click the button the normal way
     p_casino_interface->ClickRect(button_region);
-     write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Clicked button %s\n", _label);
+     write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Clicked button [%s] [%s]\n", _label, _technical_name);
     return true;
   } else {
      write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Could not click button %s. Either undefined or not visible.\n", _label);

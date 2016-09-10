@@ -62,6 +62,7 @@ void CCasinoInterface::Reset() {
     button_name.Format("%sbutton", k_betpot_button_name[i]);
     _technical_betpot_buttons[i].Reset();
     _technical_betpot_buttons[i].SetTechnicalName(button_name);
+    //!!!!!_technical_betpot_buttons[i].SetLabel(button_name);
   }
   for (int i = 0; i < k_max_number_of_i86X_buttons; ++i) {
     button_name.Format("i86%dbutton", i);
@@ -204,15 +205,15 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
   case k_autoplayer_function_betpot_1_1:
     return &_technical_betpot_buttons[1];
   case k_autoplayer_function_betpot_3_4:
-    return &_technical_betpot_buttons[3];
+    return &_technical_betpot_buttons[2];
   case k_autoplayer_function_betpot_2_3:
-    return &_technical_betpot_buttons[4];
+    return &_technical_betpot_buttons[3];
   case k_autoplayer_function_betpot_1_2:
-    return &_technical_betpot_buttons[5];
+    return &_technical_betpot_buttons[4];
   case k_autoplayer_function_betpot_1_3:
-    return &_technical_betpot_buttons[6];
+    return &_technical_betpot_buttons[5];
   case k_autoplayer_function_betpot_1_4:
-    return &_technical_betpot_buttons[7];
+    return &_technical_betpot_buttons[6];
   default:
     // The i86-autoplayer-buttons are flexible
     // and have to be searched by label.
