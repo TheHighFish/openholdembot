@@ -14,11 +14,12 @@
 #include "stdafx.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 
-#include "CSymbolEngineCards.h"
-#include "CSymbolEnginePokerval.h"
 #include "CardFunctions.h"
+#include "CFormulaParser.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
+#include "CSymbolEngineCards.h"
+#include "CSymbolEnginePokerval.h"
 #include "CTableState.h"
 #include "StringFunctions.h"
 
@@ -86,10 +87,47 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat() {
 		_prime_coded_board_cards);
 }
 
+void CSymbolEngineOpenPPLHandAndBoardExpression::CheckForProbablyMistakenSpadesInsteadOfSuited(CString expression) {
+  if (!p_formula_parser->IsParsing()) {
+    // We want this check andf warning only once at parse-time
+    return;
+  }
+  // This function must only be called if the prefix is hand$ or board$
+  assert(expression.GetLength() >= CString("hand$").GetLength());
+  // Now we are also sure, that we have enough input for the remaining operations...
+  char last_character = RightCharacter(expression);
+  if (tolower(last_character) != 's') {
+    // No "spades" at the end
+    return;
+  }
+  // The next character should be a card-rank-character 2..A,
+  // but we don't check, as it is unreliable user-input.
+  char third_last_character = RightCharacter(expression, 2);
+  if (!IsCardRankCharacter(third_last_character)) {
+    // We either found another suit or a "$" (or something else)
+    return;
+  }
+  // Now we know: 2 ranks at the end + 1 suit
+  // Something like AKs (spades)
+  // If the user really intended this he could write KsA.
+  // AKs probably got confused with AKsuited.
+  CString guessed_correct_expression = expression + "uited";
+  CString message;
+  message.Format("Hand- or board-expression \"%s\" detected.\n"
+    "\n"
+    "Suit \"s\" (spades) located at the very end\n"
+    "though earlier positions would have been possible.\n"
+    "\n"
+    "Did you mean \"%s\" instead?\n",
+    expression, guessed_correct_expression);
+  CParseErrors::Error(message);
+}
+
 bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
 	// First check, if hand$ or board$ and/or Suited
 	// At the same time remove the unnecessary parts of the expression
 	if (memcmp(name, "hand$", 5) == 0) {
+    CheckForProbablyMistakenSpadesInsteadOfSuited(name);
 		is_hand_expression  = true;
 		is_board_expression = false;
 		hand_or_board_expression = name;
@@ -99,6 +137,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		hand_or_board_expression = CStringRemoveLeft(hand_or_board_expression, 5);
 		prime_coded_available_ranks = _prime_coded_hole_cards;
 	}	else if	(memcmp(name, "board$", 6) == 0) {
+    CheckForProbablyMistakenSpadesInsteadOfSuited(name);
 		is_hand_expression  = false;
 		is_board_expression = true;
 		hand_or_board_expression = name;
@@ -111,13 +150,11 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		// Quick exit on other symbols
 		return false;
 	}
-
    write_log(preferences.debug_hand_and_baord_expressions(), 
     "[CSymbolEngineOpenPPLHandAndBoardExpression] Encoded available ranks: %i\n",
     prime_coded_available_ranks);
 	bool is_suited_expression = false;
 	assert(is_hand_expression || is_board_expression);
-
 	if (hand_or_board_expression.Right(6).MakeLower() == "suited") {
 		 write_log(preferences.debug_hand_and_baord_expressions(), 
 			"[CSymbolEngineOpenPPLHandAndBoardExpression] Suited expression\n");
@@ -141,7 +178,6 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		*result = false;
 		return true;
 	}
-
 	// This was super-elegant, but unfortunatelly there can be 
 	// SUITED expressions, which we can only solve with srankbits.
 	// Ranks in the expression (to be searched)
@@ -163,7 +199,6 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 		}	else {
 			// Suited board-expression
 			int rankbits_available = p_symbol_engine_pokerval->srankbitscommon();
-	
 			// Check ranks in expression against available ranks
 			if ((rankbits_to_be_searched & rankbits_available) != rankbits_to_be_searched)
 			{
@@ -174,7 +209,6 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 			}
 		}
 	}
-
 	// Third case: cards with individual suits
 	int length = hand_or_board_expression.GetLength();
 	for (int i=0; i<(length-1); i++) 	{
@@ -221,17 +255,14 @@ int CSymbolEngineOpenPPLHandAndBoardExpression::PrimeCodedRanks(int rank_0,
 	int rank_1, int opt_rank_2, int opt_rank_3, int opt_rank_4) {
 	int result = 1;
 	int ranks[kNumberOfCommunityCards];
-
    write_log(preferences.debug_hand_and_baord_expressions(),
     "[CSymbolEngineOpenPPLHandAndBoardExpression] Given ranks = %i, %i, %i, %i, %i\n",
     rank_0, rank_1, opt_rank_2, opt_rank_3, opt_rank_4);
-
 	ranks[0] = rank_0;
 	ranks[1] = rank_1;
 	ranks[2] = opt_rank_2;
 	ranks[3] = opt_rank_3;
 	ranks[4] = opt_rank_4;
-
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
     int rank = ranks[i];
 		assert((rank >= 0) || (rank == kUndefined));

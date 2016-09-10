@@ -34,6 +34,11 @@ public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();
 private:
+  // Checking for expressions like hand$AKs
+  // which get regularly confused with hand$AKsuited.
+  // Creating an error-message at parse-time only
+  void CheckForProbablyMistakenSpadesInsteadOfSuited(CString expression);
+private:
   // defaulting to kUndefinedZero, because this value gets used as an index
 	int PrimeCodedRanks(int rank_0,	int rank_1, 
 		int opt_rank_2 = kUndefinedZero, int opt_rank_3 = kUndefinedZero, 
