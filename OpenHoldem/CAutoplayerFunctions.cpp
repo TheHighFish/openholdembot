@@ -286,7 +286,7 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
 
 void CAutoplayerFunctions::CalcSecondaryFormulas(void) {
 	for (int i=k_hopper_function_sitin; i<=k_standard_function_betsize_enable_rounding; ++i) {
-		double result = p_function_collection->Evaluate(k_standard_function_names[i]);
+    double result = p_function_collection->Evaluate(k_standard_function_names[i], preferences.log_hopper_functions());
 		 write_log(preferences.debug_formula(), "[CAutoplayerFunctions] Secondary formulas; %s: %f\n", 
 			  k_standard_function_names[i], result);
 	}
