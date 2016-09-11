@@ -3,15 +3,20 @@ v9.2.7 2016-09-xx
 NEW STUFF:
 - OpenHoldem is now able to detect changing table-themes 
   (e.g. different background and different position of seats
-  at the final table of MTTs at 888-Poker)
+  at the final table of MTTs at Winamax-Poker)
   If the tablepoints don't match for more than N heartbeats
   (currently N = 10) then OpenHoldem will disconnect
   and will try to connect with a different tablemap.
+  Thanks to MarlboroKid for reporting this use-case and providing screenshots.
   [THF]
 
 BUG FIXES:
 - OH was leaking one GDI-object per successfully scraped i3slider.
   Thanks to Narfal for reporting and for providing replay-frames and TM.
+  [THF]
+- Some betpot-buttons were broken due to a wrong constant 
+  in the lookup-function for buttons.
+  Thanks to Fk1 for reporting.
   [THF]
   
 
