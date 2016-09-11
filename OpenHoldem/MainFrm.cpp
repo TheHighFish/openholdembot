@@ -345,11 +345,11 @@ void CMainFrame::OnManualMode() {
   // No error-checking here~> if it does not work, then we silently fail.
   // http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153%28v=vs.85%29.aspx
   ShellExecute(
-		NULL,               // Pointer to parent window; not needed
-		"open",             // "open" == "execute" for an executable
-		"ManualMode.exe",		// ManualMode to be executed
+    NULL,               // Pointer to parent window; not needed
+    "open",             // "open" == "execute" for an executable
+    p_filenames->ManualModePath(),
 		NULL, 		          // Parameters
-		p_filenames->OpenHoldemDirectory(), // Working directory
+		p_filenames->ToolsDirectory(), // Working directory, location of ManualMode
 		SW_SHOWNORMAL);		  // Active window, default size
 }
 

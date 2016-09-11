@@ -136,6 +136,13 @@ CString CFilenames::ScraperDirectory() {
 	return scraper_dir;
 }
 
+CString CFilenames::ToolsDirectory() {
+  assert(_startup_path != "");
+  CString tools_dir = CString(_startup_path) + "tools\\";
+  Log("ToolsDirectory", (char*)tools_dir.GetString());
+  return tools_dir;
+}
+
 CString CFilenames::ReplaySessionDirectory() {
 	assert(_startup_path != "");
 	CString path;
@@ -236,6 +243,12 @@ CString CFilenames::OpenPPLLibraryPath() {
 CString CFilenames::CustomLibraryPath() {
   CString result = BotlogicDirectory() + "\\custom_function_library.ohf";
   Log("CustomLibraryPath", result.GetString());
+  return result;
+}
+
+CString CFilenames::ManualModePath() {
+  CString result = ToolsDirectory() + "\\ManualMode.exe";
+  Log("ManualModePath", result.GetString());
   return result;
 }
 

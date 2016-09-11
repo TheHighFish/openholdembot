@@ -26,6 +26,7 @@ class CFilenames {
   CString PathOfExecutable();
   CString ReplaySessionDirectory();
   CString ScraperDirectory();
+  CString ToolsDirectory();
 public:
   // Filenames
 	CString LogFilename();
@@ -40,6 +41,7 @@ public:
   CString VersusPath();
   CString OpenPPLLibraryPath();
   CString CustomLibraryPath();
+  CString ManualModePath();
 public:
   // Others
   CString TableMapWildcard();
