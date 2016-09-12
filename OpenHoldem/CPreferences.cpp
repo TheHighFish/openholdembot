@@ -201,7 +201,7 @@ void CPreferences::InitDefaults(void) {
 	prefs_numerical_values[k_prefs_rebuy_condition_no_cards] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
-	prefs_numerical_values[k_prefs_configurationcheck_input_settings] = true;
+	prefs_numerical_values[k_prefs_configurationcheck_input_settings] = false;
 	prefs_numerical_values[k_prefs_configurationcheck_font_settings] = true;
   // Ints
 	prefs_numerical_values[k_prefs_formula_dx] = 640;
