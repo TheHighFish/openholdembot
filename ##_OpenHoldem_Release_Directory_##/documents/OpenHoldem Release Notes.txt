@@ -18,6 +18,10 @@ BUG FIXES:
   in the lookup-function for buttons.
   Thanks to Fk1 for reporting.
   [THF]
+- If the validator got enabled with the toolbar-button it worked on every heartbeat
+  instead of only at our turn when we scrape stable frames.
+  This has now been fixed.
+  [THF]
   
 
 v9.2.6 2016-08-30

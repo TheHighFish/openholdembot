@@ -197,8 +197,13 @@ void CValidator::ValidateIt() {
 }
 
 void CValidator::ValidateGameState() {
-	if (// Enabled, when it's my turn?
-		  (preferences.validator_enabled() && (p_symbol_engine_autoplayer->ismyturn())) 
+  if (!p_symbol_engine_autoplayer->ismyturn()) {
+    // Validate only if it is my turn.
+    //   * because then we have stable frames
+    //   * because then it matters most
+    return;
+  }
+	if (preferences.validator_enabled()
 		  // Manually enabled via toolbar?
 		  || (_enabled_manually)) {
 	  // Validate.
