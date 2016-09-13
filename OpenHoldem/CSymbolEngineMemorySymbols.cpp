@@ -103,7 +103,7 @@ void CSymbolEngineMemorySymbols::Store(CString command) {
     return;
   }
   double result = EvaluateRightHandExpression(right_hand_side);
-  _memory_symbols[symbol_name] = result;
+  _memory_symbols[LowerCaseKey(symbol_name)] = result;
 }
 
 double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_hand_value) {
@@ -137,7 +137,7 @@ void CSymbolEngineMemorySymbols::Increment(CString command) {
     ErrorUnnamedMemorySymbol(command);
     return;
   }
-  ++_memory_symbols[symbol_name];
+  ++_memory_symbols[LowerCaseKey(symbol_name)];
 }
 
 double CSymbolEngineMemorySymbols::Recall(CString command) {
@@ -147,7 +147,7 @@ double CSymbolEngineMemorySymbols::Recall(CString command) {
     ErrorUnnamedMemorySymbol(command);
     return kUndefinedZero;
   }
-  return _memory_symbols[symbol_name];
+  return _memory_symbols[LowerCaseKey(symbol_name)];
 }
 
 bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
@@ -175,6 +175,11 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result
   }
   // Not a memory symbol
   return false;
+}
+
+CString CSymbolEngineMemorySymbols::LowerCaseKey(CString symbol) {
+  CString new_key = symbol.MakeLower();
+  return new_key;
 }
 
 // SymbolsProvided() does not make much sense here

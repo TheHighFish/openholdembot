@@ -23,6 +23,11 @@ BUG FIXES:
   This has now been fixed.
   [THF]
   
+MAINTENANCE:
+- Memory-symbols are now case-insensitive to avoid problems with typos
+  as they are user-defined and can't be verified at load-time.
+  [THF]
+  
 
 v9.2.6 2016-08-30
 ==================

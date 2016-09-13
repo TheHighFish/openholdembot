@@ -41,6 +41,12 @@ class CSymbolEngineMemorySymbols: public CVirtualSymbolEngine {
   void ErrorInvalidMemoryStoreCommand(CString command);
   void ErrorUnnamedMemorySymbol(CString command);
  private:
+  // The keys for storage and lookup are lower-cases
+  // To make memory-symbols case insensitive, 
+  // i.e. less error-prone as there are no compile-time-checks.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19224
+  CString LowerCaseKey(CString symbol);
+ private:
   std::map<CString, double> _memory_symbols;
 };
 
