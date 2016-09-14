@@ -22,6 +22,13 @@ BUG FIXES:
   instead of only at our turn when we scrape stable frames.
   This has now been fixed.
   [THF]
+- A (nearly) always positive f$rebuy-function caused lots of rebuy-attempts
+  which got stopped by sanity checks. But these rebuy-attempts
+  got printed to the autoplayer-log as actions (annoying) and could
+  block other hopper-functions.
+  This has now been fixed.
+  Thanks to Chillit for reporting.
+  [THF]
   
 MAINTENANCE:
 - Memory-symbols are now case-insensitive to avoid problems with typos

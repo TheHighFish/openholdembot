@@ -192,20 +192,15 @@ CString CAutoplayerTrace::BestAction() {
 }
 
 void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
-  CString	pcards, comcards, temp, rank, pokerhand;
+  CString	comcards, temp, rank, pokerhand;
   CString	fcra_formula_status;
   int		userchair = p_symbol_engine_userchair->userchair();
   int		betround  = p_betround_calculator->betround();
-  // player cards
-  if (p_symbol_engine_userchair->userchair_confirmed()) {
-    for (int i=0; i<=1; i++) {
-      Card* card = p_table_state->User()->hole_cards(i);
-      pcards.Append(card->ToString());
-    }
-  } else {
-  	pcards = "....";
-  }
-  // common cards
+  // Player cards
+  // There always exists a user, if notz then we have a fake-player. ;-)
+  assert(p_table_state->User() != NULL);
+  CString player_cards = p_table_state->User()->Cards();
+  // Common cards
   comcards = "";
   if (betround >= kBetroundFlop) {
     for (int i=0; i<kNumberOfFlopCards; i++) {
@@ -241,7 +236,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
    write_log(k_always_log_basic_information, "  Version:       %s\n",    VERSION_TEXT); 
    write_log(k_always_log_basic_information, "  Chairs:        %5d\n",   p_tablemap->nchairs());
    write_log(k_always_log_basic_information, "  Userchair:     %5d\n",   userchair);
-   write_log(k_always_log_basic_information, "  Holecards:     %s\n",    pcards.GetString());
+   write_log(k_always_log_basic_information, "  Holecards:     %s\n",    player_cards.GetString());
    write_log(k_always_log_basic_information, "  Community:     %s\n",    comcards.GetString());
    write_log(k_always_log_basic_information, "  Handrank:      %s\n",    rank.GetString());
    write_log(k_always_log_basic_information, "  Hand:          %s\n",    pokerhand.GetString());
@@ -254,7 +249,9 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
    write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
    write_log(k_always_log_basic_information, "  Formulas:      %s\n",    fcra_formula_status.GetString());
    write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
-   write_log(k_always_log_basic_information, "  Best action:   %s\n",    BestAction().GetString());
+  // !!! "Best action" is undefined if the executed action
+  // is "something else" like a hopper function
+   write_log(k_always_log_basic_information, "  Best action:   %s\n", BestAction().GetString());
    write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);
   write_log_separator(k_always_log_basic_information, "");
   // Also show "BestAction" in the statusbar.

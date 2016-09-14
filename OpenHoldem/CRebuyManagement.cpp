@@ -116,13 +116,15 @@ bool CRebuyManagement::RebuyPossible() {
 	}
 }
 
-void CRebuyManagement::TryToRebuy() {
+bool CRebuyManagement::TryToRebuy() {
 	 write_log(preferences.debug_rebuy(), "[CRebuyManagement] TryToRebuy()\n");
 	if (RebuyPossible()) {
 		RebuyLastTime = CurrentTime;		
 		PreviousRebuyHandNumber = p_handreset_detector->GetHandNumber();
 		ExecuteRebuyScript();
+    return true;
 	}
+  return false;
 }	
 
 void CRebuyManagement::ExecuteRebuyScript() {

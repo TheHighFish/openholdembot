@@ -30,7 +30,7 @@ public:
 	// This function has to be protected against mouse-
 	// and keyboard collisions, e.g by a mutex.
 	// We expect the autoplayer to do this job!
-	void TryToRebuy();
+	bool TryToRebuy();
 
 private:
 	bool MinimumDelayElapsed();

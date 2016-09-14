@@ -286,14 +286,10 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 		 write_log(preferences.debug_autoplayer(), "[AutoPlayer] Nothing to do.\n");
 		return false;
 	}
-
 	CMyMutex mutex;
-
-	if (!mutex.IsLocked())
-	{
+	if (!mutex.IsLocked()) {
 		return false;
 	}
-
 	PrepareActionSequence();
 	// Prefold, close, rebuy and chat work require different treatment,
 	// more than just clicking a simple region...
@@ -303,23 +299,14 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 		if (DoPrefold()) {
 			executed_secondary_function = k_standard_function_prefold;
 		}
-	}
-	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_close))	{
+	}	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_close))	{
 		// CloseWindow is "final".
 		// We don't expect any further action after that
 		// and can return immediatelly.
 		if (p_casino_interface->CloseWindow()) {
 			executed_secondary_function = k_hopper_function_close;
 		}
-	}
-	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_rebuy))	{
-		// This requires an external script and some time.
-		// No further actions here eihter, but immediate return.
-		p_rebuymanagement->TryToRebuy();
-		// No way to check for success here
-		executed_secondary_function = k_hopper_function_rebuy;
-	}
-	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
+	}	else if (p_autoplayer_functions->GetAutoplayerFunctionValue(k_standard_function_chat)) 	{
 			if (DoChat()) {
 				executed_secondary_function = k_standard_function_chat;
 			}
@@ -330,15 +317,30 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	// k_hopper_function_leave,
   // k_hopper_function_rematch,
 	// k_hopper_function_autopost,
-	else 
+	else {
     for (int i=k_hopper_function_sitin; i<=k_hopper_function_autopost; ++i)	{
-		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
-			if (p_casino_interface->LogicalAutoplayerButton(i)->Click()) {
-				executed_secondary_function = i;
-				break;
+  		if (p_autoplayer_functions->GetAutoplayerFunctionValue(i))	{
+        if (p_casino_interface->LogicalAutoplayerButton(i)->Click()) {
+          executed_secondary_function = i;
+          break;
+        }
 			}
 		}
 	}
+  // Move f$rebuy to the VERY end
+  // so that an (always?) positive f$rebuy-function
+  // with blocked ir non-existing script
+  // can't block all the other hopper-functions.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19953
+  if ((executed_secondary_function == kUndefined)
+    && (p_autoplayer_functions->GetAutoplayerFunctionValue(k_hopper_function_rebuy))) {
+    // This requires an external script and some time.
+    // No further actions here eihter, but immediate return.
+    bool result = p_rebuymanagement->TryToRebuy();
+    if (result) {
+      executed_secondary_function = k_hopper_function_rebuy;
+    }
+  }
 	if (executed_secondary_function != kUndefined) {
 		FinishActionSequenceIfNecessary();
 		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), preferences.log_hopper_functions());
