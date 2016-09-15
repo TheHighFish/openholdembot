@@ -321,7 +321,7 @@ void start_log(void)
 	}
 }
 
-voidwrite_log(char* fmt, ...) {
+void write_log(char* fmt, ...) {
 	char		buff[10000] ;
 	va_list		ap;
 	char		nowtime[26];

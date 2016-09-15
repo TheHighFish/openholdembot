@@ -145,7 +145,7 @@ void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code) {
 			SetPrevaction(k_autoplayer_function_call);	
 		}
 	}	else {
-		_autoplayer_actions[BETROUND][autoplayer_action_code]++; //!!!!! betpot? Todo: set _didswag
+		_autoplayer_actions[BETROUND][autoplayer_action_code]++; //!!! betpot? Todo: set _didswag
 		SetPrevaction(autoplayer_action_code);
 	}
 }
