@@ -92,7 +92,7 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
     swag_amt, _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
   bool use_comma_instead_of_dot = p_tablemap->use_comma_instead_of_dot();
   (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), _i3_edit_region,
-    swag_amt, use_comma_instead_of_dot, NULL, point_null);
+    swag_amt, use_comma_instead_of_dot);
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_3());
   Sleep(preferences.swag_delay_3());
   // Check for stolen focus, and thus misswag

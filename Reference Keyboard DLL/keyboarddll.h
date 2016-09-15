@@ -20,15 +20,11 @@
 #define KEYBOARDDLL_API __declspec(dllimport)
 #endif
 
-typedef int (*keyboard_sendstring_t)(const HWND hwnd, const RECT rect, const CString s, const bool use_comma,
-									 const HWND restore_focus, const POINT restore_cursor);
-KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma,
-							   const HWND restore_focus, const POINT restore_cursor);
+typedef int (*keyboard_sendstring_t)(const HWND hwnd, const RECT rect, const CString s, const bool use_comma);
+KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma);
 
-typedef int (*keyboard_sendkey_t)(const HWND hwnd, const RECT rect, UINT vkey,
-								  const HWND restore_focus, const POINT restore_cursor);
-KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey,
-							const HWND restore_focus, const POINT restore_cursor);
+typedef int (*keyboard_sendkey_t)(const HWND hwnd, const RECT rect, UINT vkey);
+KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey);
 
 typedef void (*keyboard_process_message_t)(const char *message, const void *param);
 KEYBOARDDLL_API void ProcessMessage(const char *message, const void *param);

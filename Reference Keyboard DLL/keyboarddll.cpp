@@ -61,8 +61,7 @@ void PlayKeyboardEvent(int vkey, int bscan)
 		keybd_event(VK_MENU,    0, KEYEVENTF_KEYUP, 0);
 }
 
-KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma,
-							   const HWND restore_focus, const POINT restore_cursor)
+KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma)
 {
 	INPUT			input[102];
 
@@ -122,26 +121,10 @@ KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s
 		PlayKeyboardEvent(LOBYTE(KeyScan), HIBYTE(KeyScan));
 	}
 	Sleep(20);
-
-	// Restore previous window state and cursor position
-	if (restore_focus!=NULL)
-	{
-		SetActiveWindow(restore_focus);
-		SetForegroundWindow(restore_focus);
-		SetFocus(restore_focus);
-	}
-
-	// Remove that code-block, if you don't want to restore the mouse-cursor!
-	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
-	{
-		SetCursorPos(restore_cursor.x, restore_cursor.y);
-	}
-
 	return (int) true;
 }
 
-KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey,
-							const HWND restore_focus, const POINT restore_cursor)
+KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey)
 {
 	INPUT			input[4];
 
@@ -194,21 +177,7 @@ KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey,
 
 	// Send input
 	SendInput(input_count, input, sizeof(INPUT));
-
-	// Restore previous window state and cursor position
-	if (restore_focus!=NULL)
-	{
-		SetActiveWindow(restore_focus);
-		SetForegroundWindow(restore_focus);
-		SetFocus(restore_focus);
-	}
-
-	// Remove that code-block, if you don't want to restore the mouse-cursor!
-	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
-	{
-		SetCursorPos(restore_cursor.x, restore_cursor.y);
-	}
-
+  Sleep(20);
 	return (int) true;
 }
 
