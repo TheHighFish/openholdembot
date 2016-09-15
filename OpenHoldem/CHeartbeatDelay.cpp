@@ -43,9 +43,9 @@ void CHeartbeatDelay::FlexibleSleep() {
     sleeping_factor = MIN(sleeping_factor, 2);
   }
   double modified_heartbeat_delay = default_heartbeat_delay * sleeping_factor;
-  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] default delay   %.3f ms.\n", default_heartbeat_delay);
-  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] sleeping factor %.3f .\n", sleeping_factor);
-  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] modified delay  %.3f ms.\n", modified_heartbeat_delay);
+ write_log(preferences.debug_heartbeat(), "[HeartBeatThread] default delay   %.3f ms.\n", default_heartbeat_delay);
+ write_log(preferences.debug_heartbeat(), "[HeartBeatThread] sleeping factor %.3f .\n", sleeping_factor);
+ write_log(preferences.debug_heartbeat(), "[HeartBeatThread] modified delay  %.3f ms.\n", modified_heartbeat_delay);
   Sleep(modified_heartbeat_delay);
 }
 

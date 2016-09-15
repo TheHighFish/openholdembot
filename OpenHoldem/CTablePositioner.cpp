@@ -47,7 +47,7 @@ void CTablePositioner::PositionMyWindow() {
 		return;
 	}
 	if (preferences.table_positioner_options() == k_position_tables_tiled) {
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to tile %d windows...\n", _number_of_tables);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to tile %d windows...\n", _number_of_tables);
 		PositionMyWindow(HWNDs_of_child_windows);
 		// Tiling windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
 		// Unfortunatelly this fucntion had 2 disadvantages:
@@ -63,7 +63,7 @@ void CTablePositioner::PositionMyWindow() {
 			HWNDs_of_child_windows);
 		*/
 	}	else if (preferences.table_positioner_options() == k_position_tables_cascaded) {
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to cascade %d windows...\n", _number_of_tables);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to cascade %d windows...\n", _number_of_tables);
 		// Cascading windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms632674(v=vs.85).aspx
 		CascadeWindows(
 			NULL,				// Parent; NULL = whole desktop
@@ -73,7 +73,7 @@ void CTablePositioner::PositionMyWindow() {
 			HWNDs_of_child_windows);
 	}	else {
 		// preferences.table_positioner_options() == k_position_tables_never
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Not doing anything because of preferences.\n");
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Not doing anything because of preferences.\n");
 	}
 }
 
@@ -93,9 +93,9 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables) {
 	// http://stackoverflow.com/questions/8690619/how-to-get-screen-resolution-in-c
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms724947(v=vs.85).aspx
 	SystemParametersInfo(SPI_GETWORKAREA,NULL,&_desktop_rectangle,NULL);
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Connected to window %i\n", p_autoconnector->attached_hwnd());
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Table size: %ix%i\n", _table_size_x, _table_size_y);
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Desktop size: %ix%i\n", _desktop_rectangle.right, _desktop_rectangle.bottom); 
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Connected to window %i\n", p_autoconnector->attached_hwnd());
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Table size: %ix%i\n", _table_size_x, _table_size_y);
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Desktop size: %ix%i\n", _desktop_rectangle.right, _desktop_rectangle.bottom); 
   if (p_tablemap->islobby()) {
 	  assert(_number_of_tables == 1);	
 		// No other tables at the moment, 
@@ -117,7 +117,7 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables) {
 	}
 	for (int i=0; i<_number_of_tables; i++)	{
 		HWND HWND_of_potential_neighbour_table = list_of_tables[i];
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Trying neighbour-table %i\n", HWND_of_potential_neighbour_table);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Trying neighbour-table %i\n", HWND_of_potential_neighbour_table);
 		if (TryLeftSideOfTable(HWND_of_potential_neighbour_table)) {
 			return;
 		}
@@ -134,10 +134,10 @@ void CTablePositioner::PositionMyWindow(HWND *list_of_tables) {
 bool CTablePositioner::TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table) {
 	RECT position_of_potential_neigbour_table;
 	GetWindowRect(HWND_of_potential_neighbour_table, &position_of_potential_neigbour_table);
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryLeftSideOfTable() Neighbours position: %i, %i, %i, %i\n", 
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryLeftSideOfTable() Neighbours position: %i, %i, %i, %i\n", 
 		position_of_potential_neigbour_table.left, position_of_potential_neigbour_table.top,
 		position_of_potential_neigbour_table.right, position_of_potential_neigbour_table.bottom);
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryLeftSideOfTable() Trying right side of neighbour\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryLeftSideOfTable() Trying right side of neighbour\n");
 	int my_left_x = position_of_potential_neigbour_table.left - _table_size_x;
 	int my_top_y  = position_of_potential_neigbour_table.top;
 	return TryPosition(my_left_x, my_top_y);
@@ -146,7 +146,7 @@ bool CTablePositioner::TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table
 bool CTablePositioner::TryTopSideOfTable(HWND HWND_of_potential_neighbour_table) {
 	RECT position_of_potential_neigbour_table;
 	GetWindowRect(HWND_of_potential_neighbour_table, &position_of_potential_neigbour_table);
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryTopSideOfTable() Trying top side of neighbour\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryTopSideOfTable() Trying top side of neighbour\n");
 	int my_left_x = position_of_potential_neigbour_table.left;
 	int my_top_y  = position_of_potential_neigbour_table.top - _table_size_y;
 	return TryPosition(my_left_x, my_top_y);
@@ -155,32 +155,32 @@ bool CTablePositioner::TryTopSideOfTable(HWND HWND_of_potential_neighbour_table)
 bool CTablePositioner::TryBottomRightPosition() {
 	int left_x = _desktop_rectangle.right  - _table_size_x + 1;
 	int top_y  = _desktop_rectangle.bottom - _table_size_y + 1;
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryBottomRightPosition()\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryBottomRightPosition()\n");
 	return TryPosition(left_x, top_y);
 }
 
 bool CTablePositioner::TryPosition(int left_x, int top_y) {
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Trying position %i, %i\n",
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Trying position %i, %i\n",
 		left_x, top_y);
   int right_x = left_x; //!!!
   int bottom_y = top_y;
   if (p_sharedmem->OverlapsAnyTable(left_x, top_y, right_x, bottom_y)) {
-  	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Candidate-position overlaps other table\n");
+  	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Candidate-position overlaps other table\n");
 		return false;
 	}
 	// We have found a good position that does not overlap any other table
 	// Move our connected table over there.
 	_new_left_x = left_x;
 	_new_top_y  = top_y;
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Found a free slot\n");
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Going to move the table to %i, %i\n",
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Found a free slot\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] TryPosition() Going to move the table to %i, %i\n",
 		_new_left_x, _new_top_y);
 	MoveWindowToItsPosition();
 	return true;
 }
 
 void CTablePositioner::MoveToTopLeft() {
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToTopLeft()\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToTopLeft()\n");
 	_new_left_x = 0;
 	_new_top_y  = 0;
 	MoveWindowToItsPosition();
@@ -188,18 +188,18 @@ void CTablePositioner::MoveToTopLeft() {
 
 // Precondition: position and size defined
 void CTablePositioner::MoveWindowToItsPosition() {
-	 write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveWindowToItsPosition()\n");
+	write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveWindowToItsPosition()\n");
   // Consistancy checks
 	if (_new_left_x      < 0 || _new_left_x   > _desktop_rectangle.right
 	  	|| _new_top_y    < 0 || _new_top_y    > _desktop_rectangle.bottom
 		  || _table_size_x < 1 || _table_size_x > _desktop_rectangle.right
 		  || _table_size_y < 1 || _table_size_y > _desktop_rectangle.bottom) {
 		// Values out of sane range
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] Values out of sane range; probably not yet initialized\n");
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_left_x   = %i\n", _new_left_x);
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_top_y    = %i\n", _new_top_y);
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] _table_size_x = %i\n", _table_size_x);
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] _table_size_y = %i\n", _table_size_y);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] Values out of sane range; probably not yet initialized\n");
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_left_x   = %i\n", _new_left_x);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_top_y    = %i\n", _new_top_y);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _table_size_x = %i\n", _table_size_x);
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] _table_size_y = %i\n", _table_size_y);
 		return;
 	}
   MoveWindow(p_autoconnector->attached_hwnd(), 
@@ -213,16 +213,16 @@ void CTablePositioner::MoveWindowToItsPosition() {
 void CTablePositioner::AlwaysKeepPositionIfEnabled() {
 	if (!preferences.table_positioner_always_keep_position()
 		  || (p_autoconnector->attached_hwnd() == NULL)) {
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() disabled or not connected\n");
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() disabled or not connected\n");
 		return;
 	}
 	RECT current_position;
 	GetWindowRect(p_autoconnector->attached_hwnd(), &current_position);
 	if ((current_position.left == _new_left_x)
 		  && (current_position.top == _new_top_y)) {
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() position is good\n");
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() position is good\n");
 	}	else {
-		 write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() restoring old position\n");
+		write_log(preferences.debug_table_positioner(), "[CTablePositioner] AlwaysKeepPositionIfEnabled() restoring old position\n");
 		MoveWindowToItsPosition();
 	}
 }
@@ -232,7 +232,7 @@ void CTablePositioner::ResizeToTargetSize() {
   int height;
   p_tablemap_access->GetClientSize("targetsize", &width, &height);
   if (width <= 0 || height <= 0) {
-     write_log(preferences.debug_table_positioner(), "[CTablePositioner] target size <= 0\n");
+    write_log(preferences.debug_table_positioner(), "[CTablePositioner] target size <= 0\n");
     return;
   }
   ResizeToClientSize(p_autoconnector->attached_hwnd(), width, height);

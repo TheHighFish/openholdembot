@@ -163,7 +163,7 @@ void COHScriptList::ErrorOldStyleFormat(CString list_member) {
 }
 
 double COHScriptList::Evaluate(bool log /* = false */) {
-   write_log(preferences.debug_formula(), 
+  write_log(preferences.debug_formula(), 
     "[COHScriptList] Evaluating list %s\n", _name); 
   if (!p_table_state->User()->HasKnownCards()) return false;
   return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),

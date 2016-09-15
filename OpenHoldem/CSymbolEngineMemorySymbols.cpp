@@ -78,11 +78,11 @@ void CSymbolEngineMemorySymbols::ErrorUnnamedMemorySymbol(CString command) {
 void CSymbolEngineMemorySymbols::Store(CString command) {
   assert(command.Left(6) == "me_st_");
   CString command_without_prefix = command.Mid(6); 
-   write_log(preferences.debug_memorysymbols(), 
+  write_log(preferences.debug_memorysymbols(), 
     "[CSymbolEngineMemorySymbols] command without prefix> %s\n", command_without_prefix);
   // Get the name of the symbol, up to the next underscore
   int position_of_first_underscore = command_without_prefix.Find('_');
-   write_log(preferences.debug_memorysymbols(), 
+  write_log(preferences.debug_memorysymbols(), 
     "[CSymbolEngineMemorySymbols] position of under-score: %i\n", 
     position_of_first_underscore);
   if (position_of_first_underscore <= 0) {
@@ -91,11 +91,11 @@ void CSymbolEngineMemorySymbols::Store(CString command) {
     return;
   }
   CString symbol_name = command_without_prefix.Left(position_of_first_underscore);
-   write_log(preferences.debug_memorysymbols(), 
+  write_log(preferences.debug_memorysymbols(), 
     "[CSymbolEngineMemorySymbols] symbol name: %s\n", symbol_name);
   // Get the right hand value after the underscore
   CString right_hand_side = command_without_prefix.Mid(position_of_first_underscore + 1);
-   write_log(preferences.debug_memorysymbols(), 
+  write_log(preferences.debug_memorysymbols(), 
     "[CSymbolEngineMemorySymbols] right hand side: %s\n", right_hand_side);
   if (right_hand_side == "") {
     // Empty right hand side expression after under-score
@@ -124,7 +124,7 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
     result = CParseTreeTerminalNodeIdentifier::EvaluateIdentifier(
       right_hand_value, true); // !!! Needs function parameter
   }
-   write_log(preferences.debug_memorysymbols(), 
+  write_log(preferences.debug_memorysymbols(), 
     "[CSymbolEngineMemorySymbols] Evaluating %s -> %.3f\n",
     right_hand_value, result);
   return result;
@@ -155,7 +155,7 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result
   // "name" = query
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "me_", 3) == 0) {
-     write_log(preferences.debug_memorysymbols(), 
+    write_log(preferences.debug_memorysymbols(), 
       "[CSymbolEngineMemorySymbols] EvaluateSymbol(%s)\n", name);
     if (memcmp(name, "me_st_", 6) == 0) {  
       Store(name);

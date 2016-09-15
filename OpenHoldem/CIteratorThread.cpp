@@ -92,7 +92,7 @@ int				_nplCards, _ncomCards;
 double			_win, _tie, _los;
 
 CIteratorThread::CIteratorThread() {
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
 
 	// Create events
 	_m_stop_thread = CreateEvent(0, TRUE, FALSE, 0);
@@ -102,11 +102,11 @@ CIteratorThread::CIteratorThread() {
 	InitHandranktTableForPrwin();
 	AfxBeginThread(IteratorThreadFunction, this);
 
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread started.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread started.\n");
 }
 
 CIteratorThread::~CIteratorThread() {
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ending...\n");
   assert(p_iterator_thread != NULL);
 	if (_m_stop_thread)
 	{
@@ -122,11 +122,11 @@ CIteratorThread::~CIteratorThread() {
 	}
 	p_iterator_thread = NULL;
 
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread ended.\n");
 }
 
 void CIteratorThread::RestartPrWinComputations() {
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
   InitIteratorLoop();
   ResetIteratorVars();
 	ResetGlobalVariables();
@@ -136,7 +136,7 @@ void CIteratorThread::StartPrWinComputationsIfNeeded() {
 	p_validator->ValidateIt();
 	assert(p_iterator_thread != NULL);
 	if (p_symbol_engine_autoplayer->IsFirstHeartbeatOfMyTurn())	{
-     write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread paused. Going to restart.\n");
+    write_log(preferences.debug_prwin(), "[PrWinThread] IteratorThread paused. Going to restart.\n");
     assert(IteratorThreadWorking() == false);
     RestartPrWinComputations();
 		return;
@@ -151,12 +151,12 @@ void CIteratorThread::AdjustPrwinVariablesIfNecessary() {
   _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
 	if (_willplay && (_willplay < 2 * _nopponents + 1))
 	{
-		 write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting willplay (too low)\n");
 		_willplay = 2 * _nopponents + 1; //too low a value can give lockup
 	}
 	if (_wontplay < _willplay)
 	{
-		 write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] Adjusting wontplay (too low)\n");
 		_wontplay = _willplay; //wontplay cannot safely be less than willplay
 	}
 }
@@ -193,7 +193,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
       continue;
     }
 
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
     // "f$prwin_number_of_iterations" has to be declared outside of the loop,
 	// as we check afterwards, if the loop terminated successfully.
     _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
@@ -226,7 +226,7 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 				  _prtie = enhanced_dealing_return;
 				  _prlos = enhanced_dealing_return;
 				  _iterations_calculated = _iterations_required;
-				   write_log(preferences.debug_prwin(), "[PrWinThread] Chair's %i range consists of dead cards only.\n",enhanced_dealing_return);
+				  write_log(preferences.debug_prwin(), "[PrWinThread] Chair's %i range consists of dead cards only.\n",enhanced_dealing_return);
 				  break;
 			  }
 			  QueryPerformanceCounter(&t2); // stop timer
@@ -254,10 +254,10 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 			  CardMask_SET(opp_evalCards, ocard[(i*2)+1]);
 			  opp_hv = Hand_EVAL_N(opp_evalCards, 7);
 			  opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(opp_hv, 7, &dummy, CARD_NOCARD, CARD_NOCARD);
-				 write_log(preferences.debug_prwin(), "[PrWinThread] PlayerPV: %i OppPV: %i\n",
+				write_log(preferences.debug_prwin(), "[PrWinThread] PlayerPV: %i OppPV: %i\n",
 				pl_pokval, opp_pokval);
 			  if (opp_pokval > pl_pokval) {
-				   write_log(preferences.debug_prwin(), "[PrWinThread] Lost\n");
+				  write_log(preferences.debug_prwin(), "[PrWinThread] Lost\n");
 				  _los++;
 				  hand_lost = true;
 				  break;
@@ -270,16 +270,16 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 		  }
 		  if (!hand_lost)	{
 			  if (pl_pokval > opp_pokvalmax) {
-           write_log(preferences.debug_prwin(), "[PrWinThread] Won\n");
+          write_log(preferences.debug_prwin(), "[PrWinThread] Won\n");
 				  _win++;
 			  }	else {
-           write_log(preferences.debug_prwin(), "[PrWinThread] Tie\n");
+          write_log(preferences.debug_prwin(), "[PrWinThread] Tie\n");
 				  _tie++;
 			  }
 		  }
 		  UpdateIteratorVarsForDisplay();
 	  }
-	   write_log(preferences.debug_prwin(), "[PrWinThread] End of main loop.\n");
+	  write_log(preferences.debug_prwin(), "[PrWinThread] End of main loop.\n");
     if (!IteratorThreadComplete()) {
       // Computation stopped with some kind of error.
       // Reset vars to avoid bogus data
@@ -293,12 +293,12 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 
 	  if(UseEnhancedPrWin())
 	  {			
-			 write_log(preferences.debug_prwin(), "EnhancedDealingAlgorithm elapsed time in millisec: %.3f Iterations: %d prwin: %.3f prtie: %.3f prlos: %.3f vanilla.limit: %i \n",
+			write_log(preferences.debug_prwin(), "EnhancedDealingAlgorithm elapsed time in millisec: %.3f Iterations: %d prwin: %.3f prtie: %.3f prlos: %.3f vanilla.limit: %i \n",
 				elapsedTime,_iterations_calculated, _prwin, _prtie, _prlos, _prw1326.vanilla_chair.limit );
 	  }
 	  else
 	  {
-			 write_log(preferences.debug_prwin(), "StandardDealingAlgorithm elapsed time in millisec: %.3f Iterations: %d prwin: %.3f prtie: %.3f prlos: %.3f\n",
+			write_log(preferences.debug_prwin(), "StandardDealingAlgorithm elapsed time in millisec: %.3f Iterations: %d prwin: %.3f prtie: %.3f prlos: %.3f\n",
 				elapsedTime,_iterations_calculated, _prwin, _prtie, _prlos);
 	  }
 
@@ -315,7 +315,7 @@ void CIteratorThread::UpdateIteratorVarsForDisplay() {
 		_prwin = _win / (double) _iterations_calculated;
 		_prtie = _tie / (double) _iterations_calculated;
 		_prlos = _los / (double) _iterations_calculated;
-		 write_log(preferences.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
+		write_log(preferences.debug_prwin(), "[PrWinThread] Progress: %d %.3f %.3f %.3f\n", 
 			_iterations_calculated, _prwin, _prtie, _prlos);
 	}
 }
@@ -368,7 +368,7 @@ void CIteratorThread::InitNumberOfIterations() {
 }
 
 void CIteratorThread::InitIteratorLoop() {
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Initializing iterator loop\n");
 
 	// Set starting status and parameters
 	InitNumberOfIterations();
@@ -532,7 +532,7 @@ void CIteratorThread::CloneVanillaChairToAllOtherChairs() {
 	// finally copy the vanilla to all user chairs so that someone who just turns on prw1326
 	// experimentally does not cause a crash
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=19012&hilit=%2Avanilla%2A
-	 write_log(preferences.debug_prwin(), "[PrWinThread] CIteratorThread::CloneVanillaChairToAllOtherChairs \n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] CIteratorThread::CloneVanillaChairToAllOtherChairs \n");
 	for(int i=0; i<kMaxNumberOfPlayers; ++i) {
 		_prw1326.chair[i] = _prw1326.vanilla_chair;
 	}
@@ -543,7 +543,7 @@ void CIteratorThread::StandardDealingAlgorithm(int nopponents)
 	// Normal prwin opponent card selection
 	// Random ranges for everybody
 	// Number of opponents might be adapted to get more "reasonable" results
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Using standard prwin.\n");
 
 	// if f$prwin_number_of_opponents<=13 then deal with random replacement algorithm, otherwise deal with swap algorithm
 	if (nopponents <= 13)
@@ -558,7 +558,7 @@ void CIteratorThread::StandardDealingAlgorithm(int nopponents)
 
 void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 {
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Useing swap-algorithm, as f$prwin_number_of_opponents > 13\n");
 	// swap alogorithm
 	// weighted prwin not implemented for this case
 	int numberOfCards = kNumberOfCardsPerDeck;
@@ -628,11 +628,11 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 {
 	unsigned int	card = 0;
 
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Using random algorithm, as f$prwin_number_of_opponents <= 13\n");
 	// random replacement algorithm
 	// opponent cards
 	if (nopponents < 1) {
-		 write_log(preferences.debug_prwin(), "[PrWinThread] No opponents. Auto-adapting to 1.\n");
+		write_log(preferences.debug_prwin(), "[PrWinThread] No opponents. Auto-adapting to 1.\n");
     nopponents = 1;
 	}
 	for (int i=0; 
@@ -653,7 +653,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 
 			if (!_willplay)
 			{
-				 write_log(preferences.debug_prwin(), "[PrWinThread] Weighting disabled. Willplay is 0.\n");
+				write_log(preferences.debug_prwin(), "[PrWinThread] Weighting disabled. Willplay is 0.\n");
 				break; //0 disables weighting
 			}
 
@@ -688,7 +688,7 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 }
 
 int CIteratorThread::EnhancedDealingAlgorithm() {
-	 write_log(preferences.debug_prwin(), "[PrWinThread] Using ZeeZooLaa's enhanced prwin.\n");
+	write_log(preferences.debug_prwin(), "[PrWinThread] Using ZeeZooLaa's enhanced prwin.\n");
 	unsigned int	card = 0, deadHandsCounter = 0;
 	int k = 0; //k is used as an index into ocard[]
 	int userchair = p_symbol_engine_userchair->userchair();

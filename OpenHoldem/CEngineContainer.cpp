@@ -69,13 +69,13 @@
 
 CEngineContainer *p_engine_container = NULL;
   CEngineContainer::CEngineContainer() {
-   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
+  write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
   CreateSymbolEngines();
   // First initialization is the same as on a new connection
   ResetOnConnection();
   // But we want to initialize later again on every connection
   _reset_on_connection_executed = false;
-   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
+  write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
 
 CEngineContainer::~CEngineContainer() {
@@ -96,7 +96,7 @@ void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) 
 }
 
 void CEngineContainer::CreateSymbolEngines() {
-   write_log(preferences.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
   CreateSpecialSymbolEngines();
 
   _number_of_symbol_engines_loaded = 0;
@@ -244,18 +244,18 @@ void CEngineContainer::CreateSymbolEngines() {
   // CHandHistoryWriter
   p_handhistory_writer = new CHandHistoryWriter;
   AddSymbolEngine(p_handhistory_writer);
-   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
+  write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
 void CEngineContainer::DestroyAllSymbolEngines() {
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
-		 write_log(preferences.debug_engine_container(), "[EngineContainer] Going to delete symbol engine %i\n", i);
+		write_log(preferences.debug_engine_container(), "[EngineContainer] Going to delete symbol engine %i\n", i);
 		delete _symbol_engines[i];
 		_symbol_engines[i] = NULL;
 	}
 	_number_of_symbol_engines_loaded = 0;
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
 }
 
 void CEngineContainer::DestroyAllSpecialSymbolEngines() {
@@ -263,10 +263,10 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines() {
 }
 
 void CEngineContainer::EvaluateAll() {
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
 	if (!_reset_on_connection_executed) {
-		 write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as ResetOnConnection not yet executed.\n");
-		 write_log(preferences.debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
+		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as ResetOnConnection not yet executed.\n");
+		write_log(preferences.debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
 		// The problem with ResetOnConnection:
 		// It will be called by another thread,
 		// so the execution might be out of order.
@@ -307,44 +307,44 @@ void CEngineContainer::EvaluateAll() {
 }
 
 void CEngineContainer::ResetOnConnection() {
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
 		_symbol_engines[i]->ResetOnConnection();
 	}
 	_reset_on_connection_executed = true;
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
 }
 
 void CEngineContainer::ResetOnDisconnection() {
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on disconnection\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on disconnection\n");
 	// Just to make sure that our connection-code
 	// will be executed later in correct order
 	_reset_on_connection_executed = false;
 }
 
 void CEngineContainer::ResetOnHandreset() {
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on handreset\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on handreset\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
 		_symbol_engines[i]->ResetOnHandreset();
 	}
 }
 
 void CEngineContainer::ResetOnNewRound() {
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on new round\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on new round\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
 		_symbol_engines[i]->ResetOnNewRound();
 	}
 }
 
 void CEngineContainer::ResetOnMyTurn() {
-	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
+	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
 		_symbol_engines[i]->ResetOnMyTurn();
 	}
 }
 
 void CEngineContainer::ResetOnHeartbeat() {
-   write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
   for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
 	  _symbol_engines[i]->ResetOnHeartbeat();
   }
@@ -353,7 +353,7 @@ void CEngineContainer::ResetOnHeartbeat() {
 bool CEngineContainer::EvaluateSymbol(const char *name, 
                                       double *result, 
                                       bool log /* = false */) {
-   write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
+  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
   if (IsOutdatedSymbol(name)) {
     *result = kUndefined;
     return false;
@@ -371,7 +371,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
         // Log the symbol and its value
         // But only if it is a basic symbol and not a function
         // Functions receive special treatment (indentation, etc)
-         write_log(preferences.debug_auto_trace(),
+        write_log(preferences.debug_auto_trace(),
           "[EngineContainer] %s -> %.3f [evaluated]\n", name, *result);
         p_autoplayer_trace->Add(name, *result);
       }
@@ -398,10 +398,10 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
 }
 
 void CEngineContainer::BuildListOfSymbolsProvided() {
-   write_log(preferences.debug_engine_container(), "[EngineContainer] Building list of symbols\n");
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Building list of symbols\n");
   _list_of_symbols = "";
   for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
-     write_log(preferences.debug_engine_container(), "[EngineContainer] Engine %d\n", i);
+    write_log(preferences.debug_engine_container(), "[EngineContainer] Engine %d\n", i);
     CString new_symbols = _symbol_engines[i]->SymbolsProvided();
     _list_of_symbols.Append(new_symbols);
     const int kPrintfBufferSize = 4096;
@@ -411,10 +411,10 @@ void CEngineContainer::BuildListOfSymbolsProvided() {
       // as the very long list caused a buffer overflow if enabled.
       // As it turned out the function-collection alone
       // still could exceed that limit, so we check the size.
-       write_log(preferences.debug_engine_container(), "[EngineContainer] New symbols %s\n", 
+      write_log(preferences.debug_engine_container(), "[EngineContainer] New symbols %s\n", 
         new_symbols);
     } else {
-       write_log(preferences.debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
+      write_log(preferences.debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
     }
     // Extra blank to avoid unexpected concatenation of symbols
     _list_of_symbols.Append(" ");

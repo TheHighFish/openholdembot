@@ -44,7 +44,7 @@ void CSymbolEngineEventLogging::ResetOnHandreset() {
   // (because of all the guys who report "bugs" of outdated versions)
   char title[512] = "--- title undefined ---";
   GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
-  write_log(k_always_log_basic_information,
+ write_log(k_always_log_basic_information,
     "\n"
     "==============================================\n"
     "%s"    // Version info already contains a newline

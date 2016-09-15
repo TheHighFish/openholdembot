@@ -67,7 +67,7 @@ void CReplayFrame::CreateReplayFrame(void){
 		&total_bytes_on_disk,	
 		&free_bytes_total_on_disk);
 	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) {
-		 write_log(preferences.debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
+		write_log(preferences.debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
 		OH_MessageBox_Error_Warning("Not enough disk space to create replay-frame.");
     return;
 	}
@@ -77,12 +77,12 @@ void CReplayFrame::CreateReplayFrame(void){
   CString next_frame;
 	next_frame.Format("[%06d]", _next_replay_frame);
   // Replay-frame should always be mentioned in the log for easy reference
-   write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame %s\n", next_frame);
+  write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame %s\n", next_frame);
 	CreateBitMapFile();
   // Create HTML file
 	CString path = p_filenames->ReplayHTMLFilename(_next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0) {
-		 write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating HTML file: %s\n", path);
+		write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating HTML file: %s\n", path);
 		// First line has to be the "title" of the table.
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
@@ -347,7 +347,7 @@ CString CReplayFrame::GetPotsAsHTML() {
 void CReplayFrame::CreateReplaySessionDirectoryIfNecessary() {
 	CString path = p_filenames->ReplaySessionDirectory();
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)	{
-     write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating replay directory %s\n", path);
+    write_log(preferences.debug_replayframes(), "[CReplayFrame] Creating replay directory %s\n", path);
 		SHCreateDirectoryEx(NULL, path.GetString(), NULL);
 	}
 }

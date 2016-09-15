@@ -33,11 +33,11 @@ bool CCasinoHotkey::PressHotkey() {
     return false;
   }
   if (isalnum(key_to_be_pressed)) {
-     write_log(preferences.debug_autoplayer(),
+    write_log(preferences.debug_autoplayer(),
       "[CasinoHotkeys] Going to press key [%c]\n",
       key_to_be_pressed);
   } else {
-     write_log(preferences.debug_autoplayer(),
+    write_log(preferences.debug_autoplayer(),
       "[CasinoHotkeys] Going to press non-alpha-numeric key [%x]\n",
       key_to_be_pressed);
   }

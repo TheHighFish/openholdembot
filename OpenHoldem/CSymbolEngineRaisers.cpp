@@ -117,7 +117,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 		// There are no bets and raises.
 		// Skip the calculations to keep the raischair of the previous round.
 		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
-     write_log(preferences.debug_symbolengine(), 
+    write_log(preferences.debug_symbolengine(), 
       "[CSymbolEngineRaisers] No bet to call, therefore no raises\n");
 		return;
 	}
@@ -125,12 +125,12 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 	int first_possible_raiser = FirstPossibleRaiser();
 	int last_possible_raiser  = LastPossibleRaiser();
 	double highest_bet = LastOrbitsLastRaisersBet();
-   write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Searching for raisers from chair %i to %i with a bet higher than %.2f\n",
+  write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Searching for raisers from chair %i to %i with a bet higher than %.2f\n",
 		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
 		int chair = i % p_tablemap->nchairs();
 		double current_players_bet = p_table_state->Player(chair)->bet();
-     write_log(preferences.debug_symbolengine(), 
+    write_log(preferences.debug_symbolengine(), 
       "[CSymbolEngineRaisers] chair %d bet %.2f\n",
       chair, current_players_bet);
 		// Raisers are people
@@ -139,27 +139,27 @@ void CSymbolEngineRaisers::CalculateRaisers() {
     // * either betting/raising postflop or truely raising preflop
     //   (not counting the infamous "blind raisers")
     if (!p_table_state->Player(chair)->HasAnyCards()) {
-       write_log(preferences.debug_symbolengine(), 
+      write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d has no cards.\n", chair);
       continue;
     } else if (current_players_bet <= highest_bet) {
-       write_log(preferences.debug_symbolengine(), 
+      write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d is not raising\n", chair);
       continue;
     } else if ((p_betround_calculator->betround() == kBetroundPreflop)
 				&& (current_players_bet <= p_symbol_engine_tablelimits->bblind())) {
-       write_log(preferences.debug_symbolengine(), 
+      write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d so-called \"blind raiser\". To be ignored.\n", chair);
       continue;
     }
     else if ((p_betround_calculator->betround() == kBetroundPreflop)
       && p_table_state->Player(chair)->PostingBothBlinds()) {
-       write_log(preferences.debug_symbolengine(), 
+      write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d is posting both blinds at once. To be ignored.\n", chair);
       continue;
     }
 		highest_bet = current_players_bet;
-     write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Opponent %i raising to %s\n",
+    write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Opponent %i raising to %s\n",
 			chair, Number2CString(highest_bet));
 		_raischair = chair;
 		int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
@@ -172,9 +172,9 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 	}
 	AssertRange(_raischair, kUndefined, kLastChair);
   _lastraised[BETROUND] = _raischair;
-	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
-	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] raischair: %i\n", _raischair);
-	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers]  firstraiser_chair (empty if no raiser) : %i\n", _firstraiser_chair);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] raischair: %i\n", _raischair);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers]  firstraiser_chair (empty if no raiser) : %i\n", _firstraiser_chair);
 }
 
 int CSymbolEngineRaisers::FirstPossibleRaiser() {

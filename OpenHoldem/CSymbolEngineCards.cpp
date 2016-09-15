@@ -144,7 +144,7 @@ int CSymbolEngineCards::GetNumberOfCardsForSuit(
 	CardMask suittestCards;
 	CardMask_AND(suittestCards, cards, card_mask_of_suit);
 	int n = StdDeck_numCards(suittestCards);
-	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i cards of the same suit\n", n);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i cards of the same suit\n", n);
 	return n;
 }
 
@@ -154,7 +154,7 @@ int CSymbolEngineCards::GetDominantSuit(CardMask cards, int* max_cards_of_same_s
 	n_diamonds = GetNumberOfCardsForSuit(cards, diamondsCards);
 	n_hearts   = GetNumberOfCardsForSuit(cards, heartsCards);
 	n_spades   = GetNumberOfCardsForSuit(cards, spadesCards);
-	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i clubs, %i diamonds, %i hearts and %i spades\n",
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] found %i clubs, %i diamonds, %i hearts and %i spades\n",
 		n_clubs, n_diamonds, n_hearts, n_spades);
 	if ((n_clubs >= n_diamonds) && (n_clubs >= n_hearts) && (n_clubs >= n_spades)) {
 		*max_cards_of_same_suit = n_clubs;
@@ -200,7 +200,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	for (int i=0; i<kNumberOfCardsPerPlayer; i++)	{
     Card* card = p_table_state->User()->hole_cards(i);
 		if (card->IsKnownCard())	{
-			 write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
+			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
 				card);
       CardMask_SET(plCards, card->GetValue());
 		}
@@ -211,7 +211,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	for (int i=0; i<kNumberOfCommunityCards; i++)	{
 		Card *card = p_table_state->CommonCards(i);
 		if (card->IsKnownCard())		{
-			 write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
+			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask common (and player): %i\n",
         card->GetValue());
       CardMask_SET(comCards, card->GetValue());
       CardMask_SET(plCards, card->GetValue());
@@ -505,7 +505,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	HandVal			handval_std = 0, handval_std_plus1 = 0, handval_common_plus1 = 0;
 	int				dummy = 0;
 
-	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] CalcUnknownCards()\n");
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] CalcUnknownCards()\n");
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
@@ -539,7 +539,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	_ncardsbetter = 0;
 
 	if (p_symbol_engine_userchair->userchair_confirmed())	{
-		 write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
+		write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] userchair confirmed; calculating nouts...\n");
 		// iterate through every unseen card and see what happens to our handvals
 		for (int i=0; i<kNumberOfCardsPerDeck; i++)	{
       if (i!=p_table_state->User()->hole_cards(0)->GetValue()  
@@ -572,7 +572,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 			}
 		}
 	}
-	 write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
+	write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] nouts: %i\n", _nouts);
 	AssertRange(_ncardsknown,   0, kNumberOfCardsPerDeck);
 	AssertRange(_ncardsunknown, 0, kNumberOfCardsPerDeck);
 	AssertRange(_nouts,         0, kNumberOfCardsPerDeck);

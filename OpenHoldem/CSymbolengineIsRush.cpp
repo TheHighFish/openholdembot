@@ -74,18 +74,18 @@ void CSymbolEngineIsRush::ResetOnHeartbeat() {
 bool CSymbolEngineIsRush::isrush() {
   if (p_symbol_engine_istournament->istournament()) {
     // Not a cash-game, therefore not rush
-     write_log(preferences.debug_symbolengine(),
+    write_log(preferences.debug_symbolengine(),
       "[CSymbolEngineIsRush] Tournament, therefore not rush / zoom\n");
     return false;
   }
   else if (p_symbol_engine_active_dealt_playing->nopponentsdealt()<2){
     // Game may be HU
-     write_log(preferences.debug_symbolengine(),
+    write_log(preferences.debug_symbolengine(),
       "[CSymbolEngineIsRush] One dealt opponent, game may or may not be rush / zoom\n");
       return false;
   }
   assert(handresets > 0);
-   write_log(preferences.debug_symbolengine(),
+  write_log(preferences.debug_symbolengine(),
     "[CSymbolEngineIsRush] Average duration of hand-reset: %.2f\n",
     sum_of_handreset_durations / handresets);
   if (sum_of_handreset_durations / handresets > kMaxAverageDurationOfHandreset) {

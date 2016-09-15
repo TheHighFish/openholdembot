@@ -56,18 +56,18 @@ CString CDebugTab::EvaluateAll() {
 }
 
 void CDebugTab::Clear() {
-   write_log(preferences.debug_alltherest(), "[CDebugTab] Clear()\n");
+  write_log(preferences.debug_alltherest(), "[CDebugTab] Clear()\n");
   assert(_number_of_expressions >= 0);
   assert(_number_of_expressions <= kMaxSizeOfDebugTab);
-   write_log(preferences.debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
+  write_log(preferences.debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
   for (int i=0; i<kMaxSizeOfDebugTab; ++i) {
     _expression_texts[i] = "";
     delete _expressions[i];
     _expressions[i] = NULL;
   }
-   write_log(preferences.debug_alltherest(), "[CDebugTab] Expressions deleted\n");
+  write_log(preferences.debug_alltherest(), "[CDebugTab] Expressions deleted\n");
   _number_of_expressions = 0;
-   write_log(preferences.debug_alltherest(), "[CDebugTab] Done\n");
+  write_log(preferences.debug_alltherest(), "[CDebugTab] Done\n");
 }
 
 void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expression) {

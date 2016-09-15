@@ -43,24 +43,24 @@ CParseTreeNode::~CParseTreeNode() {
   // and remeber the result.
   bool is_open_ended_when_condition = IsOpenEndedWhenCondition();
 #ifdef _DEBUG
-   write_log(preferences.debug_formula(),
+  write_log(preferences.debug_formula(),
     "[CParseTreeNode] Deleting parse tree node %i\n", this);
   if (_node_type == kTokenOperatorConditionalWhen) {
-     write_log(preferences.debug_formula(),
+    write_log(preferences.debug_formula(),
       "[CParseTreeNode] WHEN condition: %s\n", _first_sibbling->Serialize());
-     write_log(preferences.debug_formula(),
+    write_log(preferences.debug_formula(),
       "[CParseTreeNode] Open ended: %s\n", Bool2CString(IsOpenEndedWhenCondition()));
   }
-   write_log(preferences.debug_formula(),
+  write_log(preferences.debug_formula(),
     "[CParseTreeNode] 1st sibbling %i::%i\n", this, _first_sibbling);
-   write_log(preferences.debug_formula(),
+  write_log(preferences.debug_formula(),
     "[CParseTreeNode] 2nd sibbling %i::%i\n", this, _second_sibbling);
-   write_log(preferences.debug_formula(),
+  write_log(preferences.debug_formula(),
     "[CParseTreeNode] 3rd sibbling %i::%i\n", this, _third_sibbling);
 #endif
   if (_first_sibbling != NULL) {
 #ifdef _DEBUG
-    write_log(preferences.debug_formula(),
+   write_log(preferences.debug_formula(),
      "[CParseTreeNode] Deleting 1st sibbling %i::%i\n", this, _first_sibbling);
 #endif
     delete _first_sibbling;
@@ -68,7 +68,7 @@ CParseTreeNode::~CParseTreeNode() {
   }
   if (_second_sibbling != NULL) {
 #ifdef _DEBUG
-     write_log(preferences.debug_formula(),
+    write_log(preferences.debug_formula(),
       "[CParseTreeNode] Deleting 2nd sibbling %i::%i\n", this, _second_sibbling);
 #endif
     delete _second_sibbling;
@@ -79,11 +79,11 @@ CParseTreeNode::~CParseTreeNode() {
     // They create graphs, no longer pure trees/
     // The 3rd node is reachable on two paths.
 #ifdef _DEBUG
-     write_log(preferences.debug_formula(),
+    write_log(preferences.debug_formula(),
       "[CParseTreeNode] Open ended: %s\n", Bool2CString(IsOpenEndedWhenCondition()));
-     write_log(preferences.debug_formula(),
+    write_log(preferences.debug_formula(),
       "[CParseTreeNode] Node type %i\n", _node_type);
-     write_log(preferences.debug_formula(),
+    write_log(preferences.debug_formula(),
       "[CParseTreeNode] Deleting 3rd sibbling %i::%i\n", this, _third_sibbling);
 #endif
     delete _third_sibbling;

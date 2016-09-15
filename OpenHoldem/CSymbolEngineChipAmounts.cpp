@@ -146,9 +146,9 @@ void CSymbolEngineChipAmounts::CalculatePots() {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17984#p125241
   if (IsSmaller(_potcommon, 0)) {
 	  // This can happen for potmethod = 2 and incorrectly scraped (occluded) main-pot
-	   write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] ERROR! negative potcommon.\n"); 
-     write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] Probably miss-scraped main-pot or wrong potmethod.");
-     write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] Adapting to 0.0\n");
+	  write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] ERROR! negative potcommon.\n"); 
+    write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] Probably miss-scraped main-pot or wrong potmethod.");
+    write_log(k_always_log_errors, "[CSymbolEngineChipAmounts] Adapting to 0.0\n");
 	  _potcommon = 0;
   }
 }
@@ -162,7 +162,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise() {
 	} else {
 		_call = 0;
 	}
-   write_log(preferences.debug_symbolengine(),
+  write_log(preferences.debug_symbolengine(),
     "[CSymbolEngineChipAmounts] call = %.2f\n", _call);
   // In case we are covered consider only the effective amount to call,
   // but only if our balance is reasonable.
@@ -213,7 +213,7 @@ double CSymbolEngineChipAmounts::Largestbet() {
       // Does not count as largest bet
       // and there must be a regular big blind,
       // so we can safely skip
-       write_log(preferences.debug_symbolengine(),
+      write_log(preferences.debug_symbolengine(),
         "[CSymbolEngineChipAmounts] LargestBet() ignoring player %i, who posts both blinds\n",
         i);
       continue;

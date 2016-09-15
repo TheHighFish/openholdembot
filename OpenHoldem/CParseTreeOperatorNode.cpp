@@ -87,7 +87,7 @@ void CParseTreeOperatorNode::MakeWhenCondition(TPParseTreeNode condition) {
 }
 
 double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
-  write_log(preferences.debug_formula(), 
+ write_log(preferences.debug_formula(), 
     "[CParseTreeOperatorNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
@@ -104,7 +104,7 @@ double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
     double raise_by_amount_in_bblinds = EvaluateSibbling(_first_sibbling, log);
     double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
       + raise_by_amount_in_bblinds;
-    write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
       "[CParseTreeOperatorNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
       raise_by_amount_in_bblinds,
       p_symbol_engine_chip_amounts->ncallbets(),
@@ -122,7 +122,7 @@ double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
 			* pot_size_after_call_in_big_blinds;
     double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
       + raise_by_amount_in_bblinds;
-    write_log(preferences.debug_formula(), 
+   write_log(preferences.debug_formula(), 
       "[CParseTreeOperatorNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
       raise_by_percentage,
       pot_size_after_call_in_big_blinds,
@@ -360,7 +360,7 @@ CString CParseTreeOperatorNode::Serialize() {
       + (_third_sibbling? _third_sibbling->Serialize(): "");
   } else {
     // Unhandled note-type, probably new and therefore not yet handled
-    write_log(k_always_log_errors, "[CParseTreeOperatorNode] ERROR: Unhandled node-type %i in serialization of parse-tree\n",
+   write_log(k_always_log_errors, "[CParseTreeOperatorNode] ERROR: Unhandled node-type %i in serialization of parse-tree\n",
       _node_type);
     return "";
   }

@@ -43,7 +43,7 @@ CParseTreeTerminalNodeIdentifier::~CParseTreeTerminalNodeIdentifier() {
 }
 
 double CParseTreeTerminalNodeIdentifier::Evaluate(bool log /* = false */){
-  write_log(preferences.debug_formula(), 
+ write_log(preferences.debug_formula(), 
     "[CParseTreeTerminalNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
@@ -94,7 +94,7 @@ CString CParseTreeTerminalNodeIdentifier::Serialize() {
     return _terminal_name;
   } else {
     // Unhandled note-type, probably new and therefore not yet handled
-    write_log(k_always_log_errors, "[CParseTreeTerminalNode] ERROR: Unhandled node-type %i in serialization of parse-tree\n",
+   write_log(k_always_log_errors, "[CParseTreeTerminalNode] ERROR: Unhandled node-type %i in serialization of parse-tree\n",
       _node_type);
     return "";
   }

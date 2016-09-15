@@ -21,7 +21,7 @@
 
 void LogMemoryUsage(char *message) {
   if (!preferences.debug_memory_usage()) return;
-   write_log(true, "[MemoryLogging] %s\n", message);
+  write_log(true, "[MemoryLogging] %s\n", message);
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms683180%28v=vs.85%29.aspx
   DWORD process_ID = GetCurrentProcessId();
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms682050%28v=vs.85%29.aspx 
@@ -31,9 +31,9 @@ void LogMemoryUsage(char *message) {
                                 FALSE, process_ID);
   assert(NULL != hProcess);
   if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
-     write_log(true, "[MemoryLogging] WorkingSetSize:     %09d\n", 
+    write_log(true, "[MemoryLogging] WorkingSetSize:     %09d\n", 
       pmc.WorkingSetSize);
-     write_log(true, "[MemoryLogging] PeakWorkingSetSize: %09d\n", 
+    write_log(true, "[MemoryLogging] PeakWorkingSetSize: %09d\n", 
       pmc.PeakWorkingSetSize);
   }
   CloseHandle(hProcess);

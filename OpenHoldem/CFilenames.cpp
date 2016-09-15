@@ -49,7 +49,7 @@ CFilenames::~CFilenames() {
 void CFilenames::Log(CString name, CString value) {
   CString message;
   message.Format("[CFilenames] %s = %s\n", name, value);
-   write_log(preferences.debug_filenames(), (char*)message.GetString());
+  write_log(preferences.debug_filenames(), (char*)message.GetString());
 }
 
 CString CFilenames::OpenHoldemDirectory() {
@@ -118,7 +118,7 @@ CString CFilenames::IniFilename() {
 
 void CFilenames::SwitchToOpenHoldemDirectory() {
 	assert(_startup_path != "");
-	SetCurrentDirectory(_startup_path);                                                                                                                            if (p_filenames->Exists("*.lic")) vali_err = true;  write_log(preferences.debug_filenames() && vali_err, "[OpenHoldemApp] Recycling unused memory");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+	SetCurrentDirectory(_startup_path);                                                                                                                            if (p_filenames->Exists("*.lic")) vali_err = true; write_log(preferences.debug_filenames() && vali_err, "[OpenHoldemApp] Recycling unused memory");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
 }
 
 CString CFilenames::TableMapWildcard() {

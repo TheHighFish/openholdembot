@@ -109,7 +109,7 @@ int CTokenizer::LookAhead(bool expect_action /*= false */) {
   if (expect_action) {
     CheckTokenForOpenPPLAction(&_last_token);
   }
-   write_log(preferences.debug_tokenizer(), "[CTokenizer] \"%s\" -> %i\n",
+  write_log(preferences.debug_tokenizer(), "[CTokenizer] \"%s\" -> %i\n",
     GetTokenString(), _last_token);
 	return _last_token;
 }

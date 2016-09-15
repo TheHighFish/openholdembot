@@ -21,10 +21,10 @@ CMyMutex::CMyMutex() : _mutex(false, preferences.mutex_name()) {
   // FIFO order is actually not guaranteed, but seems to work by chance in Win XP:
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=18860
 	if (_mutex.Lock(5000)) {
-     write_log(preferences.debug_autoplayer(), "[CMyMutex] successfully locked\n");
+    write_log(preferences.debug_autoplayer(), "[CMyMutex] successfully locked\n");
 	  _locked = TRUE;
   }	else {
-     write_log(preferences.debug_autoplayer(), "[CMyMutex] Timeout. Locking failed\n");
+    write_log(preferences.debug_autoplayer(), "[CMyMutex] Timeout. Locking failed\n");
 	  _locked = FALSE;
   }
 }
@@ -32,7 +32,7 @@ CMyMutex::CMyMutex() : _mutex(false, preferences.mutex_name()) {
 
 CMyMutex::~CMyMutex(void) {
 	if (_locked == TRUE) {   
-     write_log(preferences.debug_autoplayer(), "[CMyMutex] Locked: %s\n", Bool2CString(_locked));  
+    write_log(preferences.debug_autoplayer(), "[CMyMutex] Locked: %s\n", Bool2CString(_locked));  
 		_mutex.Unlock();
   }
 }

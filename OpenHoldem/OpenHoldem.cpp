@@ -136,7 +136,7 @@ BOOL COpenHoldemApp::InitInstance() {
 	InstantiateAllSingletons();
   p_formula_parser->ParseDefaultLibraries();
 
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load mouse.DLL\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load mouse.DLL\n");
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
 	if (_mouse_dll==NULL)
@@ -163,7 +163,7 @@ BOOL COpenHoldemApp::InitInstance() {
 			return false;
 		}
 	
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load keyboard.DLL\n");}
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load keyboard.DLL\n");}
 
 	// keyboard.dll - failure in load is fatal
 	_keyboard_dll = LoadLibrary("keyboard.dll");
@@ -200,7 +200,7 @@ BOOL COpenHoldemApp::InitInstance() {
 	 //Document template and doc/view
          //https://msdn.microsoft.com/en-us/library/hts9a4xz.aspx
 	 // https://msdn.microsoft.com/en-us/library/d1e9fe7d.aspx
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to create CSingleDocTemplate()\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to create CSingleDocTemplate()\n");
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(COpenHoldemDoc),
@@ -208,31 +208,31 @@ BOOL COpenHoldemApp::InitInstance() {
 		RUNTIME_CLASS(COpenHoldemView));
 
 	if (!pDocTemplate) {
-		 write_log(preferences.debug_openholdem(), "[OpenHoldem] Creating CSingleDocTemplate() failed\n");
+		write_log(preferences.debug_openholdem(), "[OpenHoldem] Creating CSingleDocTemplate() failed\n");
 		return FALSE;
 	}
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to AddDocTemplate()\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to AddDocTemplate()\n");
 	AddDocTemplate(pDocTemplate);
 
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to EnableShellOpen()\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to EnableShellOpen()\n");
 	EnableShellOpen();
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to RegisterShellFileTypes(false)\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to RegisterShellFileTypes(false)\n");
 	RegisterShellFileTypes(false);
-   write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to InitializeThreads()\n");
+  write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to InitializeThreads()\n");
   InitializeThreads();
-   write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to OpenLastRecentlyUsedFile()\n");
+  write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to OpenLastRecentlyUsedFile()\n");
 	OpenLastRecentlyUsedFile();
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Posting message that finishes initialization later\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Posting message that finishes initialization later\n");
 	FinishInitialization();
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] InitInstance done\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] InitInstance done\n");
 	return TRUE;
 }
 
 void COpenHoldemApp::FinishInitialization() {
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] FinishInitialization()\n");
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] FinishInitialization()\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);
 	assert(p_openholdem_title != NULL);
 	p_openholdem_title->UpdateTitle();
@@ -253,7 +253,7 @@ void COpenHoldemApp::FinishInitialization() {
 	m_pMainWnd->SetFocus();
 	m_pMainWnd->SetForegroundWindow();
   // autoconnect on start, if preferred
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to connect\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to connect\n");
 	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once) {
 		p_autoconnector->Connect(NULL);
 	}
@@ -315,7 +315,7 @@ void COpenHoldemApp::LoadLastRecentlyUsedFileList() {
 	ASSERT_VALID(this);
 	ASSERT(m_pRecentFileList == NULL);
 
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load file history\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load file history\n");
 	if (kNumberOfLastRecentlyUsedFilesInFileMenu > 0) 
 	{
 		// create file MRU since nMaxMRU not zero
@@ -335,14 +335,14 @@ void COpenHoldemApp::OpenLastRecentlyUsedFile() {
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to open last recently used file\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to open last recently used file\n");
 	// Open the most recently used file. (First on the MRU list.) Get the last
 	// file from the registry. We need not account for cmdInfo.m_bRunAutomated and
 	// cmdInfo.m_bRunEmbedded as they are processed before we get here.
 	if (cmdInfo.m_nShellCommand == CCommandLineInfo::FileNew)	{
 		CString sLastPath(GetProfileString(_afxFileSection, "File1"));
     if (!sLastPath.IsEmpty())	{
-			 write_log(preferences.debug_openholdem(), "[OpenHoldem] Last path: %s\n", 
+			write_log(preferences.debug_openholdem(), "[OpenHoldem] Last path: %s\n", 
 				sLastPath);
 			CFile f;
 			// If file is there, set to open!
@@ -353,17 +353,17 @@ void COpenHoldemApp::OpenLastRecentlyUsedFile() {
 			}
 		}
 	}
-	 write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to dispatch command-line\n");
+	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to dispatch command-line\n");
 	// Dispatch commands specified on the command line.  Will fail if
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.	
 	if (!ProcessShellCommand(cmdInfo)) {
-		 write_log(preferences.debug_openholdem(), "[OpenHoldem] Dispatching command-line failed\n");
+		write_log(preferences.debug_openholdem(), "[OpenHoldem] Dispatching command-line failed\n");
 	}
 }
 
 void COpenHoldemApp::InitializeThreads() {
   // Heartbeat thread cares about everything: connecting, scraping, playing
-  write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
+ write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
   assert(p_heartbeat_thread == NULL);
   p_heartbeat_thread = new CHeartbeatThread;
   assert(p_heartbeat_thread != NULL);
