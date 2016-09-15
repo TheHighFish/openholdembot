@@ -308,9 +308,7 @@ void CEngineContainer::EvaluateAll() {
 
 void CEngineContainer::ResetOnConnection() {
 	 write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
-	p_autoplayer_trace->Clear();
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-	{
+	for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
 		_symbol_engines[i]->ResetOnConnection();
 	}
 	_reset_on_connection_executed = true;

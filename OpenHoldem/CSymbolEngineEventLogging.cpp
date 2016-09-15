@@ -16,6 +16,7 @@
 #include "CSymbolEngineEventLogging.h"
 
 #include "CAutoconnector.h"
+#include "CAutoplayerTrace.h"
 #include "CHandresetDetector.h"
 #include "CScraper.h"
 #include "CSymbolEngineDealerchair.h"
@@ -34,8 +35,9 @@ CSymbolEngineEventLogging::~CSymbolEngineEventLogging()
 void CSymbolEngineEventLogging::InitOnStartup()
 {}
 
-void CSymbolEngineEventLogging::ResetOnConnection()
-{}
+void CSymbolEngineEventLogging::ResetOnConnection() {
+  p_autoplayer_trace->Clear();
+}
 
 void CSymbolEngineEventLogging::ResetOnHandreset() {
   // Log a new connection, plus the version-info
@@ -59,8 +61,9 @@ void CSymbolEngineEventLogging::ResetOnNewRound()
 void CSymbolEngineEventLogging::ResetOnMyTurn()
 {}
 
-void CSymbolEngineEventLogging::ResetOnHeartbeat()
-{}
+void CSymbolEngineEventLogging::ResetOnHeartbeat() {
+  p_autoplayer_trace->Clear();
+}
 
 bool CSymbolEngineEventLogging::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
 	// We don't provide any symbols

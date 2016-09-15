@@ -343,7 +343,9 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
   }
 	if (executed_secondary_function != kUndefined) {
 		FinishActionSequenceIfNecessary();
-		p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), preferences.log_hopper_functions());
+    if (preferences.log_hopper_functions()) {
+      p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
+    }
 		return true;
 	}
 	action_sequence_needs_to_be_finished = false;
