@@ -28,7 +28,8 @@ int line_relative = 1;
 const int kMaxSizeOfToken = 1024;
 char last_token_string[kMaxSizeOfToken];
 char* input_buffer;
-int  _token_start_pointer;
+int  _token_start_pointer = kUndefined;
+const char kEmptyBuffer[2] = "\n";
 
 #define NEXT_CHARACTER        input_buffer[_token_end_pointer+1]
 #define SECOND_NEXT_CHARACTER input_buffer[_token_end_pointer+2]
@@ -45,6 +46,7 @@ CTokenizer::~CTokenizer() {
 
 void CTokenizer::InitNewParse() {
   line_absolute = 1;
+  SetInput(kEmptyBuffer);
 	InitVars();
 }
 
@@ -445,8 +447,7 @@ char* CTokenizer::GetTokenString() {
 	return last_token_string;
 }
 
-char* CTokenizer::RemainingInput()
-{
+char* CTokenizer::RemainingInput() {
 	return TOKEN_ADDRESS;
 }
 

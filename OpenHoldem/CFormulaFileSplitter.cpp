@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CFormulaFileSplitter.h"
 
+#include "CParseErrors.h"
 #include "OH_MessageBox.h"
 
 // Format of a formula file:
@@ -44,8 +45,33 @@ CFormulaFileSplitter::~CFormulaFileSplitter() {
 
 void CFormulaFileSplitter::InitNewParse() {
   _first_function_processed = false; 
-  _total_line_processed = 0;
+  _total_lines_processed = 0;
   _starting_line_of_current_function = 0;
+}
+
+void CFormulaFileSplitter::SanityChecksForWrongFileTypes() {
+  // Some people manage to feed OpenHoldem with unexpected file-types, including
+  //  * Downloaded web-pages
+  //  * tablemaps
+  // We try to diagnose such PEBKACs here
+  CString first_line = _next_line;
+  first_line.MakeLower();
+  if ((first_line.Left(4) == "<htm")
+    || (first_line.Left(4) == "<!do")
+    || (first_line.Left(4) == "<xml")) {
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19814&p=139309
+    CParseErrors::Error("Invalid file-type.\n"
+      "The input looks like HTML or XML.\n"
+      "Did you download a demo from the internet\n"
+      "and save a web-page instead of plain text?\n");
+  } else if (first_line.Left(5) == ".osdb") {
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20046#p140821
+    CParseErrors::Error("Invalid file-type.\n"
+      "The input looks like a tablemap.\n"
+      "Tablemaps have to be put into the scraper-directory\n"
+      "and then get loaded automatically.\n"
+      "Menu->File->Open is only for bot-logic.\n");
+  }
 }
 
 // Returns the next function (including header),
@@ -60,7 +86,10 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
     if (!formula_file.ReadString(_next_line)) {
 	    break;
     }
-    ++_total_line_processed;
+    ++_total_lines_processed;
+    if (_total_lines_processed == 1) {
+      SanityChecksForWrongFileTypes();
+    }
     // Avoid problems with "empty" lines before first function header
     // that  contain spaces.
     _next_line.TrimRight();
@@ -73,7 +102,7 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
       // Only continue, if we found the first one
       //
       // In case of break: keep that function-header for the next query
-      _starting_line_of_current_function = _total_line_processed;
+      _starting_line_of_current_function = _total_lines_processed;
       break;
 	  }
     if (_function_header.IsEmpty() || (_function_header.Find('#') < 0)) {

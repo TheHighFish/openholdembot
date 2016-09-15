@@ -43,8 +43,7 @@ void CParseErrors::ErrorUnknownIdentifier(CString name) {
   Error(message);
 }
 
-CString CParseErrors::ErroneousCodeSnippet()
-{
+CString CParseErrors::ErroneousCodeSnippet() {
 	// We have seen functions up to several 1000 lines 
 	// (insane Shanky-style) and lines up 5000 characters
 	// (auto-generated code).
@@ -54,22 +53,16 @@ CString CParseErrors::ErroneousCodeSnippet()
 	const int kMaxCharactersPerLineToShow = 60;
 	char* remaining_input = CTokenizer::RemainingInput();
   if (remaining_input == NULL) return "";
-
-	CString erroneous_code_snippet;
-	for (int i=0; i<kLinesOfCodeToShow; i++)
-	{ 
-		for (int j=0; j<kMaxCharactersPerLineToShow; j++)
-		{
+  CString erroneous_code_snippet;
+	for (int i=0; i<kLinesOfCodeToShow; i++) { 
+		for (int j=0; j<kMaxCharactersPerLineToShow; j++) {
 			char next_character = remaining_input[j];
 			erroneous_code_snippet += next_character;
-			if (next_character == '\n')
-			{
+			if (next_character == '\n')	{
 				// End of line reached
 				// Therefore terminate this line early
 				break;
-			}
-			else if (next_character == '\0')
-			{
+			}	else if (next_character == '\0') {
 				// End of function reached
 				// Therefore terminate completely
 				goto EndOfOuterLoop;
@@ -78,8 +71,7 @@ CString CParseErrors::ErroneousCodeSnippet()
 		erroneous_code_snippet += '\n';
 		// Skip to end of line 
 		char next_character;
-		do
-		{
+		do {
 			next_character = *remaining_input;
 			remaining_input++;	
 		}
