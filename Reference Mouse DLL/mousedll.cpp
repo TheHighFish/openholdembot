@@ -38,8 +38,7 @@
 #include <math.h>
 #include "mousedll.h"
 
-MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton button, const int clicks,
-							const HWND restore_focus, const POINT restore_cursor)
+MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton button, const int clicks)
 {
 	INPUT			input[100] = {0};
 
@@ -101,29 +100,13 @@ MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton 
 	Sleep(100);
 	SendInput(clicks*2, input, sizeof(INPUT));
 	Sleep(100);
-
-	// Restore previous window state and cursor position
-	if (restore_focus!=NULL)
-	{
-		SetActiveWindow(restore_focus);
-		SetForegroundWindow(restore_focus);
-		SetFocus(restore_focus);
-	}
-
-	// Remove that code-block, if you don't want to restore the mouse-cursor!
-	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
-	{
-		SetCursorPos(restore_cursor.x, restore_cursor.y);
-	}
-
 	return (int) true;
 }
 
-MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, const HWND restore_focus, const POINT restore_cursor)
-{
+MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect) {
 	INPUT			input[3];
 	POINT			pt;
-	double			fx, fy;
+	double		fx, fy;
 
 	double fScreenWidth = ::GetSystemMetrics( SM_CXSCREEN )-1;
 	double fScreenHeight = ::GetSystemMetrics( SM_CYSCREEN )-1;
@@ -162,24 +145,8 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect, const HWND res
 	SetFocus(hwnd);
 	SetForegroundWindow(hwnd);
 	SetActiveWindow(hwnd);
-
 	// Send input
 	SendInput(3, input, sizeof(INPUT));
-
-	// Restore previous window state and cursor position
-	if (restore_focus!=NULL)
-	{
-		SetActiveWindow(restore_focus);
-		SetForegroundWindow(restore_focus);
-		SetFocus(restore_focus);
-	}
-
-	// Remove that code-block, if you don't want to restore the mouse-cursor!
-	if (restore_cursor.x!=-1 && restore_cursor.y!=-1)
-	{
-		SetCursorPos(restore_cursor.x, restore_cursor.y);
-	}
-
 	return (int) true;
 }
 
