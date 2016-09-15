@@ -229,7 +229,7 @@ void CPreferences::InitDefaults(void) {
 	prefs_CString_values[k_prefs_pt_ip_addr] = "127.0.0.1";
 	prefs_CString_values[k_prefs_pt_port] = "5432";
 	prefs_CString_values[k_prefs_pt_user] = "pokertracker";
-	prefs_CString_values[k_prefs_rebuy_script] = "Rebuy.exe";
+	prefs_CString_values[k_prefs_rebuy_script] = "Tools\\Rebuy.exe";
 	prefs_CString_values[k_prefs_window_class_name] = "OpenHoldem";
 	prefs_CString_values[k_prefs_mutex_name] = "OHAntiColl";
 }
