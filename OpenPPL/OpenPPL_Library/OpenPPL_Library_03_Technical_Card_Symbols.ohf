@@ -1,0 +1,145 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 7.0.2 or later
+//
+// Contributors:
+//   Bob3456
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Technical Card Symbols
+//
+//*****************************************************************************
+
+##OneCardStraightPossibleOnTurn_AceHigh##
+//........................AKQJT98765432a-
+(`(RankBitsCommonTurn & 0b111110000000000) >= 4)   
+
+##OneCardStraightPossibleOnTurn_KingHigh##
+(`(RankBitsCommonTurn & 0b011111000000000) >= 4)  
+
+##OneCardStraightPossibleOnTurn_QueenHigh##
+(`(RankBitsCommonTurn & 0b001111100000000) >= 4)  
+
+##OneCardStraightPossibleOnTurn_JackHigh##
+(`(RankBitsCommonTurn & 0b000111110000000) >= 4)  
+
+##OneCardStraightPossibleOnTurn_TenHigh##
+(`(RankBitsCommonTurn & 0b000011111000000) >= 4)  
+
+##OneCardStraightPossibleOnTurn_NineHigh##
+(`(RankBitsCommonTurn & 0b000001111100000) >= 4)  
+
+##OneCardStraightPossibleOnTurn_EightHigh##
+(`(RankBitsCommonTurn & 0b000000111110000) >= 4)   
+
+##OneCardStraightPossibleOnTurn_SevenHigh##
+(`(RankBitsCommonTurn & 0b000000011111000) >= 4)   
+
+##OneCardStraightPossibleOnTurn_SixHigh##
+(`(RankBitsCommonTurn & 0b000000001111100) >= 4)   
+
+##OneCardStraightPossibleOnTurn_FiveHigh##
+(`(RankBitsCommonTurn & 0b000000000111110) >= 4)
+
+##RankBitsAce##
+// Including ace low
+// AKQJT98765432a-
+0b0100000000000010
+
+##RankBitsCommonLowCardsOnly##
+// Bits 8..ace(low), last bit is unused
+(rankbitscommon & 0b111111110)
+
+##RankBitsCommonFlop##
+  (FirstFlopCard != ConstCardAce ? 2**FirstFlopCard : RankBitsAce)
+| (SecondFlopCard != ConstCardAce ? 2**SecondFlopCard : RankBitsAce)
+| (ThirdFlopCard != ConstCardAce ? 2**ThirdFlopCard : RankBitsAce)
+
+##RankBitsCommonTurn##
+  RankBitsCommonFlop
+| (TurnCard != ConstCardAce ? 2**TurnCard : RankBitsAce)
+
+##RankBitsCommonRiver##
+// As this can only be called at the river it is identical to rankbiscommon
+rankbitscommon
+
+##SecondTopFlopCard_PairOnFlop##
+PairOnFlop AND FirstFlopCard  == SecondFlopCard AND FirstFlopCard  > ThirdFlopCard  ? ThirdFlopCard :
+PairOnFlop AND FirstFlopCard  == SecondFlopCard AND FirstFlopCard  < ThirdFlopCard  ? FirstFlopCard :
+PairOnFlop AND FirstFlopCard  == ThirdFlopCard AND FirstFlopCard  > SecondFlopCard  ? SecondFlopCard :
+PairOnFlop AND FirstFlopCard  == ThirdFlopCard AND FirstFlopCard  < SecondFlopCard  ? FirstFlopCard :
+PairOnFlop AND SecondFlopCard  == ThirdFlopCard AND SecondFlopCard  > FirstFlopCard  ? FirstFlopCard :
+PairOnFlop AND SecondFlopCard  == ThirdFlopCard AND SecondFlopCard  < FirstFlopCard  ? SecondFlopCard :
+-1
+
+##SecondTopFlopCard_UnpairedFlop##
+NOT PairOnFlop AND FirstFlopCard  >= SecondFlopCard AND FirstFlopCard  >= ThirdFlopCard  AND SecondFlopCard >= ThirdFlopCard  ? SecondFlopCard :
+NOT PairOnFlop AND FirstFlopCard  >= SecondFlopCard AND FirstFlopCard  >= ThirdFlopCard  AND SecondFlopCard <= ThirdFlopCard  ? ThirdFlopCard  :
+NOT PairOnFlop AND SecondFlopCard >= FirstFlopCard  AND SecondFlopCard >= ThirdFlopCard  AND FirstFlopCard  >= ThirdFlopCard  ? FirstFlopCard  :
+NOT PairOnFlop AND SecondFlopCard >= FirstFlopCard  AND SecondFlopCard >= ThirdFlopCard  AND FirstFlopCard  <= ThirdFlopCard  ? ThirdFlopCard  :
+NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= SecondFlopCard AND FirstFlopCard  >= SecondFlopCard ? FirstFlopCard  :
+NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= SecondFlopCard AND FirstFlopCard  <= SecondFlopCard ? SecondFlopCard :
+-1
+
+##Srankbitshero##
+ (($$ps0==tsuit ? (RankOfFirstHoleCard!=ConstCardAce ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
+| ($$ps1==tsuit ? (RankOfSecondHoleCard!=ConstCardAce ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
+
+##Srankbitsavailable##
+// Available suited cards for other players,
+// possibly contributing to a flush or straight flush
+// The binary negation works on full prevision.
+// We have to discard everything above ace high
+// plus ace-low and the unused lowest bit.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19262
+(~(srankbitscommon | Srankbitshero)) & ConstAllRanksWithoutAceLow

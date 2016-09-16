@@ -1,0 +1,1232 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 7.0.2 or later
+//
+// Contributors:
+//   Bob3456
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Hand(Strength) Symbols
+//
+//*****************************************************************************
+
+##HadOverPairOnFlop##
+[   ispair
+AND RankOfFirstHoleCard > FirstFlopCard
+AND RankOfFirstHoleCard > SecondFlopCard
+AND RankOfFirstHoleCard > ThirdFlopCard ]
+
+##HadOverPairOnTurn##
+[   ispair
+AND RankOfFirstHoleCard > FirstFlopCard
+AND RankOfFirstHoleCard > SecondFlopCard
+AND RankOfFirstHoleCard > ThirdFlopCard 
+AND RankOfFirstHoleCard > TurnCard 
+]
+
+##HadSecondOverPairOnFlop##
+    ispair
+AND rankhiplayer < TopFlopCard
+AND rankhiplayer > SecondTopFlopCard
+
+##HadSecondOverPairOnTurn##
+HadSecondOverPairOnFlop AND (($$cr3==TopFlopCard)OR ($$cr3<TopFlopCard))
+
+##HadPairOnFlop##
+// Pair in the hand
+WHEN ispair RETURN True FORCE
+// Pairing the board
+WHEN FirstHoleCardPairsTheFlop  RETURN True FORCE
+WHEN SecondHoleCardPairsTheFlop RETURN True FORCE 
+
+##HadPairOnTurn##
+   HadPairOnFlop 
+OR FlopCardPairedOnTurn 
+OR RankOfFirstHoleCard == TurnCard 
+OR RankOfSecondHoleCard == TurnCard
+
+##HadSetOnFlop##
+PairInHand AND (RankOfFirstHoleCard==$$cr0 OR RankOfFirstHoleCard==$$cr1 OR RankOfFirstHoleCard==$$cr2) 
+
+##HadSetOnTurn##
+HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3) 
+
+##HadTopPairOnFlop##
+[(RankOfFirstHoleCard == HighestRankOnFlop) OR (RankOfSecondHoleCard == HighestRankOnFlop)]
+
+##HadSecondTopPairOnFlop##
+[(RankOfFirstHoleCard == SecondTopFlopCard) OR (RankOfSecondHoleCard == SecondTopFlopCard)]
+
+
+##HighestRankOnTurn##
+((TurnCard > HighestRankOnFlop) ? TurnCard : HighestRankOnFlop)
+
+##HadTopPairOnTurn##
+[ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
+
+##FirstHoleCardPairsTheFlop##
+WHEN (RankOfFirstHoleCard  == FirstFlopCard)  RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == SecondFlopCard) RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == ThirdFlopCard)  RETURN True FORCE
+WHEN Others RETURN False FORCE
+
+##SecondHoleCardPairsTheFlop##
+WHEN (RankOfSecondHoleCard  == FirstFlopCard)  RETURN True FORCE
+WHEN (RankOfSecondHoleCard  == SecondFlopCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard  == ThirdFlopCard)  RETURN True FORCE
+WHEN Others RETURN False FORCE
+
+##HadTwoPairOnFlop##
+WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN True FORCE
+WHEN Others RETURN False FORCE
+
+##HaveSecondBestKicker##
+(NumberOfBetterKickers == 1)
+
+##HaveSecondBestKickerOrBetter##
+HaveSecondBestKicker OR HaveBestKickerOrBetter
+
+##HaveSecondBestOverPair##
+    ($KK
+AND FirstFlopCard < ConstCardKing
+AND SecondFlopCard < ConstCardKing
+AND ThirdFlopCard < ConstCardKing
+AND TurnCard < ConstCardKing
+AND RiverCard < ConstCardKing)
+
+##HaveSecondBestOverPairOrBetter##
+(HaveSecondBestOverPair OR HaveBestOverPairOrBetter)
+
+##HaveSecondNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 1)]
+
+##HaveSecondNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 1)
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
+`(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh##
+`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh##
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh##
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh##
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh##
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh##
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh##
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix  :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh##
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfBestPossibleStraight##
+`(rankbitscommon & 0b111110000000000) >= 3 ? ConstCardAce   :
+`(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+-1
+
+##HighCardOfSecondBestPossibleStraight##
+(HighCardOfBestPossibleStraight == ConstCardAce)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh   :
+(HighCardOfBestPossibleStraight == ConstCardKing)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh  :
+(HighCardOfBestPossibleStraight == ConstCardQueen) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh :
+(HighCardOfBestPossibleStraight == ConstCardJack)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh  :
+(HighCardOfBestPossibleStraight == ConstCardTen)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh   :
+(HighCardOfBestPossibleStraight == ConstCardNine)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh  :
+(HighCardOfBestPossibleStraight == ConstCardEight) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh :
+(HighCardOfBestPossibleStraight == ConstCardSeven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
+(HighCardOfBestPossibleStraight == ConstCardSix)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfOurStraight##
+// Precondition: we have a straight
+`(rankbits & 0b111110000000000) == 5 ? ConstCardAce   :
+`(rankbits & 0b011111000000000) == 5 ? ConstCardKing  :
+`(rankbits & 0b001111100000000) == 5 ? ConstCardQueen :
+`(rankbits & 0b000111110000000) == 5 ? ConstCardJack  :
+`(rankbits & 0b000011111000000) == 5 ? ConstCardTen   :
+`(rankbits & 0b000001111100000) == 5 ? ConstCardNine  :
+`(rankbits & 0b000000111110000) == 5 ? ConstCardEight :
+`(rankbits & 0b000000011111000) == 5 ? ConstCardSeven :
+`(rankbits & 0b000000001111100) == 5 ? ConstCardSix   :
+`(rankbits & 0b000000000111110) == 5 ? ConstCardFive  :
+ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function
+
+##HighCardOfCommonStraight##
+// Precondition: straight on board
+`(rankbitscommon & 0b111110000000000) == 5 ? ConstCardAce   :
+`(rankbitscommon & 0b011111000000000) == 5 ? ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) == 5 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) == 5 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) == 5 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) == 5 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) == 5 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) == 5 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) == 5 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) == 5 ? ConstCardFive  :
+ERROR_Board_Dont_Have_Any_Straight__Do_Not_Call_This_Function
+
+##HaveSecondNutStraight##
+HaveStraight
+AND (HighCardOfSecondBestPossibleStraight == HighCardOfOurStraight)
+
+##HaveSecondOverPair##
+ispair AND (RankOfFirstHoleCard < BestBoardCard) AND (RankOfFirstHoleCard > SecondBestBoardCard)
+
+##HaveSecondTopPair##
+RankOfFirstHoleCard == SecondBestBoardCard OR RankOfSecondHoleCard == SecondBestBoardCard
+
+##HaveSecondTopSet##
+ispair AND RankOfFirstHoleCard == SecondBestBoardCard
+
+##TopBitOfRankBitsCommon##
+(1 << rankhicommon)
+
+##SecondTopBitOfRankBitsCommon##
+(1 << SecondBestBoardCard)
+
+##ThirdTopBitOfRankBitsCommon##
+(1 << ThirdBestBoardCard)
+
+##FourthTopBitOfRankBitsCommon##
+(1 << FourthBestBoardCard)
+
+##FifthTopBitOfRankBitsCommon##
+(1 << FifthBestBoardCard)
+
+##RankBitsCommonWithoutTopBit##
+rankbitscommon & ~TopBitOfRankBitsCommon
+
+##RankBitsCommonWithoutTopTwoBits##
+RankBitsCommonWithoutTopBit & ~SecondTopBitOfRankBitsCommon
+
+##RankBitsCommonWithoutTopThreeBits##
+RankBitsCommonWithoutTopTwoBits & ~ThirdTopBitOfRankBitsCommon
+
+##RankBitsCommonWithoutTopFourBits##
+RankBitsCommonWithoutTopThreeBits & ~FourthTopBitOfRankBitsCommon
+
+##HaveThirdBestKicker##
+(NumberOfBetterKickers == 2)
+
+##HaveThirdBestKickerOrBetter##
+HaveThirdBestKicker OR HaveSecondBestKickerOrBetter
+
+##HaveThirdBestOverPair##
+    $QQ
+AND FirstFlopCard < ConstCardQueen
+AND SecondFlopCard < ConstCardQueen
+AND ThirdFlopCard < ConstCardQueen
+AND TurnCard < ConstCardQueen
+AND RiverCard < ConstCardQueen
+
+##ThirdBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopTwoBits & 0b100000000000000) != 0 ? ConstCardAce :
+(RankBitsCommonWithoutTopTwoBits & 0b010000000000000) != 0 ? ConstCardKing :
+(RankBitsCommonWithoutTopTwoBits & 0b001000000000000) != 0 ? ConstCardQueen :
+(RankBitsCommonWithoutTopTwoBits & 0b000100000000000) != 0 ? ConstCardJack :
+(RankBitsCommonWithoutTopTwoBits & 0b000010000000000) != 0 ? ConstCardTen :
+(RankBitsCommonWithoutTopTwoBits & 0b000001000000000) != 0 ? ConstCardNine :
+(RankBitsCommonWithoutTopTwoBits & 0b000000100000000) != 0 ? ConstCardEight :
+(RankBitsCommonWithoutTopTwoBits & 0b000000010000000) != 0 ? ConstCardSeven :
+(RankBitsCommonWithoutTopTwoBits & 0b000000001000000) != 0 ? ConstCardSix :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000100000) != 0 ? ConstCardFive :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000010000) != 0 ? ConstCardFour :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000001000) != 0 ? ConstCardThree :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000000100) != 0 ? ConstCardTwo :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+##HaveThirdBestOverPairOrBetter##
+(HaveThirdBestOverPair OR  HaveSecondBestOverPairOrBetter)
+
+##HaveThirdNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 2)]
+
+##HaveThirdNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 2)
+
+##HaveThirdOverPair##
+ispair AND (RankOfFirstHoleCard < SecondBestBoardCard) AND (RankOfFirstHoleCard > ThirdBestBoardCard)
+
+##HaveThirdTopPair##
+RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBoardCard
+
+##ThirdTopPairRank##
+(RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBoardCard) ? ThirdBestBoardCard :0
+
+##HaveFifthTopPair##
+RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard 
+
+##FifthTopPairRank##
+(RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard) ? FifthBestBoardCard: 0
+
+##HaveThirdTopSet##
+ispair AND RankOfFirstHoleCard == ThirdBestBoardCard
+
+##HaveFourthNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 3)]
+
+##HaveFourthNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 3)
+
+##FourthBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopThreeBits & 0b100000000000000) != 0 ? ConstCardAce :
+(RankBitsCommonWithoutTopThreeBits & 0b010000000000000) != 0 ? ConstCardKing :
+(RankBitsCommonWithoutTopThreeBits & 0b001000000000000) != 0 ? ConstCardQueen :
+(RankBitsCommonWithoutTopThreeBits & 0b000100000000000) != 0 ? ConstCardJack :
+(RankBitsCommonWithoutTopThreeBits & 0b000010000000000) != 0 ? ConstCardTen :
+(RankBitsCommonWithoutTopThreeBits & 0b000001000000000) != 0 ? ConstCardNine :
+(RankBitsCommonWithoutTopThreeBits & 0b000000100000000) != 0 ? ConstCardEight :
+(RankBitsCommonWithoutTopThreeBits & 0b000000010000000) != 0 ? ConstCardSeven :
+(RankBitsCommonWithoutTopThreeBits & 0b000000001000000) != 0 ? ConstCardSix :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000100000) != 0 ? ConstCardFive :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000010000) != 0 ? ConstCardFour :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000001000) != 0 ? ConstCardThree :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000000100) != 0 ? ConstCardTwo :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+##HaveFourthOverPair##
+ispair AND (RankOfFirstHoleCard < ThirdBestBoardCard) AND (RankOfFirstHoleCard > FourthBestBoardCard)
+
+##HaveFourthTopPair##
+RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard
+
+##FourthTopPairRank##
+(RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard) ? FourthBestBoardCard : 0
+
+##HaveFourthTopSet##
+ispair AND RankOfFirstHoleCard == FourthBestBoardCard
+
+##HaveFifthNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 4)]
+
+##HaveFifthNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 4)
+
+##FifthBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopFourBits & 0b100000000000000) != 0 ? ConstCardAce :
+(RankBitsCommonWithoutTopFourBits & 0b010000000000000) != 0 ? ConstCardKing :
+(RankBitsCommonWithoutTopFourBits & 0b001000000000000) != 0 ? ConstCardQueen :
+(RankBitsCommonWithoutTopFourBits & 0b000100000000000) != 0 ? ConstCardJack :
+(RankBitsCommonWithoutTopFourBits & 0b000010000000000) != 0 ? ConstCardTen :
+(RankBitsCommonWithoutTopFourBits & 0b000001000000000) != 0 ? ConstCardNine :
+(RankBitsCommonWithoutTopFourBits & 0b000000100000000) != 0 ? ConstCardEight :
+(RankBitsCommonWithoutTopFourBits & 0b000000010000000) != 0 ? ConstCardSeven :
+(RankBitsCommonWithoutTopFourBits & 0b000000001000000) != 0 ? ConstCardSix :
+(RankBitsCommonWithoutTopFourBits & 0b000000000100000) != 0 ? ConstCardFive :
+(RankBitsCommonWithoutTopFourBits & 0b000000000010000) != 0 ? ConstCardFour :
+(RankBitsCommonWithoutTopFourBits & 0b000000000001000) != 0 ? ConstCardThree :
+(RankBitsCommonWithoutTopFourBits & 0b000000000000100) != 0 ? ConstCardTwo :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+##HaveFifthOverPair##
+ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard > FifthBestBoardCard)
+
+##HaveAnyKindOfInsideStraightDraw##
+// Note: This does also count straightdraws at the board,
+// where we don't contribute any card. Special care should be taken
+// in HaveInsideStraightDraw
+	 (nstraightfill <= 1)
+AND NOT HaveStraight 
+
+##HaveBackdoorFlushDrawContributingTwoCards##
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND ($$ps0 == tsuit)
+AND ($$ps1 == tsuit)
+
+##HaveBackdoorNutFlushDraw##
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 0)
+
+##HaveBackdoorSecondNutFlushDraw##
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 1)
+
+##HaveBackdoorThirdNutFlushDraw##
+    (betround == ConstBetRoundFlop)
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 2)
+
+##HaveBackdoorFlushDraw##
+   HaveBackdoorFlushDrawContributingTwoCards
+OR HaveBackdoorNutFlushDraw
+OR HaveBackdoorSecondNutFlushDraw
+
+##HaveBestKicker##
+(NumberOfBetterKickers == 0)
+
+##HaveBestKickerOrBetter##
+(HaveBestKicker OR HavePair OR HaveOverPairOrBetter)
+
+##HaveBestOverPair##
+   ($AA
+AND FirstFlopCard < ConstCardAce
+AND SecondFlopCard < ConstCardAce
+AND ThirdFlopCard < ConstCardAce
+AND TurnCard < ConstCardAce
+AND RiverCard < ConstCardAce)
+
+##HaveBestOverPairOrBetter##
+  (HaveBestOverPair
+OR HaveTwoPair
+OR HaveSet
+OR HaveTrips
+OR HaveStraight
+OR HaveFlush
+OR HaveFullHouse
+OR HaveQuads
+OR HaveStraightFlush)
+
+##LowestBitOfRankBitsCommon##
+(1<<ranklocommon)
+
+##RankBitsCommonWithoutLowestBit##
+// we negate lowest-bit and then do an and-operation
+rankbitscommon & ~LowestBitOfRankBitsCommon
+
+##LowestBoardCard##
+ranklocommon
+
+##SecondLowestBoardCard##
+(RankBitsCommonWithoutLowestBit & 0b000000000000100) == 0b000000000000100 ? ConstCardTwo   :
+(RankBitsCommonWithoutLowestBit & 0b000000000001000) == 0b000000000001000 ? ConstCardThree :
+(RankBitsCommonWithoutLowestBit & 0b000000000010000) == 0b000000000010000 ? ConstCardFour  :
+(RankBitsCommonWithoutLowestBit & 0b000000000100000) == 0b000000000100000 ? ConstCardFive  :
+(RankBitsCommonWithoutLowestBit & 0b000000001000000) == 0b000000001000000 ? ConstCardSix   :
+(RankBitsCommonWithoutLowestBit & 0b000000010000000) == 0b000000010000000 ? ConstCardSeven :
+(RankBitsCommonWithoutLowestBit & 0b000000100000000) == 0b000000100000000 ? ConstCardEight :
+(RankBitsCommonWithoutLowestBit & 0b000001000000000) == 0b000001000000000 ? ConstCardNine  :
+(RankBitsCommonWithoutLowestBit & 0b000010000000000) == 0b000010000000000 ? ConstCardTen   :
+(RankBitsCommonWithoutLowestBit & 0b000100000000000) == 0b000100000000000 ? ConstCardJack  :
+(RankBitsCommonWithoutLowestBit & 0b001000000000000) == 0b001000000000000 ? ConstCardQueen :
+(RankBitsCommonWithoutLowestBit & 0b010000000000000) == 0b010000000000000 ? ConstCardKing  :
+(RankBitsCommonWithoutLowestBit & 0b100000000000000) == 0b100000000000000 ? ConstCardAce   :
+-1
+
+##HaveBottomPair##
+WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN True FORCE
+
+##HaveSecondBottomPair##
+WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN True FORCE
+
+##HaveBottomSet##
+WHEN ispair AND HaveBottomPair RETURN True FORCE
+
+##HaveBottomTrips##
+WHEN RankOfFirstHoleCard  == RankOfBottomPairOnBoard RETURN True FORCE
+WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN True FORCE
+
+##HaveBottomTwoPair##
+WHEN HaveBottomPair AND HaveSecondBottomPair RETURN True FORCE
+
+##HaveDoubleGutshotDraw##
+   `((rankbits >> 1) & 0b1011101) == 5  // A_345_7
+OR `((rankbits >> 2) & 0b1011101) == 5  // 2_456_8
+OR `((rankbits >> 3) & 0b1011101) == 5  // 3_567_9
+OR `((rankbits >> 4) & 0b1011101) == 5  // 4_678_T
+OR `((rankbits >> 5) & 0b1011101) == 5  // 5_789_J
+OR `((rankbits >> 6) & 0b1011101) == 5  // 6_89T_Q
+OR `((rankbits >> 7) & 0b1011101) == 5  // 8_9TJ_K
+OR `((rankbits >> 8) & 0b1011101) == 5  // 9_TJQ_A
+OR `((rankbits >> 1) & 0b11011011) == 6 // A2_45_78
+OR `((rankbits >> 2) & 0b11011011) == 6 // 23_56_89
+OR `((rankbits >> 3) & 0b11011011) == 6 // 34_67_9T
+OR `((rankbits >> 4) & 0b11011011) == 6 // 45_78_TJ
+OR `((rankbits >> 5) & 0b11011011) == 6 // 56_89_JQ
+OR `((rankbits >> 6) & 0b11011011) == 6 // 67_9T_QK
+OR `((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
+
+##HaveFlush##
+(nsuited >= 5)
+
+##HaveFlushDraw##
+// Modified, because Shanky BonusBots definition is not very practical
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
+// 
+// Good one, contributing 2 cards
+WHEN HaveFlushDrawContributingTwoCards RETURN True FORCE		
+// Best one
+WHEN HaveNutFlushDraw RETURN True FORCE	
+// Contributing only single card:
+WHEN HaveGoodFlushDrawContributingOnlyOneCard RETURN True FORCE	
+
+##HaveFlushDrawContributingTwoCards##
+WHEN ((nsuited == 4) AND (nsuitedcommon == 2)) RETURN True FORCE
+
+##HaveGoodFlushDrawContributingOnlyOneCard##
+// The quality of flush-draws with just one card in hand
+// depends on the probability of an opponent holding a better card
+// depends on the number of opponents.
+// http://www.maxinmontreal.com/forums/viewforum.php?f=156
+WHEN (NOT HaveAnyFlushDrawContributingOnlyOneCard) RETURN False FORCE
+// Headsup: at least fifth-best
+WHEN ((nopponentsplaying = 1) AND (NumberOfUnknownSuitedOvercards <= 4)) RETURN True FORCE
+// 3-handed: at least third-best
+WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN True FORCE
+// 4-handed: at least second-best
+WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN True FORCE
+
+##HaveAnyFlushDrawContributingOnlyOneCard##
+WHEN ((nsuited >= 4) AND (nsuitedcommon > 2)) RETURN True FORCE
+
+##HaveFullHouse##
+isfullhouse OR HaveQuads
+
+##HaveNothing##
+NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
+// AND NOT HaveBackdoorStraightDraw
+
+##HaveNutFlush##
+    HaveNutStraightFlush
+OR [HaveFlush AND (NumberOfUnknownSuitedOvercards == 0)]
+
+##HaveNutFlushCard##
+(NumberOfUnknownSuitedOvercards == 0)
+
+##HaveNutFlushDraw##
+    HaveNutStraightFlush
+OR [(nsuited >= 4) AND (NumberOfUnknownSuitedOvercards == 0)]
+
+##HaveNutStraight##
+[ishistraight OR HaveNutStraightFlush]
+
+##MyKicker##
+WHEN isfourofakind  RETURN MadeHandFifthCardRank  FORCE
+WHEN istwopair      RETURN MadeHandFifthCardRank  FORCE
+WHEN isthreeofakind RETURN MadeHandFourthCardRank FORCE
+WHEN isonepair      RETURN MadeHandThirdCardRank  FORCE
+WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
+
+
+##NumberOfBetterKickers##
+// Cards better than my kicker...
+[(ConstCardAce - MyKicker)
+// ...minus the cards in my 5-card-hand which are better than my kicker
+// (We have to shift the kicker out of rankbitspoker, therefore +1)
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
+- (`(rankbitspoker >> (MyKicker + 1)))]
+
+##NutsOnBoard##
+nhands == nhandsti
+
+##RankBitsCommonWithAdditionalAce##
+rankbitscommon | 0b100000000000010
+
+##RankBitsCommonWithAdditionalKing##
+rankbitscommon | 0b010000000000000
+
+##RankBitsCommonWithAdditionalQueen##
+rankbitscommon | 0b001000000000000
+
+##RankBitsCommonWithAdditionalJack##
+rankbitscommon | 0b000100000000000
+
+##RankBitsCommonWithAdditionalTen##
+rankbitscommon | 0b000010000000000
+
+##RankBitsCommonWithAdditionalNine##
+rankbitscommon | 0b000001000000000
+
+##RankBitsCommonWithAdditionalEight##
+rankbitscommon | 0b000000100000000
+
+##RankBitsCommonWithAdditionalSeven##
+rankbitscommon | 0b000000010000000
+
+##RankBitsCommonWithAdditionalSix##
+rankbitscommon | 0b000000001000000
+
+##RankBitsCommonWithAdditionalFive##
+rankbitscommon | 0b000000000100000
+
+##RankBitsCommonWithAdditionalFour##
+rankbitscommon | 0b000000000010000
+
+##RankBitsCommonWithAdditionalThree##
+rankbitscommon | 0b000000000001000
+
+##RankBitsCommonWithAdditionalTwo##
+rankbitscommon | 0b000000000000100
+
+##BestPossibleStraightForVillainIfAceHitsTheBoard##
+`(RankBitsCommonWithAdditionalAce & 0b111110000000000) >= 3 ? ConstCardAce :
+// We can ignore all straights without an ace here
+`(RankBitsCommonWithAdditionalAce & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfKingHitsTheBoard##
+`(RankBitsCommonWithAdditionalKing & 0b111110000000000) >= 3 ? ConstCardAce :
+`(RankBitsCommonWithAdditionalKing & 0b011111000000000) >= 3 ? ConstCardKing :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfQueenHitsTheBoard##
+`(RankBitsCommonWithAdditionalQueen & 0b111110000000000) >= 3 ? ConstCardAce :
+`(RankBitsCommonWithAdditionalQueen & 0b011111000000000) >= 3 ? ConstCardKing :
+`(RankBitsCommonWithAdditionalQueen & 0b001111100000000) >= 3 ? ConstCardQueen :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfJackHitsTheBoard##
+`(RankBitsCommonWithAdditionalJack & 0b111110000000000) >= 3 ? ConstCardAce :
+`(RankBitsCommonWithAdditionalJack & 0b011111000000000) >= 3 ? ConstCardKing :
+`(RankBitsCommonWithAdditionalJack & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(RankBitsCommonWithAdditionalJack & 0b000111110000000) >= 3 ? ConstCardJack :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfTenHitsTheBoard##
+`(RankBitsCommonWithAdditionalTen & 0b111110000000000) >= 3 ? ConstCardAce :
+`(RankBitsCommonWithAdditionalTen & 0b011111000000000) >= 3 ? ConstCardKing :
+`(RankBitsCommonWithAdditionalTen & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(RankBitsCommonWithAdditionalTen & 0b000111110000000) >= 3 ? ConstCardJack :
+`(RankBitsCommonWithAdditionalTen & 0b000011111000000) >= 3 ? ConstCardTen :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfNineHitsTheBoard##
+`(RankBitsCommonWithAdditionalNine & 0b011111000000000) >= 3 ? ConstCardKing :
+`(RankBitsCommonWithAdditionalNine & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(RankBitsCommonWithAdditionalNine & 0b000111110000000) >= 3 ? ConstCardJack :
+`(RankBitsCommonWithAdditionalNine & 0b000011111000000) >= 3 ? ConstCardTen :
+`(RankBitsCommonWithAdditionalNine & 0b000001111100000) >= 3 ? ConstCardNine :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfEightHitsTheBoard##
+`(RankBitsCommonWithAdditionalEight & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(RankBitsCommonWithAdditionalEight & 0b000111110000000) >= 3 ? ConstCardJack :
+`(RankBitsCommonWithAdditionalEight & 0b000011111000000) >= 3 ? ConstCardTen :
+`(RankBitsCommonWithAdditionalEight & 0b000001111100000) >= 3 ? ConstCardNine :
+`(RankBitsCommonWithAdditionalEight & 0b000000111110000) >= 3 ? ConstCardEight :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfSevenHitsTheBoard##
+`(RankBitsCommonWithAdditionalSeven & 0b000111110000000) >= 3 ? ConstCardJack :
+`(RankBitsCommonWithAdditionalSeven & 0b000011111000000) >= 3 ? ConstCardTen :
+`(RankBitsCommonWithAdditionalSeven & 0b000001111100000) >= 3 ? ConstCardNine :
+`(RankBitsCommonWithAdditionalSeven & 0b000000111110000) >= 3 ? ConstCardEight :
+`(RankBitsCommonWithAdditionalSeven & 0b000000011111000) >= 3 ? ConstCardSeven :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfSixHitsTheBoard##
+`(RankBitsCommonWithAdditionalSix & 0b000011111000000) >= 3 ? ConstCardTen :
+`(RankBitsCommonWithAdditionalSix & 0b000001111100000) >= 3 ? ConstCardNine :
+`(RankBitsCommonWithAdditionalSix & 0b000000111110000) >= 3 ? ConstCardEight :
+`(RankBitsCommonWithAdditionalSix & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(RankBitsCommonWithAdditionalSix & 0b000000001111100) >= 3 ? ConstCardSix :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfFiveHitsTheBoard##
+`(RankBitsCommonWithAdditionalFive & 0b000001111100000) >= 3 ? ConstCardNine :
+`(RankBitsCommonWithAdditionalFive & 0b000000111110000) >= 3 ? ConstCardEight :
+`(RankBitsCommonWithAdditionalFive & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(RankBitsCommonWithAdditionalFive & 0b000000001111100) >= 3 ? ConstCardSix :
+`(RankBitsCommonWithAdditionalFive & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfFourHitsTheBoard##
+`(RankBitsCommonWithAdditionalFour & 0b000000111110000) >= 3 ? ConstCardEight :
+`(RankBitsCommonWithAdditionalFour & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(RankBitsCommonWithAdditionalFour & 0b000000001111100) >= 3 ? ConstCardSix :
+`(RankBitsCommonWithAdditionalFour & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfThreeHitsTheBoard##
+`(RankBitsCommonWithAdditionalThree & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(RankBitsCommonWithAdditionalThree & 0b000000001111100) >= 3 ? ConstCardSix :
+`(RankBitsCommonWithAdditionalThree & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForVillainIfTwoHitsTheBoard##
+`(RankBitsCommonWithAdditionalTwo & 0b000000001111100) >= 3 ? ConstCardSix :
+`(RankBitsCommonWithAdditionalTwo & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##RankBitsWithAdditionalAce##
+rankbits | 0b100000000000010
+
+##RankBitsWithAdditionalKing##
+rankbits | 0b010000000000000
+
+##RankBitsWithAdditionalQueen##
+rankbits | 0b001000000000000
+
+##RankBitsWithAdditionalJack##
+rankbits | 0b000100000000000
+
+##RankBitsWithAdditionalTen##
+rankbits | 0b000010000000000
+
+##RankBitsWithAdditionalNine##
+rankbits | 0b000001000000000
+
+##RankBitsWithAdditionalEight##
+rankbits | 0b000000100000000
+
+##RankBitsWithAdditionalSeven##
+rankbits | 0b000000010000000
+
+##RankBitsWithAdditionalSix##
+rankbits | 0b000000001000000
+
+##RankBitsWithAdditionalFive##
+rankbits | 0b000000000100000
+
+##RankBitsWithAdditionalFour##
+rankbits | 0b000000000010000
+
+##RankBitsWithAdditionalThree##
+rankbits | 0b000000000001000
+
+##RankBitsWithAdditionalTwo##
+rankbits | 0b000000000000100
+
+##BestPossibleStraightForUsIfAceHitsTheBoard##
+`(RankBitsWithAdditionalAce & 0b111110000000000) >= 5 ? ConstCardAce :
+// We can ignore all straights without an ace here
+`(RankBitsWithAdditionalAce & 0b000000000111110) >= 5 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfKingHitsTheBoard##
+`(RankBitsWithAdditionalKing & 0b111110000000000) >= 5 ? ConstCardAce :
+`(RankBitsWithAdditionalKing & 0b011111000000000) >= 5 ? ConstCardKing :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfQueenHitsTheBoard##
+`(RankBitsWithAdditionalQueen & 0b111110000000000) >= 5 ? ConstCardAce :
+`(RankBitsWithAdditionalQueen & 0b011111000000000) >= 5 ? ConstCardKing :
+`(RankBitsWithAdditionalQueen & 0b001111100000000) >= 5 ? ConstCardQueen :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfJackHitsTheBoard##
+`(RankBitsWithAdditionalJack & 0b111110000000000) >= 5 ? ConstCardAce :
+`(RankBitsWithAdditionalJack & 0b011111000000000) >= 5 ? ConstCardKing :
+`(RankBitsWithAdditionalJack & 0b001111100000000) >= 5 ? ConstCardQueen :
+`(RankBitsWithAdditionalJack & 0b000111110000000) >= 5 ? ConstCardJack :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfTenHitsTheBoard##
+`(RankBitsWithAdditionalTen & 0b111110000000000) >= 5 ? ConstCardAce :
+`(RankBitsWithAdditionalTen & 0b011111000000000) >= 5 ? ConstCardKing :
+`(RankBitsWithAdditionalTen & 0b001111100000000) >= 5 ? ConstCardQueen :
+`(RankBitsWithAdditionalTen & 0b000111110000000) >= 5 ? ConstCardJack :
+`(RankBitsWithAdditionalTen & 0b000011111000000) >= 5 ? ConstCardTen :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfNineHitsTheBoard##
+`(RankBitsWithAdditionalNine & 0b011111000000000) >= 5 ? ConstCardKing :
+`(RankBitsWithAdditionalNine & 0b001111100000000) >= 5 ? ConstCardQueen :
+`(RankBitsWithAdditionalNine & 0b000111110000000) >= 5 ? ConstCardJack :
+`(RankBitsWithAdditionalNine & 0b000011111000000) >= 5 ? ConstCardTen :
+`(RankBitsWithAdditionalNine & 0b000001111100000) >= 5 ? ConstCardNine :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfEightHitsTheBoard##
+`(RankBitsWithAdditionalEight & 0b001111100000000) >= 5 ? ConstCardQueen :
+`(RankBitsWithAdditionalEight & 0b000111110000000) >= 5 ? ConstCardJack :
+`(RankBitsWithAdditionalEight & 0b000011111000000) >= 5 ? ConstCardTen :
+`(RankBitsWithAdditionalEight & 0b000001111100000) >= 5 ? ConstCardNine :
+`(RankBitsWithAdditionalEight & 0b000000111110000) >= 5 ? ConstCardEight :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfSevenHitsTheBoard##
+`(RankBitsWithAdditionalSeven & 0b000111110000000) >= 5 ? ConstCardJack :
+`(RankBitsWithAdditionalSeven & 0b000011111000000) >= 5 ? ConstCardTen :
+`(RankBitsWithAdditionalSeven & 0b000001111100000) >= 5 ? ConstCardNine :
+`(RankBitsWithAdditionalSeven & 0b000000111110000) >= 5 ? ConstCardEight :
+`(RankBitsWithAdditionalSeven & 0b000000011111000) >= 5 ? ConstCardSeven :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfSixHitsTheBoard##
+`(RankBitsWithAdditionalSix & 0b000011111000000) >= 5 ? ConstCardTen :
+`(RankBitsWithAdditionalSix & 0b000001111100000) >= 5 ? ConstCardNine :
+`(RankBitsWithAdditionalSix & 0b000000111110000) >= 5 ? ConstCardEight :
+`(RankBitsWithAdditionalSix & 0b000000011111000) >= 5 ? ConstCardSeven :
+`(RankBitsWithAdditionalSix & 0b000000001111100) >= 5 ? ConstCardSix :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfFiveHitsTheBoard##
+`(RankBitsWithAdditionalFive & 0b000001111100000) >= 5 ? ConstCardNine :
+`(RankBitsWithAdditionalFive & 0b000000111110000) >= 5 ? ConstCardEight :
+`(RankBitsWithAdditionalFive & 0b000000011111000) >= 5 ? ConstCardSeven :
+`(RankBitsWithAdditionalFive & 0b000000001111100) >= 5 ? ConstCardSix :
+`(RankBitsWithAdditionalFive & 0b000000000111110) >= 5 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfFourHitsTheBoard##
+`(RankBitsWithAdditionalFour & 0b000000111110000) >= 5 ? ConstCardEight :
+`(RankBitsWithAdditionalFour & 0b000000011111000) >= 5 ? ConstCardSeven :
+`(RankBitsWithAdditionalFour & 0b000000001111100) >= 5 ? ConstCardSix :
+`(RankBitsWithAdditionalFour & 0b000000000111110) >= 5 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfThreeHitsTheBoard##
+`(RankBitsWithAdditionalThree & 0b000000011111000) >= 5 ? ConstCardSeven :
+`(RankBitsWithAdditionalThree & 0b000000001111100) >= 5 ? ConstCardSix :
+`(RankBitsWithAdditionalThree & 0b000000000111110) >= 5 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfTwoHitsTheBoard##
+`(RankBitsWithAdditionalTwo & 0b000000001111100) >= 5 ? ConstCardSix :
+`(RankBitsWithAdditionalTwo & 0b000000000111110) >= 5 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##GetBestPossibleStraightIfAceHitsTheBoard##
+    (BestPossibleStraightForUsIfAceHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfAceHitsTheBoard >= BestPossibleStraightForVillainIfAceHitsTheBoard)
+
+##GetBestPossibleStraightIfKingHitsTheBoard##
+    (BestPossibleStraightForUsIfKingHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfKingHitsTheBoard >= BestPossibleStraightForVillainIfKingHitsTheBoard)
+
+##GetBestPossibleStraightIfQueenHitsTheBoard##
+    (BestPossibleStraightForUsIfQueenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfQueenHitsTheBoard >= BestPossibleStraightForVillainIfQueenHitsTheBoard)
+
+##GetBestPossibleStraightIfJackHitsTheBoard##
+    (BestPossibleStraightForUsIfJackHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfJackHitsTheBoard >= BestPossibleStraightForVillainIfJackHitsTheBoard)
+
+##GetBestPossibleStraightIfTenHitsTheBoard##
+    (BestPossibleStraightForUsIfTenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfTenHitsTheBoard >= BestPossibleStraightForVillainIfTenHitsTheBoard)
+
+##GetBestPossibleStraightIfNineHitsTheBoard##
+    (BestPossibleStraightForUsIfNineHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfNineHitsTheBoard >= BestPossibleStraightForVillainIfNineHitsTheBoard)
+
+##GetBestPossibleStraightIfEightHitsTheBoard##
+    (BestPossibleStraightForUsIfEightHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfEightHitsTheBoard >= BestPossibleStraightForVillainIfEightHitsTheBoard)
+
+##GetBestPossibleStraightIfSevenHitsTheBoard##
+    (BestPossibleStraightForUsIfSevenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfSevenHitsTheBoard >= BestPossibleStraightForVillainIfSevenHitsTheBoard)
+
+##GetBestPossibleStraightIfSixHitsTheBoard##
+    (BestPossibleStraightForUsIfSixHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfSixHitsTheBoard >= BestPossibleStraightForVillainIfSixHitsTheBoard)
+
+##GetBestPossibleStraightIfFiveHitsTheBoard##
+    (BestPossibleStraightForUsIfFiveHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfFiveHitsTheBoard >= BestPossibleStraightForVillainIfFiveHitsTheBoard)
+
+##GetBestPossibleStraightIfFourHitsTheBoard##
+    (BestPossibleStraightForUsIfFourHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfFourHitsTheBoard >= BestPossibleStraightForVillainIfFourHitsTheBoard)
+
+##GetBestPossibleStraightIfThreeHitsTheBoard##
+    (BestPossibleStraightForUsIfThreeHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfThreeHitsTheBoard >= BestPossibleStraightForVillainIfThreeHitsTheBoard)
+
+##GetBestPossibleStraightIfTwoHitsTheBoard##
+    (BestPossibleStraightForUsIfTwoHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightForVillainIfTwoHitsTheBoard)
+
+##NumberOfCardranksThatGiveUsTheBestPossibleStraight##
+  GetBestPossibleStraightIfAceHitsTheBoard
++ GetBestPossibleStraightIfKingHitsTheBoard
++ GetBestPossibleStraightIfQueenHitsTheBoard
++ GetBestPossibleStraightIfJackHitsTheBoard
++ GetBestPossibleStraightIfTenHitsTheBoard
++ GetBestPossibleStraightIfNineHitsTheBoard
++ GetBestPossibleStraightIfEightHitsTheBoard
++ GetBestPossibleStraightIfSevenHitsTheBoard
++ GetBestPossibleStraightIfSixHitsTheBoard
++ GetBestPossibleStraightIfFiveHitsTheBoard
++ GetBestPossibleStraightIfFourHitsTheBoard
++ GetBestPossibleStraightIfThreeHitsTheBoard
++ GetBestPossibleStraightIfTwoHitsTheBoard
+
+##HaveNutStraightDraw##
+WHEN FlushDrawPossible RETURN HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw FORCE
+WHEN HaveNutStraight RETURN True FORCE
+WHEN HaveUnDiscountedNutStraightDraw RETURN True FORCE
+
+##HaveUnDiscountedNutStraightDraw##
+(NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) 
+
+##HaveInsideNutStraightDraw##
+   (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
+AND NOT HaveStraight
+
+##HaveInsideStraightDraw##
+HaveAnyKindOfInsideStraightDraw
+
+##HaveNuts##
+(nhandshi == 0)
+
+##HigherStraightFlushPossible##
+// Main idea:
+// I already use 3 (out of up to 5) SF-cards at the board.
+// The guy with the higher flush also has to use at least 3.
+// Therefore we have to share at least 1 card.
+// (at my higher end and at his bottom end.
+// Therefore a SF must be possible with the 5 cards above my flush-card
+// and at least 3 of these 5 cards must be at the board.
+isroyalflush ? False :
+NOT isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
+(`((srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
+
+##HaveNutStraightFlush##
+// nhandshi seems to be wrong for bottom straightflushes without an easy fix:
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=17571
+// Therefore we do no longer use it here.
+isstraightflush AND NOT HigherStraightFlushPossible
+
+##HaveOpenEndedStraightDraw##
+[  ((rankbits >> 0) & 0b111100) == 0b111100 // 5432
+OR ((rankbits >> 1) & 0b111100) == 0b111100 // 6543
+OR ((rankbits >> 2) & 0b111100) == 0b111100 // 7654
+OR ((rankbits >> 3) & 0b111100) == 0b111100 // 8765
+OR ((rankbits >> 4) & 0b111100) == 0b111100 // 9876
+OR ((rankbits >> 5) & 0b111100) == 0b111100 // T987
+OR ((rankbits >> 6) & 0b111100) == 0b111100 // JT98
+OR ((rankbits >> 7) & 0b111100) == 0b111100 // QJT9
+OR ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT 
+] AND NOT HaveStraight
+
+##HaveQuads##
+[ isfourofakind AND (nrankedcommon < 4) ]
+
+##HaveOverPair##
+ispair AND (rankhiplayer > rankhicommon)
+
+##HaveOverPairOrBetter##
+HaveOverPair OR HaveBestOverPairOrBetter
+
+##HavePair##
+[  RankOfFirstHoleCard==RankOfSecondHoleCard
+OR RankOfFirstHoleCard==FirstFlopCard 
+OR RankOfFirstHoleCard==SecondFlopCard 
+OR RankOfFirstHoleCard==ThirdFlopCard 
+OR RankOfFirstHoleCard==TurnCard 
+OR RankOfFirstHoleCard==RiverCard
+OR RankOfSecondHoleCard==FirstFlopCard 
+OR RankOfSecondHoleCard==SecondFlopCard 
+OR RankOfSecondHoleCard==ThirdFlopCard 
+OR RankOfSecondHoleCard==TurnCard 
+OR RankOfSecondHoleCard==RiverCard ]
+
+##HavePocketPair##
+ispair
+
+##HaveRunnerRunnerFlushAtRiver##
+(betround == ConstBetRoundRiver AND HaveFlush AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+
+##HaveSet##
+[  ispair
+AND (  FirstHoleCardPairsTheFlop 
+    OR (RankOfFirstHoleCard == TurnCard) 
+    OR (RankOfFirstHoleCard == RiverCard)) ]
+
+##HaveTopTrips##
+(NOT ispair AND (RankOfFirstHoleCard == RankOfTopPairOnBoard OR RankOfSecondHoleCard == RankOfTopPairOnBoard))
+
+##HaveTrips##
+NOT ispair
+AND   [(pokerval & threeofakind) AND NOT (pokervalcommon & threeofakind)
+   OR ((pokerval & fullhouse)    AND `(pcbits & 0b11100) == 1)
+   OR  (pokerval & fourofakind)  AND NOT (pokervalcommon & fourofakind)]
+
+##TripsRank##
+HaveTrips AND HaveTopPair    ? TopPairRank:
+HaveTrips AND HaveSecondTopPair ? SecondTopPairRank:
+HaveTrips AND HaveThirdTopPair ? ThirdTopPairRank:
+HaveTrips AND HaveFourthTopPair ? FourthTopPairRank:
+HaveTrips AND HaveFifthTopPair ? FifthTopPairRank: 0
+
+##TripsKickerRank##
+HaveTrips AND TripsRank==RankOfFirstHoleCard ? RankOfSecondHoleCard:
+HaveTrips AND TripsRank==RankOfSecondHoleCard ? RankOfFirstHoleCard: 0
+
+##HaveStraight##
+(nstraightfill == 0)
+
+##HaveStraightDraw##
+   (HaveOpenEndedStraightDraw OR HaveDoubleGutshotDraw)
+AND NOT HaveStraight 
+
+##HaveStraightFlush##
+(isstraightflush OR isroyalflush)
+
+##CommonCard0Paired##
+(FirstFlopCard == SecondFlopCard OR FirstFlopCard == ThirdFlopCard OR FirstFlopCard == TurnCard OR FirstFlopCard == RiverCard)
+
+##CommonCard1Paired##
+(SecondFlopCard == FirstFlopCard OR SecondFlopCard == ThirdFlopCard OR SecondFlopCard == TurnCard OR SecondFlopCard == RiverCard)
+
+##CommonCard2Paired##
+(ThirdFlopCard == FirstFlopCard OR ThirdFlopCard == SecondFlopCard OR ThirdFlopCard == TurnCard OR ThirdFlopCard == RiverCard)
+
+##CommonCard3Paired##
+(TurnCard == FirstFlopCard OR TurnCard == SecondFlopCard OR TurnCard == ThirdFlopCard OR TurnCard == RiverCard)
+
+##CommonCard4Paired##
+(RiverCard == FirstFlopCard OR RiverCard == SecondFlopCard OR RiverCard == ThirdFlopCard OR FirstFlopCard == TurnCard)
+
+##RankBitsCommonTopBoardPair##
+// Rankbits
+// AKQJT98765432a-
+// So we have to shift 1 to the left just by the rank of the card
+WHEN (RankOfTopPairOnBoard > 0) RETURN  (1 << RankOfTopPairOnBoard) FORCE
+WHEN Others RETURN 0 FORCE
+
+##RankBitsCommonBottomBoardPair##
+// Rankbits
+// AKQJT98765432a-
+// So we have to shift 1 to the left just by the rank of the card
+// So we have to shift 1 to the left just by the rank of the card
+WHEN (RankOfBottomPairOnBoard > 0) RETURN  (1 << RankOfBottomPairOnBoard) FORCE
+WHEN Others RETURN 0 FORCE
+
+##RankBitsCommonBoardPairs##
+RankBitsCommonTopBoardPair | RankBitsCommonBottomBoardPair
+
+##RankBitsCommonWithoutPairs##
+rankbitscommon & (~RankBitsCommonBoardPairs)
+
+##HighestUnpairedBoardCard##
+(RankBitsCommonWithoutPairs >> ConstCardAce)   & 1 ? ConstCardAce   :
+(RankBitsCommonWithoutPairs >> ConstCardKing)  & 1 ? ConstCardKing  :
+(RankBitsCommonWithoutPairs >> ConstCardQueen) & 1 ? ConstCardQueen :
+(RankBitsCommonWithoutPairs >> ConstCardJack)  & 1 ? ConstCardJack  :
+(RankBitsCommonWithoutPairs >> ConstCardTen)   & 1 ? ConstCardTen   :
+(RankBitsCommonWithoutPairs >> ConstCardNine)  & 1 ? ConstCardNine  :
+(RankBitsCommonWithoutPairs >> ConstCardEight) & 1 ? ConstCardEight :
+(RankBitsCommonWithoutPairs >> ConstCardSeven) & 1 ? ConstCardSeven :
+(RankBitsCommonWithoutPairs >> ConstCardSix)   & 1 ? ConstCardSix   :
+(RankBitsCommonWithoutPairs >> ConstCardFive)  & 1 ? ConstCardFive  :
+(RankBitsCommonWithoutPairs >> ConstCardFour)  & 1 ? ConstCardFour  :
+(RankBitsCommonWithoutPairs >> ConstCardThree) & 1 ? ConstCardThree :
+(RankBitsCommonWithoutPairs >> ConstCardTwo)   & 1 ? ConstCardTwo   : 0
+
+##HaveTopNonBoardPairedPair##
+   [(betround >= ConstBetRoundFlop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
+OR [(betround >= ConstBetRoundFlop) AND (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
+
+##HaveTopPair##
+[ RankOfFirstHoleCard==rankhicommon OR RankOfSecondHoleCard==rankhicommon ]
+
+##TopPairRank##
+WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfFirstHoleCard  FORCE
+WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfSecondHoleCard FORCE
+WHEN Others RETURN 0 FORCE
+
+##TopPairKickerRank##
+WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfSecondHoleCard  FORCE
+WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfFirstHoleCard FORCE
+WHEN Others RETURN 0 FORCE
+
+##SecondTopPairRank##
+HaveSecondTopPair AND RankOfFirstHoleCard  == SecondBestBoardCard ? RankOfFirstHoleCard :
+HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecondHoleCard :
+0
+
+##HaveTopSet##
+(ispair AND (rankhiplayer == rankhicommon))
+
+##HaveTopTwoPair##
+(HaveTopPair AND HaveSecondTopPair)
+
+##RankbitsCommonWithoutAceLow##
+// Don't count ace twice in HaveTwoPair
+// bit0 is unused
+// bit 2 is ace low
+rankbitscommon & ConstAllRanksWithoutAceLow
+
+##HaveTwoPair##
+`(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2
+
+##HaveUnderPair##
+[ ispair AND rankhiplayer<ranklocommon ]
+
+##HaveUnderStraight##
+HaveStraight
+AND (pcbits == 0b00011 OR pcbits == 0b00001)
+
+##NumberOfUnknownSuitedOvercards##
+// Suited unknown overcards to holecards,
+// e.g. on Board Ah Th, in Hand Jh 9h => 2 suited overcards: Kh Qh.
+`(Srankbitsavailable >> srankhiplayer)
+
+##BoardKicker_FourOfAKindOnBoard##
+(betround == ConstBetRoundRiver) ? HighestUnpairedBoardCard : 2
+
+##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WeHaveOverPairToPair##
+// 3 is the best strength possible, because two quads are always possible
+3
+// 1 OverPair for each overcard = 1 higher full house
++ (ConstCardAce - rankhiplayer)
+// Higher set possible with pair onboard?
++ [(RankOfTopPairOnBoard > rankhiplayer) ? 1 : 0 ]
+// If the cards on board are higher than our pair,
+// we have to subtract them again, as otherwise we count them twice,
+// as set/quads and OverPair.
++ [(RankOfTopPairOnBoard > rankhiplayer) ? -1 : 0 ]
++ [(RankOfSetOnBoard  > rankhiplayer) ? -1 : 0 ]
+
+##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePlayTheBoard##
+// 3 is the best strength possible, because two quads are always possible
+3
+// 1 OverPair for each overcard = 1 higher full house
++ (ConstCardAce - rankhiplayer)
+// +1 if the pair is higher as the set (higher set possible)
+// -1 if the pair is higher as the set (counted twice as OverPair / set)
+// but these cases neutralize each other
+
+##RankOfPairOfFullHouse##
+// The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)
+// XXXX are the rank of the set
+// YYYY are the rank of the pair
+(pokerval & 0b1111)
+
+##RankOfSetOfFullHouse##
+// The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)
+// XXXX are the rank of the set
+// YYYY are the rank of the pair
+((pokerval >> 12) & 0b1111)
+
+##Overcards##
+((RankOfFirstHoleCard > rankhicommon)  AND (RankOfSecondHoleCard > rankhicommon))  ? 2 :
+((RankOfFirstHoleCard > rankhicommon)  OR (RankOfSecondHoleCard > rankhicommon))  ? 1 :
+((RankOfFirstHoleCard <= rankhicommon) AND (RankOfSecondHoleCard <= rankhicommon)) ? 0 : 0
+
+##PairInHand##
+ispair
+
+##RunnerRunnerFlushPossibleAtRiver##
+(betround == ConstBetRoundRiver AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+
+##SuitsInHand##
+($$ps0 == $$ps1) ? 1 :
+($$ps0 != $$ps1) ? 2 :
+0
