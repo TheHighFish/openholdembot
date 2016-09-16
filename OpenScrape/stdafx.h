@@ -65,8 +65,6 @@
 // Version
 #define VERSION_NUMBER			9.28
 #define VERSION_TEXT				"9.2.8"  // change version number in OpenScrape.rc also, when needed
-#define VERSION_NUMBER			9.01
-#define VERSION_TEXT				"9.0.1"  // change version number in OpenScrape.rc also, when needed
 
 #include "debug.h"
 #include "..\StructsDefines\structs_defines.h"
