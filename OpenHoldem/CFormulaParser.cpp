@@ -81,7 +81,15 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
 }
 
 void CFormulaParser::ParseDefaultLibraries() {
-  ParseLibrary(p_filenames->OpenPPLLibraryPath());
+  // Parse all OpenPPL-libraries, which are now modular.
+  // Parsing order matters, as later parts need stuff from early parts.
+  for (int i = 0; i < kNumberOfOpenPPLLibraries; ++i) {
+    CString library_path;
+    library_path.Format("%s\\%s",
+      p_filenames->BotlogicDirectory(),
+      kOpenPPLLibraries[i]);
+    ParseLibrary(library_path);
+  }
   ParseLibrary(p_filenames->CustomLibraryPath());
 }
 
@@ -221,7 +229,7 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
     "  * f$symbols: user-defined functions\n"
     "  * listXYZ: user-defined lists\n",
     name);
-  CParseErrors::Error(message);
+  //!!!!!CParseErrors::Error(message);
   return false;
 }
 

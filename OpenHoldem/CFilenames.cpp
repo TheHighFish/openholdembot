@@ -234,12 +234,6 @@ CString CFilenames::VersusPath() {
 	return result;
 }
 
-CString CFilenames::OpenPPLLibraryPath() {
-  CString result = BotlogicDirectory() + "\\OpenPPL_Library.ohf";
-  Log("OpenPPLLibraryPath", result.GetString());
-	return result;
-}   
-
 CString CFilenames::CustomLibraryPath() {
   CString result = BotlogicDirectory() + "\\custom_function_library.ohf";
   Log("CustomLibraryPath", result.GetString());
