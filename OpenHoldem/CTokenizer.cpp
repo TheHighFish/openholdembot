@@ -208,6 +208,8 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 		if (_memicmp(TOKEN_ADDRESS, "BITXOR", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryXOr; return true; }
 		if (_memicmp(TOKEN_ADDRESS, "BITNOT", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryNot; return true; }
 		break;
+  case 8:
+    if (_memicmp(TOKEN_ADDRESS, "BITCOUNT", 8) == 0) { _OpenPPL_token_ID = kTokenOperatorBitCount; return true; }
 	default: return false;
 	}
 	return false;
