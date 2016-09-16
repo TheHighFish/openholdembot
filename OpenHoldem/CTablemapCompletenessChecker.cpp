@@ -176,7 +176,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckForDeprecatedItems();
   // Absoluely mandatory for connection
   CheckItem("titletext");
-  // Necessary for connection: clientsizemin/max and z$targetsize (since 9.0.1)
+  // Necessary for connection: clientsizemin/max and y$targetsize (since 9.0.1)
   CheckItem("clientsizemin");
   CheckItem("clientsizemax");
   CheckItem("targetsize");
