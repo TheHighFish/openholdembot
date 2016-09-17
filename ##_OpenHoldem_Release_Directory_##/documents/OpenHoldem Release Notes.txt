@@ -5,10 +5,21 @@ NEW STUFF:
   mainly for more verbosity in the OpenPPL-library
   because WinHoldems backtick-operator is cryptic and hard to read.
   [THF]
+
+BUG FIXES:
+- The OPPL-symbol HaveTwoPair considers now the cases of "three pairs";
+  one of them is good (both hole-cards are paired and count), 
+  in the bad case one of our pairs is the lowest one.
+  Thanks To NewBot and Salem for participating in the discussion.
+  [THF]
   
 MAINTENANCE:
 - The OpenPPL-library is now modular and consists of about a dozen files
   in the botlogic-directory.
+  [THF]
+- Enhanced PrWin does no longer support the parameter bblimp,
+  because it was broken and we consider it useless.
+  Thanks to ZeeZooLaa for reporting.
   [THF]
   
 
