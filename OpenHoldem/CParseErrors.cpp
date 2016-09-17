@@ -25,12 +25,13 @@ void CParseErrors::Error(CString short_message) {
     short_message += "\n";
   }
 	CString message;
-	message.Format("%s%s%s%s%s%i%s%s%i%s%s%s%s%s",
+	message.Format("%s%s%s%s%s%i%s%s%i%s%s%s%s%s%s%s%s",
 		"Error: ", short_message, 
 		"=====================================================\n"
 		"Function: ", CFormulaParser::CurrentFunctionName(), "\n"
 		"Line absolute: ", CTokenizer::LineAbsolute(), "\n",
 		"Line relative: ", CTokenizer::LineRelative(), "\n",
+    "File: ", CFormulaParser::CurrentFile(), "\n",
 		"=====================================================\n",
 		ErroneousCodeSnippet(), "\n",
 		"=====================================================\n");

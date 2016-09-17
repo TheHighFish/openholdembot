@@ -29,7 +29,7 @@ CFunctionCollection *p_function_collection = NULL;
 CFunctionCollection::CFunctionCollection(){
   _title = "";
   _path = "";
-  _openPPL_library_correctly_loaded = false;
+  _openPPL_library_loaded = false;
   DeleteAll(true, true);
 }
 
@@ -41,9 +41,6 @@ CFunctionCollection::~CFunctionCollection() {
 void CFunctionCollection::DeleteAll(bool delete_read_only_library_functions, bool delete_user_defined) {
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] DeleteAll()\n");
-  if (!_openPPL_library_correctly_loaded) {
-    delete_read_only_library_functions = true;
-  }
   COHScriptObject *p_nextObject = GetFirst();
   while (p_nextObject != NULL) {
     bool needs_deletion = false;

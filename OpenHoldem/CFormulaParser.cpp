@@ -44,8 +44,9 @@
 
 CFormulaParser *p_formula_parser = NULL;
 
-// Global for static accessor-function
+// Global for static accessor-functions
 CString _function_name;
+CString _source_file_name;
 
 CFormulaParser::CFormulaParser() {
   _is_parsing = false;
@@ -69,7 +70,6 @@ void CFormulaParser::InitNewParse() {
 }
 
 void CFormulaParser::FinishParse() {
-  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   _is_parsing = false;
 }
 
@@ -77,12 +77,16 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   ParseFile(formula_file);
+  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   p_function_collection->CheckForDefaultFormulaEntries();
 }
 
 void CFormulaParser::ParseDefaultLibraries() {
   // Parse all OpenPPL-libraries, which are now modular.
-  // Parsing order matters, as later parts need stuff from early parts.
+  // Parsing order does not matters; some early parts 
+  // need stuff later parts, but we check completeness
+  // once at the very end.
+  p_function_collection->SetOpenPPLLibraryLoaded(false);
   for (int i = 0; i < kNumberOfOpenPPLLibraries; ++i) {
     CString library_path;
     library_path.Format("%s\\%s",
@@ -90,7 +94,11 @@ void CFormulaParser::ParseDefaultLibraries() {
       kOpenPPLLibraries[i]);
     ParseLibrary(library_path);
   }
+  // Check once at the end of the modular OpenPPL-library
+  p_function_collection->SetOpenPPLLibraryLoaded(true);
   ParseLibrary(p_filenames->CustomLibraryPath());
+  // Check again after the custom library
+  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
 }
 
 void CFormulaParser::ParseLibrary(CString library_path) {
@@ -102,7 +110,6 @@ void CFormulaParser::ParseLibrary(CString library_path) {
     CString message;
     message.Format("Can not load \"%s\".\nFile not found.\n", library_path);
     OH_MessageBox_Error_Warning(message);
-    p_function_collection->SetOpenPPLLibraryLoadingState(false); 
     return;
   }
   CFile library_file(library_path,
@@ -113,10 +120,10 @@ void CFormulaParser::ParseLibrary(CString library_path) {
   _is_parsing_read_only_function_library = true;
   ParseFile(library_archive);
   _is_parsing_read_only_function_library = false;
-  p_function_collection->SetOpenPPLLibraryLoadingState(CParseErrors::AnyError() == false);
 }
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {
+  _source_file_name = formula_file.GetFile()->GetFilePath();
   InitNewParse();
   p_function_collection->DeleteAll(false, true);
   p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
@@ -207,7 +214,7 @@ bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
 }
 
 bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
-  if (p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
+  if (p_function_collection->OpenPPLLibraryLoaded()) {
     // User-defined bot-logic
     // Must be a f$-symbol or a list
     if (name.Left(2) == "f$") return true;
@@ -229,7 +236,7 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
     "  * f$symbols: user-defined functions\n"
     "  * listXYZ: user-defined lists\n",
     name);
-  //!!!!!CParseErrors::Error(message);
+  CParseErrors::Error(message);
   return false;
 }
 
@@ -558,6 +565,10 @@ void CFormulaParser::ParseConditionalPartialThenElseExpressions(
 
 CString CFormulaParser::CurrentFunctionName() {
 	return _function_name;
+}
+
+CString CFormulaParser::CurrentFile() {
+  return _source_file_name;
 }
 
 void CFormulaParser::ErrorMissingAction(int token_ID) {

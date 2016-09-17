@@ -47,6 +47,7 @@ class CFormulaParser {
   void ParseLibrary(CString library_path);
  public:
   static CString CurrentFunctionName();
+  static CString CurrentFile();
   bool IsParsing()	                      { return _is_parsing; }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
   bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }

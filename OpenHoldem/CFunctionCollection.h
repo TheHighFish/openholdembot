@@ -74,11 +74,11 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   void Dump();
  public:
   bool ParseAll();
-  void SetOpenPPLLibraryLoadingState(bool is_good) { _openPPL_library_correctly_loaded = is_good; }
+  void SetOpenPPLLibraryLoaded(bool is_good) { _openPPL_library_loaded = is_good; }
   void CheckForDefaultFormulaEntries();
  public:
   bool BotLogicCorrectlyParsed();
-  bool OpenPPLLibraryCorrectlyParsed()             { return _openPPL_library_correctly_loaded; }
+  bool OpenPPLLibraryLoaded()            { return _openPPL_library_loaded; }
   bool IsOpenPPLProfile();
  public:
   // Simply call GetFirst() first, then GetNext()
@@ -106,7 +106,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   std::map<CString, COHScriptObject*> _function_map;
   CString _title;
   CString _path;
-  bool _openPPL_library_correctly_loaded;
+  bool _openPPL_library_loaded;
  private:
   std::map<CString, COHScriptObject*>::iterator enumerator_it;
   CCritSec m_critsec;

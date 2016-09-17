@@ -68,10 +68,6 @@ void CSymbolEngineOpenPPL::ResetOnMyTurn() {
 }
 
 void CSymbolEngineOpenPPL::InitMemorySymbols() {
-  // Nothing to be done if no OpenPPL-library loaded.
-  if (!p_function_collection->OpenPPLLibraryCorrectlyParsed()) {
-    return;
-  }
   // Verify that ini-functions exists.
   // Avoid PEBKACs by stupid renaming, that breaks everything
   if (!p_function_collection->Exists(kOpenPPLIniFunctionsForHistorySymbols)) {
