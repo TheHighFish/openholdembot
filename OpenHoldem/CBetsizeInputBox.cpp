@@ -92,7 +92,7 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
     swag_amt, _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
   bool use_comma_instead_of_dot = p_tablemap->use_comma_instead_of_dot();
   (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), _i3_edit_region,
-    swag_amt, use_comma_instead_of_dot, NULL, point_null);
+    swag_amt, use_comma_instead_of_dot);
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Sleeping %dms.\n", preferences.swag_delay_3());
   Sleep(preferences.swag_delay_3());
   // Check for stolen focus, and thus misswag
@@ -164,19 +164,19 @@ void CBetsizeInputBox::SelectText() {
   if (p_tablemap->swagselectionmethod() == TEXTSEL_SINGLECLICK) {
    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text selection; calling mouse.dll to single click: %d,%d %d,%d\n",
       _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
-    (theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), _i3_edit_region, MouseLeft, 1, NULL, p_null);
+    (theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), _i3_edit_region, MouseLeft, 1);
   } else if (p_tablemap->swagselectionmethod() == TEXTSEL_DOUBLECLICK) {
    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text selection; calling mouse.dll to double click: %d,%d %d,%d\n",
       _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
-    (theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), _i3_edit_region, MouseLeft, 2, NULL, p_null);
+    (theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), _i3_edit_region, MouseLeft, 2);
   } else if (p_tablemap->swagselectionmethod() == TEXTSEL_TRIPLECLICK) {
    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text selection; calling mouse.dll to triple click: %d,%d %d,%d\n",
       _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
-    (theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), _i3_edit_region, MouseLeft, 3, NULL, p_null);
+    (theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), _i3_edit_region, MouseLeft, 3);
   } else if (p_tablemap->swagselectionmethod() == TEXTSEL_CLICKDRAG) {
    write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] Text selection; calling mouse.dll to click drag: %d,%d %d,%d\n",
       _i3_edit_region.left, _i3_edit_region.top, _i3_edit_region.right, _i3_edit_region.bottom);
-    (theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), _i3_edit_region, NULL, p_null);
+    (theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), _i3_edit_region);
   } else if (p_tablemap->swagselectionmethod() == TEXTSEL_NOTHING) {
     // Nothing to do
   } else {

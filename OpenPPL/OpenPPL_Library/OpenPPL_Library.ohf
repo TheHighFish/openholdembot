@@ -2102,6 +2102,18 @@ WHEN (RankOfSecondHoleCard  == SecondFlopCard) RETURN True FORCE
 WHEN (RankOfSecondHoleCard  == ThirdFlopCard)  RETURN True FORCE
 WHEN Others RETURN False FORCE
 
+##FirstHoleCardPairsTheBoard##
+WHEN FirstHoleCardPairsTheFlop RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == TurnCard)  RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == RiverCard) RETURN True FORCE
+WHEN Others RETURN False FORCE
+
+##SecondHoleCardPairsTheBoard##
+WHEN SecondHoleCardPairsTheFlop RETURN True FORCE
+WHEN (RankOfSecondHoleCard  == TurnCard)  RETURN True FORCE
+WHEN (RankOfSecondHoleCard  == RiverCard) RETURN True FORCE
+WHEN Others RETURN False FORCE
+
 ##HadTwoPairOnFlop##
 WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN True FORCE
 WHEN Others RETURN False FORCE
@@ -2605,7 +2617,6 @@ WHEN isthreeofakind RETURN MadeHandFourthCardRank FORCE
 WHEN isonepair      RETURN MadeHandThirdCardRank  FORCE
 WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
 
-
 ##NumberOfBetterKickers##
 // Cards better than my kicker...
 [(ConstCardAce - MyKicker)
@@ -2613,6 +2624,30 @@ WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
 // (We have to shift the kicker out of rankbitspoker, therefore +1)
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
 - (`(rankbitspoker >> (MyKicker + 1)))]
+
+##NumberOfHoleCardsInMadeHand##
+`PCBitsMadeHandWithoutKicker
+
+##MadeHandWithoutkickerRequiresNCards##
+WHEN ishicard        RETURN 1 FORCE
+WHEN isonepair       RETURN 2 FORCE
+WHEN istwopair       RETURN 4 FORCE
+WHEN isthreeofakind  RETURN 3 FORCE
+WHEN isstraight      RETURN 5 FORCE
+WHEN isflush         RETURN 5 FORCE
+WHEN isfullhouse     RETURN 5 FORCE
+WHEN isfourofakind   RETURN 4 FORCE
+WHEN isstraightflush RETURN 5 FORCE
+WHEN isroyalflush    RETURN 5 FORCE
+WHEN Others          RETURN ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY FORCE   
+
+##PCBitsMadeHandWithoutKicker##
+WHEN (MadeHandWithoutkickerRequiresNCards == 1) RETURN (pcbits BitAnd 0b10000) FORCE
+WHEN (MadeHandWithoutkickerRequiresNCards == 2) RETURN (pcbits BitAnd 0b11000) FORCE
+WHEN (MadeHandWithoutkickerRequiresNCards == 3) RETURN (pcbits BitAnd 0b11100) FORCE
+WHEN (MadeHandWithoutkickerRequiresNCards == 4) RETURN (pcbits BitAnd 0b11110) FORCE
+WHEN (MadeHandWithoutkickerRequiresNCards == 5) RETURN (pcbits BitAnd 0b11111) FORCE
+WHEN Others RETURN ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY FORCE  
 
 ##NutsOnBoard##
 nhands == nhandsti
@@ -3140,7 +3175,17 @@ HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecond
 rankbitscommon & ConstAllRanksWithoutAceLow
 
 ##HaveTwoPair##
-`(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2
+// Both hole card must be paired,
+// pure board-pairs do not count.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18750
+WHEN FirstHoleCardPairsTheBoard 
+   And SecondHoleCardPairsTheBoard 
+   // Excluding Trips and quads
+   AND NOT HavePocketPair
+   // Excluding bad "three pairs"
+   // where our lowest pair is useless.
+   AND (NumberOfHoleCardsInMadeHand == 2)
+RETURN True FORCE
 
 ##HaveUnderPair##
 [ ispair AND rankhiplayer<ranklocommon ]
