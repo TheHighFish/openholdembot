@@ -1,0 +1,19 @@
+//*****************************************************************************
+//
+// OpenPPL - Various Other Symbols
+//
+//*****************************************************************************
+
+##Ante##
+// Ante in big blinds
+(bblind > 0) ? (ante / bblind) : 
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##IsFinalTable##
+isfinaltable
+
+##Others##
+AlwaysTrue
+
+##AlwaysTrue##
+1

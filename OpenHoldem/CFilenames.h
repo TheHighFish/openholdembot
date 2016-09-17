@@ -15,14 +15,17 @@
 #define INC_CFILENAMES_H
 
 // OpenPPL-files in the botlogic-directory
-const int kNumberOfOpenPPLLibraries = 6;
+const int kNumberOfOpenPPLLibraries = 9;
 const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_01_Constants.ohf",
   "OpenPPL_Library_02_Verbosity.ohf",
   "OpenPPL_Library_03_Technical_Card_Symbols.ohf",
   "OpenPPL_Library_04_Board_Symbols.ohf",
   "OpenPPL_Library_06_HandStrength_Symbols.ohf",
-  "OpenPPL_Library_07_NutFullHouseOrFourOfAKind.ohf"
+  "OpenPPL_Library_07_NutFullHouseOrFourOfAKind.ohf",
+  "OpenPPL_Library_08_Ante_Others_IsFinalTable.ohf",
+  "OpenPPL_Library_09_Technical_Stacksizes.ohf",
+  "OpenPPL_Library_10_Stacksizes.ohf"
 };
 
 class CFilenames {

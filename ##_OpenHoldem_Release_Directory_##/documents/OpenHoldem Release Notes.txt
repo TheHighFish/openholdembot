@@ -1,3 +1,17 @@
+v9.2.8 2016-09-xx
+==================
+NEW STUFF:
+- Implemented a BitCount-operator,
+  mainly for more verbosity in the OpenPPL-library
+  because WinHoldems backtick-operator is cryptic and hard to read.
+  [THF]
+  
+MAINTENANCE:
+- The OpenPPL-library is now modular and consists of about a dozen files
+  in the botlogic-directory.
+  [THF]
+  
+
 v9.2.7 2016-09-15
 ==================
 NEW STUFF:
