@@ -660,19 +660,10 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
 			//put break for i=0 and opponent unraised BB case (cannot assume anything about his cards)
 			//In round 1 we should really do an analysis of chairs to find out how many have still to
 			//place a bet. Not implemented since accuracy of prwin pre-flop is less critical.
-			if (!i)
-			{
-				//if we called then we are not BB, BB limped to flop,
-				//BB still playing, so do not weight his cards
-				int betround = p_betround_calculator->betround();
-				if (p_symbol_engine_history->nbetsround(betround) < 1.1 
-					&& p_symbol_engine_history->didcall(betround) 
-					&& (p_symbol_engine_active_dealt_playing->playersplayingbits() 
-						& p_symbol_engine_blinds->bblindbits()))
-				{
-					break;
-				}
-			}
+			//
+      // bblimp and special handling for checking players removed in OH 9.2.8
+      // as it was broken and we consider it useless / even harmful.
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19064
 		} while (!IsHandInWeightedRange(ocard[i], ocard[i+1],
 			_willplay, _wontplay, 
 			_topclip, _mustplay));

@@ -121,9 +121,8 @@ struct sprw1326
 	int			useme;				// unless set to 1326 the normal OH prwin will be used
 	int			preflop;			// unless set to 1326 the normal OH prwin will be used pre-flop
 	int			usecallback;		// unless set to 1326 the callback function will not be invoked
-	double		(*prw_callback)(); // if enabled will be invoked before the prwin calculation pass
-	double		scratch;			// for future reference
-	int			bblimp;				// if non-zero no weighting will be applied if a chair has put nothing in the pot
+	double	(*prw_callback)(); // if enabled will be invoked before the prwin calculation pass
+	double	scratch;			// for future reference
 	sprw1326_chair	vanilla_chair;	// will be precalculated by OH at startup - convenience values
 	sprw1326_chair  chair[kMaxNumberOfPlayers];  // structures for each chair
 };
