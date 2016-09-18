@@ -1,0 +1,74 @@
+//*****************************************************************************
+//
+// OpenPPL - Betsizes and StackSizes
+//
+//*****************************************************************************
+
+##AmountToCall##
+(bblind > 0) ? (DollarsToCall / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##BetSize##
+ncallbets
+
+##BigBlindSize##
+bet1
+
+##MaxOpponentsLeftStackSize##
+// We believe MaxOpponentsLeftStackSize is better than MaxStacksizeOfActiveOpponents
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18924
+MaxStacksizeOfActiveOpponents
+
+##MaxStacksizeOfActiveOpponents##
+(bblind > 0) ? 
+(stack0 == balance ? stack1/bblind : stack0/bblind) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##EffectiveMaxStacksizeOfActiveOpponents##
+(StackSize <= MaxStacksizeOfActiveOpponents) ? StackSize : MaxStacksizeOfActiveOpponents
+
+##MaxStillToActStackSize##
+// Per definition for first orbit preflop only
+userchair == BigBlindChair        ? 0 :
+userchair == SmallBlindChair      ? MaxStillToActStackSizeAfterSmallBlind      :
+userchair == ButtonChair          ? MaxStillToActStackSizeAfterButton          :
+userchair == CutOffChair          ? MaxStillToActStackSizeAfterCutOff          :
+userchair == MiddlePosition3Chair ? MaxStillToActStackSizeAfterMiddlePosition3 :
+userchair == MiddlePosition2Chair ? MaxStillToActStackSizeAfterMiddlePosition2 :
+userchair == MiddlePosition1Chair ? MaxStillToActStackSizeAfterMiddlePosition1 :
+userchair == EarlyPosition3Chair  ? MaxStillToActStackSizeAfterEarlyPosition3  :
+userchair == EarlyPosition2Chair  ? MaxStillToActStackSizeAfterEarlyPosition2  :
+userchair == EarlyPosition1Chair  ? MaxStillToActStackSizeAfterEarlyPosition1  :
+HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
+
+##MinStillToActStackSize##
+userchair == BigBlindChair        ? 0:
+userchair == SmallBlindChair      ? MinStillToActStackSizeAfterSmallBlind      :
+userchair == ButtonChair          ? MinStillToActStackSizeAfterButton          :
+userchair == CutOffChair          ? MinStillToActStackSizeAfterCutOff          :
+userchair == MiddlePosition3Chair ? MinStillToActStackSizeAfterMiddlePosition3 :
+userchair == MiddlePosition2Chair ? MinStillToActStackSizeAfterMiddlePosition2 :
+userchair == MiddlePosition1Chair ? MinStillToActStackSizeAfterMiddlePosition1 :
+userchair == EarlyPosition3Chair  ? MinStillToActStackSizeAfterEarlyPosition3  :
+userchair == EarlyPosition2Chair  ? MinStillToActStackSizeAfterEarlyPosition2  :
+userchair == EarlyPosition1Chair  ? MinStillToActStackSizeAfterEarlyPosition1  :
+HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
+
+##PotSize##
+// Considering effective potside
+(bblind > 0) ? (pot / bblind) - SidePot: ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StackSize##
+(bblind > 0) ? (balance / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StackSizeAtBeginningOfCurrentRound##
+StackSize + TotalInvestedThisRound
+
+##TotalInvested##
+WHEN (betround == ConstBetRoundPreflop) RETURN (Ante + ncurrentbets) FORCE
+WHEN (betround == ConstBetRoundFlop)    RETURN (Ante + nbetsround1 + ncurrentbets) FORCE
+WHEN (betround == ConstBetRoundTurn)    RETURN (Ante + nbetsround1 + nbetsround2 + ncurrentbets) FORCE
+WHEN (betround == ConstBetRoundRiver)   RETURN (Ante + nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) FORCE 
+WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
+
+##TotalInvestedThisRound##
+(betround == ConstBetRoundPreflop) ? (ncurrentbets + Ante) : ncurrentbets

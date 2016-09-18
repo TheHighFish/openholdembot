@@ -89,6 +89,7 @@ void CFormulaParser::ParseDefaultLibraries() {
   p_function_collection->SetOpenPPLLibraryLoaded(false);
   for (int i = 0; i < kNumberOfOpenPPLLibraries; ++i) {
     CString library_path;
+    assert(kOpenPPLLibraries[i] != "");
     library_path.Format("%s\\%s",
       p_filenames->BotlogicDirectory(),
       kOpenPPLLibraries[i]);

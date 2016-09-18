@@ -1,0 +1,107 @@
+##PrevActionWasAllin##
+   (prevaction == 4) // Allin
+OR (prevaction == 5) // Jamming the slider
+
+##AddNopponentscalling##
+Calls + nopponentscalling
+
+##PlayersRaisingOrColdCallingTheLastRaise##
+// Counting the last raiser + all cold callers
+(LastRaiserCurrentBet <= 0) ? 0 :
+  (currentbet0 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet1 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet2 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet3 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet4 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet5 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet6 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet7 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet8 == LastRaiserCurrentBet ? 1 : 0)
++ (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
+
+##ChecksAfterHero##
+// Valid second orbit only
+// All active players with a zero bet
+(BotsActionsOnThisRoundIncludingChecks == 0) ? 0 :
+nopponentschecking
+
+##ChecksInFrontOfHero##
+// No checks preflop. Not even big blind can check (game over).
+// We ignore additional blind-posters however.
+(betround == ConstBetRoundPreflop) ? 0 :
+// I did already act, so no longer any posters in front of me
+(currentbet > 0) ? 0 :
+// A bet to call, subtract all players with a non-zero bet in front of us
+(AmountToCall > 0) ? (betposition - nopponentsbetting - 1):
+// All players before us checked, not even open-folds can throw this logic off.
+[betposition - 1]
+
+##NoVillainBetOrRaisedOnFlop##
+((raisbits2 & ~(1<<userchair)) == 0)
+
+##NoVillainBetOrRaisedOnTurn##
+((raisbits3 & ~(1<<userchair)) == 0)
+
+##RaisesBeforeOurFirstActionThisRoundPostflop##
+(nopponentstruelyraising > 0) ? (nopponentstruelyraising - 1) : 0
+
+##AntesPresent##
+// First orbit preflop only,
+// as this function tries to guess the antes from the bets.
+   [(currentbet0 > 0) AND (currentbet0 < sblind) AND (balance0 > 0)]
+OR [(currentbet1 > 0) AND (currentbet1 < sblind) AND (balance1 > 0)]
+OR [(currentbet2 > 0) AND (currentbet2 < sblind) AND (balance2 > 0)]
+OR [(currentbet3 > 0) AND (currentbet3 < sblind) AND (balance3 > 0)]
+OR [(currentbet4 > 0) AND (currentbet4 < sblind) AND (balance4 > 0)]
+OR [(currentbet5 > 0) AND (currentbet5 < sblind) AND (balance5 > 0)]
+OR [(currentbet6 > 0) AND (currentbet6 < sblind) AND (balance6 > 0)]
+OR [(currentbet7 > 0) AND (currentbet7 < sblind) AND (balance7 > 0)]
+OR [(currentbet8 > 0) AND (currentbet8 < sblind) AND (balance8 > 0)]
+OR [(currentbet9 > 0) AND (currentbet9 < sblind) AND (balance9 > 0)]
+
+##NumberOfOpponentsLimpingPreflop##
+// First orbit preflop only
+// Does not count the user
+// Does not count the big-blind, who can't limp
+  [(currentbet0 == bblind) AND (userchair != 0) AND (BigBlindChair != 0) ? 1 : 0]
++ [(currentbet1 == bblind) AND (userchair != 1) AND (BigBlindChair != 1) ? 1 : 0]
++ [(currentbet2 == bblind) AND (userchair != 2) AND (BigBlindChair != 2) ? 1 : 0]
++ [(currentbet3 == bblind) AND (userchair != 3) AND (BigBlindChair != 3) ? 1 : 0]
++ [(currentbet4 == bblind) AND (userchair != 4) AND (BigBlindChair != 4) ? 1 : 0]
++ [(currentbet5 == bblind) AND (userchair != 5) AND (BigBlindChair != 5) ? 1 : 0]
++ [(currentbet6 == bblind) AND (userchair != 6) AND (BigBlindChair != 6) ? 1 : 0]
++ [(currentbet7 == bblind) AND (userchair != 7) AND (BigBlindChair != 7) ? 1 : 0]
++ [(currentbet8 == bblind) AND (userchair != 8) AND (BigBlindChair != 8) ? 1 : 0]
++ [(currentbet9 == bblind) AND (userchair != 9) AND (BigBlindChair != 9) ? 1 : 0]
+
+##RaisesBeforeOurFirstAction##
+(BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
+(betround > ConstBetRoundPreflop) ? RaisesBeforeOurFirstActionThisRoundPostflop :
+nopponentstruelyraising
+
+##RaisesSinceLastPlayOnOurSecondAction##
+// If we checked the first time the bettor sits behind us.
+[didchec AND (nopponentstruelyraising > 0) ] ? (nopponentstruelyraising - 1) :
+[didchec AND (nopponentstruelyraising == 0)] ? 0 :
+// Otherwise: either we were the first bettor
+// or there was a bet and maybe raises in front of us,
+// so all technical "raises" behind us are true raises
+nopponentstruelyraising
+
+##RaisesSinceLastPlayAfterOurSecondAction##
+// Now all technical raises are true raises, no bettors possible
+nopponentstruelyraising
+
+##OpponentsWithHigherStack##
+// No need to tinker with memory symbols here,
+// this logic is valid for all betting rounds.
+  (((balance0 + currentbet0) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance1 + currentbet1) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance2 + currentbet2) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance3 + currentbet3) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance4 + currentbet4) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance5 + currentbet5) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance6 + currentbet6) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance7 + currentbet7) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance8 + currentbet8) > MaximumPossibleBetsizeIndollars) ? 1: 0)
++ (((balance9 + currentbet9) > MaximumPossibleBetsizeIndollars) ? 1: 0)

@@ -130,6 +130,10 @@ WHEN Others RETURN False FORCE
 WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN True FORCE
 WHEN Others RETURN False FORCE
 
+##HaveBackdoorStraightDraw##
+	(-1 + msgbox$HaveBackdoorstraightDraw_Bnot_Byet_Bimplemented_D_NYour_Bhelp_Bis_Brequired_D)
+AND NOT HaveStraight 
+
 ##HaveSecondBestKicker##
 (NumberOfBetterKickers == 1)
 

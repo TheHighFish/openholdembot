@@ -1,0 +1,237 @@
+//*****************************************************************************
+//
+// OpenPPL - StackSizes - supporting technical functions
+//
+// Once the general multiplexer is implemented Chair0StartingStackSize
+// should be renamed to StartingStackSizeX.
+//
+//*****************************************************************************
+
+##Chair0StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance0 + currentbet0 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair1StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance1 + currentbet1 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair2StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance2 + currentbet2 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair3StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance3 + currentbet3 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair4StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance4 + currentbet4 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair5StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance5 + currentbet5 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair6StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance6 + currentbet6 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair7StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance7 + currentbet7 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair8StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance8 + currentbet8 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Chair9StartingStackSize##
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance9 + currentbet9 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##MaxStillToActStackSizeAfterSmallBlind##
+// Only one player behind SB, so it is easy
+// Per definition for first orbit preflop only.
+BigBlindStartingStackSize
+
+##MaxStillToActStackSizeAfterButton##
+// Per definition for first orbit preflop only
+SmallBlindStartingStackSize > MaxStillToActStackSizeAfterSmallBlind ?
+  SmallBlindStartingStackSize : MaxStillToActStackSizeAfterSmallBlind
+
+##MaxStillToActStackSizeAfterCutOff##
+// Per definition for first orbit preflop only
+ButtonStartingStackSize > MaxStillToActStackSizeAfterButton ?
+  ButtonStartingStackSize : MaxStillToActStackSizeAfterButton
+
+##MaxStillToActStackSizeAfterMiddlePosition3##
+// Per definition for first orbit preflop only
+CutOffStartingStackSize > MaxStillToActStackSizeAfterCutOff?
+  CutOffStartingStackSize : MaxStillToActStackSizeAfterCutOff
+
+##MaxStillToActStackSizeAfterMiddlePosition2##
+// Per definition for first orbit preflop only
+MiddlePosition3StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition3 ?
+  MiddlePosition3StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition3
+
+##MaxStillToActStackSizeAfterMiddlePosition1##
+// Per definition for first orbit preflop only
+MiddlePosition2StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition2 ?
+  MiddlePosition2StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition2
+
+##MaxStillToActStackSizeAfterEarlyPosition3##
+// Per definition for first orbit preflop only
+MiddlePosition1StartingStackSize > MaxStillToActStackSizeAfterMiddlePosition1 ?
+  MiddlePosition1StartingStackSize : MaxStillToActStackSizeAfterMiddlePosition1
+
+##MaxStillToActStackSizeAfterEarlyPosition2##
+// Per definition for first orbit preflop only
+EarlyPosition3StartingStackSize > MaxStillToActStackSizeAfterEarlyPosition3 ?
+  EarlyPosition3StartingStackSize : MaxStillToActStackSizeAfterEarlyPosition3
+
+##MaxStillToActStackSizeAfterEarlyPosition1##
+// Per definition for first orbit preflop only
+EarlyPosition2StartingStackSize > MaxStillToActStackSizeAfterEarlyPosition2 ?
+  EarlyPosition2StartingStackSize : MaxStillToActStackSizeAfterEarlyPosition2
+
+##MinStillToActStackSizeAfterSmallBlind##
+// Only one player behind SB, so it is easy
+BigBlindStartingStackSize
+
+##MinStillToActStackSizeAfterButton##
+SmallBlindStartingStackSize < MinStillToActStackSizeAfterSmallBlind ?
+  SmallBlindStartingStackSize : MinStillToActStackSizeAfterSmallBlind
+
+##MinStillToActStackSizeAfterCutOff##
+ButtonStartingStackSize < MinStillToActStackSizeAfterButton ?
+  ButtonStartingStackSize : MinStillToActStackSizeAfterButton
+
+##MinStillToActStackSizeAfterMiddlePosition3##
+CutOffStartingStackSize < MinStillToActStackSizeAfterCutOff ?
+  CutOffStartingStackSize : MinStillToActStackSizeAfterCutOff
+
+##MinStillToActStackSizeAfterMiddlePosition2##
+MiddlePosition3StartingStackSize < MinStillToActStackSizeAfterMiddlePosition3 ?
+  MiddlePosition3StartingStackSize : MinStillToActStackSizeAfterMiddlePosition3
+
+##MinStillToActStackSizeAfterMiddlePosition1##
+MiddlePosition2StartingStackSize < MinStillToActStackSizeAfterMiddlePosition2 ?
+  MiddlePosition2StartingStackSize : MinStillToActStackSizeAfterMiddlePosition2
+
+##MinStillToActStackSizeAfterEarlyPosition3##
+MiddlePosition1StartingStackSize < MinStillToActStackSizeAfterMiddlePosition1 ?
+  MiddlePosition1StartingStackSize : MinStillToActStackSizeAfterMiddlePosition1
+
+##MinStillToActStackSizeAfterEarlyPosition2##
+EarlyPosition3StartingStackSize < MinStillToActStackSizeAfterEarlyPosition3 ?
+  EarlyPosition3StartingStackSize : MinStillToActStackSizeAfterEarlyPosition3
+
+##MinStillToActStackSizeAfterEarlyPosition1##
+EarlyPosition2StartingStackSize < MinStillToActStackSizeAfterEarlyPosition2 ?
+  EarlyPosition2StartingStackSize : MinStillToActStackSizeAfterEarlyPosition2
+
+##MaxOpponentStackSizeCalculation##
+(bblind <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
+(balance_rank0 == (balance + currentbet)) ? (balance_rank1 / bblind) : (balance_rank0 / bblind)
+
+##MinOpponentStackSizeCalculation##
+(bblind <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
+[ 1 / bblind *
+[ nplayersdealt == 10 ?
+    (balance_rank9 == (balance + currentbet) ? balance_rank8 : balance_rank9) :
+  nplayersdealt == 9 ?
+    (balance_rank8 == (balance + currentbet) ? balance_rank7 : balance_rank8) :
+  nplayersdealt == 8 ?
+    (balance_rank7 == (balance + currentbet) ? balance_rank6 : balance_rank7) :
+  nplayersdealt == 7 ?
+    (balance_rank6 == (balance + currentbet) ? balance_rank5 : balance_rank6) :
+  nplayersdealt == 6 ?
+    (balance_rank5 == (balance + currentbet) ? balance_rank4 : balance_rank5) :
+  nplayersdealt == 5 ?
+    (balance_rank4 == (balance + currentbet) ? balance_rank3 : balance_rank4) :
+  nplayersdealt == 4 ?
+    (balance_rank3 == (balance + currentbet) ? balance_rank2 : balance_rank3) :
+  nplayersdealt == 3 ?
+    (balance_rank2 == (balance + currentbet) ? balance_rank1 : balance_rank2) :
+  nplayersdealt == 2 ?
+    (balance_rank1 == (balance + currentbet) ? balance_rank0 : balance_rank1) :
+ERROR_No_Opponents_Detected__Check_Your_TableMap]]
+
+##Stack0##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+// To be renamed to StackChair0?
+[bblind > 0] ? [balance0 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack1##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance1 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack2##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance2 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack3##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance3 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack4##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance4 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack5##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance5 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack6##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance6 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack7##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance7 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack8##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance8 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack9##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance9 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap

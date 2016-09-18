@@ -15,17 +15,28 @@
 #define INC_CFILENAMES_H
 
 // OpenPPL-files in the botlogic-directory
-const int kNumberOfOpenPPLLibraries = 9;
+const int kNumberOfOpenPPLLibraries = 20;
 const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
-  "OpenPPL_Library_01_Constants.ohf",
-  "OpenPPL_Library_02_Verbosity.ohf",
-  "OpenPPL_Library_03_Technical_Card_Symbols.ohf",
-  "OpenPPL_Library_04_Board_Symbols.ohf",
-  "OpenPPL_Library_06_HandStrength_Symbols.ohf",
-  "OpenPPL_Library_07_NutFullHouseOrFourOfAKind.ohf",
-  "OpenPPL_Library_08_Ante_Others_IsFinalTable.ohf",
-  "OpenPPL_Library_09_Technical_Stacksizes.ohf",
-  "OpenPPL_Library_10_Stacksizes.ohf"
+  "OpenPPL_Library_Constants.ohf",
+  "OpenPPL_Library_Verbosity.ohf",
+  "OpenPPL_Library_Technical_Card_Symbols.ohf",
+  "OpenPPL_Library_Board_Symbols.ohf",
+  "OpenPPL_Library_HandStrength_Symbols.ohf",
+  "OpenPPL_Library_NutFullHouseOrFourOfAKind.ohf",
+  "OpenPPL_Library_Ante_Others_IsFinalTable.ohf",
+  "OpenPPL_Library_Technical_Stacksizes.ohf",
+  "OpenPPL_Library_Stacksizes.ohf",
+  "OpenPPL_Library_History_Symbols.ohf",
+  "OpenPPL_Library_Update_History.ohf",
+  "OpenPPL_Library_Betting_Action_Symbols.ohf",
+  "OpenPPL_Library_Position_Symbols.ohf",
+  "OpenPPL_Library_Technical_Position_Symbols.ohf",
+  "OpenPPL_Library_Deprecated.ohf",
+  "OpenPPL_Library_Betting_Action_Symbols.ohf",
+  "OpenPPL_Library_Players_and_Opponents.ohf",
+  "OpenPPL_Library_ChipAmounrs.ohf",
+  "OpenPPL_Library_Technical_Betting_Action_Symbols.ohf",
+  "OpenPPL_Library_Bets_Pots_And_Stacks"
 };
 
 class CFilenames {
