@@ -36,7 +36,7 @@ const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Players_and_Opponents.ohf",
   "OpenPPL_Library_ChipAmounrs.ohf",
   "OpenPPL_Library_Technical_Betting_Action_Symbols.ohf",
-  "OpenPPL_Library_Bets_Pots_And_Stacks"
+  "OpenPPL_Library_Bets_Pots_And_Stacks.ohf"
 };
 
 class CFilenames {

@@ -137,8 +137,8 @@ WHEN betround != ConstBetRoundPreflop RETURN False FORCE
 // precisely: board contributes at most two cards.
 // This is not perfect.
 // Example:
-// Board = 456
-// hand: 9T
+//   Board = 456
+//   hand: 9T
 // But good enough for the moment ;-)
 WHEN nstraightfill == 2 AND nstraightfillcommon > 2 RETURN True FORCE
 

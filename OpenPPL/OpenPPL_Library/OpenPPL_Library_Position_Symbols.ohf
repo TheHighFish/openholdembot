@@ -174,7 +174,7 @@ MiddlePosition2Calling ? 5 :
 MiddlePosition1Calling ? 6 :
 EarlyPosition3Calling  ? 7 :
 EarlyPosition2Calling  ? 8 :
-EarlyPosition1Calling  ? 9 :h
+EarlyPosition1Calling  ? 9 :
 HINT_No_LastCaller
 
 ##LastRaiserPosition##

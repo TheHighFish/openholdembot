@@ -5,6 +5,10 @@ NEW STUFF:
   mainly for more verbosity in the OpenPPL-library
   because WinHoldems backtick-operator is cryptic and hard to read.
   [THF]
+- Finally implemented HaveBackdoorStraightDraw.
+  The implementation is not perfect, see the comment in the library.
+  Improvements are very welcome.
+  [THF]
 
 BUG FIXES:
 - The OPPL-symbol HaveTwoPair considers now the cases of "three pairs";
@@ -14,7 +18,7 @@ BUG FIXES:
   [THF]
   
 MAINTENANCE:
-- The OpenPPL-library is now modular and consists of about a dozen files
+- The OpenPPL-library is now modular and consists of about twenty files
   in the botlogic-directory.
   [THF]
 - Enhanced PrWin does no longer support the parameter bblimp,
