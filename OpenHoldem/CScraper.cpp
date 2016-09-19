@@ -86,8 +86,14 @@ const CString CScraper::extractHandnumFromString(CString t) {
 }
 
 bool CScraper::ProcessRegion(RMapCI r_iter) {
+  write_log(preferences.debug_scraper(),
+    "[CScraper] ProcessRegion %s (%i, %i, %i, %i)\n",
+    r_iter->first, r_iter->second.left, r_iter->second.top,
+    r_iter->second.right, r_iter->second.bottom);
+  write_log(preferences.debug_scraper(),
+    "[CScraper] ProcessRegion color %i radius %i transform %s\n",
+    r_iter->second.color, r_iter->second.radius, r_iter->second.transform);
 	__HDC_HEADER
-
 	// Get "current" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 	BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
@@ -96,29 +102,27 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	SelectObject(hdcCompatible, old_bitmap);
 
 	// If the bitmaps are different, then continue on
-	if (!BitmapsAreEqual(r_iter->second.last_bmp, r_iter->second.cur_bmp))
-	{
+	if (!BitmapsAreEqual(r_iter->second.last_bmp, r_iter->second.cur_bmp)) {
     // Copy into "last" bitmap
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
 		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
 									r_iter->second.bottom - r_iter->second.top + 1, 
 									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
 		SelectObject(hdcCompatible, old_bitmap);  
-
 		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
 	}
-
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	return false;
 }
 
 bool CScraper::EvaluateRegion(CString name, CString *result) {
-	__HDC_HEADER
+  __HDC_HEADER
+  write_log(preferences.debug_alltherest(),
+    "[CScraper] EvaluateRegion %s\n", name);
 	CTransform	trans;
 	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
-	if (r_iter != p_tablemap->r$()->end()) 
-	{
+	if (r_iter != p_tablemap->r$()->end()) {
     // Potential for optimization here
     ++total_region_counter;
 		if (ProcessRegion(r_iter)) {
