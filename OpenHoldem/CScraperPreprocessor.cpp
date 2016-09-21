@@ -145,16 +145,14 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 #endif OPENHOLDEM_PROGRAM 
 }
 
-void CScraperPreprocessor::PreprocessTitleString(CString *title_string)
-{
+void CScraperPreprocessor::PreprocessTitleString(CString *title_string) {
 	// Logic seems to be exactly the same for both cases
 	PreprocessMonetaryString(title_string);
 }
 
 // This function removes superfluous charaters from single numbers only.
 // Example: "Singlemalt raised to $60"
-void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text)
-{
+void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text) {
 	if (p_tablemap->balancenumbersonly()) {
 		for (int i=0; i<balance_and_or_potential_text->GetLength(); i++)		{
       char next_character = balance_and_or_potential_text->GetAt(i);

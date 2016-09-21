@@ -18,6 +18,18 @@ BUG FIXES:
   [THF]
   
 MAINTENANCE:
+- The functions in mouse- and keyboard-DLL contained lots of
+  additional parameters to optionally restore the mouse-position.
+  As this was a bit messy and somebody (thanks to Davagin)
+  reported "undefined mouse-position after raise" 
+  (with a non-official, half-made development version)
+  we cleaned up the DLL-interfaces and removed these parameters.
+  Now openholdem cares about restoration of mouse-position
+  and input-focus once at the end of an action-sequence.
+  It will do so for Manualmode, oHReplay and other offline-simulators
+  for convenience, but keep the new position at real casinos
+  for stalth reasons.
+  [THF]
 - The OpenPPL-library is now modular and consists of about twenty files
   in the botlogic-directory.
   [THF]

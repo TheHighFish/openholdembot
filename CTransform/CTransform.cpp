@@ -1195,6 +1195,10 @@ double CTransform::StringToMoney(const CString inStr) {
 	int					     iValueWithCurrencySymbol = -1;
 	bool				     currencySymbol = false;
 
+#ifdef OPENHOLDEM_PROGRAM
+  write_log(preferences.debug_scraper(),
+    "[CTransform] StringToMoney %s\n", inStr);
+#endif 
 	while (*str) {
 		switch (*str) {
 			case '0':
@@ -1232,7 +1236,7 @@ double CTransform::StringToMoney(const CString inStr) {
           // k = $1.000
           // m = $1.000.000
           // c = $0.01
-          // Both uppere and lower cases
+          // Both upper and lower cases
           // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=18939
 					if (*str == '¢' || *str == 'c' || *str == 'C') {
 						possibleValuesMultiplier.Add(-100);
