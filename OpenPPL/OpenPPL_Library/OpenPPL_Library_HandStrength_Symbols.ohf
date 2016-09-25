@@ -91,7 +91,7 @@ WHEN SecondHoleCardPairsTheFlop RETURN True FORCE
 
 ##HadPairOnTurn##
    HadPairOnFlop 
-OR FlopCardPairedOnTurn 
+OR FlopCardPairedOnTurn //?????
 OR RankOfFirstHoleCard == TurnCard 
 OR RankOfSecondHoleCard == TurnCard
 
@@ -130,17 +130,130 @@ WHEN Others RETURN False FORCE
 WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN True FORCE
 WHEN Others RETURN False FORCE
 
+##HaveGoodBackdoorStraightDrawAKQJT##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b111100000000000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b111110000000000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDrawKQJT9##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b011111000000000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDrawQJT98##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b001111100000000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDrawJT987##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000111110000000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDrawT9876##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000011111000000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDraw98765##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000001111100000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDraw87654##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000111110000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDraw76543##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000011111000) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDraw65432##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000001111100) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
+##HaveGoodBackdoorStraightDraw54321##
+WHEN betround != ConstBetRoundFlop RETURN False FORCE
+// We have to contribute both hole-cards.
+// contrary to the other functions we allow the idiot-end.
+// for a backdoor-wheeldraw to an A2345-straight
+// a) because AX(s) will be in our range quite offen
+// b) because an opponent only dominates us 
+//    if he holds 6X (X = 2..5) and hits (quite unlikely).
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000000111110) != 2) RETURN False FORCE
+// Hole-cards and board-cards must contribute threee cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000000111110) != 3) RETURN False FORCE
+WHEN Othere RETURN True FORCE
+
 ##HaveBackdoorStraightDraw##
-WHEN betround != ConstBetRoundPreflop RETURN False FORCE
-// Simple check for any backdoorstraight-draws
-// where we contribute at least one card,
-// precisely: board contributes at most two cards.
-// This is not perfect.
-// Example:
-// Board = 456
-// hand: 9T
-// But good enough for the moment ;-)
-WHEN nstraightfill == 2 AND nstraightfillcommon > 2 RETURN True FORCE
+// This code only consider backdoor-straightdraws,
+// where we contribute both cards, not to the idiot end
+// (with the exception of A2345, see HaveGoodBackdoorStraightDraw54321).
+// This is not perfect, as there are other draws like backdoor-double-gutshots
+// like 34..7..TJ that are harder to hit and where we contribute only one 
+// (or no) card in some cases.
+// We don't consider them here.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=12301
+   HaveGoodBackdoorStraightDrawAKQJT
+OR HaveGoodBackdoorStraightDrawKQJT9
+OR HaveGoodBackdoorStraightDrawQJT98
+OR HaveGoodBackdoorStraightDrawJT987
+OR HaveGoodBackdoorStraightDrawT9876
+OR HaveGoodBackdoorStraightDraw98765
+OR HaveGoodBackdoorStraightDraw87654
+OR HaveGoodBackdoorStraightDraw76543
+OR HaveGoodBackdoorStraightDraw65432
+OR HaveGoodBackdoorStraightDraw54321
 
 ##HaveSecondBestKicker##
 (NumberOfBetterKickers == 1)
@@ -1070,15 +1183,15 @@ AND   [(pokerval & threeofakind) AND NOT (pokervalcommon & threeofakind)
    OR  (pokerval & fourofakind)  AND NOT (pokervalcommon & fourofakind)]
 
 ##TripsRank##
-HaveTrips AND HaveTopPair    ? TopPairRank:
-HaveTrips AND HaveSecondTopPair ? SecondTopPairRank:
-HaveTrips AND HaveThirdTopPair ? ThirdTopPairRank:
-HaveTrips AND HaveFourthTopPair ? FourthTopPairRank:
-HaveTrips AND HaveFifthTopPair ? FifthTopPairRank: 0
+WHEN HaveTrips AND HaveTopPair       RETURN TopPairRank FORCE
+WHEN HaveTrips AND HaveSecondTopPair RETURN SecondTopPairRank FORCE
+WHEN HaveTrips AND HaveThirdTopPair  RETURN ThirdTopPairRank FORCE
+WHEN HaveTrips AND HaveFourthTopPair RETURN FourthTopPairRank FORCE
+WHEN HaveTrips AND HaveFifthTopPair  RETURN FifthTopPairRank FORCE
 
 ##TripsKickerRank##
-HaveTrips AND TripsRank==RankOfFirstHoleCard ? RankOfSecondHoleCard:
-HaveTrips AND TripsRank==RankOfSecondHoleCard ? RankOfFirstHoleCard: 0
+WHEN HaveTrips AND TripsRank==RankOfFirstHoleCard  RETURN RankOfSecondHoleCard FORCE
+WHEN HaveTrips AND TripsRank==RankOfSecondHoleCard RETURN RankOfFirstHoleCard FORCE
 
 ##HaveStraight##
 (nstraightfill == 0)

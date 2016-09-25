@@ -7,7 +7,8 @@ NEW STUFF:
   [THF]
 - Finally implemented HaveBackdoorStraightDraw.
   The implementation is not perfect, see the comment in the library.
-  Improvements are very welcome.
+  Thanks to KaeKruse, Lavezzi, Guysmo and Sloboz
+  for their code and opinions.
   [THF]
 
 BUG FIXES:
