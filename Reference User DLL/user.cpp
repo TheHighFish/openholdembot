@@ -50,20 +50,20 @@
 DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
 	if (pquery==NULL)
 		return 0;
-	if (strncmp(pquery,"dll$test",8)==0) {
+	if (strncmp(pquery,"dll$test",9)==0) {
     //ParseHandList("list_dlltest", "AA AKs AKo");
 		return GetSymbol("random");
   }
-	if (strncmp(pquery,"dll$spend",9)==0) {
+	if (strncmp(pquery,"dll$spend",10)==0) {
 		return GetSymbol("f$spend");
   }
-	if (strncmp(pquery,"dll$recurse",11)==0) {
+	if (strncmp(pquery,"dll$recurse",12)==0) {
 		return GetSymbol("dll$mynumber");
   }
-	if (strncmp(pquery,"dll$mynumber",12)==0) {
+	if (strncmp(pquery,"dll$mynumber",13)==0) {
 		return 12345.67;
   }
-  if (strncmp(pquery, "dll$scrape", 12) == 0) {
+  if (strncmp(pquery, "dll$scrape", 11) == 0) {
     char* scraped_result;
     int result_lenght;
     scraped_result = ScrapeTableMapRegion("p0balance", result_lenght);
