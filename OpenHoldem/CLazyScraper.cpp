@@ -55,7 +55,7 @@ CLazyScraper::~CLazyScraper() {
 //   * slider
 // (only if the game-type is NL or PL)
 //
-// Once per everyheartbeat (cash-game):
+// Once per every heartbeat (cash-game):
 //   * scrape "seated" for all chairs
 //   * scrape "active" for all seated chairs
 //   * scrape cards for all active chairs
