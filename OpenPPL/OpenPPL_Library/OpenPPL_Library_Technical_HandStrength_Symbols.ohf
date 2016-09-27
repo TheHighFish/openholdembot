@@ -1,0 +1,230 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 7.0.2 or later
+//
+// Contributors:
+//   Bob3456
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Technical HandStrength Symbols
+//
+//*****************************************************************************
+
+##HighCardOfCommonStraight##
+// Precondition: straight on board
+//..........................AKQJT98765432a-
+BitCount(rankbitscommon & 0b111110000000000) == 5 ? ConstCardAce   :
+BitCount(rankbitscommon & 0b011111000000000) == 5 ? ConstCardKing  :
+BitCount(rankbitscommon & 0b001111100000000) == 5 ? ConstCardQueen :
+BitCount(rankbitscommon & 0b000111110000000) == 5 ? ConstCardJack  :
+BitCount(rankbitscommon & 0b000011111000000) == 5 ? ConstCardTen   :
+BitCount(rankbitscommon & 0b000001111100000) == 5 ? ConstCardNine  :
+BitCount(rankbitscommon & 0b000000111110000) == 5 ? ConstCardEight :
+BitCount(rankbitscommon & 0b000000011111000) == 5 ? ConstCardSeven :
+BitCount(rankbitscommon & 0b000000001111100) == 5 ? ConstCardSix   :
+BitCount(rankbitscommon & 0b000000000111110) == 5 ? ConstCardFive  :
+ERROR_Board_Does Not_Have_Any_Straight__Do_Not_Call_This_Function
+
+##HighCardOfOurStraight##
+// Precondition: we have a straight
+//....................AKQJT98765432a-
+BitCount(rankbits & 0b111110000000000) == 5 ? ConstCardAce   :
+BitCount(rankbits & 0b011111000000000) == 5 ? ConstCardKing  :
+BitCount(rankbits & 0b001111100000000) == 5 ? ConstCardQueen :
+BitCount(rankbits & 0b000111110000000) == 5 ? ConstCardJack  :
+BitCount(rankbits & 0b000011111000000) == 5 ? ConstCardTen   :
+BitCount(rankbits & 0b000001111100000) == 5 ? ConstCardNine  :
+BitCount(rankbits & 0b000000111110000) == 5 ? ConstCardEight :
+BitCount(rankbits & 0b000000011111000) == 5 ? ConstCardSeven :
+BitCount(rankbits & 0b000000001111100) == 5 ? ConstCardSix   :
+BitCount(rankbits & 0b000000000111110) == 5 ? ConstCardFive  :
+ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function
+
+##NumberOfPossibleBetterStraights##
+WHEN (HighCardOfOurStraight == ConstCardAce)   RETURN 0 FORCE
+WHEN (HighCardOfOurStraight == ConstCardKing)  RETURN NumberOfPossibleStraightsAceHigh           FORCE
+WHEN (HighCardOfOurStraight == ConstCardQueen) RETURN NumberOfPossibleStraightsHighOrKingBetter  FORCE
+WHEN (HighCardOfOurStraight == ConstCardJack)  RETURN NumberOfPossibleStraightsHighOrQueenBetter FORCE
+WHEN (HighCardOfOurStraight == ConstCardTen)   RETURN NumberOfPossibleStraightsHighOrJackBetter  FORCE
+WHEN (HighCardOfOurStraight == ConstCardNine)  RETURN NumberOfPossibleStraightsHighOrTenBetter   FORCE
+WHEN (HighCardOfOurStraight == ConstCardEight) RETURN NumberOfPossibleStraightsHighOrNineBetter  FORCE
+WHEN (HighCardOfOurStraight == ConstCardSeven) RETURN NumberOfPossibleStraightsHighOrEightBetter FORCE
+WHEN (HighCardOfOurStraight == ConstCardSix)   RETURN NumberOfPossibleStraightsHighOrSevenBetter FORCE
+WHEN (HighCardOfOurStraight == ConstCardFive)  RETURN NumberOfPossibleStraightsHighOrSixBetter   FORCE
+// We don't have any straight
+WHEN Others RETURN NumberOfPossibleStraightsHighOrFiveBetter FORCE
+
+##NumberOfPossibleStraightsAceHigh##
+// No better straights to cherck for
+WHEN StraightPossibleAceHigh RETURN 1 FORCE
+
+##NumberOfPossibleStraightsKingHighOrBetter##
+WHEN StraightPossibleKingHigh RETURN (1 + NumberOfPossibleStraightsAceHigh) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsAceHighOrBetter FORCE
+
+##NumberOfPossibleStraightsQueenHighOrBetter##
+WHEN StraightPossibleQueenHigh RETURN (1 + NumberOfPossibleStraightsKingHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsKingHighOrBetter FORCE
+
+##NumberOfPossibleStraightsJackHighOrBetter##
+WHEN StraightPossibleJackHigh RETURN (1 + NumberOfPossibleStraightsQueenHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsQueenHighOrBetter FORCE
+
+##NumberOfPossibleStraightsTenHighOrBetter##
+WHEN StraightPossibleTenHigh RETURN (1 + NumberOfPossibleStraightsJackHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsJackHighOrBetter FORCE
+
+##NumberOfPossibleStraightsNineHighOrBetter##
+WHEN StraightPossibleNineHigh RETURN (1 + NumberOfPossibleStraightsTenHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsTenHighOrBetter FORCE
+
+##NumberOfPossibleStraightsEightHighOrBetter##
+WHEN StraightPossibleEightHigh RETURN (1 + NumberOfPossibleStraightsNineHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsNineHighOrBetter FORCE
+
+##NumberOfPossibleStraightsSevenHighOrBetter##
+WHEN StraightPossibleSevenHigh RETURN (1 + NumberOfPossibleStraightsEightHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsEightHighOrBetter FORCE
+
+##NumberOfPossibleStraightsSixHighOrBetter##
+WHEN StraightPossibleSixHigh RETURN (1 + NumberOfPossibleStraightsSevenHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsSevenHighOrBetter FORCE
+
+##NumberOfPossibleStraightsFiveHighOrBetter##
+WHEN StraightPossibleFiveHigh RETURN (1 + NumberOfPossibleStraightsSixHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsSixHighOrBetter FORCE
+
+##StraightPossibleAceHigh##
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b111110000000000) >= 3) RETURN True FORCE
+
+##StraightPossibleKingHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$A RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b011111000000000) >= 3) RETURN True FORCE
+
+##StraightPossibleQueenHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$K RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b001111100000000) >= 3) RETURN True FORCE
+
+##StraightPossibleJackHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$Q RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b000111110000000) >= 3) RETURN True FORCE
+
+##StraightPossibleTenHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$J RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b000011111000000) >= 3) RETURN True FORCE
+
+##StraightPossibleNineHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$T RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b000001111100000) >= 3) RETURN True FORCE
+
+##StraightPossibleEightHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$9 RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b000000111110000) >= 3) RETURN True FORCE
+
+##StraightPossibleSevenHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$8 RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b000000011111000) >= 3) RETURN True FORCE
+
+##StraightPossibleSixHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$7 RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b000000001111100) >= 3) RETURN True FORCE
+
+##StraightPossibleFiveHigh##
+// Checking if such a straight would lead to a better straight
+WHEN board$6 RETURN False FORCE
+//.....................................AKQJT98765432a-
+WHEN (BitCount(rankbitscommon BitAnd 0b000000000111110) >= 3) RETURN True FORCE
+
+##TopBitOfRankBitsCommon##
+(1 << rankhicommon)
+
+##SecondTopBitOfRankBitsCommon##
+(1 << SecondBestBoardCard)
+
+##ThirdTopBitOfRankBitsCommon##
+(1 << ThirdBestBoardCard)
+
+##FourthTopBitOfRankBitsCommon##
+(1 << FourthBestBoardCard)
+
+##FifthTopBitOfRankBitsCommon##
+(1 << FifthBestBoardCard)
+
+##RankBitsCommonWithoutTopBit##
+rankbitscommon & ~TopBitOfRankBitsCommon
+
+##RankBitsCommonWithoutTopTwoBits##
+RankBitsCommonWithoutTopBit & ~SecondTopBitOfRankBitsCommon
+
+##RankBitsCommonWithoutTopThreeBits##
+RankBitsCommonWithoutTopTwoBits & ~ThirdTopBitOfRankBitsCommon
+
+##RankBitsCommonWithoutTopFourBits##
+RankBitsCommonWithoutTopThreeBits & ~FourthTopBitOfRankBitsCommon
