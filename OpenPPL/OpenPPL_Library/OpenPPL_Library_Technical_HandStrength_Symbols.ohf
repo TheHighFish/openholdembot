@@ -93,40 +93,40 @@ ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function
 ##NumberOfPossibleBetterStraights##
 WHEN (HighCardOfOurStraight == ConstCardAce)   RETURN 0 FORCE
 WHEN (HighCardOfOurStraight == ConstCardKing)  RETURN NumberOfPossibleStraightsAceHigh           FORCE
-WHEN (HighCardOfOurStraight == ConstCardQueen) RETURN NumberOfPossibleStraightsHighOrKingBetter  FORCE
-WHEN (HighCardOfOurStraight == ConstCardJack)  RETURN NumberOfPossibleStraightsHighOrQueenBetter FORCE
-WHEN (HighCardOfOurStraight == ConstCardTen)   RETURN NumberOfPossibleStraightsHighOrJackBetter  FORCE
-WHEN (HighCardOfOurStraight == ConstCardNine)  RETURN NumberOfPossibleStraightsHighOrTenBetter   FORCE
-WHEN (HighCardOfOurStraight == ConstCardEight) RETURN NumberOfPossibleStraightsHighOrNineBetter  FORCE
-WHEN (HighCardOfOurStraight == ConstCardSeven) RETURN NumberOfPossibleStraightsHighOrEightBetter FORCE
-WHEN (HighCardOfOurStraight == ConstCardSix)   RETURN NumberOfPossibleStraightsHighOrSevenBetter FORCE
-WHEN (HighCardOfOurStraight == ConstCardFive)  RETURN NumberOfPossibleStraightsHighOrSixBetter   FORCE
+WHEN (HighCardOfOurStraight == ConstCardQueen) RETURN NumberOfPossibleStraightsKingHighOrBetter  FORCE
+WHEN (HighCardOfOurStraight == ConstCardJack)  RETURN NumberOfPossibleStraightsQueenHighOrBetter FORCE
+WHEN (HighCardOfOurStraight == ConstCardTen)   RETURN NumberOfPossibleStraightsJackHighOrBetter  FORCE
+WHEN (HighCardOfOurStraight == ConstCardNine)  RETURN NumberOfPossibleStraightsTenHighOrBetter   FORCE
+WHEN (HighCardOfOurStraight == ConstCardEight) RETURN NumberOfPossibleStraightsNineHighOrBetter  FORCE
+WHEN (HighCardOfOurStraight == ConstCardSeven) RETURN NumberOfPossibleStraightsEightHighOrBetter FORCE
+WHEN (HighCardOfOurStraight == ConstCardSix)   RETURN NumberOfPossibleStraightsSevenHighOrBetter FORCE
+WHEN (HighCardOfOurStraight == ConstCardFive)  RETURN NumberOfPossibleStraightsSixHighOrBetter   FORCE
 // We don't have any straight
-WHEN Others RETURN NumberOfPossibleStraightsHighOrFiveBetter FORCE
+WHEN Others RETURN NumberOfPossibleStraightsFiveHighOrBetter FORCE
 
 ##NumberOfPossibleStraightsAceHigh##
-// No better straights to cherck for
+// No HighOrBetter straights to cherck for
 WHEN StraightPossibleAceHigh RETURN 1 FORCE
 
-##NumberOfPossibleStraightsKingHighOrBetter##
+##NumberOfPossibleStraightsKingHighOrHighOrBetter##
 WHEN StraightPossibleKingHigh RETURN (1 + NumberOfPossibleStraightsAceHigh) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsAceHighOrBetter FORCE
+WHEN Others RETURN NumberOfPossibleStraightsAceHighOrHighOrBetter FORCE
 
-##NumberOfPossibleStraightsQueenHighOrBetter##
-WHEN StraightPossibleQueenHigh RETURN (1 + NumberOfPossibleStraightsKingHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsKingHighOrBetter FORCE
+##NumberOfPossibleStraightsQueenHighOrHighOrBetter##
+WHEN StraightPossibleQueenHigh RETURN (1 + NumberOfPossibleStraightsKingHighOrHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsKingHighOrHighOrBetter FORCE
 
-##NumberOfPossibleStraightsJackHighOrBetter##
-WHEN StraightPossibleJackHigh RETURN (1 + NumberOfPossibleStraightsQueenHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsQueenHighOrBetter FORCE
+##NumberOfPossibleStraightsJackHighOrHighOrBetter##
+WHEN StraightPossibleJackHigh RETURN (1 + NumberOfPossibleStraightsQueenHighOrHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsQueenHighOrHighOrBetter FORCE
 
-##NumberOfPossibleStraightsTenHighOrBetter##
-WHEN StraightPossibleTenHigh RETURN (1 + NumberOfPossibleStraightsJackHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsJackHighOrBetter FORCE
+##NumberOfPossibleStraightsTenHighOrHighOrBetter##
+WHEN StraightPossibleTenHigh RETURN (1 + NumberOfPossibleStraightsJackHighOrHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsJackHighOrHighOrBetter FORCE
 
-##NumberOfPossibleStraightsNineHighOrBetter##
-WHEN StraightPossibleNineHigh RETURN (1 + NumberOfPossibleStraightsTenHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsTenHighOrBetter FORCE
+##NumberOfPossibleStraightsNineHighOrHighOrBetter##
+WHEN StraightPossibleNineHigh RETURN (1 + NumberOfPossibleStraightsTenHighOrHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsTenHighOrHighOrBetter FORCE
 
 ##NumberOfPossibleStraightsEightHighOrBetter##
 WHEN StraightPossibleEightHigh RETURN (1 + NumberOfPossibleStraightsNineHighOrBetter) FORCE
@@ -149,55 +149,55 @@ WHEN Others RETURN NumberOfPossibleStraightsSixHighOrBetter FORCE
 WHEN (BitCount(rankbitscommon BitAnd 0b111110000000000) >= 3) RETURN True FORCE
 
 ##StraightPossibleKingHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$A RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b011111000000000) >= 3) RETURN True FORCE
 
 ##StraightPossibleQueenHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$K RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b001111100000000) >= 3) RETURN True FORCE
 
 ##StraightPossibleJackHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$Q RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b000111110000000) >= 3) RETURN True FORCE
 
 ##StraightPossibleTenHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$J RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b000011111000000) >= 3) RETURN True FORCE
 
 ##StraightPossibleNineHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$T RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b000001111100000) >= 3) RETURN True FORCE
 
 ##StraightPossibleEightHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$9 RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b000000111110000) >= 3) RETURN True FORCE
 
 ##StraightPossibleSevenHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$8 RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b000000011111000) >= 3) RETURN True FORCE
 
 ##StraightPossibleSixHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$7 RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b000000001111100) >= 3) RETURN True FORCE
 
 ##StraightPossibleFiveHigh##
-// Checking if such a straight would lead to a better straight
+// Checking if such a straight would lead to a HighOrBetter straight
 WHEN board$6 RETURN False FORCE
 //.....................................AKQJT98765432a-
 WHEN (BitCount(rankbitscommon BitAnd 0b000000000111110) >= 3) RETURN True FORCE
