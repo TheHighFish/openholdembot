@@ -272,7 +272,6 @@ ERROR_DealPosition1Chair_Not_Recognized__Check_Your_TableMap
 True
 
 ##OpponentStacksizeHeadsUp##
-//!!!R
 [bblind==0] ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
 [nopponentsplaying == NumberOfOpponentsAllin] ? HINT_All_Opponents_Allin :
 [nopponentsplaying-NumberOfOpponentsAllin > 1] ? ERROR_Game_Is_Not_HeadsUp :
@@ -300,3 +299,101 @@ True
 [(playersplayingbits & 0b1000000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
   AND userchair!=9 AND balance9>0] ? Stack9:
 ERROR_Game_Is_Not_HeadsUp
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
+`(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh##
+`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh##
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh##
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh##
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh##
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh##
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh##
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix  :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh##
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfBestPossibleStraight##
+`(rankbitscommon & 0b111110000000000) >= 3 ? ConstCardAce   :
+`(rankbitscommon & 0b011111000000000) >= 3 ? ConstCardKing  :
+`(rankbitscommon & 0b001111100000000) >= 3 ? ConstCardQueen :
+`(rankbitscommon & 0b000111110000000) >= 3 ? ConstCardJack  :
+`(rankbitscommon & 0b000011111000000) >= 3 ? ConstCardTen   :
+`(rankbitscommon & 0b000001111100000) >= 3 ? ConstCardNine  :
+`(rankbitscommon & 0b000000111110000) >= 3 ? ConstCardEight :
+`(rankbitscommon & 0b000000011111000) >= 3 ? ConstCardSeven :
+`(rankbitscommon & 0b000000001111100) >= 3 ? ConstCardSix   :
+`(rankbitscommon & 0b000000000111110) >= 3 ? ConstCardFive  :
+-1
+
+##HighCardOfSecondBestPossibleStraight##
+(HighCardOfBestPossibleStraight == ConstCardAce)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh   :
+(HighCardOfBestPossibleStraight == ConstCardKing)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh  :
+(HighCardOfBestPossibleStraight == ConstCardQueen) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh :
+(HighCardOfBestPossibleStraight == ConstCardJack)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh  :
+(HighCardOfBestPossibleStraight == ConstCardTen)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh   :
+(HighCardOfBestPossibleStraight == ConstCardNine)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh  :
+(HighCardOfBestPossibleStraight == ConstCardEight) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh :
+(HighCardOfBestPossibleStraight == ConstCardSeven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
+(HighCardOfBestPossibleStraight == ConstCardSix)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
+HINT_Such_A_Straight_Does_Not_Exist
+HINT_Such_A_Straight_Does_Not_Exist
