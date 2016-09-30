@@ -73,7 +73,7 @@ BitCount(rankbitscommon & 0b000000111110000) == 5 ? ConstCardEight :
 BitCount(rankbitscommon & 0b000000011111000) == 5 ? ConstCardSeven :
 BitCount(rankbitscommon & 0b000000001111100) == 5 ? ConstCardSix   :
 BitCount(rankbitscommon & 0b000000000111110) == 5 ? ConstCardFive  :
-ERROR_Board_Does Not_Have_Any_Straight__Do_Not_Call_This_Function
+ERROR_Board_Does_Not_Have_Any_Straight__Do_Not_Call_This_Function
 
 ##HighCardOfOurStraight##
 // Precondition: we have a straight

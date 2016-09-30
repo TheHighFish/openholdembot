@@ -85,6 +85,7 @@ void CHeartbeatThread::StartThread() {
 UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
   CTablepointChecker tablepoint_checker;
 	pParent = static_cast<CHeartbeatThread*>(pParam);
+  assert(pParent != NULL);
 	// Seed the RNG
 	srand((unsigned)GetTickCount());
 
@@ -94,11 +95,14 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 		// Check event for stop thread
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
 			// Set event
+      write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Ending heartbeat thread\n");
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
     LogMemoryUsage("Begin of heartbeat thread cycle");
+    assert(p_tablemap_loader != NULL);
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
+    assert(p_autoconnector != NULL);
     if (!p_autoconnector->IsConnected()) {
       // Not connected
       AutoConnect();
