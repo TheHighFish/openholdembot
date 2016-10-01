@@ -16,6 +16,7 @@
 *.opendb
 *.sdf
 *.suo
+*.vspx
 Debug
 Documentation/OpenHoldem_Manual.chm
 Documentation/Chapters/titlepage/images/Temp
