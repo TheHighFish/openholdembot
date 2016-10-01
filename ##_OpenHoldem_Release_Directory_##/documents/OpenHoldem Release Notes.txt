@@ -1,4 +1,4 @@
-v9.2.8 2016-09-xx
+v9.2.8 2016-10-01
 ==================
 NEW STUFF:
 - Implemented a BitCount-operator,
@@ -17,7 +17,7 @@ BUG FIXES:
   Thanks To NewBot and Salem for participating in the discussion.
   [THF]
 - The OPPL-symbol HaveSecondNutStraight failed if the assumed
-  2nd best streaight connected with the board to a better straight
+  2nd best straight connected with the board to a better straight
   of "6 cards".
   Thanks to ChuckneverMuck for reporting and to Darkmund,
   Fifer, Johnny and BillW for perticipating in the discussion.
