@@ -396,4 +396,3 @@ HINT_Such_A_Straight_Does_Not_Exist
 (HighCardOfBestPossibleStraight == ConstCardSeven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
 (HighCardOfBestPossibleStraight == ConstCardSix)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
 HINT_Such_A_Straight_Does_Not_Exist
-HINT_Such_A_Straight_Does_Not_Exist
