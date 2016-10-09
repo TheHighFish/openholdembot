@@ -21,8 +21,10 @@ class CTableTitle {
   void UpdateTitle();
   void Clear();
   CString Title();
+  CString PreprocessedTitle();
   bool TitleChangedSinceLastHeartbeat();
  private:
+  void SelfTest();
   void SetTitle(CString new_title);
  private:
   CString _title;
