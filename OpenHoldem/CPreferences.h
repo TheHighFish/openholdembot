@@ -16,7 +16,7 @@
 
 #include "..\CCritSec\CCritSec.h"
 #include "NumericalFunctions.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 // global preferences constants
 enum {

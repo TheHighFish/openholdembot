@@ -29,7 +29,7 @@
 #include "CPreferences.h"
 #include "CTableState.h"
 #include "NumericalFunctions.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineCallers *p_symbol_engine_callers = NULL;
 

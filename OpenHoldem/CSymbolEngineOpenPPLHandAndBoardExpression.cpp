@@ -21,7 +21,7 @@
 #include "CSymbolEngineCards.h"
 #include "CSymbolEnginePokerval.h"
 #include "CTableState.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineOpenPPLHandAndBoardExpression *p_symbol_engine_open_ppl_hand_and_board_expression = NULL;
 

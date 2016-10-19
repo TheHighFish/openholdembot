@@ -21,7 +21,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEngineRaisers.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEnginePokerAction *p_symbol_engine_poker_action = NULL;
 

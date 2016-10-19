@@ -18,7 +18,7 @@
 #include "CScraper.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CBetroundCalculator *p_betround_calculator = NULL;
 

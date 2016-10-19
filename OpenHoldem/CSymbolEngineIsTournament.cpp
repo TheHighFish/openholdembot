@@ -30,7 +30,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineIsTournament *p_symbol_engine_istournament = NULL;
 

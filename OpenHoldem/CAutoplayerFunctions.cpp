@@ -24,7 +24,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
 #include "MagicNumbers.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 // TODO make it a symbol-engine?
 // Call it!

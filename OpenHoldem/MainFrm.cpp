@@ -64,7 +64,7 @@
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
 #include "Singletons.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 // CMainFrame
 

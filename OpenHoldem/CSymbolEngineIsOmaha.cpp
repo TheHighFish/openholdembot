@@ -20,7 +20,7 @@
 #include "CScraper.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineIsOmaha *p_symbol_engine_isomaha = NULL;
 

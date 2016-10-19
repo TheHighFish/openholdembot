@@ -17,7 +17,7 @@
 #include "CCasinoInterface.h"
 #include "CPreferences.h"
 #include "..\CTablemap\CTablemap.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 const char kHotkeyUndefined = '\0';
 

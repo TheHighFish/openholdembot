@@ -1,0 +1,20 @@
+LIBRARY	window_functions
+EXPORTS
+Bool2CString
+CStringRemoveLeft
+CStringRemoveRight
+DigitCharacterToNumber;
+IntToBinaryString
+Number2CString
+RemoveExtraDotsInNumbers
+RemoveLeftWhiteSpace
+RemoveMultipleWhiteSpaces
+RemoveRightWhiteSpace
+RemoveSpacesInFrontOfCentMultipliers
+RemoveSpacesInsideNumbers
+ReplaceCommasInNumbersByDots
+ReplaceOutlandischCurrencyByDollarsandCents
+RightCharacter
+RightDigitCharacterToNumber
+StringAIsPrefixOfStringB
+StringIsExactMatch

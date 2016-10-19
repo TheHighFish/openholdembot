@@ -27,7 +27,7 @@
 #include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
 #include "MagicNumbers.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CHandresetDetector *p_handreset_detector = NULL;
 

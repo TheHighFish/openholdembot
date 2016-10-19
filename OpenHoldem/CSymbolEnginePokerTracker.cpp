@@ -27,7 +27,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "debug.h"
 #include "OH_MessageBox.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEnginePokerTracker *p_symbol_engine_pokertracker = NULL;
 

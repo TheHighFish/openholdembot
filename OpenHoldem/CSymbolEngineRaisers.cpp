@@ -28,7 +28,7 @@
 #include "CPreferences.h"
 #include "CTableState.h"
 #include "NumericalFunctions.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineRaisers *p_symbol_engine_raisers = NULL;
 

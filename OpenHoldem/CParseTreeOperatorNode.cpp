@@ -30,7 +30,7 @@
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
-#include "StringFunctions.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 #include "TokenizerConstants.h"
 
 CParseTreeOperatorNode::CParseTreeOperatorNode(int relative_line_number) : 

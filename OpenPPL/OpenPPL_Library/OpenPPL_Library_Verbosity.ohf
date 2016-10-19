@@ -86,7 +86,7 @@ $$cr3
 ##RankOfRiverCard##
 $$cr4
 
-##SuitOfFirstCard##
+##SuitOfFirstFlopCard##
 $$cs0
 
 ##SuitOfSecondFlopCard##
@@ -95,7 +95,7 @@ $$cs1
 ##SuitOfThirdFlopCard##
 $$cs2
 
-##SuitOfTurncard##
+##SuitOfTurnCard##
 $$cs3
 
 ##SuitOfRiverCard##

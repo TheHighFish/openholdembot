@@ -29,7 +29,7 @@
 #include "MagicNumbers.h"
 #include "Median.h"
 #include "Numericalfunctions.h"
-#include "StringFunctions.h."
+#include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineTableLimits	*p_symbol_engine_tablelimits = NULL;
 

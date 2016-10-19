@@ -193,6 +193,9 @@
     <Filter Include="Source Files\HandhistoryGenerator">
       <UniqueIdentifier>{3a6f2946-c39b-42b6-b351-1c126988f61a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Temp">
+      <UniqueIdentifier>{a37fce48-f069-4910-b6e3-7743df529ef9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
@@ -513,7 +516,7 @@
     <ClCompile Include="CTablePositioner.cpp">
       <Filter>Source Files\AutoConnector</Filter>
     </ClCompile>
-	<ClCompile Include="CTablepointChecker.cpp">
+    <ClCompile Include="CTablepointChecker.cpp">
       <Filter>Source Files\AutoConnector</Filter>
     </ClCompile>
     <ClCompile Include="CPokerTrackerLookUp.cpp">
@@ -559,9 +562,6 @@
       <Filter>Source Files\Various Function Libraries</Filter>
     </ClCompile>
     <ClCompile Include="NumericalFunctions.cpp">
-      <Filter>Source Files\Various Function Libraries</Filter>
-    </ClCompile>
-    <ClCompile Include="StringFunctions.cpp">
       <Filter>Source Files\Various Function Libraries</Filter>
     </ClCompile>
     <ClCompile Include="CFormulaFileSplitter.cpp">
@@ -971,8 +971,8 @@
     <None Include="OpenHoldem.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="CTablepointChecker.h">
-      <Filter>Header Files\AutoConnector</Filter>
+    <None Include="..\StringFunctionsDLL\string_functions.cpp">
+      <Filter>Temp</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1409,9 +1409,6 @@
       <Filter>Header Files\Various Function Libraries</Filter>
     </ClInclude>
     <ClInclude Include="NumericalFunctions.h">
-      <Filter>Header Files\Various Function Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="StringFunctions.h">
       <Filter>Header Files\Various Function Libraries</Filter>
     </ClInclude>
     <ClInclude Include="CFormulaFileSplitter.h">

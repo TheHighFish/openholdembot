@@ -89,4 +89,10 @@ void CParserSymbolTable::VeryfyAllUsedFunctionsAtEndOfParse() {
     p_function_collection->VerifyExistence(function_name);
     ++enumerator_it;
   }
+  // Now that all symbols are verified we clear them here.
+  // Clearing explicitly by external logic went wrong in the past
+  // when we introduced the modular OpenPPl-library.
+  // That's why Clear() is now private for this module only.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20137
+  Clear();
 }

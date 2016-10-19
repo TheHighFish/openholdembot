@@ -65,7 +65,6 @@ void CFormulaParser::InitNewParse() {
   // We do NOT clear the function collection here,
   // because we might want to reparse the function-collection!
   // (Formula Editor -> Apply)
-  p_parser_symbol_table->Clear();
   _function_name = "--undefined--";
 }
 

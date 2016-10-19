@@ -111,7 +111,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\window_functions.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\window_functions.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Debug\String_Functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -152,7 +152,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\lib\String_Functions.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -187,7 +187,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;..\Debug\string_functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -368,7 +368,7 @@
     <ClCompile Include="CAutoConnectorThread.cpp" />
     <ClCompile Include="CTableMapLoader.cpp" />
     <ClCompile Include="CTablePositioner.cpp" />
-	<ClCompile Include="CTablepointChecker.cpp" />
+    <ClCompile Include="CTablepointChecker.cpp" />
     <ClCompile Include="CDllExtension.cpp" />
     <ClCompile Include="CPokerTrackerLookUp.cpp" />
     <ClCompile Include="CPokerTrackerThread.cpp" />
@@ -385,7 +385,6 @@
     <ClCompile Include="CStringMatch.cpp" />
     <ClCompile Include="MagicNumbers.cpp" />
     <ClCompile Include="NumericalFunctions.cpp" />
-    <ClCompile Include="StringFunctions.cpp" />
     <ClCompile Include="WebSafeColours.cpp" />
     <ClCompile Include="CFormulaFileSplitter.cpp" />
     <ClCompile Include="CFormulaParser.cpp" />
@@ -413,6 +412,7 @@
     <ClCompile Include="COHScriptObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\StringFunctionsDLL\string_functions.cpp" />
     <None Include="OpenHoldem.def" />
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_" />
     <None Include="Validator_Rules\consistency_checks_autoplayer_inline.cpp_" />
@@ -673,7 +673,7 @@
     <ClInclude Include="CAutoConnectorThread.h" />
     <ClInclude Include="CTableMapLoader.h" />
     <ClInclude Include="CTablePositioner.h" />
-	<ClInclude Include="CTablepointChecker.h" />
+    <ClInclude Include="CTablepointChecker.h" />
     <ClInclude Include="CConfigurationCheck.h" />
     <ClInclude Include="CProblemSolver.h" />
     <ClInclude Include="CVersionInfo.h" />
@@ -693,7 +693,6 @@
     <ClInclude Include="FloatingPoint_Comparisions.h" />
     <ClInclude Include="MagicNumbers.h" />
     <ClInclude Include="NumericalFunctions.h" />
-    <ClInclude Include="StringFunctions.h" />
     <ClInclude Include="WebSafeColours.h" />
     <ClInclude Include="CFormulaFileSplitter.h" />
     <ClInclude Include="CFormulaParser.h" />
@@ -730,9 +729,18 @@
       <Project>{03de5c1c-773f-47cf-ad7c-470f68c6400e}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Reference Scraper DLL\Reference Scraper DLL.vcxproj">
+      <Project>{f7cf9cce-04e1-4a98-bb34-eef00a7e1aa1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\scintilla\vcbuild\SciLexer.vcxproj">
       <Project>{e757a486-9770-4db4-8299-00e22986e604}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\StringFunctionsDLL\string_functions.vcxproj">
+      <Project>{9a3a25e1-3045-4ec3-be51-5bd55f1f94b9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowFunctionsDLL\window_functions.vcxproj">
+      <Project>{e87d7887-adde-41db-aa09-3ddab950faa5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
