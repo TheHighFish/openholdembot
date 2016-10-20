@@ -138,7 +138,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b111100000000000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b111110000000000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDrawKQJT9##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -148,7 +148,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b011111000000000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDrawQJT98##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -158,7 +158,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b001111100000000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDrawJT987##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -168,7 +168,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b000111110000000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDrawT9876##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -178,7 +178,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b000011111000000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDraw98765##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -188,7 +188,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b000001111100000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDraw87654##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -198,7 +198,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b000000111110000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDraw76543##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -208,7 +208,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b000000011111000) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDraw65432##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -218,7 +218,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b000000001111100) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveGoodBackdoorStraightDraw54321##
 WHEN betround != ConstBetRoundFlop RETURN False FORCE
@@ -233,7 +233,7 @@ WHEN (BitCount(rankbitsplayer BitAnd 0b000000000111110) != 2) RETURN False FORCE
 // Hole-cards and board-cards must contribute threee cards to a straight.
 // ..............................AKQJT98765432a-
 WHEN (BitCount(rankbits BitAnd 0b000000000111110) != 3) RETURN False FORCE
-WHEN Othere RETURN True FORCE
+WHEN Others RETURN True FORCE
 
 ##HaveBackdoorStraightDraw##
 // This code only consider backdoor-straightdraws,

@@ -108,25 +108,25 @@ WHEN Others RETURN NumberOfPossibleStraightsFiveHighOrBetter FORCE
 // No HighOrBetter straights to cherck for
 WHEN StraightPossibleAceHigh RETURN 1 FORCE
 
-##NumberOfPossibleStraightsKingHighOrHighOrBetter##
+##NumberOfPossibleStraightsKingHighOrBetter##
 WHEN StraightPossibleKingHigh RETURN (1 + NumberOfPossibleStraightsAceHigh) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsAceHighOrHighOrBetter FORCE
+WHEN Others RETURN NumberOfPossibleStraightsAceHigh FORCE
 
-##NumberOfPossibleStraightsQueenHighOrHighOrBetter##
-WHEN StraightPossibleQueenHigh RETURN (1 + NumberOfPossibleStraightsKingHighOrHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsKingHighOrHighOrBetter FORCE
+##NumberOfPossibleStraightsQueenHighOrBetter##
+WHEN StraightPossibleQueenHigh RETURN (1 + NumberOfPossibleStraightsKingHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsKingHighOrBetter FORCE
 
-##NumberOfPossibleStraightsJackHighOrHighOrBetter##
-WHEN StraightPossibleJackHigh RETURN (1 + NumberOfPossibleStraightsQueenHighOrHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsQueenHighOrHighOrBetter FORCE
+##NumberOfPossibleStraightsJackHighOrBetter##
+WHEN StraightPossibleJackHigh RETURN (1 + NumberOfPossibleStraightsQueenHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsQueenHighOrBetter FORCE
 
-##NumberOfPossibleStraightsTenHighOrHighOrBetter##
-WHEN StraightPossibleTenHigh RETURN (1 + NumberOfPossibleStraightsJackHighOrHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsJackHighOrHighOrBetter FORCE
+##NumberOfPossibleStraightsTenHighOrBetter##
+WHEN StraightPossibleTenHigh RETURN (1 + NumberOfPossibleStraightsJackHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsJackHighOrBetter FORCE
 
-##NumberOfPossibleStraightsNineHighOrHighOrBetter##
-WHEN StraightPossibleNineHigh RETURN (1 + NumberOfPossibleStraightsTenHighOrHighOrBetter) FORCE
-WHEN Others RETURN NumberOfPossibleStraightsTenHighOrHighOrBetter FORCE
+##NumberOfPossibleStraightsNineHighOrBetter##
+WHEN StraightPossibleNineHigh RETURN (1 + NumberOfPossibleStraightsTenHighOrBetter) FORCE
+WHEN Others RETURN NumberOfPossibleStraightsTenHighOrBetter FORCE
 
 ##NumberOfPossibleStraightsEightHighOrBetter##
 WHEN StraightPossibleEightHigh RETURN (1 + NumberOfPossibleStraightsNineHighOrBetter) FORCE
