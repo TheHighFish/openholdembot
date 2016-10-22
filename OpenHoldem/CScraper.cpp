@@ -596,7 +596,7 @@ void CScraper::ScrapeName(int chair) {
 	}
 }
 
-double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
+CString CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   CString	name;
   CString text;
   assert((scrape_u_else_p == 'u') || (scrape_u_else_p == 'p'));
@@ -604,37 +604,29 @@ double CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   if (EvaluateRegion(name, &text)) {
 		if (p_string_match->IsStringAllin(text)) { 
       write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
-       return 0.0;
+       return Number2CString(0.0);
 		}	else if (	text.MakeLower().Find("out")!=-1
 				||	text.MakeLower().Find("inactive")!=-1
 				||	text.MakeLower().Find("away")!=-1 ) {
 			p_table_state->Player(chair)->set_active(false);
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT/INACTIVE/AWAY\n", name);
-      return kUndefined;
+      return Number2CString(kUndefined);
 		}	else {
-			CScraperPreprocessor::ProcessBalanceNumbersOnly(&text);
-			if (text!="" && p_string_match->IsNumeric(text)) {
-        CTransform trans;
-        double result = trans.StringToMoney(text);
-			  write_log(preferences.debug_scraper(), "[CScraper] u%dbalance, result %s\n", chair, text.GetString());
-        return result;
-      }
+      return text;
 		}
 	}
-  return kUndefined;
+  return Number2CString(kUndefined);;
 }
 
 void CScraper::ScrapeBalance(int chair) {
 	RETURN_IF_OUT_OF_RANGE (chair, p_tablemap->LastChair())
   // Scrape uXbalance and pXbalance
-  double result = ScrapeUPBalance(chair, 'p');
-  if (result >= 0) {
-    p_table_state->Player(chair)->set_balance(result);
+  CString balance = ScrapeUPBalance(chair, 'p');
+  if (p_table_state->Player(chair)->_balance.SetValue(balance)) {
     return;
   }
-  result = ScrapeUPBalance(chair, 'u');
-  if (result >= 0) {
-    p_table_state->Player(chair)->set_balance(result);
+  balance = ScrapeUPBalance(chair, 'u');
+  if (p_table_state->Player(chair)->_balance.SetValue(balance)) {
     return;
   }
 }
@@ -646,39 +638,36 @@ void CScraper::ScrapeBet(int chair) {
 	CString				text = "";
 	CString				s = "", t="";
 
-	p_table_state->Player(chair)->set_bet(0.0);
-  	// Player bet pXbet
+	p_table_state->Player(chair)->_bet.Reset();
+  // Player bet pXbet
   s.Format("p%dbet", chair);
-  double result = 0;
-	if (EvaluateNumericalRegion(&result, s)) {
-	  p_table_state->Player(chair)->set_bet(result);
+  CString result;
+  EvaluateRegion(s, &result);
+	if (p_table_state->Player(chair)->_bet.SetValue(result)) {
 		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return;
 	}
-
-	// uXbet
+  // uXbet
 	s.Format("u%dbet", chair);
-  result = 0;
-	if (EvaluateNumericalRegion(&result, s)) {
-		p_table_state->Player(chair)->set_bet(result);
-		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
-		return;
-	}		
-		
+  result = "";
+  EvaluateRegion(s, &result);
+  if (p_table_state->Player(chair)->_bet.SetValue(result)) {
+    __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
+      return;
+  }
 	// pXchip00
 	s.Format("p%dchip00", chair);
 	RMapCI r_iter = p_tablemap->r$()->find(s.GetString());
-	if (r_iter != p_tablemap->r$()->end() && p_table_state->Player(chair)->bet() == 0) 	{
+	if (r_iter != p_tablemap->r$()->end() && p_table_state->Player(chair)->_bet.GetValue() == 0) 	{
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
 		double chipscrape_res = DoChipScrape(r_iter);
 		SelectObject(hdcCompatible, old_bitmap);
 
 		t.Format("%.2f", chipscrape_res);
 		CScraperPreprocessor::PreprocessMonetaryString(&t);
-		p_table_state->Player(chair)->set_bet(strtod(t.GetString(), 0));
-
+		p_table_state->Player(chair)->_bet.SetValue(t.GetString());
 		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", 
-      chair, p_table_state->Player(chair)->bet());
+      chair, p_table_state->Player(chair)->_bet.GetValue());
 	}
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }

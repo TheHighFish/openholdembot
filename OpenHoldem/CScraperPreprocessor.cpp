@@ -145,37 +145,30 @@ void CScraperPreprocessor::PreprocessMonetaryString(CString *monetary_string)
 #endif OPENHOLDEM_PROGRAM 
 }
 
-void CScraperPreprocessor::PreprocessTitleString(CString *title_string) {
-	// Logic seems to be exactly the same for both cases
-	PreprocessMonetaryString(title_string);
-}
-
 // This function removes superfluous charaters from single numbers only.
 // Example: "Singlemalt raised to $60"
 void CScraperPreprocessor::ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text) {
-	if (p_tablemap->balancenumbersonly()) {
-		for (int i=0; i<balance_and_or_potential_text->GetLength(); i++)		{
-      char next_character = balance_and_or_potential_text->GetAt(i);
-			if (SaveIsDigit(next_character)) {
-				continue;
-			}
-			// Remove (more efficiently: replace it)
-			// * comma
-			// * dollar-sign
-			// * a..z, A..Z
-			// * minus-sign
-			// * brackets
-			if (isalpha(next_character) 
-				  || (next_character == '$')
-				  || (next_character == ',')
-				  || (next_character == '-')
-				  || (next_character == '(')
-				  || (next_character == ')')) {
-				// Replace by space to be removed later
-				balance_and_or_potential_text->SetAt(i, ' ');
-			}
+	for (int i=0; i<balance_and_or_potential_text->GetLength(); i++)		{
+    char next_character = balance_and_or_potential_text->GetAt(i);
+		if (SaveIsDigit(next_character)) {
+			continue;
 		}
-		// Now remove all bad characters at once
-		balance_and_or_potential_text->Remove(' ');
+		// Remove (more efficiently: replace it)
+		// * comma
+		// * dollar-sign
+		// * a..z, A..Z
+		// * minus-sign
+		// * brackets
+		if (isalpha(next_character) 
+				|| (next_character == '$')
+				|| (next_character == ',')
+				|| (next_character == '-')
+				|| (next_character == '(')
+				|| (next_character == ')')) {
+			// Replace by space to be removed later
+			balance_and_or_potential_text->SetAt(i, ' ');
+		}
 	}
+	// Now remove all bad characters at once
+	balance_and_or_potential_text->Remove(' ');
 }

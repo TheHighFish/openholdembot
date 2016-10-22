@@ -108,8 +108,8 @@ void CGameState::CaptureState() {
 	for (int i=0; i<kMaxNumberOfPlayers; i++) {
     // player name, balance, currentbet
     strncpy_s(state[state_index].m_player[i].m_name, 16, p_table_state->Player(i)->name().GetString(), _TRUNCATE);
-    state[state_index].m_player[i].m_balance = p_table_state->Player(i)->balance();
-		state[state_index].m_player[i].m_currentbet = p_table_state->Player(i)->bet();
+    state[state_index].m_player[i].m_balance = p_table_state->Player(i)->_balance.GetValue();
+		state[state_index].m_player[i].m_currentbet = p_table_state->Player(i)->_bet.GetValue();
     // player cards
 		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
       Card* player_card = p_table_state->Player(i)->hole_cards(j);

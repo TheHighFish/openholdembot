@@ -203,8 +203,8 @@ bool CSymbolEngineIsTournament::BetsAndBalancesAreTournamentLike() {
   double sum_of_all_chips = 0.0;
   for (int i=0; i<p_tablemap->nchairs(); i++) {
 	  if (p_table_state->Player(i)->active()==true) {
-	    sum_of_all_chips += p_table_state->Player(i)->balance();
-		  sum_of_all_chips += p_table_state->Player(i)->bet();}
+	    sum_of_all_chips += p_table_state->Player(i)->_balance.GetValue();
+		  sum_of_all_chips += p_table_state->Player(i)->_bet.GetValue();}
   }
  write_log(preferences.debug_istournament(), "[CSymbolEngineIsTournament] Sum of chips at the table: %.2f\n",
     sum_of_all_chips);
@@ -236,7 +236,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 	}
 	int players_with_antes = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		double players_bet = p_table_state->Player(i)->bet();
+		double players_bet = p_table_state->Player(i)->_bet.GetValue();
 		if ((players_bet > 0) && (players_bet < p_symbol_engine_tablelimits->sblind())) {
 			players_with_antes++;
 		}

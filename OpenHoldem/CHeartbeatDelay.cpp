@@ -125,7 +125,7 @@ double CHeartbeatDelay::SleepingFactorPlayingNotMyTurn() {
     else {
       return 2.0;
     }
-  } else if ((p_table_state->User()->bet() > 0) && (p_symbol_engine_raisers->nopponentschecking() >= 1)) {
+  } else if ((p_table_state->User()->_bet.GetValue() > 0) && (p_symbol_engine_raisers->nopponentschecking() >= 1)) {
     // At least one opponent has to decide about raise / call / fold
     // Slow down a little bit.
     return (1 + 0.5 * p_symbol_engine_raisers->nopponentschecking());

@@ -228,6 +228,9 @@
     <ClCompile Include="crc32hash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+	<ClCompile Include="CScrapedMoney.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="CValidator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -998,6 +1001,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CMyMutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+	<ClInclude Include="CScrapedMoney.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="COcclusionCheck.h">

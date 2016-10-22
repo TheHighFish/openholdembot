@@ -301,8 +301,8 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	{
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
-			stacks[i] = p_table_state->Player(i)->balance();
-			sym_currentbet[i] = p_table_state->Player(i)->bet();
+			stacks[i] = p_table_state->Player(i)->_balance.GetValue();
+			sym_currentbet[i] = p_table_state->Player(i)->_bet.GetValue();
 		}
 	}
 

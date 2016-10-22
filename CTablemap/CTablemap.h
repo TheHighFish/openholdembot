@@ -154,7 +154,6 @@ class CTablemap {
 	const int betpotmethod()		       { return GetTMSymbol("betpotmethod", BETPOT_DEFAULT); }
 	const int HandNumberMinExpectedDigits()	{ return GetTMSymbol("handnumber_min_expected_digits", 0); }
 	const int HandNumberMaxExpectedDigits() { return GetTMSymbol("handnumber_max_expected_digits", 0); }
-	const bool balancenumbersonly()	   { return GetTMSymbol("balancenumbersonly", false); }
   const bool use_comma_instead_of_dot()   { return GetTMSymbol("use_comma_instead_of_dot", false); }
   const bool islobby()               { return GetTMSymbol("islobby", false); }
 	const CString sitename()		       { return GetTMSymbol("sitename"); } 

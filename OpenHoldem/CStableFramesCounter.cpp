@@ -61,8 +61,8 @@ void CStableFramesCounter::SaveCurrentState() {
     _card_player_last[i][0]	= p_table_state->Player(i)->hole_cards(0)->GetValue();
 		_card_player_last[i][1]	= p_table_state->Player(i)->hole_cards(1)->GetValue();
 		_dealer_last[i]         = p_table_state->Player(i)->dealer();
-		_playerbalance_last[i]  = p_table_state->Player(i)->balance();
-		_playerbet_last[i]      = p_table_state->Player(i)->bet();
+		_playerbalance_last[i]  = p_table_state->Player(i)->_balance.GetValue();
+		_playerbet_last[i]      = p_table_state->Player(i)->_bet.GetValue();
 	}
 }
 
@@ -112,10 +112,10 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 		}	else if (p_table_state->Player(i)->dealer() != _dealer_last[i]) {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Dealer%d-position does not match\n", i);
-		}	else if (p_table_state->Player(i)->balance() != _playerbalance_last[i])	{
+		}	else if (p_table_state->Player(i)->_balance.GetValue() != _playerbalance_last[i])	{
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-balance does not match\n", i);
-		}	else if (p_table_state->Player(i)->bet()	 != _playerbet_last[i]) {
+		}	else if (p_table_state->Player(i)->_bet.GetValue()	 != _playerbet_last[i]) {
 			same_scrape = false;
 			write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Player%d-bet does not match\n", i);
 		}

@@ -25,8 +25,8 @@ CPlayer::~CPlayer() {
 
 void CPlayer::Reset() {
   set_name("");
-  set_balance(0.0);
-  set_bet(0.0);
+  _balance.Reset();
+  _bet.Reset();
   for (int i=0; i<kNumberOfCardsPerPlayer; ++i) {
     _hole_cards[i].ClearValue();
   }
@@ -74,7 +74,7 @@ void CPlayer::CheckPlayerCardsForConsistency() {
 }
 
 bool CPlayer::IsAllin() {
-  return (_seated && _active && HasAnyCards() && (_balance == 0));
+  return (_seated && _active && HasAnyCards() && (_balance.GetValue() == 0));
 }
 
 bool CPlayer::PostingBothBlinds() {
@@ -91,7 +91,7 @@ bool CPlayer::PostingBothBlinds() {
   }
   // We have to calculate in cents here, as IsApproximatellyEqual uses rounding internally.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18743
-  double bet_in_cents = 100 * _bet;
+  double bet_in_cents = 100 * _bet.GetValue();
   double both_blinds_in_cents = 100 * (p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind());
   return (_seated && _active && HasAnyCards()
     && IsApproximatellyEqual(bet_in_cents, both_blinds_in_cents));
@@ -130,7 +130,7 @@ CString CPlayer::DataDump() {
   result += "  ";
   // Money: currentbet and balance
   CString money;
-  money.Format("%12.2f  %12.2f", bet(), balance());
+  money.Format("%12.2f  %12.2f", _bet.GetValue(), _balance.GetValue());
   result += money;
   return result;
 

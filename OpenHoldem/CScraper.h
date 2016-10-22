@@ -69,7 +69,7 @@ class CScraper {
 	int CardString2CardNumber(CString card);
  private:
 	// private functions and variables - not available via accessors or mutators
-  double ScrapeUPBalance(int chair, char scrape_u_else_p);
+  CString ScrapeUPBalance(int chair, char scrape_u_else_p);
 	void ScrapeBalance(const int chair);
 	void ScrapeBet(const int chair);
 	void ScrapePots();
@@ -81,7 +81,6 @@ class CScraper {
   void EvaluateTrueFalseRegion(bool *result, const CString name);
   bool EvaluateNumericalRegion(double *result, const CString name);
 	bool IsExtendedNumberic(CString text);
-	CString ProcessBalanceNumbersOnly(CString balance_and_or_potential_text);
  private:
   void ResetLimitInfo();
  private:

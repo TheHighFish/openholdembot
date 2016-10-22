@@ -48,7 +48,7 @@ bool COcclusionCheck::UserBalanceNonZero()
 {
 	int userchair = p_symbol_engine_userchair->userchair();
 	if (UserChairKnown() 
-		&& (p_table_state->User()->balance() > 0))
+		&& (p_table_state->User()->_balance.GetValue() > 0))
 	{
 		return true;
 	}
@@ -91,7 +91,7 @@ bool COcclusionCheck::AnyApponentBalanceNonZero()
 	int Userchair = p_symbol_engine_userchair->userchair();
 	for (int i=0; i<=9; i++)
 	{
-		if ((i != Userchair) && (p_table_state->Player(i)->balance() > 0))
+		if ((i != Userchair) && (p_table_state->Player(i)->_balance.GetValue() > 0))
 		{
 			return true;
 		}

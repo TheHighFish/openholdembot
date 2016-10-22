@@ -15,6 +15,7 @@
 #define INC_CPLAYER_H
 
 #include "Card.h"
+#include "CScrapedMoney.h"
 
 class CPlayer {
  public:
@@ -38,8 +39,6 @@ class CPlayer {
  public:
   // Public accessors
   CString name()       { return _name; }
-  double  balance()    { return _balance; }
-  double  bet()        { return _bet; }
   int     colourcode() { return _colourcode; }
  public:
   // Public accessors
@@ -56,8 +55,6 @@ class CPlayer {
  public:
   // Public setters (must only be used by CScraper)
   void set_name(CString new_name)         { _name = new_name; }
-  void set_balance(double new_balance)    { _balance = new_balance; }
-  void set_bet(double new_bet)            { _bet = new_bet; }
   void set_colourcode(int new_colourcode) { _colourcode = new_colourcode; }
  public:
   // Public setters (must only be used by CScraper)
@@ -67,10 +64,11 @@ class CPlayer {
  public:
   // For the log-file
   CString DataDump();
+ public:
+  CScrapedMoney _balance;
+  CScrapedMoney _bet;
  private:
   CString _name;
-  double  _balance;
-  double  _bet;
   Card    _hole_cards[kNumberOfCardsPerPlayer];
   int     _colourcode;
  private:

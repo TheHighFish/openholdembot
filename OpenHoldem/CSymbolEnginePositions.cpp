@@ -82,7 +82,7 @@ void CSymbolEnginePositions::CalculateNChairsDealtLeftRight() {
 		  i<=DEALER_CHAIR+p_tablemap->nchairs();
 		  i++) {
 		int next_chair = i%p_tablemap->nchairs();
-		double p_bet = p_table_state->Player(next_chair)->bet();
+		double p_bet = p_table_state->Player(next_chair)->_bet.GetValue();
 
 		if (next_chair == USER_CHAIR)	{
 			found_userchair = true;

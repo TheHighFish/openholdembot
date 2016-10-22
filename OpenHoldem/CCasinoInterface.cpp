@@ -176,8 +176,8 @@ bool CCasinoInterface::HandleInterfacebuttonsI86(void) {
 
 bool CCasinoInterface::EnterBetsizeForAllin() {
   write_log(preferences.debug_autoplayer(), "[CasinoInterface] Going to enter betsize allin\n");
-	double betsize_for_allin = p_table_state->User()->bet()
-	  + p_table_state->User()->balance(); 
+	double betsize_for_allin = p_table_state->User()->_bet.GetValue()
+	  + p_table_state->User()->_balance.GetValue(); 
   return EnterBetsize(betsize_for_allin);
 }
 

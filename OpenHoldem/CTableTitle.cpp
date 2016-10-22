@@ -67,9 +67,7 @@ CString CTableTitle::PreprocessTitle(CString title) {
   // One more problem:
   // * extra dots in mubers at Microgaming
   //   http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19658
-  // but the latter one mainly affects balances. The function
-  // to handle this case should be in a library that gets shared
-  // with the scraper.
+  // but the latter one mainly affects balances. 
   CString result = title;
   RemoveOHreplayFrameNumber(&result);
   RemoveLeftWhiteSpace(&result);

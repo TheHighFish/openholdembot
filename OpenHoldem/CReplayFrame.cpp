@@ -250,10 +250,10 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
       GetCardHtml(p_table_state->Player(i)->hole_cards(1)->GetValue()));
 		player_info += text;  
 		// Bet
-		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->bet());
+		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->_bet.GetValue());
 		player_info += text; 
 		// Balance
-		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->balance());
+		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->_balance.GetValue());
 		player_info += text;  
 		// Name
 		text.Format("      <td>%-15s</td>\n", p_table_state->Player(i)->name().GetString());

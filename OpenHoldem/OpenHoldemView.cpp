@@ -301,13 +301,13 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			_playername_last[i] = p_table_state->Player(i)->name();
 			update_it = true;
 		}
-		if (_playerbalance_last[i] != p_table_state->Player(i)->balance()) {
-			_playerbalance_last[i] = p_table_state->Player(i)->balance();
+		if (_playerbalance_last[i] != p_table_state->Player(i)->_balance.GetValue()) {
+			_playerbalance_last[i] = p_table_state->Player(i)->_balance.GetValue();
 			update_it = true;
 		}
-		if (_playerbet_last[i] != p_table_state->Player(i)->bet()) 
+		if (_playerbet_last[i] != p_table_state->Player(i)->_bet.GetValue()) 
 		{
-			_playerbet_last[i] = p_table_state->Player(i)->bet();
+			_playerbet_last[i] = p_table_state->Player(i)->_bet.GetValue();
 			update_it = true;
 		}
 
@@ -788,9 +788,9 @@ void COpenHoldemView::DrawBalanceBox(const int chair) {
 
 		// Format Text
 		if (p_table_state->Player(chair)->active()) 	{
-			t = Number2CString(p_table_state->Player(chair)->balance());
+			t = Number2CString(p_table_state->Player(chair)->_balance.GetValue());
 		}	else {
-			t.Format("Out (%s)", Number2CString(p_table_state->Player(chair)->balance()));
+			t.Format("Out (%s)", Number2CString(p_table_state->Player(chair)->_balance.GetValue()));
 		}
 	}	else {
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
@@ -864,9 +864,9 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
   // Format text
-	if (p_table_state->Player(chair)->bet() != 0) 
+	if (p_table_state->Player(chair)->_bet.GetValue() != 0) 
 	{
-		t = Number2CString(p_table_state->Player(chair)->bet());
+		t = Number2CString(p_table_state->Player(chair)->_bet.GetValue());
 	}
 	else 	{
 		t = "";

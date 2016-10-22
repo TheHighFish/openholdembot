@@ -60,7 +60,7 @@ double BetsizeForBetpot(int betpot_action_code) {
     + p_symbol_engine_chip_amounts->call();
   double additional_money_into_pot = BetPotFactor(betpot_action_code) 
     * pot_after_i_call;
-  double final_betsize = p_table_state->User()->bet()
+  double final_betsize = p_table_state->User()->_bet.GetValue()
     + p_symbol_engine_chip_amounts->call()
     + additional_money_into_pot;
   assert(final_betsize > 0);

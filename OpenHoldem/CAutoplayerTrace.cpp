@@ -240,8 +240,8 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   write_log(k_always_log_basic_information, "  Community:     %s\n",    comcards.GetString());
   write_log(k_always_log_basic_information, "  Handrank:      %s\n",    rank.GetString());
   write_log(k_always_log_basic_information, "  Hand:          %s\n",    pokerhand.GetString());
-  write_log(k_always_log_basic_information, "  My balance:    %9.2f\n", p_table_state->User()->balance());
-  write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", p_table_state->User()->bet()); 
+  write_log(k_always_log_basic_information, "  My balance:    %9.2f\n", p_table_state->User()->_balance.GetValue());
+  write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", p_table_state->User()->_bet.GetValue()); 
   write_log(k_always_log_basic_information, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
   write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
   write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());

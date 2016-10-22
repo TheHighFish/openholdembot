@@ -23,7 +23,6 @@ public:
 	~CScraperPreprocessor();
 public:
 	static void PreprocessMonetaryString(CString *monetary_string);
-	static void PreprocessTitleString(CString *title_string);
 	static void ProcessBalanceNumbersOnly(CString *balance_and_or_potential_text);
 };
 

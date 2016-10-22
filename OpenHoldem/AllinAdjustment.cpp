@@ -41,7 +41,7 @@ bool ChangeBetsizeToAllin(double amount_to_raise_to) {
     return false;
   }
   // Safety measure: good balance?
-  if (p_table_state->User()->balance() <= 0.0) {
+  if (p_table_state->User()->_balance.GetValue() <= 0.0) {
     write_log(preferences.debug_allin_adjustment(),
       "[AllinAdjustment] Cancelled due to bad users balance\n");
     return false;
@@ -52,7 +52,7 @@ bool ChangeBetsizeToAllin(double amount_to_raise_to) {
   // If our currentbet is "too large" or our balance "too low"
   // then we alreadz should be allin or something is wrong.
   // Act conservatively here
-  if (p_table_state->User()->bet() >= critical_betsize) {
+  if (p_table_state->User()->_bet.GetValue() >= critical_betsize) {
     write_log(preferences.debug_allin_adjustment(),
       "[AllinAdjustment] Cancelled as we already should be allin if input was right.\n");
     return false;

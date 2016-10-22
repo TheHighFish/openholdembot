@@ -250,7 +250,7 @@ bool CHandresetDetector::IsHandresetByChangingBlindLevel() {
 
 bool CHandresetDetector::SmallBlindExists() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
-    double players_bet = p_table_state->Player(i)->bet();
+    double players_bet = p_table_state->Player(i)->_bet.GetValue();
     if ((players_bet > 0) && (players_bet < _bblind)) {
       // Either SB or ante, first orbit preflop, hand-reset
       return true;
@@ -285,7 +285,7 @@ void CHandresetDetector::GetNewSymbolValues() {
 		}
 	}
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
-    _balance[i] = p_table_state->Player(i)->balance();
+    _balance[i] = p_table_state->Player(i)->_balance.GetValue();
   }
 }
 

@@ -105,7 +105,7 @@ double CSymbolEngineRaisers::LastOrbitsLastRaisersBet() {
 	if (p_table_state->User()->HasKnownCards())	{
 		// Otherwise: either we are the raiser (highest bet)
 		// Or we called the raise (highest bet too)
-		return p_table_state->User()->bet();
+		return p_table_state->User()->_bet.GetValue();
 	}
 	// Otherwise meaningless
 	return 0.0;
@@ -129,7 +129,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
 		int chair = i % p_tablemap->nchairs();
-		double current_players_bet = p_table_state->Player(chair)->bet();
+		double current_players_bet = p_table_state->Player(chair)->_bet.GetValue();
     write_log(preferences.debug_symbolengine(), 
       "[CSymbolEngineRaisers] chair %d bet %.2f\n",
       chair, current_players_bet);
@@ -204,7 +204,7 @@ void CSymbolEngineRaisers::CalculateNOpponentsCheckingBettingFolded()
   assert(p_tablemap->nchairs() <= kMaxNumberOfPlayers);
 	for (int i=0; i<p_tablemap->nchairs(); i++)
 	{
-		double current_players_bet = p_table_state->Player(i)->bet();
+		double current_players_bet = p_table_state->Player(i)->_bet.GetValue();
 		if (current_players_bet < RaisersBet()
       && p_table_state->Player(i)->HasAnyCards())
 		{
@@ -243,7 +243,7 @@ double CSymbolEngineRaisers::RaisersBet() {
 	// So we don't have to know the raisers chair for that.
 	double result = 0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-		double current_players_bet = p_table_state->Player(i)->bet();
+		double current_players_bet = p_table_state->Player(i)->_bet.GetValue();
 		if (current_players_bet > result && p_table_state->Player(i)->HasAnyCards()) 	{
 			result = current_players_bet;
 		}

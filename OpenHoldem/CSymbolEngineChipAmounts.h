@@ -56,12 +56,12 @@ public:
 		}
 		return _stacks_at_hand_start[chair]; 
 	}
-
+  
 	double ncurrentbets()	{
 		if (p_symbol_engine_tablelimits->bet() == 0)		{
 			return 0;
 		}
-		return (p_table_state->User()->bet() / p_symbol_engine_tablelimits->bet());
+		return (p_table_state->User()->_bet.GetValue() / p_symbol_engine_tablelimits->bet());
 	}
  public:
 	double pot()		    	{ return _pot; }

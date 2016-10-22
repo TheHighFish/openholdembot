@@ -231,6 +231,7 @@
     <ClCompile Include="CPopupHandler.cpp" />
     <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
+	<ClCompile Include="CScrapedMoney.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
     <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
@@ -518,6 +519,7 @@
     <ClInclude Include="CPopupHandler.h" />
     <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
+	<ClInclude Include="CScrapedMoney.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
