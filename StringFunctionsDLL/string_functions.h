@@ -31,6 +31,7 @@
 /* STRING_FUNCTIONS_API */ void RemoveExtraDotsInNumbers(CString *s);
 /* STRING_FUNCTIONS_API */ void RemoveLeftWhiteSpace(CString *s);
 /* STRING_FUNCTIONS_API */ void RemoveMultipleWhiteSpaces(CString *s);
+/* STRING_FUNCTIONS_API */ void RemoveOHreplayFrameNumber(CString *s);
 /* STRING_FUNCTIONS_API */ void RemoveRightWhiteSpace(CString *s);
 /* STRING_FUNCTIONS_API */ void RemoveSpacesInFrontOfCentMultipliers(CString *s);
 /* STRING_FUNCTIONS_API */ void RemoveSpacesInsideNumbers(CString *s);
@@ -39,6 +40,7 @@
 /* STRING_FUNCTIONS_API */ char RightCharacter(CString string, int index_from_right = 0);
 /* STRING_FUNCTIONS_API */ int  RightDigitCharacterToNumber(CString string, int index_from_right = 0);
 /* STRING_FUNCTIONS_API */ bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b);
+/* STRING_FUNCTIONS_API */ void StringFunctionsTest();
 /* STRING_FUNCTIONS_API */ bool StringIsExactMatch(const char *string_a, const char *string_b);
 
 #endif // INC_STRING_FUNCTIONS_H 

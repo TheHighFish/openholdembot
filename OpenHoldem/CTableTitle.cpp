@@ -18,6 +18,9 @@
 #include "..\StringFunctionsDLL\string_functions.h"
 
 CTableTitle::CTableTitle() {
+#ifdef _DEBUG
+  StringFunctionsTest();
+#endif
   Clear();
 }
 

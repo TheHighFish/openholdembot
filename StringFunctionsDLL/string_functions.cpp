@@ -144,6 +144,21 @@ void RemoveMultipleWhiteSpaces(CString *s) {
   s->Remove(kCharToBeRemoved);
 }
 
+void RemoveOHreplayFrameNumber(CString *s) {
+  if (s->GetLength() < 8) {
+    return;
+  }
+  if (RightCharacter(*s) != ']') {
+    return;
+  }
+  if (RightCharacter(*s, 7) != '[') {
+    return;
+  }
+  int new_length = s->GetLength() - 8;
+  assert(new_length >= 0);
+  s->Truncate(new_length);
+}
+
 void RemoveRightWhiteSpace(CString *s) {
   s->TrimRight();
 }
@@ -237,12 +252,13 @@ void RemoveExtraDotsInNumbers(CString *s) {
   s->Remove(kCharToBeRemoved);
 }
 
-// !!! call this!
-void StringFunctionsSelfTest() {
+void StringFunctionsTest() {
 #ifdef _DEBUG
-  CString crappy_title = "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     ";
+  CString crappy_title = "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     [000017]";
+  RemoveOHreplayFrameNumber(&crappy_title);
+  assert(crappy_title == "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     ");
   ReplaceOutlandischCurrencyByDollarsandCents(&crappy_title);
-  crappy_title = "  Robostars  Buyin $5,666.777,8     Ante 250 000      Rake 25 c     ";
+  assert(crappy_title == "  Robostars  Buyin $5,666.777,8     Ante 250 000      Rake 25 c     ");
   RemoveLeftWhiteSpace(&crappy_title);
   assert(crappy_title == "Robostars  Buyin $5,666.777,8     Ante 250 000      Rake 25 c     ");
   RemoveRightWhiteSpace(&crappy_title);
