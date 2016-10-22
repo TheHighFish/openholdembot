@@ -39,7 +39,7 @@ void CTableState::Reset() {
     _players[i].Reset();
   }
   for (int i=0; i<kMaxNumberOfPots; ++i) {
-    set_pot(i, 0.0);
+    _pot[i].Reset();
   }
   TableTitle()->Clear();
 }
@@ -63,12 +63,18 @@ CPlayer *CTableState::Player(int chair) {
 
 double CTableState::Pot(int sidepot_index) {
   AssertRange(sidepot_index, 0, kLastPot);
-  return  _pot[sidepot_index];
+  return  _pot[sidepot_index].GetValue();
 }
 
-void CTableState::set_pot(int sidepot_index, double new_value) {
+bool CTableState::set_pot(int sidepot_index, CString new_value) {
   AssertRange(sidepot_index, 0, kLastPot);
-  _pot[sidepot_index] = new_value;
+  return _pot[sidepot_index].SetValue(new_value);
+}
+
+void CTableState::ResetPots() {
+  for (int j = 0; j < kMaxNumberOfPots; j++) {
+    _pot[j].Reset();
+  }
 }
 
 Card *CTableState::CommonCards(int common_card_index) {

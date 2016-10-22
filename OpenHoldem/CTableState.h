@@ -19,6 +19,7 @@
 
 #include "Card.h"
 #include "CPlayer.h"
+#include "CScrapedMoney.h"
 #include "CTableTitle.h"
 #include "MagicNumbers.h"
 #include "SLimitInfo.h"
@@ -47,14 +48,15 @@ class CTableState {
  public:
   CTableTitle *TableTitle();
  public:
-  void set_pot(int sidepot_index, double new_value);
+  bool set_pot(int sidepot_index, CString new_value);
+  void ResetPots();
  public:
   // !!! To do: proper encapsulation
   CLimitInfo _s_limit_info;
  private:
   CPlayer _players[kNumberOfPlayerEntries];
-  double	_pot[kMaxNumberOfPots];
   Card    _common_cards[kNumberOfCommunityCards];
+  CScrapedMoney _pot[kMaxNumberOfPots];
  private:
   CTableTitle _table_title;
  private:

@@ -692,17 +692,15 @@ void CScraper::ScrapePots() {
 	CString			s = "", t="";
 	RMapCI			r_iter = p_tablemap->r$()->end();
 
-	for (int j=0; j<kMaxNumberOfPots; j++) {
-    p_table_state->set_pot(j, 0.0);
-  }
+  p_table_state->ResetPots();
 	for (int j=0; j<kMaxNumberOfPots; j++) {
 		// r$c0potX
 		s.Format("c0pot%d", j);
-    double result = 0;
-		if (EvaluateNumericalRegion(&result, s)) {
-			p_table_state->set_pot(j, result);
-			continue;
-		}
+    CString result;
+    EvaluateRegion(s, &result);
+    if (p_table_state->set_pot(j, result)) {
+      continue;
+    }
 		// r$c0potXchip00_index
 		s.Format("c0pot%dchip00", j);
 		r_iter = p_tablemap->r$()->find(s.GetString());
@@ -714,11 +712,8 @@ void CScraper::ScrapePots() {
       old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
 			double chipscrape_res = DoChipScrape(r_iter);
 			SelectObject(hdcCompatible, old_bitmap);
-
 			t.Format("%.2f", chipscrape_res);
-			CScraperPreprocessor::PreprocessMonetaryString(&t);
-			p_table_state->set_pot(j, strtod(t.GetString(), 0));
-
+			p_table_state->set_pot(j, t.GetString());
 			write_log(preferences.debug_scraper(), 
         "[CScraper] c0pot%dchipXY, result %f\n", j, p_table_state->Pot(j));
 

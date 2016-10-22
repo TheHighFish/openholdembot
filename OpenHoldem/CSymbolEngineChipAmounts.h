@@ -97,7 +97,7 @@ public:
  private:
 	// Used in ICM calculator - ICM needs stacks at beginning of hand
 	double _stacks_at_hand_start[kMaxNumberOfPlayers];	
-	double _pot;
+	double _pot; //!!!!!R
 	double _potcommon;
 	double _potplayer;
  private:
