@@ -47,6 +47,7 @@
 #include "CTableMaploader.h"
 #include "CTablePositioner.h"
 #include "CTableState.h"
+#include "CTableTitle.h"
 #include "CValidator.h"
 #include "CVersionInfo.h"
 #include "CWhiteInfoBox.h"
@@ -55,8 +56,11 @@ void InstantiateAllSingletons() {
   // Instantiation of all singletons, except session-counter.
   // session-counter has to be done do earlier, as it is needed 
   // to create the log-file, which might be needed before this point.
-    // This function gets executed exactly once at startup.
+  // This function gets executed exactly once at startup.
   // So the global class-pointers have to be NULL.
+  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTableTitle\n");
+  assert(!p_table_title);
+  p_table_title = new CTableTitle;
   write_log(preferences.debug_alltherest(), "[Singletons] Going to create CStringMatch\n");
   assert(!p_string_match);
   p_string_match = new CStringMatch;
@@ -210,12 +214,19 @@ void DeleteAllSingletons() {
   // that depends on other classes, e.g. the destructor of the autoconnector
   // needs its session_id (CSessionCounter).
   //
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting casino interface\n");
   DELETE_AND_CLEAR(p_casino_interface)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting occlusion check\n");
   DELETE_AND_CLEAR(p_occlusioncheck)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting rebuy management\n");
   DELETE_AND_CLEAR(p_rebuymanagement)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting engine container\n");
   DELETE_AND_CLEAR(p_engine_container)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting white info box\n");
   DELETE_AND_CLEAR(p_white_info_box)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting OpenHoldem title\n");
   DELETE_AND_CLEAR(p_openholdem_title)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting popup handler\n");
   DELETE_AND_CLEAR(p_popup_handler)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");
   DELETE_AND_CLEAR(p_autoconnector)
@@ -269,6 +280,8 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_string_match)
   write_log(preferences.debug_alltherest(), "[Singletons] Deleting 25\n");
   DELETE_AND_CLEAR(p_filenames)
+  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 26\n");
+  DELETE_AND_CLEAR(p_table_title)
   write_log(preferences.debug_alltherest(), "[Singletons] All singletons successfully deleted\n");
 }
   

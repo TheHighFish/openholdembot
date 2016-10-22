@@ -11,6 +11,9 @@
 //
 //******************************************************************************
 
+#ifndef INC_CTABLETITLE_H
+#define INC_CTABLETITLE_H
+
 class CTableTitle {
  public:
   CTableTitle();
@@ -23,10 +26,18 @@ class CTableTitle {
   CString Title();
   CString PreprocessedTitle();
   bool TitleChangedSinceLastHeartbeat();
+ public:
+  // Public static for preprocessing of scraped ttlimitsX by CScraper.cpp
+  static CString PreprocessTitle(CString title);
  private:
   void SelfTest();
   void SetTitle(CString new_title);
  private:
   CString _title;
+  CString _preprocessed_title;
   CString _previous_title;
 };
+
+extern CTableTitle *p_table_title;
+
+#endif INC_CTABLETITLE_H

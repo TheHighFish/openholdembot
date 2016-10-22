@@ -40,6 +40,7 @@
 #include "CPreferences.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
+#include "CTableTitle.h"
 #include "MagicNumbers.h"
 #include "Numericalfunctions.h"
 
@@ -81,9 +82,7 @@ void CGameState::CaptureState() {
 		playing = false;
 	}
   // Poker window title
-	char title[MAX_WINDOW_TITLE];
-	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE);
-  strncpy_s(state[state_index].m_title, 64, title, _TRUNCATE);
+  strncpy_s(state[state_index].m_title, 64, p_table_title->Title(), _TRUNCATE);
 	state[state_index].m_title[63] = '\0';
   // Pot information
   AssertRange(state_index, 0, kMaxIndex);

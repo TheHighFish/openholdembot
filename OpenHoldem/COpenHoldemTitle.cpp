@@ -20,12 +20,12 @@
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "../CTablemap/CTablemap.h"
+#include "CTableTitle.h"
 #include "MainFrm.h"
 
 COpenHoldemTitle *p_openholdem_title = NULL;
 
-COpenHoldemTitle::COpenHoldemTitle()
-{
+COpenHoldemTitle::COpenHoldemTitle() {
 	user_defined_title = "";
 	assert(p_filenames != NULL);
 	simple_title = p_filenames->PureExecutableFilename();
@@ -34,62 +34,44 @@ COpenHoldemTitle::COpenHoldemTitle()
 COpenHoldemTitle::~COpenHoldemTitle()
 {}
 
-CString COpenHoldemTitle::GetTitle()
-{
+CString COpenHoldemTitle::GetTitle() {
 	// user-defined overwrites everything
-	if (user_defined_title != "")
-	{
+	if (user_defined_title != "") 	{
 		return user_defined_title;
 	}
-	if (preferences.simple_window_title())
-	{
+	if (preferences.simple_window_title()) {
 		return simple_title;
-	}
-	else
-	{
+	}	else {
 		return FullTitle();
 	}
 }
 
-CString COpenHoldemTitle::FullTitle()
-{
+CString COpenHoldemTitle::FullTitle() {
 	assert(p_autoconnector != NULL);
 	assert(p_function_collection != NULL);
 	assert(p_tablemap != NULL);
-
-	CString full_title;
-	char table_title[MAX_WINDOW_TITLE];
-
-	GetWindowText(p_autoconnector->attached_hwnd(), table_title, 
-		MAX_WINDOW_TITLE);
-	if (p_autoconnector->IsConnected())
-	{
+  CString full_title;
+	if (p_autoconnector->IsConnected())	{
 		full_title.Format("%s - %s (%s)", p_function_collection->Title(), 
-			p_tablemap->sitename(), table_title);
-	}
-	else
-	{
+			p_tablemap->sitename(), p_table_title->Title());
+	}	else {
 		full_title.Format("%s", p_function_collection->Title());
 	}
 	return full_title;
 }
 
-void COpenHoldemTitle::SetUserDefinedOpenHoldemTitle(CString new_title)
-{
+void COpenHoldemTitle::SetUserDefinedOpenHoldemTitle(CString new_title) {
 	user_defined_title = new_title;
 	UpdateTitle();
 }
 
-void COpenHoldemTitle::UpdateTitle()
-{
-	if (PMainframe() == NULL)
-	{
+void COpenHoldemTitle::UpdateTitle() {
+	if (PMainframe() == NULL)	{
 		// Missing main window can happen very early during execution
 		// if OpenHoldem creates a default document with default title
 		// but the window does not yet exist.
 		return;
 	}
-
 	// PostMessage(WMA_SETWINDOWTEXT, 0, (LPARAM)(GetTitle().GetString()));
 	// can't be used, because that would call COpenHoldemHopperCommunication::OnSetWindowText
 	// which would then call SetUserDefinedOpenHoldemTitle()
@@ -99,5 +81,4 @@ void COpenHoldemTitle::UpdateTitle()
 	current_title = GetTitle();
 	HWND main_window = PMainframe()->GetSafeHwnd();
 	SetWindowText(main_window, current_title);
-
 }

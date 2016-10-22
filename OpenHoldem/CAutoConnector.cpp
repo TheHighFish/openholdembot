@@ -305,7 +305,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			// Reset display
 			PMainframe()->ResetDisplay();
       // log OH title bar text and table reset
-			::GetWindowText(_attached_hwnd, title, MAX_WINDOW_TITLE);
       WriteLogTableReset("NEW CONNECTION");
       p_table_positioner->ResizeToTargetSize();
 			p_table_positioner->PositionMyWindow();
@@ -400,7 +399,6 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 
 	// Change window title
 	p_openholdem_title->UpdateTitle();
-
 	// Reset Display 
 	PMainframe()->ResetDisplay();
 

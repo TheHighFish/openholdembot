@@ -17,6 +17,8 @@
 #include "CAutoconnector.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
+CTableTitle *p_table_title = NULL;
+
 CTableTitle::CTableTitle() {
 #ifdef _DEBUG
   StringFunctionsTest();
@@ -34,13 +36,14 @@ void CTableTitle::UpdateTitle() {
 }
 
 void CTableTitle::Clear() {
-  _title = "";
-  CString _previous_title = "";
+  SetTitle("");
+  _previous_title = "";
 }
 
 void CTableTitle::SetTitle(CString new_title) {
   _previous_title = _title;
   _title = new_title;
+  _preprocessed_title = PreprocessTitle(_title);
 }
 
 CString CTableTitle::Title() {
@@ -48,9 +51,12 @@ CString CTableTitle::Title() {
 }
 
 CString CTableTitle::PreprocessedTitle() {
-  // !!!!!
+  return _preprocessed_title;
+}
+
+CString CTableTitle::PreprocessTitle(CString title) {
   // There are some annoying title formats that cause problems
-  // for nirmal title processing. We try to transform these
+  // for normal title processing. We try to transform these
   // mal-formed title-strings to good ones:
   // * spaces between numbers and cent multipliers at 888
   //   http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19216
@@ -64,8 +70,20 @@ CString CTableTitle::PreprocessedTitle() {
   // but the latter one mainly affects balances. The function
   // to handle this case should be in a library that gets shared
   // with the scraper.
-  return _title;
+  CString result = title;
+  RemoveOHreplayFrameNumber(&result);
+  RemoveLeftWhiteSpace(&result);
+  RemoveRightWhiteSpace(&result);
+  RemoveMultipleWhiteSpaces(&result);
+  RemoveSpacesInsideNumbers(&result);
+  ReplaceOutlandischCurrencyByDollarsandCents(&result);
+  RemoveSpacesInFrontOfCentMultipliers(&result);
+  ReplaceCommasInNumbersByDots(&result);
+  RemoveExtraDotsInNumbers(&result);
+  return result;
 }
+
+
 
 bool CTableTitle::TitleChangedSinceLastHeartbeat() {
   return (_title != _previous_title);

@@ -22,6 +22,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
+#include "CTableTitle.h"
 #include "CVersionInfo.h"
 
 CSymbolEngineEventLogging *p_symbol_engine_event_logging = NULL;
@@ -42,9 +43,7 @@ void CSymbolEngineEventLogging::ResetOnConnection() {
 void CSymbolEngineEventLogging::ResetOnHandreset() {
   // Log a new connection, plus the version-info
   // (because of all the guys who report "bugs" of outdated versions)
-  char title[512] = "--- title undefined ---";
-  GetWindowText(p_autoconnector->attached_hwnd(), title, 512);
- write_log(k_always_log_basic_information,
+  write_log(k_always_log_basic_information,
     "\n"
     "==============================================\n"
     "%s"    // Version info already contains a newline
@@ -52,7 +51,8 @@ void CSymbolEngineEventLogging::ResetOnHandreset() {
     "==============================================\n"
     "HAND RESET\n"
     "==============================================\n",
-    p_version_info->GetVersionInfo(), title);
+    p_version_info->GetVersionInfo(), 
+    p_table_title->Title());
 }
 
 void CSymbolEngineEventLogging::ResetOnNewRound()

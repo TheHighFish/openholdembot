@@ -31,6 +31,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
+#include "CTableTitle.h"
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
 #include "debug.h"
@@ -790,8 +791,6 @@ void CScraper::ScrapeMTTRegions() {
 void CScraper::ScrapeLimits() {
 	__HDC_HEADER
 	CString				text = "";
-	CString				titletext = "";
-	char				  c_titletext[MAX_WINDOW_TITLE] = {0};
 	bool				  got_new_scrape = false, log_blind_change = false;
 	CTransform		trans;
 	CString				s = "";
@@ -802,7 +801,7 @@ void CScraper::ScrapeLimits() {
 	// the titlebar.  That way if we do not find handnumber
 	// information in the titlebar we won't overwrite the values we scraped
 	// from the handnumber region.
-
+  //
 	// r$c0handnumber
 	if (EvaluateRegion("c0handnumber", &text)) {
 		if (text!="") {
@@ -811,7 +810,6 @@ void CScraper::ScrapeLimits() {
 		}
 		write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
 	}
-
 	for (int j=0; j<=9; j++) {
 		// r$c0handnumberX
 		s.Format("c0handnumber%d", j);
@@ -837,44 +835,29 @@ void CScraper::ScrapeLimits() {
 	// information we scraped from those specific regions with
 	// default values if we can't find them in the titlebar.
 	CString l_handnumber = p_table_state->_s_limit_info.handnumber(); 
-
 	// s$ttlimits - Scrape blinds/stakes/limit info from title text
 	s_iter = p_tablemap->s$()->find("ttlimits");
-	if (s_iter != p_tablemap->s$()->end())
-	{
-		GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
-		titletext = c_titletext;
-	 	
-		CScraperPreprocessor::PreprocessTitleString(&titletext);
+	if (s_iter != p_tablemap->s$()->end()) {
+    CString titletext = p_table_title->PreprocessedTitle();
     trans.ParseStringBSL(
 			titletext, s_iter->second.text, NULL,
 			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
       &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-
 		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
       l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-
 		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
-		for (int j=0; j<=9; j++)
-		{
+		for (int j=0; j<=9; j++) {
 			s.Format("ttlimits%d", j);
 			s_iter = p_tablemap->s$()->find(s.GetString());
-			if (s_iter != p_tablemap->s$()->end())
-			{
-				GetWindowText(p_autoconnector->attached_hwnd(), c_titletext, MAX_WINDOW_TITLE-1);
-				titletext = c_titletext;
-	
-				CScraperPreprocessor::PreprocessTitleString(&titletext);
+			if (s_iter != p_tablemap->s$()->end()) {
 				trans.ParseStringBSL(
 					titletext, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
           &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-
 				write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
           l_sblind, l_bblind, l_bbet, l_ante, l_limit);
 			}
 		}
-
 		// c0limits needs both
     // * a region r$c0limits to define where to scrape the limis 
     // * a symbol s$c0limits to define how to interpret the scrape text,
