@@ -128,7 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\OpenHoldem\CScraperPreprocessor.cpp" />
     <ClCompile Include="..\OpenHoldem\WebSafeColours.cpp" />
     <ClCompile Include="CRegionCloner.cpp" />
     <ClCompile Include="CTablemap_TroubleChecking.cpp">
@@ -164,15 +163,12 @@
     <ClCompile Include="..\CTransform\pdiff\LPyramid.cpp" />
     <ClCompile Include="..\CTransform\pdiff\Metric.cpp" />
     <ClCompile Include="..\CTransform\pdiff\RGBAImage.cpp" />
-    <ClCompile Include="..\OpenHoldem\StringFunctions.cpp" />
     <ClCompile Include="..\hscroll-list-box\HScrollListBox.cpp" />
     <ClCompile Include="..\CTablemap\CTablemap.cpp" />
     <ClCompile Include="..\CTablemap\CTablemapAccess.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\OpenHoldem\CScraperPreprocessor.h" />
     <ClInclude Include="..\OpenHoldem\OH_MessageBox.h" />
-    <ClInclude Include="..\OpenHoldem\WebSafeColours.h" />
     <ClInclude Include="CRegionCloner.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="DialogCopyRegion.h" />
@@ -202,12 +198,12 @@
     <ClInclude Include="..\CTransform\pdiff\Metric.h" />
     <ClInclude Include="..\CTransform\pdiff\RGBAImage.h" />
     <ClInclude Include="..\CTransform\hash\stdint.h" />
-    <ClInclude Include="..\OpenHoldem\StringFunctions.h" />
     <ClInclude Include="..\hscroll-list-box\HScrollListBox.h" />
     <ClInclude Include="..\CTablemap\CTablemap.h" />
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\OpenHoldem\WebSafeColours.h" />
     <None Include="res\cursor1.cur" />
     <None Include="res\drawrect.bmp" />
     <None Include="res\drawrect.cur" />

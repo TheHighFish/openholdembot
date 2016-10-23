@@ -39,13 +39,13 @@ void CSymbolEngineMTTInfo::InitOnStartup() {
 }
 
 void CSymbolEngineMTTInfo::ResetOnConnection() {
-	_mtt_number_entrants = 0;
-	_mtt_players_remaining = 0;
-	_mtt_my_rank = 0;
-	_mtt_paid_places = 0;
-	_mtt_largest_stack = 0.0;
-	_mtt_average_stack = 0.0;
-	_mtt_smallest_stack = 0.0;
+	_mtt_number_entrants.Reset();
+	_mtt_players_remaining.Reset();
+	_mtt_my_rank.Reset();
+	_mtt_paid_places.Reset();
+	_mtt_largest_stack.Reset();
+	_mtt_average_stack.Reset();
+	_mtt_smallest_stack.Reset();
 }
 
 void CSymbolEngineMTTInfo::ResetOnHandreset() {
@@ -68,13 +68,13 @@ bool CSymbolEngineMTTInfo::EvaluateSymbol(const char *name, double *result, bool
 	  return false;
   }
 	// MTT symbols
-  if (memcmp(name, "mtt_number_entrants", 19)==0)        *result = _mtt_number_entrants;
-  else if (memcmp(name, "mtt_players_remaining", 21)==0) *result = _mtt_players_remaining;
-  else if (memcmp(name, "mtt_my_rank", 11)==0)	         *result = _mtt_my_rank;
-  else if (memcmp(name, "mtt_paid_places", 15)==0)       *result = _mtt_paid_places;
-  else if (memcmp(name, "mtt_largest_stack", 17)==0)	   *result = _mtt_largest_stack;
-  else if (memcmp(name, "mtt_average_stack", 17)==0)	   *result = _mtt_average_stack;
-  else if (memcmp(name, "mtt_smallest_stack", 18)==0) 	 *result = _mtt_smallest_stack;
+  if (memcmp(name, "mtt_number_entrants", 19)==0)        *result = _mtt_number_entrants.GetValue();
+  else if (memcmp(name, "mtt_players_remaining", 21)==0) *result = _mtt_players_remaining.GetValue();
+  else if (memcmp(name, "mtt_my_rank", 11)==0)	         *result = _mtt_my_rank.GetValue();
+  else if (memcmp(name, "mtt_paid_places", 15)==0)       *result = _mtt_paid_places.GetValue();
+  else if (memcmp(name, "mtt_largest_stack", 17)==0)	   *result = _mtt_largest_stack.GetValue();
+  else if (memcmp(name, "mtt_average_stack", 17)==0)	   *result = _mtt_average_stack.GetValue();
+  else if (memcmp(name, "mtt_smallest_stack", 18)==0) 	 *result = _mtt_smallest_stack.GetValue();
   else {
 	  // Symbol of a different symbol-engine
 	  return false;
@@ -84,18 +84,18 @@ bool CSymbolEngineMTTInfo::EvaluateSymbol(const char *name, double *result, bool
 
 // If any of these are true then we are connected to a MTT
 bool CSymbolEngineMTTInfo::ConnectedToMTT() {
-  return (_mtt_number_entrants > p_tablemap->nchairs()
-	  || _mtt_players_remaining > p_tablemap->nchairs()
-	  || _mtt_paid_places > p_tablemap->nchairs()
-	  || _mtt_my_rank > p_tablemap->nchairs());
+  return (_mtt_number_entrants.GetValue() > p_tablemap->nchairs()
+	  || _mtt_players_remaining.GetValue() > p_tablemap->nchairs()
+	  || _mtt_paid_places.GetValue() > p_tablemap->nchairs()
+	  || _mtt_my_rank.GetValue() > p_tablemap->nchairs());
 }
 
 // If any of these are true then we are connected to a MTT or SNG
 bool CSymbolEngineMTTInfo::ConnectedToAnyTournament() {
-  return (_mtt_number_entrants > 0
-    || _mtt_players_remaining > 0
-    || _mtt_paid_places > 0
-    || _mtt_my_rank > 0);
+  return (_mtt_number_entrants.GetValue() > 0
+    || _mtt_players_remaining.GetValue() > 0
+    || _mtt_paid_places.GetValue() > 0
+    || _mtt_my_rank.GetValue() > 0);
 }
 
 CString CSymbolEngineMTTInfo::SymbolsProvided() {

@@ -16,9 +16,9 @@
 //
 
 #include "stdafx.h"
-#include "..\OpenHoldem\CScraperPreprocessor.h"
 #include "DialogEditSymbols.h"
 #include "OpenScrapeDoc.h"
+#include "..\OpenHoldem\CTableTitle.h"
 
 // CDlgEditSymbols dialog
 
@@ -99,9 +99,9 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
 	m_Titletext.GetWindowText(text);
 	m_Value.GetWindowText(format);
 	
-  CScraperPreprocessor scrper_preprocessor;
-  scrper_preprocessor.PreprocessTitleString(&text);
-	trans.ParseStringBSL(text, format, &results);
+  CTableTitle tabletitle;
+  CString preprocessed_title = tabletitle.PreprocessTitle(text);
+  trans.ParseStringBSL(preprocessed_title, format, &results);
 
 	m_ParseResults.SetWindowText(results.GetString());
 }

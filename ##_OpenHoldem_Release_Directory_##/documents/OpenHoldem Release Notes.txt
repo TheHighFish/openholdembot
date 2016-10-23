@@ -11,10 +11,11 @@ BUG FIXES:
 
 MAINTENANCE:
 - The introduction of advanced preprocessing for titles, bets and balances
-  made the tablemap-option "balancenumbersonly" superfluous.
-  It therefore got removed.
+  made the tablemap-options "balancenumbersonly" and "scraperpreprocessordll" superfluous.
+  Therefore they got removed.
   [THF]
 
+  
 v9.2.8 2016-10-01
 ==================
 NEW STUFF:

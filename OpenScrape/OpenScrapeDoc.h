@@ -21,7 +21,7 @@ int	const num_z$strings = 3;
 char * const z$strings[num_z$strings] = 
     { "clientsizemin", "clientsizemax", "targetsize" };
 
-int	const num_s$strings = 85;
+int	const num_s$strings = 84;
 char * const s$strings[num_s$strings] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
 	"titletext7", "titletext8", "titletext9", 
 	"!titletext", "!titletext0", "!titletext1", "!titletext2", "!titletext3", "!titletext4", "!titletext5", "!titletext6",
@@ -34,7 +34,7 @@ char * const s$strings[num_s$strings] = { "titletext", "titletext0", "titletext1
 	"defaultlabels", "t0type", "t1type", "t2type", "t3type", 
 	"betsizeselectionmethod", "betsizedeletionmethod", "betsizeconfirmationmethod", "betsizeinterpretationmethod",
   "buttonclickmethod", "allinconfirmationmethod", "balancenumbersonly", "scraperdll", 
-  "scraperpreprocessordll", "chipscrapemethod", "cardscrapemethod", "islobby",
+  "chipscrapemethod", "cardscrapemethod", "islobby",
   "use_comma_instead_of_dot",
   "i0buttonhotkey", "i1buttonhotkey", "i2buttonhotkey", "i3buttonhotkey", "i4buttonhotkey",
   "i5buttonhotkey", "i6buttonhotkey", "i7buttonhotkey", "i8buttonhotkey", "i9buttonhotkey",

@@ -21,7 +21,6 @@
 #include "CAutoconnector.h"
 #include "CCasinoInterface.h"
 #include "CPreferences.h"
-#include "CScraperPreprocessor.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -161,22 +160,6 @@ void CScraper::EvaluateTrueFalseRegion(bool *result, const CString name) {
       *result = false;
     }
 	}
-}
-
-bool CScraper::EvaluateNumericalRegion(double *result, const CString name) {
-  CString text_result;
-  if (EvaluateRegion(name, &text_result)) {
-		CScraperPreprocessor::PreprocessMonetaryString(&text_result);
-    write_log(preferences.debug_scraper(), "[CScraper] %s result %s\n", 
-      name, text_result.GetString());
-		if (text_result != "") {
-      CScraperPreprocessor::PreprocessMonetaryString(&text_result);
-      CTransform trans;
-			*result = trans.StringToMoney(text_result);
-      return true;
-		}
-	}
-  return false;
 }
 
 void CScraper::ScrapeInterfaceButtons() {
@@ -664,7 +647,6 @@ void CScraper::ScrapeBet(int chair) {
 		SelectObject(hdcCompatible, old_bitmap);
 
 		t.Format("%.2f", chipscrape_res);
-		CScraperPreprocessor::PreprocessMonetaryString(&t);
 		p_table_state->Player(chair)->_bet.SetValue(t.GetString());
 		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", 
       chair, p_table_state->Player(chair)->_bet.GetValue());
@@ -735,39 +717,26 @@ void CScraper::ScrapePots() {
 
 void CScraper::ScrapeMTTRegions() {
   assert(p_symbol_engine_mtt_info != NULL);
-	double result = 0;
-	p_symbol_engine_mtt_info->set_mtt_number_entrants(0);	
-	if (EvaluateNumericalRegion(&result, "mtt_number_entrants")) {	
+	CString result;
+	if (EvaluateRegion("mtt_number_entrants", &result)) {	
 		p_symbol_engine_mtt_info->set_mtt_number_entrants(result);
 	}
-	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_players_remaining(0);
-	if (EvaluateNumericalRegion(&result, "mtt_players_remaining")) {
+	if (EvaluateRegion("mtt_players_remaining", &result)) {
 		p_symbol_engine_mtt_info->set_mtt_players_remaining(result);
 	}
-	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_my_rank(0);
-	if (EvaluateNumericalRegion(&result, "mtt_my_rank")) {
+	if (EvaluateRegion("mtt_my_rank", &result)) {
 		p_symbol_engine_mtt_info->set_mtt_my_rank(result);
 	}
-	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_paid_places(0);
-	if (EvaluateNumericalRegion(&result, "mtt_paid_places")) {
+	if (EvaluateRegion("mtt_paid_places", &result)) {
 		p_symbol_engine_mtt_info->set_mtt_paid_places(result);
 	}
-	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_largest_stack(0);
-	if (EvaluateNumericalRegion(&result, "mtt_largest_stack")) {
+	if (EvaluateRegion("mtt_largest_stack", &result)) {
 		p_symbol_engine_mtt_info->set_mtt_largest_stack(result);
 	}
-	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_average_stack(0);
-	if (EvaluateNumericalRegion(&result, "mtt_average_stack")) {
+	if (EvaluateRegion("mtt_average_stack", &result)) {
 		p_symbol_engine_mtt_info->set_mtt_average_stack(result);
 	}
-	result = 0;
-	p_symbol_engine_mtt_info->set_mtt_smallest_stack(0);
-	if (EvaluateNumericalRegion(&result, "mtt_smallest_stack")) {
+	if (EvaluateRegion("mtt_smallest_stack", &result)) {
 		p_symbol_engine_mtt_info->set_mtt_smallest_stack(result);
 	}
 }
@@ -903,37 +872,42 @@ void CScraper::ScrapeLimits() {
 			p_table_state->_s_limit_info._handnumber = l_handnumber;
     }
     if (l_sblind != kUndefined) {
-			p_table_state->_s_limit_info._sblind = l_sblind;
+			p_table_state->_s_limit_info._sblind.SetValue(Number2CString(l_sblind));
     }
     if (l_bblind != kUndefined) {
-			p_table_state->_s_limit_info._bblind = l_bblind;
+			p_table_state->_s_limit_info._bblind.SetValue(Number2CString(l_bblind));
     }
     if (l_bbet != kUndefined) {
-			p_table_state->_s_limit_info._bbet = l_bbet;
+			p_table_state->_s_limit_info._bbet.SetValue(Number2CString(l_bbet));
     }
     if (l_ante != kUndefined) {
-			p_table_state->_s_limit_info._ante = l_ante;
+			p_table_state->_s_limit_info._ante.SetValue(Number2CString(l_ante));
     }
     if (l_limit != kUndefined) {
 			p_table_state->_s_limit_info._limit = l_limit;
     }
     if (l_sb_bb != kUndefined) {
-			p_table_state->_s_limit_info._sb_bb = l_sb_bb;
+			p_table_state->_s_limit_info._sb_bb.SetValue(Number2CString(l_sb_bb));
     }
     if (l_bb_BB != kUndefined) {
-			p_table_state->_s_limit_info._bb_BB = l_bb_BB;
+			p_table_state->_s_limit_info._bb_BB.SetValue(Number2CString(l_bb_BB));
     }
     if (l_buyin != kUndefined) {
-			p_table_state->_s_limit_info._buyin = l_buyin;
+			p_table_state->_s_limit_info._buyin.SetValue(Number2CString(l_buyin));
     }
+    CString result;
     // r$c0smallblind
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info._sblind, "c0smallblind");
+    EvaluateRegion("c0smallblind", &result);
+    p_table_state->_s_limit_info._sblind.SetValue(result);
 		// r$c0bigblind
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info._bblind, "c0bigblind");
+    EvaluateRegion("c0bigblind", &result);
+    p_table_state->_s_limit_info._bblind.SetValue(result);
 		// r$c0bigbet
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info._bbet, "c0bigbet");
+    EvaluateRegion("c0bigbet", &result);
+    p_table_state->_s_limit_info._bbet.SetValue(result);
 		// r$c0ante
-    EvaluateNumericalRegion(&p_table_state->_s_limit_info._ante, "c0ante");
+    EvaluateRegion("c0ante", &result);
+    p_table_state->_s_limit_info._ante.SetValue(result);
 		// r$c0isfinaltable
     EvaluateTrueFalseRegion(&p_table_state->_s_limit_info._is_final_table, "c0isfinaltable");
 	}

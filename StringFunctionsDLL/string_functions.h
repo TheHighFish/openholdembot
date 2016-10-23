@@ -27,6 +27,7 @@
 /* STRING_FUNCTIONS_API */ CString CStringRemoveRight(CString string, int number_of_characters_to_remove);
 /* STRING_FUNCTIONS_API */ int     DigitCharacterToNumber(char digit);
 /* STRING_FUNCTIONS_API */ CString IntToBinaryString(int number, int min_digits = 1);
+/* STRING_FUNCTIONS_API */ void KeepBalanceNumbersOnly(CString *s);
 /* STRING_FUNCTIONS_API */ CString Number2CString(double number, int default_precision = 2);
 /* STRING_FUNCTIONS_API */ void RemoveExtraDotsInNumbers(CString *s);
 /* STRING_FUNCTIONS_API */ void RemoveLeftWhiteSpace(CString *s);

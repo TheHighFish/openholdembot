@@ -79,7 +79,6 @@ class CScraper {
  private:
 	bool ProcessRegion(RMapCI r_iter);
   void EvaluateTrueFalseRegion(bool *result, const CString name);
-  bool EvaluateNumericalRegion(double *result, const CString name);
 	bool IsExtendedNumberic(CString text);
  private:
   void ResetLimitInfo();

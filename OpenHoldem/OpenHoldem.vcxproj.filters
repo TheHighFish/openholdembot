@@ -228,7 +228,7 @@
     <ClCompile Include="crc32hash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClCompile Include="CScrapedMoney.cpp">
+    <ClCompile Include="CScrapedMoney.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CValidator.cpp">
@@ -544,9 +544,6 @@
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
     <ClCompile Include="CScraper.cpp">
-      <Filter>Source Files\Scraper</Filter>
-    </ClCompile>
-    <ClCompile Include="CScraperPreprocessor.cpp">
       <Filter>Source Files\Scraper</Filter>
     </ClCompile>
     <ClCompile Include="CardFunctions.cpp">
@@ -1003,7 +1000,7 @@
     <ClInclude Include="CMyMutex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-	<ClInclude Include="CScrapedMoney.h">
+    <ClInclude Include="CScrapedMoney.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="COcclusionCheck.h">
@@ -1382,9 +1379,6 @@
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
     <ClInclude Include="CScraper.h">
-      <Filter>Header Files\Scraper</Filter>
-    </ClInclude>
-    <ClInclude Include="CScraperPreprocessor.h">
       <Filter>Header Files\Scraper</Filter>
     </ClInclude>
     <ClInclude Include="..\CTablemap\CTablemap.h">

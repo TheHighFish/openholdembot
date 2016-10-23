@@ -115,6 +115,36 @@ CString Number2CString(double number, int default_precision /* = 2 */) {
   return result;
 }
 
+inline bool IsStandardASCII(char c) {
+  return ((c >= 0) && (c <= 0x7F));
+}
+
+inline bool ExtendedIsDigit(char c) {
+  // Characters from the extended ASCII-set >= 0x80 (non-english currencies)
+  // could cause assertions for (signed) chars inside isdigit()
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17579&start=90#p122315
+  if (!IsStandardASCII(c)) return false;
+  return isdigit(c);
+}
+
+// This function removes superfluous charaters from single numbers only.
+// Example: "Singlemalt raised to $60"
+void KeepBalanceNumbersOnly(CString *s) {
+  for (int i = 0; i < s->GetLength(); ++i) {
+    char next_character = s->GetAt(i);
+    if (ExtendedIsDigit(next_character)) {
+      continue;
+    }
+    if (next_character == '.') {
+      continue;
+    }
+    // Remove (more efficiently: replace) all other characters
+    s->SetAt(i, kCharToBeRemoved);
+  }
+  // Now remove all bad characters at once
+  s->Remove(kCharToBeRemoved);
+}
+
 void RemoveLeftWhiteSpace(CString *s) {
   s->TrimLeft();
 }

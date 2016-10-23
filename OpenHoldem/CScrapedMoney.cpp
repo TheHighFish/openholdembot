@@ -33,7 +33,7 @@ bool CScrapedMoney::SetValue(CString scraped_value) {
   RemoveSpacesInFrontOfCentMultipliers(&scraped_value);
   ReplaceCommasInNumbersByDots(&scraped_value);
   RemoveExtraDotsInNumbers(&scraped_value);
-  //!!! balancenumbersonly
+  KeepBalanceNumbersOnly(&scraped_value);
   double result = atof(scraped_value); //!!!!!
   if (result >= 0.0) {
     _value = result;

@@ -14,6 +14,8 @@
 #ifndef INC_SLIMITINFO_H
 #define INC_SLIMITINFO_H
 
+#include "CScrapedMoney.h"
+
 class CLimitInfo {
   friend class CScraper;
  public:
@@ -33,25 +35,26 @@ class CLimitInfo {
 	double	bblind(bool is_fixed_limit);
 	double	bbet(bool is_fixed_limit);
  public:
-  double	ante()           { return _ante; }
+  double	ante()           { return _ante.GetValue(); }
 	int		  limit()          { return _limit; }
   CString	handnumber()     { return _handnumber; }
-  double  buyin ()         { return _buyin; }
+  double  buyin ()         { return _buyin.GetValue(); }
   bool    is_final_table() { return _is_final_table; }
  protected:
-	double	_sblind;
-	double	_bblind;
-	double	_bbet;
-	double	_ante;
-	int		  _limit;
-	// Handnumber should be a string, as
-	//   * it may contain characters
-	//   * its lengths my exceed the precision of double
-	CString	_handnumber;
-	double	_sb_bb;
-	double	_bb_BB;
-  double  _buyin;
-  bool    _is_final_table;
+  // FL / PL / NL
+  int	_limit;
+  // Handnumber should be a string, as
+  //   * it may contain characters
+  //   * its lengths my exceed the precision of CScrapedMoney
+  CString	_handnumber;
+  bool _is_final_table;
+	CScrapedMoney	_sblind;
+	CScrapedMoney	_bblind;
+	CScrapedMoney	_bbet;
+	CScrapedMoney	_ante;
+	CScrapedMoney	_sb_bb;
+	CScrapedMoney	_bb_BB;
+  CScrapedMoney _buyin;
 };
 
 #endif // INC_SLIMITINFO_H

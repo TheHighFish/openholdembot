@@ -123,9 +123,6 @@
     <ClCompile Include="..\CTransform\pdiff\RGBAImage.cpp">
       <Filter>Source Files\CTransform</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenHoldem\StringFunctions.cpp">
-      <Filter>Source Files\CTransform</Filter>
-    </ClCompile>
     <ClCompile Include="..\hscroll-list-box\HScrollListBox.cpp">
       <Filter>Source Files\hscroll-list-box</Filter>
     </ClCompile>
@@ -139,9 +136,6 @@
       <Filter>Source Files\CTransform</Filter>
     </ClCompile>
     <ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp">
-      <Filter>Source Files\OpenHoldem_Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\OpenHoldem\CScraperPreprocessor.cpp">
       <Filter>Source Files\OpenHoldem_Functions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -233,9 +227,6 @@
     <ClInclude Include="..\CTransform\hash\stdint.h">
       <Filter>Header Files\CTransform</Filter>
     </ClInclude>
-    <ClInclude Include="..\OpenHoldem\StringFunctions.h">
-      <Filter>Header Files\CTransform</Filter>
-    </ClInclude>
     <ClInclude Include="..\hscroll-list-box\HScrollListBox.h">
       <Filter>Header Files\hscroll-list-box</Filter>
     </ClInclude>
@@ -245,13 +236,7 @@
     <ClInclude Include="..\CTablemap\CTableMapAccess.h">
       <Filter>Header Files\CTablemap</Filter>
     </ClInclude>
-    <ClInclude Include="..\OpenHoldem\WebSafeColours.h">
-      <Filter>Header Files\CTransform</Filter>
-    </ClInclude>
     <ClInclude Include="..\OpenHoldem\OH_MessageBox.h">
-      <Filter>Header Files\OpenHoldem_Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\OpenHoldem\CScraperPreprocessor.h">
       <Filter>Header Files\OpenHoldem_Functions</Filter>
     </ClInclude>
   </ItemGroup>
@@ -288,6 +273,9 @@
     </None>
     <None Include="res\Toolbar.bmp">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\OpenHoldem\WebSafeColours.h">
+      <Filter>Header Files\CTransform</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
