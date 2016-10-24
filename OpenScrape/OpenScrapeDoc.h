@@ -21,7 +21,7 @@ int	const num_z$strings = 3;
 char * const z$strings[num_z$strings] = 
     { "clientsizemin", "clientsizemax", "targetsize" };
 
-int	const num_s$strings = 84;
+int	const num_s$strings = 83;
 char * const s$strings[num_s$strings] = { "titletext", "titletext0", "titletext1", "titletext2", "titletext3", "titletext4", "titletext5", "titletext6",
 	"titletext7", "titletext8", "titletext9", 
 	"!titletext", "!titletext0", "!titletext1", "!titletext2", "!titletext3", "!titletext4", "!titletext5", "!titletext6",

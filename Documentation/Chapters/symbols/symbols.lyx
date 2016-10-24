@@ -5855,20 +5855,10 @@ myturnbits
 \begin_inset Text
 
 \begin_layout Plain Layout
-a bit-vector that tells you what buttons are visible
-\end_layout
-
-\begin_layout Plain Layout
-bits 43210 correspond to buttons KARCF (check alli rais call fold).
- Bit 4 (check) was added in OpenHoldem 2.0, that's why it is 
-\begin_inset Quotes eld
-\end_inset
-
-out of order
-\begin_inset Quotes erd
-\end_inset
-
-
+ bit-vector that tells you what buttons are visible.
+ The bits 43210 correspond to the buttons ARKCF (allin, raise, check, call
+ fold), the legendary FCKRA in revered order, allin has the highest value.
+ 
 \end_layout
 
 \end_inset
