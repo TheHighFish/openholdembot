@@ -217,7 +217,14 @@ void RemoveSpacesInsideNumbers(CString *s) {
 void ReplaceCommasInNumbersByDots(CString *s) {
   int length = s->GetLength();
   int last_index = length - 1;
-  for (int i = 0; i < last_index; ++i) {
+  if (length > 0) {
+    char first_char = s->GetAt(0);
+    if ((first_char == '.') || (first_char == ',')) {
+      s->SetAt(0, kCharToBeRemoved);
+      s->Remove(kCharToBeRemoved);
+    }
+  }
+  for (int i = 1; i < last_index; ++i) {
     if ((s->GetAt(i) == ',')
       && isdigit(s->GetAt(i - 1))
       && isdigit(s->GetAt(i + 1))) {
@@ -257,6 +264,7 @@ void RemoveSpacesInFrontOfCentMultipliers(CString *s) {
 void RemoveExtraDotsInNumbers(CString *s) {
   bool inside_number = false;
   bool dot_inside_number_seen = false;
+  int digits_seen = 0;
   int length = s->GetLength();
   int last_index = length - 1;
   // Searching backwards for dots in numbers
@@ -264,18 +272,24 @@ void RemoveExtraDotsInNumbers(CString *s) {
     char current_char = s->GetAt(i);
     if (isdigit(current_char)) {
       inside_number = true;
+      ++digits_seen;
       continue;
     }
     else if (current_char == '.') {
-      if (dot_inside_number_seen) {
+      // If we already saw a dot, e.g. 1.234.5
+      // or if we already saw more than 2 digits, e.g. 1.234 
+      // then we found an extra dot, separating 1000s or milions.
+      // It has to be removed.
+      if ((dot_inside_number_seen) 
+        || (digits_seen > 2)) {
         s->SetAt(i, kCharToBeRemoved);
       }
       dot_inside_number_seen = true;
       continue;
-    }
-    else {
+    } else {
       inside_number = false;
       dot_inside_number_seen = false;
+      digits_seen = 0;
     }
   }
   // Finally remove all superfluous characters
