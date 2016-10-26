@@ -279,7 +279,7 @@ void RemoveExtraDotsInNumbers(CString *s) {
       // If we already saw a dot, e.g. 1.234.5
       // or if we already saw more than 2 digits, e.g. 1.234 
       // then we found an extra dot, separating 1000s or milions.
-      // It has to be removed.
+      // This extra dot has to be removed.
       if ((dot_inside_number_seen) 
         || (digits_seen > 2)) {
         s->SetAt(i, kCharToBeRemoved);

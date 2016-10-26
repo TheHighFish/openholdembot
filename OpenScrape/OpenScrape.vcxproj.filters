@@ -277,6 +277,12 @@
     <None Include="..\OpenHoldem\WebSafeColours.h">
       <Filter>Header Files\CTransform</Filter>
     </None>
+    <None Include="..\StringFunctionsDLL\string_functions.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
+    </None>
+    <None Include="..\OpenHoldem\CTableTitle.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenScrape.rc">

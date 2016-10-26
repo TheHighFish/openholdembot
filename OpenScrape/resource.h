@@ -93,6 +93,7 @@
 #define IDC_NUDGE_BIGGER                1067
 #define IDC_NUDGE_SMALLER               1068
 #define IDC_TEST                        1069
+#define IDC_TITLETEXT_PREPROCESSED      1070
 #define IDC_TRACKER_FONT_SET            1077
 #define IDC_TRACKER_CARD_NUM            1078
 #define IDC_TRACKER_FONT_NUM            1079

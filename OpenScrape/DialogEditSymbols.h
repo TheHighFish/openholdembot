@@ -46,6 +46,7 @@ protected:
 
 	CComboBox m_Name, m_Value;
 	CEdit m_Titletext;
+  CEdit m_Titletext_preprocessed;
 	CEdit m_ParseResults;
 	CButton m_ParseButton;
 };

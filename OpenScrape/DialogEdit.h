@@ -29,8 +29,9 @@ public:
 
 	enum { IDD = IDD_EDITDLG };
 	CString		m_titletext;
+  CString   m_titletext_preprocessed;
 	CString		m_result;
-	CEdit		m_EditEntry;
+	CEdit		  m_EditEntry;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

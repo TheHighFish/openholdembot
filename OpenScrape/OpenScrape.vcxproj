@@ -203,7 +203,9 @@
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\OpenHoldem\CTableTitle.cpp" />
     <None Include="..\OpenHoldem\WebSafeColours.h" />
+    <None Include="..\StringFunctionsDLL\string_functions.cpp" />
     <None Include="res\cursor1.cur" />
     <None Include="res\drawrect.bmp" />
     <None Include="res\drawrect.cur" />

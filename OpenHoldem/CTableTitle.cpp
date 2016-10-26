@@ -14,7 +14,9 @@
 #include "stdafx.h"
 #include "CTableTitle.h"
 
+#ifdef OPENHOLDEM_PROGRAM
 #include "CAutoconnector.h"
+#endif
 #include "..\StringFunctionsDLL\string_functions.h"
 
 CTableTitle *p_table_title = NULL;
@@ -30,9 +32,11 @@ CTableTitle::~CTableTitle() {
 }
 
 void CTableTitle::UpdateTitle() {
+#ifdef OPENHOLDEM_PROGRAM
 	char title[MAX_WINDOW_TITLE];
 	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE-1);
   SetTitle(title);
+#endif 
 }
 
 void CTableTitle::Clear() {

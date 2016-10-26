@@ -20,6 +20,10 @@
 #include "OpenScrapeDoc.h"
 #include "..\OpenHoldem\CTableTitle.h"
 
+// !!!!! ugly temp solution as DLL does not yet work
+#include "..\StringFunctionsDLL\string_functions.cpp"
+#include "..\OpenHoldem\CTableTitle.cpp"
+
 // CDlgEditSymbols dialog
 
 IMPLEMENT_DYNAMIC(CDlgEditSymbols, CDialog)
@@ -39,6 +43,7 @@ void CDlgEditSymbols::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_NAME, m_Name);
 	DDX_Control(pDX, IDC_VALUE, m_Value);
 	DDX_Control(pDX, IDC_TITLETEXT, m_Titletext);
+  DDX_Control(pDX, IDC_TITLETEXT_PREPROCESSED, m_Titletext_preprocessed);
 	DDX_Control(pDX, IDC_PARSERESULTS, m_ParseResults);
 	DDX_Control(pDX, IDC_PARSEBUTTON, m_ParseButton);
 }
@@ -64,6 +69,8 @@ BOOL CDlgEditSymbols::OnInitDialog()
 
 	SetWindowText(titletext.GetString());
 	m_Titletext.SetWindowText(titlebartext.GetString());
+  CTableTitle tabletitle;
+  m_Titletext_preprocessed.SetWindowText(tabletitle.PreprocessTitle(titlebartext));
 
 	// Set drop down choices for "Record name" field and select current
 	for (int i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i]);
