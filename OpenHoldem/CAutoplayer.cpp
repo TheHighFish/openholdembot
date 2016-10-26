@@ -62,7 +62,8 @@ CAutoplayer::~CAutoplayer(void) {
 }
 
 void CAutoplayer::EngageAutoPlayerUponConnectionIfNeeded() {
-	if (p_autoconnector->IsConnected() && preferences.engage_autoplayer()) {
+  write_log(preferences.debug_alltherest(), "[CAutoplayer] location Johnny_5\n");
+  if (p_autoconnector->IsConnected() && preferences.engage_autoplayer()) {
 		EngageAutoplayer(true);
 	}
 }

@@ -170,6 +170,7 @@ void COpenHoldemView::OnInitialUpdate() {
 // COpenHoldemView drawing
 void COpenHoldemView::OnDraw(CDC* pDC) {
 	UpdateDisplay(true);
+  write_log(preferences.debug_alltherest(), "[GUI] location Johnny_1\n");
 }
 
 void COpenHoldemView::OnTimer(UINT_PTR nIDEvent) {
@@ -179,6 +180,7 @@ void COpenHoldemView::OnTimer(UINT_PTR nIDEvent) {
 		if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
 		{
 			UpdateDisplay(false);
+      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_2\n");
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 		}
 	}

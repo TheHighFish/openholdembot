@@ -103,6 +103,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     assert(p_tablemap_loader != NULL);
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
     assert(p_autoconnector != NULL);
+    write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_B\n");
     if (!p_autoconnector->IsConnected()) {
       // Not connected
       AutoConnect();
@@ -110,6 +111,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     // No "else" here
     // We want one fast scrape immediately after connection
     // without any heartbeat-sleeping.
+    write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_C\n");
 		if (p_autoconnector->IsConnected()) {
       if (!IsWindow(p_autoconnector->attached_hwnd())) {
         // Table disappeared
@@ -172,6 +174,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 }
 
 void CHeartbeatThread::AutoConnect() {
+  write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_D\n");
 	assert(!p_autoconnector->IsConnected());
 	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) {
 		if (p_autoconnector->TimeSincelast_failed_attempt_to_connect() > 1 /* seconds */) {

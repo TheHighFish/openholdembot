@@ -79,6 +79,7 @@ void CTablePositioner::PositionMyWindow() {
 
 void CTablePositioner::PositionMyWindow(HWND *list_of_tables) {
 	assert(p_autoconnector != NULL);
+  write_log(preferences.debug_alltherest(), "[CTablePositioner] location Johnny_3\n");
 	if (!p_autoconnector->IsConnected()) 	{
 		// This should not happen, as this function gets only called after connection
 		// But it does not hurt to avoid trouble with p_autoconnector->attached_hwnd()

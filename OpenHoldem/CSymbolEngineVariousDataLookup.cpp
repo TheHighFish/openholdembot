@@ -102,6 +102,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode
+    write_log(preferences.debug_alltherest(), "[CSymbolEngineVariousDataLookup] location Johnny_8\n");
     if (p_formula_parser->IsParsing()
         || !p_autoconnector->IsConnected()
 	      || !p_symbol_engine_userchair->userchair_confirmed()) {

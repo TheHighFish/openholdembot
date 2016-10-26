@@ -463,6 +463,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
+    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_E\n");
 		if (p_symbol_engine_userchair != NULL
 			  && p_autoconnector->IsConnected()) 	{
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);

@@ -644,6 +644,7 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		
 	if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 	{
+    write_log(preferences.debug_alltherest(), "[CPokerTrackerThread] location Johnny_7\n");
 		if (p_autoconnector->IsConnected())
 		{
 			for (int i=0; i<PT_DLL_GetNumberOfStats(); i++)

@@ -51,6 +51,7 @@ CString COpenHoldemTitle::FullTitle() {
 	assert(p_function_collection != NULL);
 	assert(p_tablemap != NULL);
   CString full_title;
+  write_log(preferences.debug_alltherest(), "[COpenHoldemTitle] location Johnny_6\n");
 	if (p_autoconnector->IsConnected())	{
 		full_title.Format("%s - %s (%s)", p_function_collection->Title(), 
 			p_tablemap->sitename(), p_table_title->Title());
