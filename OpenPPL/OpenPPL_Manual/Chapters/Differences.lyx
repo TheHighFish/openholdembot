@@ -425,7 +425,7 @@ Cases Matter (Partially)
 \end_layout
 
 \begin_layout Standard
-OpenHoldem is case-sensitive - contrary to standard PPL.
+OpenHoldem is case-sensitive -- contrary to standard PPL.
  Therefore the case used (upper and/or lower) matters.
  The rules for your OpenPPL code are more user-friendly and less rigid.
  Three areas where case matters:
@@ -1003,7 +1003,7 @@ However we don't like undefined behaviour and we don't want to keep multiple
  Therefore we introduced 2 new commands: RaiseTo and RaiseBy.
  This way you can clearly specify what behaviour you want.
  You only have to specify the correct betsizeinterpretationmethod in your
- tablemap to telll OpenHoldem how your casino behaves and OpenHoldem will
+ tablemap to tell OpenHoldem how your casino behaves and OpenHoldem will
  care about all the rest.automatically.
 \end_layout
 
