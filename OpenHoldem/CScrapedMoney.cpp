@@ -8,7 +8,12 @@
 //******************************************************************************
 //
 // Purpose: class for bets, balances and pots,
-//  which also handles proprocessing of special num,ber formats, ...
+//  which also handles proprocessing of special number formats, ...
+//    http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20164
+//    http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19216
+//    http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19658
+//    http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20096
+//    http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20085
 //
 //******************************************************************************
 
