@@ -66,13 +66,11 @@ BOOL CDlgEditSymbols::OnInitDialog()
 	CDialog::OnInitDialog();
 
   SetWindowText(titletext);
-  /*
   CTableTitle tabletitle;
-  tabletitle.SetTitle(titletext);
-	SetWindowText(tabletitle.Title());
-	m_Titletext.SetWindowText(tabletitle.Title());
-  m_Titletext_preprocessed.SetWindowText(tabletitle.PreprocessedTitle());*/
-
+  tabletitle.SetTitle(titlebartext);
+  SetWindowText(tabletitle.Title());
+  m_Titletext.SetWindowText(tabletitle.Title());
+  m_Titletext_preprocessed.SetWindowText(tabletitle.PreprocessedTitle());
 	// Set drop down choices for "Record name" field and select current
 	for (int i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i]);
 	m_Name.SelectString(-1, name);
@@ -91,7 +89,6 @@ void CDlgEditSymbols::OnBnClickedOk()
 {
 	m_Name.GetWindowText(name);
 	m_Value.GetWindowText(value);
-
 	OnOK();
 }
 
@@ -109,6 +106,7 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
   CTableTitle tabletitle;
   tabletitle.SetTitle(text);
   CString preprocessed_title = tabletitle.PreprocessedTitle();
+  m_Titletext_preprocessed.SetWindowText(preprocessed_title);
   trans.ParseStringBSL(preprocessed_title, format, &results);
 	m_ParseResults.SetWindowText(results.GetString());
 }
