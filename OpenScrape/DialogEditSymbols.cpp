@@ -62,15 +62,14 @@ END_MESSAGE_MAP()
 BOOL CDlgEditSymbols::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-
-	CString		text;
-
+ 	CString		text;
 	CDialog::OnInitDialog();
 
-	SetWindowText(titletext.GetString());
-	m_Titletext.SetWindowText(titlebartext.GetString());
   CTableTitle tabletitle;
-  m_Titletext_preprocessed.SetWindowText(tabletitle.PreprocessTitle(titlebartext));
+  tabletitle.SetTitle(titletext);
+	SetWindowText(tabletitle.Title());
+	m_Titletext.SetWindowText(tabletitle.Title());
+  m_Titletext_preprocessed.SetWindowText(tabletitle.PreprocessedTitle());
 
 	// Set drop down choices for "Record name" field and select current
 	for (int i=0; i<strings.GetSize(); i++)  m_Name.AddString(strings[i]);

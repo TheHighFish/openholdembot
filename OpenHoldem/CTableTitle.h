@@ -15,6 +15,7 @@
 #define INC_CTABLETITLE_H
 
 class CTableTitle {
+  friend class CDlgEditSymbols;
  public:
   CTableTitle();
   ~CTableTitle();
@@ -29,9 +30,11 @@ class CTableTitle {
  public:
   // Public static for preprocessing of scraped ttlimitsX by CScraper.cpp
   static CString PreprocessTitle(CString title);
+ protected:
+  // Accessible by OpenScrape (CDlgEditSymbols)
+  void SetTitle(CString new_title);
  private:
   void SelfTest();
-  void SetTitle(CString new_title);
  private:
   CString _title;
   CString _preprocessed_title;
