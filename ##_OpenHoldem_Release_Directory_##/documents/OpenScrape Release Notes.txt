@@ -1,4 +1,19 @@
-v9.2.1 2016-xx-xx
+v9.3.0 2016-10-29
+==================
+NEW STUFF:
+- Improved preprocessing of tiles, bets, balances and pots 
+  to handle non-standard number formats (extra dots, spaces in numbers, ...)
+  Some ttlimits might needs small changes, please revisit your tablemaps.
+  For details please see http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20164
+  [THF]
+MAINTENANCE:
+- The introduction of advanced preprocessing for titles, bets and balances
+  made the tablemap-options "balancenumbersonly" and "scraperpreprocessordll" superfluous.
+  Therefore they got removed.
+  [THF]
+  
+
+v9.2.1 2016-07-21
 ==================
 NEW stuff:
 - Support for betpot-buttons and hotkeys.

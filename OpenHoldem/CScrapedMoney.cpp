@@ -21,6 +21,7 @@
 #include "CScrapedMoney.h"
 
 #include "..\StringFunctionsDLL\string_functions.h"
+#include "..\CTransform\CTransform.h" // !!! R
 
 CScrapedMoney::CScrapedMoney() {
   Reset();
@@ -38,8 +39,9 @@ bool CScrapedMoney::SetValue(CString scraped_value) {
   RemoveSpacesInFrontOfCentMultipliers(&scraped_value);
   ReplaceCommasInNumbersByDots(&scraped_value);
   RemoveExtraDotsInNumbers(&scraped_value);
-  KeepBalanceNumbersOnly(&scraped_value);
-  double result = atof(scraped_value); //!!!!!
+  //KeepBalanceNumbersOnly(&scraped_value);
+  CTransform c;
+  double result = c.StringToMoney(scraped_value);
   if (result >= 0.0) {
     _value = result;
     return true;

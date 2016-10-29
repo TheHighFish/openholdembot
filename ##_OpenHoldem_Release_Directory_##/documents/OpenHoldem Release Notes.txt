@@ -1,7 +1,11 @@
-v9.3.0 2016-10-xx
+v9.3.0 2016-10-29
 ==================
 NEW STUFF:
-- preprocessing
+- Improved preprocessing of tiles, bets, balances and pots 
+  to handle non-standard number formats (extra dots, spaces in numbers, ...)
+  Some ttlimits might needs small changes, please revisit your tablemaps.
+  For details please see http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20164
+  [THF]
 
 BUG FIXES:
 - The modular OpenPPl-library of the redacted version 9.2.80%
