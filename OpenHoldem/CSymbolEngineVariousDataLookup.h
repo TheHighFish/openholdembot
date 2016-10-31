@@ -26,11 +26,11 @@ public:
 public:
 	// Mandatory reset-functions
 	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
+	void UpdateOnConnection();
+	void UpdateOnHandreset();
+	void UpdateOnNewRound();
+	void UpdateOnMyTurn();
+	void UpdateOnHeartbeat();
 public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();

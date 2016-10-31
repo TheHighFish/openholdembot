@@ -24,11 +24,11 @@ class CSymbolEngineGameType: public CVirtualSymbolEngine {
 	// public mutators
  public:
 	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
+	void UpdateOnConnection();
+	void UpdateOnHandreset();
+	void UpdateOnNewRound();
+	void UpdateOnMyTurn();
+	void UpdateOnHeartbeat();
 	void CalcTableLimits();
  public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);

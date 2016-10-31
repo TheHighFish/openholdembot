@@ -70,8 +70,8 @@ bool CAllinSlider::SlideAllin() {
   // Click confirmation button 
   p_casino_interface->_betsize_input_box.Confirm();
   p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), kAlwaysLogAutoplayerFunctions);
- write_log(preferences.debug_autoplayer(), "[AllinSlider] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
- write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider.\n");
+  write_log(preferences.debug_autoplayer(), "[AllinSlider] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
+  write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider.\n");
   return true;
 }
 

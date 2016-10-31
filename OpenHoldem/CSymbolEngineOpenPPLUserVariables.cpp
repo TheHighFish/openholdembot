@@ -29,10 +29,10 @@ CSymbolEngineOpenPPLUserVariables::~CSymbolEngineOpenPPLUserVariables() {
 void CSymbolEngineOpenPPLUserVariables::InitOnStartup() {
 }
 
-void CSymbolEngineOpenPPLUserVariables::ResetOnConnection() {
+void CSymbolEngineOpenPPLUserVariables::UpdateOnConnection() {
 }
 
-void CSymbolEngineOpenPPLUserVariables::ResetOnHandreset() {
+void CSymbolEngineOpenPPLUserVariables::UpdateOnHandreset() {
   // All user-variables are for the current hand only 
   // and get deleted on hand-reset.
   write_log(preferences.debug_symbolengine_open_ppl(),
@@ -40,13 +40,13 @@ void CSymbolEngineOpenPPLUserVariables::ResetOnHandreset() {
   _user_variables.clear();
 }
 
-void CSymbolEngineOpenPPLUserVariables::ResetOnNewRound() {
+void CSymbolEngineOpenPPLUserVariables::UpdateOnNewRound() {
 }
 
-void CSymbolEngineOpenPPLUserVariables::ResetOnMyTurn() {
+void CSymbolEngineOpenPPLUserVariables::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineOpenPPLUserVariables::ResetOnHeartbeat() {
+void CSymbolEngineOpenPPLUserVariables::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineOpenPPLUserVariables::Set(CString symbol) {

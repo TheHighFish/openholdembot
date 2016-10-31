@@ -632,20 +632,20 @@ bool CFunctionCollection::IsOpenPPLProfile() {
 void CFunctionCollection::InitOnStartup() {
 }
 
-void CFunctionCollection::ResetOnConnection() {
+void CFunctionCollection::UpdateOnConnection() {
   ClearCache();
 }
 
-void CFunctionCollection::ResetOnHandreset() {
+void CFunctionCollection::UpdateOnHandreset() {
 }
 
-void CFunctionCollection::ResetOnNewRound() {
+void CFunctionCollection::UpdateOnNewRound() {
 }
 
-void CFunctionCollection::ResetOnMyTurn() {
+void CFunctionCollection::UpdateOnMyTurn() {
 }
 
-void CFunctionCollection::ResetOnHeartbeat() {
+void CFunctionCollection::UpdateOnHeartbeat() {
   ClearCache();
 }
 

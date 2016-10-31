@@ -56,11 +56,11 @@ CSymbolEngineRaisers::~CSymbolEngineRaisers() {
 void CSymbolEngineRaisers::InitOnStartup() {
 }
 
-void CSymbolEngineRaisers::ResetOnConnection() {
-	ResetOnHandreset();
+void CSymbolEngineRaisers::UpdateOnConnection() {
+	UpdateOnHandreset();
 }
 
-void CSymbolEngineRaisers::ResetOnHandreset() {
+void CSymbolEngineRaisers::UpdateOnHandreset() {
 	// callbits, raisbits, etc.
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_callbits[i] = 0;
@@ -77,15 +77,15 @@ void CSymbolEngineRaisers::ResetOnHandreset() {
 	_nopponentschecking = 0;
 }
 
-void CSymbolEngineRaisers::ResetOnNewRound() {
+void CSymbolEngineRaisers::UpdateOnNewRound() {
 	_firstraiser_chair = kUndefined;
 }
 
-void CSymbolEngineRaisers::ResetOnMyTurn() {
+void CSymbolEngineRaisers::UpdateOnMyTurn() {
 	CalculateRaisers();
 }
 
-void CSymbolEngineRaisers::ResetOnHeartbeat() {
+void CSymbolEngineRaisers::UpdateOnHeartbeat() {
 	CalculateNOpponentsCheckingBettingFolded();
 	CalculateFoldBits();
 }

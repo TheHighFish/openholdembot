@@ -24,19 +24,22 @@ CVirtualSymbolEngine::CVirtualSymbolEngine()
 CVirtualSymbolEngine::~CVirtualSymbolEngine()
 {}
 
-void CVirtualSymbolEngine::ResetOnConnection()
+void CVirtualSymbolEngine::UpdateOnConnection()
 {}
 
-void CVirtualSymbolEngine::ResetOnHandreset()
+void CVirtualSymbolEngine::UpdateOnHandreset()
 {}
 
-void CVirtualSymbolEngine::ResetOnNewRound()
+void CVirtualSymbolEngine::UpdateOnNewRound()
 {}
 
-void CVirtualSymbolEngine::ResetOnMyTurn()
+void CVirtualSymbolEngine::UpdateOnMyTurn()
 {}
 
-void CVirtualSymbolEngine::ResetOnHeartbeat()
+void CVirtualSymbolEngine::UpdateOnHeartbeat()
+{}
+
+void CVirtualSymbolEngine::UpdateAfterAutoplayerAction(int autoplayer_action_code)
 {}
 
 bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result, bool log /* = false */)

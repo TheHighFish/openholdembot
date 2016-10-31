@@ -41,23 +41,23 @@ void CSymbolEngineTime::InitOnStartup() {
   time(&_elapsedautohold);
 }
 
-void CSymbolEngineTime::ResetOnConnection() {
+void CSymbolEngineTime::UpdateOnConnection() {
   time(&_elapsedhold);
   time(&_elapsedhandhold);
   time(&_elapsedautohold);
 }
 
-void CSymbolEngineTime::ResetOnHandreset() {
+void CSymbolEngineTime::UpdateOnHandreset() {
   time(&_elapsedhandhold);
 }
 
-void CSymbolEngineTime::ResetOnNewRound() {
+void CSymbolEngineTime::UpdateOnNewRound() {
 }
 
-void CSymbolEngineTime::ResetOnMyTurn() {
+void CSymbolEngineTime::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineTime::ResetOnHeartbeat() {
+void CSymbolEngineTime::UpdateOnHeartbeat() {
   // current time
   time_t t_now_time;
   time(&t_now_time);										
@@ -82,7 +82,7 @@ void CSymbolEngineTime::ResetOnHeartbeat() {
   AssertRange(_elapsedtoday, 0, (24 * 3600));
 }	
 
-void CSymbolEngineTime::ResetOnAutoPlayerAction() {
+void CSymbolEngineTime::UpdateOnAutoPlayerAction() {
   time(&_elapsedautohold);
 }
 

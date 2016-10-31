@@ -45,7 +45,7 @@ void CStableFramesCounter::Reset() {
 	_isReset = true;
 }
 
-void CStableFramesCounter::ResetOnAutoplayerAction() {
+void CStableFramesCounter::UpdateOnAutoplayerAction() {
   Reset();
 }
 

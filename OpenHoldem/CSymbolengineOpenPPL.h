@@ -26,17 +26,20 @@ class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
  public:
 	// Mandatory reset-functions
 	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
+	void UpdateOnConnection();
+	void UpdateOnHandreset();
+	void UpdateOnNewRound();
+	void UpdateOnMyTurn();
+	void UpdateOnHeartbeat();
+  void UpdateAfterAutoplayerAction(int autoplayer_action_code);
  public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString IdentifiersProvided();;
  public:
   void InitMemorySymbols();
+ private:
+  void CheckExistenceOfOpenPPLFunction(CString function);
 };
 
 extern CSymbolEngineOpenPPL *p_symbol_engine_open_ppl;

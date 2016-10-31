@@ -41,14 +41,14 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   // Mandatory reset-functions
   void InitOnStartup();
-  void ResetOnConnection();
-  void ResetOnHandreset();
-  void ResetOnNewRound();
-  void ResetOnMyTurn();
-  void ResetOnHeartbeat();
+  void UpdateOnConnection();
+  void UpdateOnHandreset();
+  void UpdateOnNewRound();
+  void UpdateOnMyTurn();
+  void UpdateOnHeartbeat();
  public:
   // To be called by
-  //   * ResetOnHeartbeat() 
+  //   * UpdateOnHeartbeat() 
   //   * the formula editor for the working copy (f$debug and f$test)
   void ClearCache();
  public:

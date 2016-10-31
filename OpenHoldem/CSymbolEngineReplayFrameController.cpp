@@ -40,20 +40,20 @@ CSymbolEngineReplayFrameController::~CSymbolEngineReplayFrameController() {
 }
 
 void CSymbolEngineReplayFrameController::InitOnStartup() {
-	ResetOnConnection();
+	UpdateOnConnection();
 }
 
-void CSymbolEngineReplayFrameController::ResetOnConnection() {
+void CSymbolEngineReplayFrameController::UpdateOnConnection() {
 	set_replay_recored_this_turn(false);
 }
 
-void CSymbolEngineReplayFrameController::ResetOnHandreset() {
+void CSymbolEngineReplayFrameController::UpdateOnHandreset() {
 }
 
-void CSymbolEngineReplayFrameController::ResetOnNewRound() {
+void CSymbolEngineReplayFrameController::UpdateOnNewRound() {
 }
 
-void CSymbolEngineReplayFrameController::ResetOnMyTurn() {
+void CSymbolEngineReplayFrameController::UpdateOnMyTurn() {
 }
 
 void CSymbolEngineReplayFrameController::set_replay_recored_this_turn(bool p_b) {
@@ -64,7 +64,7 @@ bool CSymbolEngineReplayFrameController::is_replay_recored_this_turn() const {
 	return __replay_recored_this_turn;
 } 
 
-void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
+void CSymbolEngineReplayFrameController::UpdateOnHeartbeat() {
 	if(p_symbol_engine_casino->ConnectedToOHReplay()){
     // No point in shooting frames when connected to OHReplay
     write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as connected to OHReplay\n");
@@ -105,7 +105,7 @@ void CSymbolEngineReplayFrameController::ResetOnHeartbeat() {
 		ShootReplayFrameIfNotYetDone();
     return;
 	}
-  // ResetOnHeartbeat() is the last function to be called,
+  // UpdateOnHeartbeat() is the last function to be called,
   // whereas the first one depends on circumstances.
   // therefore we reset _replay_recored_this_turn here at the very end. 
 	set_replay_recored_this_turn(false);

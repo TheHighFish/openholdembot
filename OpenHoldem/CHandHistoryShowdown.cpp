@@ -29,7 +29,7 @@ CHandHistoryShowdown::CHandHistoryShowdown() {
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_userchair != NULL);
-  ResetOnHandreset();
+  UpdateOnHandreset();
 }
 
 CHandHistoryShowdown::~CHandHistoryShowdown() {
@@ -38,18 +38,18 @@ CHandHistoryShowdown::~CHandHistoryShowdown() {
 void CHandHistoryShowdown::InitOnStartup() {
 }
 
-void CHandHistoryShowdown::ResetOnConnection() {
+void CHandHistoryShowdown::UpdateOnConnection() {
 }
 
-void CHandHistoryShowdown::ResetOnHandreset() {
+void CHandHistoryShowdown::UpdateOnHandreset() {
   _job_done = false;
   _river_seen = false;
 }
 
-void CHandHistoryShowdown::ResetOnNewRound() {
+void CHandHistoryShowdown::UpdateOnNewRound() {
 }
 
-void CHandHistoryShowdown::ResetOnMyTurn() {
+void CHandHistoryShowdown::UpdateOnMyTurn() {
 }
 
 bool AnyOpponentsCardsVisible() {
@@ -72,7 +72,7 @@ bool AllPlayersActed() {
   return false;
 }
 
-void CHandHistoryShowdown::ResetOnHeartbeat() {
+void CHandHistoryShowdown::UpdateOnHeartbeat() {
   if (p_betround_calculator->betround() == kBetroundRiver) {
     _river_seen = true;
   }

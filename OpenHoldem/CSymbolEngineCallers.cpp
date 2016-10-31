@@ -58,12 +58,12 @@ CSymbolEngineCallers::~CSymbolEngineCallers() {
 void CSymbolEngineCallers::InitOnStartup() {
 }
 
-void CSymbolEngineCallers::ResetOnConnection() {
+void CSymbolEngineCallers::UpdateOnConnection() {
   _nchairs = p_tablemap->nchairs();
-	ResetOnHandreset();
+	UpdateOnHandreset();
 }
 
-void CSymbolEngineCallers::ResetOnHandreset() {
+void CSymbolEngineCallers::UpdateOnHandreset() {
 	// callbits, raisbits, etc.
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_callbits[i] = 0;
@@ -71,16 +71,16 @@ void CSymbolEngineCallers::ResetOnHandreset() {
 	_nopponentscalling  = 0;
 }
 
-void CSymbolEngineCallers::ResetOnNewRound() {
+void CSymbolEngineCallers::UpdateOnNewRound() {
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
 }
 
-void CSymbolEngineCallers::ResetOnMyTurn() {
+void CSymbolEngineCallers::UpdateOnMyTurn() {
 	CalculateCallers();
 }
 
-void CSymbolEngineCallers::ResetOnHeartbeat() {
+void CSymbolEngineCallers::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineCallers::CalculateCallers() {

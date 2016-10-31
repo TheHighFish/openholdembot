@@ -170,25 +170,25 @@ CSymbolEngineIsTournament::~CSymbolEngineIsTournament() {
 }
 
 void CSymbolEngineIsTournament::InitOnStartup() {
-	ResetOnConnection();
+	UpdateOnConnection();
 }
 
-void CSymbolEngineIsTournament::ResetOnConnection() {
+void CSymbolEngineIsTournament::UpdateOnConnection() {
 	_istournament    = kUndefined;
 	_decision_locked = false;
 }
 
-void CSymbolEngineIsTournament::ResetOnHandreset() {
+void CSymbolEngineIsTournament::UpdateOnHandreset() {
 }
 
-void CSymbolEngineIsTournament::ResetOnNewRound() {
+void CSymbolEngineIsTournament::UpdateOnNewRound() {
 }
 
-void CSymbolEngineIsTournament::ResetOnMyTurn() {
+void CSymbolEngineIsTournament::UpdateOnMyTurn() {
 	TryToDetectTournament();
 }
 
-void CSymbolEngineIsTournament::ResetOnHeartbeat() {
+void CSymbolEngineIsTournament::UpdateOnHeartbeat() {
   if (_istournament == kUndefined) {
     // Beginning pf session and not yet sure.
     // Temporary maximum effort on every heartbeat

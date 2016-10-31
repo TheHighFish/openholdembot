@@ -42,19 +42,19 @@ CSymbolEnginePokerAction::~CSymbolEnginePokerAction() {
 void CSymbolEnginePokerAction::InitOnStartup() {
 }
 
-void CSymbolEnginePokerAction::ResetOnConnection() {
+void CSymbolEnginePokerAction::UpdateOnConnection() {
 }
 
-void CSymbolEnginePokerAction::ResetOnHandreset() {
+void CSymbolEnginePokerAction::UpdateOnHandreset() {
 }
 
-void CSymbolEnginePokerAction::ResetOnNewRound() {
+void CSymbolEnginePokerAction::UpdateOnNewRound() {
 }
 
-void CSymbolEnginePokerAction::ResetOnMyTurn() {
+void CSymbolEnginePokerAction::UpdateOnMyTurn() {
 }
 
-void CSymbolEnginePokerAction::ResetOnHeartbeat() {
+void CSymbolEnginePokerAction::UpdateOnHeartbeat() {
 }
 
 const int CSymbolEnginePokerAction::PreflopPos() {

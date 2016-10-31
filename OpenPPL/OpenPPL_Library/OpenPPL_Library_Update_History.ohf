@@ -165,16 +165,6 @@ me_st_MemRaises_Calculate_Raises
 ((handsplayed == 0 OR StartingStackSize == 0) AND (betround == ConstBetRoundPreflop)) ?
   me_st_MemStartingStackSize_CalculateStartingStackSize : HINT_Nothing_To_Do_But_All_OK
   
-##TimeToInitMemorySymbols##
-// Some advanced symbols depend on memory symbols.
-// They are designed to update once per orbit on our turn.
-// However: depending on user-settings OpenHoldem might evaluate
-// the necessary function even when it is not our turn.
-// And incorrect delay-settings might also lead to multiple actions
-// on identical frames (OH acts faster as casino/bring can update)
-// So we check for isfinalanswer and a changed gamestate.
-[isfinalanswer AND GameStateChanged]
-
 ##GameStateChanged##
 // Change in dealerchair => new hand
    (dealerchair != me_re_MemOldGameStateDealerChair)
@@ -196,6 +186,65 @@ OR (betround    != me_re_MemOldGameStateBetround)
 XOR me_st_MemOldGameStateCurrentBet_currentbet
 XOR me_st_MemOldGameStatePotSize_pot
 XOR me_st_MemOldGameStateBetround_betround
+
+##RememberRaiseCountersForSpecificBettingRounds##
+WHEN (betround == ConstBetRoundPreflop) Set me_st_MemRaisesBeforeFlop_Raises
+WHEN (betround == ConstBetRoundFlop)    Set me_st_MemRaisesOnFlop_Raises
+WHEN (betround == ConstBetRoundTurn)    Set me_st_MemRaisesOnTurn_Raises
+
+##RememberMemorySymbolsAtFirstAction##
+// We call this function after the first action
+// and not at handreset, as not all information 
+// is guaranteed to be available at handreset (positions e.g.)
+WHEN (betround != ConstBetRoundPreflop) RETURN 0 FALSE
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FALSE
+    me_st_MemStartingChips_StartingChips
+XOR me_st_MemMissingSmallBlind_MissingSmallblind // avoid recursion!!!!!
+XOR me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
+XOR me_st_MemBotsLastPreflopAction_None
+
+##UpdateMemorySymbolseOnHandReset##
+// Reset everything to zero
+    me_st_MemRaises_0
+XOR me_st_MemBets_0
+XOR me_st_MemBotsLastPreflopAction_None
+XOR me_st_MemCalls_0
+XOR me_st_MemChecks_0
+XOR me_st_MemMissingSmallBlind_0
+XOR me_st_MaxOpponentStackSize_0
+XOR me_st_MemRaisesBeforeFlop_0
+XOR me_st_MemRaisesOnFlop_0
+XOR me_st_MemRaisesOnTurn_0
+XOR me_st_MemStartingChips_0
+XOR RememberCurrentGameState
+
+##UpdateMemorySymbolseOnNewRound##
+// Reset history symbols for this round to zero
+    me_st_MemRaises_0
+XOR me_st_MemBets_0
+XOR me_st_MemCalls_0
+XOR me_st_MemChecks_0
+XOR me_st_MemStartingChips_0
+XOR RememberCurrentGameState
+
+##UpdateMemorySymbolsAfterAutoplayerAction##
+// Remember current value of action counters
+WHEN NOT GameStateChanged RE$TURN HINT_NothingToDoButallOK FORCE
+WHEN Others RETURN
+    me_st_MemRaises_Raises
+XOR me_st_MemBets_Bets
+XOR me_st_MemCalls_Calls
+XOR me_st_MemChecks_Checks
+XOR RememberRaiseCountersForSpecificBettingRounds
+XOR RememberMemorySymbolsAtFirstAction
+XOR RememberCurrentGameState
+FORCE
+
+
+
+
+
+
 
 ##InitMemorySymbols##
 // In rare cases (or at OH-replay) it might happen,
@@ -231,32 +280,4 @@ WHEN Others RETURN (RememberHeartbeatID
   XOR InitStartingChips
   XOR RememberCurrentGameState)
 FORCE  
-
-//*****************************************************************************
-//
-// Sanity-checks for correct usage of symbols like Raises, Calls, etc.
-// These symbols
-//   * need game history
-//   * need to be updated exactly once per orbit,
-//     when it is our turn and we have isfinalanswer = true
-//   * become stale immediately thereafter
-//   * therefore are well-defined only at our turn,
-//     and even then only in the main OPPL-functions    
-//   * get misused a lot
-//
-// Therefore we keep a heartbeat-ID that updates together with these symbols
-// and then we call VerifyHeartbeatID for each critical symbol
-// and throw an error-message in case it gets used at inappropriate times.
-//
-// !!! Maybe to be removed in the future, if history symbols work "all the time"
-//
-//*****************************************************************************
-
-##VerifyHeartbeatIDForBetsCallsChecksRaises##
-(me_re_heartbeatID != randomheartbeat) ? ErrorCriticalSymbolsUsedAtWrongTime : 0
-
-##ErrorCriticalSymbolsUsedAtWrongTime##
-msgbox$ERROR_N_NHistory_Bsymbols_Blike_BBets_C_BCalls_C_BChecks_C_BRaises_NBotsLastPreflopAction_C_BRaisesBeforeFlop_D_D_D_Nare_Bnot_Byet_Binitialized_Bat_Bthis_Bpoint_Bof_Btime_D_NThey_Bare_Bwelldefined_Bonly_Bin_Bthe_Bmain_Bautoplayer_Blogic_Nat_Byour_Bturn_D_N_NUse_Bthem_Bonly_Bin_N_B_B_B_B_Bf$alli_D_D_Df$fold_N_B_B_B_B_Bf$preflop_D_D_Df$river_N
-
-##RememberHeartbeatID##
-me_st_heartbeatID_randomheartbeat
+FORCE  

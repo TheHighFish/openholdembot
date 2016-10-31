@@ -31,20 +31,20 @@ CSymbolEngineMemorySymbols::~CSymbolEngineMemorySymbols() {
 void CSymbolEngineMemorySymbols::InitOnStartup() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnConnection() {
+void CSymbolEngineMemorySymbols::UpdateOnConnection() {
   _memory_symbols.clear();
 }
 
-void CSymbolEngineMemorySymbols::ResetOnHandreset() {
+void CSymbolEngineMemorySymbols::UpdateOnHandreset() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnNewRound() {
+void CSymbolEngineMemorySymbols::UpdateOnNewRound() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnMyTurn() {
+void CSymbolEngineMemorySymbols::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnHeartbeat() {
+void CSymbolEngineMemorySymbols::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineMemorySymbols::ErrorInvalidMemoryStoreCommand(CString command) {

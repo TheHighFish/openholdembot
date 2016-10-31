@@ -54,21 +54,21 @@ CSymbolEngineVariousDataLookup::~CSymbolEngineVariousDataLookup() {
 void CSymbolEngineVariousDataLookup::InitOnStartup() {
 }
 
-void CSymbolEngineVariousDataLookup::ResetOnConnection() {
+void CSymbolEngineVariousDataLookup::UpdateOnConnection() {
 }
 
-void CSymbolEngineVariousDataLookup::ResetOnHandreset() {
+void CSymbolEngineVariousDataLookup::UpdateOnHandreset() {
   // Reset display
   InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 }
 
-void CSymbolEngineVariousDataLookup::ResetOnNewRound() {
+void CSymbolEngineVariousDataLookup::UpdateOnNewRound() {
 }
 
-void CSymbolEngineVariousDataLookup::ResetOnMyTurn() {
+void CSymbolEngineVariousDataLookup::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineVariousDataLookup::ResetOnHeartbeat() {
+void CSymbolEngineVariousDataLookup::UpdateOnHeartbeat() {
 }
 
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
