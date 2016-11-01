@@ -129,8 +129,6 @@ bool CPokerTrackerThread::AllConnectionDataSpecified()
 		&& preferences.pt_user()    != ""
 		&& preferences.pt_pass()    != ""
 		&& preferences.pt_dbname()  != "");
-
-
 }
 
 void CPokerTrackerThread::Connect(void) {
@@ -158,21 +156,37 @@ void CPokerTrackerThread::Connect(void) {
 	}
 }
 
-void CPokerTrackerThread::Disconnect(void)
-{
-	if(_pgconn)
-    {
-      if (PQstatus(_pgconn) == CONNECTION_OK)
-        {
-          PQfinish(_pgconn);
-        }
+void CPokerTrackerThread::Reconnect(void) {
+  // Reconnecting after a lost network connection
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=214&t=19553
+  if (_pgconn) {
+    if (PQstatus(_pgconn) != CONNECTION_OK) {
+      PQreset(_pgconn);
+      if (PQstatus(_pgconn) == CONNECTION_OK) {
+        write_log(preferences.debug_pokertracker(), "[PokerTracker] PostgreSQL DB reconnected after bad connection\n");
+        _connected = true;
+      } else {
+        write_log(preferences.debug_pokertracker(), "[PokerTracker] ERROR reconnecting to PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
+        PQfinish(_pgconn);
+        _connected = false;
+        _pgconn = NULL;
+      }
     }
+  }
+}
+
+void CPokerTrackerThread::Disconnect(void) {
+	if (_pgconn) {
+    if (PQstatus(_pgconn) == CONNECTION_OK) {
+      PQfinish(_pgconn);
+      write_log(preferences.debug_pokertracker(), "[PokerTracker] Disconnected");
+    }
+  }
 	_pgconn = NULL;
 	_connected = false;
 }
 
-bool CPokerTrackerThread::IsConnected()
-{
+bool CPokerTrackerThread::IsConnected() {
   write_log(preferences.debug_pokertracker(), "[PokerTracker] connected: %s\n",
     Bool2CString(_connected));
   write_log(preferences.debug_pokertracker(), "[PokerTracker]PXStatus = %d (0 = CONNECTION_OK)\n",
@@ -709,61 +723,55 @@ void CPokerTrackerThread::ReportUpdateComplete(int updatedCount, int chair)
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_data[chair].scraped_name, updatedCount);
 }
 
-UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
-{
+UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam) {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	int				iteration = 0;
 	clock_t		iterStart, iterEnd;
 	int				iterDurationMS;
 
-	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
-	{
+	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0) {
 		iterStart = clock();
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had started\n", ++iteration);
-		if (!pParent->_connected)
-		{
+		if (!pParent->_connected)	{
 			pParent->Connect();
-		}
-	
+		} else if (PQstatus(pParent->_pgconn) != CONNECTION_OK) {
+      pParent->Reconnect();
+    }
 		double players = p_symbol_engine_active_dealt_playing->nopponentsseated() 
 			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0);
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", (int)players);
-				
-		if (players < 2)
-		{
+		if (players < 2) {
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Not enough players to justify iteration...\n");
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] For beginners: possible tablemap-problem?\n");
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Continuing anyway...\n");
 		}
-
 		// Avoiding division by zero and setting sleep time
 		AdaptValueToMinMaxRange(&players, 1, kMaxNumberOfPlayers);
 		int sleep_time;
 		if (p_symbol_engine_isrush->isrush()) {
-			sleep_time = (int) ((double)(5 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));}
-		else {
-			sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));}
+			sleep_time = (int) ((double)(5 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
+    }	else {
+			sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
+    }
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] sleepTime set to %d\n", sleep_time);
 		LightSleep(sleep_time, pParent);
-		
-		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
-		{
-			for (int chair = 0; chair < p_tablemap->nchairs(); ++chair)
-			{
+		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)	{
+			for (int chair = 0; chair < p_tablemap->nchairs(); ++chair)	{
 				GetStatsForChair(pParam, chair, sleep_time);
 				/* Verify therad_stop is false */ 
-				if (LightSleep(0, pParent)) 
-					break; 
+        if (LightSleep(0, pParent)) {
+          break;
+        }
 			}
 		}
 		iterEnd = clock();
 		iterDurationMS = (int) ((double)(iterEnd - iterStart));
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
-		if ( (iterDurationMS <= 10000) && (iterDurationMS > 0) )
-		{
+		if ( (iterDurationMS <= 10000) && (iterDurationMS > 0) ) {
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
-			if (LightSleep(10000 - iterDurationMS, pParent)) 
-				break; 
+      if (LightSleep(10000 - iterDurationMS, pParent)) {
+        break;
+      }
 		}
 	}
 	// Set event
