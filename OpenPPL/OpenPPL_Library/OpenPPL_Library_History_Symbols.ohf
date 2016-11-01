@@ -62,8 +62,7 @@
 //*****************************************************************************
 
 ##Bets##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ me_re_MemBets
+me_re_MemBets
 
 ##BotsLastAction##
 // Just to be extra safe...
@@ -105,18 +104,13 @@ sitename$openholdem ? (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Act
 ERROR_IncorrectBotsLastAction
 
 ##BotsLastPreflopAction##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ me_re_MemBotsLastPreflopAction
+me_re_MemBotsLastPreflopAction
 
 ##Calls##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ ismyturn ? me_re_MemCalls :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+me_re_MemCalls
 
 ##Checks##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ ismyturn ? me_re_MemChecks :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+me_re_MemChecks
 
 ##MaxOpponentStackSize##
 me_re_MaxOpponentStackSize
@@ -126,8 +120,7 @@ me_re_MinOpponentStackSize
 
 ##MissingSmallBlind##
 // !!! To be implemented in OH
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ me_re_MemMissingSmallBlind
+me_re_MemMissingSmallBlind
 
 ##NumberOfRaisesBeforeFlop##
 WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
@@ -162,16 +155,13 @@ VerifyHeartbeatIDForBetsCallsChecksRaises
 me_re_MemRaises
 
 ##RaisesBeforeFlop##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NumberOfRaisesBeforeFlop > 0)
+(NumberOfRaisesBeforeFlop > 0)
 
 ##RaisesOnFlop##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NumberOfRaisesOnFlop > 0)
+(NumberOfRaisesOnFlop > 0)
 
 ##RaisesOnTurn##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NumberOfRaisesOnTurn > 0)
+(NumberOfRaisesOnTurn > 0)
 
 ##StartingChips##
 me_re_MemStartingChips
