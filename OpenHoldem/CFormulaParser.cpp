@@ -252,14 +252,21 @@ bool CFormulaParser::ExpectConditionalThen() {
 	return true;
 }
 
-void CFormulaParser::CheckForExtraTokensAfterEndOfFunction(){
-	int token_ID = _tokenizer.GetToken();
-	if ((token_ID != kTokenEndOfFile)
-		  && (token_ID != kTokenEndOfFunction))	{
-		CParseErrors::Error("Unexpected token(s) after end of function.\n");
-	}
-	// Nothing more to do here, not even returning a result.
-	// We are finished and just warn about the extra input.
+void CFormulaParser::CheckForExtraTokensAfterEndOfFunction() {
+  int token_ID = _tokenizer.GetToken();
+  if (token_ID == kTokenOperatorConditionalWhen) {
+    // "Special" case: OpenPPL-code after OH-script expression.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20180
+    CParseErrors::Error("Unexpected token(s) after end of function.\n"
+      "This function is OH-script-style (i.e. a single mathematical expression),\n"
+      "but after the end of the expression starts an OpenPPL-style WHEN-condition.\n");
+  }
+  else if ((token_ID != kTokenEndOfFile)
+    && (token_ID != kTokenEndOfFunction)) {
+    CParseErrors::Error("Unexpected token(s) after end of function.\n");
+  }
+  // Nothing more to do here, not even returning a result.
+  // We are finished and just warn about the extra input.
 }
 
 void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
