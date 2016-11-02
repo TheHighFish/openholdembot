@@ -31,6 +31,7 @@ CScrapedMoney::~CScrapedMoney() {
 }
 
 bool CScrapedMoney::SetValue(CString scraped_value) {
+  ReplaceSpaceLookALikesBySpaces(&scraped_value);
   RemoveLeftWhiteSpace(&scraped_value);
   RemoveRightWhiteSpace(&scraped_value);
   RemoveMultipleWhiteSpaces(&scraped_value);

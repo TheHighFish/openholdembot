@@ -38,6 +38,7 @@
 /* STRING_FUNCTIONS_API */ void RemoveSpacesInsideNumbers(CString *s);
 /* STRING_FUNCTIONS_API */ void ReplaceCommasInNumbersByDots(CString *s);
 /* STRING_FUNCTIONS_API */ void ReplaceOutlandischCurrencyByDollarsandCents(CString *s);
+/* STRING_FUNCTIONS_API */ void ReplaceSpaceLookALikesBySpaces(CString *s);
 /* STRING_FUNCTIONS_API */ char RightCharacter(CString string, int index_from_right = 0);
 /* STRING_FUNCTIONS_API */ int  RightDigitCharacterToNumber(CString string, int index_from_right = 0);
 /* STRING_FUNCTIONS_API */ bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b);

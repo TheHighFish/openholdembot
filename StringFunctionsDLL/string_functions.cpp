@@ -247,6 +247,22 @@ void ReplaceOutlandischCurrencyByDollarsandCents(CString *s) {
   }
 }
 
+void ReplaceSpaceLookALikesBySpaces(CString *s) {
+  // Some crappy casinos use other characters like "non-breaking-spaces"2
+  // (extended Latin-1 character-set) instead of a space
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407&p=141701#p141701
+  // http://www.joelonsoftware.com/articles/Unicode.html
+  int length = s->GetLength();
+  for (int i = 0; i < length; ++i) {
+    char current_char = s->GetAt(i);
+    switch (current_char) {
+    case 0xA0:
+      s->SetAt(i, ' ');
+      break;
+    }
+  }
+}
+
 void RemoveSpacesInFrontOfCentMultipliers(CString *s) {
   int length = s->GetLength();
   int last_index = length - 2;
@@ -298,7 +314,10 @@ void RemoveExtraDotsInNumbers(CString *s) {
 
 void StringFunctionsTest() {
 #ifdef _DEBUG
-  CString crappy_title = "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     [000017]";
+  CString crappy_title;
+  crappy_title.Format("  Robostars  Buyin €5,666.777,8     Ante 250%c000      Rake 25 ¢     [000017]", 0xA0);
+  ReplaceSpaceLookALikesBySpaces(&crappy_title);
+  assert(crappy_title == "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     [000017]");
   RemoveOHreplayFrameNumber(&crappy_title);
   assert(crappy_title == "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     ");
   ReplaceOutlandischCurrencyByDollarsandCents(&crappy_title);
