@@ -1,3 +1,28 @@
+v9.3.1 2016-11-xx
+==================
+NEW STUFF:
+- Restarting the PokerTracker-connection if the connection got lost.
+  Special thanks to AlexTheKing88 who contributed the code.
+  [THF]
+- The BlackChipPolker software had special characters inside numbers in the title
+  that looked like spaces to humans but were something different
+  (0xA0 = "none-breakable-space" in Latin-1-encoding of extended ASCII).
+  This special case gets now handled by the title-preprocessing.
+  Thanks to Terminatoros for reporting and for the replay-frame.
+  [THF]
+- Renaming an OH-script-object with the editor could crash Openholdem,
+  as the rename-function was formerly based on a semi-buggy 
+  delete and recreate, but got broken when the deletion got fixed.
+  This has now been corrected.
+  Thanks to Guysmo for rewporting.
+  [TFF]
+
+MAINTENANCE:
+- Improved HaveUnderStraight.
+  Thanks to poker_dog for reporting a special case
+  and to Johnny for the suggestions.
+  [THF]
+
 v9.3.0 2016-10-29
 ==================
 NEW STUFF:

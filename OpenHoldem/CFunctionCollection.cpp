@@ -535,13 +535,27 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
     OH_MessageBox_Interactive("Cannot rename to a function/list that already exists", "Error", 0);
     return false;
   }
-  // Delete old entry from the binary tree... 
-  Delete(from_name);
+  RemoveFromBinaryTree(from_name);
   // ...then rename...
   object_to_rename->SetName(to_name); //!!!! creates a dangling pointer
   // ...and insert again.
   Add(object_to_rename);
   return true;
+}
+
+void CFunctionCollection::RemoveFromBinaryTree(CString function_name) {
+  CSLock lock(m_critsec);
+  COHScriptObject *object_to_delete = LookUp(function_name);
+  if (object_to_delete != NULL) {
+    std::map<CString, COHScriptObject*>::iterator it;
+    it = _function_map.find(function_name);
+    if (it != _function_map.end()) {
+      write_log(preferences.debug_formula(),
+        "[CFunctionCollection] Removing %s from lookuo-table\n", function_name);
+      // Remove it from the lookup-table...
+      _function_map.erase(it);
+    }
+  }
 }
 
 void CFunctionCollection::Delete(CString name) {
@@ -551,21 +565,13 @@ void CFunctionCollection::Delete(CString name) {
   assert (name != "f$debug");    
   CSLock lock(m_critsec);
   COHScriptObject *object_to_delete = LookUp(name);
+  RemoveFromBinaryTree(name);
   if (object_to_delete != NULL) {
-    std::map<CString, COHScriptObject*>::iterator it; 
-    it = _function_map.find(name);
-    if (it != _function_map.end()) {
-      write_log(preferences.debug_formula(), 
-        "[CFunctionCollection] Removing %s from lookuo-table\n", name);
-       // Remove it from the lookup-table...
-      _function_map.erase(it);
-      // ... and delete the object
-     write_log(preferences.debug_formula(),
-        "[CFunctionCollection] Deleting object %s\n", name);
-      delete object_to_delete;
-     write_log(preferences.debug_formula(),
-        "[CFunctionCollection] Object %s deleted\n", name);
-    }
+    write_log(preferences.debug_formula(),
+      "[CFunctionCollection] Deleting object %s\n", name);
+    delete object_to_delete;
+    write_log(preferences.debug_formula(),
+      "[CFunctionCollection] Object %s deleted\n", name);
   }
 }
 

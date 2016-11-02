@@ -100,6 +100,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   CString GetSimilarNameWithDifferentCases(CString function_name);
   bool CheckForOutdatedFunction(CString name);
   bool CheckForMisspelledOpenPPLMainFunction(CString name);
+  void RemoveFromBinaryTree(CString function_name);
  private:
   void ExecuteSelftest();  
  private:
