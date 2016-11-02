@@ -82,10 +82,10 @@ void CSymbolEngineRaisers::UpdateOnNewRound() {
 }
 
 void CSymbolEngineRaisers::UpdateOnMyTurn() {
-	CalculateRaisers();
 }
 
 void CSymbolEngineRaisers::UpdateOnHeartbeat() {
+  CalculateRaisers();
 	CalculateNOpponentsCheckingBettingFolded();
 	CalculateFoldBits();
 }
@@ -291,8 +291,8 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 		if (memcmp(name, "nopponentschecking", 18)==0 && strlen(name)==18) {
 			*result = nopponentschecking();
 		}	else if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23) {
-      WarnIfSymbolRequiresMyTurn("opponentstruelyraising");
-      RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
+      //!!!!!WarnIfSymbolRequiresMyTurn("opponentstruelyraising");
+      //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 			*result = nopponentstruelyraising();
 		}	else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17) {
 			*result = nopponentsbetting();
@@ -306,8 +306,8 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 		return true;
 	}
 	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	{
-    WarnIfSymbolRequiresMyTurn("nplayerscallshort");
-    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
+    //!!!!!WarnIfSymbolRequiresMyTurn("nplayerscallshort");
+    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = nplayerscallshort();
 	}
 	else if (memcmp(name, "raischair", 9) == 0 && strlen(name) == 9) {
@@ -315,12 +315,12 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 	}else if (memcmp(name, "firstraiser_chair", 17) == 0) {
 		*result = firstraiser_chair();
 	}	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9) {
-    WarnIfSymbolRequiresMyTurn("raisbits");
-    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
+    //!!!!!WarnIfSymbolRequiresMyTurn("raisbits");
+    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = raisbits(name[8]-'0');
 	}	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9) {
-    WarnIfSymbolRequiresMyTurn("foldbits");
-    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
+    //!!!!!WarnIfSymbolRequiresMyTurn("foldbits");
+    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = foldbits(name[8]-'0');
 	} else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11) { 
     *result = LastRaised(name[10]-'0');
