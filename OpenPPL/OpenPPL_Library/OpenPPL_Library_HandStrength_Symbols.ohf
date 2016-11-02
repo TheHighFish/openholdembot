@@ -1141,9 +1141,21 @@ rankbitscommon & ConstAllRanksWithoutAceLow
 ##HaveUnderPair##
 [ ispair AND rankhiplayer<ranklocommon ]
 
+##HigherHoleCardPaired##
+   (rankhiplayer == FirstFlopCard)
+OR (rankhiplayer == SecondFlopCard)
+OR (rankhiplayer == ThirdFlopCard)
+OR (rankhiplayer == TurnCard)
+OR (rankhiplayer == RiverCard)
+
 ##HaveUnderStraight##
-HaveStraight
-AND (pcbits == 0b00011 OR pcbits == 0b00001)
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19504
+WHEN NOT HaveStraight RETURN False FORCE
+WHEN HaveNutStraight  RETURN False FORCE
+WHEN StraightOnBoard  RETURN False FORCE
+WHEN (pcbits == 0b00011) RETURN True FORCE
+WHEN (pcbits == 0b00001) RETURN True FORCE
+WHEN (HigherHoleCardPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN True FORCE
 
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
