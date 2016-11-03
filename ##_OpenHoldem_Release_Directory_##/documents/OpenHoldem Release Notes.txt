@@ -1,6 +1,6 @@
 v9.3.1 2016-11-xx
 ==================
-NEW STUFF:
+BUG FIXES:
 - Restarting the PokerTracker-connection if the connection got lost.
   Special thanks to AlexTheKing88 who contributed the code.
   [THF]
@@ -14,13 +14,18 @@ NEW STUFF:
   as the rename-function was formerly based on a semi-buggy 
   delete and recreate, but got broken when the deletion got fixed.
   This has now been corrected.
-  Thanks to Guysmo for rewporting.
+  Thanks to Guysmo for reporting.
   [TFF]
+- The table-title was undefined at some point of time
+  and therefore blind-guessing did not work for everybody.
+  Thanks to SmartBet for reporting.
+  [THF]
+
 
 MAINTENANCE:
 - Improved HaveUnderStraight.
   Thanks to poker_dog for reporting a special case
-  and to Johnny for the suggestions.
+  and to Johnny and Salem for the suggestions.
   [THF]
 
 v9.3.0 2016-10-29
