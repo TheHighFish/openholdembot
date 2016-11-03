@@ -151,8 +151,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d so-called \"blind raiser\". To be ignored.\n", chair);
       continue;
-    }
-    else if ((p_betround_calculator->betround() == kBetroundPreflop)
+    } else if ((p_betround_calculator->betround() == kBetroundPreflop)
       && p_table_state->Player(chair)->PostingBothBlinds()) {
       write_log(preferences.debug_symbolengine(), 
         "[CSymbolEngineRaisers] chair %d is posting both blinds at once. To be ignored.\n", chair);

@@ -37,6 +37,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CTableMapLoader.h"
 #include "CTablepointChecker.h"
+#include "CTableTitle.h"
 #include "CTablePositioner.h"
 #include "CValidator.h"
 #include "DialogScraperOutput.h"
@@ -134,6 +135,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
+  p_table_title->UpdateTitle();
   write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
   p_lazyscraper->DoScrape();
   // We must not check if the scrape of the table changed, because:

@@ -39,6 +39,9 @@ CTableTitle::~CTableTitle() {
 
 void CTableTitle::UpdateTitle() {
 #ifdef OPENHOLDEM_PROGRAM
+  if (!p_autoconnector->IsConnected()) {
+    return;
+  }
 	char title[MAX_WINDOW_TITLE];
 	GetWindowText(p_autoconnector->attached_hwnd(), title, MAX_WINDOW_TITLE-1);
   SetTitle(title);
