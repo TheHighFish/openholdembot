@@ -1,14 +1,18 @@
-v9.3.1 2016-11-xx
+v9.3.2 2016-11-xx
 ==================
 BUG FIXES:
-- Restarting the PokerTracker-connection if the connection got lost.
-  Special thanks to AlexTheKing88 who contributed the code.
-  [THF]
 - The BlackChipPolker software had special characters inside numbers in the title
   that looked like spaces to humans but were something different
   (0xA0 = "none-breakable-space" in Latin-1-encoding of extended ASCII).
   This special case gets now handled by the title-preprocessing.
   Thanks to Terminatoros for reporting and for the replay-frame.
+  [THF]
+
+v9.3.1 2016-11-xx
+==================
+BUG FIXES:
+- Restarting the PokerTracker-connection if the connection got lost.
+  Special thanks to AlexTheKing88 who contributed the code.
   [THF]
 - Renaming an OH-script-object with the editor could crash Openholdem,
   as the rename-function was formerly based on a semi-buggy 
@@ -19,6 +23,13 @@ BUG FIXES:
 - The table-title was undefined at some point of time
   and therefore blind-guessing did not work for everybody.
   Thanks to SmartBet for reporting.
+  [THF]
+. Memory-increment-commands (me_inc_) did not work in combination 
+  with OpenPPL-conditions, where they have to work differently 
+  due to the implicit continuation to the next condition.
+  Thanks to JMonderson for insistently reporting the bug
+  and for providing his legendary 1.500.000 lines of FlopZilla-code
+  for reproduction.
   [THF]
 
 
