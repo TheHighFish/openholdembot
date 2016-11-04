@@ -50,7 +50,10 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
     p_symbol_engine_openppl_user_variables->Set(name);
     return true;
   }
-  if (name.Left(6) == "me_st_") {
+  // Covering both me_st_ and me_inc_ here.
+  // me_re_ is a normal identifier, as it
+  // doesn't require a continuation at the next condition.
+  if (name.Left(3) == "me_") {
     double temp_result;
     p_symbol_engine_memory_symbols->EvaluateSymbol(name,
       &temp_result, true);
