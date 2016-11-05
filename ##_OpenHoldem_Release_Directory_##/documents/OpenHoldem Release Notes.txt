@@ -8,7 +8,7 @@ BUG FIXES:
   Thanks to Terminatoros for reporting and for the replay-frame.
   [THF]
 
-v9.3.1 2016-11-xx
+v9.3.1 2016-11-05
 ==================
 BUG FIXES:
 - Restarting the PokerTracker-connection if the connection got lost.
@@ -24,7 +24,7 @@ BUG FIXES:
   and therefore blind-guessing did not work for everybody.
   Thanks to SmartBet for reporting.
   [THF]
-. Memory-increment-commands (me_inc_) did not work in combination 
+- Memory-increment-commands (me_inc_) did not work in combination 
   with OpenPPL-conditions, where they have to work differently 
   due to the implicit continuation to the next condition.
   Thanks to JMonderson for insistently reporting the bug
@@ -35,7 +35,7 @@ BUG FIXES:
 
 MAINTENANCE:
 - Improved HaveUnderStraight.
-  Thanks to poker_dog for reporting a special case
+  Thanks to Poker_Dog for reporting a special case
   and to Johnny and Salem for the suggestions.
   [THF]
 
