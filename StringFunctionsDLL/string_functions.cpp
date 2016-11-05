@@ -255,11 +255,28 @@ void ReplaceSpaceLookALikesBySpaces(CString *s) {
   int length = s->GetLength();
   for (int i = 0; i < length; ++i) {
     char current_char = s->GetAt(i);
+    if ((current_char < 0) || (current_char > 127)) {
+      unsigned int char_value = unsigned int(current_char);
+      int signed_char_value = int(current_char);
+      CString message;
+      message.Format("Unexpected character inside title or number\n"
+        "Probably extended ASCII or Unicode\n"
+        "Numerical value: %x, %d\n"
+        "Please report to the developers\n"
+        "http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167",
+        char_value, signed_char_value);
+#ifdef OPENHOLDEM_PROGRAM
+      OH_MessageBox_Error_Warning(message);
+#else
+      MessageBox(0, message, "Debug-Info", 0);
+#endif
+    }
+    /*
     switch (current_char) {
     case 0xA0:
       s->SetAt(i, ' ');
       break;
-    }
+    }*/
   }
 }
 
