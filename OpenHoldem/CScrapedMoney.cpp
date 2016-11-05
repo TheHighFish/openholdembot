@@ -41,6 +41,15 @@ bool CScrapedMoney::SetValue(CString scraped_value) {
   ReplaceCommasInNumbersByDots(&scraped_value);
   RemoveExtraDotsInNumbers(&scraped_value);
   //KeepBalanceNumbersOnly(&scraped_value);
+  if (scraped_value == "") {
+    // Empty data (e.g. in the c0sblind) must not evaluated
+    // otherwise we might overwrite known good data (e.g. from ttlimits)
+    return false;
+  }
+  if (!(scraped_value.Find("0123456789"))) {
+    // Again: evaluate only meaningful input
+    return false;
+  }
   CTransform c;
   double result = c.StringToMoney(scraped_value);
   if (result >= 0.0) {
