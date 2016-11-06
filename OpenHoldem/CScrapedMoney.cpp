@@ -32,11 +32,11 @@ CScrapedMoney::~CScrapedMoney() {
 
 bool CScrapedMoney::SetValue(CString scraped_value) {
   ReplaceSpaceLookALikesBySpaces(&scraped_value);
+  ReplaceOutlandischCurrencyByDollarsAndCents(&scraped_value);
   RemoveLeftWhiteSpace(&scraped_value);
   RemoveRightWhiteSpace(&scraped_value);
   RemoveMultipleWhiteSpaces(&scraped_value);
   RemoveSpacesInsideNumbers(&scraped_value);
-  ReplaceOutlandischCurrencyByDollarsandCents(&scraped_value);
   RemoveSpacesInFrontOfCentMultipliers(&scraped_value);
   ReplaceCommasInNumbersByDots(&scraped_value);
   RemoveExtraDotsInNumbers(&scraped_value);

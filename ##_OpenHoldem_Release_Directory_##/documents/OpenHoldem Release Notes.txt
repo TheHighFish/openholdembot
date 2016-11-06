@@ -1,4 +1,4 @@
-v9.3.2 2016-11-xx
+v9.3.2 2016-11-06
 ==================
 BUG FIXES:
 - The BlackChipPolker software had special characters inside numbers in the title
@@ -6,6 +6,11 @@ BUG FIXES:
   (0xA0 = "none-breakable-space" in Latin-1-encoding of extended ASCII).
   This special case gets now handled by the title-preprocessing.
   Thanks to Terminatoros for reporting and for the replay-frame.
+  [THF]
+  
+MAINTENANCE:
+- Moved the warning about unexpected characters in the title 
+  to a less annoying place where "known unexpected" input has been filtered.
   [THF]
 
 v9.3.1 2016-11-05
