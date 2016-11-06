@@ -83,12 +83,13 @@ CString CTableTitle::PreprocessTitle(CString title) {
   // but the latter one mainly affects balances. 
   CString result = title;
   ReplaceSpaceLookALikesBySpaces(&result);
+  ReplaceOutlandischCurrencyByDollarsAndCents(&result);
+  WarnAboutNonASCIICharacters(&result);
   RemoveOHreplayFrameNumber(&result);
   RemoveLeftWhiteSpace(&result);
   RemoveRightWhiteSpace(&result);
   RemoveMultipleWhiteSpaces(&result);
   RemoveSpacesInsideNumbers(&result);
-  ReplaceOutlandischCurrencyByDollarsandCents(&result);
   RemoveSpacesInFrontOfCentMultipliers(&result);
   ReplaceCommasInNumbersByDots(&result);
   RemoveExtraDotsInNumbers(&result);
