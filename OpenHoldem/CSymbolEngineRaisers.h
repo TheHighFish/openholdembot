@@ -56,7 +56,6 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
 		}
 	}
  public:
-	int nplayerscallshort()			{ return _nplayerscallshort; }
 	int nopponentstruelyraising()	{ return _nopponentstruelyraising; }
 	int nopponentsbetting()			{ return _nopponentsbetting; }
 	int nopponentsfolded()			{ return _nopponentsfolded; }
@@ -77,7 +76,6 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
  private:
 	int _raischair;
 	int _firstraiser_chair;
-	int _nplayerscallshort;
 	int _nopponentsbetting;
 	int _nopponentstruelyraising;
 	int _nopponentsfolded;
@@ -87,7 +85,6 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
 	// Index 0 is unused.
 	int _raisbits[kNumberOfBetrounds + 1];
 	int _foldbits[kNumberOfBetrounds + 1];
-	int _callbits[kNumberOfBetrounds + 1]; 
   int _lastraised[kNumberOfBetrounds + 1]; 
 };
 

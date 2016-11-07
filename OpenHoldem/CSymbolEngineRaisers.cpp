@@ -32,9 +32,6 @@
 
 CSymbolEngineRaisers *p_symbol_engine_raisers = NULL;
 
-// Some symbols are only well-defined if it is my turn
-#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_symbol_engine_autoplayer->ismyturn()) *result = kUndefined; }
-
 CSymbolEngineRaisers::CSymbolEngineRaisers() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
@@ -61,9 +58,10 @@ void CSymbolEngineRaisers::UpdateOnConnection() {
 }
 
 void CSymbolEngineRaisers::UpdateOnHandreset() {
-	// callbits, raisbits, etc.
+  // !!!!! Update symbols like raischair, ....
+  // !!!!! only when it is my turn later!?
+	// raisbits, foldbits, etc.
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
-		_callbits[i] = 0;
 		_raisbits[i] = 0;
 		_foldbits[i] = 0;
     _lastraised[i] = kUndefined;
@@ -193,30 +191,24 @@ int CSymbolEngineRaisers::LastPossibleRaiser() {
 	return (FirstPossibleRaiser() + p_tablemap->nchairs() - 1);
 }
 
-void CSymbolEngineRaisers::CalculateNOpponentsCheckingBettingFolded()
-{
+void CSymbolEngineRaisers::CalculateNOpponentsCheckingBettingFolded() {
 	_nplayerscallshort  = 0;
 	_nopponentsbetting  = 0;
 	_nopponentsfolded   = 0;
 	_nopponentschecking = 0;
-
   assert(p_tablemap->nchairs() <= kMaxNumberOfPlayers);
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		double current_players_bet = p_table_state->Player(i)->_bet.GetValue();
 		if (current_players_bet < RaisersBet()
-      && p_table_state->Player(i)->HasAnyCards())
-		{
+        && p_table_state->Player(i)->HasAnyCards())	{
 			_nplayerscallshort++;
 		}
-		if (i == USER_CHAIR)
-		{
+		if (i == USER_CHAIR) {
 			// No opponent;
 			// Nothing more to do
 			continue;
 		}
-		if (current_players_bet > 0) 
-		{
+		if (current_players_bet > 0) {
 			_nopponentsbetting++;
 		}
 		// Players might have been betting, but folded, so no else for the if
@@ -250,30 +242,24 @@ double CSymbolEngineRaisers::RaisersBet() {
 	return result;
 }
 
-void CSymbolEngineRaisers::CalculateFoldBits()
-{
+void CSymbolEngineRaisers::CalculateFoldBits() {
 	// foldbits (very late, as they depend on the dealt symbols)
 	int new_foldbits = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)
-	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		if (!p_table_state->Player(i)->HasAnyCards()) {
 			new_foldbits |= k_exponents[i];
 		}
 	}
 	// remove players, who didn't get dealt.
 	new_foldbits &= p_symbol_engine_active_dealt_playing->playersdealtbits();
-
 	// remove players, who folded in earlier betting-rounds.
-	if (BETROUND >= kBetroundFlop)
-	{
+	if (BETROUND >= kBetroundFlop) {
 		new_foldbits &= (~_foldbits[kBetroundPreflop]);
 	}
-	if (BETROUND >= kBetroundTurn)
-	{
+	if (BETROUND >= kBetroundTurn) {
 		new_foldbits &= (~_foldbits[kBetroundFlop]);
 	}
-	if (BETROUND >= kBetroundRiver)   
-	{
+	if (BETROUND >= kBetroundRiver)	{
 		new_foldbits &= (~_foldbits[kBetroundTurn]);
 	}
 	_foldbits[BETROUND] = new_foldbits;
@@ -290,8 +276,6 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 		if (memcmp(name, "nopponentschecking", 18)==0 && strlen(name)==18) {
 			*result = nopponentschecking();
 		}	else if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23) {
-      //!!!!!WarnIfSymbolRequiresMyTurn("opponentstruelyraising");
-      //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 			*result = nopponentstruelyraising();
 		}	else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17) {
 			*result = nopponentsbetting();
@@ -305,21 +289,14 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 		return true;
 	}
 	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	{
-    //!!!!!WarnIfSymbolRequiresMyTurn("nplayerscallshort");
-    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = nplayerscallshort();
-	}
-	else if (memcmp(name, "raischair", 9) == 0 && strlen(name) == 9) {
+	} else if (memcmp(name, "raischair", 9) == 0 && strlen(name) == 9) {
 		*result = raischair();
-	}else if (memcmp(name, "firstraiser_chair", 17) == 0) {
+	} else if (memcmp(name, "firstraiser_chair", 17) == 0) {
 		*result = firstraiser_chair();
 	}	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9) {
-    //!!!!!WarnIfSymbolRequiresMyTurn("raisbits");
-    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = raisbits(name[8]-'0');
 	}	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9) {
-    //!!!!!WarnIfSymbolRequiresMyTurn("foldbits");
-    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = foldbits(name[8]-'0');
 	} else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11) { 
     *result = LastRaised(name[10]-'0');
