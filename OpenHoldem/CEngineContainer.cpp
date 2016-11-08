@@ -35,6 +35,7 @@
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChairs.h"
+#include "CSymbolEngineChecksBetsFolds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineColourCodes.h"
 #include "CSymbolEngineDealerchair.h"
@@ -161,6 +162,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCallers
   p_symbol_engine_callers = new CSymbolEngineCallers();
   AddSymbolEngine(p_symbol_engine_callers);
+  // CSymbolEngineChecksBetsFolds
+  p_symbol_engine_checks_bets_folds = new CSymbolEngineChecksBetsFolds();
+  AddSymbolEngine(p_symbol_engine_checks_bets_folds);
   // CSymbolEnginePokerActio
   p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
   AddSymbolEngine(p_symbol_engine_poker_action);

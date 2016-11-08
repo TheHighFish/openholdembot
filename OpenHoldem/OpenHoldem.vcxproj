@@ -236,6 +236,7 @@
     <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />
+	<ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
@@ -523,6 +524,7 @@
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
+	<ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
     <ClInclude Include="CSymbolengineColourCodes.h" />
     <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />

@@ -10,6 +10,32 @@
 // Purpose:
 //
 //******************************************************************************
+//
+// nopponentstruelyraising counts all people who voluntarily bet more than needed,
+// especially:
+//  * all raisers
+//  * the first voluntary better postflop
+// but not
+//  * the infamous "blind-raisers" (Winholdem)
+//  * people posting antes 
+//
+// nopponentstruelyraising counts only the info that is visible at the table,
+// i.e. one orbit (max). Formerly it was well-defined only at out turn,
+// but we try to make it well-defined all the time, mainly because
+// people don't understand the restrictions of "Raises" (OpenPPl,
+// implemented with the use of nopponentsraising:
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18141)
+//
+// Now nopponentstruelyraising should count:
+//  * a full orbit when it is our turn
+//  * a partial orbit from dealer to hero if we did not yet act
+//  * a psartial orbit behind us if we already acted 
+//    (similar to RaisesSinceLastPlay, but might include a bettor)
+//  * an orbit after the dealer if the userchair is unknown
+//    (not really usable for OpenPPL which updates at our turn, 
+//    but at least somewhat meaningful in the debug-tab).
+//
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineRaisers.h"
@@ -63,16 +89,11 @@ void CSymbolEngineRaisers::UpdateOnHandreset() {
 	// raisbits, foldbits, etc.
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_raisbits[i] = 0;
-		_foldbits[i] = 0;
     _lastraised[i] = kUndefined;
 	}
 	_raischair = kUndefined;
 	_firstraiser_chair = kUndefined;
-	_nplayerscallshort  = 0;
-	_nopponentsbetting  = 0;
 	_nopponentstruelyraising = 0;
-	_nopponentsfolded   = 0;
-	_nopponentschecking = 0;
 }
 
 void CSymbolEngineRaisers::UpdateOnNewRound() {
@@ -84,8 +105,6 @@ void CSymbolEngineRaisers::UpdateOnMyTurn() {
 
 void CSymbolEngineRaisers::UpdateOnHeartbeat() {
   CalculateRaisers();
-	CalculateNOpponentsCheckingBettingFolded();
-	CalculateFoldBits();
 }
 
 double CSymbolEngineRaisers::LastOrbitsLastRaisersBet() {
@@ -191,44 +210,6 @@ int CSymbolEngineRaisers::LastPossibleRaiser() {
 	return (FirstPossibleRaiser() + p_tablemap->nchairs() - 1);
 }
 
-void CSymbolEngineRaisers::CalculateNOpponentsCheckingBettingFolded() {
-	_nplayerscallshort  = 0;
-	_nopponentsbetting  = 0;
-	_nopponentsfolded   = 0;
-	_nopponentschecking = 0;
-  assert(p_tablemap->nchairs() <= kMaxNumberOfPlayers);
-	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-		double current_players_bet = p_table_state->Player(i)->_bet.GetValue();
-		if (current_players_bet < RaisersBet()
-        && p_table_state->Player(i)->HasAnyCards())	{
-			_nplayerscallshort++;
-		}
-		if (i == USER_CHAIR) {
-			// No opponent;
-			// Nothing more to do
-			continue;
-		}
-		if (current_players_bet > 0) {
-			_nopponentsbetting++;
-		}
-		// Players might have been betting, but folded, so no else for the if
-		if ((p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<(i)))
-        && !p_table_state->Player(i)->HasAnyCards())	{
-			_nopponentsfolded++;					
-		}
-		if (p_table_state->Player(i)->HasAnyCards() 
-			  && current_players_bet == 0) {
-			_nopponentschecking++;
-		}
-	}
-	AssertRange(_nplayerscallshort,  0, kMaxNumberOfOpponentsAtFullRingTable);
-	// Using kMaxNumberOfPlayers instead of kMaxNumberOfOpponentsAtFullRingTable below,
-	// as it might be that the user is not seated or user-chair not recognized
-	AssertRange(_nopponentsbetting,  0, kMaxNumberOfPlayers);
-	AssertRange(_nopponentsfolded,   0, kMaxNumberOfPlayers);
-	AssertRange(_nopponentschecking, 0, kMaxNumberOfPlayers);
-}
-
 double CSymbolEngineRaisers::RaisersBet() {
 	// The raisers bet is simply the largest bet at the table.
 	// So we don't have to know the raisers chair for that.
@@ -242,29 +223,6 @@ double CSymbolEngineRaisers::RaisersBet() {
 	return result;
 }
 
-void CSymbolEngineRaisers::CalculateFoldBits() {
-	// foldbits (very late, as they depend on the dealt symbols)
-	int new_foldbits = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-		if (!p_table_state->Player(i)->HasAnyCards()) {
-			new_foldbits |= k_exponents[i];
-		}
-	}
-	// remove players, who didn't get dealt.
-	new_foldbits &= p_symbol_engine_active_dealt_playing->playersdealtbits();
-	// remove players, who folded in earlier betting-rounds.
-	if (BETROUND >= kBetroundFlop) {
-		new_foldbits &= (~_foldbits[kBetroundPreflop]);
-	}
-	if (BETROUND >= kBetroundTurn) {
-		new_foldbits &= (~_foldbits[kBetroundFlop]);
-	}
-	if (BETROUND >= kBetroundRiver)	{
-		new_foldbits &= (~_foldbits[kBetroundTurn]);
-	}
-	_foldbits[BETROUND] = new_foldbits;
-}
-
 int CSymbolEngineRaisers::LastRaised(const int round) {
   AssertRange(round, kBetroundPreflop, kBetroundRiver);
   return _lastraised[round];
@@ -273,31 +231,20 @@ int CSymbolEngineRaisers::LastRaised(const int round) {
 bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponents", 10)==0) {
-		if (memcmp(name, "nopponentschecking", 18)==0 && strlen(name)==18) {
-			*result = nopponentschecking();
-		}	else if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23) {
+		if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23) {
 			*result = nopponentstruelyraising();
-		}	else if (memcmp(name, "nopponentsbetting", 17)==0 && strlen(name)==17) {
-			*result = nopponentsbetting();
-		}	else if (memcmp(name, "nopponentsfolded", 16)==0 && strlen(name)==16)	{
-			*result = nopponentsfolded();
 		}	else {
 			// Invalid symbol
 			return false;
 		}
 		// Valid symbol
 		return true;
-	}
-	if (memcmp(name, "nplayerscallshort", 17)==0 && strlen(name)==17)	{
-		*result = nplayerscallshort();
 	} else if (memcmp(name, "raischair", 9) == 0 && strlen(name) == 9) {
 		*result = raischair();
 	} else if (memcmp(name, "firstraiser_chair", 17) == 0) {
 		*result = firstraiser_chair();
 	}	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9) {
 		*result = raisbits(name[8]-'0');
-	}	else if (memcmp(name, "foldbits", 8)==0 && strlen(name)==9) {
-		*result = foldbits(name[8]-'0');
 	} else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11) { 
     *result = LastRaised(name[10]-'0');
   }	else {
@@ -309,11 +256,8 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool
 }
 
 CString CSymbolEngineRaisers::SymbolsProvided() {
-  CString list = "nopponentschecking "
-    "nopponentstruelyraising nopponentsbetting nopponentsfolded "
-    "nplayerscallshort raischair firstraiser_chair  ";
+  CString list = "nopponentstruelyraising raischair firstraiser_chair  ";
   list += RangeOfSymbols("raisbits%i", kBetroundPreflop, kBetroundRiver);
-  list += RangeOfSymbols("foldbits%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("lastraised%i", kBetroundPreflop, kBetroundRiver);
   return list;
 }

@@ -729,6 +729,9 @@
     <ClCompile Include="CSymbolEngineCallers.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
+	<ClCompile Include="CSymbolEngineChecksBetsFolds.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
     <ClCompile Include="CSymbolEngineRaisers.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
@@ -973,6 +976,9 @@
     </None>
     <None Include="..\StringFunctionsDLL\string_functions.cpp">
       <Filter>Temp</Filter>
+    </None>
+    <None Include="CSymbolEngineChecksBetsFolds.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1592,6 +1598,9 @@
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="CSymbolEngineCallers.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
+    </ClInclude>
+	<ClInclude Include="CSymbolEngineChecksBetsFolds.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="CSymbolEngineRaisers.h">
