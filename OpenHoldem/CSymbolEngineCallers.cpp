@@ -124,7 +124,8 @@ void CSymbolEngineCallers::CalculateCallers() {
 }
 
 int CSymbolEngineCallers::FirstPossibleCaller() {
-  int first_possible_caller = p_symbol_engine_raisers->FirstPossibleRaiser();
+  int first_possible_caller = p_symbol_engine_raisers->FirstPossibleActor();
+  // !!!!! be careful with bb preflop!
   // Can't be the user (logically)
   // Must not be the user (technically)
   // as we compare against the users bet later.

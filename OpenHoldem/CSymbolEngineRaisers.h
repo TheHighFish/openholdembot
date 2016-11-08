@@ -50,13 +50,19 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
 	int nopponentstruelyraising()	{ return _nopponentstruelyraising; }
  protected:
   // Also used by CSymbolEngineCallers
-	int FirstPossibleRaiser();
-	int LastPossibleRaiser();
+  // Return values are NOT normalized to 0..(nchairs-1)
+  // because this is more convenient 
+  // for the exit-condition of the for-loop.
+  // that searches for raisers (callers).
+  // Normalization happens then inside the loop
+  int ChairInFrontOfFirstPossibleActor();
+  int FirstPossibleActor();
+  int LastPossibleActor();	
  private:
 	void CalculateRaisers();
  private:
 	double RaisersBet();
-	double LastOrbitsLastRaisersBet();
+	double MinimumStartingBetCurrentOrbit();
  private:
   int LastRaised(const int round);
  private:
