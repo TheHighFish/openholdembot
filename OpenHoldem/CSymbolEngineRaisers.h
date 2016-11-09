@@ -10,6 +10,33 @@
 // Purpose:
 //
 //******************************************************************************
+//
+// nopponentstruelyraising counts all people who voluntarily bet more than needed,
+// especially:
+//  * all raisers
+//  * the first voluntary better postflop
+// but not
+//  * the infamous "blind-raisers" (Winholdem)
+//  * people posting antes 
+//
+// nopponentstruelyraising counts only the info that is visible at the table,
+// i.e. one orbit (max). Formerly it was well-defined only at out turn,
+// but we try to make it well-defined all the time, mainly because
+// people don't understand the restrictions of "Raises" (OpenPPl,
+// implemented with the use of nopponentsraising:
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18141)
+//
+// Now nopponentstruelyraising should count:
+//  * a full orbit when it is our turn
+//  * a partial orbit from dealer to hero if we did not yet act
+//  * a partial orbit behind us if we already acted 
+//    (similar to RaisesSinceLastPlay, but might include a bettor)
+//  * an orbit after the dealer if the userchair is unknown
+//    (not really usable for OpenPPL which updates at our turn, 
+//    but at least somewhat meaningful in the debug-tab).
+//
+//******************************************************************************
+
 
 #ifndef INC_CSYMBOLENGINERAISERS_H
 #define INC_CSYMBOLENGINERAISERS_H
@@ -61,8 +88,7 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
  private:
 	void CalculateRaisers();
  private:
-	double RaisersBet();
-	double MinimumStartingBetCurrentOrbit();
+	double MinimumStartingBetCurrentOrbit(bool searching_for_raisers);
  private:
   int LastRaised(const int round);
  private:

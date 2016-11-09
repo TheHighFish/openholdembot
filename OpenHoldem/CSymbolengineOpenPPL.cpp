@@ -33,7 +33,7 @@ const char* kOpenPPLUpdateOnNewRound =
   "UpdateMemorySymbolseOnNewRound";
 const char* kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction =
   "UpdateMemorySymbolsAfterAutoplayerAction";
-//!!!!! write trace onlöy after execution
+//!!!!! write trace only after execution
 
 CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
 	// The values of some symbol-engines depend on other engines.

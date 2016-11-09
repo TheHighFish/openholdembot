@@ -168,13 +168,21 @@ int CSymbolEngineRaisers::LastPossibleActor() {
   return result;
 }
 
-double CSymbolEngineRaisers::MinimumStartingBetCurrentOrbit() {
+double CSymbolEngineRaisers::MinimumStartingBetCurrentOrbit(bool searching_for_raisers) {
 	// Not yet acted: 0 or 1 bb for the first orbit
 	if (!p_symbol_engine_history->DidAct()) {
     if (p_betround_calculator->betround() == kBetroundPreflop) {
-      // Preflop:
-      // Start with big blind and forget about WinHoldem "blind raisers".
-      return p_symbol_engine_tablelimits->bblind();
+      if (searching_for_raisers) {
+        // Preflop:
+        // Start with big blind and forget about WinHoldem "blind raisers".
+        return p_symbol_engine_tablelimits->bblind();
+      } else {
+        // When searching for callers start with 0 big blinds
+        // to avoid recognizing the big-blind as a caller.
+        // (true, we could change the starting position
+        // of the search, but this would cause troubles heradsup).
+        return 0.0;
+      }
     } else {
       // Postflop
 		  return 0.0;
@@ -199,7 +207,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 	int first_possible_raiser = FirstPossibleActor();
 	int last_possible_raiser  = LastPossibleActor();
   assert(last_possible_raiser > first_possible_raiser);
-	double highest_bet = MinimumStartingBetCurrentOrbit();
+	double highest_bet = MinimumStartingBetCurrentOrbit(true);
   write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Searching for raisers from chair %i to %i with a bet higher than %.2f\n",
 		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
@@ -261,19 +269,6 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] raischair: %i\n", _raischair);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers]  firstraiser_chair (empty if no raiser) : %i\n", _firstraiser_chair);
-}
-
-double CSymbolEngineRaisers::RaisersBet() { //!!!!! move to callers
-	// The raisers bet is simply the largest bet at the table.
-	// So we don't have to know the raisers chair for that.
-	double result = 0;
-	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-		double current_players_bet = p_table_state->Player(i)->_bet.GetValue();
-		if (current_players_bet > result && p_table_state->Player(i)->HasAnyCards()) 	{
-			result = current_players_bet;
-		}
-	}
-	return result;
 }
 
 int CSymbolEngineRaisers::LastRaised(const int round) {
