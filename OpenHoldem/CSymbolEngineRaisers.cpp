@@ -84,9 +84,6 @@ void CSymbolEngineRaisers::UpdateOnConnection() {
 }
 
 void CSymbolEngineRaisers::UpdateOnHandreset() {
-  // !!!!! Update symbols like raischair, ....
-  // !!!!! only when it is my turn later!?
-	// raisbits, 
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_raisbits[i] = 0;
     _lastraised[i] = kUndefined;
@@ -196,6 +193,7 @@ double CSymbolEngineRaisers::MinimumStartingBetCurrentOrbit(bool searching_for_r
 
 void CSymbolEngineRaisers::CalculateRaisers() {
 	_nopponentstruelyraising = 0;
+  _temp_raisbits_current_orbit = 0;
   if (p_symbol_engine_chip_amounts->call() <= 0.0) {
     // There are no bets and raises.
     // Skip the calculations to keep the raischair of the previous round.
@@ -254,21 +252,45 @@ void CSymbolEngineRaisers::CalculateRaisers() {
     }
     AssertRange(_raischair, kUndefined, kLastChair);
     _lastraised[BETROUND] = _raischair;
-    // ...but be very conservative with raisbits
-    // as its information gets accumulated during a complete betround,
-    // so temporary errors sum up.
-    // Update only at my turn, when we have stable input
-    // and have to take critical decisions,
-    // even if this means that this symbol becomes undefined
-    // at other times.
+    // We have to be very careful
+    // if we accumulate info based on dozens of unstable frames
+    // when it is not our turn and the casino potentially
+    // updates its display, causing garbabe input that sums up.
+    // This affects raisbits, callbits, foldbits.
+    // Special fail-safe-code for raisbits: 
+    // We calcuklate stable raisbits and unstable temp_raisbits.
+    // When it is our turn we update the stable data.
+    // Completeness of historical info of previous betrounds
+    // is guaranteed, as after an opponents raise
+    // it will be our turn for the update once more again
+    // (at least as long as we are playing, and that's all that matters).
     if (p_symbol_engine_autoplayer->ismyturn()) {
-      int new_raisbits = _raisbits[BETROUND] | k_exponents[chair];
-      _raisbits[BETROUND] = new_raisbits;
+      _temp_raisbits_current_orbit |= k_exponents[chair];
+    }
+    if (p_symbol_engine_autoplayer->ismyturn()) {
+      _raisbits[BETROUND] |= _temp_raisbits_current_orbit;
     }
 	}
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] nopponentstruelyraising: %i\n", _nopponentstruelyraising);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] raischair: %i\n", _raischair);
 	write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers]  firstraiser_chair (empty if no raiser) : %i\n", _firstraiser_chair);
+}
+
+int CSymbolEngineRaisers::raisbits(int betround) {
+  AssertRange(betround, kBetroundPreflop, kBetroundRiver);
+  if (betround == BETROUND) {
+    // Compute the result based on known good data and temp data
+    // (potentially unstable, but best what we have)
+    return (_raisbits[betround] | _temp_raisbits_current_orbit);
+  }
+  if ((betround >= kBetroundPreflop)
+      && (betround <= kBetroundRiver)) {
+    // Return stable historical data
+    return _raisbits[betround];
+  } else {
+    // index out of range, can happen e.g. for bad user-DLLs
+    return kUndefined;
+  }
 }
 
 int CSymbolEngineRaisers::LastRaised(const int round) {

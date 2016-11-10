@@ -108,7 +108,7 @@ void CSymbolEngineCallers::CalculateCallers() {
       // We have to be very careful
       // if we accumulate info based on dozens of unstable frames
       // when it is not our turn and the casino potentially
-      // updates its display, causing garbabe input.
+      // updates its display, causing garbabe input that sums up.
       // This affects raisbits, callbits, foldbits.
       // Special fail-safe-code for callbits: currently none,
       // because it is very unlikely that a mis-scrape

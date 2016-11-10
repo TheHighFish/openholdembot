@@ -65,15 +65,8 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
  public:
 	int raischair()	{ return _raischair; }
 	int firstraiser_chair()      { return _firstraiser_chair; }
-	int raisbits(int betround) {
-		if ((betround >= kBetroundPreflop)
-			  && (betround <= kBetroundRiver)) {
-			return _raisbits[betround];
-		}	else {
-			return kUndefined;
-		}
-	}
  public:
+  int raisbits(int betround);
 	int nopponentstruelyraising()	{ return _nopponentstruelyraising; }
  protected:
   // Also used by CSymbolEngineCallers
@@ -96,6 +89,7 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
 	int _firstraiser_chair;
 	int _nopponentstruelyraising;
  private:
+  int _temp_raisbits_current_orbit;
 	// Indices 1..4 are for the betrounds preflop..river.
 	// Index 0 is unused.
 	int _raisbits[kNumberOfBetrounds + 1];
