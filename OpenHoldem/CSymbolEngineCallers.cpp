@@ -64,7 +64,6 @@ void CSymbolEngineCallers::UpdateOnConnection() {
 }
 
 void CSymbolEngineCallers::UpdateOnHandreset() {
-	// callbits, raisbits, etc.
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_callbits[i] = 0;
 	}
@@ -106,11 +105,17 @@ void CSymbolEngineCallers::CalculateCallers() {
         // We found the first caller
         _firstcaller_chair = chair;
       }
-      //!!!!! Be conservative like in the other engine
+      // We have to be very careful
+      // if we accumulate info based on dozens of unstable frames
+      // when it is not our turn and the casino potentially
+      // updates its display, causing garbabe input.
+      // This affects raisbits, callbits, foldbits.
+      // Special fail-safe-code for callbits: currently none,
+      // because it is very unlikely that a mis-scrape
+      // causes the bets of a raiser to look like a call.
       int new_callbits = _callbits[BETROUND] | k_exponents[chair];
       _callbits[BETROUND] = new_callbits;
-		}
-		else if (p_table_state->Player(chair)->_bet.GetValue() > highest_bet) {
+		}	else if (p_table_state->Player(chair)->_bet.GetValue() > highest_bet) {
 			highest_bet = p_table_state->Player(chair)->_bet.GetValue();
 		}
 	}
@@ -121,13 +126,9 @@ void CSymbolEngineCallers::CalculateCallers() {
 bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17) {
-    //!!!!!WarnIfSymbolRequiresMyTurn("nopponentscalling");
-    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = nopponentscalling();
 		return true;
 	}	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9) {
-    //!!!!!WarnIfSymbolRequiresMyTurn("callbits");
-    //!!!!!RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = callbits(RightDigitCharacterToNumber(name));
     return true;
   } else if (memcmp(name, "firstcaller_chair", 17)==0) {

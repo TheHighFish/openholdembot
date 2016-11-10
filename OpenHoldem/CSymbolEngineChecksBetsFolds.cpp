@@ -150,6 +150,19 @@ void CSymbolEngineChecksBetsFolds::CalculateFoldBits() {
 		new_foldbits &= (~_foldbits[kBetroundTurn]);
 	}
 	_foldbits[BETROUND] = new_foldbits;
+  // We have to be very careful
+  // if we accumulate info based on dozens of unstable frames
+  // when it is not our turn and the casino potentially
+  // updates its display, causing garbabe input.
+  // This affects raisbits, callbits, foldbits.
+  // Special fail-safe-code for foldbits: 
+  // when it is our turn and we have stable input try to repair foldbits 
+  // for all betrounds and remove all playing players again.
+  if (p_symbol_engine_autoplayer->ismyturn()) {
+    for (int i = kBetroundPreflop; i <= kBetroundRiver; ++i) {
+      _foldbits[i] &= ~p_symbol_engine_active_dealt_playing->playersplayingbits();
+    }
+  }
 }
 
 bool CSymbolEngineChecksBetsFolds::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
