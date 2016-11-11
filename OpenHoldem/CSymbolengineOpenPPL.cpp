@@ -28,9 +28,9 @@
 CSymbolEngineOpenPPL *p_symbol_engine_open_ppl = NULL;
 
 const char* kOpenPPLUpdateOnHandReset =
-  "UpdateMemorySymbolseOnHandReset";
+  "UpdateMemorySymbolsOnHandReset";
 const char* kOpenPPLUpdateOnNewRound =
-  "UpdateMemorySymbolseOnNewRound";
+  "UpdateMemorySymbolsOnNewRound";
 const char* kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction =
   "UpdateMemorySymbolsAfterAutoplayerAction";
 //!!!!! write trace only after execution
@@ -59,7 +59,7 @@ void CSymbolEngineOpenPPL::CheckExistenceOfOpenPPLFunction(CString function) {
       "%s\n"
       "in OpenPPL-library.\n"
       "\n"
-      "Without this function most history-symbols will be broken.n"
+      "Without this function most history-symbols will be broken.\n"
       "Probably caused by one-sided renaming of that function.",
       function);
     OH_MessageBox_Error_Warning(message);
@@ -67,15 +67,16 @@ void CSymbolEngineOpenPPL::CheckExistenceOfOpenPPLFunction(CString function) {
 }
 
 void CSymbolEngineOpenPPL::InitOnStartup() {
-  // Verify that ini-functions exists.
-  // Avoid PEBKACs by stupid renaming, that breaks everything
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnHandReset);
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnNewRound);
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction);
-	UpdateOnConnection();
+	//!!!!!UpdateOnConnection();
 }
 
 void CSymbolEngineOpenPPL::UpdateOnConnection() {
+  // Verify that ini-functions exists.
+  // Avoid PEBKACs by stupid renaming, that breaks everything
+  // !!!!! only call when öibrary loaded!
+  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnHandReset);
+  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnNewRound);
+  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction);
   UpdateOnHandreset();
 }
 

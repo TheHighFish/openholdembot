@@ -1141,9 +1141,28 @@ rankbitscommon & ConstAllRanksWithoutAceLow
 ##HaveUnderPair##
 [ ispair AND rankhiplayer<ranklocommon ]
 
+##HigherHoleCardInPokerVal##
+WHEN (pcbits BitAnd 0b10000) RETURN FirstCardOfPokerVal  FORCE
+WHEN (pcbits BitAnd 0b01000) RETURN SecondCardOfPokerVal FORCE
+WHEN (pcbits BitAnd 0b00100) RETURN ThirdCardOfPokerVal  FORCE
+WHEN (pcbits BitAnd 0b00010) RETURN FourthCardOfPokerVal FORCE
+WHEN (pcbits BitAnd 0b00001) RETURN FifthCardOfPokerVal  FORCE
+
+##HigherHoleCardInPokerValPaired##
+   (HigherHoleCardInPokerVal == FirstFlopCard)
+OR (HigherHoleCardInPokerVal == SecondFlopCard)
+OR (HigherHoleCardInPokerVal == ThirdFlopCard)
+OR (HigherHoleCardInPokerVal == TurnCard)
+OR (HigherHoleCardInPokerVal == RiverCard)
+
 ##HaveUnderStraight##
-HaveStraight
-AND (pcbits == 0b00011 OR pcbits == 0b00001)
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19504
+WHEN NOT HaveStraight RETURN False FORCE
+WHEN HaveNutStraight  RETURN False FORCE
+WHEN StraightOnBoard  RETURN False FORCE
+WHEN (pcbits == 0b00011) RETURN True FORCE
+WHEN (pcbits == 0b00001) RETURN True FORCE
+WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN True FORCE
 
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,

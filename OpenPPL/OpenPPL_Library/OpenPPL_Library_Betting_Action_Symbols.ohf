@@ -163,18 +163,15 @@ OR didbetsizeround3
 + didbetsizeround1
 
 ##CallsSinceLastRaise##
-(PlayersRaisingOrColdCallingTheLastRaise <= 0) ? HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise :
-ismyturn ? (PlayersRaisingOrColdCallingTheLastRaise - 1) :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+WHEN (PlayersRaisingOrColdCallingTheLastRaise <= 0) RETURN HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise FORCE
+WHEN Others RETURN (PlayersRaisingOrColdCallingTheLastRaise - 1) FORCE
 
 ##Folds##
-ismyturn ? 
-[(betround == ConstBetRoundPreflop) ? (nplayersdealt  - nopponentsplaying - 1) :
- (betround == ConstBetRoundFlop)    ? (nplayersround2 - nopponentsplaying - 1) :
- (betround == ConstBetRoundTurn)    ? (nplayersround3 - nopponentsplaying - 1) :
- (betround == ConstBetRoundRiver)   ? (nplayersround4 - nopponentsplaying - 1) :
- ERROR_Betround_Out_Of_Range] :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+WHEN (betround == ConstBetRoundPreflop) RETURN (nplayersdealt  - nopponentsplaying - 1) FORCE
+WHEN (betround == ConstBetRoundFlop)    RETURN (nplayersround2 - nopponentsplaying - 1) FORCE
+WHEN (betround == ConstBetRoundTurn)    RETURN (nplayersround3 - nopponentsplaying - 1) FORCE
+WHEN (betround == ConstBetRoundRiver)   RETURN (nplayersround4 - nopponentsplaying - 1) FORCE
+WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
 
 ##LastAggressorActsAfterUs##		
    ac_agchair_after 
@@ -200,8 +197,7 @@ AND NOT didcallround3
 AND NoVillainBetOrRaisedOnTurn
 
 ##RaisesSinceLastPlay##
-(NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
-(BotsActionsOnThisRoundIncludingChecks == 0) ? RaisesBeforeOurFirstAction :
-(BotsActionsOnThisRoundIncludingChecks == 1) ? RaisesSinceLastPlayOnOurSecondAction :
-(BotsActionsOnThisRoundIncludingChecks >= 2) ? RaisesSinceLastPlayAfterOurSecondAction :
-ERROR_BotsActionsOnThisRound_Out_Of_Range
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN RaisesBeforeOurFirstAction FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN RaisesSinceLastPlayOnOurSecondAction FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks >= 2) RETURN RaisesSinceLastPlayAfterOurSecondAction FORCE
+WHEN Others RETURN ERROR_BotsActionsOnThisRound_Out_Of_Range FORCE

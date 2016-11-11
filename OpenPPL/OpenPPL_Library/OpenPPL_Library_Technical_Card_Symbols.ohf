@@ -116,6 +116,21 @@
 //
 //*****************************************************************************
 
+##FirstCardOfPokerVal##
+((pokerval >> 16) BitAnd 0x0F)
+
+##SecondCardOfPokerVal##
+((pokerval >> 12) BitAnd 0x0F)
+
+##ThirdCardOfPokerVal##
+((pokerval >> 8) BitAnd 0x0F)
+
+##FourthCardOfPokerVal##
+((pokerval >> 4) BitAnd 0x0F)
+
+##FifthCardOfPokerVal##
+((pokerval >> 0) BitAnd 0x0F)
+
 ##OneCardStraightPossibleOnTurn_AceHigh##
 //........................AKQJT98765432a-
 (`(RankBitsCommonTurn & 0b111110000000000) >= 4)   

@@ -333,11 +333,6 @@ RaiseMax
 ##ERROR_IncorrectBotsLastAction##
 -1
 
-##ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC##
-// Now use a very special constant so that even the most inexperienced newbie
-// notices that something is wrong
--1234567
-
 ##HINT_We_Dont_Have_A_FullHouse_At_All##
 // Docu says: this case is 0; and this special case needs extra care.
 // However returning a high number instead of 0 seems better to us,

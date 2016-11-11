@@ -61,6 +61,49 @@
 //
 //*****************************************************************************
 
+##MaxOpponentStackSize##
+me_re_MaxOpponentStackSize
+
+##MinOpponentStackSize##
+me_re_MinOpponentStackSize
+
+##NumberOfRaisesBeforeFlop##
+WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
+WHEN (betround >  ConstBetRoundPreflop) RETURN me_re_MemRaisesBeforeFlop FORCE
+WHEN Others RETURN 0 FORCE
+
+##NumberOfRaisesOnFlop##
+WHEN (betround == ConstBetRoundFlop) RETURN Raises FORCE
+WHEN (betround >  ConstBetRoundFlop) RETURN me_re_MemRaisesOnFlop FORCE
+WHEN Others RETURN 0 FORCE
+
+##NumberOfRaisesOnTurn##
+WHEN (betround == ConstBetRoundTurn) RETURN Raises FORCE
+WHEN (betround >  ConstBetRoundTurn) RETURN me_re_MemRaisesOnTurn FORCE
+WHEN Others RETURN 0 FORCE
+
+##Raises##
+WHEN Others RETURN (me_re_MemRaises + RaisesSinceLastPlay) FORCE
+
+##RaisesBeforeFlop##
+WHEN (NumberOfRaisesBeforeFlop > 0) RETURN True FORCE
+
+##RaisesOnFlop##
+WHEN (NumberOfRaisesOnFlop > 0) RETURN True FORCE
+
+##RaisesOnTurn##
+WHEN (NumberOfRaisesOnTurn > 0) RETURN True FORCE
+
+##StartingChips##
+me_re_MemStartingChips
+
+##StartingStackSize##
+me_re_MemStartingStackSize
+
+
+
+
+
 ##Bets##
 me_re_MemBets
 
@@ -112,59 +155,21 @@ me_re_MemCalls
 ##Checks##
 me_re_MemChecks
 
-##MaxOpponentStackSize##
-me_re_MaxOpponentStackSize
 
-##MinOpponentStackSize##
-me_re_MinOpponentStackSize
 
 ##MissingSmallBlind##
 // !!! To be implemented in OH
 me_re_MemMissingSmallBlind
 
-##NumberOfRaisesBeforeFlop##
-WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
-WHEN (betround >  ConstBetRoundPreflop) RETURN me_re_MemRaisesBeforeFlop FORCE
-WHEN Others RETURN 0 FORCE
 
-##NumberOfRaisesOnFlop##
-WHEN (betround == ConstBetRoundFlop) RETURN Raises FORCE
-WHEN (betround >  ConstBetRoundFlop) RETURN me_re_MemRaisesOnFlop FORCE
-WHEN Others RETURN 0 FORCE
 
-##NumberOfRaisesOnTurn##
-WHEN (betround == ConstBetRoundTurn) RETURN Raises FORCE
-WHEN (betround >  ConstBetRoundTurn) RETURN me_re_MemRaisesOnTurn FORCE
-WHEN Others RETURN 0 FORCE
 
-##Raises##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
-// Raises might have been -1 if there were additional blind-posters,
-// because nopponentsraising was wrong in that case for old versions
-// But this gets now handled perfectly by nopponentstruelyraising.
-// But we keep the sanity-checks anyway.
-[(me_re_MemRaises < 0) AND (betround == ConstBetRoundPreflop) AND (ncallbets == 1)] ? 
-  (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
-[(me_re_MemRaises < 0) AND (betround == ConstBetRoundPreflop) AND (ncallbets > 1)]  ? 
-  (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 1) :
-// Should not happen postflop, but a sanity-check can't harm.
-[(me_re_MemRaises < 0) AND (betround >= ConstBetRoundFlop)] ? 
-  (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
-// Otherwise: probably everything ok
-me_re_MemRaises
 
-##RaisesBeforeFlop##
-(NumberOfRaisesBeforeFlop > 0)
+##UpdateMemorySymbolsOnHandReset##
+UpdateMemorySymbolsOnNewRound
 
-##RaisesOnFlop##
-(NumberOfRaisesOnFlop > 0)
+##UpdateMemorySymbolsOnNewRound##
+me_st_MemRaises_0
 
-##RaisesOnTurn##
-(NumberOfRaisesOnTurn > 0)
-
-##StartingChips##
-me_re_MemStartingChips
-
-##StartingStackSize##
-me_re_MemStartingStackSize
+##UpdateMemorySymbolsAfterAutoplayerAction##
+me_st_MemRaises_Raises
