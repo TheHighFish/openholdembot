@@ -264,9 +264,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
     // is guaranteed, as after an opponents raise
     // it will be our turn for the update once more again
     // (at least as long as we are playing, and that's all that matters).
-    if (p_symbol_engine_autoplayer->ismyturn()) {
-      _temp_raisbits_current_orbit |= k_exponents[chair];
-    }
+    _temp_raisbits_current_orbit |= k_exponents[chair];
     if (p_symbol_engine_autoplayer->ismyturn()) {
       _raisbits[BETROUND] |= _temp_raisbits_current_orbit;
     }
