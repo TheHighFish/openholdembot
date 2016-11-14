@@ -96,9 +96,11 @@ CString CTableTitle::PreprocessTitle(CString title) {
   return result;
 }
 
-
-
 bool CTableTitle::TitleChangedSinceLastHeartbeat() {
   return (_title != _previous_title);
+}
+
+bool CTableTitle::ContainsSubstring(CString substring) {
+  return (_title.Find(substring) >= 0);
 }
 
