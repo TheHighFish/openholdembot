@@ -1,3 +1,16 @@
+v9.3.3 2016-11-xx
+==================
+BUG FIXES:
+- prwin
+
+- Even more title preprocessing.
+  Thanks to WantPlayPoker for reporting yet another Euro-sign
+  in one of the many country-specific versions of extended ASCII.
+  [THF]
+  
+ blind guessing
+
+
 v9.3.2 2016-11-06
 ==================
 BUG FIXES:
