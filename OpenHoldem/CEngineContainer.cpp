@@ -39,6 +39,7 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineColourCodes.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineDebug.h"
 #include "CSymbolEngineEventLogging.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHandrank.h"
@@ -226,10 +227,16 @@ void CEngineContainer::CreateSymbolEngines() {
   // OpenPPL-symbol-engines
   p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
   AddSymbolEngine(p_symbol_engine_openppl_user_variables);
-  // CSymbolEngineOpenPPL triigers calculation of history-symbols
+  // CSymbolEngineOpenPPL triggers calculation of history-symbols
   // and therefore has to be the very last openPPL-symbol-engine
   p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
   AddSymbolEngine(p_symbol_engine_open_ppl);
+  // Some OH-debug-support for the debug-tab
+  // Does not depend on anything else,
+  // does get used very rarely only by developers.
+  // Therefore placed very late.
+  p_symbol_engine_debug = new CSymbolEngineDebug;
+  AddSymbolEngine(p_symbol_engine_debug);
   // After all real symbol-engines have been handled
   // we can add the hand-history-generator modules.
   // Order of insertion has order of later usage.
