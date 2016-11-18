@@ -48,6 +48,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineDebug.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
@@ -71,6 +72,10 @@ CSymbolEngineRaisers::CSymbolEngineRaisers() {
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
+  //
+  // Also using p_symbol_engine_debug
+  // which doesn't depend on anything and which we want to place last
+  // for performance reasons (very rarely used).
 }
 
 CSymbolEngineRaisers::~CSymbolEngineRaisers() {
@@ -204,6 +209,9 @@ void CSymbolEngineRaisers::CalculateRaisers() {
   }
 	int first_possible_raiser = FirstPossibleActor();
 	int last_possible_raiser  = LastPossibleActor();
+  assert(p_symbol_engine_debug != NULL);
+  p_symbol_engine_debug->SetValue(0, first_possible_raiser);
+  p_symbol_engine_debug->SetValue(1, last_possible_raiser);
   assert(last_possible_raiser > first_possible_raiser);
 	double highest_bet = MinimumStartingBetCurrentOrbit(true);
   write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Searching for raisers from chair %i to %i with a bet higher than %.2f\n",
