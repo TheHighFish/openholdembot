@@ -64,6 +64,33 @@
 //
 //*****************************************************************************
 
+##UpdateMemorySymbolsOnHandReset##
+WHEN Others SET me_st_MemBotsLastPreflopAction_None
+WHEN Others SET me_st_MemRaisesMemRaisesBeforeFlop_0
+WHEN Others SET me_st_MemRaisesMemRaisesOnFlop_0
+WHEN Others SET me_st_MemRaisesMemRaisesOnTurn_0
+// Execute UpdateMemorySymbolsOnNewRound unconditionally
+// but don't do anything
+WHEN UpdateMemorySymbolsOnNewRound
+
+##UpdateMemorySymbolsOnNewRound##
+WHEN Others SET me_st_MemRaises_0
+WHEN Others SET me_st_MemChecks_0
+WHEN Others SET me_st_MemCalls_0
+
+##UpdateMemorySymbolsAfterAutoplayerAction##
+WHEN Others SET me_st_MemRaises_Raises
+WHEN Others SET me_st_MemChecks_Checks
+WHEN Others SET me_st_MemCalls_Calls
+WHEN (betround == ConstBetRoundPreflop) SET me_st_MemBotsLastPreflopAction_BotsLastAction
+WHEN (betround == ConstBetRoundPreflop) SET me_st_MemRaisesMemRaisesBeforeFlop_Raises
+WHEN (betround == ConstBetRoundFlop) SET me_st_MemRaisesMemRaisesOnFlop_Raises
+WHEN (betround == ConstBetRoundTurn) SET me_st_MemRaisesMemRaisesOnTurn_Raises
+
+
+
+
+
 ##CalculateChecks##
 (BotsActionsOnThisRoundIncludingChecks == 0) ? ChecksInFrontOfHero :
 // Stored value of checks on previous orbit plus players behind
@@ -107,22 +134,6 @@ ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 // So don't change anything
 HINT_Nothing_To_Do_But_All_OK
 
-##InitBotsLastPreflopAction##
-// Don't use BotsLastAction on the first orbit,
-// because that variable has to be the last one to be initialized
-// and is therefore undefined.
-[(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] ? 
-    me_st_MemBotsLastPreflopAction_None :
-[(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks > 0)] ? 
-    me_st_MemBotsLastPreflopAction_BotsLastAction : 
-[(betround == ConstBetRoundFlop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] ?
-    me_st_MemBotsLastPreflopAction_BotsLastAction : 0  
-	
-##InitCalls##
-(BotsActionsOnThisRoundIncludingChecks == 0) ?
-  me_st_MemCalls_nopponentscalling :
-  me_st_MemCalls_AddNopponentscalling
-  
 ##InitChecks##
 (BotsActionsOnThisRound <= 1) ? me_st_MemChecks_CalculateChecks : 
 HINT_Nothing_To_Do_But_All_OK
@@ -141,22 +152,7 @@ HINT_Nothing_To_Do_But_All_OK
 me_st_MemMissingSmallBlind_CalculateMissingSmallBlind :
 HINT_Nothing_To_Do_But_All_OK
 
-##InitRaisesBeforeFlop##
-(betround == ConstBetRoundPreflop) ? me_st_MemRaisesBeforeFlop_Raises : 
-HINT_Nothing_To_Do_But_All_OK
-
-##InitRaisesOnFlop##
-(betround == ConstBetRoundFlop) ? me_st_MemRaisesOnFlop_Raises : 
-HINT_Nothing_To_Do_But_All_OK
-
-##InitRaisesOnTurn##
-(betround == ConstBetRoundTurn) ? me_st_MemRaisesOnTurn_Raises : 
-HINT_Nothing_To_Do_But_All_OK
   
-##InitRaises##
-(BotsActionsOnThisRoundIncludingChecks == 0) ? me_st_MemRaises_RaisesSinceLastPlay :
-me_st_MemRaises_Calculate_Raises  
-
 ##InitStartingChips##
 ((handsplayed == 0 OR StartingChips == 0) AND (betround == ConstBetRoundPreflop)) ?
   me_st_MemStartingChips_CalculateStartingChips : HINT_Nothing_To_Do_But_All_OK
@@ -205,30 +201,6 @@ XOR me_st_MemOldGameStateBetround_betround
 // that history symbols have been properly initialized.+
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407
 //!!!!!WHEN NOT GameStateChanged RETURN RememberHeartbeatID FORCE	
-// Memory symbols for game history have to be updated exactly once per turn
-WHEN NOT TimeToInitMemorySymbols RETURN HINT_Nothing_To_Do_But_All_OK FORCE
-// We can't use AND and OR here because of short circuiting.
-// We must use an operator that evaluates both sites.
-// The final result is meaningless.
-//
-// The heartbeat-ID has to be remembered first,
-// because it is used to check if some history-symbols (Raises, Calls)
-// are used correctly, at well-defined times only.
-// And InitRaises, etc. will use them very soon -- and correctly.
-WHEN Others RETURN ( 333 //!!!!!RememberHeartbeatID 
-  XOR InitMissingSmallBlind 
-  XOR InitBets
-  XOR InitChecks
-  XOR InitCalls
-  XOR InitRaises
-  XOR InitBotsLastPreflopAction
-  XOR InitRaisesBeforeFlop
-  XOR InitRaisesOnFlop
-  XOR InitRaisesOnTurn
-  XOR InitMaxOpponentStackSize
-  XOR InitMinOpponentStackSize
-  XOR InitStartingStackSize
-  XOR InitStartingChips
-  XOR RememberCurrentGameState)
-FORCE  
+
+
 

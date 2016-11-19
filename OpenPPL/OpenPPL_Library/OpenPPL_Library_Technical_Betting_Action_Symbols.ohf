@@ -58,9 +58,6 @@
    (prevaction == 4) // Allin
 OR (prevaction == 5) // Jamming the slider
 
-##AddNopponentscalling##
-Calls + nopponentscalling
-
 ##PlayersRaisingOrColdCallingTheLastRaise##
 // Counting the last raiser + all cold callers
 (LastRaiserCurrentBet <= 0) ? 0 :
@@ -151,13 +148,13 @@ nopponentstruelyraising
 ##OpponentsWithHigherStack##
 // No need to tinker with memory symbols here,
 // this logic is valid for all betting rounds.
-  (((balance0 + currentbet0) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance1 + currentbet1) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance2 + currentbet2) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance3 + currentbet3) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance4 + currentbet4) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance5 + currentbet5) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance6 + currentbet6) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance7 + currentbet7) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance8 + currentbet8) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance9 + currentbet9) > MaximumPossibleBetsizeIndollars) ? 1: 0)
+  (((balance0 + currentbet0) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance1 + currentbet1) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance2 + currentbet2) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance3 + currentbet3) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance4 + currentbet4) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance5 + currentbet5) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance6 + currentbet6) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance7 + currentbet7) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance8 + currentbet8) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance9 + currentbet9) > MaximumPossibleBetsizeInDollars) ? 1: 0)

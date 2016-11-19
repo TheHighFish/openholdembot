@@ -98,6 +98,13 @@ WHEN (NumberOfRaisesOnFlop > 0) RETURN True FORCE
 ##RaisesOnTurn##
 WHEN (NumberOfRaisesOnTurn > 0) RETURN True FORCE
 
+
+
+
+
+
+
+
 ##StartingChips##
 me_re_MemStartingChips
 
@@ -170,13 +177,3 @@ me_re_MemMissingSmallBlind
 
 
 
-##UpdateMemorySymbolsOnHandReset##
-UpdateMemorySymbolsOnNewRound
-
-##UpdateMemorySymbolsOnNewRound##
-WHEN Others Set me_st_MemRaises_0
-WHEN Others Set me_st_MemCalls_0
-
-##UpdateMemorySymbolsAfterAutoplayerAction##
-WHEN Others Set me_st_MemRaises_Raises
-WHEN Others Set me_st_MemCalls_Calls
