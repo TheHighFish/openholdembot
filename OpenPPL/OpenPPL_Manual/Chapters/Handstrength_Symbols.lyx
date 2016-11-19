@@ -1712,7 +1712,7 @@ Flushes (five cards of one suit) and flush draws (four cards of one suit)
  Especially flushes with only one contributed hole-card are nearly worthless
  if the rank is low due to the high risk of being dominated.
  That's why we don't count these weak flushes and draws.
- For details please see the openPPL-library.
+ For details please see the OpenPPL-library.
  If you really need to consider any flush, even the weakest one (e.g.
  in case you are pot-commited), there exist technical symbols like HaveAnyFlushD
 rawContributingOnlyOneCard.
