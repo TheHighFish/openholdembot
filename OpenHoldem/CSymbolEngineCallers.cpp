@@ -22,6 +22,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineDebug.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineTableLimits.h"
@@ -50,6 +51,10 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
+  //
+  // Also using p_symbol_engine_debug
+  // which doesn't depend on anything and which we want to place last
+  // for performance reasons (very rarely used).
 }
 
 CSymbolEngineCallers::~CSymbolEngineCallers() {
@@ -89,35 +94,66 @@ void CSymbolEngineCallers::CalculateCallers() {
   int first_possible_raiser = p_symbol_engine_raisers->FirstPossibleActor();
   int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor();
   assert(last_possible_raiser > first_possible_raiser);
+  assert(p_symbol_engine_debug != NULL);
+  p_symbol_engine_debug->SetValue(2, first_possible_raiser);
+  p_symbol_engine_debug->SetValue(3, last_possible_raiser);
   double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);
+  p_symbol_engine_debug->SetValue(4, highest_bet);
   for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
     int chair = i % p_tablemap->nchairs();
+    if (!p_table_state->Player(chair)->HasAnyCards()) {
+      // Folded or not dealt, therefore of no interest
+      continue;
+    }
     double current_players_bet = p_table_state->Player(chair)->_bet.GetValue();
-    	// Exact match required. Players being allin don't count as callers.
-		if ((p_table_state->Player(chair)->_bet.GetValue() == highest_bet) 
-        && (current_players_bet > 0)) {
-      // Can't be the user if it is our turn
-      if (chair == USER_CHAIR) continue;
-			++_nopponentscalling;
-      // We have a caller, at least the temporary last one
-      _lastcaller_chair = chair;
-      if (_firstcaller_chair == kUndefined) {
-        // We found the first caller
-        _firstcaller_chair = chair;
-      }
-      // We have to be very careful
-      // if we accumulate info based on dozens of unstable frames
-      // when it is not our turn and the casino potentially
-      // updates its display, causing garbabe input that sums up.
-      // This affects raisbits, callbits, foldbits.
-      // Special fail-safe-code for callbits: currently none,
-      // because it is very unlikely that a mis-scrape
-      // causes the bets of a raiser to look like a call.
-      int new_callbits = _callbits[BETROUND] | k_exponents[chair];
-      _callbits[BETROUND] = new_callbits;
-		}	else if (p_table_state->Player(chair)->_bet.GetValue() > highest_bet) {
-			highest_bet = p_table_state->Player(chair)->_bet.GetValue();
-		}
+    if (current_players_bet == 0) {
+      // Player is checking
+      continue;
+    }
+    if (chair == USER_CHAIR) {
+      // User is no opponent
+      // and its bet is of no interest either (start or end of search)
+      continue;
+    }
+    if (current_players_bet > highest_bet) {
+      // Raiser
+      highest_bet = current_players_bet;
+      continue;
+    }
+    if (current_players_bet < highest_bet) {
+      // Not a caller
+      if (p_table_state->Player(chair)->_balance.GetValue() == 0) {
+        // Player is allin from previous orbit
+        // This does not get counted as "calling" 
+        // as he could have been raising allin.
+        continue;
+      } 
+      // End of search loop reached.
+      // We found somebody who was raising or calling in a previous orbit.
+      // If we continue then we would find outdated callers,
+      // which does not meet the definition of "CallsSinceLastPlay".
+      // Aggregated OpenPPL-history-symbols like "Raises" would become wrong
+      // if we count some callers twice.
+      break;
+    }
+    assert(current_players_bet == highest_bet);
+		++_nopponentscalling;
+    // We have a caller, at least the temporary last one
+    _lastcaller_chair = chair;
+    if (_firstcaller_chair == kUndefined) {
+      // We found the first caller
+      _firstcaller_chair = chair;
+    }
+    // We have to be very careful
+    // if we accumulate info based on dozens of unstable frames
+    // when it is not our turn and the casino potentially
+    // updates its display, causing garbabe input that sums up.
+    // This affects raisbits, callbits, foldbits.
+    // Special fail-safe-code for callbits: currently none,
+    // because it is very unlikely that a mis-scrape
+    // causes the bets of a raiser to look like a call.
+    int new_callbits = _callbits[BETROUND] | k_exponents[chair];
+    _callbits[BETROUND] = new_callbits;
 	}
 	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);
   AssertRange(_nopponentscalling,   0, kMaxNumberOfPlayers);
