@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2016-07-15"/>
+<meta name="create-date" content="2016-11-19"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -14,7 +14,7 @@
 <a class="toc" name="toc-Chapter--1"></a>HandStrength Symbols
 </h1>
 <div class="Remark*">
-If a set is on board, &ldquo;PairOnBoard&rdquo; is also true; full houses do also count as sets and pairs, made flushes as flushdraws, etc. Therefore it is a strongly recommended to code made hands first (and strong made hands at the very beginning), then weaker holding with positive potential and weaker draws at the very last.
+If a set is on board, &ldquo;PairOnBoard&rdquo; is also true per Shanky definition; full houses do also count as sets and pairs, made flushes as flushdraws, etc. Therefore it is a strongly recommended to code made hands first (and strong made hands at the very beginning), then weaker holdings with positive potential and weaker draws at the very last.
 </div>
 <div class="Unindented">
 <table>
@@ -164,24 +164,6 @@ We have the second best overpair (KK) or a stronger hand
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 40%;">
-HaveSecondNutFlush
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the second best flush possible
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveSecondNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the second best flush draw
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
 HaveSecondNutStraight
 </td>
 <td align="left" valign="top" style="width: 55%;">
@@ -245,24 +227,6 @@ We have the third best overpair (QQ) or a better hand
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 40%;">
-HaveThirdNutFlush
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the Third best flush
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveThirdNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the Third best flushdraw
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
 HaveThirdOverPair
 </td>
 <td align="left" valign="top" style="width: 55%;">
@@ -285,24 +249,6 @@ HaveThirdTopSet
 </td>
 <td align="left" valign="top" style="width: 55%;">
 We have the Third highest set
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveFourthNutFlush
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the Fourth highest flush
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveFourthNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the Fourth highest flushdraw
 </td>
 
 </tr>
@@ -335,24 +281,6 @@ We Have the Fourth highest set
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 40%;">
-HaveFifthNutFlush
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the Fifth highest flush
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveFifthNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the Fifth highest flushdraw 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
 HaveFifthOverPair
 </td>
 <td align="left" valign="top" style="width: 55%;">
@@ -366,54 +294,6 @@ HaveFifthTopPair
 </td>
 <td align="left" valign="top" style="width: 55%;">
 We have the Fifth pair
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveBackdoorSecondNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the 2nd highest backdoor nut flush draw
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveBackdoorThirdNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the Third highest backdoor nut flush draw
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveBackdoorFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have a flush, flushdraw or a backdoor flushdraw. Have BackdoorFlushdraw is only true, if<ul>
-<li>
-we contribute 2 cards
-</li>
-<li>
-or we contribute 1 card to the nuts
-</li>
-<li>
-or we contribute 1 card to the 2nd nuts 
-</li>
-
-</ul>
-
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveBackdoorNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have a backdoor nut flush draw
 </td>
 
 </tr>
@@ -500,24 +380,6 @@ We have a double gut shot draw
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 40%;">
-HaveFlush
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have a flush
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have a flushdraw
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
 HaveFullHouse
 </td>
 <td align="left" valign="top" style="width: 55%;">
@@ -554,33 +416,6 @@ We have nothing (no pair, overcards, flushdraw or straightdraw)
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 40%;">
-HaveNutFlush
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the nut flush
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveNutFlushCard 
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the nut flush card
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveNutFlushDraw
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the nut flush draw
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
 HaveNuts
 </td>
 <td align="left" valign="top" style="width: 55%;">
@@ -603,15 +438,6 @@ HaveNutStraightDraw
 </td>
 <td align="left" valign="top" style="width: 55%;">
 True, if we have a draw to the best straight; this means: if we hit, no better straight is possible. E.g.87 at a board of 653. A nut straight draw requires &ldquo;at least 7 outs&rdquo; according to Shankys definition. Therefore straight draws get discounted if there is a flush draw possible. Use HaveUnDiscountedNutStraightDraw if you don’t worry about possible flushes.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveNutStraightFlush
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have the nut straight flush
 </td>
 
 </tr>
@@ -657,15 +483,6 @@ HaveQuads
 </td>
 <td align="left" valign="top" style="width: 55%;">
 We have quads
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 40%;">
-HaveRunnerRunnerFlushAtRiver 
-</td>
-<td align="left" valign="top" style="width: 55%;">
-We have Flush and we made it with Turn and River card
 </td>
 
 </tr>
@@ -903,6 +720,273 @@ TripsKickerRank
 </td>
 <td align="left" valign="top" style="width: 55%;">
 Rank of the kicker of our Trips
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section-">
+<a class="toc" name="toc-Section--1"></a>Flushes and Flush Draws
+</h2>
+<div class="Unindented">
+Flushes (five cards of one suit) and flush draws (four cards of one suit) vary greatly in strength. Especially flushes with only one contributed hole-card are nearly worthless if the rank is low due to the high risk of being dominated. That’s why we don’t count these weak flushes and draws. For details please see the openPPL-library. If you really need to consider any flush, even the weakest one (e.g. in case you are pot-commited), there exist technical symbols like HaveAnyFlushDrawContributingOnlyOneCard.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+Name
+</td>
+<td align="left" valign="top" style="width: 55%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveSecondNutFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the second best flush possible
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveSecondNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the second best flush draw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveThirdNutFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the Third best flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveThirdNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the Third best flushdraw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveFourthNutFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the Fourth highest flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveFourthNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the Fourth highest flushdraw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveFifthNutFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the Fifth highest flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveFifthNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the Fifth highest flushdraw 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveBackdoorSecondNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the 2nd highest backdoor nut flush draw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveBackdoorThirdNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the Third highest backdoor nut flush draw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveBackdoorFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have a flush, flushdraw or a backdoor flushdraw. Have BackdoorFlushdraw is only true, if<ul>
+<li>
+we contribute 2 cards
+</li>
+<li>
+or we contribute 1 card to the nuts
+</li>
+<li>
+or we contribute 1 card to the 2nd nuts 
+</li>
+
+</ul>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveBackdoorNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have a backdoor nut flush draw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have a flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have a flushdraw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveInsideStraightDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have an inside straight draw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNothing
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have nothing (no pair, overcards, flushdraw or straightdraw)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNutFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the nut flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNutFlushCard 
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the nut flush card
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNutFlushDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the nut flush draw
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNuts
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the best hand possible at this time
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNutStraight
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the best possible straight
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNutStraightDraw
+</td>
+<td align="left" valign="top" style="width: 55%;">
+True, if we have a draw to the best straight; this means: if we hit, no better straight is possible. E.g.87 at a board of 653. A nut straight draw requires &ldquo;at least 7 outs&rdquo; according to Shankys definition. Therefore straight draws get discounted if there is a flush draw possible. Use HaveUnDiscountedNutStraightDraw if you don’t worry about possible flushes.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveNutStraightFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have the nut straight flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveRunnerRunnerFlushAtRiver 
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have Flush and we made it with Turn and River card
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+HaveStraightFlush
+</td>
+<td align="left" valign="top" style="width: 55%;">
+We have a straight flush
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+SuitsInHand
+</td>
+<td align="left" valign="top" style="width: 55%;">
+The number if unique suits in our hand
 </td>
 
 </tr>
