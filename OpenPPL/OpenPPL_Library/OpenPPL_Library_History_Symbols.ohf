@@ -61,6 +61,10 @@
 //
 //*****************************************************************************
 
+##Calls##
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN CallsBeforeOurFirstAction FORCE
+WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
+
 ##MaxOpponentStackSize##
 me_re_MaxOpponentStackSize
 
@@ -149,8 +153,7 @@ ERROR_IncorrectBotsLastAction
 ##BotsLastPreflopAction##
 me_re_MemBotsLastPreflopAction
 
-##Calls##
-me_re_MemCalls
+
 
 ##Checks##
 me_re_MemChecks
@@ -165,11 +168,15 @@ me_re_MemMissingSmallBlind
 
 
 
+
+
 ##UpdateMemorySymbolsOnHandReset##
 UpdateMemorySymbolsOnNewRound
 
 ##UpdateMemorySymbolsOnNewRound##
-me_st_MemRaises_0
+WHEN Others Set me_st_MemRaises_0
+WHEN Others Set me_st_MemCalls_0
 
 ##UpdateMemorySymbolsAfterAutoplayerAction##
-me_st_MemRaises_Raises
+WHEN Others Set me_st_MemRaises_Raises
+WHEN Others Set me_st_MemCalls_Calls

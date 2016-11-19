@@ -162,6 +162,14 @@ OR didbetsizeround3
 + didraisround1 
 + didbetsizeround1
 
+##CallsBeforeOurFirstAction##
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
+WHEN Others RETURN nopponentscalling FORCE
+
+##CallsSinceLastPlay##
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN 0 FORCE
+WHEN Others RETURN nopponentscalling FORCE
+
 ##CallsSinceLastRaise##
 WHEN (PlayersRaisingOrColdCallingTheLastRaise <= 0) RETURN HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise FORCE
 WHEN Others RETURN (PlayersRaisingOrColdCallingTheLastRaise - 1) FORCE
