@@ -156,8 +156,8 @@ void CSymbolEngineChecksBetsFolds::CalculateFoldBits() {
   // updates its display, causing garbabe input that sums up.
   // This affects raisbits, callbits, foldbits.
   // Special fail-safe-code for foldbits: 
-  // when it is our turn and we have stable input try to repair foldbits 
-  // for all betrounds and remove all playing players again.
+  // when it is our turn and we have stable input we try to repair foldbits 
+  // of all betrounds and remove all playing players again.
   if (p_symbol_engine_autoplayer->ismyturn()) {
     for (int i = kBetroundPreflop; i <= kBetroundRiver; ++i) {
       _foldbits[i] &= ~p_symbol_engine_active_dealt_playing->playersplayingbits();

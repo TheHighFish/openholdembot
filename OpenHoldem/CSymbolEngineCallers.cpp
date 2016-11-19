@@ -151,7 +151,7 @@ void CSymbolEngineCallers::CalculateCallers() {
     // This affects raisbits, callbits, foldbits.
     // Special fail-safe-code for callbits: currently none,
     // because it is very unlikely that a mis-scrape
-    // causes the bets of a raiser to look like a call.
+    // causes the bet of a raiser to look like a call.
     int new_callbits = _callbits[BETROUND] | k_exponents[chair];
     _callbits[BETROUND] = new_callbits;
 	}
