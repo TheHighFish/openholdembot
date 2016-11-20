@@ -95,7 +95,7 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 	{
 		return false;
 	}
-	p_flags_toolbar->SetFlag(_flag_to_reset, true);
+	p_flags_toolbar->SetFlag(_flag_to_reset, false);
 	return true;
 }
 
