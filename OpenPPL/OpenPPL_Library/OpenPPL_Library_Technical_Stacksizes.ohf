@@ -204,11 +204,11 @@ EarlyPosition3StartingStackSize < MinStillToActStackSizeAfterEarlyPosition3 ?
 EarlyPosition2StartingStackSize < MinStillToActStackSizeAfterEarlyPosition2 ?
   EarlyPosition2StartingStackSize : MinStillToActStackSizeAfterEarlyPosition2
 
-##MaxOpponentStackSizeCalculation##
+##CalculateMaxOpponentStackSize##
 (bblind <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
 (balance_rank0 == (balance + currentbet)) ? (balance_rank1 / bblind) : (balance_rank0 / bblind)
 
-##MinOpponentStackSizeCalculation##
+##CalculateMinOpponentStackSize##
 (bblind <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
 [ 1 / bblind *
 [ nplayersdealt == 10 ?

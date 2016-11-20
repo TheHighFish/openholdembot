@@ -61,15 +61,62 @@
 //
 //*****************************************************************************
 
+##BotsLastAction##
+// Just to be extra safe...
+WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+// Caring about a possible check, when a fold could not have happened
+WHEN [me_re_MemBotsLastAction == Fold] RETURN Check FORCE
+// Computing BotsLastAction from prevation
+// k_prevaction_undefined = -2
+// k_prevaction_fold = -1
+// k_prevaction_check = 0		// new in OpenHoldem
+// k_prevaction_call = 1
+// k_prevaction_raise = 2		// min-raise
+// k_prevaction_betsize = 3	// "stated wager", i.e. using f$betsize
+// k_prevaction_allin = 4
+// k_prevaction_jam = 5
+//
+// We do no longer check for swuccessful and failed allins
+// because this function gets used for the initialization of BotsLastPreflopAction
+// This update happens potentiually multiple times preflop, not only once on the flop,
+// and at the same heartbeat when the action was executed,
+// so we can't check if the balance is zero, as the casino did not yet update
+// and we did not yet scrape again.
+WHEN PrevActionWasAllin RETURN RaiseMax FORCE
+// Raising (FL and NL)
+WHEN ((prevaction == 2) OR (prevaction == 3)) RETURN Raise FORCE
+// calling
+WHEN (prevaction == 1) RETURN Call FORCE
+// Checking postflop
+WHEN ((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) RETURN Check FORCE
+// Checking preflop
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) RETURN Check FORCE
+// "Checking" when it was a call
+// Actually OpenHoldem does auto-adapt prevaction after such actions
+// but we try to be extra safe
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) RETURN Call FORCE
+// Folding (might be used in sitout formulas)
+WHEN (prevaction == -1) RETURN Fold FORCE
+// No autoplayer-actions, but human being acting at ManualMode
+WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) FORCE
+// None
+WHEN (prevaction == -1) RETURN None FORCE
+WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
+
+##BotsLastPreflopAction##
+me_re_MemBotsLastPreflopAction
+
 ##Calls##
 WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN CallsBeforeOurFirstAction FORCE
 WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
 
 ##MaxOpponentStackSize##
-me_re_MaxOpponentStackSize
+WHEN (me_re_MaxOpponentStackSize > 0) RETURN me_re_MaxOpponentStackSize FORCE
+WHEN Others RETURN CalculateMaxOpponentStackSize FORCE
 
 ##MinOpponentStackSize##
-me_re_MinOpponentStackSize
+WHEN (me_re_MinOpponentStackSize > 0) RETURN me_re_MinOpponentStackSize FORCE
+WHEN Others RETURN CalculateMinOpponentStackSize FORCE
 
 ##NumberOfRaisesBeforeFlop##
 WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
@@ -111,50 +158,6 @@ WHEN Others RETURN CalculateStartingStackSize FORCE
 
 ##Bets##
 me_re_MemBets
-
-##BotsLastAction##
-// Just to be extra safe...
-[(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] ? None :
-// Caring about a possible check, when a fold could not have happened
-[me_re_MemBotsLastAction == Fold] ? Check :
-// Computing BotsLastAction from prevation
-// k_prevaction_undefined = -2
-// k_prevaction_fold = -1
-// k_prevaction_check = 0		// new in OpenHoldem
-// k_prevaction_call = 1
-// k_prevaction_raise = 2		// min-raise
-// k_prevaction_betsize = 3	// "stated wager", i.e. using f$betsize
-// k_prevaction_allin = 4
-// k_prevaction_jam = 5
-//
-// Successful allin
-(PrevActionWasAllin AND (balance == 0)) ? RaiseMax :
-// Failed allin
-(PrevActionWasAllin AND (balance >= 0)) ? Raise :
-// Raising (FL and NL)
-((prevaction == 2) OR (prevaction == 3)) ? Raise :
-// calling
-(prevaction == 1) ? Call :
-// Checking postflop
-((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) ? Check :
-// Checking preflop
-((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) ? Check :
-// "Checking" when it was a call
-// Actually OH does auto-adapt prevaction after such actions
-// but we try to be extra safe
-((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) ? Call :
-// Folding (might be used in sitour formulas)
-(prevaction == -1) ? Fold :
-// No autoplayer-actions, but human being at ManualMode
-sitename$openholdem ? (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) : 
-// None
-(prevaction == -1) ? None :
-ERROR_IncorrectBotsLastAction
-
-##BotsLastPreflopAction##
-me_re_MemBotsLastPreflopAction
-
-
 
 ##Checks##
 me_re_MemChecks
