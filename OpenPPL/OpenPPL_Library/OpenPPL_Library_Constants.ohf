@@ -372,7 +372,7 @@ RaiseMax
 ##HINT_CutOff_Does_Not_Exist##
 -1
 
-##HINT_There_Is_No_SmallNlind_In_This_Game##
+##HINT_There_Is_No_SmallBlind_In_This_Game##
 -1 
 
 ##HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
@@ -389,9 +389,6 @@ RaiseMax
 
 ##HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw##
 False
-
-##HINT_Nothing_To_Do_But_All_OK##
-0
 
 ##HINT_SuitsOnBoard_Undefined_For_This_Betting_Round##
 0

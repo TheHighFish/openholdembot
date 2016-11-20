@@ -61,6 +61,13 @@
 //
 //*****************************************************************************
 
+##Bets##
+// There are no bets preflop per Shanky definition
+WHEN (betround == ConstBetRoundFlop) RETURN 0 FORCE
+// Known stored value
+WHEN (me_re_MemBets > 0) RETURN me_re_MemBets FORCE
+WHEN ((AmountToCall > 0) AND (TotalInvested <= Ante)) RETURN 1 FORCE
+
 ##BotsLastAction##
 // Just to be extra safe...
 WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
@@ -110,6 +117,13 @@ me_re_MemBotsLastPreflopAction
 WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN CallsBeforeOurFirstAction FORCE
 WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
 
+##Checks##
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN ChecksInFrontOfHero FORCE
+// Stored value of checks on previous orbit plus players behind
+WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN (me_re_MemChecks + ChecksAfterHero) FORCE
+// There can no longer be any checking players, so just return the known value
+WHEN Others RETURN me_re_MemChecks FORCE
+
 ##MaxOpponentStackSize##
 WHEN (me_re_MaxOpponentStackSize > 0) RETURN me_re_MaxOpponentStackSize FORCE
 WHEN Others RETURN CalculateMaxOpponentStackSize FORCE
@@ -117,6 +131,12 @@ WHEN Others RETURN CalculateMaxOpponentStackSize FORCE
 ##MinOpponentStackSize##
 WHEN (me_re_MinOpponentStackSize > 0) RETURN me_re_MinOpponentStackSize FORCE
 WHEN Others RETURN CalculateMinOpponentStackSize FORCE
+
+##MissingSmallBlind##
+// Gets initialized after our first action preflop
+WHEN (betround > ConstBetRoundPreflop) RETURN me_re_MemMissingSmallBlind FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN me_re_MemMissingSmallBlind FORCE
+WHEN Others RETURN CalculateMissingSmallBlind FORCE
 
 ##NumberOfRaisesBeforeFlop##
 WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
@@ -152,25 +172,3 @@ WHEN Others RETURN CalculateStartingChips FORCE
 ##StartingStackSize##
 WHEN (me_re_MemStartingStackSize > 0) RETURN me_re_MemStartingStackSize FORCE
 WHEN Others RETURN CalculateStartingStackSize FORCE
-
-
-
-
-##Bets##
-me_re_MemBets
-
-##Checks##
-me_re_MemChecks
-
-
-
-##MissingSmallBlind##
-// !!! To be implemented in OH
-me_re_MemMissingSmallBlind
-
-
-
-
-
-
-
