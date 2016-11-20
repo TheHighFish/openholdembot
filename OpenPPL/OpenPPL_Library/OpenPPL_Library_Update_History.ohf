@@ -161,16 +161,6 @@ HINT_Nothing_To_Do_But_All_OK
 ((handsplayed == 0 OR StartingStackSize == 0) AND (betround == ConstBetRoundPreflop)) ?
   me_st_MemStartingStackSize_CalculateStartingStackSize : HINT_Nothing_To_Do_But_All_OK
   
-##TimeToInitMemorySymbols##
-// Some advanced symbols depend on memory symbols.
-// They are designed to update once per orbit on our turn.
-// However: depending on user-settings OpenHoldem might evaluate
-// the necessary function even when it is not our turn.
-// And incorrect delay-settings might also lead to multiple actions
-// on identical frames (OH acts faster as casino/bring can update)
-// So we check for isfinalanswer and a changed gamestate.
-[isfinalanswer AND GameStateChanged]
-
 ##GameStateChanged##
 // Change in dealerchair => new hand
    (dealerchair != me_re_MemOldGameStateDealerChair)
