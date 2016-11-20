@@ -58,15 +58,30 @@
 //
 // OpenPPL - History Symbols
 //
+// This module provides the following symbols
+// = Bets
+// = BotsLastAction
+// = BotsLastPreflopAction
+// = Calls
+// = Checks
+// = MaxOpponentStackSize
+// = MinOpponentStackSize
+// = MissingSmallBlind
+// = NumberOfRaisesBeforeFlop
+// = NumberOfRaisesOnFlop
+// = NumberOfRaisesOnTurn 
+// = Raises
+// = StartingChips
+// = StartingStackSize 
 //
 //*****************************************************************************
 
 ##Bets##
 // There are no bets preflop per Shanky definition
-WHEN (betround == ConstBetRoundFlop) RETURN 0 FORCE
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
 // Known stored value
 WHEN (me_re_MemBets > 0) RETURN me_re_MemBets FORCE
-WHEN ((AmountToCall > 0) AND (TotalInvested <= Ante)) RETURN 1 FORCE
+WHEN ((AmountToCall > 0) AND (TotalInvestedThisRound <= Ante)) RETURN 1 FORCE
 
 ##BotsLastAction##
 // Just to be extra safe...
