@@ -64,6 +64,14 @@
 //
 //*****************************************************************************
 
+##CalculateStartingChips##
+// Precondition: first hand, preflop
+(currentbet + balance + ante)
+
+##CalculateStartingStackSize##
+// Precondition: first hand, preflop
+(bblind > 0) ? (StartingChips / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
 ##UpdateMemorySymbolsOnHandReset##
 WHEN Others SET me_st_MemBotsLastPreflopAction_None
 WHEN Others SET me_st_MemRaisesMemRaisesBeforeFlop_0
@@ -86,6 +94,8 @@ WHEN (betround == ConstBetRoundPreflop) SET me_st_MemBotsLastPreflopAction_BotsL
 WHEN (betround == ConstBetRoundPreflop) SET me_st_MemRaisesMemRaisesBeforeFlop_Raises
 WHEN (betround == ConstBetRoundFlop) SET me_st_MemRaisesMemRaisesOnFlop_Raises
 WHEN (betround == ConstBetRoundTurn) SET me_st_MemRaisesMemRaisesOnTurn_Raises
+WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
+WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 
 
 
@@ -117,13 +127,9 @@ ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 ##Calculate_Raises##
 (me_re_MemRaises + RaisesSinceLastPlay)
 
-##CalculateStartingChips##
-// Precondition: first hand, preflop
-(bblind > 0) ? (currentbet + balance) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
-##CalculateStartingStackSize##
-// Precondition: first hand, preflop
-(bblind > 0) ? ((currentbet + balance + ante) / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+
 
 ##InitBets##
 // No bet in front of us to call
@@ -152,15 +158,16 @@ HINT_Nothing_To_Do_But_All_OK
 me_st_MemMissingSmallBlind_CalculateMissingSmallBlind :
 HINT_Nothing_To_Do_But_All_OK
 
-  
-##InitStartingChips##
-((handsplayed == 0 OR StartingChips == 0) AND (betround == ConstBetRoundPreflop)) ?
-  me_st_MemStartingChips_CalculateStartingChips : HINT_Nothing_To_Do_But_All_OK
+##TimeToInitMemorySymbols##
+// Some advanced symbols depend on memory symbols.
+// They are designed to update once per orbit on our turn.
+// However: depending on user-settings OpenHoldem might evaluate
+// the necessary function even when it is not our turn.
+// And incorrect delay-settings might also lead to multiple actions
+// on identical frames (OH acts faster as casino/bring can update)
+// So we check for isfinalanswer and a changed gamestate.
+[isfinalanswer AND GameStateChanged]
 
-##InitStartingStackSize##
-((handsplayed == 0 OR StartingStackSize == 0) AND (betround == ConstBetRoundPreflop)) ?
-  me_st_MemStartingStackSize_CalculateStartingStackSize : HINT_Nothing_To_Do_But_All_OK
-  
 ##GameStateChanged##
 // Change in dealerchair => new hand
    (dealerchair != me_re_MemOldGameStateDealerChair)

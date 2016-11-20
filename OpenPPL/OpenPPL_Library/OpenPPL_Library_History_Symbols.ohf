@@ -98,19 +98,13 @@ WHEN (NumberOfRaisesOnFlop > 0) RETURN True FORCE
 ##RaisesOnTurn##
 WHEN (NumberOfRaisesOnTurn > 0) RETURN True FORCE
 
-
-
-
-
-
-
-
 ##StartingChips##
-me_re_MemStartingChips
+WHEN (me_re_MemStartingChips > 0) RETURN me_re_MemStartingChips FORCE
+WHEN Others RETURN CalculateStartingChips FORCE
 
 ##StartingStackSize##
-me_re_MemStartingStackSize
-
+WHEN (me_re_MemStartingStackSize > 0) RETURN me_re_MemStartingStackSize FORCE
+WHEN Others RETURN CalculateStartingStackSize FORCE
 
 
 
