@@ -4,7 +4,10 @@ NEW STUFF:
 - New symbol title$xyz that returns true if the table title
   contains the substring "xyz" (case-sensitive).
   This could e.g. be used to detect "turbo"-SNGs.
-  Thanks to Hugo1 for the suggestion.
+  Thanks to Hugo1 for the suggestion. 
+  
+  !!!! add to list of symbols
+  
   [THF]
 
 BUG FIXES:
@@ -16,6 +19,9 @@ BUG FIXES:
   [THF]
 - The wiundow-message to reset a flag (0..19) at the toolbar
   did incorrectly set it. Thanks to Likeheadsup for reporting.
+  [THF]
+- Fixed a case og NutFullHouseOrFourOhaKind.
+  Thanks to Smuroff for reporting and to ChuckNeverMuck for the fix.
   [THF]
   
  blind guessing
