@@ -197,23 +197,14 @@ WHEN Others RETURN HINT_There_Is_No_Set_On_The_Board FORCE
 + (13 - RankOfBottomPairOnBoard)
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19522
+RankOfSetOfFullHouse < RankOfTopPairOnBoard ? (1 + IndividualOvercardsOnBoard * 2) :
 // 2 is the lowest rank possible, because quads are still possible
-2
+2+
 // For each rank in the common cards above the rank in the pocket cards, theres a higher FH possible.
-+  (rankbitscommon & 0b000000000001000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000000000010000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000000000100000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000000001000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000000010000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000000100000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000001000000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000010000000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b000100000000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b001000000000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b010000000000000 > rankbitsplayer ? 1 : 0)
-+ (rankbitscommon & 0b100000000000000 > rankbitsplayer ? 1 : 0)
+IndividualOvercardsOnBoard 
 // If the Pair on board is higher than our pocket-pair it got already counted
-- ((trankcommon > rankhiplayer) ? 1 : 0)
+- (trankcommon > rankhiplayer)
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard_WeHitQuads##
 // With a single pair on board and quads for us we have the current nuts
