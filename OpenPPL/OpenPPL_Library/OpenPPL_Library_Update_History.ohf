@@ -110,7 +110,7 @@ WHEN Others SET me_st_MemCalls_0
 WHEN Others SET me_st_MemBets_0
 
 ##UpdateMemorySymbolsAfterAutoplayerAction##
-// This function is the preferred place to stora and update memory symbola
+// This function is the preferred place to store and update memory symbola
 // as it is our turn and we see stable frames, i.e. absence of casino animations
 WHEN Others SET me_st_MemRaises_Raises
 WHEN Others SET me_st_MemChecks_Checks
@@ -126,3 +126,79 @@ WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxO
 WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MaxOpponentStackSize
 WHEN (betround == ConstBetRoundPreflop) SET me_re_MemBotsLastPreflopAction_BotsLastAction
 WHEN (betround == ConstBetRoundPreflop) SET me_st_MemMissingSmallBlind_MissingSmallBlind
+// Finally remember a heartbeat ID so that be become able to detect
+// if a symbol gets used before the next scrape (e.g by the debug-tab).
+// In this case we have to return the new value (e.g. of "Raises")
+// and not a computed result based on the "old" value + ActionsSinceLastPlay.
+WHEN CreateHeartbeatIDAfterAutoplayerAction
+// Terminating the open-ended when-condition above
+// to execute the next one for sure.
+WHEN Others
+// Remember current game-state to avoid duplicte updates
+// of memory-symbols in case an action has no effect.
+WHEN RememberCurrentGameStateAfterAutoplayeraction
+
+//*****************************************************************************
+//
+// Detecting already executed updates of memory-symbols
+// that conflict with the normal way of evaluation
+//
+// Usually we calculate symbols like "Raises" based on old, stable values
+// plus RaisesSinceLastPlay (based on nopponentstruelyraising, computed 
+// with the info of the current orbit).
+// This however does no longer work if we store a new "old" value
+// at the end of my turn after an autoplayer action.
+// True, all critical work is done, but code in other threads
+// (especially the debug-tab) might request these symbols.
+// Then Openholdem would temporarily display invalid info
+// and people would be confused.
+// To avoid countless "bug"-reports, we remember and compare
+// a heartbeat-ID and then return the new value without
+// any computed updates based on an old frame
+// (that usually displays some ActionsSinceLastPlay by other players).
+//
+// Affected are the action counters
+// Calls, Checks, Raises
+//
+//*****************************************************************************
+
+##CreateHeartbeatIDAfterAutoplayerAction##
+// As there are no heartbeat-counters 
+// and we don't want things to complicated
+// we use randomheartbeat as a "nearly unique" ID.
+me_st_heartbeatID_randomheartbeat
+
+##OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction##
+WHEN (me_re_heartbeatID == randomheartbeat) RETURN True FORCE
+
+//*****************************************************************************
+//
+// Avoid duplicate updates in case an autoplayer action had no effect.
+// In this case we must not update the symbols again (increase counters, ...).
+// To prevent this problem we remember the current game-state (partially)
+// and then verify that it has changed.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407
+//
+//*****************************************************************************
+
+##GameStateChangedSinceLastAutoplayerAction##
+// Change in dealerchair => new hand
+   (dealerchair != me_re_MemOldGameStateDealerChair)
+// Change in currentbet => we did act 
+// and the autoplayer executed successfully   
+OR (currentbet  != me_re_MemOldGameStateCurrentBet)
+// Change in potsize: somebody else behind us acted, 
+// so we checked or folded successfully
+OR (pot			    != me_re_MemOldGameStatePotSize)
+// Change in betround, if everybody checked 
+// and potsize is the same
+OR (betround    != me_re_MemOldGameStateBetround)
+
+##RememberCurrentGameStateAfterAutoplayeraction##
+// We can't use AND and OR here because of short circuiting.
+// We must use an operator that evaluates both sites.
+// The final result is meaningless.
+    me_st_MemOldGameStateDealerChair_dealerchair
+XOR me_st_MemOldGameStateCurrentBet_currentbet
+XOR me_st_MemOldGameStatePotSize_pot
+XOR me_st_MemOldGameStateBetround_betround

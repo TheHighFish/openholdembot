@@ -129,10 +129,17 @@ WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 me_re_MemBotsLastPreflopAction
 
 ##Calls##
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemCalls FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemCalls FORCE
 WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN CallsBeforeOurFirstAction FORCE
 WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
 
 ##Checks##
+// No checks preflop. Not even big blind can check (game over).
+// We ignore additional blind-posters however.
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemChecks FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemChecks FORCE
 WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN ChecksInFrontOfHero FORCE
 // Stored value of checks on previous orbit plus players behind
 WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN (me_re_MemChecks + ChecksAfterHero) FORCE
@@ -169,6 +176,8 @@ WHEN (betround >  ConstBetRoundTurn) RETURN me_re_MemRaisesOnTurn FORCE
 WHEN Others RETURN 0 FORCE
 
 ##Raises##
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemRaises FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemRaises FORCE
 WHEN Others RETURN (me_re_MemRaises + RaisesSinceLastPlay) FORCE
 
 ##RaisesBeforeFlop##

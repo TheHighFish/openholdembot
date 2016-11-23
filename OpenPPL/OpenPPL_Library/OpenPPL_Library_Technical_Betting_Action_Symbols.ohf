@@ -73,21 +73,28 @@ OR (prevaction == 5) // Jamming the slider
 + (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
 
 ##ChecksAfterHero##
+// No checks preflop. Not even big blind can check (game over).
+// We ignore additional blind-posters however.
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
 // Valid second orbit only
 // All active players with a zero bet
-(BotsActionsOnThisRoundIncludingChecks == 0) ? 0 :
-nopponentschecking
+// This might be temporary incorrect after our first action 
+// as it might count early checkers again. But this is OK, 
+// as we don't update at this point of time, and the value will be OK
+// when ot is our turn again and we take a decision.
+WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN nopponentschecking FORCE
 
 ##ChecksInFrontOfHero##
 // No checks preflop. Not even big blind can check (game over).
 // We ignore additional blind-posters however.
-(betround == ConstBetRoundPreflop) ? 0 :
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
 // I did already act, so no longer any posters in front of me
-(currentbet > 0) ? 0 :
+// (at my 2nd turn)
+WHEN (currentbet > 0) RETURN 0 FORCE
 // A bet to call, subtract all players with a non-zero bet in front of us
-(AmountToCall > 0) ? (betposition - nopponentsbetting - 1):
+WHEN (AmountToCall > 0) RETURN (betposition - nopponentsbetting - 1) FORCE
 // All players before us checked, not even open-folds can throw this logic off.
-[betposition - 1]
+WHEN Others RETURN [betposition - 1] FORCE
 
 ##NoVillainBetOrRaisedOnFlop##
 ((raisbits2 & ~(1<<userchair)) == 0)
