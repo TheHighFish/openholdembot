@@ -135,7 +135,7 @@ WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN CallsBeforeOurFirstActi
 WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
 
 ##Checks##
-// No checks preflop. Not even big blind can check (game over).
+// No checks preflop. Not even big blind can check (betround over).
 // We ignore additional blind-posters however.
 WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
 WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemChecks FORCE

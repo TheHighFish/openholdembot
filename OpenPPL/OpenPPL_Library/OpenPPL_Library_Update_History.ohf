@@ -112,6 +112,14 @@ WHEN Others SET me_st_MemBets_0
 ##UpdateMemorySymbolsAfterAutoplayerAction##
 // This function is the preferred place to store and update memory symbola
 // as it is our turn and we see stable frames, i.e. absence of casino animations
+//
+// At first we set the flag me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_True
+// as during the update we have partially inconsistent information,
+// as the OpenHoldem-symbols are already updated (e.g. didrais, ...).
+// This could cause some OpenPPl-symbols like BotsActionsOnThisRoundIncludingChecks
+// to be off by one, so we have to adapt.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=20275&p=142396#p142396
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_True
 WHEN Others SET me_st_MemRaises_Raises
 WHEN Others SET me_st_MemChecks_Checks
 WHEN Others SET me_st_MemCalls_Calls
@@ -137,6 +145,10 @@ WHEN Others
 // Remember current game-state to avoid duplicte updates
 // of memory-symbols in case an action has no effect.
 WHEN RememberCurrentGameStateAfterAutoplayeraction
+// Terminating the open-ended when-condition above
+// to execute the next one for sure.
+WHEN Others
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_False
 
 //*****************************************************************************
 //
