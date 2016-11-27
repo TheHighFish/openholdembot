@@ -12,11 +12,16 @@ BUG FIXES:
   Thanks to WantPlayPoker for reporting yet another Euro-sign
   in one of the many country-specific versions of extended ASCII.
   [THF]
-- The wiundow-message to reset a flag (0..19) at the toolbar
+- The window-message to reset a flag (0..19) at the toolbar
   did incorrectly set it. Thanks to Likeheadsup for reporting.
   [THF]
 - Fixed a case of NutFullHouseOrFourOhaKind.
   Thanks to Smuroff for reporting and to ChuckNeverMuck for the fix.
+  [THF]
+- The log-file got incorrectly delet6ed on startup,
+  because there was a circular dependency as the log needs to know its max size (preferences) 
+  and the preferences sometimes need a log-file on startup.
+  Thanks to WantPlayPoker, Chillit and Guysmo for reporeting.
   [THF]
   
 MAINTENANCE:
