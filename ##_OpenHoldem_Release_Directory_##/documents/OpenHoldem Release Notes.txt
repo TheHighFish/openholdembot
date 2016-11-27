@@ -1,18 +1,13 @@
-v9.3.3 2016-11-xx
+v9.3.3 2016-11-27
 ==================
 NEW STUFF:
 - New symbol title$xyz that returns true if the table title
   contains the substring "xyz" (case-sensitive).
   This could e.g. be used to detect "turbo"-SNGs.
   Thanks to Hugo1 for the suggestion. 
-  
-  !!!! add to list of symbols
-  
-  [THF]
+[THF]
 
 BUG FIXES:
-- prwin
-
 - Even more title preprocessing.
   Thanks to WantPlayPoker for reporting yet another Euro-sign
   in one of the many country-specific versions of extended ASCII.
@@ -20,11 +15,14 @@ BUG FIXES:
 - The wiundow-message to reset a flag (0..19) at the toolbar
   did incorrectly set it. Thanks to Likeheadsup for reporting.
   [THF]
-- Fixed a case og NutFullHouseOrFourOhaKind.
+- Fixed a case of NutFullHouseOrFourOhaKind.
   Thanks to Smuroff for reporting and to ChuckNeverMuck for the fix.
   [THF]
   
- blind guessing
+MAINTENANCE:
+- Support for special blind-structure of a Georgian casino.
+  Thanks to LikeHeadsup for reporting and for providing replay-frames.
+  [THF]
 
 
 v9.3.2 2016-11-06
