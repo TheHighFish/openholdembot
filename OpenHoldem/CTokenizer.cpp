@@ -454,13 +454,13 @@ void CTokenizer::ErrorInvalidCharacter(char invalid_char) {
   CString message;
   message.Format("Illegal character: \"%c\"\n"
     "\n"
-    "Non-standard-characters like \"extended ASCII\""
-    "can cause all kinds of unbelievable troubles,"
-    "like getting interpreted by system-libraries as multi-byte Unicode,"
-    "thus eating up extra characters of the input, including line-endings,"
+    "Non-standard-characters like \"extended ASCII \""
+    "can cause all kinds of unbelievable troubles, "
+    "like getting interpreted by system-libraries as multi-byte Unicode, "
+    "thus eating up extra characters of the input, including line-endings, "
     "thus causing line-info in the logs to be wrong.\n"
     "\n"
-    "Therefore OH-script and OpenPPL (like most other programming languages)"
+    "Therefore OH-script and OpenPPL (like most other programming languages) "
     "are restricted to standard ASCII on purpose.\n",
     invalid_char);
   CParseErrors::Error(message);
