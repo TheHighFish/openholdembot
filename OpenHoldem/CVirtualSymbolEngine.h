@@ -24,6 +24,7 @@ class CVirtualSymbolEngine {
 	CVirtualSymbolEngine();
 	virtual ~CVirtualSymbolEngine();
  public:
+  virtual void InitOnStartup();
 	virtual void UpdateOnConnection();
 	virtual void UpdateOnHandreset();
 	virtual void UpdateOnNewRound();

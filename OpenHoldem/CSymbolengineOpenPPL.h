@@ -37,7 +37,7 @@ class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString IdentifiersProvided();;
  public:
-  void InitMemorySymbols();
+  void VerifyExistenceOfOpenPPLInitializationInLibrary();
  private:
   void CheckExistenceOfOpenPPLFunction(CString function);
 };

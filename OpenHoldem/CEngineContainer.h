@@ -41,6 +41,7 @@ class CEngineContainer {
   void DestroyAllSymbolEngines();
   void DestroyAllSpecialSymbolEngines();
  private:
+  void InitOnStartup();
   void UpdateOnHandreset();
   void UpdateOnNewRound();
   void UpdateOnMyTurn();

@@ -24,6 +24,9 @@ CVirtualSymbolEngine::CVirtualSymbolEngine()
 CVirtualSymbolEngine::~CVirtualSymbolEngine()
 {}
 
+void CVirtualSymbolEngine::InitOnStartup()
+{}
+
 void CVirtualSymbolEngine::UpdateOnConnection()
 {}
 

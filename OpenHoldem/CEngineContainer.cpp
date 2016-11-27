@@ -70,12 +70,11 @@
 #include "UnknownSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
-  CEngineContainer::CEngineContainer() {
+
+CEngineContainer::CEngineContainer() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
   CreateSymbolEngines();
-  // First initialization is the same as on a new connection
-  UpdateOnConnection();
-  // But we want to initialize later again on every connection
+  InitOnStartup();
   _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
@@ -315,6 +314,15 @@ void CEngineContainer::EvaluateAll() {
 	}
 	// And finally UpdateOnHeartbeat() gets always called.
 	UpdateOnHeartbeat();
+}
+
+void CEngineContainer::InitOnStartup() {
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup\n");
+  for (int i = 0; i<_number_of_symbol_engines_loaded; i++) {
+    _symbol_engines[i]->InitOnStartup();
+  }
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup finished\n");
+
 }
 
 void CEngineContainer::UpdateOnConnection() {

@@ -67,16 +67,10 @@ void CSymbolEngineOpenPPL::CheckExistenceOfOpenPPLFunction(CString function) {
 }
 
 void CSymbolEngineOpenPPL::InitOnStartup() {
-	//!!!!!UpdateOnConnection();
 }
 
 void CSymbolEngineOpenPPL::UpdateOnConnection() {
-  // Verify that ini-functions exists.
-  // Avoid PEBKACs by stupid renaming, that breaks everything
-  // !!!!! only call when öibrary loaded!
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnHandReset);
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnNewRound);
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction);
+  VerifyExistenceOfOpenPPLInitializationInLibrary();
   UpdateOnHandreset();
 }
 
@@ -93,24 +87,22 @@ void CSymbolEngineOpenPPL::UpdateOnNewRound() {
 }
 
 void CSymbolEngineOpenPPL::UpdateOnMyTurn() {
-  // Iniytialization of memory-symbols temporary disbled, here
-  // as it did not work perfectly and we currently do it in
-  // CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL()
-  //InitMemorySymbols(); !!!!!
 }
 
-void CSymbolEngineOpenPPL::InitMemorySymbols() {
-  // This function is very vital for most OpenPPL-history-symbols
-  // that will soon be used by the autoplayer during this heartbeat.
-  // Therefore we log these initializations too if an autoplayer-trace
-  // is desired.
-  //!!!!!R
+void CSymbolEngineOpenPPL::VerifyExistenceOfOpenPPLInitializationInLibrary() {
+  // Verify that ini-functions exists.
+  // Avoid PEBKACs by stupid renaming, that breaks everything
+  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnHandReset);
+  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnNewRound);
+  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction);
 }
 
 void CSymbolEngineOpenPPL::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineOpenPPL::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
+  //!!!!!
+  MessageBox(0, "Updating", "Debug", 0);
   p_function_collection->Evaluate(
     kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction,
     kAlwaysLogOpenPPLInitialization);

@@ -43,6 +43,8 @@ CAutoplayerTrace::~CAutoplayerTrace() {
 
 void CAutoplayerTrace::Clear() {
   ENT 
+    //!!!!!
+    MessageBox(0, "Clearing", "Debug", 0);
   _indentation = 0;
   _number_of_log_lines = 0;
   _symboltrace_collection.RemoveAll();
@@ -159,6 +161,8 @@ CString CAutoplayerTrace::Indentation() {
 }
 
 void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary_formulas) {
+  //!!!!!
+  MessageBox(0, "Printing", "Debug", 0);
   CSLock lock(log_critsec);
   if (full_log_for_primary_formulas) {
     LogPlayers();
