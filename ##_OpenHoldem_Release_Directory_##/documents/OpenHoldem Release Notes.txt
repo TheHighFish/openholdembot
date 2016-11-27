@@ -15,7 +15,7 @@ BUG FIXES:
 - The window-message to reset a flag (0..19) at the toolbar
   did incorrectly set it. Thanks to Likeheadsup for reporting.
   [THF]
-- Fixed a case of NutFullHouseOrFourOhaKind.
+- Fixed a case of NutFullHouseOrFourOfAKind.
   Thanks to Smuroff for reporting and to ChuckNeverMuck for the fix.
   [THF]
 - The log-file got incorrectly delet6ed on startup,
