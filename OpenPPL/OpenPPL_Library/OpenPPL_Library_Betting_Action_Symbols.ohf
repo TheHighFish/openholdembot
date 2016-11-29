@@ -155,27 +155,33 @@ WHEN Others RETURN 0 FORCE
 // without the need for hand-resets
 WHEN ((betround == ConstBetRoundPreflop) AND (currentbet < bblind)) RETURN 0 FORCE
 WHEN ((betround > ConstBetRoundPreflop) AND (currentbet == 0)) RETURN 0 FORCE
-WHEN Others RETURN
-  [(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
-  // Checks are not counted per definition.
-  // Folds and allins are not relevant, as then the hand is over for us.
-  + didcall 
-  + didrais 
-  + didbetsize
-  + ActionCounterCorrectionForUpdateInProgress] FORCE
-
+WHEN (BotsActionsOnThisRoundAdapted < 0) RETURN 0 FORCE
+WHEN Others RETURN BotsActionsOnThisRoundAdapted FORCE
+ 
 ##BotsActionsOnThisRoundIncludingChecks##
 // Special condition to ease simulations at Manualmode 
 // without the need for hand-resets
 WHEN ((betround == ConstBetRoundPreflop) AND (currentbet < bblind)) RETURN 0 FORCE
-WHEN Others RETURN
-  [(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
-  // Folds and allins are not relevant, as then the hand is over for us.
-  + didchec 
-  + didcall 
-  + didbetsize 
-  + didrais
-  + ActionCounterCorrectionForUpdateInProgress] FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecksAdapted < 0) RETURN 0 FORCE
+WHEN Others RETURN BotsActionsOnThisRoundIncludingChecksAdapted FORCE
+
+##BotsActionsOnThisRoundAdapted##
+[(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+// Checks are not counted per definition.
+// Folds and allins are not relevant, as then the hand is over for us.
++ didcall 
++ didrais 
++ didbetsize
++ ActionCounterCorrectionForUpdateInProgress]
+   
+##BotsActionsOnThisRoundIncludingChecksAdapted##
+[(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+// Folds and allins are not relevant, as then the hand is over for us.
++ didchec 
++ didcall 
++ didbetsize 
++ didrais
++ ActionCounterCorrectionForUpdateInProgress]
 
 ##BotsActionsPreflop##
 WHEN (betround == ConstBetRoundPreflop) RETURN BotsActionsOnThisRound FORCE
