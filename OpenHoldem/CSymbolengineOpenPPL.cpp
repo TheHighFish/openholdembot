@@ -33,7 +33,6 @@ const char* kOpenPPLUpdateOnNewRound =
   "UpdateMemorySymbolsOnNewRound";
 const char* kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction =
   "UpdateMemorySymbolsAfterAutoplayerAction";
-//!!!!! write trace only after execution
 
 CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
 	// The values of some symbol-engines depend on other engines.
@@ -101,8 +100,6 @@ void CSymbolEngineOpenPPL::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineOpenPPL::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
-  //!!!!!
-  MessageBox(0, "Updating", "Debug", 0);
   p_function_collection->Evaluate(
     kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction,
     kAlwaysLogOpenPPLInitialization);
