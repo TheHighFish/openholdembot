@@ -18,7 +18,7 @@
 
 // Small-blind, big-blind, big-bet
 const int kNumberOfValuesPerLevel =   3; 
-const int kNumberOfBlindLevels    = 198;
+const int kNumberOfBlindLevels    = 205;
 const int kLastBlindLevel         = kNumberOfBlindLevels - 1;
 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60&p=125232&view=show#p125232
@@ -219,11 +219,20 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    { 30000000.00,  60000000.00, 120000000.00},
    { 40000000.00,  80000000.00, 160000000.00},
    { 50000000.00, 100000000.00, 200000000.00},
-   // Finally special blind-levels like 1/1 and 1000/3000
-   // from offline-simulators like DDPoker.
+   // Non-standard blind-levels of a Georgian casino
+   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19516
    // We put them out of order to avoid problems
    // with completion.of partially known blinds
-   // at real casinos.
+   // of other real casinos with more common levels.
+   { 0.10,         0.10,         0.10 },
+   { 0.25,         0.25,         0.25 },
+   { 0.50,         0.50,         0.50 },
+   { 1.00,         1.00,         1.00 },
+   { 2.00,         2.00,         2.00 },
+   { 5.00,         5.00,         5.00 },
+   { 10.00,        10.00,        10.00 },
+   // Finally special blind-levels like 1/1 and 1000/3000
+   // from offline-simulators like DDPoker.
    {        1.00,         1.00,         2.00},
    {        2.00,         3.00,         6.00},
    {        3.00,         5.00,        10.00},
@@ -232,7 +241,8 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {       25.00,        25.00,        50.00},
    {       50.00,        75.00,       150.00},
    {     2000.00,      5000.00,     10000.00}, 
-   {     1000.00,      3000.00,      6000.00}};
+   {     1000.00,      3000.00,      6000.00},
+};
 
 CBlindLevels::CBlindLevels () {
 }

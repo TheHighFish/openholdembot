@@ -1,3 +1,81 @@
+v9.3.3 2016-11-27
+==================
+NEW STUFF:
+- New symbol title$xyz that returns true if the table title
+  contains the substring "xyz" (case-sensitive).
+  This could e.g. be used to detect "turbo"-SNGs.
+  Thanks to Hugo1 for the suggestion. 
+[THF]
+
+BUG FIXES:
+- Even more title preprocessing.
+  Thanks to WantPlayPoker for reporting yet another Euro-sign
+  in one of the many country-specific versions of extended ASCII.
+  [THF]
+- The window-message to reset a flag (0..19) at the toolbar
+  did incorrectly set it. Thanks to Likeheadsup for reporting.
+  [THF]
+- Fixed a case of NutFullHouseOrFourOfAKind.
+  Thanks to Smuroff for reporting and to ChuckNeverMuck for the fix.
+  [THF]
+- The log-file got incorrectly delet6ed on startup,
+  because there was a circular dependency as the log needs to know its max size (preferences) 
+  and the preferences sometimes need a log-file on startup.
+  Thanks to WantPlayPoker, Chillit and Guysmo for reporeting.
+  [THF]
+  
+MAINTENANCE:
+- Support for special blind-structure of a Georgian casino.
+  Thanks to LikeHeadsup for reporting and for providing replay-frames.
+  [THF]
+
+
+v9.3.2 2016-11-06
+==================
+BUG FIXES:
+- The BlackChipPolker software had special characters inside numbers in the title
+  that looked like spaces to humans but were something different
+  (0xA0 = "none-breakable-space" in Latin-1-encoding of extended ASCII).
+  This special case gets now handled by the title-preprocessing.
+  Thanks to Terminatoros for reporting and for the replay-frame.
+  [THF]
+  
+MAINTENANCE:
+- Moved the warning about unexpected characters in the title 
+  to a less annoying place where "known unexpected" input has been filtered.
+  [THF]
+
+v9.3.1 2016-11-05
+==================
+BUG FIXES:
+- Restarting the PokerTracker-connection if the connection got lost.
+  Special thanks to AlexTheKing88 who contributed the code.
+  [THF]
+- Renaming an OH-script-object with the editor could crash Openholdem,
+  as the rename-function was formerly based on a semi-buggy 
+  delete and recreate, but got broken when the deletion got fixed.
+  This has now been corrected.
+  Thanks to Guysmo for reporting.
+  [TFF]
+- The table-title was undefined at some point of time
+  and therefore blind-guessing did not work for everybody.
+  Thanks to SmartBet for reporting.
+  [THF]
+- Memory-increment-commands (me_inc_) did not work in combination 
+  with OpenPPL-conditions, where they have to work differently 
+  due to the implicit continuation to the next condition.
+  Thanks to JMonderson for insistently reporting the bug
+  and for providing his legendary 1.500.000 lines of FlopZilla-code
+  for reproduction.
+  [THF]
+
+
+MAINTENANCE:
+- Improved HaveUnderStraight.
+  Thanks to Poker_Dog for reporting a special case
+  and to Johnny and Salem for the suggestions.
+  [THF]
+
 v9.3.0 2016-10-29
 ==================
 NEW STUFF:

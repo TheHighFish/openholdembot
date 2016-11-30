@@ -1983,6 +1983,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	mainParent = parent = AddSymbolTitle("Table Map symbols", NULL, hCatItem);
 	AddSymbol(parent, "sitename$abc", "true if user defined string abc appears within the Table Map symbol _s$_sitename");
 	AddSymbol(parent, "network$def", "true if user defined string def appears within the Table Map symbol _s$_network");
+  AddSymbol(parent, "title$xyz", "true if user defined string xyz appears within the table title");
 
 	mainParent = parent = AddSymbolTitle("Formula file", NULL, hCatItem);
 	AddSymbol(parent, "f$prwin_number_of_iterations", "number of iterations tested by the analyzer(s)");

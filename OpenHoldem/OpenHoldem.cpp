@@ -125,91 +125,79 @@ BOOL COpenHoldemApp::InitInstance() {
 	AfxEnableControlContainer();
   
 	// Classes
+  // First we have to read the pre4ferences,
+  // as start_log() needs to know if the old log has to be deleted...
+  free((void*)m_pszProfileName);
+  m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
+  preferences.LoadPreferences();
 	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter, which is necessary for 
 	// the filename of the log (oh_0.log, etc).
 	start_log();
-  // Load preferences immediately after creation of the log-file
-  // We might want to to log the preferences too.
-  free((void*)m_pszProfileName);
-  m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
+  // ...then re-Load the preferences immediately after creation 
+  // of the log-file again, as We might want to to log the preferences too,
+  // which was not yet possible some lines above.
+  // www!!!!!
   preferences.LoadPreferences();
 
 	InstantiateAllSingletons();
   p_formula_parser->ParseDefaultLibraries();
-
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load mouse.DLL\n");
+  
+  write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load mouse.DLL\n");
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
-	if (_mouse_dll==NULL)
-	{
+	if (_mouse_dll == NULL)	{
 		CString		t = "";
 		t.Format("Unable to load mouse.dll, error: %d\n\nExiting.", GetLastError());
 		OH_MessageBox_Error_Warning(t, "OpenHoldem mouse.dll ERROR");
 		return false;
-	}
-	else
-	{
+	}	else {
 		_dll_mouse_process_message = (mouse_process_message_t) GetProcAddress(_mouse_dll, "ProcessMessage");
 		_dll_mouse_click = (mouse_click_t) GetProcAddress(_mouse_dll, "MouseClick");
 		_dll_mouse_click_drag = (mouse_clickdrag_t) GetProcAddress(_mouse_dll, "MouseClickDrag");
-
-		if (_dll_mouse_process_message==NULL || _dll_mouse_click==NULL || _dll_mouse_click_drag==NULL)
-		{
+		if (_dll_mouse_process_message==NULL || _dll_mouse_click==NULL || _dll_mouse_click_drag==NULL) {
 			CString		t = "";
 			t.Format("Unable to find all symbols in mouse.dll");
 			OH_MessageBox_Error_Warning(t, "OpenHoldem mouse.dll ERROR");
-
 			FreeLibrary(_mouse_dll);
 			_mouse_dll = NULL;
 			return false;
 		}
-	
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load keyboard.DLL\n");}
-
 	// keyboard.dll - failure in load is fatal
 	_keyboard_dll = LoadLibrary("keyboard.dll");
-	if (_keyboard_dll==NULL)
-	{
+	if (_keyboard_dll==NULL) {
 		CString		t = "";
 		t.Format("Unable to load keyboard.dll, error: %d\n\nExiting.", GetLastError());
 		OH_MessageBox_Error_Warning(t, "OpenHoldem keyboard.dll ERROR");
 		return false;
-	}
-	else
-	{
+	}	else {
 		_dll_keyboard_process_message = (keyboard_process_message_t) GetProcAddress(_keyboard_dll, "ProcessMessage");
 		_dll_keyboard_sendstring = (keyboard_sendstring_t) GetProcAddress(_keyboard_dll, "SendString");
 		_dll_keyboard_sendkey = (keyboard_sendkey_t) GetProcAddress(_keyboard_dll, "SendKey");
-
-		if (_dll_keyboard_process_message==NULL || _dll_keyboard_sendstring==NULL || _dll_keyboard_sendkey==NULL)
-		{
+		if (_dll_keyboard_process_message==NULL || _dll_keyboard_sendstring==NULL || _dll_keyboard_sendkey==NULL)	{
 			CString		t = "";
 			t.Format("Unable to find all symbols in keyboard.dll");
 			OH_MessageBox_Error_Warning(t, "OpenHoldem keyboard.dll ERROR");
-
 			FreeLibrary(_keyboard_dll);
 			_keyboard_dll = NULL;
 			return false;
 		}
 	}
-
 	LoadLastRecentlyUsedFileList();
 	// Register the application's document templates.  Document templates
 	// serve as the connection between documents, frame windows and views
 	CSingleDocTemplate* pDocTemplate;
-
-	 //Document template and doc/view
-         //https://msdn.microsoft.com/en-us/library/hts9a4xz.aspx
-	 // https://msdn.microsoft.com/en-us/library/d1e9fe7d.aspx
+	// Document template and doc/view
+  // https://msdn.microsoft.com/en-us/library/hts9a4xz.aspx
+	// https://msdn.microsoft.com/en-us/library/d1e9fe7d.aspx
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to create CSingleDocTemplate()\n");
 	pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(COpenHoldemDoc),
 		RUNTIME_CLASS(CMainFrame),	   // main SDI frame window
 		RUNTIME_CLASS(COpenHoldemView));
-
 	if (!pDocTemplate) {
 		write_log(preferences.debug_openholdem(), "[OpenHoldem] Creating CSingleDocTemplate() failed\n");
 		return FALSE;

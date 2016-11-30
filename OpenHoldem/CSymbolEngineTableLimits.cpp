@@ -108,7 +108,7 @@ void CSymbolEngineTableLimits::UpdateOnHeartbeat() {
       &tablelimit_best_guess.bblind,
       &tablelimit_best_guess.bbet);
     if (p_table_state->_s_limit_info.ante() > 0) {
-      if (p_table_state->_s_limit_info.ante() >= sblind()) {
+      if (p_table_state->_s_limit_info.ante() > sblind()) {
         write_log(k_always_log_errors,
           "[CSymbolEngineTableLimits] WARNING! ante larger than small blind\n");
         write_log(k_always_log_errors,
