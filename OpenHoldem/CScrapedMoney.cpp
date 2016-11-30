@@ -31,6 +31,9 @@ CScrapedMoney::~CScrapedMoney() {
 }
 
 bool CScrapedMoney::SetValue(CString scraped_value) {
+  if (scraped_value == "") {
+    return false;
+  }
   RemoveLeftWhiteSpace(&scraped_value);
   RemoveRightWhiteSpace(&scraped_value);
   RemoveMultipleWhiteSpaces(&scraped_value);
@@ -39,7 +42,7 @@ bool CScrapedMoney::SetValue(CString scraped_value) {
   RemoveSpacesInFrontOfCentMultipliers(&scraped_value);
   ReplaceCommasInNumbersByDots(&scraped_value);
   RemoveExtraDotsInNumbers(&scraped_value);
-  //KeepBalanceNumbersOnly(&scraped_value);
+  //!!!KeepBalanceNumbersOnly(&scraped_value);
   CTransform c;
   double result = c.StringToMoney(scraped_value);
   if (result >= 0.0) {

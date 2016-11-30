@@ -1199,6 +1199,9 @@ double CTransform::StringToMoney(const CString inStr) {
   write_log(preferences.debug_scraper(),
     "[CTransform] StringToMoney %s\n", inStr);
 #endif 
+  if (strlen(inStr) == 0) {
+    return kUndefined;
+  }
 	while (*str) {
 		switch (*str) {
 			case '0':

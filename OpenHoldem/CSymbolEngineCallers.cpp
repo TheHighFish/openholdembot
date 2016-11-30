@@ -95,10 +95,7 @@ void CSymbolEngineCallers::CalculateCallers() {
   int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor();
   assert(last_possible_raiser > first_possible_raiser);
   assert(p_symbol_engine_debug != NULL);
-  p_symbol_engine_debug->SetValue(2, first_possible_raiser);
-  p_symbol_engine_debug->SetValue(3, last_possible_raiser);
   double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);
-  p_symbol_engine_debug->SetValue(4, highest_bet);
   for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
     int chair = i % p_tablemap->nchairs();
     if (!p_table_state->Player(chair)->HasAnyCards()) {
