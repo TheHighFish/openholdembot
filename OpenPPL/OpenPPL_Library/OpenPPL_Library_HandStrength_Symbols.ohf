@@ -71,8 +71,7 @@ AND RankOfFirstHoleCard > ThirdFlopCard ]
 AND RankOfFirstHoleCard > FirstFlopCard
 AND RankOfFirstHoleCard > SecondFlopCard
 AND RankOfFirstHoleCard > ThirdFlopCard 
-AND RankOfFirstHoleCard > TurnCard 
-]
+AND RankOfFirstHoleCard > TurnCard ]
 
 ##HadSecondOverPairOnFlop##
     ispair
@@ -90,10 +89,15 @@ WHEN FirstHoleCardPairsTheFlop  RETURN True FORCE
 WHEN SecondHoleCardPairsTheFlop RETURN True FORCE 
 
 ##HadPairOnTurn##
-   HadPairOnFlop 
-OR FlopCardPairedOnTurn //?????
-OR RankOfFirstHoleCard == TurnCard 
-OR RankOfSecondHoleCard == TurnCard
+// We already had a pair at the flop...
+WHEN HadPairOnFlop True FORCE
+// ...or got a new one at the turn
+WHEN (RankOfFirstHoleCard == TurnCard) True FORCE
+WHEN (RankOfSecondHoleCard == TurnCard) True FORCE
+// But we ignore FlopCardPairedOnTurn
+// because we only want to consider pairs
+// where we contribute at least one hole-card.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20297
 
 ##HadSetOnFlop##
 PairInHand AND (RankOfFirstHoleCard==$$cr0 OR RankOfFirstHoleCard==$$cr1 OR RankOfFirstHoleCard==$$cr2) 
