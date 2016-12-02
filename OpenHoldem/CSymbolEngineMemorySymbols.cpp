@@ -107,13 +107,13 @@ void CSymbolEngineMemorySymbols::Store(CString command) {
 }
 
 double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_hand_value) {
-  // Possible use-case
+  // Possible use-cases
   //   * constants        me_st_x_3_141
   //   * functions        me_st_x_f$myfunc
   //   * symbols          me_st_x_userchair
   //   * memory-symbols   me_st_x_re_re_y
   // Already removed: "me_st_x_"
-  // All we have is the oure right-hand-side
+  // All we have is the pure right-hand-side
   double result = kUndefinedZero;
   if (isdigit(right_hand_value[0])) {
     // Constant
