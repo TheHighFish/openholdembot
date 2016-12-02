@@ -90,10 +90,10 @@ WHEN SecondHoleCardPairsTheFlop RETURN True FORCE
 
 ##HadPairOnTurn##
 // We already had a pair at the flop...
-WHEN HadPairOnFlop True FORCE
+WHEN HadPairOnFlop RETURN True FORCE
 // ...or got a new one at the turn
-WHEN (RankOfFirstHoleCard == TurnCard) True FORCE
-WHEN (RankOfSecondHoleCard == TurnCard) True FORCE
+WHEN (RankOfFirstHoleCard == TurnCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard == TurnCard) RETURN True FORCE
 // But we ignore FlopCardPairedOnTurn
 // because we only want to consider pairs
 // where we contribute at least one hole-card.

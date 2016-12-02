@@ -1,3 +1,12 @@
+v9.4.0 2016-12-xx
+==================
+NEW STUFF:
+
+BUG FIXES:
+- HadPairOnTurn uncorrectly considered board-pairs.
+  Thenks to ChuckNeverMuck for reporting.
+  [THF]
+
 v9.3.3 2016-11-27
 ==================
 NEW STUFF:
