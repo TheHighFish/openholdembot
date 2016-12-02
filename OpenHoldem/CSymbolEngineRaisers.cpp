@@ -76,12 +76,14 @@ CSymbolEngineRaisers::CSymbolEngineRaisers() {
   // Also using p_symbol_engine_debug
   // which doesn't depend on anything and which we want to place last
   // for performance reasons (very rarely used).
+  UpdateOnHandreset();
 }
 
 CSymbolEngineRaisers::~CSymbolEngineRaisers() {
 }
 
 void CSymbolEngineRaisers::InitOnStartup() {
+  UpdateOnConnection();
 }
 
 void CSymbolEngineRaisers::UpdateOnConnection() {

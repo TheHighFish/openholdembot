@@ -55,12 +55,14 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
   // Also using p_symbol_engine_debug
   // which doesn't depend on anything and which we want to place last
   // for performance reasons (very rarely used).
+  UpdateOnHandreset();
 }
 
 CSymbolEngineCallers::~CSymbolEngineCallers() {
 }
 
 void CSymbolEngineCallers::InitOnStartup() {
+  UpdateOnConnection();
 }
 
 void CSymbolEngineCallers::UpdateOnConnection() {
@@ -72,7 +74,9 @@ void CSymbolEngineCallers::UpdateOnHandreset() {
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_callbits[i] = 0;
 	}
-	_nopponentscalling  = 0;
+  _nopponentscalling = 0;
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
 }
 
 void CSymbolEngineCallers::UpdateOnNewRound() {
