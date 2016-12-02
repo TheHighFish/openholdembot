@@ -156,6 +156,7 @@ WHEN Others RETURN CalculateMinOpponentStackSize FORCE
 
 ##MissingSmallBlind##
 // Gets initialized after our first action preflop
+WHEN (nplayersseated < 2) RETURN False FORCE
 WHEN (betround > ConstBetRoundPreflop) RETURN me_re_MemMissingSmallBlind FORCE
 WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN me_re_MemMissingSmallBlind FORCE
 WHEN Others RETURN CalculateMissingSmallBlind FORCE
