@@ -112,13 +112,13 @@
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSet##
 // 3 is the lowest nut rank possible, because there's still a quad and a FH with the higher pair possible.
 // There's always a higher pair on board, so if there are two higher ranked cards in common cards,
-// there's also a higher set possible with a pocket pair and the remaining single card on board.
+// there's also a higher SET possible with a pocket pair and the remaining single card on board.
 3 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 2) ? 1 : 0]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitTopSet##
 // 2 is the lowest nut rank possible, because there's still a quad possible.
-// There's might be a higher card on board, so if there is a higher ranked card in common cards then our set rank,
-// there's also a higher set possible with a pocket pair and the remaining single card on board.
+// There's might be a higher card on board, so if there is a higher ranked card in common cards then our SET rank,
+// there's also a higher SET possible with a pocket pair and the remaining single card on board.
 2 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 1) ? 1 : 0]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomQuads##
@@ -130,7 +130,7 @@
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WePairBothPairs##
 // There's might be a higher card on board,
 // so if there is a higher ranked card in common cards then our pair ranks,
-// there are also a higher pair and a higher set possible.
+// there are also a higher pair and a higher SET possible.
 1
 + [((pokervalcommon & 0b1111) > RankOfPairOfFullHouse) ? 1 : 0]
 + [((pokervalcommon & 0b1111) > RankOfSetOfFullHouse ) ? 1 : 0]
@@ -190,8 +190,8 @@ WHEN Others RETURN HINT_There_Is_No_Set_On_The_Board FORCE
 ##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard##
 // One quads possible, so the bestcase is second nuts
 2
-// Because the set does have a higher rank then our pair,
-// with the rank of the set there's no OverPair possible,
+// Because the SET does have a higher rank then our pair,
+// with the rank of the SET there's no OverPair possible,
 // and therefore are only 11 OverPairs possible instead of 12 if we do have 22 pair,
 // 10 if we have 33 pair, etc.
 + (13 - RankOfBottomPairOnBoard)
@@ -236,10 +236,10 @@ IndividualOvercardsOnBoard
 // 1) we pair both board-cards, so we have quads and nobody can have better quads
 [(rankhiplayer == BestBoardCard) AND (rankloplayer == SecondBestBoardCard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairBothBoardCards :
 //
-// 2) we pair the set on board, which is higher than the pair, so we get the best quads
+// 2) we pair the SET on board, which is higher than the pair, so we get the best quads
 [((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard > SecondBestBoardCard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairHighSetOnBoard :
 //
-// 3) we pair the set on board, which is lower than the pair, so somebody could have better quads
+// 3) we pair the SET on board, which is lower than the pair, so somebody could have better quads
 [((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard < SecondBestBoardCard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowSetOnBoard :
 //
 // 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
@@ -248,7 +248,7 @@ IndividualOvercardsOnBoard
 // 5) we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
 [((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard :
 //
-// 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the set or lower)
+// 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the SET or lower)
 [ispair AND (rankhiplayer != BestBoardCard) AND (rankhiplayer != SecondBestBoardCard) AND (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WeHaveOverPairToPair :
 //
 // 7) we don't have an OverPair to the pair and therefore play the board (probably again 2 cases)
@@ -256,7 +256,7 @@ NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePlayTheBoard
 
 
 ##RankOfSetOnBoard##
-// Precondition: set on board
+// Precondition: SET on board
 trankcommon
 
 
@@ -279,9 +279,9 @@ TwoPairOnBoard AND NOT FullHouseOnBoard ?
 ispair ?
 [
     // Everybody who has a higher pocket pair or hits a higher board-card
-    // or hits the set will get a better hand
+    // or hits the SET will get a better hand
     (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer + 1) :
-    // Otherwise: set is lower, so there is 1 additional card, that loses for us
+    // Otherwise: SET is lower, so there is 1 additional card, that loses for us
     (ConstCardAce - rankhiplayer + 1)
 ] :
 // Case 3: We pair the board
@@ -291,13 +291,13 @@ ispair ?
     (rankhiplayer == BestBoardCard) OR (rankhiplayer == SecondBestBoardCard) OR (rankhiplayer == ThirdBestBoardCard) ?
     [
         (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer) :
-        // Otherwise: set is lower, so there is 1 additional card, that loses for us
+        // Otherwise: SET is lower, so there is 1 additional card, that loses for us
         (ConstCardAce - rankhiplayer + 1)
     ] :
     [
         // Otherwise rankloplayer paired:
         (RankOfSetOnBoard > rankloplayer) ? (ConstCardAce - rankloplayer) :
-        // Otherwise: set is lower, so there is 1 additional card, that loses for us
+        // Otherwise: SET is lower, so there is 1 additional card, that loses for us
         (ConstCardAce - rankloplayer + 1)
     ]
 ]

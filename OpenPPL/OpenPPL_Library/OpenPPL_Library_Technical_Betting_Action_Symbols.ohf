@@ -58,9 +58,6 @@
    (prevaction == 4) // Allin
 OR (prevaction == 5) // Jamming the slider
 
-##AddNopponentscalling##
-Calls + nopponentscalling
-
 ##PlayersRaisingOrColdCallingTheLastRaise##
 // Counting the last raiser + all cold callers
 (LastRaiserCurrentBet <= 0) ? 0 :
@@ -76,21 +73,48 @@ Calls + nopponentscalling
 + (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
 
 ##ChecksAfterHero##
-// Valid second orbit only
-// All active players with a zero bet
-(BotsActionsOnThisRoundIncludingChecks == 0) ? 0 :
-nopponentschecking
+// No checks preflop. Not even big blind can check (game over).
+// We ignore additional blind-posters however.
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+// We called or raised, therefore no longer any checks possible
+WHEN (currentbet > 0) RETURN 0 FORCE
+// We did not yet act, therefore no checks behind us possible
+WHEN ((BotsActionsOnThisRoundIncludingChecks == 0) AND (currentbet == 0)) RETURN 0 FORCE
+// A bet to call and the first bettor must sit behind us.
+// Consider all playing players between the user 
+// and the first bettor.
+WHEN (AmountToCall > 0) RETURN (BetPositionFirstRaiser - betposition - 1) FORCE
+// Nobody betting.
+// Consider all playing players behind the user.
+// Potentially counting players who did not yet act,
+// but this is acceptable for a remporary result.
+WHEN Others RETURN (nplayersplaying - betposition) FORCE
 
 ##ChecksInFrontOfHero##
 // No checks preflop. Not even big blind can check (game over).
 // We ignore additional blind-posters however.
-(betround == ConstBetRoundPreflop) ? 0 :
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
 // I did already act, so no longer any posters in front of me
-(currentbet > 0) ? 0 :
-// A bet to call, subtract all players with a non-zero bet in front of us
-(AmountToCall > 0) ? (betposition - nopponentsbetting - 1):
+// (at my 2nd turn)
+WHEN (currentbet > 0) RETURN 0 FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
+// A bet to call, consider all playing players in front of the first bettor
+WHEN (AmountToCall > 0) RETURN (BetPositionFirstRaiser - 1) FORCE
 // All players before us checked, not even open-folds can throw this logic off.
-[betposition - 1]
+WHEN Others RETURN [betposition - 1] FORCE
+
+##BetPositionFirstRaiser##
+WHEN (firstraiser_chair < 0) RETURN HINT_No_FirstRaiser FORCE
+WHEN (firstraiser_chair == 0) RETURN ac_betpos0 FORCE
+WHEN (firstraiser_chair == 1) RETURN ac_betpos1 FORCE
+WHEN (firstraiser_chair == 2) RETURN ac_betpos2 FORCE
+WHEN (firstraiser_chair == 3) RETURN ac_betpos3 FORCE
+WHEN (firstraiser_chair == 4) RETURN ac_betpos4 FORCE
+WHEN (firstraiser_chair == 5) RETURN ac_betpos5 FORCE
+WHEN (firstraiser_chair == 6) RETURN ac_betpos6 FORCE
+WHEN (firstraiser_chair == 7) RETURN ac_betpos7 FORCE
+WHEN (firstraiser_chair == 8) RETURN ac_betpos8 FORCE
+WHEN (firstraiser_chair == 9) RETURN ac_betpos9 FORCE
 
 ##NoVillainBetOrRaisedOnFlop##
 ((raisbits2 & ~(1<<userchair)) == 0)
@@ -151,13 +175,13 @@ nopponentstruelyraising
 ##OpponentsWithHigherStack##
 // No need to tinker with memory symbols here,
 // this logic is valid for all betting rounds.
-  (((balance0 + currentbet0) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance1 + currentbet1) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance2 + currentbet2) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance3 + currentbet3) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance4 + currentbet4) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance5 + currentbet5) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance6 + currentbet6) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance7 + currentbet7) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance8 + currentbet8) > MaximumPossibleBetsizeIndollars) ? 1: 0)
-+ (((balance9 + currentbet9) > MaximumPossibleBetsizeIndollars) ? 1: 0)
+  (((balance0 + currentbet0) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance1 + currentbet1) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance2 + currentbet2) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance3 + currentbet3) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance4 + currentbet4) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance5 + currentbet5) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance6 + currentbet6) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance7 + currentbet7) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance8 + currentbet8) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance9 + currentbet9) > MaximumPossibleBetsizeInDollars) ? 1: 0)

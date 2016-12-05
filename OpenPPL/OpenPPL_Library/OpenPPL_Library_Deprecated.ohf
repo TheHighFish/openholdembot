@@ -80,7 +80,7 @@ ac_dealpos9 == TrueDealPositionOfBigBlind ? 9 :
 ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
   
 ##SmallBlindChair##
-MissingSmallBlind ? HINT_There_Is_No_SmallNlind_In_This_Game :
+MissingSmallBlind ? HINT_There_Is_No_SmallBlind_In_This_Game :
 ac_dealpos0 == 1 ? 0 :
 ac_dealpos1 == 1 ? 1 :
 ac_dealpos2 == 1 ? 2 :

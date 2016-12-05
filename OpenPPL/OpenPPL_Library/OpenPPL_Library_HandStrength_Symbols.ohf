@@ -71,8 +71,7 @@ AND RankOfFirstHoleCard > ThirdFlopCard ]
 AND RankOfFirstHoleCard > FirstFlopCard
 AND RankOfFirstHoleCard > SecondFlopCard
 AND RankOfFirstHoleCard > ThirdFlopCard 
-AND RankOfFirstHoleCard > TurnCard 
-]
+AND RankOfFirstHoleCard > TurnCard ]
 
 ##HadSecondOverPairOnFlop##
     ispair
@@ -90,10 +89,15 @@ WHEN FirstHoleCardPairsTheFlop  RETURN True FORCE
 WHEN SecondHoleCardPairsTheFlop RETURN True FORCE 
 
 ##HadPairOnTurn##
-   HadPairOnFlop 
-OR FlopCardPairedOnTurn //?????
-OR RankOfFirstHoleCard == TurnCard 
-OR RankOfSecondHoleCard == TurnCard
+// We already had a pair at the flop...
+WHEN HadPairOnFlop RETURN True FORCE
+// ...or got a new one at the turn
+WHEN (RankOfFirstHoleCard == TurnCard) RETURN True FORCE
+WHEN (RankOfSecondHoleCard == TurnCard) RETURN True FORCE
+// But we ignore FlopCardPairedOnTurn
+// because we only want to consider pairs
+// where we contribute at least one hole-card.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20297
 
 ##HadSetOnFlop##
 PairInHand AND (RankOfFirstHoleCard==$$cr0 OR RankOfFirstHoleCard==$$cr1 OR RankOfFirstHoleCard==$$cr2) 
@@ -1177,7 +1181,7 @@ WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RET
 3
 // 1 OverPair for each overcard = 1 higher full house
 + (ConstCardAce - rankhiplayer)
-// Higher set possible with pair onboard?
+// Higher SET possible with pair onboard?
 + [(RankOfTopPairOnBoard > rankhiplayer) ? 1 : 0 ]
 // If the cards on board are higher than our pair,
 // we have to subtract them again, as otherwise we count them twice,
@@ -1190,8 +1194,8 @@ WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RET
 3
 // 1 OverPair for each overcard = 1 higher full house
 + (ConstCardAce - rankhiplayer)
-// +1 if the pair is higher as the set (higher set possible)
-// -1 if the pair is higher as the set (counted twice as OverPair / set)
+// +1 if the pair is higher as the SET (higher SET possible)
+// -1 if the pair is higher as the SET (counted twice as OverPair / set)
 // but these cases neutralize each other
 
 ##RankOfPairOfFullHouse##

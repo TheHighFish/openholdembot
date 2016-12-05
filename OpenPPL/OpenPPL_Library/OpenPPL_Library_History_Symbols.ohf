@@ -58,18 +58,36 @@
 //
 // OpenPPL - History Symbols
 //
+// This module provides the following symbols
+// = Bets
+// = BotsLastAction
+// = BotsLastPreflopAction
+// = Calls
+// = Checks
+// = MaxOpponentStackSize
+// = MinOpponentStackSize
+// = MissingSmallBlind
+// = NumberOfRaisesBeforeFlop
+// = NumberOfRaisesOnFlop
+// = NumberOfRaisesOnTurn 
+// = Raises
+// = StartingChips
+// = StartingStackSize 
 //
 //*****************************************************************************
 
 ##Bets##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ me_re_MemBets
+// There are no bets preflop per Shanky definition
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+// Known stored value
+WHEN (me_re_MemBets > 0) RETURN me_re_MemBets FORCE
+WHEN ((AmountToCall > 0) AND (TotalInvestedThisRound <= Ante)) RETURN 1 FORCE
 
 ##BotsLastAction##
 // Just to be extra safe...
-[(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] ? None :
+WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
 // Caring about a possible check, when a fold could not have happened
-[me_re_MemBotsLastAction == Fold] ? Check :
+WHEN [me_re_MemBotsLastAction == Fold] RETURN Check FORCE
 // Computing BotsLastAction from prevation
 // k_prevaction_undefined = -2
 // k_prevaction_fold = -1
@@ -80,54 +98,68 @@ VerifyHeartbeatIDForBetsCallsChecksRaises
 // k_prevaction_allin = 4
 // k_prevaction_jam = 5
 //
-// Successful allin
-(PrevActionWasAllin AND (balance == 0)) ? RaiseMax :
-// Failed allin
-(PrevActionWasAllin AND (balance >= 0)) ? Raise :
+// We do no longer check for swuccessful and failed allins
+// because this function gets used for the initialization of BotsLastPreflopAction
+// This update happens potentiually multiple times preflop, not only once on the flop,
+// and at the same heartbeat when the action was executed,
+// so we can't check if the balance is zero, as the casino did not yet update
+// and we did not yet scrape again.
+WHEN PrevActionWasAllin RETURN RaiseMax FORCE
 // Raising (FL and NL)
-((prevaction == 2) OR (prevaction == 3)) ? Raise :
+WHEN ((prevaction == 2) OR (prevaction == 3)) RETURN Raise FORCE
 // calling
-(prevaction == 1) ? Call :
+WHEN (prevaction == 1) RETURN Call FORCE
 // Checking postflop
-((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) ? Check :
+WHEN ((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) RETURN Check FORCE
 // Checking preflop
-((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) ? Check :
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) RETURN Check FORCE
 // "Checking" when it was a call
-// Actually OH does auto-adapt prevaction after such actions
+// Actually OpenHoldem does auto-adapt prevaction after such actions
 // but we try to be extra safe
-((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) ? Call :
-// Folding (might be used in sitour formulas)
-(prevaction == -1) ? Fold :
-// No autoplayer-actions, but human being at ManualMode
-sitename$openholdem ? (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) : 
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) RETURN Call FORCE
+// Folding (might be used in sitout formulas)
+WHEN (prevaction == -1) RETURN Fold FORCE
+// No autoplayer-actions, but human being acting at ManualMode
+WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) FORCE
 // None
-(prevaction == -1) ? None :
-ERROR_IncorrectBotsLastAction
+WHEN (prevaction == -1) RETURN None FORCE
+WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 
 ##BotsLastPreflopAction##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ me_re_MemBotsLastPreflopAction
+me_re_MemBotsLastPreflopAction
 
 ##Calls##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ ismyturn ? me_re_MemCalls :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemCalls FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemCalls FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN CallsBeforeOurFirstAction FORCE
+WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
 
 ##Checks##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ ismyturn ? me_re_MemChecks :
-ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
+// No checks preflop. Not even big blind can check (betround over).
+// We ignore additional blind-posters however.
+WHEN (betround == ConstBetRoundPreflop) RETURN 0 FORCE
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemChecks FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemChecks FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN ChecksInFrontOfHero FORCE
+// Stored value of checks on previous orbit plus players behind
+WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN (me_re_MemChecks + ChecksAfterHero) FORCE
+// There can no longer be any checking players, so just return the known value
+WHEN Others RETURN me_re_MemChecks FORCE
 
 ##MaxOpponentStackSize##
-me_re_MaxOpponentStackSize
+WHEN (me_re_MaxOpponentStackSize > 0) RETURN me_re_MaxOpponentStackSize FORCE
+WHEN Others RETURN CalculateMaxOpponentStackSize FORCE
 
 ##MinOpponentStackSize##
-me_re_MinOpponentStackSize
+WHEN (me_re_MinOpponentStackSize > 0) RETURN me_re_MinOpponentStackSize FORCE
+WHEN Others RETURN CalculateMinOpponentStackSize FORCE
 
 ##MissingSmallBlind##
-// !!! To be implemented in OH
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ me_re_MemMissingSmallBlind
+// Gets initialized after our first action preflop
+WHEN (nplayersseated < 2) RETURN False FORCE
+WHEN (betround > ConstBetRoundPreflop) RETURN me_re_MemMissingSmallBlind FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN me_re_MemMissingSmallBlind FORCE
+WHEN Others RETURN CalculateMissingSmallBlind FORCE
 
 ##NumberOfRaisesBeforeFlop##
 WHEN (betround == ConstBetRoundPreflop) RETURN Raises FORCE
@@ -145,36 +177,23 @@ WHEN (betround >  ConstBetRoundTurn) RETURN me_re_MemRaisesOnTurn FORCE
 WHEN Others RETURN 0 FORCE
 
 ##Raises##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
-// Raises might have been -1 if there were additional blind-posters,
-// because nopponentsraising was wrong in that case for old versions
-// But this gets now handled perfectly by nopponentstruelyraising.
-// But we keep the sanity-checks anyway.
-[(me_re_MemRaises < 0) AND (betround == ConstBetRoundPreflop) AND (ncallbets == 1)] ? 
-  (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
-[(me_re_MemRaises < 0) AND (betround == ConstBetRoundPreflop) AND (ncallbets > 1)]  ? 
-  (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 1) :
-// Should not happen postflop, but a sanity-check can't harm.
-[(me_re_MemRaises < 0) AND (betround >= ConstBetRoundFlop)] ? 
-  (ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way + 0) :
-// Otherwise: probably everything ok
-me_re_MemRaises
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemRaises FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemRaises FORCE
+WHEN Others RETURN (me_re_MemRaises + RaisesSinceLastPlay) FORCE
 
 ##RaisesBeforeFlop##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NumberOfRaisesBeforeFlop > 0)
+WHEN (NumberOfRaisesBeforeFlop > 0) RETURN True FORCE
 
 ##RaisesOnFlop##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NumberOfRaisesOnFlop > 0)
+WHEN (NumberOfRaisesOnFlop > 0) RETURN True FORCE
 
 ##RaisesOnTurn##
-VerifyHeartbeatIDForBetsCallsChecksRaises
-+ (NumberOfRaisesOnTurn > 0)
+WHEN (NumberOfRaisesOnTurn > 0) RETURN True FORCE
 
 ##StartingChips##
-me_re_MemStartingChips
+WHEN (me_re_MemStartingChips > 0) RETURN me_re_MemStartingChips FORCE
+WHEN Others RETURN CalculateStartingChips FORCE
 
 ##StartingStackSize##
-me_re_MemStartingStackSize
+WHEN (me_re_MemStartingStackSize > 0) RETURN me_re_MemStartingStackSize FORCE
+WHEN Others RETURN CalculateStartingStackSize FORCE
