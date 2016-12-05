@@ -31,20 +31,20 @@ CSymbolEngineMemorySymbols::~CSymbolEngineMemorySymbols() {
 void CSymbolEngineMemorySymbols::InitOnStartup() {
 }
 
-void CSymbolEngineMemorySymbols::UpdateOnConnection() {
+void CSymbolEngineMemorySymbols::ResetOnConnection() {
   _memory_symbols.clear();
 }
 
-void CSymbolEngineMemorySymbols::UpdateOnHandreset() {
+void CSymbolEngineMemorySymbols::ResetOnHandreset() {
 }
 
-void CSymbolEngineMemorySymbols::UpdateOnNewRound() {
+void CSymbolEngineMemorySymbols::ResetOnNewRound() {
 }
 
-void CSymbolEngineMemorySymbols::UpdateOnMyTurn() {
+void CSymbolEngineMemorySymbols::ResetOnMyTurn() {
 }
 
-void CSymbolEngineMemorySymbols::UpdateOnHeartbeat() {
+void CSymbolEngineMemorySymbols::ResetOnHeartbeat() {
 }
 
 void CSymbolEngineMemorySymbols::ErrorInvalidMemoryStoreCommand(CString command) {
@@ -107,13 +107,13 @@ void CSymbolEngineMemorySymbols::Store(CString command) {
 }
 
 double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_hand_value) {
-  // Possible use-cases
+  // Possible use-case
   //   * constants        me_st_x_3_141
   //   * functions        me_st_x_f$myfunc
   //   * symbols          me_st_x_userchair
   //   * memory-symbols   me_st_x_re_re_y
   // Already removed: "me_st_x_"
-  // All we have is the pure right-hand-side
+  // All we have is the oure right-hand-side
   double result = kUndefinedZero;
   if (isdigit(right_hand_value[0])) {
     // Constant

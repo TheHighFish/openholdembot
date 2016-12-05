@@ -44,16 +44,16 @@ CSymbolEngineIsRush::~CSymbolEngineIsRush() {
 }
 
 void CSymbolEngineIsRush::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineIsRush::UpdateOnConnection() {
+void CSymbolEngineIsRush::ResetOnConnection() {
 	sum_of_handreset_durations = 0.0;
   // Init to 1 to avoid division by zero
   handresets = 1;
 }
 
-void CSymbolEngineIsRush::UpdateOnHandreset() {
+void CSymbolEngineIsRush::ResetOnHandreset() {
   if (p_symbol_engine_time->elapsedauto() > 60) {
     // Unreliable value, we might have been sitting out
     return;
@@ -62,13 +62,13 @@ void CSymbolEngineIsRush::UpdateOnHandreset() {
   ++handresets;
 }
 
-void CSymbolEngineIsRush::UpdateOnNewRound() {
+void CSymbolEngineIsRush::ResetOnNewRound() {
 }
 
-void CSymbolEngineIsRush::UpdateOnMyTurn() {
+void CSymbolEngineIsRush::ResetOnMyTurn() {
 }
 
-void CSymbolEngineIsRush::UpdateOnHeartbeat() {
+void CSymbolEngineIsRush::ResetOnHeartbeat() {
 }
 
 bool CSymbolEngineIsRush::isrush() {

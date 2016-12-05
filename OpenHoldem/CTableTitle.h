@@ -27,6 +27,8 @@ class CTableTitle {
   CString Title();
   CString PreprocessedTitle();
   bool TitleChangedSinceLastHeartbeat();
+  // for the title$xyz-symbol
+  bool ContainsSubstring(CString substring);
  public:
   // Public static for preprocessing of scraped ttlimitsX by CScraper.cpp
   static CString PreprocessTitle(CString title);

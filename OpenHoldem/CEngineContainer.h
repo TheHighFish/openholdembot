@@ -24,10 +24,8 @@ class CEngineContainer {
   ~CEngineContainer();
  public:
   // both to be called by the auto-connector
-  void UpdateOnConnection();
-  void UpdateOnDisconnection();
-  // To be called by the autoplayer
-  void UpdateAfterAutoplayerAction(int autoplayer_action_code);
+  void ResetOnConnection();
+  void ResetOnDisconnection();
  public:
   void EvaluateAll();
   bool EvaluateSymbol(const char *name, double *result, bool log = false);
@@ -41,11 +39,10 @@ class CEngineContainer {
   void DestroyAllSymbolEngines();
   void DestroyAllSpecialSymbolEngines();
  private:
-  void InitOnStartup();
-  void UpdateOnHandreset();
-  void UpdateOnNewRound();
-  void UpdateOnMyTurn();
-  void UpdateOnHeartbeat();
+  void ResetOnHandreset();
+  void ResetOnNewRound();
+  void ResetOnMyTurn();
+  void ResetOnHeartbeat();
  private:
   CVirtualSymbolEngine *_symbol_engines[k_max_number_of_symbol_engines]; 
   int _number_of_symbol_engines_loaded;

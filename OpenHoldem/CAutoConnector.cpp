@@ -282,8 +282,8 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
       p_casino_interface->Reset();
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Table state cleared\n");
       // Reset symbols
-			p_engine_container->UpdateOnConnection();
-      write_log(preferences.debug_autoconnector(), "[CAutoConnector] UpdateOnConnection executed (during connection)\n");
+			p_engine_container->ResetOnConnection();
+      write_log(preferences.debug_autoconnector(), "[CAutoConnector] ResetOnConnection executed (during connection)\n");
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with scraper output and scraper DLL\n");
       // Reset "ScraperOutput" dialog, if it is live
 			if (m_ScraperOutputDlg) {
@@ -359,7 +359,7 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
   _autoconnector_mutex->Lock(INFINITE);
-	p_engine_container->UpdateOnDisconnection();
+	p_engine_container->ResetOnDisconnection();
 
 	// Send "disconnect" to scraper DLL, if loaded
 	if (theApp._dll_scraper_process_message) {
@@ -392,9 +392,9 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
   p_casino_interface->Reset();
 
 	// Reset symbols
-	p_engine_container->UpdateOnConnection();
+	p_engine_container->ResetOnConnection();
 
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] UpdateOnConnection executed (disconnection)\n");
+	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ResetOnConnection executed (disconnection)\n");
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with window title\n");
 
 	// Change window title

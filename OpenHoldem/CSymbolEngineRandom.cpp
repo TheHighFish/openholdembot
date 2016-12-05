@@ -31,27 +31,27 @@ CSymbolEngineRandom::~CSymbolEngineRandom() {
 }
 
 void CSymbolEngineRandom::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineRandom::UpdateOnConnection() {
-	UpdateOnHandreset();
+void CSymbolEngineRandom::ResetOnConnection() {
+	ResetOnHandreset();
 }
 
-void CSymbolEngineRandom::UpdateOnHandreset() {
+void CSymbolEngineRandom::ResetOnHandreset() {
 	_randomhand      = Random_0_1();
 	_randomheartbeat = kUndefined;
-	UpdateOnNewRound();
+	ResetOnNewRound();
 }
 
-void CSymbolEngineRandom::UpdateOnNewRound() {
+void CSymbolEngineRandom::ResetOnNewRound() {
 	_randomround = Random_0_1();
 }
 
-void CSymbolEngineRandom::UpdateOnMyTurn() {
+void CSymbolEngineRandom::ResetOnMyTurn() {
 }
 
-void CSymbolEngineRandom::UpdateOnHeartbeat() {
+void CSymbolEngineRandom::ResetOnHeartbeat() {
 	_randomheartbeat = Random_0_1();
 }
 

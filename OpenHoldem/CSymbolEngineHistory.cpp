@@ -78,14 +78,14 @@ CSymbolEngineHistory::CSymbolEngineHistory() {
 CSymbolEngineHistory::~CSymbolEngineHistory() {}
 
 void CSymbolEngineHistory::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineHistory::UpdateOnConnection() {
-	UpdateOnHandreset();
+void CSymbolEngineHistory::ResetOnConnection() {
+	ResetOnHandreset();
 }
 
-void CSymbolEngineHistory::UpdateOnHandreset() {
+void CSymbolEngineHistory::ResetOnHandreset() {
   _prevaction = k_prevaction_undefined;
 	// Element 0 is unused
 	for (int i=0; i<(kNumberOfBetrounds+1); ++i) {
@@ -101,10 +101,10 @@ void CSymbolEngineHistory::UpdateOnHandreset() {
 	}
 }
 
-void CSymbolEngineHistory::UpdateOnNewRound() {
+void CSymbolEngineHistory::ResetOnNewRound() {
 }
 
-void CSymbolEngineHistory::UpdateOnMyTurn() {
+void CSymbolEngineHistory::ResetOnMyTurn() {
   // Collect symbol if ismyturn.
   // Per definition we need to get the value at last myturn in betround N.
   int	betround = p_betround_calculator->betround();
@@ -115,11 +115,11 @@ void CSymbolEngineHistory::UpdateOnMyTurn() {
 	}
 }
 
-void CSymbolEngineHistory::UpdateOnHeartbeat() {
+void CSymbolEngineHistory::ResetOnHeartbeat() {
 	CalculateHistory();
 }
 
-void CSymbolEngineHistory::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
+void CSymbolEngineHistory::RegisterAction(int autoplayer_action_code) {
 	AssertRange(autoplayer_action_code, k_autoplayer_function_beep,
 		k_autoplayer_function_fold);
 	// Nothing to do of the "action" was "beep".

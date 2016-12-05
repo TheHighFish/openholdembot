@@ -50,23 +50,23 @@ void CSymbolEnginePokerTracker::InitOnStartup() {
 	ClearAllStats();
 }
 
-void CSymbolEnginePokerTracker::UpdateOnConnection() {
+void CSymbolEnginePokerTracker::ResetOnConnection() {
 	ClearAllStats();
 	p_pokertracker_thread->StartThread();
 }
 
-void CSymbolEnginePokerTracker::UpdateOnHandreset() {
+void CSymbolEnginePokerTracker::ResetOnHandreset() {
   if (p_symbol_engine_isrush->isrush())
     ClearAllStats();
 }
 
-void CSymbolEnginePokerTracker::UpdateOnNewRound()
+void CSymbolEnginePokerTracker::ResetOnNewRound()
 {}
 
-void CSymbolEnginePokerTracker::UpdateOnMyTurn()
+void CSymbolEnginePokerTracker::ResetOnMyTurn()
 {}
 
-void CSymbolEnginePokerTracker::UpdateOnHeartbeat()
+void CSymbolEnginePokerTracker::ResetOnHeartbeat()
 {
 	check_for_identity_of_players_executed_this_heartbeat = false;
 }

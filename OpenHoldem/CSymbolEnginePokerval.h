@@ -29,11 +29,11 @@ public:
 public:
 	// Mandatory reset-functions
 	void InitOnStartup();
-	void UpdateOnConnection();
-	void UpdateOnHandreset();
-	void UpdateOnNewRound();
-	void UpdateOnMyTurn();
-	void UpdateOnHeartbeat();
+	void ResetOnConnection();
+	void ResetOnHandreset();
+	void ResetOnNewRound();
+	void ResetOnMyTurn();
+	void ResetOnHeartbeat();
 public:
 	int CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1);
 public:

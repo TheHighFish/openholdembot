@@ -46,20 +46,20 @@ CHandHistoryDealPhase::~CHandHistoryDealPhase() {
 void CHandHistoryDealPhase::InitOnStartup() {
 }
 
-void CHandHistoryDealPhase::UpdateOnConnection() {
+void CHandHistoryDealPhase::ResetOnConnection() {
 }
 
-void CHandHistoryDealPhase::UpdateOnHandreset() {
+void CHandHistoryDealPhase::ResetOnHandreset() {
   _job_done = false;
 }
 
-void CHandHistoryDealPhase::UpdateOnNewRound() {
+void CHandHistoryDealPhase::ResetOnNewRound() {
 }
 
-void CHandHistoryDealPhase::UpdateOnMyTurn() {
+void CHandHistoryDealPhase::ResetOnMyTurn() {
 }
 
-void CHandHistoryDealPhase::UpdateOnHeartbeat() {
+void CHandHistoryDealPhase::ResetOnHeartbeat() {
   if (_job_done) return;
   if (BETROUND > kBetroundPreflop) {
     // Can only happen when we join a table

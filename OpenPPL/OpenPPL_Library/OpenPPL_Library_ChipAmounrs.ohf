@@ -120,21 +120,21 @@ isfl ? bet : currentbet
 // The normal case (including correct and incorrect abilities to check)
 (call <= balance) ? call : balance
 
-##MaximumPossibleBetsizeInDollars##
+##MaximumPossibleBetsizeIndollars##
 (balance + currentbet)
 
 ##SidePotInDollars##
 // Money in the side-pot, i.e. the money we don't compete for.
-  [(currentbet0 > MaximumPossibleBetsizeInDollars) ? currentbet0 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet1 > MaximumPossibleBetsizeInDollars) ? currentbet1 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet2 > MaximumPossibleBetsizeInDollars) ? currentbet2 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet3 > MaximumPossibleBetsizeInDollars) ? currentbet3 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet4 > MaximumPossibleBetsizeInDollars) ? currentbet4 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet5 > MaximumPossibleBetsizeInDollars) ? currentbet5 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet6 > MaximumPossibleBetsizeInDollars) ? currentbet6 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet7 > MaximumPossibleBetsizeInDollars) ? currentbet7 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet8 > MaximumPossibleBetsizeInDollars) ? currentbet8 - MaximumPossibleBetsizeInDollars : 0]
-+ [(currentbet9 > MaximumPossibleBetsizeInDollars) ? currentbet9 - MaximumPossibleBetsizeInDollars : 0]
+  [(currentbet0 > MaximumPossibleBetsizeIndollars) ? currentbet0 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet1 > MaximumPossibleBetsizeIndollars) ? currentbet1 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet2 > MaximumPossibleBetsizeIndollars) ? currentbet2 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet3 > MaximumPossibleBetsizeIndollars) ? currentbet3 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet4 > MaximumPossibleBetsizeIndollars) ? currentbet4 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet5 > MaximumPossibleBetsizeIndollars) ? currentbet5 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet6 > MaximumPossibleBetsizeIndollars) ? currentbet6 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet7 > MaximumPossibleBetsizeIndollars) ? currentbet7 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet8 > MaximumPossibleBetsizeIndollars) ? currentbet8 - MaximumPossibleBetsizeIndollars : 0]
++ [(currentbet9 > MaximumPossibleBetsizeIndollars) ? currentbet9 - MaximumPossibleBetsizeIndollars : 0]
 
 ##SidePot##
 // Money in the side-pot, i.e. the money we don't compete for (measured in big blinds)

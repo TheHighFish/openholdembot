@@ -41,14 +41,14 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   // Mandatory reset-functions
   void InitOnStartup();
-  void UpdateOnConnection();
-  void UpdateOnHandreset();
-  void UpdateOnNewRound();
-  void UpdateOnMyTurn();
-  void UpdateOnHeartbeat();
+  void ResetOnConnection();
+  void ResetOnHandreset();
+  void ResetOnNewRound();
+  void ResetOnMyTurn();
+  void ResetOnHeartbeat();
  public:
   // To be called by
-  //   * UpdateOnHeartbeat() 
+  //   * ResetOnHeartbeat() 
   //   * the formula editor for the working copy (f$debug and f$test)
   void ClearCache();
  public:
@@ -100,6 +100,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   CString GetSimilarNameWithDifferentCases(CString function_name);
   bool CheckForOutdatedFunction(CString name);
   bool CheckForMisspelledOpenPPLMainFunction(CString name);
+  void RemoveFromBinaryTree(CString function_name);
  private:
   void ExecuteSelftest();  
  private:

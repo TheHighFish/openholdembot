@@ -45,17 +45,14 @@ class CTokenizer {
   void InitNewParse();
  private:
 	int  ScanForNextToken();
-  void SkipNextCharacter();
 	void SkipToEndOfLine();
 	void SkipToEndOfMultiLineComment();
- private:
-  void ErrorInvalidCharacter(char invalid_char);
  private:
 	bool IsBinaryMinus();
 	bool IsTokenOpenPPLKeyword();
  private:
   void CheckTokenForOpenPPLAction(int *token);
- private:
+private:
 	void InitVars();
 	char CURRENT_CHARACTER();
  private:

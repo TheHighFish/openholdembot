@@ -36,16 +36,16 @@ CSymbolEngineChipAmounts::~CSymbolEngineChipAmounts()
 {}
 
 void CSymbolEngineChipAmounts::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineChipAmounts::UpdateOnConnection() {
-	UpdateOnHandreset();
+void CSymbolEngineChipAmounts::ResetOnConnection() {
+	ResetOnHandreset();
   _maxbalance = kUndefinedZero;
 	_balanceatstartofsession = kUndefinedZero;
 }
 
-void CSymbolEngineChipAmounts::UpdateOnHandreset() {
+void CSymbolEngineChipAmounts::ResetOnHandreset() {
 	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
 		_stack[i]      = 0;
 		_stacks_at_hand_start[i] = 0;
@@ -63,15 +63,15 @@ void CSymbolEngineChipAmounts::UpdateOnHandreset() {
   _nraisbets = 0.0;
 }
 
-void CSymbolEngineChipAmounts::UpdateOnNewRound() {
+void CSymbolEngineChipAmounts::ResetOnNewRound() {
 }
 
-void CSymbolEngineChipAmounts::UpdateOnMyTurn() {
+void CSymbolEngineChipAmounts::ResetOnMyTurn() {
   SetBalanceAtStartOfSessionConditionally();
   SetMaxBalanceConditionally();
 }
 
-void CSymbolEngineChipAmounts::UpdateOnHeartbeat() {
+void CSymbolEngineChipAmounts::ResetOnHeartbeat() {
 	CalculateStacks();
 	CalculatePots();
 	CalculateBetsToCallToRaise();

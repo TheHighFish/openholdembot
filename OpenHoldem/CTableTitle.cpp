@@ -82,23 +82,25 @@ CString CTableTitle::PreprocessTitle(CString title) {
   //   http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19658
   // but the latter one mainly affects balances. 
   CString result = title;
-  RemoveOHreplayFrameNumber(&result);
-  ReplaceKnownNonASCIICharacters(&result);
+  ReplaceSpaceLookALikesBySpaces(&result);
+  ReplaceOutlandischCurrencyByDollarsAndCents(&result);
   WarnAboutNonASCIICharacters(&result);
+  RemoveOHreplayFrameNumber(&result);
   RemoveLeftWhiteSpace(&result);
   RemoveRightWhiteSpace(&result);
   RemoveMultipleWhiteSpaces(&result);
   RemoveSpacesInsideNumbers(&result);
-  ReplaceOutlandischCurrencyByDollarsandCents(&result);
   RemoveSpacesInFrontOfCentMultipliers(&result);
   ReplaceCommasInNumbersByDots(&result);
   RemoveExtraDotsInNumbers(&result);
   return result;
 }
 
-
-
 bool CTableTitle::TitleChangedSinceLastHeartbeat() {
   return (_title != _previous_title);
+}
+
+bool CTableTitle::ContainsSubstring(CString substring) {
+  return (_title.Find(substring) >= 0);
 }
 

@@ -133,84 +133,48 @@ OR didraisround3
 OR didbetsizeround3
 
 ##BotsActionsOnFlop##
-WHEN (betround == ConstBetRoundFlop) RETURN BotsActionsOnThisRound FORCE
-WHEN Others RETURN
-  ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
-  // Checks are not counted
-  + didcallround2 
-  + didraisround2 
-  + didbetsizeround2) FORCE
-  
-##ActionCounterCorrectionForUpdateInProgress##
-// If we update OpenPPL memory symbols after an autoplayer-action
-// then OpenHoldems autoplayer-symbols already are updated
-// and the sum of actions is "one ahead" 
-// (compared to the situation when we took a decision)
-// That's why we need a correction
-WHEN me_re_MemUpdateOfOpenPPLMemorySymbolsInProgress RETURN -1 FORCE
-WHEN Others RETURN 0 FORCE
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+// Checks are not counted
++ didcallround2 
++ didraisround2 
++ didbetsizeround2
 
 ##BotsActionsOnThisRound##
-// Special condition to ease simulations at Manualmode 
-// without the need for hand-resets
-WHEN ((betround == ConstBetRoundPreflop) AND (currentbet < bblind)) RETURN 0 FORCE
-WHEN ((betround > ConstBetRoundPreflop) AND (currentbet == 0)) RETURN 0 FORCE
-WHEN (BotsActionsOnThisRoundAdapted < 0) RETURN 0 FORCE
-WHEN Others RETURN BotsActionsOnThisRoundAdapted FORCE
- 
-##BotsActionsOnThisRoundIncludingChecks##
-// Special condition to ease simulations at Manualmode 
-// without the need for hand-resets
-WHEN ((betround == ConstBetRoundPreflop) AND (currentbet < bblind)) RETURN 0 FORCE
-WHEN (BotsActionsOnThisRoundIncludingChecksAdapted < 0) RETURN 0 FORCE
-WHEN Others RETURN BotsActionsOnThisRoundIncludingChecksAdapted FORCE
-
-##BotsActionsOnThisRoundAdapted##
-[(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
-// Checks are not counted per definition.
-// Folds and allins are not relevant, as then the hand is over for us.
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+// Checks are not counted
 + didcall 
 + didrais 
 + didbetsize
-+ ActionCounterCorrectionForUpdateInProgress]
-   
-##BotsActionsOnThisRoundIncludingChecksAdapted##
-[(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+
+##BotsActionsOnThisRoundIncludingChecks##
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
 // Folds and allins are not relevant, as then the hand is over for us.
 + didchec 
 + didcall 
 + didbetsize 
 + didrais
-+ ActionCounterCorrectionForUpdateInProgress]
 
 ##BotsActionsPreflop##
-WHEN (betround == ConstBetRoundPreflop) RETURN BotsActionsOnThisRound FORCE
-WHEN Others RETURN
-  ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
-  // Checks are not counted per definition
-  // and we can't check preflop without posting a blind out of order (first hand only).
-  + didcallround1 
-  + didraisround1 
-  + didbetsizeround1) FORCE
-
-##CallsBeforeOurFirstAction##
-WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
-WHEN Others RETURN nopponentscalling FORCE
-
-##CallsSinceLastPlay##
-WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN 0 FORCE
-WHEN Others RETURN nopponentscalling FORCE
+  (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+// Checks are not counted per definition
+// and we can't check preflop without posting a blind out of order (first hand only).
++ didcallround1 
++ didraisround1 
++ didbetsizeround1
 
 ##CallsSinceLastRaise##
-WHEN (PlayersRaisingOrColdCallingTheLastRaise <= 0) RETURN HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise FORCE
-WHEN Others RETURN (PlayersRaisingOrColdCallingTheLastRaise - 1) FORCE
+(PlayersRaisingOrColdCallingTheLastRaise <= 0) ? HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise :
+ismyturn ? (PlayersRaisingOrColdCallingTheLastRaise - 1) :
+ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##Folds##
-WHEN (betround == ConstBetRoundPreflop) RETURN (nplayersdealt  - nopponentsplaying - 1) FORCE
-WHEN (betround == ConstBetRoundFlop)    RETURN (nplayersround2 - nopponentsplaying - 1) FORCE
-WHEN (betround == ConstBetRoundTurn)    RETURN (nplayersround3 - nopponentsplaying - 1) FORCE
-WHEN (betround == ConstBetRoundRiver)   RETURN (nplayersround4 - nopponentsplaying - 1) FORCE
-WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
+ismyturn ? 
+[(betround == ConstBetRoundPreflop) ? (nplayersdealt  - nopponentsplaying - 1) :
+ (betround == ConstBetRoundFlop)    ? (nplayersround2 - nopponentsplaying - 1) :
+ (betround == ConstBetRoundTurn)    ? (nplayersround3 - nopponentsplaying - 1) :
+ (betround == ConstBetRoundRiver)   ? (nplayersround4 - nopponentsplaying - 1) :
+ ERROR_Betround_Out_Of_Range] :
+ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC
 
 ##LastAggressorActsAfterUs##		
    ac_agchair_after 
@@ -236,7 +200,8 @@ AND NOT didcallround3
 AND NoVillainBetOrRaisedOnTurn
 
 ##RaisesSinceLastPlay##
-WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN RaisesBeforeOurFirstAction FORCE
-WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN RaisesSinceLastPlayOnOurSecondAction FORCE
-WHEN (BotsActionsOnThisRoundIncludingChecks >= 2) RETURN RaisesSinceLastPlayAfterOurSecondAction FORCE
-WHEN Others RETURN ERROR_BotsActionsOnThisRound_Out_Of_Range FORCE
+(NOT ismyturn) ? ERROR_Action_History_Only_Valid_On_My_Turn_Most_Favourite_PEBKAC :
+(BotsActionsOnThisRoundIncludingChecks == 0) ? RaisesBeforeOurFirstAction :
+(BotsActionsOnThisRoundIncludingChecks == 1) ? RaisesSinceLastPlayOnOurSecondAction :
+(BotsActionsOnThisRoundIncludingChecks >= 2) ? RaisesSinceLastPlayAfterOurSecondAction :
+ERROR_BotsActionsOnThisRound_Out_Of_Range

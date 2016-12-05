@@ -28,12 +28,11 @@ public:
 public:
 	// Mandatory reset-functions
 	void InitOnStartup();
-	void UpdateOnConnection();
-	void UpdateOnHandreset();
-	void UpdateOnNewRound();
-	void UpdateOnMyTurn();
-	void UpdateOnHeartbeat();
-  void UpdateAfterAutoplayerAction(int autoplayer_action_code);
+	void ResetOnConnection();
+	void ResetOnHandreset();
+	void ResetOnNewRound();
+	void ResetOnMyTurn();
+	void ResetOnHeartbeat();
 public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided();
@@ -61,6 +60,8 @@ public:
 	int didfold(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_fold]; }
 	int didalli(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_allin]; }
 	int prevaction()			    	{ return _prevaction; }
+public:
+	void RegisterAction(int autoplayer_action_code);
 private:
 	void SetPrevaction(int autoplayer_action_code);
 	void CalculateHistory();

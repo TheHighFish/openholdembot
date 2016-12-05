@@ -34,19 +34,19 @@ CHandHistoryAction::~CHandHistoryAction() {
 void CHandHistoryAction::InitOnStartup() {
 }
 
-void CHandHistoryAction::UpdateOnConnection() {
+void CHandHistoryAction::ResetOnConnection() {
 }
 
-void CHandHistoryAction::UpdateOnHandreset() {
+void CHandHistoryAction::ResetOnHandreset() {
 }
 
-void CHandHistoryAction::UpdateOnNewRound() {
+void CHandHistoryAction::ResetOnNewRound() {
 }
 
-void CHandHistoryAction::UpdateOnMyTurn() {
+void CHandHistoryAction::ResetOnMyTurn() {
 }
 
-void CHandHistoryAction::UpdateOnHeartbeat() {
+void CHandHistoryAction::ResetOnHeartbeat() {
 }
 
 bool CHandHistoryAction::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

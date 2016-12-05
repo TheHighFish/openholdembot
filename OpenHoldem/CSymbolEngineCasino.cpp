@@ -49,18 +49,18 @@ CSymbolEngineCasino::~CSymbolEngineCasino() {
 void CSymbolEngineCasino::InitOnStartup() {
 }
 
-void CSymbolEngineCasino::UpdateOnConnection() {
+void CSymbolEngineCasino::ResetOnConnection() {
 }
 
-void CSymbolEngineCasino::UpdateOnHandreset() {
+void CSymbolEngineCasino::ResetOnHandreset() {
   // Reset display
   InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 }
 
-void CSymbolEngineCasino::UpdateOnNewRound() {
+void CSymbolEngineCasino::ResetOnNewRound() {
 }
 
-void CSymbolEngineCasino::UpdateOnMyTurn() {
+void CSymbolEngineCasino::ResetOnMyTurn() {
 }
 
 bool CSymbolEngineCasino::ConnectedToManualMode() {
@@ -132,6 +132,6 @@ CString CSymbolEngineCasino::SymbolsProvided() {
   return "chair$ chairbit$ sitename$ network$ nchairs ";
 }
 
-void CSymbolEngineCasino::UpdateOnHeartbeat() {
+void CSymbolEngineCasino::ResetOnHeartbeat() {
 }
 

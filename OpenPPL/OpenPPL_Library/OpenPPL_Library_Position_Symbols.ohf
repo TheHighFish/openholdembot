@@ -68,19 +68,19 @@
 
 ##SmallBlind##
 // Small blind missing, therefore we can't be small blind
-WHEN MissingSmallBlind RETURN False FORCE
+MissingSmallBlind ? False :
 // 3 or more handed, normal blinds
-WHEN ((NOT TableIsHeadsup) AND (dealposition == 1)) RETURN True FORCE
+   ((NOT TableIsHeadsup) AND (dealposition == 1))
 // Headsup, reversed blinds
-WHEN  (TableIsHeadsup AND (dealposition == 2)) RETURN True FORCE
+OR (TableIsHeadsup AND (dealposition == 2))
 
 ##BigBlind##
 // Missing small blind, big blind is the first dealt player
-WHEN (MissingSmallBlind AND (dealposition == 1)) RETURN True FORCE
+MissingSmallBlind ? (dealposition == 1) :
 // 3 or more handed, normal blinds
-WHEN ((NOT TableIsHeadsup) AND (dealposition == 2)) RETURN True FORCE
+   ((NOT TableIsHeadsup) AND (dealposition == 2))
 // Headsup, reversed blinds
-WHEN (TableIsHeadsup AND (dealposition == 1)) RETURN True FORCE
+OR ((TableIsHeadsup) AND (dealposition == 1))
 
 ##Button##
 // If the game in not 10-handed, some positions would be both "normal" and in the blinds.

@@ -31,7 +31,7 @@ CSymbolEngineTableStats::CSymbolEngineTableStats() {
 	// we assure correct ordering by checking if they are initialized.
   assert(p_symbol_engine_active_dealt_playing != NULL);
   assert(p_symbol_engine_chip_amounts != NULL);
-  UpdateOnConnection();
+  ResetOnConnection();
 }
 
 CSymbolEngineTableStats::~CSymbolEngineTableStats() {
@@ -40,7 +40,7 @@ CSymbolEngineTableStats::~CSymbolEngineTableStats() {
 void CSymbolEngineTableStats::InitOnStartup() {
 }
 
-void CSymbolEngineTableStats::UpdateOnConnection() {
+void CSymbolEngineTableStats::ResetOnConnection() {
   for (int i=0; i<=kNumberOfHands; ++i) {
     seen_flop[i] = 0;
     seen_turn[i] = 0;
@@ -51,17 +51,17 @@ void CSymbolEngineTableStats::UpdateOnConnection() {
   }
 }
 
-void CSymbolEngineTableStats::UpdateOnHandreset() {
+void CSymbolEngineTableStats::ResetOnHandreset() {
   ShiftOldestDataAway();
 }
 
-void CSymbolEngineTableStats::UpdateOnNewRound() {
+void CSymbolEngineTableStats::ResetOnNewRound() {
 }
 
-void CSymbolEngineTableStats::UpdateOnMyTurn() {
+void CSymbolEngineTableStats::ResetOnMyTurn() {
 }
 
-void CSymbolEngineTableStats::UpdateOnHeartbeat() {
+void CSymbolEngineTableStats::ResetOnHeartbeat() {
   UpdateData();
 }
 

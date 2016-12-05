@@ -42,21 +42,21 @@ CSymbolEngineBlinds::~CSymbolEngineBlinds()
 
 void CSymbolEngineBlinds::InitOnStartup()
 {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineBlinds::UpdateOnConnection()
+void CSymbolEngineBlinds::ResetOnConnection()
 {
-	UpdateOnHandreset();
+	ResetOnHandreset();
 }
 
-void CSymbolEngineBlinds::UpdateOnHandreset()
+void CSymbolEngineBlinds::ResetOnHandreset()
 {
 	_playersblindbits = 0;
 	_bblindbits = 0;
 }
 
-void CSymbolEngineBlinds::UpdateOnNewRound()
+void CSymbolEngineBlinds::ResetOnNewRound()
 {}
 
 bool CSymbolEngineBlinds::BlindsAreUnknown()
@@ -66,7 +66,7 @@ bool CSymbolEngineBlinds::BlindsAreUnknown()
 
 }
 
-void CSymbolEngineBlinds::UpdateOnMyTurn()
+void CSymbolEngineBlinds::ResetOnMyTurn()
 {
 	// Only updating when it is my turn (stable frames)
 	// and blinds are unknown
@@ -76,7 +76,7 @@ void CSymbolEngineBlinds::UpdateOnMyTurn()
 	}
 }
 
-void CSymbolEngineBlinds::UpdateOnHeartbeat()
+void CSymbolEngineBlinds::ResetOnHeartbeat()
 {}
 
 void CSymbolEngineBlinds::CalculateBlinds()

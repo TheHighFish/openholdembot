@@ -60,19 +60,19 @@ CSymbolEngineICM::~CSymbolEngineICM() {
 void CSymbolEngineICM::InitOnStartup() {
 }
 
-void CSymbolEngineICM::UpdateOnConnection() {
+void CSymbolEngineICM::ResetOnConnection() {
 }
 
-void CSymbolEngineICM::UpdateOnHandreset() {
+void CSymbolEngineICM::ResetOnHandreset() {
 }
 
-void CSymbolEngineICM::UpdateOnNewRound() {
+void CSymbolEngineICM::ResetOnNewRound() {
 }
 
-void CSymbolEngineICM::UpdateOnMyTurn() {
+void CSymbolEngineICM::ResetOnMyTurn() {
 }
 
-void CSymbolEngineICM::UpdateOnHeartbeat() {
+void CSymbolEngineICM::ResetOnHeartbeat() {
 }
 
 double P(int i, int n, double *s, int N)

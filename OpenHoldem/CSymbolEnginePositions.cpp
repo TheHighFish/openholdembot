@@ -42,10 +42,10 @@ CSymbolEnginePositions::~CSymbolEnginePositions()
 void CSymbolEnginePositions::InitOnStartup()
 {}
 
-void CSymbolEnginePositions::UpdateOnConnection()
+void CSymbolEnginePositions::ResetOnConnection()
 {}
 
-void CSymbolEnginePositions::UpdateOnHandreset() {
+void CSymbolEnginePositions::ResetOnHandreset() {
 	_betposition  = 0;
 	_dealposition = 0;
 	_callposition = 0;
@@ -55,15 +55,15 @@ void CSymbolEnginePositions::UpdateOnHandreset() {
 	_dealpositionrais = 0;
 }
 
-void CSymbolEnginePositions::UpdateOnNewRound() {
+void CSymbolEnginePositions::ResetOnNewRound() {
 }
 
-void CSymbolEnginePositions::UpdateOnMyTurn() {
+void CSymbolEnginePositions::ResetOnMyTurn() {
 	CalculatePositionForTheRaiser();
 	CalculatePositionsForTheUserchair();
 }
 
-void CSymbolEnginePositions::UpdateOnHeartbeat() {
+void CSymbolEnginePositions::ResetOnHeartbeat() {
 	CalculateNChairsDealtLeftRight();
   CalculatePositionsForTheUserchair();
 }

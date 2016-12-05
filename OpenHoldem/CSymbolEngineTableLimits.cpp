@@ -53,12 +53,12 @@ CSymbolEngineTableLimits::~CSymbolEngineTableLimits() {
 }
 
 void CSymbolEngineTableLimits::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineTableLimits::UpdateOnConnection() {
+void CSymbolEngineTableLimits::ResetOnConnection() {
 	write_log(preferences.debug_table_limits(), 
-    "[CSymbolEngineTableLimits] UpdateOnConnection()\n");
+    "[CSymbolEngineTableLimits] ResetOnConnection()\n");
 	number_of_saved_tablelimits = 0;
 	for (int i=0; i<k_number_of_hands_to_autolock_blinds_for_cashgames; i++)	{
 		tablelimits_first_N_hands_sblind[i] = 0;
@@ -73,13 +73,13 @@ void CSymbolEngineTableLimits::UpdateOnConnection() {
   tablelimit_locked_for_complete_session.bblind = 0;
 	tablelimit_locked_for_complete_session.sblind = 0;
   blinds_locked_for_complete_session = false;
-  // UpdateOnHandreset also cares about tablelimit_locked_for_current_hand
-	UpdateOnHandreset();
+  // ResetOnHandreset also cares about tablelimit_locked_for_current_hand
+	ResetOnHandreset();
 }
 
-void CSymbolEngineTableLimits::UpdateOnHandreset() {
+void CSymbolEngineTableLimits::ResetOnHandreset() {
 	write_log(preferences.debug_table_limits(), 
-    "[CSymbolEngineTableLimits] UpdateOnHandreset()\n");
+    "[CSymbolEngineTableLimits] ResetOnHandreset()\n");
 	blinds_locked_for_current_hand = false;
 	tablelimit_locked_for_current_hand.sblind = 0;
 	tablelimit_locked_for_current_hand.bblind = 0;
@@ -93,15 +93,15 @@ void CSymbolEngineTableLimits::UpdateOnHandreset() {
 	tablelimit_best_guess.bbet   = 0;
 }
 
-void CSymbolEngineTableLimits::UpdateOnNewRound() {
+void CSymbolEngineTableLimits::ResetOnNewRound() {
 }
 
-void CSymbolEngineTableLimits::UpdateOnMyTurn() {
+void CSymbolEngineTableLimits::ResetOnMyTurn() {
 }
 
-void CSymbolEngineTableLimits::UpdateOnHeartbeat() {
+void CSymbolEngineTableLimits::ResetOnHeartbeat() {
 	write_log(preferences.debug_table_limits(), 
-    "[CSymbolEngineTableLimits] UpdateOnHeartbeat()\n");
+    "[CSymbolEngineTableLimits] ResetOnHeartbeat()\n");
   if (TableLimitsNeedToBeComputed()) {
     CBlindGuesser _blind_guesser;
     _blind_guesser.Guess(&tablelimit_best_guess.sblind,
@@ -230,7 +230,7 @@ void CSymbolEngineTableLimits::AutoLockBlinds() {
 
 void CSymbolEngineTableLimits::CalcTableLimits() { 
  	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] CalcTableLimits()\n");
-  UpdateOnHeartbeat();
+  ResetOnHeartbeat();
 }
 
 STableLimit CSymbolEngineTableLimits::BestTableLimitsToBeUsed() {

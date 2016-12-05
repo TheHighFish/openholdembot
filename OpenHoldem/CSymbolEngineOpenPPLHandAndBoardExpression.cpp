@@ -57,19 +57,19 @@ CSymbolEngineOpenPPLHandAndBoardExpression::~CSymbolEngineOpenPPLHandAndBoardExp
 void CSymbolEngineOpenPPLHandAndBoardExpression::InitOnStartup()
 {}
 
-void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnConnection()
+void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnConnection()
 {}
 
-void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnHandreset()
+void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHandreset()
 {}
 
-void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnNewRound()
+void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnNewRound()
 {}
 
-void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnMyTurn() {
+void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnMyTurn() {
 }
 
-void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnHeartbeat() {
+void CSymbolEngineOpenPPLHandAndBoardExpression::ResetOnHeartbeat() {
 	_prime_coded_hole_cards = PrimeCodedRanks(
     p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
     p_table_state->User()->hole_cards(1)->GetOpenHoldemRank());

@@ -35,6 +35,7 @@ const char kEmptyBuffer[2] = "\n";
 #define SECOND_NEXT_CHARACTER input_buffer[_token_end_pointer+2]
 #define SIZE_OF_TOKEN         (_token_end_pointer - _token_start_pointer)
 #define TOKEN_ADDRESS         &input_buffer[_token_start_pointer]
+#define SKIP_NEXT_CHARACTER   _token_end_pointer++;
 
 CTokenizer::CTokenizer() {
   InitNewParse();
@@ -63,14 +64,16 @@ void CTokenizer::InitVars() {
 
 char CTokenizer::CURRENT_CHARACTER() {     
   char next_char = input_buffer[_token_end_pointer];
-  if (!isascii(next_char)) {
-    ErrorInvalidCharacter(next_char);
+  if ((next_char < 0) || (next_char > 0xFF)) {
     // Invalid character, usually unicode, copy-pasted from a web-page,
     // and or non-ASCII-characters in a comment.
     // No longer throwing an error, trying to handle it gracefully.
-    // Returning kTokenEndOfFunction stop processing
-    // and avoid too much error messages.
-    return kTokenEndOfFunction;
+    //
+	  // Advance _token_end_pointer to avoid multiple errors for the same char.
+	  ++_token_end_pointer;
+    // Returning kTokenEndOfFunction was the old way to stop processing.
+    // Now returning a space.
+    return ' ';
   }
   return next_char;
 }
@@ -256,7 +259,7 @@ StartOfScanForNextToken:
       line_absolute++;
       line_relative++;
     }
-    SkipNextCharacter();
+    SKIP_NEXT_CHARACTER
   }
   // Set start of next token at position after space
   _token_start_pointer = _token_end_pointer;
@@ -450,35 +453,14 @@ char* CTokenizer::RemainingInput() {
 	return TOKEN_ADDRESS;
 }
 
-void CTokenizer::ErrorInvalidCharacter(char invalid_char) {
-  CString message;
-  message.Format("Illegal character: \"%c\"\n"
-    "\n"
-    "Non-standard-characters like \"extended ASCII \""
-    "can cause all kinds of unbelievable troubles, "
-    "like getting interpreted by system-libraries as multi-byte Unicode, "
-    "thus eating up extra characters of the input, including line-endings, "
-    "thus causing line-info in the logs to be wrong.\n"
-    "\n"
-    "Therefore OH-script and OpenPPL (like most other programming languages) "
-    "are restricted to standard ASCII on purpose.\n",
-    invalid_char);
-  CParseErrors::Error(message);
-}
-
-inline void CTokenizer::SkipNextCharacter() {
-  if (!isascii(NEXT_CHARACTER)) {
-    ErrorInvalidCharacter(NEXT_CHARACTER);
-  }
-  _token_end_pointer++;
-}
-
-void CTokenizer::SkipToEndOfLine() {
-	while (CURRENT_CHARACTER() != '\n')	{
-		SkipNextCharacter();
+void CTokenizer::SkipToEndOfLine()
+{
+	while (CURRENT_CHARACTER() != '\n')
+	{
+		SKIP_NEXT_CHARACTER
 	}
 	// And skip the end of line too
-	SkipNextCharacter();
+	SKIP_NEXT_CHARACTER
   line_absolute++;
   line_relative++;
 }
@@ -486,24 +468,28 @@ void CTokenizer::SkipToEndOfLine() {
 void CTokenizer::SkipToEndOfMultiLineComment()
 {
 	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
-		  && (CURRENT_CHARACTER() != '\0'))	{
+		&& (CURRENT_CHARACTER() != '\0'))
+	{
     if (CURRENT_CHARACTER() == '\n') {
       line_absolute++;
       line_relative++;
     }
-		SkipNextCharacter();
+		SKIP_NEXT_CHARACTER
 	}
-	if (CURRENT_CHARACTER() == '\0') {
+	if (CURRENT_CHARACTER() == '\0')
+	{
 		CParseErrors::Error("End of function reached while looking for end of comment.\n"
       "/*\n"
       "  Every multi-line comment needs to be terminated\n"
       "  by a star and a slash.\n"
       "*/\n");
-		SkipNextCharacter();
-	}	else	{
+		SKIP_NEXT_CHARACTER
+	}
+	else
+	{
 		// Skip the remaining "*/"
-		SkipNextCharacter();
-		SkipNextCharacter();
+		SKIP_NEXT_CHARACTER
+		SKIP_NEXT_CHARACTER
 	}
 }
 

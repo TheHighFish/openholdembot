@@ -35,10 +35,10 @@ CSymbolEngineMTTInfo::~CSymbolEngineMTTInfo() {
 }
 
 void CSymbolEngineMTTInfo::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineMTTInfo::UpdateOnConnection() {
+void CSymbolEngineMTTInfo::ResetOnConnection() {
 	_mtt_number_entrants.Reset();
 	_mtt_players_remaining.Reset();
 	_mtt_my_rank.Reset();
@@ -48,16 +48,16 @@ void CSymbolEngineMTTInfo::UpdateOnConnection() {
 	_mtt_smallest_stack.Reset();
 }
 
-void CSymbolEngineMTTInfo::UpdateOnHandreset() {
+void CSymbolEngineMTTInfo::ResetOnHandreset() {
 }
 
-void CSymbolEngineMTTInfo::UpdateOnNewRound() {
+void CSymbolEngineMTTInfo::ResetOnNewRound() {
 }
 
-void CSymbolEngineMTTInfo::UpdateOnMyTurn() {
+void CSymbolEngineMTTInfo::ResetOnMyTurn() {
 }
 
-void CSymbolEngineMTTInfo::UpdateOnHeartbeat() {
+void CSymbolEngineMTTInfo::ResetOnHeartbeat() {
 }
 
 bool CSymbolEngineMTTInfo::EvaluateSymbol(const char *name, double *result, bool log /* = false */)

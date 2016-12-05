@@ -33,7 +33,6 @@ class CParseErrors {
   static CString ErroneousCodeSnippet();
  private:
   static bool _is_error;
-  static CString _last_error_message;
 };
 
 #endif INC_CPARSEERRORS_H

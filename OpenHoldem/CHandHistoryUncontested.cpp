@@ -38,20 +38,20 @@ CHandHistoryUncontested::~CHandHistoryUncontested() {
 void CHandHistoryUncontested::InitOnStartup() {
 }
 
-void CHandHistoryUncontested::UpdateOnConnection() {
+void CHandHistoryUncontested::ResetOnConnection() {
 }
 
-void CHandHistoryUncontested::UpdateOnHandreset() {
+void CHandHistoryUncontested::ResetOnHandreset() {
   _job_done = false;
 }
 
-void CHandHistoryUncontested::UpdateOnNewRound() {
+void CHandHistoryUncontested::ResetOnNewRound() {
 }
 
-void CHandHistoryUncontested::UpdateOnMyTurn() {
+void CHandHistoryUncontested::ResetOnMyTurn() {
 }
 
-void CHandHistoryUncontested::UpdateOnHeartbeat() {
+void CHandHistoryUncontested::ResetOnHeartbeat() {
   if (_job_done) return;
   if (p_symbol_engine_active_dealt_playing->nplayersdealt() < 2) return;
   if (p_symbol_engine_active_dealt_playing->nplayersactive() != 1) return;

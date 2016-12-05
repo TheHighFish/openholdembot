@@ -37,25 +37,25 @@ CSymbolEngineUserchair::~CSymbolEngineUserchair()
 
 void CSymbolEngineUserchair::InitOnStartup()
 {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineUserchair::UpdateOnConnection()
+void CSymbolEngineUserchair::ResetOnConnection()
 {
 	_userchair = kUndefined;
 }
 
-void CSymbolEngineUserchair::UpdateOnHandreset()
+void CSymbolEngineUserchair::ResetOnHandreset()
 {
 }
 
-void CSymbolEngineUserchair::UpdateOnNewRound()
+void CSymbolEngineUserchair::ResetOnNewRound()
 {}
 
-void CSymbolEngineUserchair::UpdateOnMyTurn()
+void CSymbolEngineUserchair::ResetOnMyTurn()
 {}
 
-void CSymbolEngineUserchair::UpdateOnHeartbeat() {
+void CSymbolEngineUserchair::ResetOnHeartbeat() {
 	if (!userchair_confirmed() || (p_casino_interface->IsMyTurn())) {
 		CalculateUserChair();
 	}

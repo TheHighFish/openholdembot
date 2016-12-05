@@ -25,7 +25,6 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
-#include "CSymbolEngineDebug.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineMTTInfo.h"
 #include "CSymbolEngineUserchair.h"
@@ -790,66 +789,34 @@ void CScraper::ScrapeLimits() {
 	// default values if we can't find them in the titlebar.
 	CString l_handnumber = p_table_state->_s_limit_info.handnumber(); 
 	// s$ttlimits - Scrape blinds/stakes/limit info from title text
-  CString titletext = p_table_title->PreprocessedTitle();
 	s_iter = p_tablemap->s$()->find("ttlimits");
-  if (s_iter != p_tablemap->s$()->end()) {
+	if (s_iter != p_tablemap->s$()->end()) {
+    CString titletext = p_table_title->PreprocessedTitle();
     trans.ParseStringBSL(
-      titletext, s_iter->second.text, NULL,
-      &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante,
+			titletext, s_iter->second.text, NULL,
+			&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
       &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-    write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
+		write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
       l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-  }
-  p_symbol_engine_debug->SetValue(0, l_sblind);
-	// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
-	for (int j=0; j<=9; j++) {
-		s.Format("ttlimits%d", j);
-		s_iter = p_tablemap->s$()->find(s.GetString());
-		if (s_iter != p_tablemap->s$()->end()) {
-			trans.ParseStringBSL(
-				titletext, s_iter->second.text, NULL,
-				&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
-        &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-			write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
-        l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-		}
-	}
-  write_log(preferences.debug_scraper(), "[CScraper] ttlimits(X), result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
-    l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-  p_symbol_engine_debug->SetValue(1, l_sblind);
-	// c0limits needs both
-  // * a region r$c0limits to define where to scrape the limis 
-  // * a symbol s$c0limits to define how to interpret the scrape text,
-  //   similar to s$ttlimits
-  // First c0limits
-  CString c0limitsX = "c0limits";
-	if (EvaluateRegion(c0limitsX, &text))	{
-    write_log(preferences.debug_scraper(), 
-      "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
-		if (text != "")	{
-			s_iter = p_tablemap->s$()->find(c0limitsX);
-      if (s_iter == p_tablemap->s$()->end()) {
-        // Missing s$c0limits could crash OpenHoldem in the past
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
-        // but CTablemapCompletenessChecker now also takes care
-        write_log(k_always_log_errors, "[CScraper] ERROR! Can't interpret r$c0limits due to missing s$c0limits\n");
-      } else {
-        CString how_to_interpret_c0limit = s_iter->second.text;
-        write_log(preferences.debug_scraper(), 
-          "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
+		// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
+		for (int j=0; j<=9; j++) {
+			s.Format("ttlimits%d", j);
+			s_iter = p_tablemap->s$()->find(s.GetString());
+			if (s_iter != p_tablemap->s$()->end()) {
 				trans.ParseStringBSL(
-					text, how_to_interpret_c0limit, NULL,
+					titletext, s_iter->second.text, NULL,
 					&l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
           &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
-        write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+				write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
           l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-      }
+			}
 		}
-	}
-  p_symbol_engine_debug->SetValue(2, l_sblind);
-  // Then c0limitsX
-  for (int i=0; i<9; ++i) {
-    c0limitsX.Format("c0limits%i", i);
+		// c0limits needs both
+    // * a region r$c0limits to define where to scrape the limis 
+    // * a symbol s$c0limits to define how to interpret the scrape text,
+    //   similar to s$ttlimits
+    // First c0limits
+    CString c0limitsX = "c0limits";
 		if (EvaluateRegion(c0limitsX, &text))	{
       write_log(preferences.debug_scraper(), 
         "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
@@ -861,7 +828,7 @@ void CScraper::ScrapeLimits() {
           // but CTablemapCompletenessChecker now also takes care
           write_log(k_always_log_errors, "[CScraper] ERROR! Can't interpret r$c0limits due to missing s$c0limits\n");
         } else {
-        CString how_to_interpret_c0limit = s_iter->second.text;
+          CString how_to_interpret_c0limit = s_iter->second.text;
           write_log(preferences.debug_scraper(), 
             "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
 				  trans.ParseStringBSL(
@@ -873,57 +840,77 @@ void CScraper::ScrapeLimits() {
         }
 			}
 		}
-  }
-  write_log(preferences.debug_scraper(), "[CScraper] ttlimits(X) / c0limits(X), result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
-    l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-  p_symbol_engine_debug->SetValue(3, l_sblind);
-  // save what we just scanned through
-  if (l_handnumber != "") {
-		p_table_state->_s_limit_info._handnumber = l_handnumber;
-  }
-  if (l_sblind != kUndefined) {
-		p_table_state->_s_limit_info._sblind.SetValue(Number2CString(l_sblind));
-  }
-  if (l_bblind != kUndefined) {
-		p_table_state->_s_limit_info._bblind.SetValue(Number2CString(l_bblind));
-  }
-  if (l_bbet != kUndefined) {
-		p_table_state->_s_limit_info._bbet.SetValue(Number2CString(l_bbet));
-  }
-  if (l_ante != kUndefined) {
-		p_table_state->_s_limit_info._ante.SetValue(Number2CString(l_ante));
-  }
-  if (l_limit != kUndefined) {
-		p_table_state->_s_limit_info._limit = l_limit;
-  }
-  if (l_sb_bb != kUndefined) {
-		p_table_state->_s_limit_info._sb_bb.SetValue(Number2CString(l_sb_bb));
-  }
-  if (l_bb_BB != kUndefined) {
-		p_table_state->_s_limit_info._bb_BB.SetValue(Number2CString(l_bb_BB));
-  }
-  if (l_buyin != kUndefined) {
-		p_table_state->_s_limit_info._buyin.SetValue(Number2CString(l_buyin));
-  }
-  p_symbol_engine_debug->SetValue(4, l_sblind);
-  CString result;
-  // r$c0smallblind
-  EvaluateRegion("c0smallblind", &result);
-  p_table_state->_s_limit_info._sblind.SetValue(result);
-	// r$c0bigblind
-  EvaluateRegion("c0bigblind", &result);
-  p_table_state->_s_limit_info._bblind.SetValue(result);
-	// r$c0bigbet
-  EvaluateRegion("c0bigbet", &result);
-  p_table_state->_s_limit_info._bbet.SetValue(result);
-	// r$c0ante
-  EvaluateRegion("c0ante", &result);
-  p_table_state->_s_limit_info._ante.SetValue(result);
-	// r$c0isfinaltable
-  EvaluateTrueFalseRegion(&p_table_state->_s_limit_info._is_final_table, "c0isfinaltable");
-  write_log(preferences.debug_scraper(), "[CScraper] small blind at the very end: %.2f\n",
-    p_table_state->_s_limit_info._sblind.GetValue());
-  p_symbol_engine_debug->SetValue(5, p_table_state->_s_limit_info._sblind.GetValue());
+    // Then c0limitsX
+    for (int i=0; i<9; ++i) {
+      c0limitsX.Format("c0limits%i", i);
+		  if (EvaluateRegion(c0limitsX, &text))	{
+        write_log(preferences.debug_scraper(), 
+          "[CScraper] r$%s evalutes to %s\n", c0limitsX, text);
+			  if (text != "")	{
+			    s_iter = p_tablemap->s$()->find(c0limitsX);
+          if (s_iter == p_tablemap->s$()->end()) {
+            // Missing s$c0limits could crash OpenHoldem in the past
+            // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+            // but CTablemapCompletenessChecker now also takes care
+            write_log(k_always_log_errors, "[CScraper] ERROR! Can't interpret r$c0limits due to missing s$c0limits\n");
+          } else {
+          CString how_to_interpret_c0limit = s_iter->second.text;
+            write_log(preferences.debug_scraper(), 
+              "[CScraper] s$%s is %s\n", c0limitsX, how_to_interpret_c0limit);
+				    trans.ParseStringBSL(
+					    text, how_to_interpret_c0limit, NULL,
+					    &l_handnumber, &l_sblind, &l_bblind, &l_bbet, &l_ante, 
+              &l_limit, &l_sb_bb, &l_bb_BB, &l_buyin);
+            write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n", 
+              l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+          }
+			  }
+		  }
+    }
+    // save what we just scanned through
+    if (l_handnumber != "") {
+			p_table_state->_s_limit_info._handnumber = l_handnumber;
+    }
+    if (l_sblind != kUndefined) {
+			p_table_state->_s_limit_info._sblind.SetValue(Number2CString(l_sblind));
+    }
+    if (l_bblind != kUndefined) {
+			p_table_state->_s_limit_info._bblind.SetValue(Number2CString(l_bblind));
+    }
+    if (l_bbet != kUndefined) {
+			p_table_state->_s_limit_info._bbet.SetValue(Number2CString(l_bbet));
+    }
+    if (l_ante != kUndefined) {
+			p_table_state->_s_limit_info._ante.SetValue(Number2CString(l_ante));
+    }
+    if (l_limit != kUndefined) {
+			p_table_state->_s_limit_info._limit = l_limit;
+    }
+    if (l_sb_bb != kUndefined) {
+			p_table_state->_s_limit_info._sb_bb.SetValue(Number2CString(l_sb_bb));
+    }
+    if (l_bb_BB != kUndefined) {
+			p_table_state->_s_limit_info._bb_BB.SetValue(Number2CString(l_bb_BB));
+    }
+    if (l_buyin != kUndefined) {
+			p_table_state->_s_limit_info._buyin.SetValue(Number2CString(l_buyin));
+    }
+    CString result;
+    // r$c0smallblind
+    EvaluateRegion("c0smallblind", &result);
+    p_table_state->_s_limit_info._sblind.SetValue(result);
+		// r$c0bigblind
+    EvaluateRegion("c0bigblind", &result);
+    p_table_state->_s_limit_info._bblind.SetValue(result);
+		// r$c0bigbet
+    EvaluateRegion("c0bigbet", &result);
+    p_table_state->_s_limit_info._bbet.SetValue(result);
+		// r$c0ante
+    EvaluateRegion("c0ante", &result);
+    p_table_state->_s_limit_info._ante.SetValue(result);
+		// r$c0isfinaltable
+    EvaluateTrueFalseRegion(&p_table_state->_s_limit_info._is_final_table, "c0isfinaltable");
+	}
   __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 

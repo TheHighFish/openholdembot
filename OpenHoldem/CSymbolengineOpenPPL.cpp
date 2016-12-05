@@ -27,12 +27,8 @@
 
 CSymbolEngineOpenPPL *p_symbol_engine_open_ppl = NULL;
 
-const char* kOpenPPLUpdateOnHandReset =
-  "UpdateMemorySymbolsOnHandReset";
-const char* kOpenPPLUpdateOnNewRound =
-  "UpdateMemorySymbolsOnNewRound";
-const char* kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction =
-  "UpdateMemorySymbolsAfterAutoplayerAction";
+const char* kOpenPPLIniFunctionsForHistorySymbols =
+  "InitMemorySymbols";
 
 CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
 	// The values of some symbol-engines depend on other engines.
@@ -51,58 +47,51 @@ CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
 CSymbolEngineOpenPPL::~CSymbolEngineOpenPPL() {
 }
 
-void CSymbolEngineOpenPPL::CheckExistenceOfOpenPPLFunction(CString function) {
-  if (!p_function_collection->Exists(function)) {
+void CSymbolEngineOpenPPL::InitOnStartup() {
+	ResetOnConnection();
+}
+
+void CSymbolEngineOpenPPL::ResetOnConnection() {
+}
+
+void CSymbolEngineOpenPPL::ResetOnHandreset() {
+}
+
+void CSymbolEngineOpenPPL::ResetOnNewRound() {
+}
+
+void CSymbolEngineOpenPPL::ResetOnMyTurn() {
+  // Iniytialization of memory-symbols temporary disbled, here
+  // as it did not work perfectly and we currently do it in
+  // CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL()
+  //InitMemorySymbols();
+}
+
+void CSymbolEngineOpenPPL::InitMemorySymbols() {
+  // Verify that ini-functions exists.
+  // Avoid PEBKACs by stupid renaming, that breaks everything
+  if (!p_function_collection->Exists(kOpenPPLIniFunctionsForHistorySymbols)) {
     CString message;
     message.Format("Can't find initialization-function\n"
       "%s\n"
       "in OpenPPL-library.\n"
       "\n"
-      "Without this function most history-symbols will be broken.\n"
+      "Without this function most history-symbols will be broken.n"
       "Probably caused by one-sided renaming of that function.",
-      function);
+      kOpenPPLIniFunctionsForHistorySymbols);
     OH_MessageBox_Error_Warning(message);
+    return;
   }
-}
-
-void CSymbolEngineOpenPPL::InitOnStartup() {
-}
-
-void CSymbolEngineOpenPPL::UpdateOnConnection() {
-  VerifyExistenceOfOpenPPLInitializationInLibrary();
-  UpdateOnHandreset();
-}
-
-void CSymbolEngineOpenPPL::UpdateOnHandreset() {
+  // This function is very vital for most OpenPPL-history-symbols
+  // that will soon be used by the autoplayer during this heartbeat.
+  // Therefore we log these initializations too if an autoplayer-trace
+  // is desired.
   p_function_collection->Evaluate(
-    kOpenPPLUpdateOnHandReset,
+    kOpenPPLIniFunctionsForHistorySymbols,
     kAlwaysLogOpenPPLInitialization);
 }
 
-void CSymbolEngineOpenPPL::UpdateOnNewRound() {
-  p_function_collection->Evaluate(
-    kOpenPPLUpdateOnNewRound,
-    kAlwaysLogOpenPPLInitialization);
-}
-
-void CSymbolEngineOpenPPL::UpdateOnMyTurn() {
-}
-
-void CSymbolEngineOpenPPL::VerifyExistenceOfOpenPPLInitializationInLibrary() {
-  // Verify that ini-functions exists.
-  // Avoid PEBKACs by stupid renaming, that breaks everything
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnHandReset);
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateOnNewRound);
-  CheckExistenceOfOpenPPLFunction(kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction);
-}
-
-void CSymbolEngineOpenPPL::UpdateOnHeartbeat() {
-}
-
-void CSymbolEngineOpenPPL::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
-  p_function_collection->Evaluate(
-    kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction,
-    kAlwaysLogOpenPPLInitialization);
+void CSymbolEngineOpenPPL::ResetOnHeartbeat() {
 }
 
 bool CSymbolEngineOpenPPL::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

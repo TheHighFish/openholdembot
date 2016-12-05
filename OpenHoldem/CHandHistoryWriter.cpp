@@ -48,22 +48,22 @@ CHandHistoryWriter::~CHandHistoryWriter() {
 void CHandHistoryWriter::InitOnStartup() {
 }
 
-void CHandHistoryWriter::UpdateOnConnection() {
+void CHandHistoryWriter::ResetOnConnection() {
 }
 
-void CHandHistoryWriter::UpdateOnHandreset() {
+void CHandHistoryWriter::ResetOnHandreset() {
   //write_log(true, "######## Test ################\n");
   WriteHistory();
 }
 
-void CHandHistoryWriter::UpdateOnNewRound() {
+void CHandHistoryWriter::ResetOnNewRound() {
 }
 
-void CHandHistoryWriter::UpdateOnMyTurn() {
+void CHandHistoryWriter::ResetOnMyTurn() {
   WriteHistory();
 }
 
-void CHandHistoryWriter::UpdateOnHeartbeat() {
+void CHandHistoryWriter::ResetOnHeartbeat() {
 }
 
 void CHandHistoryWriter::AddMessage(CString message) {

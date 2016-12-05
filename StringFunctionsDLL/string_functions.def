@@ -1,4 +1,4 @@
-LIBRARY	window_functions
+LIBRARY	string_functions
 EXPORTS
 Bool2CString
 CStringRemoveLeft
@@ -13,8 +13,8 @@ RemoveRightWhiteSpace
 RemoveSpacesInFrontOfCentMultipliers
 RemoveSpacesInsideNumbers
 ReplaceCommasInNumbersByDots
-ReplaceKnownNonASCIICharacters
-ReplaceOutlandischCurrencyByDollarsandCents
+ReplaceOutlandischCurrencyByDollarsAndCents
+ReplaceSpaceLookALikesBySpaces
 RightCharacter
 RightDigitCharacterToNumber
 StringAIsPrefixOfStringB

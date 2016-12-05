@@ -48,14 +48,14 @@ CSymbolEngineCards::~CSymbolEngineCards() {
 }
 
 void CSymbolEngineCards::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineCards::UpdateOnConnection() {
-	UpdateOnHandreset();
+void CSymbolEngineCards::ResetOnConnection() {
+	ResetOnHandreset();
 }
 
-void CSymbolEngineCards::UpdateOnHandreset() {
+void CSymbolEngineCards::ResetOnHandreset() {
 	// pocket tests
 	_ispair = false;
 	_issuited = false;
@@ -92,13 +92,13 @@ void CSymbolEngineCards::UpdateOnHandreset() {
 	_nstraightflushfillcommon = k_cards_needed_for_flush;
 }
 
-void CSymbolEngineCards::UpdateOnNewRound() {
+void CSymbolEngineCards::ResetOnNewRound() {
 }
 
-void CSymbolEngineCards::UpdateOnMyTurn() {
+void CSymbolEngineCards::ResetOnMyTurn() {
 }
 
-void CSymbolEngineCards::UpdateOnHeartbeat() {
+void CSymbolEngineCards::ResetOnHeartbeat() {
 	CalcPocketTests();
 	CalculateCommonCards();
 	CalcFlushesStraightsSets();

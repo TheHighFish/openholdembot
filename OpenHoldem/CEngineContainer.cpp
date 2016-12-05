@@ -35,11 +35,9 @@
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChairs.h"
-#include "CSymbolEngineChecksBetsFolds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineColourCodes.h"
 #include "CSymbolEngineDealerchair.h"
-#include "CSymbolEngineDebug.h"
 #include "CSymbolEngineEventLogging.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHandrank.h"
@@ -70,11 +68,12 @@
 #include "UnknownSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
-
-CEngineContainer::CEngineContainer() {
+  CEngineContainer::CEngineContainer() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
   CreateSymbolEngines();
-  InitOnStartup();
+  // First initialization is the same as on a new connection
+  ResetOnConnection();
+  // But we want to initialize later again on every connection
   _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
@@ -162,9 +161,6 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCallers
   p_symbol_engine_callers = new CSymbolEngineCallers();
   AddSymbolEngine(p_symbol_engine_callers);
-  // CSymbolEngineChecksBetsFolds
-  p_symbol_engine_checks_bets_folds = new CSymbolEngineChecksBetsFolds();
-  AddSymbolEngine(p_symbol_engine_checks_bets_folds);
   // CSymbolEnginePokerActio
   p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
   AddSymbolEngine(p_symbol_engine_poker_action);
@@ -226,16 +222,10 @@ void CEngineContainer::CreateSymbolEngines() {
   // OpenPPL-symbol-engines
   p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
   AddSymbolEngine(p_symbol_engine_openppl_user_variables);
-  // CSymbolEngineOpenPPL triggers calculation of history-symbols
+  // CSymbolEngineOpenPPL triigers calculation of history-symbols
   // and therefore has to be the very last openPPL-symbol-engine
   p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
   AddSymbolEngine(p_symbol_engine_open_ppl);
-  // Some OH-debug-support for the debug-tab
-  // Does not depend on anything else,
-  // does get used very rarely only by developers.
-  // Therefore placed very late.
-  p_symbol_engine_debug = new CSymbolEngineDebug;
-  AddSymbolEngine(p_symbol_engine_debug);
   // After all real symbol-engines have been handled
   // we can add the hand-history-generator modules.
   // Order of insertion has order of later usage.
@@ -275,9 +265,9 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines() {
 void CEngineContainer::EvaluateAll() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
 	if (!_reset_on_connection_executed) {
-		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as UpdateOnConnection not yet executed.\n");
+		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as ResetOnConnection not yet executed.\n");
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
-		// The problem with UpdateOnConnection:
+		// The problem with ResetOnConnection:
 		// It will be called by another thread,
 		// so the execution might be out of order.
 		// Therefore we have to skip all other calculations
@@ -297,82 +287,66 @@ void CEngineContainer::EvaluateAll() {
 	// table-limits depend on betround
 	p_symbol_engine_tablelimits->CalcTableLimits();
 
-	// UpdateOnConnection() gets directly called by the auto-connector,
+	// ResetOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
 	// We only need to care about:
-	// * UpdateOnHandreset()
-	// * UpdateOnNewRound()
-	// * UpdateOnMyTurn()
+	// * ResetOnHandreset()
+	// * ResetOnNewRound()
+	// * ResetOnMyTurn()
 	if (p_handreset_detector->IsHandreset()) 	{
-		UpdateOnHandreset();
+		ResetOnHandreset();
 	}
 	if (p_betround_calculator->IsNewBetround())	{
-		UpdateOnNewRound();
+		ResetOnNewRound();
 	}
 	if (p_casino_interface->IsMyTurn())	{
-		UpdateOnMyTurn();
+		ResetOnMyTurn();
 	}
-	// And finally UpdateOnHeartbeat() gets always called.
-	UpdateOnHeartbeat();
+	// And finally ResetOnHeartbeat() gets always called.
+	ResetOnHeartbeat();
 }
 
-void CEngineContainer::InitOnStartup() {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup\n");
-  for (int i = 0; i<_number_of_symbol_engines_loaded; i++) {
-    _symbol_engines[i]->InitOnStartup();
-  }
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup finished\n");
-
-}
-
-void CEngineContainer::UpdateOnConnection() {
+void CEngineContainer::ResetOnConnection() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
-		_symbol_engines[i]->UpdateOnConnection();
+		_symbol_engines[i]->ResetOnConnection();
 	}
 	_reset_on_connection_executed = true;
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
 }
 
-void CEngineContainer::UpdateOnDisconnection() {
+void CEngineContainer::ResetOnDisconnection() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on disconnection\n");
 	// Just to make sure that our connection-code
 	// will be executed later in correct order
 	_reset_on_connection_executed = false;
 }
 
-void CEngineContainer::UpdateOnHandreset() {
+void CEngineContainer::ResetOnHandreset() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on handreset\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
-		_symbol_engines[i]->UpdateOnHandreset();
+		_symbol_engines[i]->ResetOnHandreset();
 	}
 }
 
-void CEngineContainer::UpdateOnNewRound() {
+void CEngineContainer::ResetOnNewRound() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on new round\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
-		_symbol_engines[i]->UpdateOnNewRound();
+		_symbol_engines[i]->ResetOnNewRound();
 	}
 }
 
-void CEngineContainer::UpdateOnMyTurn() {
+void CEngineContainer::ResetOnMyTurn() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
-		_symbol_engines[i]->UpdateOnMyTurn();
+		_symbol_engines[i]->ResetOnMyTurn();
 	}
 }
 
-void CEngineContainer::UpdateOnHeartbeat() {
+void CEngineContainer::ResetOnHeartbeat() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
   for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
-	  _symbol_engines[i]->UpdateOnHeartbeat();
-  }
-}
-
-void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Reset after autoplayer action\n");
-  for (int i = 0; i < _number_of_symbol_engines_loaded; ++i) {
-    _symbol_engines[i]->UpdateAfterAutoplayerAction(autoplayer_action_code);
+	  _symbol_engines[i]->ResetOnHeartbeat();
   }
 }
 

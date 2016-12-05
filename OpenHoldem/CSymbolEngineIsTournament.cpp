@@ -22,9 +22,9 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineCasino.h"
-#include "CSymbolEngineChecksBetsFolds.h"
 #include "CSymbolengineMTTInfo.h"
 #include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -159,9 +159,9 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 	assert(p_symbol_engine_autoplayer != NULL);
 	assert(p_symbol_engine_casino != NULL);
-  assert(p_symbol_engine_checks_bets_folds != NULL);
-  assert(p_symbol_engine_chip_amounts != NULL);
 	assert(p_symbol_engine_mtt_info != NULL);
+	assert(p_symbol_engine_chip_amounts != NULL);
+	assert(p_symbol_engine_raisers != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_time != NULL);
 }
@@ -170,25 +170,25 @@ CSymbolEngineIsTournament::~CSymbolEngineIsTournament() {
 }
 
 void CSymbolEngineIsTournament::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEngineIsTournament::UpdateOnConnection() {
+void CSymbolEngineIsTournament::ResetOnConnection() {
 	_istournament    = kUndefined;
 	_decision_locked = false;
 }
 
-void CSymbolEngineIsTournament::UpdateOnHandreset() {
+void CSymbolEngineIsTournament::ResetOnHandreset() {
 }
 
-void CSymbolEngineIsTournament::UpdateOnNewRound() {
+void CSymbolEngineIsTournament::ResetOnNewRound() {
 }
 
-void CSymbolEngineIsTournament::UpdateOnMyTurn() {
+void CSymbolEngineIsTournament::ResetOnMyTurn() {
 	TryToDetectTournament();
 }
 
-void CSymbolEngineIsTournament::UpdateOnHeartbeat() {
+void CSymbolEngineIsTournament::ResetOnHeartbeat() {
   if (_istournament == kUndefined) {
     // Beginning pf session and not yet sure.
     // Temporary maximum effort on every heartbeat
@@ -230,7 +230,7 @@ bool CSymbolEngineIsTournament::AntesPresent() {
 	// Antes are present, if all players are betting 
 	// and at least 3 have a bet smaller than SB 
 	// (remember: this is for the first few hands only).
-	if ((p_symbol_engine_checks_bets_folds->nopponentsbetting() + 1)
+	if ((p_symbol_engine_raisers->nopponentsbetting() + 1)
 		  < p_symbol_engine_active_dealt_playing->nplayersseated()) {
 		return false;
 	}

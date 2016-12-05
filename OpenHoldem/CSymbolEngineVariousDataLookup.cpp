@@ -37,6 +37,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
+#include "CTableTitle.h"
 #include "CWhiteInfoBox.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
@@ -54,21 +55,21 @@ CSymbolEngineVariousDataLookup::~CSymbolEngineVariousDataLookup() {
 void CSymbolEngineVariousDataLookup::InitOnStartup() {
 }
 
-void CSymbolEngineVariousDataLookup::UpdateOnConnection() {
+void CSymbolEngineVariousDataLookup::ResetOnConnection() {
 }
 
-void CSymbolEngineVariousDataLookup::UpdateOnHandreset() {
+void CSymbolEngineVariousDataLookup::ResetOnHandreset() {
   // Reset display
   InvalidateRect(theApp.m_pMainWnd->GetSafeHwnd(), NULL, true);
 }
 
-void CSymbolEngineVariousDataLookup::UpdateOnNewRound() {
+void CSymbolEngineVariousDataLookup::ResetOnNewRound() {
 }
 
-void CSymbolEngineVariousDataLookup::UpdateOnMyTurn() {
+void CSymbolEngineVariousDataLookup::ResetOnMyTurn() {
 }
 
-void CSymbolEngineVariousDataLookup::UpdateOnHeartbeat() {
+void CSymbolEngineVariousDataLookup::ResetOnHeartbeat() {
 }
 
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
@@ -111,8 +112,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 	    OH_MessageBox_OH_Script_Messages(name);
 	    *result = 0;
     }
-  }
-  else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
+  } else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
     if (!p_formula_parser->IsParsing()) {
       write_log(preferences.debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
@@ -124,8 +124,14 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     *result = true;
   } else if ((memcmp(name, "attached_hwnd", 13)==0) && (strlen(name)==13)) {
     *result = int(p_autoconnector->attached_hwnd());
-  } else if ((memcmp(name, "islobby", 7)==0) && (strlen(name)==7)) {
+  }
+  else if ((memcmp(name, "islobby", 7) == 0) && (strlen(name) == 7)) {
     *result = p_tablemap->islobby();
+  }
+  else if ((memcmp(name, "title$", 6) == 0) && (strlen(name) >= 7)) {
+    assert(p_table_title != NULL);
+    CString substring = CString(name).Mid(6);
+    *result = p_table_title->ContainsSubstring(substring);
   } else if ((memcmp(name, kEmptyExpression_False_Zero_WhenOthersFoldForce, strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))==0) 
       && (strlen(name)==strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))) {
     *result = kUndefinedZero;
@@ -142,7 +148,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
   // e.g. "dll$, pl_ chair$, ....
-  CString list = "dll$ pl_ vs$ msgbox$ log$ "
+  CString list = "dll$ pl_ vs$ msgbox$ log$ title$ "
     "betround fmax f flagbits "
     "session version islobby "
     "handsplayed handsplayed_headsup ";

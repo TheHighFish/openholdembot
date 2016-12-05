@@ -118,6 +118,12 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
       _function_text += "\n";
     }
   } 
+  // Remove superfluous new-lines at the end of the function
+  // to avoid blowing up the files on saving...
+  _function_text.TrimRight();
+  // except one, that is necessary for the tokenizer
+  // and results in better formatting
+  _function_text += "\n";
 #ifdef DEBUG_FORMULA_FILESPLITTER
   //printf("[CFormulaFileSplitter] next function: %s\n", _formula_content);
   OH_MessageBox_Interactive(_function_text, "Function", 0);

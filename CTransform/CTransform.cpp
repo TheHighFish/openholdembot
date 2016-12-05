@@ -1188,22 +1188,17 @@ void CTransform::ParseStringBSL(const CString text,
 }
 
 double CTransform::StringToMoney(const CString inStr) {
-  CStringArray		 possibleValues;
-  CArray<int, int> possibleValuesMultiplier;
-  CString				   activeValue = "";
-  int					     iValueWithCurrencySymbol = -1;
-  bool				     currencySymbol = false;
-	#ifdef OPENHOLDEM_PROGRAM
+	const char			 *str = inStr.GetString();
+	CStringArray		 possibleValues;
+	CArray<int, int> possibleValuesMultiplier;
+	CString				   activeValue = "";
+	int					     iValueWithCurrencySymbol = -1;
+	bool				     currencySymbol = false;
+
+#ifdef OPENHOLDEM_PROGRAM
   write_log(preferences.debug_scraper(),
     "[CTransform] StringToMoney %s\n", inStr);
 #endif 
-  if (strlen(inStr) == 0) {
-    return kUndefinedZero;
-  }
-  if (inStr.FindOneOf("0123456789") < 0) {
-    return kUndefinedZero;
-  }
-  const char *str = inStr.GetString();
 	while (*str) {
 		switch (*str) {
 			case '0':

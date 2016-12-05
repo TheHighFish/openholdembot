@@ -22,7 +22,6 @@
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
-#include "CEngineContainer.h"
 #include "CFlagsToolbar.h"
 #include "CFunctionCollection.h"
 #include "CHeartbeatThread.h"
@@ -98,7 +97,7 @@ void CAutoplayer::FinishActionSequenceIfNecessary() {
       p_casino_interface->PressTabToSwitchOHReplayToNextFrame();
     }
     // avoid multiple-clicks within a short frame of time
-    p_stableframescounter->UpdateOnAutoplayerAction();
+    p_stableframescounter->ResetOnAutoplayerAction();
     if (p_symbol_engine_casino->ConnectedToOfflineSimulation() || preferences.restore_position_and_focus()) {
       // Restore mouse position and window focus
       // Only for simulations, not for real casinos (stealth).
@@ -162,10 +161,10 @@ bool CAutoplayer::DoBetPot(void) {
       }
 		}
     if (success) {
+      p_autoplayer_trace->Print(ActionConstantNames(i), kAlwaysLogAutoplayerFunctions);
 			// Register the action
 			// Treat betpot like swagging, i.e. raising a user-defined amount
-      p_engine_container->UpdateAfterAutoplayerAction(k_autoplayer_function_betsize);
-      p_autoplayer_trace->Print(ActionConstantNames(i), kAlwaysLogAutoplayerFunctions);
+			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
     }
 		// Else continue trying with the next betpot function
@@ -261,9 +260,9 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
       continue;
     }
 		if (p_function_collection->Evaluate(k_standard_function_names[i])) 	{
-			if (p_casino_interface->LogicalAutoplayerButton(i)->Click()) 			{				
-        p_engine_container->UpdateAfterAutoplayerAction(i);
-        p_autoplayer_trace->Print(ActionConstantNames(i), kAlwaysLogAutoplayerFunctions);
+			if (p_casino_interface->LogicalAutoplayerButton(i)->Click()) 			{
+				p_autoplayer_trace->Print(ActionConstantNames(i), kAlwaysLogAutoplayerFunctions);
+				p_symbol_engine_history->RegisterAction(i);
 				return true;
 			}
 		}
@@ -346,9 +345,6 @@ bool CAutoplayer::ExecuteSecondaryFormulasIfNecessary() {
 	if (executed_secondary_function != kUndefined) {
 		FinishActionSequenceIfNecessary();
     if (preferences.log_hopper_functions()) {
-      // No update after action required here,
-      // as prefold already cares about that
-      // and the other actions don't need it.
       p_autoplayer_trace->Print(ActionConstantNames(executed_secondary_function), false);
     }
 		return true;
@@ -419,11 +415,14 @@ bool CAutoplayer::DoAllin(void) {
 	//	3) swag the balance 
 	if (p_tablemap->allinconfirmationmethod() != 0)	{
 		// Clicking max (or allin) and then raise
-    success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
-      k_autoplayer_function_raise, preferences.swag_delay_3());
+		success = p_casino_interface->ClickButtonSequence(k_autoplayer_function_allin,
+			k_autoplayer_function_raise, preferences.swag_delay_3());
+
+		p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), kAlwaysLogAutoplayerFunctions);
 	}	else {
     // Clicking only max (or allin), but not raise
 		success = p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->Click();
+    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), kAlwaysLogAutoplayerFunctions);
   }
 	if (!success) {
     // Try the slider
@@ -437,8 +436,7 @@ bool CAutoplayer::DoAllin(void) {
 		// Not really necessary to register the action,
 		// as the game is over and there is no doallin-symbol,
 		// but it does not hurt to register it anyway.
-    p_engine_container->UpdateAfterAutoplayerAction(k_autoplayer_function_allin);
-    p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_allin), kAlwaysLogAutoplayerFunctions);
+		p_symbol_engine_history->RegisterAction(k_autoplayer_function_allin);
 		return true;
 	}
 	return false;
@@ -509,8 +507,7 @@ bool CAutoplayer::DoBetsize() {
 		if (success) {
       write_log(preferences.debug_autoplayer(), "[AutoPlayer] betsize %.2f (adjusted) entered\n",
         betsize);
-      p_engine_container->UpdateAfterAutoplayerAction(k_autoplayer_function_betsize);
-      p_autoplayer_trace->Print(ActionConstantNames(k_autoplayer_function_betsize), kAlwaysLogAutoplayerFunctions);
+			p_symbol_engine_history->RegisterAction(k_autoplayer_function_betsize);
 			return true;
 		}
     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Failed to enter betsize %.2f\n",
@@ -528,7 +525,7 @@ bool CAutoplayer::DoPrefold(void) {
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Smells like a bad f$prefold-function.\n");
 	}
 	if (p_casino_interface->LogicalAutoplayerButton(k_standard_function_prefold)->Click())	{
-    p_engine_container->UpdateAfterAutoplayerAction(k_autoplayer_function_fold);
+		p_symbol_engine_history->RegisterAction(k_autoplayer_function_fold);
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Prefold executed.\n");
 		return true;
 	}

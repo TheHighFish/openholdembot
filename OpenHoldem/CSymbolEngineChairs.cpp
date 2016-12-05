@@ -40,19 +40,19 @@ CSymbolEngineChairs::~CSymbolEngineChairs() {
 }
 
 void CSymbolEngineChairs::InitOnStartup() {
-  UpdateOnConnection();
+  ResetOnConnection();
 }
 
-void CSymbolEngineChairs::UpdateOnConnection() {
+void CSymbolEngineChairs::ResetOnConnection() {
   _nchairs = p_tablemap->nchairs();
-  UpdateOnHandreset();
+  ResetOnHandreset();
 }
 
-void CSymbolEngineChairs::UpdateOnHandreset() {
-  UpdateOnNewRound();
+void CSymbolEngineChairs::ResetOnHandreset() {
+  ResetOnNewRound();
 }
 
-void CSymbolEngineChairs::UpdateOnNewRound() {
+void CSymbolEngineChairs::ResetOnNewRound() {
   _opponent_headsup_chair = kUndefined;
   _smallblind_chair = kUndefined;
   _bigblind_chair = kUndefined;
@@ -60,7 +60,7 @@ void CSymbolEngineChairs::UpdateOnNewRound() {
 
 }
 
-void CSymbolEngineChairs::UpdateOnMyTurn() {
+void CSymbolEngineChairs::ResetOnMyTurn() {
   // Only well-defined at my turn and requires userchair for calculation.
   // But it seems some "casinos" like test-suite can break that condition.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
@@ -71,7 +71,7 @@ void CSymbolEngineChairs::UpdateOnMyTurn() {
   CalculateCutOffChair();
 }
 
-void CSymbolEngineChairs::UpdateOnHeartbeat() {
+void CSymbolEngineChairs::ResetOnHeartbeat() {
 }
 
 void CSymbolEngineChairs::CalculateOpponentHeadsupChair(){

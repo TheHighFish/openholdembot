@@ -24,13 +24,11 @@ class CVirtualSymbolEngine {
 	CVirtualSymbolEngine();
 	virtual ~CVirtualSymbolEngine();
  public:
-  virtual void InitOnStartup();
-	virtual void UpdateOnConnection();
-	virtual void UpdateOnHandreset();
-	virtual void UpdateOnNewRound();
-	virtual void UpdateOnMyTurn();
-	virtual void UpdateOnHeartbeat();
-  virtual void UpdateAfterAutoplayerAction(int autoplayer_action_code);
+	virtual void ResetOnConnection();
+	virtual void ResetOnHandreset();
+	virtual void ResetOnNewRound();
+	virtual void ResetOnMyTurn();
+	virtual void ResetOnHeartbeat();
  public:
   void WarnIfSymbolRequiresMyTurn(CString name);
  public:

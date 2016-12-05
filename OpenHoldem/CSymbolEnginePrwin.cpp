@@ -38,18 +38,18 @@ CSymbolEnginePrwin::~CSymbolEnginePrwin() {
 }
 
 void CSymbolEnginePrwin::InitOnStartup() {
-	UpdateOnConnection();
+	ResetOnConnection();
 }
 
-void CSymbolEnginePrwin::UpdateOnConnection() {
-	UpdateOnHandreset();
+void CSymbolEnginePrwin::ResetOnConnection() {
+	ResetOnHandreset();
 }
 
-void CSymbolEnginePrwin::UpdateOnHandreset() {
-	UpdateOnNewRound();
+void CSymbolEnginePrwin::ResetOnHandreset() {
+	ResetOnNewRound();
 }
 
-void CSymbolEnginePrwin::UpdateOnNewRound() {
+void CSymbolEnginePrwin::ResetOnNewRound() {
 	_nhandshi = 0;
 	_nhandslo = 0;
 	_nhandsti = 0;
@@ -57,14 +57,14 @@ void CSymbolEnginePrwin::UpdateOnNewRound() {
 	_prlosnow = 0;
 }
 
-void CSymbolEnginePrwin::UpdateOnMyTurn() {
+void CSymbolEnginePrwin::ResetOnMyTurn() {
 	CalculateNOpponents();
   assert(p_iterator_thread != NULL);
 	p_iterator_thread->StartPrWinComputationsIfNeeded();
 	CalculateNhands();
 }
 
-void CSymbolEnginePrwin::UpdateOnHeartbeat() {
+void CSymbolEnginePrwin::ResetOnHeartbeat() {
 }
 
 void CSymbolEnginePrwin::CalculateNhands() {
