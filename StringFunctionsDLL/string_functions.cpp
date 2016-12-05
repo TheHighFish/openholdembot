@@ -269,6 +269,7 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
         s->SetAt(i, kCharToBeRemoved);
         // and remove it at the end of the function
         break;
+      }
     }
   }
   s->Remove(kCharToBeRemoved);
