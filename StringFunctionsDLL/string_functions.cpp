@@ -233,6 +233,47 @@ void ReplaceCommasInNumbersByDots(CString *s) {
   }
 }
 
+void ReplaceKnownNonASCIICharacters(CString *s) {
+  // Some crappy casinos use other characters like "non-breaking-spaces"2
+  // (extended Latin-1 character-set) instead of a space
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407&p=141701#p141701
+  // http://www.joelonsoftware.com/articles/Unicode.html
+  int length = s->GetLength();
+  for (int i = 0; i < length; ++i) {
+    char current_char = s->GetAt(i);
+    if (!isascii(current_char)) {
+      unsigned int char_value = unsigned int(current_char);
+      switch (char_value) {
+      case 0xFFFFFFA0:
+        // "Non-breakable space" in extended ASCII Latin-1 encoding
+        s->SetAt(i, ' ');
+        break;
+      case 0xFFFFFF88:
+        // "Euro" in some unknown extended ASCII-encoding,
+        // displayed as "Modifier letter circumflex accent" in latin-1
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=141946#p141916
+        s->SetAt(i, '€');
+        break;
+      case 0xFFFFFFF3:
+      case 0xFFFFFFE4:
+      case 0xFFFFFFE0:
+      case 0xFFFFFFEB:
+      case 0xFFFFFFE5:
+      case 0xFFFFFFED:
+      case 0xFFFFFFFB:
+      case 0xFFFFFFE9:
+        // From Pokerstars with love
+        // they put crap at the end of the real title (########)
+        // but the visible titlebar in the client-area is clean.
+        //!!!!!www
+        s->SetAt(i, kCharToBeRemoved);
+        // and remove it at the end of the function
+        break;
+    }
+  }
+  s->Remove(kCharToBeRemoved);
+}
+
 void ReplaceOutlandischCurrencyByDollarsandCents(CString *s) {
   int length = s->GetLength();
   for (int i = 0; i < length; ++i) {
@@ -343,4 +384,32 @@ bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b) {
 bool StringIsExactMatch(const char *string_a, const char *string_b) {
   return ((strlen(string_a) == strlen(string_b))
     && StringAIsPrefixOfStringB(string_a, string_b));
+}
+
+void WarnAboutNonASCIICharacters(const CString *s) {
+  // Some crappy casinos use other characters like "non-breaking-spaces"2
+  // (extended Latin-1 character-set) instead of a space
+  // Warn about them if they didn't get already replaced.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407&p=141701#p141701
+  // http://www.joelonsoftware.com/articles/Unicode.html
+  int length = s->GetLength();
+  for (int i = 0; i < length; ++i) {
+    char current_char = s->GetAt(i);
+    if (!isascii(current_char)) {
+      unsigned int char_value = unsigned int(current_char);
+      int signed_char_value = int(current_char);
+      CString message;
+      message.Format("Unexpected character inside title or number\n"
+        "Probably extended ASCII or Unicode\n"
+        "Numerical value: %x, %d\n"
+        "Please report to the developers\n"
+        "http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167",
+        char_value, signed_char_value);
+#ifdef OPENHOLDEM_PROGRAM
+      OH_MessageBox_Error_Warning(message);
+#else
+      MessageBox(0, message, "Debug-Info", 0);
+#endif
+    }
+  }
 }

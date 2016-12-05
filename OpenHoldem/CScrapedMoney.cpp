@@ -34,6 +34,8 @@ bool CScrapedMoney::SetValue(CString scraped_value) {
   if (scraped_value == "") {
     return false;
   }
+  ReplaceKnownNonASCIICharacters(&scraped_value);
+  WarnAboutNonASCIICharacters(&scraped_value);
   RemoveLeftWhiteSpace(&scraped_value);
   RemoveRightWhiteSpace(&scraped_value);
   RemoveMultipleWhiteSpaces(&scraped_value);
