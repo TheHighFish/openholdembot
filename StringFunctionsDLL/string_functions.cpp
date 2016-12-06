@@ -233,21 +233,7 @@ void ReplaceCommasInNumbersByDots(CString *s) {
   }
 }
 
-void ReplaceOutlandischCurrencyByDollarsAndCents(CString *s) {
-  int length = s->GetLength();
-  for (int i = 0; i < length; ++i) {
-    char current_char = s->GetAt(i);
-    switch (current_char) {
-    case '€':
-    case '£': s->SetAt(i, '$');
-      break;
-    case '¢': s->SetAt(i, 'c');
-      break;
-    }
-  }
-}
-
-void ReplaceSpaceLookALikesBySpaces(CString *s) {
+void ReplaceKnownNonASCIICharacters(CString *s) {
   // Some crappy casinos use other characters like "non-breaking-spaces"2
   // (extended Latin-1 character-set) instead of a space
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407&p=141701#p141701
@@ -261,14 +247,44 @@ void ReplaceSpaceLookALikesBySpaces(CString *s) {
       case 0xFFFFFFA0:
         // "Non-breakable space" in extended ASCII Latin-1 encoding
         s->SetAt(i, ' ');
-        break;      
+        break;
       case 0xFFFFFF88:
         // "Euro" in some unknown extended ASCII-encoding,
         // displayed as "Modifier letter circumflex accent" in latin-1
         // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=141946#p141916
         s->SetAt(i, '€');
         break;
+      case 0xFFFFFFF3:
+      case 0xFFFFFFE4:
+      case 0xFFFFFFE0:
+      case 0xFFFFFFEB:
+      case 0xFFFFFFE5:
+      case 0xFFFFFFED:
+      case 0xFFFFFFFB:
+      case 0xFFFFFFE9:
+        // From Pokerstars with love
+        // they put crap at the end of the real title (########)
+        // but the visible titlebar in the client-area is clean.
+        //!!!!!www
+        s->SetAt(i, kCharToBeRemoved);
+        // and remove it at the end of the function
+        break;
       }
+    }
+  }
+  s->Remove(kCharToBeRemoved);
+}
+
+void ReplaceOutlandischCurrencyByDollarsandCents(CString *s) {
+  int length = s->GetLength();
+  for (int i = 0; i < length; ++i) {
+    char current_char = s->GetAt(i);
+    switch (current_char) {
+    case '€':
+    case '£': s->SetAt(i, '$');
+      break;
+    case '¢': s->SetAt(i, 'c');
+      break;
     }
   }
 }
@@ -324,14 +340,10 @@ void RemoveExtraDotsInNumbers(CString *s) {
 
 void StringFunctionsTest() {
 #ifdef _DEBUG
-  CString crappy_title;
-  //!!!!!crappy_title.Format("  Robostars  Buyin €5,666.777,8     Ante 250%c000      Rake 25 ¢     [000017]", 0xA0);
-  //ReplaceSpaceLookALikesBySpaces(&crappy_title);
-  //assert(crappy_title == "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     [000017]");
-  crappy_title = "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     [000017]";
+  CString crappy_title = "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     [000017]";
   RemoveOHreplayFrameNumber(&crappy_title);
   assert(crappy_title == "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     ");
-  ReplaceOutlandischCurrencyByDollarsAndCents(&crappy_title);
+  ReplaceOutlandischCurrencyByDollarsandCents(&crappy_title);
   assert(crappy_title == "  Robostars  Buyin $5,666.777,8     Ante 250 000      Rake 25 c     ");
   RemoveLeftWhiteSpace(&crappy_title);
   assert(crappy_title == "Robostars  Buyin $5,666.777,8     Ante 250 000      Rake 25 c     ");
