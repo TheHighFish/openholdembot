@@ -114,8 +114,8 @@ nitions/
 \end_inset
 
  This DLL provides the ability to extend the set of PokerTracker-stats easily.
- The interesting part of the DLL is the file PokerTracker_Queries_Version_4.h
- which contains the definition of a struct:
+ The interesting part of the DLL is the file PokerTracker_Queries_Version_4.which
+ h contains the definition of a struct:
 \end_layout
 
 \begin_layout Standard
