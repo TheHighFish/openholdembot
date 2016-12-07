@@ -1,12 +1,41 @@
-v9.4.0 2016-12-xx
+v9.4.0 2016-12-08
 ==================
 NEW STUFF:
-
-BUG FIXES:
-- HadPairOnTurn uncorrectly considered board-pairs.
-  Thenks to ChuckNeverMuck for reporting.
+- The OpenHoldem symbols nopponentstruelyraising and nopponentscalling
+  which evaluate only the visible info at the table (max one orbit)
+  got completely reimplemented to be well-defined at all times:
+  They mean now:
+    * bets and raises (or calls) in front of me before my first action (partial orbit)
+    * bets and raises behind me after my action (partial orbit)	
+    * bets and raises behind and in front of me (full orbit) at my turn.
   [THF]
-
+- All OpenPPL history-symbols got rewritten to be well-defined at all times.
+  Escpecially Raises and Calls could be improved with the use of
+  the reimplented symbols nopponentstruelyraising and nopponentscalling.
+  The symbols get now updated differently, e.g. Raises:
+    * old stable value of Raises + RaisesSinceLastplay
+      (based on nopponentstruelyraising), potentially 
+	  temporary unstable when it is not my turn
+    * same calculation (now based on stable input) when it is my turn
+    * memory-symbols get updated after the autoplayer action
+  This way the symbols can be used all the time, even if we don't have stable input 
+  (results might be temporary wrong), while the updates happen only if we see 
+  stable input (our turn) and there are no longer any initializations neccessary
+  before the symbols can be used (for all the people who want to use symbols
+  "out of order", want to supervise everything with a DLL, ...)
+  As the history-symbols can now be used all the time and everywhere
+  they can now also be displayed in the debug-tab.
+  No restrictions whatsoever.
+  Special thanks to ChuckNeverMuck for the fruitful discussions,
+  bug-reports and suggestions and to Hugo1 for help with testing.
+  [THF]
+ 
+BUG FIXES:	
+- HadPairOnTurn incorrectly considered flop-cards that paired on the turn.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+  
+  
 v9.3.3 2016-11-27
 ==================
 NEW STUFF:
