@@ -44,11 +44,11 @@ CSymbolEnginePokerval::~CSymbolEnginePokerval() {
 void CSymbolEnginePokerval::InitOnStartup() {
 }
 
-void CSymbolEnginePokerval::ResetOnConnection() {
-	ResetOnHandreset();
+void CSymbolEnginePokerval::UpdateOnConnection() {
+	UpdateOnHandreset();
 }
 
-void CSymbolEnginePokerval::ResetOnHandreset() {
+void CSymbolEnginePokerval::UpdateOnHandreset() {
 	for (int i=0; i<kNumberOfBetrounds; i++) {
 		_phandval[i] = kUndefinedZero;
 		_chandval[i] = kUndefinedZero;
@@ -57,13 +57,13 @@ void CSymbolEnginePokerval::ResetOnHandreset() {
 	handval = kUndefinedZero;
 }
 
-void CSymbolEnginePokerval::ResetOnNewRound() {
+void CSymbolEnginePokerval::UpdateOnNewRound() {
 }
 
-void CSymbolEnginePokerval::ResetOnMyTurn() {
+void CSymbolEnginePokerval::UpdateOnMyTurn() {
 }
 
-void CSymbolEnginePokerval::ResetOnHeartbeat() {
+void CSymbolEnginePokerval::UpdateOnHeartbeat() {
   _hand_type       = kUndefinedZero;
 	_ishistraight    = false;
 	_isroyalflush    = false;
