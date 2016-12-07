@@ -34,6 +34,20 @@ double StringToNumber(CString number) {
   }
 }
 
+char HexadecimalChar(int i) {
+  assert(i >= 0);
+  assert(i <= 35);
+  if (i < 10) {
+    return ('0' + i);
+  }
+  else if (i <= 35) {
+    return ('A' + i - 10);
+  }
+  else {
+    return '#';
+  }
+}
+
 #define TWO(c) (0x1u << (c))
 #define MASK(c) (((unsigned int)(-1)) / (TWO(TWO(c)) + 1u))
 #define COUNT(x,c) ((x) & MASK(c)) + (((x) >> (TWO(c))) & MASK(c))

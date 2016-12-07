@@ -224,11 +224,15 @@ void CTablemapCompletenessChecker::VerifyMap() {
   int number_of_buttons_seen = 0;
   for (int i=0; i<k_max_number_of_buttons; ++i) {
     CString button;
-    button.Format("i%dbutton", i);
+    button.Format("i%cbutton", HexadecimalChar(i));  
     if (p_tablemap->ItemExists(button)) {
       ++number_of_buttons_seen;
-      CheckItem("i", i, "state");
-      CheckItem("i", i, "label");
+      CString button_state;
+      button_state.Format("i%cstate", HexadecimalChar(i));
+      CheckItem(button_state); 
+      CString button_label;
+      button_label.Format("i%clabel", HexadecimalChar(i));
+      CheckItem(button_label);
     }
   }
   if (number_of_buttons_seen < 3) {

@@ -149,7 +149,7 @@ Description
 N (none)
 </td>
 <td align="left" valign="top" style="width: 85%;">
-This is used for those regions that do not need a transform as their only purpose is to describe a rectangle for use by the scraper engine. An example is button location (i0button - i9button) which informs the Autoplayer engine of the allowed rectangle for mouse clicks. 
+This is used for those regions that do not need a transform as their only purpose is to describe a rectangle for use by the scraper engine. An example is button location (i0button - iFbutton) which informs the Autoplayer engine of the allowed rectangle for mouse clicks. 
 </td>
 
 </tr>
@@ -331,16 +331,16 @@ Identifies the region on the casino table where the limit information can be fou
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i0button - i9button
+i0button - i9button, iAbutton - iFbutton
 </td>
 <td align="left" valign="top" style="width: 85%;">
-Specifies the rectangular area in which the Autoplayer can click the mouse for each button 0-9.
+Specifies the rectangular area in which the Autoplayer can click the mouse for each of the 16 buttons.
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i0label - i9label
+i0label - i9label, iAlabel - iFlabel
 </td>
 <td align="left" valign="top" style="width: 85%;">
 <div class="PlainVisible">
@@ -350,7 +350,7 @@ i0label - i9label
 
 </div>
 <div class="PlainVisible">
-Specifies the action that should be associated with buttons 0-9. By default, and if not overridden here, button 0 will be interpreted as the fold button, 1 as the call button, 2 as the raise button and 3 as the allin button. <br/>
+Specifies the action that should be associated with buttons the 16 buttons. There are no defauls, so every button needs a label. <br/>
 The return value from the transformation of this region (hash or text) will determine how the scraper engine interprets the button. All values are changed to lowercase and have spaces and ’-’ removed. Only the leftmost characters will be tested "allin", "a11in", "allln", "a111n", "aiiin" : button is seen as the allin button "raise", "ra1se", "ralse", "bet" : button is seen as the raise button "call", "caii", "ca11" : button is seen as the call button "check" : button is seen as the check button "fold", "fo1d", "foid" : button is seen as the fold button "autopost", "aut0p0st" : button is seen as the autopost button "sitin", "s1t1n" : button is seen as the sitin button "sitout", "s1tout", "sit0ut", "s1t0ut" : button is seen as the sitout button "leave" : button is seen as the leave button "prefold" : button is seen as the prefold button <br/>
 Examples: "All-In" will be recognized as allin; "Auto-post blinds" will be recognized as autopost 
 </div>
@@ -360,10 +360,10 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will be recog
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i0state - i9state
+i0state - i9state, iAstate - iFstate
 </td>
 <td align="left" valign="top" style="width: 85%;">
-Specifies whether the button0 - button9 is live and available to be clicked. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive.
+Specifies whether the corresponding button is live and available to be clicked. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive.
 </td>
 
 </tr>

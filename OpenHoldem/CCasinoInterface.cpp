@@ -54,7 +54,7 @@ CCasinoInterface::~CCasinoInterface() {
 void CCasinoInterface::Reset() {
   CString button_name;
   for (int i = 0; i < k_max_number_of_buttons; ++i) {
-    button_name.Format("i%dbutton", i);
+    button_name.Format("i%cbutton", HexadecimalChar(i)); 
     _technical_autoplayer_buttons[i].Reset();
     _technical_autoplayer_buttons[i].SetTechnicalName(button_name);
   }
