@@ -37,6 +37,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
+#include "CTableTitle.h"
 #include "CWhiteInfoBox.h"
 #include "MagicNumbers.h"
 #include "OpenHoldem.h"
