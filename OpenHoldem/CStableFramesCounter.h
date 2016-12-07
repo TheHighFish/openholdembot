@@ -26,7 +26,7 @@ class CStableFramesCounter {
   // Therefore we reset the counter to zero after actions
   // to avoid multiple clicks within a short frame of time
   // if the casino does not update its GUI fast enough.
-  void ResetOnAutoplayerAction();
+  void UpdateOnAutoplayerAction();
  private:
 	void Reset();
 	void SaveCurrentState();
