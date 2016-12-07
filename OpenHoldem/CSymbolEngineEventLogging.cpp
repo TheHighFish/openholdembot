@@ -36,11 +36,11 @@ CSymbolEngineEventLogging::~CSymbolEngineEventLogging()
 void CSymbolEngineEventLogging::InitOnStartup()
 {}
 
-void CSymbolEngineEventLogging::ResetOnConnection() {
+void CSymbolEngineEventLogging::UpdateOnConnection() {
   p_autoplayer_trace->Clear();
 }
 
-void CSymbolEngineEventLogging::ResetOnHandreset() {
+void CSymbolEngineEventLogging::UpdateOnHandreset() {
   // Log a new connection, plus the version-info
   // (because of all the guys who report "bugs" of outdated versions)
   write_log(k_always_log_basic_information,
@@ -55,13 +55,13 @@ void CSymbolEngineEventLogging::ResetOnHandreset() {
     p_table_title->Title());
 }
 
-void CSymbolEngineEventLogging::ResetOnNewRound()
+void CSymbolEngineEventLogging::UpdateOnNewRound()
 {}
 
-void CSymbolEngineEventLogging::ResetOnMyTurn()
+void CSymbolEngineEventLogging::UpdateOnMyTurn()
 {}
 
-void CSymbolEngineEventLogging::ResetOnHeartbeat() {
+void CSymbolEngineEventLogging::UpdateOnHeartbeat() {
   p_autoplayer_trace->Clear();
 }
 

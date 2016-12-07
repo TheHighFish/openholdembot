@@ -37,19 +37,19 @@ CSymbolEngineColourCodes::~CSymbolEngineColourCodes() {
 void CSymbolEngineColourCodes::InitOnStartup() {
 }
 
-void CSymbolEngineColourCodes::ResetOnConnection() {
+void CSymbolEngineColourCodes::UpdateOnConnection() {
 }
 
-void CSymbolEngineColourCodes::ResetOnHandreset() {
+void CSymbolEngineColourCodes::UpdateOnHandreset() {
 }
 
-void CSymbolEngineColourCodes::ResetOnNewRound() {
+void CSymbolEngineColourCodes::UpdateOnNewRound() {
 }
 
-void CSymbolEngineColourCodes::ResetOnMyTurn(){
+void CSymbolEngineColourCodes::UpdateOnMyTurn(){
 }
 
-void CSymbolEngineColourCodes::ResetOnHeartbeat() {
+void CSymbolEngineColourCodes::UpdateOnHeartbeat() {
 }
 
 bool CSymbolEngineColourCodes::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {

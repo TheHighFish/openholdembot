@@ -37,23 +37,23 @@ CSymbolEngineGameType::~CSymbolEngineGameType() {
 }
 
 void CSymbolEngineGameType::InitOnStartup() {
-	ResetOnConnection();
+	UpdateOnConnection();
 }
 
-void CSymbolEngineGameType::ResetOnConnection() {
+void CSymbolEngineGameType::UpdateOnConnection() {
 	_gametype = kGametypeFL; 
 }
 
-void CSymbolEngineGameType::ResetOnHandreset() {
+void CSymbolEngineGameType::UpdateOnHandreset() {
 }
 
-void CSymbolEngineGameType::ResetOnNewRound() {
+void CSymbolEngineGameType::UpdateOnNewRound() {
 }
 
-void CSymbolEngineGameType::ResetOnMyTurn() {
+void CSymbolEngineGameType::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineGameType::ResetOnHeartbeat() {
+void CSymbolEngineGameType::UpdateOnHeartbeat() {
   int scraped_limit = p_table_state->_s_limit_info.limit();
   switch (scraped_limit) {
     case kGametypeNL:

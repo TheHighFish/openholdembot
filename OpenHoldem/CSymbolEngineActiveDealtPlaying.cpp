@@ -43,10 +43,10 @@ CSymbolEngineActiveDealtPlaying::~CSymbolEngineActiveDealtPlaying()
 
 void CSymbolEngineActiveDealtPlaying::InitOnStartup()
 {
-	ResetOnConnection();
+	UpdateOnConnection();
 }
 
-void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
+void CSymbolEngineActiveDealtPlaying::UpdateOnConnection()
 {
 	_playersactivebits  = 0;
 	_playersplayingbits = 0;
@@ -55,7 +55,7 @@ void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
   _maxnplayersdealt   = 0;   
 }
 
-void CSymbolEngineActiveDealtPlaying::ResetOnHandreset()
+void CSymbolEngineActiveDealtPlaying::UpdateOnHandreset()
 {
 	_playersdealtbits   = 0;
 	_playersactivebits  = 0;
@@ -63,13 +63,13 @@ void CSymbolEngineActiveDealtPlaying::ResetOnHandreset()
 	_playersseatedbits  = 0;
 }
 
-void CSymbolEngineActiveDealtPlaying::ResetOnNewRound()
+void CSymbolEngineActiveDealtPlaying::UpdateOnNewRound()
 {}
 
-void CSymbolEngineActiveDealtPlaying::ResetOnMyTurn()
+void CSymbolEngineActiveDealtPlaying::UpdateOnMyTurn()
 {}
 
-void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat() {
+void CSymbolEngineActiveDealtPlaying::UpdateOnHeartbeat() {
 	CalculateActiveBits();
 	CalculatePlayingBits();
 	CalculateDealtBits();

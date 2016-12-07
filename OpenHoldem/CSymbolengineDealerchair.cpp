@@ -35,24 +35,24 @@ CSymbolEngineDealerchair::~CSymbolEngineDealerchair()
 
 void CSymbolEngineDealerchair::InitOnStartup()
 {
-	ResetOnConnection();
+	UpdateOnConnection();
 }
 
-void CSymbolEngineDealerchair::ResetOnConnection()
+void CSymbolEngineDealerchair::UpdateOnConnection()
 {
 	_dealerchair = kUndefined;
 }
 
-void CSymbolEngineDealerchair::ResetOnHandreset()
+void CSymbolEngineDealerchair::UpdateOnHandreset()
 {}
 
-void CSymbolEngineDealerchair::ResetOnNewRound()
+void CSymbolEngineDealerchair::UpdateOnNewRound()
 {}
 
-void CSymbolEngineDealerchair::ResetOnMyTurn()
+void CSymbolEngineDealerchair::UpdateOnMyTurn()
 {}
 
-void CSymbolEngineDealerchair::ResetOnHeartbeat() {
+void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
 	write_log(preferences.debug_symbolengine(), "nchairs: %d\n", 
 		p_tablemap->nchairs());
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
