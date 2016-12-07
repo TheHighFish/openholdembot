@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-10-07"/>
+<meta name="create-date" content="2016-12-08"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -22,9 +22,6 @@ Name
 <td align="left" valign="top" style="width: 40%;">
 Meaning
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Limitations / Remarks
-</td>
 
 </tr>
 <tr>
@@ -33,9 +30,6 @@ AllOpponentsLeftSittingOut
 </td>
 <td align="left" valign="top" style="width: 40%;">
 True, if all remaining opponents are sitting out. This symbol is especially meant for use in tournaments
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -46,15 +40,6 @@ Bets
 <td align="left" valign="top" style="width: 40%;">
 The number of bets made this betting round, can only be 0 or 1 since the 2nd bet is a raise
 </td>
-<td align="left" valign="top" style="width: 30%;">
-<div class="PlainVisible">
-Contrary to Standard PPL Bets is always 1 preflop.
-</div>
-<div class="PlainVisible">
-Only valid at my turn with autoplayer engaged (see &ldquo;Raises&rdquo;).
-</div>
-
-</td>
 
 </tr>
 <tr>
@@ -63,9 +48,6 @@ BigBlindSittingOut
 </td>
 <td align="left" valign="top" style="width: 40%;">
 True, if the big blind is sitting out. This symbol is especially meant for use in tournaments
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -76,9 +58,6 @@ BotCalledBeforeFlop
 <td align="left" valign="top" style="width: 40%;">
 True if we called preflop
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -87,9 +66,6 @@ BotCalledOnFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 True if we called on the flop
-</td>
-<td align="left" valign="top" style="width: 30%;">
-Postflop only
 </td>
 
 </tr>
@@ -100,9 +76,6 @@ BotCalledOnTurn
 <td align="left" valign="top" style="width: 40%;">
 True if we called on the turn
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Turn and River only
-</td>
 
 </tr>
 <tr>
@@ -111,9 +84,6 @@ BotCalledOnRiver
 </td>
 <td align="left" valign="top" style="width: 40%;">
 True if we called on the river
-</td>
-<td align="left" valign="top" style="width: 30%;">
-River only
 </td>
 
 </tr>
@@ -124,9 +94,6 @@ BotIsLastRaiser
 <td align="left" valign="top" style="width: 40%;">
 We have the betting / raising initiative
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -135,9 +102,6 @@ BotRaisedBeforeFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 We raised Preflop, can also be used on the Preflop and will be true if we bet or raised
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -148,9 +112,6 @@ BotRaisedOnFlop
 <td align="left" valign="top" style="width: 40%;">
 We bet or raised on the Flop, can also be used on the Flop and will be true if we bet or raised
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Postflop only
-</td>
 
 </tr>
 <tr>
@@ -159,9 +120,6 @@ BotRaisedOnTurn
 </td>
 <td align="left" valign="top" style="width: 40%;">
 We bet or raised on the Turn, can also be used on the turn and will be true if we bet or raised
-</td>
-<td align="left" valign="top" style="width: 30%;">
-Turn and River only
 </td>
 
 </tr>
@@ -172,12 +130,6 @@ BotsActionsOnFlop
 <td align="left" valign="top" style="width: 40%;">
 Number of actions where we put money in the pot on the Flop
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None<div class="Remark*">
-All-ins are not counted obviously (as the game would be over anyway)
-</div>
-
-</td>
 
 </tr>
 <tr>
@@ -186,12 +138,6 @@ BotsActionsOnThisRound
 </td>
 <td align="left" valign="top" style="width: 40%;">
 Number of actions this betting round where we put money in the pot
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None<div class="Remark*">
-All-ins are not counted obviously (as the game would be over anyway)
-</div>
-
 </td>
 
 </tr>
@@ -202,12 +148,6 @@ BotsActionsOnThisRoundIncludingChecks
 <td align="left" valign="top" style="width: 40%;">
 Number of checks + number of actions where we put money in the pot
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None<div class="Remark*">
-All-ins are not counted obviously (as then the game would be over anyway)
-</div>
-
-</td>
 
 </tr>
 <tr>
@@ -216,9 +156,6 @@ BotsActionsPreflop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 Number of actions where we put money in the pot Preflop, all-ins are not counted
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -229,9 +166,6 @@ BotCheckedPreflop
 <td align="left" valign="top" style="width: 40%;">
 True if bot checked Preflop
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -240,9 +174,6 @@ BotCheckedOnFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 True if bot checked on Flop
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -253,9 +184,6 @@ BotCheckedOnTurn
 <td align="left" valign="top" style="width: 40%;">
 True if bot checked on Turn
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -264,9 +192,6 @@ BotCheckedOnRiver
 </td>
 <td align="left" valign="top" style="width: 40%;">
 True if bot checked on River
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -277,9 +202,6 @@ BotsLastAction
 <td align="left" valign="top" style="width: 40%;">
 Bot’s last action, can be one of the following: none, beep, raise, bet, call, or check
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -289,9 +211,6 @@ BotsLastPreflopAction
 <td align="left" valign="top" style="width: 40%;">
 Bot’s last action Preflop, can be one of the following: none, beep, raise, bet, call, or check
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -301,9 +220,6 @@ None
 <td align="left" valign="top" style="width: 40%;">
 
 </td>
-<td align="left" valign="top" style="width: 30%;">
-
-</td>
 
 </tr>
 <tr>
@@ -311,9 +227,6 @@ None
 
 </td>
 <td align="left" valign="top" style="width: 40%;">
-
-</td>
-<td align="left" valign="top" style="width: 30%;">
 
 </td>
 
@@ -325,9 +238,6 @@ Calls
 <td align="left" valign="top" style="width: 40%;">
 The number of calls by opponents on this betting round
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Only valid at my turn with autoplayer engaged (see &ldquo;Raises&rdquo;).
-</td>
 
 </tr>
 <tr>
@@ -336,9 +246,6 @@ CallsSinceLastRaise
 </td>
 <td align="left" valign="top" style="width: 40%;">
 The number of calls by all opponents since the last raise by an opponent on the current betting round
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -349,9 +256,6 @@ Checks
 <td align="left" valign="top" style="width: 40%;">
 The number of checks made by opponents this betting round
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Only valid at my turn with autoplayer engaged (see &ldquo;Raises&rdquo;).
-</td>
 
 </tr>
 <tr>
@@ -360,9 +264,6 @@ Folds
 </td>
 <td align="left" valign="top" style="width: 40%;">
 The number of folds this betting round
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -373,9 +274,6 @@ MissingSmallBlind
 <td align="left" valign="top" style="width: 40%;">
 True, if there is no small blind in this hand, e.g. the player who would have been SB did bust in the previous hand.
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -384,9 +282,6 @@ NoBettingOnFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 No bets/raises were made on the Flop, may also be used on the Flop and will be true if there were no bets/raises
-</td>
-<td align="left" valign="top" style="width: 30%;">
-Postflop only
 </td>
 
 </tr>
@@ -397,9 +292,6 @@ NoBettingOnTurn
 <td align="left" valign="top" style="width: 40%;">
 No bets/raises were made on the Turn, may also be used on the Turn and will be true if there were no bets/raises
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -408,9 +300,6 @@ NoVillainBetOrRaisedOnFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 No villan bet or raised on Flop
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None
 </td>
 
 </tr>
@@ -421,9 +310,6 @@ NoVillainBetOrRaisedOnTurn
 <td align="left" valign="top" style="width: 40%;">
 No villan bet or raised on Turn
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -431,10 +317,7 @@ None
 NumberOfOpponentsAllin
 </td>
 <td align="left" valign="top" style="width: 40%;">
-Number of opponents who raised or called allin. Range: 0..9.
-</td>
-<td align="left" valign="top" style="width: 30%;">
-If the amount to call is equal to our stack size and we are headsUp we consider the villan as being allin.
+Number of opponents who raised or called allin. Range: 0..9. If the amount to call is equal to our stack size and we are headsUp we consider the villan as being allin.
 </td>
 
 </tr>
@@ -445,9 +328,6 @@ NumberOfRaisesBeforeFlop
 <td align="left" valign="top" style="width: 40%;">
 The number of raises before the Flop made by opponents. 
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -456,9 +336,6 @@ NumberOfRaisesOnFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 The number of raises on the Flop made by opponents. Bets don’t count.
-</td>
-<td align="left" valign="top" style="width: 30%;">
-Postflop only
 </td>
 
 </tr>
@@ -469,9 +346,6 @@ NumberOfRaisesOnTurn
 <td align="left" valign="top" style="width: 40%;">
 The number of raises on the Turn made by opponents. Bets don’t count.
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Turn and river only
-</td>
 
 </tr>
 <tr>
@@ -480,9 +354,6 @@ OpponentCalledOnFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 An opponent called on Flop, and did not raise or bet
-</td>
-<td align="left" valign="top" style="width: 30%;">
-Postflop only
 </td>
 
 </tr>
@@ -493,9 +364,6 @@ OpponentCalledOnTurn
 <td align="left" valign="top" style="width: 40%;">
 An opponent called on Turn, and did not raise or bet
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Turn and river only
-</td>
 
 </tr>
 <tr>
@@ -503,10 +371,7 @@ Turn and river only
 OpponentIsAllin
 </td>
 <td align="left" valign="top" style="width: 40%;">
-An opponent is all in, there may still be other players in the hand
-</td>
-<td align="left" valign="top" style="width: 30%;">
-If the amount to call is equal to our stack size and we are headsUp we consider the villan as being allin.
+An opponent is all in, there may still be other players in the hand. If the amount to call is equal to our stack size and we are headsUp we consider the villan as being allin.
 </td>
 
 </tr>
@@ -517,9 +382,6 @@ Raises
 <td align="left" valign="top" style="width: 40%;">
 The number of raises made by opponents this betting round. Bets don’t count.
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Only valid at my turn with autoplayer engaged. The calculation depends on game-history (multiple frames) and needs to be done exactly once per orbit, very shortly before the autoplayer acts. The symbol is undefined before and becomes undefined immediatelly thereafter again. For other times when it is not the players turn (f$prefold) use &ldquo;easy&rdquo; symbols without that restriction like <i>AmountToCall</i>.
-</td>
 
 </tr>
 <tr>
@@ -528,12 +390,6 @@ RaisesBeforeFlop
 </td>
 <td align="left" valign="top" style="width: 40%;">
 The number of raises by opponents before flop
-</td>
-<td align="left" valign="top" style="width: 30%;">
-None<div class="Remark*">
-Calculation depends on game-history (multiple frames) 
-</div>
-
 </td>
 
 </tr>
@@ -544,12 +400,6 @@ RaisesOnFlop
 <td align="left" valign="top" style="width: 40%;">
 The number of raises by opponents on flop. Bets don’t count.
 </td>
-<td align="left" valign="top" style="width: 30%;">
-Postflop only<div class="Remark*">
-Calculation depends on game-history (multiple frames) 
-</div>
-
-</td>
 
 </tr>
 <tr>
@@ -558,12 +408,6 @@ RaisesOnTurn
 </td>
 <td align="left" valign="top" style="width: 40%;">
 The number of raises by opponentson turn. Bets don’t count.
-</td>
-<td align="left" valign="top" style="width: 30%;">
-Turn and River only<div class="Remark*">
-Calculation depends on game-history (multiple frames) 
-</div>
-
 </td>
 
 </tr>
@@ -574,9 +418,6 @@ RaisesSinceLastPlay
 <td align="left" valign="top" style="width: 40%;">
 The number of raises since our last action. Bets don’t count.
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 <tr>
@@ -586,9 +427,6 @@ SmallBlindSittingOut
 <td align="left" valign="top" style="width: 40%;">
 True, if the big small is sitting out. This symbol is especially meant for use in tournaments
 </td>
-<td align="left" valign="top" style="width: 30%;">
-None
-</td>
 
 </tr>
 
@@ -596,13 +434,9 @@ None
 
 </div>
 <div class="Indented">
-Please note: some of these symbols depend on game history and on counters that get updated once per orbit, i.e when it is our turn to act. They are well-defined only when it is our turn and undefined otherwise.
+Please note: OpenPPL history counters like Raises and Calls need to get updated exactly once per orbit when we see stable input (i.e. out turn). This update gets executed after autoplayer-actions. Therefore these counters need an active autoplayer to work properly for multiple orbits.
 </div>
 
-<hr class="footer"/>
-<div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-10-07T19:24:07.993000</span>
-</div>
 </div>
 </body>
 </html>
