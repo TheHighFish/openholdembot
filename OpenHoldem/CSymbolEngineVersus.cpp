@@ -52,19 +52,19 @@ CSymbolEngineVersus::~CSymbolEngineVersus() {
 void CSymbolEngineVersus::InitOnStartup() {
 }
 
-void CSymbolEngineVersus::ResetOnConnection() {
+void CSymbolEngineVersus::UpdateOnConnection() {
 }
 
-void CSymbolEngineVersus::ResetOnHandreset() {
+void CSymbolEngineVersus::UpdateOnHandreset() {
 }
 
-void CSymbolEngineVersus::ResetOnNewRound() {
+void CSymbolEngineVersus::UpdateOnNewRound() {
 }
 
-void CSymbolEngineVersus::ResetOnMyTurn() {
+void CSymbolEngineVersus::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineVersus::ResetOnHeartbeat() {
+void CSymbolEngineVersus::UpdateOnHeartbeat() {
   GetCounts();
 }
 
