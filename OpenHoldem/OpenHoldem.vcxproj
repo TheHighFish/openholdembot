@@ -111,7 +111,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\window_functions.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Debug\String_Functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;..\lib\secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\window_functions.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Debug\String_Functions.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -152,7 +152,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\lib\String_Functions.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;secur32.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\lib\String_Functions.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -236,6 +236,7 @@
     <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />
+	<ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
@@ -334,6 +335,7 @@
     <ClCompile Include="CSymbolEngineCards.cpp" />
     <ClCompile Include="CSymbolEngineChipAmounts.cpp" />
     <ClCompile Include="CSymbolengineDealerchair.cpp" />
+	<ClCompile Include="CSymbolengineDebug.cpp" />
     <ClCompile Include="CSymbolEngineEventLogging.cpp" />
     <ClCompile Include="CSymbolEngineHandrank.cpp" />
     <ClCompile Include="CSymbolEngineHistory.cpp" />
@@ -523,6 +525,7 @@
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
+	<ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
     <ClInclude Include="CSymbolengineColourCodes.h" />
     <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
@@ -599,6 +602,7 @@
     <ClInclude Include="CSymbolEngineCards.h" />
     <ClInclude Include="CSymbolEngineChipAmounts.h" />
     <ClInclude Include="CSymbolEngineDealerchair.h" />
+	<ClInclude Include="CSymbolEngineDebug.h" />
     <ClInclude Include="CSymbolEngineEventLogging.h" />
     <ClInclude Include="CSymbolEngineHandrank.h" />
     <ClInclude Include="CSymbolEngineHistory.h" />
