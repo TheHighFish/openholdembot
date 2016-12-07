@@ -63,13 +63,13 @@ CSymbolEngineHandrank::~CSymbolEngineHandrank()
 
 void CSymbolEngineHandrank::InitOnStartup()
 {
-	ResetOnHandreset();
+	UpdateOnHandreset();
 }
 
-void CSymbolEngineHandrank::ResetOnConnection()
+void CSymbolEngineHandrank::UpdateOnConnection()
 {}
 
-void CSymbolEngineHandrank::ResetOnHandreset()
+void CSymbolEngineHandrank::UpdateOnHandreset()
 {
 	_handrank169  = 0;
 	_handrank2652 = 0;
@@ -78,10 +78,10 @@ void CSymbolEngineHandrank::ResetOnHandreset()
 	_handrankp    = 0;
 }
 
-void CSymbolEngineHandrank::ResetOnNewRound()
+void CSymbolEngineHandrank::UpdateOnNewRound()
 {}
 
-void CSymbolEngineHandrank::ResetOnMyTurn() {
+void CSymbolEngineHandrank::UpdateOnMyTurn() {
 	char		cardstr[10] = {0};
 
 	// Get name string containing the players' current cards
@@ -107,7 +107,7 @@ void CSymbolEngineHandrank::ResetOnMyTurn() {
 	_handrankp    = 2652.0 / (1.0 + (double)_nopponents);	
 }
 
-void CSymbolEngineHandrank::ResetOnHeartbeat()
+void CSymbolEngineHandrank::UpdateOnHeartbeat()
 {}
 
 void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int c1)

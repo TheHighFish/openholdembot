@@ -11,17 +11,17 @@
 //
 //******************************************************************************
 
-#ifndef INC_CSYMBOLENGINECALLERS_H
-#define INC_CSYMBOLENGINECALLERS_H
+#ifndef INC_CSYMBOLENGINECHECKSBETSFOLDS_H
+#define INC_CSYMBOLENGINECHECKSBETSFOLDS_H
 
 #include "CVirtualSymbolEngine.h"
 #include "CBetroundCalculator.h"
 #include "NumericalFunctions.h"
 
-class CSymbolEngineCallers: public CVirtualSymbolEngine {
+class CSymbolEngineChecksBetsFolds: public CVirtualSymbolEngine {
  public:
-	CSymbolEngineCallers();
-	~CSymbolEngineCallers();
+	CSymbolEngineChecksBetsFolds();
+	~CSymbolEngineChecksBetsFolds();
  public:
 	// Mandatory reset-functions
 	void InitOnStartup();
@@ -33,34 +33,37 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
  public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
-	CString SymbolsProvided();;
+	CString SymbolsProvided();
  public:
-	int callbits(int betround) {
+	int foldbits(int betround) {
 		if ((betround >= kBetroundPreflop)
 			  && (betround <= kBetroundRiver)) {
-			return _callbits[betround];
-		}	else		{
+			return _foldbits[betround];
+		}	else {
 			return kUndefined;
 		}
 	}
  public:
-	int nopponentscalling()   { return _nopponentscalling; }
-  int lastcaller_chair()    { return _lastcaller_chair;  }
-  int firstcaller_chair()   { return _firstcaller_chair; }
+	int nplayerscallshort()			{ return _nplayerscallshort; }
+	int nopponentsbetting()			{ return _nopponentsbetting; }
+	int nopponentsfolded()			{ return _nopponentsfolded; }
+	int nopponentschecking()		{ return _nopponentschecking; }
  private:
-	void CalculateCallers();
+	void CalculateFoldBits();
+	void CalculateNOpponentsCheckingBettingFolded();
  private:
-	int _nopponentscalling;
-  int _firstcaller_chair;
-  int _lastcaller_chair;
+	double RaisersBet();
+ private:
+	int _nplayerscallshort;
+	int _nopponentsbetting;
+	int _nopponentsfolded;
+	int _nopponentschecking;
  private:
 	// Indices 1..4 are for the betrounds preflop..river.
 	// Index 0 is unused.
-	int _callbits[kNumberOfBetrounds + 1]; 
- private:
-  int _nchairs;
+	int _foldbits[kNumberOfBetrounds + 1];
 };
 
-extern CSymbolEngineCallers *p_symbol_engine_callers;
+extern CSymbolEngineChecksBetsFolds *p_symbol_engine_checks_bets_folds;
 
-#endif INC_CSYMBOLENGINECALLERS_H
+#endif INC_CSYMBOLENGINECHECKSBETSFOLDS_H

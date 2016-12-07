@@ -47,7 +47,7 @@ void CSymbolEngineAutoplayer::InitOnStartup() {
 }
 
 
-void CSymbolEngineAutoplayer::ResetOnConnection() {
+void CSymbolEngineAutoplayer::UpdateOnConnection() {
 	_myturnbits      = 0;
 	_issittingin     = false;
 	_isautopost      = false;
@@ -55,16 +55,16 @@ void CSymbolEngineAutoplayer::ResetOnConnection() {
 	_last_myturnbits = 0;
 }
 
-void CSymbolEngineAutoplayer::ResetOnHandreset() {
+void CSymbolEngineAutoplayer::UpdateOnHandreset() {
 }
 
-void CSymbolEngineAutoplayer::ResetOnNewRound() {
+void CSymbolEngineAutoplayer::UpdateOnNewRound() {
 }
 
-void CSymbolEngineAutoplayer::ResetOnMyTurn() {
+void CSymbolEngineAutoplayer::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineAutoplayer::ResetOnHeartbeat() {
+void CSymbolEngineAutoplayer::UpdateOnHeartbeat() {
 	_last_myturnbits = _myturnbits;
 	_myturnbits      = 0;
 	_issittingin     = false;

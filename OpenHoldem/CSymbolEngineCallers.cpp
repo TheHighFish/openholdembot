@@ -22,6 +22,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineDebug.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineTableLimits.h"
@@ -50,114 +51,121 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
+  //
+  // Also using p_symbol_engine_debug
+  // which doesn't depend on anything and which we want to place last
+  // for performance reasons (very rarely used).
+  UpdateOnHandreset();
 }
 
 CSymbolEngineCallers::~CSymbolEngineCallers() {
 }
 
 void CSymbolEngineCallers::InitOnStartup() {
+  UpdateOnConnection();
 }
 
-void CSymbolEngineCallers::ResetOnConnection() {
+void CSymbolEngineCallers::UpdateOnConnection() {
   _nchairs = p_tablemap->nchairs();
-	ResetOnHandreset();
+	UpdateOnHandreset();
 }
 
-void CSymbolEngineCallers::ResetOnHandreset() {
-	// callbits, raisbits, etc.
+void CSymbolEngineCallers::UpdateOnHandreset() {
 	for (int i=kBetroundPreflop; i<=kBetroundRiver; i++) {
 		_callbits[i] = 0;
 	}
-	_nopponentscalling  = 0;
-}
-
-void CSymbolEngineCallers::ResetOnNewRound() {
-  _firstcaller_chair = kUndefined;
-  _lastcaller_chair = kUndefined;
-}
-
-void CSymbolEngineCallers::ResetOnMyTurn() {
-	CalculateCallers();
-}
-
-void CSymbolEngineCallers::ResetOnHeartbeat() {
-}
-
-void CSymbolEngineCallers::CalculateCallers() {
-	// nopponentscalling
-	//
-	// nopponentscalling is "difficult" to calculate 
-  // and has to work only when it is our turn.
-  // Then we can simply start searching after the userchair 
-  // (or dealer on first action preflop)
-	// and do a circular search for callers.
   _nopponentscalling = 0;
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
-  // Avoiding problems with unknown userchair (but "buttons" seen on connections)
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=18822&start=30#p132759
-  if (!p_symbol_engine_userchair->userchair_confirmed()) return;
-	double current_bet = FirstPossibleRaisersBet();
-	for (int i=0; i<_nchairs; ++i) {
-		int chair = (FirstPossibleCaller() + i) % _nchairs;
-    	// Exact match required. Players being allin don't count as callers.
-		if ((p_table_state->Player(chair)->_bet.GetValue() == current_bet) 
-        && (current_bet > 0)) {
-      // Can't be the user if it is our turn
-      if (chair == USER_CHAIR) continue;
-			int new_callbits = _callbits[BETROUND] | k_exponents[chair];
-			_callbits[BETROUND] = new_callbits;
-      ++_nopponentscalling;
-      // We have a caller, at least the temporary last one
-      _lastcaller_chair = chair;
-      if (_firstcaller_chair == kUndefined) {
-        // We found the first caller
-        _firstcaller_chair = chair;
-      }
-		}
-		else if (p_table_state->Player(chair)->_bet.GetValue() > current_bet) {
-			current_bet = p_table_state->Player(chair)->_bet.GetValue();
-		}
+}
+
+void CSymbolEngineCallers::UpdateOnNewRound() {
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
+}
+
+void CSymbolEngineCallers::UpdateOnMyTurn() {
+}
+
+void CSymbolEngineCallers::UpdateOnHeartbeat() {
+  CalculateCallers();
+}
+
+void CSymbolEngineCallers::CalculateCallers() {
+  _nopponentscalling = 0;
+  _firstcaller_chair = kUndefined;
+  _lastcaller_chair = kUndefined;
+  int first_possible_raiser = p_symbol_engine_raisers->FirstPossibleActor();
+  int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor();
+  assert(last_possible_raiser > first_possible_raiser);
+  assert(p_symbol_engine_debug != NULL);
+  double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);
+  for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
+    int chair = i % p_tablemap->nchairs();
+    if (!p_table_state->Player(chair)->HasAnyCards()) {
+      // Folded or not dealt, therefore of no interest
+      continue;
+    }
+    double current_players_bet = p_table_state->Player(chair)->_bet.GetValue();
+    if (current_players_bet == 0) {
+      // Player is checking
+      continue;
+    }
+    if (chair == USER_CHAIR) {
+      // User is no opponent
+      // and its bet is of no interest either (start or end of search)
+      continue;
+    }
+    if (current_players_bet > highest_bet) {
+      // Raiser
+      highest_bet = current_players_bet;
+      continue;
+    }
+    if (current_players_bet < highest_bet) {
+      // Not a caller
+      if (p_table_state->Player(chair)->_balance.GetValue() == 0) {
+        // Player is allin from previous orbit
+        // This does not get counted as "calling" 
+        // as he could have been raising allin.
+        continue;
+      } 
+      // End of search loop reached.
+      // We found somebody who was raising or calling in a previous orbit.
+      // If we continue then we would find outdated callers,
+      // which does not meet the definition of "CallsSinceLastPlay".
+      // Aggregated OpenPPL-history-symbols like "Raises" would become wrong
+      // if we count some callers twice.
+      break;
+    }
+    assert(current_players_bet == highest_bet);
+		++_nopponentscalling;
+    // We have a caller, at least the temporary last one
+    _lastcaller_chair = chair;
+    if (_firstcaller_chair == kUndefined) {
+      // We found the first caller
+      _firstcaller_chair = chair;
+    }
+    // We have to be very careful
+    // if we accumulate info based on dozens of unstable frames
+    // when it is not our turn and the casino potentially
+    // updates its display, causing garbabe input that sums up.
+    // This affects raisbits, callbits, foldbits.
+    // Special fail-safe-code for callbits: currently none,
+    // because it is very unlikely that a mis-scrape
+    // causes the bet of a raiser to look like a call.
+    int new_callbits = _callbits[BETROUND] | k_exponents[chair];
+    _callbits[BETROUND] = new_callbits;
 	}
 	AssertRange(_callbits[BETROUND], 0, k_bits_all_ten_players_1_111_111_111);
   AssertRange(_nopponentscalling,   0, kMaxNumberOfPlayers);
 }
 
-int CSymbolEngineCallers::FirstPossibleCaller() {
-  int first_possible_caller = p_symbol_engine_raisers->FirstPossibleRaiser();
-  // Can't be the user (logically)
-  // Must not be the user (technically)
-  // as we compare against the users bet later.
-  assert(first_possible_caller != USER_CHAIR);
-  return first_possible_caller;
-}
-
-int CSymbolEngineCallers::LastPossibleCaller() {
-  // The guy before the user
-  return ((USER_CHAIR + _nchairs - 1) % _nchairs);
-}
-
-double CSymbolEngineCallers::FirstPossibleRaisersBet() {
-  double users_bet = p_table_state->User()->_bet.GetValue();
-  if (users_bet >= p_symbol_engine_tablelimits->bblind()) {
-    return users_bet;
-  }
-  // Othewrwise> return something that is
-  //   * greater than 0 to avoid counting checkers as callers
-  //   * is smaller than BB to avoid counting the BB or a min-bettor as caller
-  return (0.9 * p_symbol_engine_tablelimits->bblind());
-}
-
 bool CSymbolEngineCallers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponentscalling", 17)==0 && strlen(name)==17) {
-    WarnIfSymbolRequiresMyTurn("nopponentscalling");
-    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = nopponentscalling();
 		return true;
 	}	else if (memcmp(name, "callbits", 8)==0 && strlen(name)==9) {
-    WarnIfSymbolRequiresMyTurn("callbits");
-    RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN
 		*result = callbits(RightDigitCharacterToNumber(name));
     return true;
   } else if (memcmp(name, "firstcaller_chair", 17)==0) {

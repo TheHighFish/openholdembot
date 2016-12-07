@@ -36,22 +36,22 @@ CSymbolEngineIsOmaha::~CSymbolEngineIsOmaha()
 
 void CSymbolEngineIsOmaha::InitOnStartup()
 {
-	ResetOnConnection();
+	UpdateOnConnection();
 }
 
-void CSymbolEngineIsOmaha::ResetOnConnection()
+void CSymbolEngineIsOmaha::UpdateOnConnection()
 {}
 
-void CSymbolEngineIsOmaha::ResetOnHandreset()
+void CSymbolEngineIsOmaha::UpdateOnHandreset()
 {}
 
-void CSymbolEngineIsOmaha::ResetOnNewRound()
+void CSymbolEngineIsOmaha::UpdateOnNewRound()
 {}
 
-void CSymbolEngineIsOmaha::ResetOnMyTurn() {
+void CSymbolEngineIsOmaha::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineIsOmaha::ResetOnHeartbeat()
+void CSymbolEngineIsOmaha::UpdateOnHeartbeat()
 {}
 
 bool CSymbolEngineIsOmaha::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
