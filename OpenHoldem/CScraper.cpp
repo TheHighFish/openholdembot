@@ -179,7 +179,7 @@ void CScraper::ScrapeActionButtons() {
 	CString button_name;
 	CString result;
 	for (int i=0; i<k_max_number_of_buttons; ++i)	{
-		button_name.Format("i%dstate", i);
+		button_name.Format("i%cstate", HexadecimalChar(i)); 
 		if (EvaluateRegion(button_name, &result)) {
       p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
 		}
@@ -198,7 +198,7 @@ void CScraper::ScrapeActionButtonLabels() {
   // No longer using any WinHoldem defaults
 	for (int i=0; i<k_max_number_of_buttons; ++i)	{
     p_casino_interface->_technical_autoplayer_buttons[i].SetLabel("");
-		label.Format("i%dlabel", i);
+		label.Format("i%clabel", HexadecimalChar(i));
 		if (EvaluateRegion(label, &result))	{
       p_casino_interface->_technical_autoplayer_buttons[i].SetLabel(result);
 		}

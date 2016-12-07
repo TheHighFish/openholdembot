@@ -1,12 +1,18 @@
 v9.4.1 2016-12-xx
 ==================
+NEW STUFF:
+- Supporting six more buttons, needed by increasing number of hopper functions.
+  The buttons, states and labels are named i0button..i9button 
+  and iAbutton..iFbutton.
+  [THF]
+
 BUG FIXES:	
 - replay-frames
 
 MAINTENANCE:
 - The implementation of the additionalö button labels iXlabelY
   turned out to be missing, formerly buggy and not needed at all.
-  Therefore these tablemaü regions get now officially removed.
+  Therefore these tablemap regions get now officially removed.
   Thanks to JohnNash for reporting.
   [THF]
 

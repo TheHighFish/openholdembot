@@ -453,7 +453,7 @@ N (none)
 \begin_layout Plain Layout
 This is used for those regions that do not need a transform as their only
  purpose is to describe a rectangle for use by the scraper engine.
- An example is button location (i0button - i9button) which informs the Autoplaye
+ An example is button location (i0button - iFbutton) which informs the Autoplaye
 r engine of the allowed rectangle for mouse clicks.
  
 \end_layout
@@ -942,7 +942,7 @@ Identifies the region on the casino table where the limit information can
 \begin_inset Text
 
 \begin_layout Plain Layout
-i0button - i9button
+i0button - i9button, iAbutton - iFbutton
 \end_layout
 
 \end_inset
@@ -952,7 +952,7 @@ i0button - i9button
 
 \begin_layout Plain Layout
 Specifies the rectangular area in which the Autoplayer can click the mouse
- for each button 0-9.
+ for each of the 16 buttons.
 \end_layout
 
 \end_inset
@@ -963,7 +963,7 @@ Specifies the rectangular area in which the Autoplayer can click the mouse
 \begin_inset Text
 
 \begin_layout Plain Layout
-i0label - i9label
+i0label - i9label, iAlabel - iFlabel
 \end_layout
 
 \end_inset
@@ -972,10 +972,8 @@ i0label - i9label
 \begin_inset Text
 
 \begin_layout Plain Layout
-Specifies the action that should be associated with buttons 0-9.
- By default, and if not overridden here, button 0 will be interpreted as
- the fold button, 1 as the call button, 2 as the raise button and 3 as the
- allin button.
+Specifies the action that should be associated with buttons the 16 buttons.
+ There are no defauls, so every button needs a label.
  
 \end_layout
 
@@ -1007,7 +1005,7 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
 \begin_inset Text
 
 \begin_layout Plain Layout
-i0state - i9state
+i0state - i9state, iAstate - iFstate
 \end_layout
 
 \end_inset
@@ -1016,7 +1014,7 @@ i0state - i9state
 \begin_inset Text
 
 \begin_layout Plain Layout
-Specifies whether the button0 - button9 is live and available to be clicked.
+Specifies whether the corresponding button is live and available to be clicked.
  The best transformation is hash or color.
  If the leftmost characters of the result from this region’s transform are
  either “true”, "on", "yes", "checked" or "lit" then the button will be

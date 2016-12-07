@@ -19,6 +19,11 @@
 // Deals with floating points, ints, hex and binary
 double StringToNumber(CString number);
 
+// Turns an integer into a hex-char 0..9, A..F
+// Works up to 35: 0..9, A..Z
+// Used for indexing more than 10 autoplayer buttons
+char HexadecimalChar(int i);
+
 inline void SwapDoubles(double *first, double *second) {
   double temp = *first;
   *first = *second;
