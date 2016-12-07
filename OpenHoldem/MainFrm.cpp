@@ -474,21 +474,24 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_I\n");
 		}
-		// Shoot replay frame
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_J\n");
 		if (p_autoconnector->attached_hwnd() != NULL) {
+      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_K\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
+      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_L\n");
     }	else {
+      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_M\n");
       p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
+      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_N\n");
     }
-    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_K\n");
+    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_O\n");
 	}	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
-    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_L\n");
+    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_P\n");
 		p_openholdem_statusbar->OnUpdateStatusbar();
+    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_Q\n");
 	}
-  write_log(preferences.debug_alltherest(), "[GUI] location Johnny_M\n");
+  write_log(preferences.debug_alltherest(), "[GUI] location Johnny_R\n");
 	CWnd::OnTimer(nIDEvent); 
-  write_log(preferences.debug_alltherest(), "[GUI] location Johnny_N\n");
 }
 
 void CMainFrame::OnAutoplayer() 
