@@ -33,6 +33,7 @@
 #include "CParseTreeTerminalNodeNumber.h"
 #include "CParseTreeTerminalNodeUserVariable.h"
 #include "CPreferences.h"
+#include "CSymbolEngineOpenPPL.h"
 #include "CValidator.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
@@ -85,7 +86,7 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
 void CFormulaParser::ParseDefaultLibraries() {
   // Parse all OpenPPL-libraries, which are now modular.
   // Parsing order does not matters; some early parts 
-  // need stuff later parts, but we check completeness
+  // need stuff of later parts, but we check completeness
   // once at the very end.
   p_function_collection->SetOpenPPLLibraryLoaded(false);
   for (int i = 0; i < kNumberOfOpenPPLLibraries; ++i) {
@@ -101,6 +102,7 @@ void CFormulaParser::ParseDefaultLibraries() {
   ParseLibrary(p_filenames->CustomLibraryPath());
   // Check again after the custom library
   p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
+  p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
 }
 
 void CFormulaParser::ParseLibrary(CString library_path) {
@@ -252,16 +254,15 @@ bool CFormulaParser::ExpectConditionalThen() {
 	return true;
 }
 
-void CFormulaParser::CheckForExtraTokensAfterEndOfFunction() {
-  int token_ID = _tokenizer.GetToken();
+void CFormulaParser::CheckForExtraTokensAfterEndOfFunction(){
+int token_ID = _tokenizer.GetToken();
   if (token_ID == kTokenOperatorConditionalWhen) {
     // "Special" case: OpenPPL-code after OH-script expression.
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20180
     CParseErrors::Error("Unexpected token(s) after end of function.\n"
       "This function is OH-script-style (i.e. a single mathematical expression),\n"
       "but after the end of the expression starts an OpenPPL-style WHEN-condition.\n");
-  }
-  else if ((token_ID != kTokenEndOfFile)
+  } else if ((token_ID != kTokenEndOfFile)
     && (token_ID != kTokenEndOfFunction)) {
     CParseErrors::Error("Unexpected token(s) after end of function.\n");
   }
