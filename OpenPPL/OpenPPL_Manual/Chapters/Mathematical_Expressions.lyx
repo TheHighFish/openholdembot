@@ -550,7 +550,7 @@ WHEN (hand$AA OR hand$KK) RaiseMax FORCE
 
 \begin_layout Standard
 Negation (Not) has highest priority of all operators, thereafter follow
- And, XOr and or in decreasing order.
+ And, XOr and OR in decreasing order.
  So if you want to write an expression like
 \end_layout
 
