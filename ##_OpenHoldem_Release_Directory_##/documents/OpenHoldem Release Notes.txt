@@ -1,3 +1,15 @@
+v9.4.1 2016-12-xx
+==================
+BUG FIXES:	
+- replay-frames
+
+MAINTENANCE:
+- The implementation of the additionalö button labels iXlabelY
+  turned out to be missing, formerly buggy and not needed at all.
+  Therefore these tablemaü regions get now officially removed.
+  Thanks to JohnNash for reporting.
+  [THF]
+
 v9.4.0 2016-12-08
 ==================
 NEW STUFF:
@@ -19,8 +31,9 @@ NEW STUFF:
     * same calculation (now based on stable input) when it is my turn
     * memory-symbols get updated after the autoplayer action
   This way the symbols can be used all the time, even if we don't have stable input 
-  (results might be temporary wrong), while the updates happen only if we see 
-  stable input (our turn) and there are no longer any initializations neccessary
+  (results might be temporary wrong if the casino updates its display), 
+  while the updates happen only if we see  stable input (our turn) 
+  and there are no longer any initializations neccessary
   before the symbols can be used (for all the people who want to use symbols
   "out of order", want to supervise everything with a DLL, ...)
   As the history-symbols can now be used all the time and everywhere

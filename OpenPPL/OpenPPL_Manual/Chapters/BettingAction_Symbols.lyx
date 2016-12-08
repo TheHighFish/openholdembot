@@ -1039,7 +1039,8 @@ True, if the big small is sitting out.
 
 \begin_layout Standard
 Please note: OpenPPL history counters like Raises and Calls need to get
- updated exactly once per orbit when we see stable input (out turn).
+ updated exactly once per orbit when we see stable input (i.e.
+ out turn).
  This update gets executed after autoplayer-actions.
  Therefore these counters need an active autoplayer to work properly for
  multiple orbits.
