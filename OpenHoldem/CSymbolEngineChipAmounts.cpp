@@ -130,6 +130,8 @@ void CSymbolEngineChipAmounts::CalculatePots() {
 		_pot = p_table_state->Pot(0);
 		_potcommon = _pot - _potplayer;
 	}	else if(p_tablemap->potmethod() == 3) {
+    // Special pots at Bodog
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=9331
 		_pot = p_table_state->Pot(0);
 		for (int i=1; i<kMaxNumberOfPots; i++) {
 			_pot = max(_pot, p_table_state->Pot(i));
