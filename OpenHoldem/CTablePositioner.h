@@ -19,27 +19,21 @@ class CTablePositioner {
 	CTablePositioner();
 	~CTablePositioner();
  public:
-	// To be called once after connection
-	void PositionMyWindow();
+  // To be called once after connection
+  void CTablePositioner::PositionMyWindow();
 	// To be called once per heartbeat
 	void AlwaysKeepPositionIfEnabled();
   void ResizeToTargetSize();
  private:
-	void PositionMyWindow(HWND *list_of_tables);
-	bool TryLeftSideOfTable(HWND HWND_of_potential_neighbour_table);
-	bool TryTopSideOfTable(HWND HWND_of_potential_neighbour_table);
-	bool TryBottomRightPosition();
-	bool TryPosition(int left_x, int top_y);
-	void MoveToTopLeft();
 	void MoveWindowToItsPosition();
+  void MoveToTopLeft();
  private:
 	int _number_of_tables;
 	HWND *HWNDs_of_child_windows;
 	int _table_size_x;
 	int _table_size_y;
-	int _new_left_x;
-	int _new_top_y;
 	RECT _desktop_rectangle;
+  RECT _table_position;
 };
 
 extern CTablePositioner *p_table_positioner;
