@@ -244,15 +244,15 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
     if (!isascii(current_char)) {
       unsigned int char_value = unsigned int(current_char);
       switch (char_value) {
-      case 0xFFFFFFA0:
-        // "Non-breakable space" in extended ASCII Latin-1 encoding
-        s->SetAt(i, ' ');
-        break;
       case 0xFFFFFF88:
         // "Euro" in some unknown extended ASCII-encoding,
         // displayed as "Modifier letter circumflex accent" in latin-1
         // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=141946#p141916
         s->SetAt(i, '€');
+        break;
+      case 0xFFFFFFA0:
+        // "Non-breakable space" in extended ASCII Latin-1 encoding
+        s->SetAt(i, ' ');
         break;
       case 0xFFFFFFF3:
       case 0xFFFFFFE4:
