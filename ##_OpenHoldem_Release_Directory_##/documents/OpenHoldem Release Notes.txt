@@ -9,6 +9,10 @@ NEW STUFF:
 
 BUG FIXES:	
 - replay-frames
+- The reimplemented symbol nopponentscalling could be wrong
+  under certain conditions in the big blind, also affecting "Calls".
+  Thanks to SweetPork for reporting.
+  [THF]
 
 MAINTENANCE:
 - The implementation of the additionalö button labels iXlabelY
