@@ -37,6 +37,10 @@ MAINTENANCE:
   Therefore these tablemap regions get now officially removed.
   Thanks to JohnNash for reporting.
   [THF]
+- Even more title preprocessing.
+  Thanks to KindBot for reporting yet another Euro-sign
+  in one of the many country-specific versions of extended ASCII.
+  [THF]
 
 v9.4.0 2016-12-08
 ==================
