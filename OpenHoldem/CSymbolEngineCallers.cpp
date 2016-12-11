@@ -96,10 +96,13 @@ void CSymbolEngineCallers::CalculateCallers() {
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
   int first_possible_raiser = p_symbol_engine_raisers->FirstPossibleActor();
-  int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor();
+  p_symbol_engine_debug->SetValue(0, first_possible_raiser);
+  int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor() + _nchairs;
+  p_symbol_engine_debug->SetValue(1, last_possible_raiser);
   assert(last_possible_raiser > first_possible_raiser);
   assert(p_symbol_engine_debug != NULL);
   double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);
+  p_symbol_engine_debug->SetValue(2, highest_bet);
   for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
     int chair = i % p_tablemap->nchairs();
     if (!p_table_state->Player(chair)->HasAnyCards()) {
@@ -111,19 +114,24 @@ void CSymbolEngineCallers::CalculateCallers() {
       // Player is checking
       continue;
     }
-    if (chair == USER_CHAIR) {
-      // User is no opponent
-      // and its bet is of no interest either (start or end of search)
+    if (current_players_bet < p_symbol_engine_tablelimits->bblind()) {
+      // Player is posting the small-blind or ante
       continue;
     }
     if (current_players_bet > highest_bet) {
       // Raiser
       highest_bet = current_players_bet;
+      p_symbol_engine_debug->SetValue(3, highest_bet);
+      continue;
+    }
+    if (chair == USER_CHAIR) {
+      // User is no opponent
+      // and its bet is of no interest either (start or end of search)
       continue;
     }
     if (current_players_bet < highest_bet) {
       // Not a caller
-      if (p_table_state->Player(chair)->_balance.GetValue() == 0) {
+      if (current_players_bet == 0) {
         // Player is allin from previous orbit
         // This does not get counted as "calling" 
         // as he could have been raising allin.
@@ -135,6 +143,7 @@ void CSymbolEngineCallers::CalculateCallers() {
       // which does not meet the definition of "CallsSinceLastPlay".
       // Aggregated OpenPPL-history-symbols like "Raises" would become wrong
       // if we count some callers twice.
+      p_symbol_engine_debug->SetValue(4, chair);
       break;
     }
     assert(current_players_bet == highest_bet);

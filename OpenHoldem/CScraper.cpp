@@ -800,7 +800,6 @@ void CScraper::ScrapeLimits() {
     write_log(preferences.debug_scraper(), "[CScraper] ttlimits, result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
       l_sblind, l_bblind, l_bbet, l_ante, l_limit);
   }
-  p_symbol_engine_debug->SetValue(0, l_sblind);
 	// s$ttlimitsX - Scrape blinds/stakes/limit info from title text
 	for (int j=0; j<=9; j++) {
 		s.Format("ttlimits%d", j);
@@ -816,7 +815,6 @@ void CScraper::ScrapeLimits() {
 	}
   write_log(preferences.debug_scraper(), "[CScraper] ttlimits(X), result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
     l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-  p_symbol_engine_debug->SetValue(1, l_sblind);
 	// c0limits needs both
   // * a region r$c0limits to define where to scrape the limis 
   // * a symbol s$c0limits to define how to interpret the scrape text,
@@ -846,7 +844,6 @@ void CScraper::ScrapeLimits() {
       }
 		}
 	}
-  p_symbol_engine_debug->SetValue(2, l_sblind);
   // Then c0limitsX
   for (int i=0; i<9; ++i) {
     c0limitsX.Format("c0limits%i", i);
@@ -876,7 +873,6 @@ void CScraper::ScrapeLimits() {
   }
   write_log(preferences.debug_scraper(), "[CScraper] ttlimits(X) / c0limits(X), result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
     l_sblind, l_bblind, l_bbet, l_ante, l_limit);
-  p_symbol_engine_debug->SetValue(3, l_sblind);
   // save what we just scanned through
   if (l_handnumber != "") {
 		p_table_state->_s_limit_info._handnumber = l_handnumber;
@@ -905,7 +901,6 @@ void CScraper::ScrapeLimits() {
   if (l_buyin != kUndefined) {
 		p_table_state->_s_limit_info._buyin.SetValue(Number2CString(l_buyin));
   }
-  p_symbol_engine_debug->SetValue(4, l_sblind);
   CString result;
   // r$c0smallblind
   EvaluateRegion("c0smallblind", &result);
@@ -923,7 +918,6 @@ void CScraper::ScrapeLimits() {
   EvaluateTrueFalseRegion(&p_table_state->_s_limit_info._is_final_table, "c0isfinaltable");
   write_log(preferences.debug_scraper(), "[CScraper] small blind at the very end: %.2f\n",
     p_table_state->_s_limit_info._sblind.GetValue());
-  p_symbol_engine_debug->SetValue(5, p_table_state->_s_limit_info._sblind.GetValue());
   __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
 
