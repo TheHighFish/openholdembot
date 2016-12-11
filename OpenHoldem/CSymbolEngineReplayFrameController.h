@@ -30,14 +30,12 @@ class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine {
 	void UpdateOnNewRound();
 	void UpdateOnMyTurn();
 	void UpdateOnHeartbeat();
+  void UpdateAfterAutoplayerAction(int autoplayer_action_code);
  public:
 	// Public accessors
 	void ShootReplayFrameIfNotYetDone();
  private:
-	bool __replay_recored_this_turn;
-private:
-	void set_replay_recored_this_turn(bool p_b);
-	bool is_replay_recored_this_turn() const;
+  int _heartbeat_of_last_replay_frame;
 };
 
 extern CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller;

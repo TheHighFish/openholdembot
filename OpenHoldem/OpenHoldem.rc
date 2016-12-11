@@ -660,7 +660,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Shoot replay-frames",IDC_STATIC,4,8,175,74
     CONTROL         "Never",IDC_RECORD_NEVER,"Button",BS_AUTORADIOBUTTON,7,20,147,8
-    CONTROL         "When it's my turn",IDC_RECORD_MY_TURN,"Button",BS_AUTORADIOBUTTON,7,36,138,10
+    CONTROL         "On autoplayer action (my turn)",IDC_RECORD_MY_TURN,"Button",BS_AUTORADIOBUTTON,7,36,138,10
     CONTROL         "On change in table state when in hand",IDC_RECORD_EVERY_CHANGE_PLAYING,
                     "Button",BS_AUTORADIOBUTTON,7,52,147,8
     CONTROL         "On change in table state",IDC_RECORD_EVERY_CHANGE,

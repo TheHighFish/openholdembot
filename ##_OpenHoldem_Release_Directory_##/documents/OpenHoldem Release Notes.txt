@@ -8,7 +8,9 @@ NEW STUFF:
   [THF]
 
 BUG FIXES:	
-- replay-frames
+- Replay-frames in my turn could be missing.
+  tbhanks to AlexTheKing88 for reporting.
+  [THF]
 - The reimplemented symbol nopponentscalling could be wrong
   under certain conditions in the big blind, also affecting "Calls".
   Thanks to SweetPork for reporting.
