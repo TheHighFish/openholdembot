@@ -244,6 +244,10 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
     if (!isascii(current_char)) {
       unsigned int char_value = unsigned int(current_char);
       switch (char_value) {
+      case 0xFFFFFF80:
+        // "Euro" in some unknown extended ASCII-encoding,
+        s->SetAt(i, '€');
+        break;
       case 0xFFFFFF88:
         // "Euro" in some unknown extended ASCII-encoding,
         // displayed as "Modifier letter circumflex accent" in latin-1
