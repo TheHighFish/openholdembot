@@ -1051,7 +1051,7 @@ void CDlgFormulaScintilla::OnDelete() {
   // Delete a UDF or list
   HTREEITEM h_item = m_FormulaTree.GetSelectedItem();
   CString name = m_FormulaTree.GetItemText(h_item);
-  CloseTabOnDelete(name); //!!!!!
+  CloseTabOnDelete(name); 
   p_function_collection->Delete(name);
   m_dirty = true;
   // Clear the tab

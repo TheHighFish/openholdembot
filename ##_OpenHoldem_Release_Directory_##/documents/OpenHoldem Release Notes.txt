@@ -15,6 +15,13 @@ BUG FIXES:
   under certain conditions in the big blind, also affecting "Calls".
   Thanks to SweetPork for reporting.
   [THF]
+- If a function got deletedf with the formula-editor
+  and it was still displayed in an open tab,
+  then on closing the editor OpenHoldem asked
+  if the user wanted to apply his changes
+  and copied the deleted function back to the formula-set.
+  Thanks tzo LikeHeadsup for reporting.
+  [THF]
 
 MAINTENANCE:
 - The implementation of the additionalö button labels iXlabelY
