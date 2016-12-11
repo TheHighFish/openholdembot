@@ -28,7 +28,7 @@ BUG FIXES:
   even if this function allows small overlap and resizes
   all maximized Windows.
   This seems to be acceptable for our users.
-  Rhanks to opengeek for reporting.
+  Thanks to OpenGeek for reporting.
   [THF]
 
 MAINTENANCE:
