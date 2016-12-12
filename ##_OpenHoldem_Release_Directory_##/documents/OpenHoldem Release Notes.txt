@@ -1,4 +1,4 @@
-v9.4.1 2016-12-xx
+v9.4.1 2016-12-12
 ==================
 NEW STUFF:
 - Supporting six more autoplayer buttons, 
@@ -23,7 +23,7 @@ BUG FIXES:
   Thanks to LikeHeadsup for reporting.
   [THF]
 - The table-positioning option "tiled" did not 
-  reused formerly occupied slots correctly.
+  reuse formerly occupied slots correctly.
   Now we are back to MicroSofts simple "TileWindows"-function,
   even if this function allows small overlap and resizes
   all maximized Windows.
