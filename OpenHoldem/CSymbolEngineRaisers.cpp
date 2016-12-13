@@ -164,10 +164,13 @@ int CSymbolEngineRaisers::LastPossibleActor() {
     //   but at least somewhat meaningful in the debug-tab).
     result = p_symbol_engine_dealerchair->dealerchair();
   }
-  if (result < FirstPossibleActor()) {
+  int first_possible_actor = FirstPossibleActor();
+  int nchairs = p_tablemap->nchairs();
+  int chairs_inspected = result - first_possible_actor;
+  if (chairs_inspected < nchairs) {
     // Make sure tat our simple for-loops don't terminate too early
     // when searching for raisers
-    result += p_tablemap->nchairs();
+    result += nchairs;
   }
   return result;
 }
@@ -210,10 +213,13 @@ void CSymbolEngineRaisers::CalculateRaisers() {
     return;
   }
 	int first_possible_raiser = FirstPossibleActor();
+  p_symbol_engine_debug->SetValue(0, first_possible_raiser);
 	int last_possible_raiser  = LastPossibleActor();
+  p_symbol_engine_debug->SetValue(1, last_possible_raiser);
   assert(last_possible_raiser > first_possible_raiser);
   assert(p_symbol_engine_debug != NULL);
 	double highest_bet = MinimumStartingBetCurrentOrbit(true);
+  p_symbol_engine_debug->SetValue(2, highest_bet);
   write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Searching for raisers from chair %i to %i with a bet higher than %.2f\n",
 		first_possible_raiser, last_possible_raiser, highest_bet); 
 	for (int i=first_possible_raiser; i<=last_possible_raiser; ++i) {
@@ -247,6 +253,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
       continue;
     }
 		highest_bet = current_players_bet;
+    p_symbol_engine_debug->SetValue(3, highest_bet);
     write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Opponent %i raising to %s\n",
 			chair, Number2CString(highest_bet));
     // Updating some other symbols
@@ -254,9 +261,11 @@ void CSymbolEngineRaisers::CalculateRaisers() {
     // they can easily be repared...
     ++_nopponentstruelyraising;
     _raischair = chair;
+    p_symbol_engine_debug->SetValue(4, _raischair);
     assert(chair != USER_CHAIR);
     if (_firstraiser_chair == kUndefined) {
       _firstraiser_chair = chair;
+      p_symbol_engine_debug->SetValue(5, _firstraiser_chair);
     }
     AssertRange(_raischair, kUndefined, kLastChair);
     _lastraised[BETROUND] = _raischair;
