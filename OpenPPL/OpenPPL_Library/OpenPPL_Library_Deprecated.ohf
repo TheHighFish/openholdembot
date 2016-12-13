@@ -64,6 +64,7 @@
 
 ##TrueDealPositionOfBigBlind##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=257&t=19377
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19362
 WHEN TableIsHeadsup RETURN 1 FORCE
 WHEN MissingSmallBlind RETURN 1 FORCE
 WHEN Others RETURN 2 FORCE
