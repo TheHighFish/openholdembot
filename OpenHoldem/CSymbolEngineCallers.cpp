@@ -96,13 +96,10 @@ void CSymbolEngineCallers::CalculateCallers() {
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
   int first_possible_raiser = p_symbol_engine_raisers->FirstPossibleActor();
-  p_symbol_engine_debug->SetValue(0, first_possible_raiser);
   int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor() + _nchairs;
-  p_symbol_engine_debug->SetValue(1, last_possible_raiser);
   assert(last_possible_raiser > first_possible_raiser);
   assert(p_symbol_engine_debug != NULL);
   double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);
-  p_symbol_engine_debug->SetValue(2, highest_bet);
   for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
     int chair = i % p_tablemap->nchairs();
     if (!p_table_state->Player(chair)->HasAnyCards()) {
@@ -121,7 +118,6 @@ void CSymbolEngineCallers::CalculateCallers() {
     if (current_players_bet > highest_bet) {
       // Raiser
       highest_bet = current_players_bet;
-      p_symbol_engine_debug->SetValue(3, highest_bet);
       continue;
     }
     if (chair == USER_CHAIR) {
@@ -143,7 +139,6 @@ void CSymbolEngineCallers::CalculateCallers() {
       // which does not meet the definition of "CallsSinceLastPlay".
       // Aggregated OpenPPL-history-symbols like "Raises" would become wrong
       // if we count some callers twice.
-      p_symbol_engine_debug->SetValue(4, chair);
       break;
     }
     assert(current_players_bet == highest_bet);
