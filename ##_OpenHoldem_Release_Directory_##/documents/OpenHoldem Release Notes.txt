@@ -1,3 +1,12 @@
+v9.4.2 2016-12-12
+==================
+BUG FIXES:	
+- BotsLastPreflopAction did not get updated properly
+  after autoplayer-actions due to symbol-caching
+  (depending partially on old and partially on already updated symbols)
+  Thanks to JMonderson for reporting.
+  [THF]
+
 v9.4.1 2016-12-12
 ==================
 NEW STUFF:
@@ -8,7 +17,7 @@ NEW STUFF:
   [THF]
 
 BUG FIXES:	
-- Replay-frames in my turn could be missing.
+- Replay-frames on my turn could be missing.
   Thanks to AlexTheKing88 for reporting.
   [THF]
 - The reimplemented symbol nopponentscalling could be wrong
@@ -32,7 +41,7 @@ BUG FIXES:
   [THF]
 
 MAINTENANCE:
-- The implementation of the additionalö button labels iXlabelY
+- The implementation of the additional button labels iXlabelY
   turned out to be missing, formerly buggy and not needed at all.
   Therefore these tablemap regions get now officially removed.
   Thanks to JohnNash for reporting.
