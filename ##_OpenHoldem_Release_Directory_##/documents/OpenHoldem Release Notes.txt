@@ -1,9 +1,9 @@
-v9.4.2 2016-12-12
+v9.4.2 2016-12-13
 ==================
 BUG FIXES:	
-- BotsLastPreflopAction did not get updated properly
+- BotsLastPreflopAction did in some cases not get updated properly
   after autoplayer-actions due to symbol-caching
-  (depending partially on old and partially on already updated symbols)
+  (depending partially on old and partially on already updated symbol values)
   Thanks to JMonderson for reporting.
   [THF]
 

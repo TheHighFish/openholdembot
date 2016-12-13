@@ -100,7 +100,6 @@ void CSymbolEngineOpenPPL::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineOpenPPL::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
-  p_function_collection->ClearCache();
   p_function_collection->Evaluate(
     kOpenPPLUpdateMemorySymbolsAfterAutoplayerAction,
     kAlwaysLogOpenPPLInitialization);

@@ -45,10 +45,10 @@ void CTablePositioner::PositionMyWindow() {
 		// That's not what we want.
 		return;
 	}
-  if (p_tablemap->islobby()) {
+  /*if (p_tablemap->islobby()) {
     write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to handle the lobby...\n", _number_of_tables);
     MoveToTopLeft();
-  }	else if (preferences.table_positioner_options() == k_position_tables_tiled) {
+  }	else*/ if (preferences.table_positioner_options() == k_position_tables_tiled) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to tile %d windows...\n", _number_of_tables);
 		// Tiling windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
 		// Unfortunatelly this fucntion had 2 disadvantages:

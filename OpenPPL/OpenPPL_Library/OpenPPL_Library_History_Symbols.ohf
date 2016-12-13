@@ -124,7 +124,8 @@ WHEN (prevaction == -1) RETURN None FORCE
 WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 
 ##BotsLastPreflopAction##
-me_re_MemBotsLastPreflopAction
+WHEN (betround == ConstBetRoundPreflop) RETURN BotsLastAction FORCE
+WHEN Others RETURN me_re_MemBotsLastPreflopAction FORCE
 
 ##Calls##
 WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemCalls FORCE
