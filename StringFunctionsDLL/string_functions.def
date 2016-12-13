@@ -1,4 +1,4 @@
-LIBRARY	window_functions
+LIBRARY	string_functions
 EXPORTS
 Bool2CString
 CStringRemoveLeft

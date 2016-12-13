@@ -38,7 +38,7 @@
 #include "Singletons.h"
 
 // !!!!! ugly temp solution as DLL does not yet work
-#include "..\StringFunctionsDLL\string_functions.cpp"
+//#include "..\StringFunctionsDLL\string_functions.cpp"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
