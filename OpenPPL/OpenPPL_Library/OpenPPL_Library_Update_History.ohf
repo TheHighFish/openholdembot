@@ -66,6 +66,51 @@
 //
 //*****************************************************************************
 
+##CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction##
+// This function is a nearly identical copy of BotsLastAction.
+// Unfortunately the logical value can change after autoplayer-action,
+// but not the technical value (due to symbol-caching)
+// and we need both values at the same heartbeat,
+// one for execution (bot-logic) and the other one to update the history.
+// The most easy solution was this code-clone.
+WHEN (betround != ConstBetRoundPreflop) RETURN BotsLastPreflopAction FORCE
+// Computing BotsLastAction from prevation
+// k_prevaction_undefined = -2
+// k_prevaction_fold = -1
+// k_prevaction_check = 0   // new in OpenHoldem
+// k_prevaction_call = 1
+// k_prevaction_raise = 2   // min-raise
+// k_prevaction_betsize = 3	// "stated wager", i.e. using f$betsize
+// k_prevaction_allin = 4
+// k_prevaction_jam = 5     // allin with the slider
+//
+// We do no longer check for successful and failed allins
+// because this function gets used for the initialization of BotsLastPreflopAction
+// This update happens potentiually multiple times preflop, not only once on the flop,
+// and at the same heartbeat when the action was executed,
+// so we can't check if the balance is zero, as the casino did not yet update
+// and we did not yet scrape again.
+WHEN PrevActionWasAllin RETURN RaiseMax FORCE
+// Raising (FL and NL)
+WHEN ((prevaction == 2) OR (prevaction == 3)) RETURN Raise FORCE
+// calling
+WHEN (prevaction == 1) RETURN Call FORCE
+// Checking postflop
+WHEN ((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) RETURN Check FORCE
+// Checking preflop
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) RETURN Check FORCE
+// "Checking" when it was a call
+// Actually OpenHoldem does auto-adapt prevaction after such actions
+// but we try to be extra safe
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) RETURN Call FORCE
+// Folding (might be used in sitout formulas)
+WHEN (prevaction == -1) RETURN Fold FORCE
+// No autoplayer-actions, but human being acting at ManualMode
+WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) FORCE
+// None
+WHEN (prevaction == -1) RETURN None FORCE
+WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
+
 ##CalculateMissingSmallBlind##
 // True, if SB is missing, false otherwise
 // Should be called at our first action preflop only.
@@ -97,7 +142,6 @@ WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FO
 ##UpdateMemorySymbolsOnHandReset##
 WHEN ResetOldGameStateAtHandReset
 WHEN Others
-WHEN Others SET me_st_MemBotsLastPreflopAction_None
 WHEN Others SET me_st_MemRaisesMemRaisesBeforeFlop_0
 WHEN Others SET me_st_MemRaisesMemRaisesOnFlop_0
 WHEN Others SET me_st_MemRaisesMemRaisesOnTurn_0
@@ -131,7 +175,7 @@ WHEN Others SET me_st_MemRaises_Raises
 WHEN Others SET me_st_MemChecks_Checks
 WHEN Others SET me_st_MemCalls_Calls
 WHEN Others SET me_st_MemBets_Bets
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemBotsLastPreflopAction_BotsLastAction
+WHEN (betround == ConstBetRoundPreflop) SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
 WHEN (betround == ConstBetRoundPreflop) SET me_st_MemRaisesMemRaisesBeforeFlop_Raises
 WHEN (betround == ConstBetRoundFlop) SET me_st_MemRaisesMemRaisesOnFlop_Raises
 WHEN (betround == ConstBetRoundTurn) SET me_st_MemRaisesMemRaisesOnTurn_Raises
