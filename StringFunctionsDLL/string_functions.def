@@ -9,6 +9,7 @@ Number2CString
 RemoveExtraDotsInNumbers
 RemoveLeftWhiteSpace
 RemoveMultipleWhiteSpaces
+RemoveOHReplayFrameNumber
 RemoveRightWhiteSpace
 RemoveSpacesInFrontOfCentMultipliers
 RemoveSpacesInsideNumbers

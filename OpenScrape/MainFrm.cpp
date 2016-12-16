@@ -26,6 +26,7 @@
 #include "DialogCopyRegion.h"
 #include "DialogSelectTable.h"
 #include "global.h"
+#include "ListOfSymbols.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
@@ -359,11 +360,11 @@ void CMainFrame::OnEditDuplicateregion()
 	}
 
 	// Add them to the dialog
-	for (int i=0; i<num_r$strings; i++)
+	for (int i=0; i<list_of_regions.size(); i++)
 	{
-		bool add_it = (strstr(r$strings[i], target.GetString())!=NULL);
+		bool add_it = (strstr(list_of_regions[i], target.GetString())!=NULL);
 
-		CString s = r$strings[i];
+		CString s = list_of_regions[i];
 		for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 		{
 			if (r_iter->second.name == s)  
@@ -371,7 +372,7 @@ void CMainFrame::OnEditDuplicateregion()
 		}
 
 		if (add_it)
-			dlgcopyregion.candidates.Add(r$strings[i]);
+			dlgcopyregion.candidates.Add(list_of_regions[i]);
 	}
 
 	// Show dialog if there are any strings left to add

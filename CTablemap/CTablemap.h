@@ -14,6 +14,7 @@
 #ifndef INC_CTABLEMAP_H
 #define INC_CTABLEMAP_H
 
+#include <atlstr.h>
 #include <map>
 #include <stdint.h>
 #include "../CTransform/pdiff/RGBAImage.h"

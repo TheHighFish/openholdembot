@@ -19,6 +19,7 @@
 #include <math.h>
 
 #include "DialogTableMap.h"
+#include "ListOfSymbols.h"
 #include "resource.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
@@ -1484,15 +1485,15 @@ void CDlgTableMap::OnBnClickedNew() {
 		dlgsizes.strings.RemoveAll();
 
 		ZMap::const_iterator z_iter;
-		for (int i=0; i<num_z$strings; i++) {
+		for (int i=0; i<list_of_sizes.size(); i++) {
 			bool used_string = false;
       for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++) {
-				if (z_iter->second.name == z$strings[i]) { 
+				if (z_iter->second.name == list_of_sizes[i]) { 
 					used_string=true;
         }
       }
 			if (!used_string) {
-				dlgsizes.strings.Add(z$strings[i]);
+				dlgsizes.strings.Add(list_of_sizes[i]);
       }
 		}
 		// Show dialog if there are any strings left to add
@@ -1531,15 +1532,15 @@ void CDlgTableMap::OnBnClickedNew() {
 		dlgsymbols.strings.RemoveAll();
 
 		SMap::const_iterator s_iter;
-		for (int i=0; i<num_s$strings; i++)	{
+		for (int i=0; i<list_of_symbols.size(); i++)	{
 			bool used_string = false;
       for (s_iter = p_tablemap->s$()->begin(); s_iter != p_tablemap->s$()->end(); s_iter++) {
-        if (s$strings[i] == NULL || s_iter->second.name == s$strings[i]) {
+        if (list_of_symbols[i] == "" || s_iter->second.name == list_of_symbols[i]) {
 					used_string=true;
         }
       }
       if (!used_string) {
-				dlgsymbols.strings.Add(s$strings[i]);
+				dlgsymbols.strings.Add(list_of_symbols[i]);
       }
 		}
 		// Show dialog if there are any strings left to add
@@ -1580,19 +1581,19 @@ void CDlgTableMap::OnBnClickedNew() {
 		dlgregions.titletext = "New Region record";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
-    assert(r$strings[num_r$strings - 1] != NULL);
-		for (int i=0; i<num_r$strings; i++) {
+    assert(list_of_regions[list_of_regions.size() - 1] != NULL);
+		for (int i=0; i<list_of_regions.size(); i++) {
       // Ignore empty strings
-      // Sometimes num_r$strings is not up to date.
-      if (r$strings[i] == NULL) continue;
+      // This should no longer happen with the new way we build lists
+      // but we keep this checl, as the consequences of empty symbols were nasty.
+      if (list_of_regions[i] == "") continue;
 			bool used_string = false;
 			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++) {
         CString tablemap_string = r_iter->second.name;
-        char *allowed_string = r$strings[i];
+        CString allowed_string = list_of_regions[i];
         assert(tablemap_string != "");
         assert(allowed_string != NULL);
         if (tablemap_string == "") continue;
-        if (allowed_string == NULL) continue;
 				if (tablemap_string == allowed_string) {  
 					used_string = true;
           break;
@@ -1600,7 +1601,7 @@ void CDlgTableMap::OnBnClickedNew() {
       }
 
 			if (!used_string)
-				dlgregions.strings.Add(r$strings[i]);
+				dlgregions.strings.Add(list_of_regions[i]);
 		}
 
 		// Show dialog if there are any strings left to add
@@ -1926,8 +1927,8 @@ void CDlgTableMap::OnBnClickedEdit()
 		dlgsizes.height = z_iter->second.height;
 
 		dlgsizes.strings.RemoveAll();
-		for (int i=0; i<num_z$strings; i++)  
-			dlgsizes.strings.Add(z$strings[i]);
+		for (int i=0; i<list_of_sizes.size(); i++)  
+			dlgsizes.strings.Add(list_of_sizes[i]);
 
 		// Show dialog
 		if (dlgsizes.DoModal() != IDOK)
@@ -1991,8 +1992,8 @@ void CDlgTableMap::OnBnClickedEdit()
 		dlgsymbols.titlebartext = title;
 
 		dlgsymbols.strings.RemoveAll();
-		for (int i=0; i<num_s$strings; i++)  
-			dlgsymbols.strings.Add(s$strings[i]);
+		for (int i=0; i<list_of_symbols.size(); i++)  
+			dlgsymbols.strings.Add(list_of_symbols[i]);
 		
 		// Show dialog
 		if (dlgsymbols.DoModal() != IDOK)
@@ -2052,8 +2053,8 @@ void CDlgTableMap::OnBnClickedEdit()
 		dlgregion.name = r_iter->second.name;
 		
 		dlgregion.strings.RemoveAll();
-		for (int i=0; i<num_r$strings; i++)  
-			dlgregion.strings.Add(r$strings[i]);
+		for (int i=0; i<list_of_regions.size(); i++)  
+			dlgregion.strings.Add(list_of_regions[i]);
 		
 		// Show dialog
 		if (dlgregion.DoModal() != IDOK)

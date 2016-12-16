@@ -18,12 +18,11 @@
 
 #define DEALER_CHAIR p_symbol_engine_dealerchair->dealerchair()
 
-class CSymbolEngineDealerchair: public CVirtualSymbolEngine
-{
-public:
+class CSymbolEngineDealerchair: public CVirtualSymbolEngine {
+ public:
 	CSymbolEngineDealerchair();
 	~CSymbolEngineDealerchair();
-public:
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void UpdateOnConnection();
@@ -31,14 +30,14 @@ public:
 	void UpdateOnNewRound();
 	void UpdateOnMyTurn();
 	void UpdateOnHeartbeat();
-public:
+ public:
 	// Public accessors
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	inline int dealerchair()			{ return _dealerchair; }
   CString SymbolsProvided();
-private:
+ private:
 	void CalculateDealerChair();
-private:
+ private:
 	int _dealerchair;
 };
 

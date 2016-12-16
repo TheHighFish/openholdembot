@@ -16,6 +16,9 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 
+//!!!!! ugly temp solution
+//#include "..\StringFunctionsDLL\string_functions.cpp"
+
 #include <psapi.h>
 #include <windows.h>
 
@@ -135,7 +138,7 @@ BOOL COpenHoldemApp::InitInstance() {
   // ...then re-Load the preferences immediately after creation 
   // of the log-file again, as We might want to to log the preferences too,
   // which was not yet possible some lines above.
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20281&p=142334#p142334
   preferences.LoadPreferences();
 
 	InstantiateAllSingletons();

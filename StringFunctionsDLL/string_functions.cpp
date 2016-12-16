@@ -45,6 +45,10 @@
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "Psapi.h"
 
+#ifdef OPENHOLDEM_PROGRAM
+#include "..\OpenHoldem\OH_MessageBox.h"
+#endif
+
 const char kUnprintableBeepChar = 0x07;
 const char kCharToBeRemoved = kUnprintableBeepChar;
 
@@ -174,7 +178,7 @@ void RemoveMultipleWhiteSpaces(CString *s) {
   s->Remove(kCharToBeRemoved);
 }
 
-void RemoveOHreplayFrameNumber(CString *s) {
+void RemoveOHReplayFrameNumber(CString *s) {
   if (s->GetLength() < 8) {
     return;
   }
@@ -270,7 +274,7 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
         // From Pokerstars with love
         // they put crap at the end of the real title (########)
         // but the visible titlebar in the client-area is clean.
-        //!!!!!www
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=142568#p142568
         s->SetAt(i, kCharToBeRemoved);
         // and remove it at the end of the function
         break;
@@ -346,7 +350,7 @@ void RemoveExtraDotsInNumbers(CString *s) {
 void StringFunctionsTest() {
 #ifdef _DEBUG
   CString crappy_title = "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     [000017]";
-  RemoveOHreplayFrameNumber(&crappy_title);
+  RemoveOHReplayFrameNumber(&crappy_title);
   assert(crappy_title == "  Robostars  Buyin €5,666.777,8     Ante 250 000      Rake 25 ¢     ");
   ReplaceOutlandischCurrencyByDollarsandCents(&crappy_title);
   assert(crappy_title == "  Robostars  Buyin $5,666.777,8     Ante 250 000      Rake 25 c     ");

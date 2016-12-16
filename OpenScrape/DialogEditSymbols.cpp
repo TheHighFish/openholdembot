@@ -11,7 +11,6 @@
 //
 //******************************************************************************
 
-
 // DialogEditSymbols.cpp : implementation file
 //
 
@@ -20,8 +19,6 @@
 #include "OpenScrapeDoc.h"
 #include "..\OpenHoldem\CTableTitle.h"
 
-// !!!!! ugly temp solution as DLL does not yet work
-#include "..\StringFunctionsDLL\string_functions.cpp"
 #include "..\OpenHoldem\CTableTitle.cpp"
 
 // CDlgEditSymbols dialog

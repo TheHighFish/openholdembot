@@ -11,9 +11,11 @@
 //
 //******************************************************************************
 
-
 // OpenScrape.cpp : Defines the class behaviors for the application.
 //
+
+//!!!!!ugly temp workaround
+//#include "..\StringFunctionsDLL\string_functions.cpp"
 
 #include "stdafx.h"
 #include <psapi.h>

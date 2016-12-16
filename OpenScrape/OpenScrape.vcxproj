@@ -81,7 +81,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>psapi.lib;..\dbghelp\dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;..\Release\String_Functions.lib;..\dbghelp\dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenScrape.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>psapi.lib;..\dbghelp\dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;..\Release\String_Functions.lib;..\dbghelp\dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenScrape.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -145,6 +145,7 @@
     <ClCompile Include="DialogSelectTable.cpp" />
     <ClCompile Include="DialogTableMap.cpp" />
     <ClCompile Include="global.cpp" />
+	<ClCompile Include="ListOfSymbols.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="..\OpenHoldem\NumericalFunctions.cpp" />
     <ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="DialogSelectTable.h" />
     <ClInclude Include="DialogTableMap.h" />
     <ClInclude Include="global.h" />
+	<ClInclude Include="ListOfSymbols.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="..\OpenHoldem\NumericalFunctions.h" />
     <ClInclude Include="OpenScrape.h" />

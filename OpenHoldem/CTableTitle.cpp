@@ -82,7 +82,7 @@ CString CTableTitle::PreprocessTitle(CString title) {
   //   http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19658
   // but the latter one mainly affects balances. 
   CString result = title;
-  RemoveOHreplayFrameNumber(&result);
+  RemoveOHReplayFrameNumber(&result);
   ReplaceKnownNonASCIICharacters(&result);
   WarnAboutNonASCIICharacters(&result);
   RemoveLeftWhiteSpace(&result);
