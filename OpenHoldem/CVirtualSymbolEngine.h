@@ -37,8 +37,6 @@ class CVirtualSymbolEngine {
 	virtual bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	// To build a list of identifiers for the editor
 	virtual CString SymbolsProvided();
-  // For the format-string to add symbols like.currentbet0..currentbet9
-  CString RangeOfSymbols(CString format_string, int first, int last);
 };
 
 #endif INC_CVIRTUALSYMBOLENGINE_H

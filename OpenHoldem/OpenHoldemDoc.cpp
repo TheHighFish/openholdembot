@@ -28,6 +28,8 @@
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 
+//!!!!!ugly temp workaround
+#include "..\StringFunctionsDLL\string_functions.cpp"
 
 // COpenHoldemDoc
 IMPLEMENT_DYNCREATE(COpenHoldemDoc, CDocument)
