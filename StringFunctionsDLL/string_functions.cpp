@@ -423,3 +423,17 @@ void WarnAboutNonASCIICharacters(const CString *s) {
     }
   }
 }
+
+// For the symbol-engines to build a ctring with a list of symbols
+// like currentbet0..currentbet9, separates by spaces
+CString RangeOfSymbols(CString format_string, int first, int last) {
+  CString result;
+  CString next_symbol;
+  assert(last >= first);
+  for (int i = first; i <= last; ++i) {
+    next_symbol.Format(format_string, i);
+    result += next_symbol;
+    result += " ";
+  }
+  return result;
+}
