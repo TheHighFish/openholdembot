@@ -143,6 +143,7 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
 		return true;
 	}
 	// Region does not exist
+  *result = "";
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 	return false;
 }
@@ -594,12 +595,17 @@ CString CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
 				||	text.MakeLower().Find("away")!=-1 ) {
 			p_table_state->Player(chair)->set_active(false);
 			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT/INACTIVE/AWAY\n", name);
-      return Number2CString(kUndefined);
+      return Number2CString(kUndefinedZero);
 		}	else {
       return text;
 		}
 	}
-  return Number2CString(kUndefined);;
+  // Number2CString(kUndefined) returns "-1",
+  // which probably got converted to 1 by StringToMoney.
+  // That's why we return an empty string "" again
+  // to support all the people who don't scrape "nothing" as 0 or allin.
+  // www!!!!!
+  return "";
 }
 
 void CScraper::ScrapeBalance(int chair) {
