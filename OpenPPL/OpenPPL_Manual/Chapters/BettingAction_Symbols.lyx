@@ -139,8 +139,8 @@ Bets
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of bets made this betting round, can only be 0 or 1 since the
- 2nd bet is a raise
+The number of bets madeby opponent this betting round, can only be 0 or
+ 1 since the 2nd bet is a raise
 \end_layout
 
 \end_inset
