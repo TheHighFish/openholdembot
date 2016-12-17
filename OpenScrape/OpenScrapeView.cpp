@@ -11,7 +11,6 @@
 //
 //******************************************************************************
 
-
 // OpenScrapeView.cpp : implementation of the COpenScrapeView class
 //
 #include "stdafx.h"
@@ -24,6 +23,8 @@
 #define new DEBUG_NEW
 #endif
 
+//!!!!!ugly temp workaround
+#include "..\StringFunctionsDLL\string_functions.cpp"
 
 // COpenScrapeView
 
