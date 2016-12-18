@@ -182,33 +182,43 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
-    Sleep(500);
+    Sleep(250);
+    if (IteratorThreadComplete()) {
+      // No longer anything to do
+      continue;
+    }
+	  // At this point, the iterator thread starts working on a new hand
+    _iterations_calculated = 1;  // Set to 1 so it's clear the thread is busy
+    _prwin = _prlos = _prtie = 0;
     if (!p_symbol_engine_autoplayer->ismyturn()) {
       // Not my turn;
       // Nothing to simulate
+      write_log(preferences.debug_prwin(), "[PrWinThread] Waiting (Not my turn).\n");
       continue;
     }
     if (IteratorThreadComplete()) {
       // No longer anything to do
       continue;
     }
-
-	write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
-    // "f$prwin_number_of_iterations" has to be declared outside of the loop,
-	// as we check afterwards, if the loop terminated successfully.
     _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
-	AdjustPrwinVariablesIfNecessary();
-
-	LARGE_INTEGER frequency;        // ticks per second
-	LARGE_INTEGER t1, t2;           // ticks
-	double elapsedTime = 0;
-	QueryPerformanceFrequency(&frequency); // get ticks per second
-
-	CalculateTotalWeights();
-	//
-	// Main iterator loop
-	//
-	  for (_iterations_calculated=0; _iterations_calculated < _iterations_required; ++_iterations_calculated) {
+    if (_nopponents <= 0) {
+      // Wait until _nopponents is valid
+      write_log(preferences.debug_prwin(), "[PrWinThread] Waiting (_nopponents invalid).\n");
+      continue;
+    }
+    write_log(preferences.debug_prwin(), "[PrWinThread] Start of main loop.\n");
+    // "f$prwin_number_of_iterations" has to be declared outside of the loop,
+    // as we check afterwards, if the loop terminated successfully.
+    AdjustPrwinVariablesIfNecessary();
+    LARGE_INTEGER frequency;        // ticks per second
+    LARGE_INTEGER t1, t2;           // ticks
+    double elapsedTime = 0;
+    QueryPerformanceFrequency(&frequency); // get ticks per second
+    CalculateTotalWeights();
+  	//
+	  // Main iterator loop
+	  //
+	  for (_iterations_calculated=1; _iterations_calculated < _iterations_required; ++_iterations_calculated) {
 		  // Check event for thread stop signal once every 1000 iterations
       if ((_iterations_calculated % 1000 == 0)
           && (_iterations_calculated > 0)
