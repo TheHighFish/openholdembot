@@ -18,6 +18,7 @@
 
 #include <assert.h>
 #include "CAutoPlayer.h"
+#include "CFunctionCollection.h"
 #include "CHeartbeatThread.h"
 #include "CLazyScraper.h"
 #include "CPreferences.h"
@@ -84,6 +85,14 @@ void CSymbolEngineReplayFrameController::UpdateOnHeartbeat() {
 	  ShootReplayFrameIfNotYetDone();
 	  return;
 	}
+  bool shoot_replay_frame_by_formula = p_function_collection->Evaluate(
+    k_standard_function_names[k_standard_function_shoot_replay_frame], 
+    preferences.log_hopper_functions());
+  if (shoot_replay_frame_by_formula) {
+    write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] Replay required by f$shoot_replay_frame\n");
+    ShootReplayFrameIfNotYetDone();
+    return;
+  }
 }
 
 void CSymbolEngineReplayFrameController::UpdateAfterAutoplayerAction(int autoplayer_action_code) {

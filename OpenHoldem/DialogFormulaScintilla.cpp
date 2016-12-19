@@ -527,7 +527,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
         AddFunctionToTree(parent, "notes");
         AddFunctionToTree(parent, "DLL");
         AddStandardFunctionsToTree(parent, 
-          k_standard_function_prefold, k_standard_function_betsize_enable_rounding);
+          k_standard_function_prefold, k_standard_function_shoot_replay_frame);
         break;
       case 2:
         // Hopper Functions
