@@ -164,12 +164,11 @@ int CSymbolEngineRaisers::LastPossibleActor() {
     //   but at least somewhat meaningful in the debug-tab).
     result = p_symbol_engine_dealerchair->dealerchair();
   }
-  int first_possible_actor = FirstPossibleActor();
-  int nchairs = p_tablemap->nchairs();
-  int chairs_inspected = result - first_possible_actor;
-  if (chairs_inspected < nchairs) {
+  int first_possible_actor = FirstPossibleActor();  
+  if (result <= first_possible_actor) {
     // Make sure tat our simple for-loops don't terminate too early
     // when searching for raisers
+    int nchairs = p_tablemap->nchairs();
     result += nchairs;
   }
   return result;
