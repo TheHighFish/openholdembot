@@ -1,4 +1,4 @@
-v9.4.2 2016-12-xx
+v9.4.3 2016-12-xx
 ==================
 BUG FIXES:	
 - If a balance was empty and the user didn't scrape this case properly 
@@ -26,7 +26,10 @@ BUG FIXES:
   Thanks to JMonderson for reporting.
   [THF]
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 v9.4.1 2016-12-12
 ==================
 NEW STUFF:

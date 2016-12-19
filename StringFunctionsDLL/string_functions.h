@@ -31,7 +31,7 @@ STRING_FUNCTIONS_API void KeepBalanceNumbersOnly(CString *s);
 STRING_FUNCTIONS_API CString Number2CString(double number, int default_precision = 2);
 // For the symbol-engines to build a ctring with a list of symbols
 // like currentbet0..currentbet9, separates by spaces
-CString RangeOfSymbols(CString format_string, int first, int last);
+STRING_FUNCTIONS_API CString RangeOfSymbols(CString format_string, int first, int last);
 STRING_FUNCTIONS_API void RemoveExtraDotsInNumbers(CString *s);
 STRING_FUNCTIONS_API void RemoveLeftWhiteSpace(CString *s);
 STRING_FUNCTIONS_API void RemoveMultipleWhiteSpaces(CString *s);

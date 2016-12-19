@@ -20,25 +20,25 @@
 
 class CSymbolEngineDealerchair: public CVirtualSymbolEngine {
  public:
-	CSymbolEngineDealerchair();
-	~CSymbolEngineDealerchair();
+  CSymbolEngineDealerchair();
+  ~CSymbolEngineDealerchair();
  public:
-	// Mandatory reset-functions
-	void InitOnStartup();
-	void UpdateOnConnection();
-	void UpdateOnHandreset();
-	void UpdateOnNewRound();
-	void UpdateOnMyTurn();
-	void UpdateOnHeartbeat();
+  // Mandatory reset-functions
+  void InitOnStartup();
+  void UpdateOnConnection();
+  void UpdateOnHandreset();
+  void UpdateOnNewRound();
+  void UpdateOnMyTurn();
+  void UpdateOnHeartbeat();
  public:
-	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
-	inline int dealerchair()			{ return _dealerchair; }
+  // Public accessors
+  bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  inline int dealerchair()			{ return _dealerchair; }
   CString SymbolsProvided();
  private:
-	void CalculateDealerChair();
+  void CalculateDealerChair();
  private:
-	int _dealerchair;
+  int _dealerchair;
 };
 
 extern CSymbolEngineDealerchair *p_symbol_engine_dealerchair;
