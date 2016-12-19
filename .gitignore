@@ -5,6 +5,7 @@
 *.pfb
 *.pdb
 *.exp
+*.jar
 *.lyx~
 *.lyx#
 *.user
@@ -18,6 +19,7 @@
 *.sdf
 *.suo
 *.vspx
+..bfg-report
 Debug
 Documentation/OpenHoldem_Manual.chm
 Documentation/Chapters/titlepage/images/Temp
