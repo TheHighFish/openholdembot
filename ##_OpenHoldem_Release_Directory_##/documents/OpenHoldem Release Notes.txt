@@ -12,6 +12,9 @@ BUG FIXES:
   assuming a single opponent. Now PrWin waits for a reasonable number of opponents.
   Thanks tzo Bitsy for reporting and to Reirei for the patch.
   [THF]
+- log$-symbols got correctly evaluated to 1, but incorrectly logged as 0.
+  Thanks to ChillIt for reporting.
+  [THF]
   
 
 v9.4.2 2016-12-13
