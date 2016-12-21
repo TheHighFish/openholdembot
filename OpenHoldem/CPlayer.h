@@ -43,6 +43,7 @@ class CPlayer {
  public:
   // Public accessors
   Card*   hole_cards(int index) { 
+    // !!!!! make sure there is no index overflop, can depend on user-input
     assert(first_or_second_0_1 >= 0);
     assert(first_or_second_0_1 < kMaxNumberOfCardsPerPlayer);
     return &_hole_cards[index]; 

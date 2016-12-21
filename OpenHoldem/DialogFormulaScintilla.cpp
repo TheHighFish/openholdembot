@@ -2345,9 +2345,9 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "$$ccX", "the card value for common card X (X=0-4)");
 	AddSymbol(parent, "$$crX", "the rank value for common card X (X=0-4)");
 	AddSymbol(parent, "$$csX", "the suit value for common card X (X=0-4)");
-	AddSymbol(parent, "$$pcX", "the card value for player card X (X=0-1)");
-	AddSymbol(parent, "$$prX", "the rank value for player card X (X=0-1)");
-	AddSymbol(parent, "$$psX", "the suit value for player card X (X=0-1)");
+	AddSymbol(parent, "$$pcX", "the card value for player card X (X=0-3)");
+	AddSymbol(parent, "$$prX", "the rank value for player card X (X=0-3)");
+	AddSymbol(parent, "$$psX", "the suit value for player card X (X=0-3)");
 
 	mainParent = parent = AddSymbolTitle("Hand and Board Expressions", NULL, hCatItem);
 	AddSymbol(parent, "hand$XYZ", "True, if you have hand XYZ, e.g. hand$ATSuited");

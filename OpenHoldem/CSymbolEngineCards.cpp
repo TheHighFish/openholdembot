@@ -861,9 +861,9 @@ CString CSymbolEngineCards::SymbolsProvided() {
     "nranked nrankedcommon "
     "trank trankcommon "
     "ncommoncardsknown nouts ";
-  list += RangeOfSymbols("$$pc%i", 0, NumberOfCardsPerPlayer()-1);
-  list += RangeOfSymbols("$$pr%i", 0, NumberOfCardsPerPlayer()-1);
-  list += RangeOfSymbols("$$ps%i", 0, NumberOfCardsPerPlayer()-1);
+  list += RangeOfSymbols("$$pc%i", 0, kMaxNumberOfCardsPerPlayer-1);
+  list += RangeOfSymbols("$$pr%i", 0, kMaxNumberOfCardsPerPlayer-1);
+  list += RangeOfSymbols("$$ps%i", 0, kMaxNumberOfCardsPerPlayer-1);
   list += RangeOfSymbols("$$cc%i", 0, kNumberOfCommunityCards-1);
   list += RangeOfSymbols("$$cr%i", 0, kNumberOfCommunityCards-1);
   list += RangeOfSymbols("$$cs%i", 0, kNumberOfCommunityCards-1);
