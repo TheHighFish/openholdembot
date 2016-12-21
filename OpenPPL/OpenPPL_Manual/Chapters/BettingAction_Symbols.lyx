@@ -80,7 +80,11 @@ BettingAction Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
+<<<<<<< HEAD
 <lyxtabular version="3" rows="44" columns="2">
+=======
+<lyxtabular version="3" rows="46" columns="2">
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">
@@ -127,6 +131,7 @@ True, if all remaining opponents are sitting out.
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<<<<<<< HEAD
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -136,6 +141,8 @@ Bets
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -145,9 +152,13 @@ The number of bets made by opponents this betting round, can only be 0 or
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+=======
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -156,6 +167,7 @@ BigBlindSittingOut
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
@@ -166,6 +178,8 @@ True, if the big blind is sitting out.
 
 \end_inset
 </cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
@@ -189,6 +203,7 @@ True if we called preflop
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<<<<<<< HEAD
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -198,6 +213,8 @@ BotCalledOnFlop
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -206,6 +223,7 @@ True if we called on the flop
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
@@ -217,11 +235,17 @@ BotCalledOnTurn
 
 \end_inset
 </cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+<<<<<<< HEAD
 True if we called on the turn
+=======
+True if we called preflop
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \end_layout
 
 \end_inset
@@ -238,6 +262,7 @@ BotCalledOnRiver
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<<<<<<< HEAD
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -253,6 +278,12 @@ True if we called on the river
 
 \begin_layout Plain Layout
 BotIsLastRaiser
+=======
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if we called on the flop
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \end_layout
 
 \end_inset
@@ -266,6 +297,7 @@ We have the betting / raising initiative
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
@@ -277,12 +309,18 @@ BotRaisedBeforeFlop
 
 \end_inset
 </cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+<<<<<<< HEAD
 We raised Preflop, can also be used on the Preflop and will be true if we
  bet or raised
+=======
+True if we called on the turn
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \end_layout
 
 \end_inset
@@ -299,6 +337,7 @@ BotRaisedOnFlop
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<<<<<<< HEAD
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -315,6 +354,12 @@ We bet or raised on the Flop, can also be used on the Flop and will be true
 
 \begin_layout Plain Layout
 BotRaisedOnTurn
+=======
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if we called on the river
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \end_layout
 
 \end_inset
@@ -329,6 +374,7 @@ We bet or raised on the Turn, can also be used on the turn and will be true
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
@@ -340,11 +386,17 @@ BotsActionsOnFlop
 
 \end_inset
 </cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+<<<<<<< HEAD
 Number of actions where we put money in the pot on the Flop
+=======
+We have the betting / raising initiative
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \end_layout
 
 \end_inset
@@ -372,6 +424,7 @@ Number of actions this betting round where we put money in the pot
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<<<<<<< HEAD
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -381,6 +434,8 @@ BotsActionsOnThisRoundIncludingChecks
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -389,9 +444,13 @@ Number of checks + number of actions where we put money in the pot
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+=======
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -400,6 +459,7 @@ BotsActionsPreflop
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
@@ -410,6 +470,8 @@ Number of actions where we put money in the pot Preflop, all-ins are not
 
 \end_inset
 </cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
@@ -433,6 +495,7 @@ True if bot checked Preflop
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<<<<<<< HEAD
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -442,6 +505,8 @@ BotCheckedOnFlop
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -450,6 +515,7 @@ True if bot checked on Flop
 
 \end_inset
 </cell>
+<<<<<<< HEAD
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
@@ -461,11 +527,17 @@ BotCheckedOnTurn
 
 \end_inset
 </cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+<<<<<<< HEAD
 True if bot checked on Turn
+=======
+Number of actions where we put money in the pot on the Flop
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \end_layout
 
 \end_inset
@@ -482,6 +554,7 @@ BotCheckedOnRiver
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<<<<<<< HEAD
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -497,6 +570,12 @@ True if bot checked on River
 
 \begin_layout Plain Layout
 BotsLastAction
+=======
+\begin_inset Text
+
+\begin_layout Plain Layout
+Number of actions this betting round where we put money in the pot
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 \end_layout
 
 \end_inset
@@ -511,6 +590,246 @@ Bot's last action, can be one of the following: none, beep, raise, bet,
 
 \end_inset
 </cell>
+<<<<<<< HEAD
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BotsLastPreflopAction
+\end_layout
+
+\end_inset
+</cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<<<<<<< HEAD
+Bot's last action Preflop, can be one of the following: none, beep, raise,
+ bet, call, or check
+=======
+Number of checks + number of actions where we put money in the pot
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Calls
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of calls by opponents on this betting round
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<<<<<<< HEAD
+\begin_inset Text
+
+\begin_layout Plain Layout
+CallsSinceLastRaise
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of calls by all opponents since the last raise by an opponent
+ on the current betting round
+\end_layout
+
+\end_inset
+</cell>
+<<<<<<< HEAD
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Checks
+\end_layout
+
+\end_inset
+</cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<<<<<<< HEAD
+The number of checks made by opponents this betting round
+=======
+True if bot checked Preflop
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Folds
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<<<<<<< HEAD
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of folds this betting round
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MissingSmallBlind
+=======
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if bot checked on Flop
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if there is no small blind in this hand, e.g.
+ the player who would have been SB did bust in the previous hand.
+\end_layout
+
+\end_inset
+</cell>
+<<<<<<< HEAD
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NoBettingOnFlop
+\end_layout
+
+\end_inset
+</cell>
+=======
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<<<<<<< HEAD
+No bets/raises were made on the Flop, may also be used on the Flop and will
+ be true if there were no bets/raises
+=======
+True if bot checked on Turn
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NoBettingOnTurn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<<<<<<< HEAD
+\begin_inset Text
+
+\begin_layout Plain Layout
+No bets/raises were made on the Turn, may also be used on the Turn and will
+ be true if there were no bets/raises
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NoVillainBetOrRaisedOnFlop
+=======
+\begin_inset Text
+
+\begin_layout Plain Layout
+True if bot checked on River
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No villan bet or raised on Flop
+\end_layout
+
+\end_inset
+</cell>
+<<<<<<< HEAD
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+=======
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
+\begin_inset Text
+
+\begin_layout Plain Layout
+NoVillainBetOrRaisedOnTurn
+\end_layout
+
+\end_inset
+</cell>
+<<<<<<< HEAD
+=======
 </row>
 <row>
 <cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
@@ -528,6 +847,46 @@ BotsLastPreflopAction
 \begin_layout Plain Layout
 Bot's last action Preflop, can be one of the following: none, beep, raise,
  bet, call, or check
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -707,6 +1066,7 @@ NoVillainBetOrRaisedOnTurn
 
 \end_inset
 </cell>
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 

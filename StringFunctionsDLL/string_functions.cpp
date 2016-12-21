@@ -263,6 +263,11 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
         // "Non-breakable space" in extended ASCII Latin-1 encoding
         s->SetAt(i, ' ');
         break;
+      case 0xFFFFFFA3:
+        // British pinds
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p142990
+        s->SetAt(i, '$');
+        break;
       case 0xFFFFFFF3:
       case 0xFFFFFFE4:
       case 0xFFFFFFE0:

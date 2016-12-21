@@ -1,9 +1,9 @@
-v9.4.3 2016-12-xx
+v9.4.3 2016-12-21
 ==================
 NEW STUFF:
 - New function f$shoot_replay_frame that shoots a frame
   on a user-defined condition.
-  Thanks to Checkits for the suggestion.
+  Thanks to Blacktie for the suggestion.
   [THF]
 
 BUG FIXES:	
@@ -21,8 +21,18 @@ BUG FIXES:
 - log$-symbols got correctly evaluated to 1, but incorrectly logged as 0.
   Thanks to ChillIt for reporting.
   [THF]
+- The reimplemented symbol nopponentscalling could still be wrong
+  under certain conditions in the big blind, also affecting "Calls".
+  Thanks to Guysmo, KindBot, WantPlayPoker and Stars83 for reporting.
+  [THF]
   
-
+MAINTENANCE:
+- Even more title preprocessing.
+  Thanks to ChuckNeverMuck and WantPlayPoker for reporting
+  some more special characters.
+  [THF]
+  
+  
 v9.4.2 2016-12-13
 ==================
 BUG FIXES:	
@@ -33,7 +43,7 @@ BUG FIXES:
   [THF]
 
 
-  v9.4.1 2016-12-12
+v9.4.1 2016-12-12
 ==================
 NEW STUFF:
 - Supporting six more autoplayer buttons, 
@@ -77,6 +87,61 @@ MAINTENANCE:
   in one of the many country-specific versions of extended ASCII.
   [THF]
 
+=======
+v9.4.2 2016-12-13
+==================
+BUG FIXES:	
+- BotsLastPreflopAction did in some cases not get updated properly
+  after autoplayer-actions due to symbol-caching
+  (depending partially on old and partially on already updated symbol values)
+  Thanks to JMonderson for reporting.
+  [THF]
+
+v9.4.1 2016-12-12
+==================
+NEW STUFF:
+- Supporting six more autoplayer buttons, 
+  needed by increasing number of hopper functions.
+  The buttons, states and labels are named i0button..i9button 
+  and iAbutton..iFbutton.
+  [THF]
+
+BUG FIXES:	
+- Replay-frames on my turn could be missing.
+  Thanks to AlexTheKing88 for reporting.
+  [THF]
+- The reimplemented symbol nopponentscalling could be wrong
+  under certain conditions in the big blind, also affecting "Calls".
+  Thanks to SweetPork for reporting.
+  [THF]
+- If a function got deleted with the formula-editor
+  and it was still displayed in an open tab,
+  then on closing the editor OpenHoldem asked
+  if the user wanted to apply his changes
+  and copied the deleted function back to the formula-set.
+  Thanks to LikeHeadsup for reporting.
+  [THF]
+- The table-positioning option "tiled" did not 
+  reuse formerly occupied slots correctly.
+  Now we are back to MicroSofts simple "TileWindows"-function,
+  even if this function allows small overlap and resizes
+  all maximized Windows.
+  This seems to be acceptable for our users.
+  Thanks to OpenGeek for reporting.
+  [THF]
+
+MAINTENANCE:
+- The implementation of the additional button labels iXlabelY
+  turned out to be missing, formerly buggy and not needed at all.
+  Therefore these tablemap regions get now officially removed.
+  Thanks to JohnNash for reporting.
+  [THF]
+- Even more title preprocessing.
+  Thanks to KindBot for reporting yet another Euro-sign
+  in one of the many country-specific versions of extended ASCII.
+  [THF]
+
+>>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 v9.4.0 2016-12-08
 ==================
 NEW STUFF:

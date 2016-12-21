@@ -92,6 +92,8 @@ void CSymbolEngineCallers::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineCallers::CalculateCallers() {
+  write_log(preferences.debug_symbolengine(),
+    "[CSymbolEngineCallers] CalculateCallers()\n");
   _nopponentscalling = 0;
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
@@ -102,38 +104,54 @@ void CSymbolEngineCallers::CalculateCallers() {
   assert(p_symbol_engine_debug != NULL);
   int chairs_seen = 0;
   double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);
+  write_log(preferences.debug_symbolengine(),
+    "[CSymbolEngineCallers] current highest bet: %.2f\n", highest_bet);
   for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
     ++chairs_seen;
     if (chairs_seen > _nchairs) {
       // Don't count any chair twice
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineCallers] all chairs inspected\n");
       break;
     }
     int chair = i % _nchairs;
     if (!p_table_state->Player(chair)->HasAnyCards()) {
       // Folded or not dealt, therefore of no interest
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineCallers] Chair %i folded or not dealt\n", chair);
       continue;
     }
     double current_players_bet = p_table_state->Player(chair)->_bet.GetValue();
     if (current_players_bet == 0) {
       // Player is checking
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineCallers] Chair %i checking\n", chair);
       continue;
     }
     if (current_players_bet < p_symbol_engine_tablelimits->bblind()) {
       // Player is posting the small-blind or ante
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineCallers] Chair %i posts SB or ante\n", chair);
       continue;
     }
     if (current_players_bet > highest_bet) {
       // Raiser
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineCallers] Chair %i raising\n", chair);
       highest_bet = current_players_bet;
       continue;
     }
     if (chair == USER_CHAIR) {
       // User is no opponent
       // and its bet is of no interest either (start or end of search)
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineCallers] Chair %i userchair\n", chair);
       continue;
     }
     if (current_players_bet < highest_bet) {
       // Not a caller
+      write_log(preferences.debug_symbolengine(),
+        "[CSymbolEngineCallers] Chair %i not calling (bet too small)\n", chair);
       if (current_players_bet == 0) {
         // Player is allin from previous orbit
         // This does not get counted as "calling" 
@@ -148,6 +166,8 @@ void CSymbolEngineCallers::CalculateCallers() {
       // if we count some callers twice.
       break;
     }
+    write_log(preferences.debug_symbolengine(),
+      "[CSymbolEngineCallers] Chair %i CALLS\n", chair);
     assert(current_players_bet == highest_bet);
 		++_nopponentscalling;
     // We have a caller, at least the temporary last one

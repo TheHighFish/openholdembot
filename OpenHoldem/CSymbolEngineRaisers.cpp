@@ -164,40 +164,45 @@ int CSymbolEngineRaisers::LastPossibleActor() {
     //   but at least somewhat meaningful in the debug-tab).
     result = p_symbol_engine_dealerchair->dealerchair();
   }
-  int first_possible_actor = FirstPossibleActor();  
+  int first_possible_actor = FirstPossibleActor();
+  int nchairs = p_tablemap->nchairs();
+  int chairs_inspected = result - first_possible_actor;
   if (result < first_possible_actor) {
     // Make sure tat our simple for-loops don't terminate too early
     // when searching for raisers
-    int nchairs = p_tablemap->nchairs();
     result += nchairs;
   }
   return result;
 }
 
 double CSymbolEngineRaisers::MinimumStartingBetCurrentOrbit(bool searching_for_raisers) {
-	// Not yet acted: 0 or 1 bb for the first orbit
-	if (!p_symbol_engine_history->DidAct()) {
-    if (p_betround_calculator->betround() == kBetroundPreflop) {
-      if (searching_for_raisers) {
-        // Preflop:
-        // Start with big blind and forget about WinHoldem "blind raisers".
-        return p_symbol_engine_tablelimits->bblind();
-      } else {
-        // When searching for callers start with 0 big blinds
-        // to avoid recognizing the big-blind as a caller.
-        // (true, we could change the starting position
-        // of the search, but this would cause troubles heradsup).
-        return 0.0;
-      }
-    } else {
-      // Postflop
-		  return 0.0;
-    }
-	}
-  int last_known_actor = ChairInFrontOfFirstPossibleActor();
-  int nchairs = p_tablemap->nchairs();
-  AssertRange(last_known_actor, 0, (nchairs - 1));
-	return p_table_state->Player(last_known_actor)->_bet.GetValue();
+  if (p_symbol_engine_history->DidAct()) {
+    int last_known_actor = ChairInFrontOfFirstPossibleActor();
+    int nchairs = p_tablemap->nchairs();
+    AssertRange(last_known_actor, 0, (nchairs - 1));
+    return p_table_state->Player(last_known_actor)->_bet.GetValue();
+  }
+  // Not yet acted: 0 bb (postflop) or 1 bb (preflop) for the first orbit
+  if (p_betround_calculator->betround() > kBetroundPreflop) {
+    // Postflop
+    return 0.0;
+  }
+  if (searching_for_raisers) {
+    // Preflop:
+    // Start with big blind and forget about WinHoldem "blind raisers".
+    return p_symbol_engine_tablelimits->bblind();
+  } 
+  // !!!!! www.
+  // We can't start with 1 bb, as this would recognize the BB as a caller.
+  // We can't start with 0 bb either, as this would discard a limping SB
+  // as a raiser if we are in BB.
+  // The soluition seems to be our bet as a starting point.
+  // This discards blinds as raisers if we are outside of the blinds.
+  // This discards the BB if we are in SB.
+  // This discards a (already folded) SB if we are in BB
+  // This counts any limper (including limping SB) if we are in BB.
+  // And finally the "fake User" will return 0.0 if the userchair is unknown.
+  return (p_table_state->User()->_bet.GetValue());
 }
 
 void CSymbolEngineRaisers::CalculateRaisers() {
