@@ -144,8 +144,7 @@ COpenHoldemView::COpenHoldemView() {
     _playername_last[i] = "";
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
-		for (int j=0; j<NumberOfCardsPerPlayer(); j++)
-		{
+		for (int j=0; j<kMaxNumberOfCardsPerPlayer; j++) {
 			_card_player_last[i][j] = CARD_NOCARD;
 		}
 	}
@@ -291,6 +290,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			_active_last[i] = p_table_state->Player(i)->active();
 			update_it = true;
 		}
+    //!!!!!
     if (_card_player_last[i][0] != p_table_state->Player(i)->hole_cards(0)->GetValue()
         || _card_player_last[i][1] != p_table_state->Player(i)->hole_cards(1)->GetValue()) 		{
 			_card_player_last[i][0] = p_table_state->Player(i)->hole_cards(0)->GetValue();

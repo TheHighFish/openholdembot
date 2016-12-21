@@ -53,7 +53,6 @@ public:
  private:
 	int dealerchair;
 	int last_dealerchair;
-  //!!!!!
 	int playercards[kMaxNumberOfCardsPerPlayer];
 	int last_playercards[kMaxNumberOfCardsPerPlayer];
  private:

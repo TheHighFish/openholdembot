@@ -51,7 +51,6 @@ class COpenHoldemView : public CView {
 	double	_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
 	int	    _iterator_thread_progress_last;
 	int	    _card_common_last[kNumberOfCommunityCards];
-  //!!!!!
 	int	    _card_player_last[kMaxNumberOfPlayers][kMaxNumberOfCardsPerPlayer];
 	bool		_seated_last[kMaxNumberOfPlayers];
 	bool	  _active_last[kMaxNumberOfPlayers];
