@@ -71,14 +71,16 @@ const int kMinChairNumber = 0;
 const int kMaxChairNumber = kMaxNumberOfPlayers - 1;
 
 // Number of cards
-const int kNumberOfCommunityCards   =   5;
-const int kIndexOfLastCommunityCard = kNumberOfCommunityCards - 1;
-const int kIndexOfRiverCard         = kIndexOfLastCommunityCard;
-const int kIndexOfTurnCard          = kIndexOfRiverCard - 1;
-const int kNumberOfFlopCards        =   3;  
-const int kNumberOfCardsPerPlayer   =   2;
-const int kNumberOfCardsPerDeck     =  52;
-const int kNumberOfStartingHands    = 169;
+const int kNumberOfCommunityCards       =   5;
+const int kIndexOfLastCommunityCard     = kNumberOfCommunityCards - 1;
+const int kIndexOfRiverCard             = kIndexOfLastCommunityCard;
+const int kIndexOfTurnCard              = kIndexOfRiverCard - 1;
+const int kNumberOfFlopCards            =   3;  
+const int kNumberOfCardsPerPlayerHoldEm =   2;
+const int kNumberOfCardsPerPlayerOmaha  =   4;
+const int kMaxNumberOfCardsPerPlayer    = kNumberOfCardsPerPlayerOmaha;
+const int kNumberOfCardsPerDeck         =  52;
+const int kNumberOfStartingHands        = 169;
 
 // poker constants
 // The type has to be unsigned int, 

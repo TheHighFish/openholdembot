@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: versus-symbols, winning probability against hand-lists.
+//   HoldEm only, not Omaha.
 //
 //******************************************************************************
 
@@ -72,8 +73,8 @@ private:
   int _n_tie_against_hand[kNumberOfCardsPerDeck][kNumberOfCardsPerDeck];
   int _n_los_against_hand[kNumberOfCardsPerDeck][kNumberOfCardsPerDeck];
  private:
-  
-  int card_player[kNumberOfCardsPerPlayer];
+//!!!!!  
+  int card_player[kMaxNumberOfCardsPerPlayer];
   int card_common[kNumberOfCommunityCards];
 };
 

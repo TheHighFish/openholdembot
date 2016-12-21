@@ -7,7 +7,7 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Hand-strength, HoldEm only, not Omaha.
 //
 //******************************************************************************
 
@@ -20,6 +20,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineCards.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "..\CTransform\CTransform.h"
@@ -93,7 +94,7 @@ void CSymbolEnginePokerval::CalcPokerValues() {
 	// pokerval
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++)	{
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++)	{
 		if (p_table_state->User()->HasKnownCards())	{
       CardMask_SET(Cards, p_table_state->User()->hole_cards(i)->GetValue());
 			nCards++;
@@ -130,7 +131,7 @@ void CSymbolEnginePokerval::CalcPokerValues() {
 	// pokervalplayer
 	nCards = 0;
 	CardMask_RESET(Cards);
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++)	{
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++)	{
 		// player cards
 		if (p_table_state->User()->HasKnownCards()) {
 			CardMask_SET(Cards, p_table_state->User()->hole_cards(i)->GetValue());
@@ -273,7 +274,7 @@ void CSymbolEnginePokerval::CalculateRankBits() {
   write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuitcommon = %i\n", tsuitcommon);
 	
 	// player cards
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
 		if (p_table_state->User()->HasKnownCards()) {
       int card = p_table_state->User()->hole_cards(i)->GetValue();
 			CardMask_SET(plCards, card);
@@ -496,7 +497,7 @@ int CSymbolEnginePokerval::CalculatePokerval(HandVal hv, int n, int *pcb, int ca
 		CardMask_SET(clubsCards, StdDeck_MAKE_CARD(Rank_ACE, Suit_CLUBS));
 
 		CardMask_RESET(Cards);
-		for (int i=0; i<kNumberOfCardsPerPlayer; i++)
+		for (int i=0; i<NumberOfCardsPerPlayer(); i++)
 		{
 			if (p_table_state->User()->HasKnownCards())
 			{

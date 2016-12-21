@@ -26,37 +26,36 @@
 enum LimitType { NoLimit, PotLimit, FixedLimit };
 
 
-struct SScraperState
-{
-	char				title[512];
-	unsigned int		card_common[kNumberOfCommunityCards];
-	unsigned int		card_player[kMaxNumberOfPlayers][kNumberOfCardsPerPlayer];
-	bool				dealer[kMaxNumberOfPlayers];
-	bool			    sitting_out[kMaxNumberOfPlayers];
-	CString				seated[kMaxNumberOfPlayers];
-	CString				active[kMaxNumberOfPlayers];
-	CString				name[kMaxNumberOfPlayers];
-	double				balance[kMaxNumberOfPlayers];
-	bool				name_good_scrape[kMaxNumberOfPlayers];
-	bool				balance_good_scrape[kMaxNumberOfPlayers];
-	double			bet[kMaxNumberOfPlayers];
-	double			pot[kMaxNumberOfPots];
-	CString			button_state[k_max_number_of_buttons];
-	CString			i86X_button_state[k_max_number_of_buttons];
-	CString			button_label[k_max_number_of_buttons];
-	double			sblind;
-	bool				found_sblind;
-	double			bblind;
-	bool				found_bblind;
-	double			bbet;
-	bool				found_bbet;
-	double			ante;
-	bool				found_ante;
-	LimitType		limit;
-	bool				found_limit;
-	CString			handnumber;
-	bool				found_handnumber;
-	bool				istournament;
+struct SScraperState {
+	char         title[512];
+	unsigned int card_common[kNumberOfCommunityCards];
+	unsigned int card_player[kMaxNumberOfPlayers][kMaxNumberOfCardsPerPlayer];
+	bool         dealer[kMaxNumberOfPlayers];
+	bool         sitting_out[kMaxNumberOfPlayers];
+	CString      seated[kMaxNumberOfPlayers];
+	CString      active[kMaxNumberOfPlayers];
+	CString      name[kMaxNumberOfPlayers];
+	double       balance[kMaxNumberOfPlayers];
+	bool         name_good_scrape[kMaxNumberOfPlayers];
+	bool         balance_good_scrape[kMaxNumberOfPlayers];
+	double       bet[kMaxNumberOfPlayers];
+	double       pot[kMaxNumberOfPots];
+	CString      button_state[k_max_number_of_buttons];
+	CString      i86X_button_state[k_max_number_of_buttons];
+	CString      button_label[k_max_number_of_buttons];
+	double       sblind;
+	bool         found_sblind;
+	double       bblind;
+	bool         found_bblind;
+	double       bbet;
+	bool         found_bbet;
+	double       ante;
+	bool         found_ante;
+	LimitType    limit;
+	bool         found_limit;
+	CString      handnumber;
+	bool         found_handnumber;
+	bool         istournament;
 };
 
 typedef void (*scraper_override_t)(SScraperState *state);

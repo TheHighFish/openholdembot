@@ -7,7 +7,7 @@
 //
 //******************************************************************************
 //
-// Purpose: PrWin-simulation
+// Purpose: PrWin-simulation, HoldEm only, not Omaha
 //
 //******************************************************************************
 
@@ -24,6 +24,7 @@
 #include "CSymbolEngineBlinds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePrwin.h"
 #include "CTableState.h"
@@ -82,14 +83,15 @@ char *prwin_handrank_table_169[kNumberOfStartingHands] =
 // by both class functions and static iterator-functions
 // and because the former "solution" of passing class pointers 
 // to static iterator-functions was no real option either. ;-(
-int				deck[kNumberOfCardsPerDeck];
-CardMask		usedCards,temp_usedCards;
-unsigned int	ocard[MAX_OPPONENTS*kNumberOfCardsPerPlayer];
-CardMask		addlcomCards;
-CardMask		evalCards = {0}, opp_evalCards = {0};
-int				_willplay, _wontplay, _mustplay, _topclip;
-int				_nplCards, _ncomCards;
-double			_win, _tie, _los;
+int				   deck[kNumberOfCardsPerDeck];
+CardMask		 usedCards,temp_usedCards;
+// The PrWin-calculations support HoldEm only, not Omaha
+unsigned int ocard[MAX_OPPONENTS*kNumberOfCardsPerPlayerHoldEm];
+CardMask     addlcomCards;
+CardMask     evalCards = {0}, opp_evalCards = {0};
+int          _willplay, _wontplay, _mustplay, _topclip;
+int          _nplCards, _ncomCards;
+double       _win, _tie, _los;
 
 CIteratorThread::CIteratorThread() {
 	write_log(preferences.debug_prwin(), "[PrWinThread] Iterator Thread starting.\n");
@@ -395,7 +397,7 @@ void CIteratorThread::InitIteratorLoop() {
 
 	// setup masks
   AssertRange(userchair, 0, kMaxChairNumber);
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
     Card *card = p_table_state->User()->hole_cards(i);
     if (card->IsKnownCard()) {
       CardMask_SET(_plCards, card->GetValue());
@@ -590,7 +592,7 @@ void CIteratorThread::SwapDealingAlgorithmForMoreThan13Opponents(int nopponents)
 	// opponent cards
 	int x = 0;
 	for (int i=0; 
-		i<nopponents*kNumberOfCardsPerPlayer; 
+		i<nopponents*NumberOfCardsPerPlayer(); 
 		i++)
 	{
 		while (CardMask_CARD_IS_SET(usedCards, deck[x]) 
@@ -646,15 +648,15 @@ void CIteratorThread::StandardDealingAlgorithmForUpTo13Opponents(int nopponents)
     nopponents = 1;
 	}
 	for (int i=0; 
-		i<nopponents*kNumberOfCardsPerPlayer; 
-		i+=kNumberOfCardsPerPlayer)
+		i<nopponents*NumberOfCardsPerPlayer(); 
+		i+=NumberOfCardsPerPlayer())
 	{
 		temp_usedCards=usedCards;
 		do
 		{
 			usedCards = temp_usedCards; //reset the card mask to clear settings from failed card assignments
 
-			for (int j=0; j<kNumberOfCardsPerPlayer; j++)
+			for (int j=0; j<NumberOfCardsPerPlayer(); j++)
 			{
 				card = GetRandomCard();
 				CardMask_SET(usedCards, card);

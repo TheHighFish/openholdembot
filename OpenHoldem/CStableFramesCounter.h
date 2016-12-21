@@ -37,7 +37,8 @@ class CStableFramesCounter {
 	// variables to keep the last game-state.
 	unsigned int	_myturnbitslast;
 	unsigned int	_card_common_last[kNumberOfCommunityCards];
-	unsigned int	_card_player_last[kMaxNumberOfPlayers][kNumberOfCardsPerPlayer];
+  //!!!!!
+	unsigned int	_card_player_last[kMaxNumberOfPlayers][kMaxNumberOfCardsPerPlayer];
 	bool          _dealer_last[kMaxNumberOfPlayers];
 	double        _playerbalance_last[kMaxNumberOfPlayers];
 	double			  _playerbet_last[kMaxNumberOfPlayers];

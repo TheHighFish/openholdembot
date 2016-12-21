@@ -18,6 +18,7 @@
 #include "CBetroundCalculator.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
@@ -197,7 +198,7 @@ void CSymbolEngineCards::CalcFlushesStraightsSets()
 	
 	// player cards
 	CardMask_RESET(plCards);
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++)	{
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++)	{
     Card* card = p_table_state->User()->hole_cards(i);
 		if (card->IsKnownCard())	{
 			write_log(preferences.debug_symbolengine(), "[CSymbolEngineCards] Setting card mask player: %i\n",
@@ -509,7 +510,7 @@ void CSymbolEngineCards::CalcUnknownCards()
 	CardMask_RESET(stdCards);
 	CardMask_RESET(commonCards);
 
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++)
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++)
 	{
 		// player cards
     Card* card = p_table_state->User()->hole_cards(i);
@@ -860,9 +861,9 @@ CString CSymbolEngineCards::SymbolsProvided() {
     "nranked nrankedcommon "
     "trank trankcommon "
     "ncommoncardsknown nouts ";
-  list += RangeOfSymbols("$$pc%i", 0, kNumberOfCardsPerPlayer-1);
-  list += RangeOfSymbols("$$pr%i", 0, kNumberOfCardsPerPlayer-1);
-  list += RangeOfSymbols("$$ps%i", 0, kNumberOfCardsPerPlayer-1);
+  list += RangeOfSymbols("$$pc%i", 0, NumberOfCardsPerPlayer()-1);
+  list += RangeOfSymbols("$$pr%i", 0, NumberOfCardsPerPlayer()-1);
+  list += RangeOfSymbols("$$ps%i", 0, NumberOfCardsPerPlayer()-1);
   list += RangeOfSymbols("$$cc%i", 0, kNumberOfCommunityCards-1);
   list += RangeOfSymbols("$$cr%i", 0, kNumberOfCommunityCards-1);
   list += RangeOfSymbols("$$cs%i", 0, kNumberOfCommunityCards-1);

@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: versus-symbols, winning probability against hand-lists.
+//   HoldEm only, not Omaha.
 //
 //******************************************************************************
 
@@ -125,7 +126,7 @@ bool CSymbolEngineVersus::GetCounts() {
 	int				listnum = 0;
 	
 	int betround = p_betround_calculator->betround();
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+	for (int i=0; i<kNumberOfCardsPerPlayerHoldEm; i++) {
     card_player[i] = p_table_state->User()->hole_cards(i)->GetValue();
   }
 	for (int i=0; i<kNumberOfCommunityCards; i++) {

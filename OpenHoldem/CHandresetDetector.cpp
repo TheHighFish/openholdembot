@@ -21,6 +21,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
@@ -52,7 +53,7 @@ CHandresetDetector::CHandresetDetector() {
   _bblind = kUndefinedZero;
   _last_bblind = kUndefinedZero;
   _small_blind_existed_last_hand = false;
-  for (int i = 0; i<kNumberOfCardsPerPlayer; i++) {
+  for (int i = 0; i<kMaxNumberOfCardsPerPlayer; i++) {
     playercards[i] = CARD_NOCARD;
     last_playercards[i] = CARD_NOCARD;  
   }
@@ -277,7 +278,7 @@ void CHandresetDetector::GetNewSymbolValues() {
   _community_cards = p_table_state->NumberOfCommunityCards();
   _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
   _bblind = p_symbol_engine_tablelimits->bblind();
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+	for (int i=0; i<kMaxNumberOfCardsPerPlayer; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->User()->hole_cards(i)->GetValue();
 		} else {
@@ -298,7 +299,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
   _last_nopponentsplaying = _nopponentsplaying;
   _last_bblind = _bblind;
   _small_blind_existed_last_hand = SmallBlindExists();
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
 		last_playercards[i] = playercards[i];
 	}
   for (int i = 0; i < p_tablemap->nchairs(); ++i) {

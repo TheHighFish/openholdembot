@@ -42,10 +42,10 @@ class CPlayer {
   int     colourcode() { return _colourcode; }
  public:
   // Public accessors
-  Card*   hole_cards(int first_or_second_0_1) { 
+  Card*   hole_cards(int index) { 
     assert(first_or_second_0_1 >= 0);
-    assert(first_or_second_0_1 < kNumberOfCardsPerPlayer);
-    return &_hole_cards[first_or_second_0_1]; 
+    assert(first_or_second_0_1 < kMaxNumberOfCardsPerPlayer);
+    return &_hole_cards[index]; 
   }
  public:
   // Public accessors
@@ -69,7 +69,7 @@ class CPlayer {
   CScrapedMoney _bet;
  private:
   CString _name;
-  Card    _hole_cards[kNumberOfCardsPerPlayer];
+  Card    _hole_cards[kMaxNumberOfCardsPerPlayer];
   int     _colourcode;
  private:
   bool _seated;

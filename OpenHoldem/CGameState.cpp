@@ -38,6 +38,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CScraper.h"
 #include "CPreferences.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
 #include "CTableTitle.h"
@@ -111,7 +112,7 @@ void CGameState::CaptureState() {
     state[state_index].m_player[i].m_balance = p_table_state->Player(i)->_balance.GetValue();
 		state[state_index].m_player[i].m_currentbet = p_table_state->Player(i)->_bet.GetValue();
     // player cards
-		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
+		for (int j=0; j<NumberOfCardsPerPlayer(); j++) {
       Card* player_card = p_table_state->Player(i)->hole_cards(j);
       int card = player_card->GetValue();
         write_log(preferences.debug_dll_extension(),

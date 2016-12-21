@@ -27,6 +27,7 @@
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineDebug.h"
 #include "CSymbolEngineHistory.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineMTTInfo.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
@@ -497,7 +498,7 @@ int CScraper::ScrapeCard(CString name) {
 void CScraper::ScrapePlayerCards(int chair) {
 	CString card_name;
 	int card = CARD_UNDEFINED;
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
 		card_name.Format("p%dcardface%d", chair, i);
 		if ((i > 0) 
       && ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
@@ -663,7 +664,7 @@ void CScraper::ScrapeBet(int chair) {
 
 void CScraper::ScrapeAllPlayerCards() {
 	for (int i=0; i<kMaxNumberOfPlayers; i++){
-		for (int j=0; j<kNumberOfCardsPerPlayer; j++) {
+		for (int j=0; j<NumberOfCardsPerPlayer(); j++) {
 			p_table_state->Player(i)->hole_cards(j)->ClearValue();
 		}
 	}

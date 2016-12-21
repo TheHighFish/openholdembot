@@ -20,6 +20,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
@@ -28,7 +29,7 @@ CStableFramesCounter *p_stableframescounter = NULL;
 CStableFramesCounter::CStableFramesCounter() {
 	// Initialize private variables
 	memset(&_card_common_last[0],		 0, sizeof(_card_common_last[0])*kNumberOfCommunityCards);
-	memset(&_card_player_last[0][0], 0, sizeof(_card_player_last[0][0])*kNumberOfCardsPerPlayer*kMaxNumberOfPlayers);
+	memset(&_card_player_last[0][0], 0, sizeof(_card_player_last[0][0])*NumberOfCardsPerPlayer()*kMaxNumberOfPlayers);
 	memset(&_dealer_last[0],         0, sizeof(_dealer_last[0])*kMaxNumberOfPlayers);
 	memset(&_playerbalance_last[0],  0, sizeof(_playerbalance_last[0])*kMaxNumberOfPlayers);
 	memset(&_playerbet_last[0],      0, sizeof(_playerbet_last[0])*kMaxNumberOfPlayers);

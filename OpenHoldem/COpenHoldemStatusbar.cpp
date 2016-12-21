@@ -22,6 +22,7 @@
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineHandrank.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
@@ -79,7 +80,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus() {
 	int nCards = 0;
 	_status_plcards = "";
 	if (p_table_state->User()->HasKnownCards()) {
-		for (int i=0; i<kNumberOfCardsPerPlayer; i++) {	
+		for (int i=0; i<NumberOfCardsPerPlayer(); i++) {	
 			// This condition got already checked: "playing"
       Card* card = p_table_state->User()->hole_cards(i);
       // Assertion removeed, because the scraper runs in a different thread.
@@ -90,7 +91,7 @@ void COpenHoldemStatusbar::ComputeCurrentStatus() {
 		}
 		_status_nopp.Format("%d", p_symbol_engine_prwin->nopponents_for_prwin());
 	}	else 	{
-		for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+		for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
 			if (p_table_state->User()->HasKnownCards())	{
 				Card* card = p_table_state->User()->hole_cards(i);
 				_status_plcards.Append(card->ToString());

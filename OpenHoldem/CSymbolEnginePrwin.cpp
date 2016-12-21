@@ -7,7 +7,7 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: PrWin-simulation, HoldEm only, not Omaha#include "CSymbolEngineIsOmaha.h"
 //
 //******************************************************************************
 
@@ -20,6 +20,7 @@
 #include "CIteratorThread.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolenginePokerval.h"
 #include "CTableState.h"
 
@@ -81,7 +82,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 	// player cards
 	CardMask_RESET(plCards);
 	nplCards = 0;
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
+	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
     Card* card = p_table_state->User()->hole_cards(i);
     if (card->IsKnownCard()) {
       CardMask_SET(plCards, card->GetValue());
@@ -116,7 +117,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
         CardMask_OR(opponentEvalCards, oppCards, comCards);
 				hv_opponent = Hand_EVAL_N(opponentEvalCards, 2+ncomCards);
 				opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_opponent,
-					(kNumberOfCardsPerPlayer + ncomCards), 
+					(NumberOfCardsPerPlayer() + ncomCards), 
 					&dummy, CARD_NOCARD, CARD_NOCARD);
 
 				if (pl_pokval > opp_pokval)

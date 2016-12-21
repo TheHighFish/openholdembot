@@ -29,6 +29,7 @@
 #include "CSymbolengineChipAmounts.h"
 #include "CSymbolengineColourCodes.h"
 #include "CSymbolengineGameType.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -50,7 +51,8 @@ int		cc[kNumberOfCommunityCards][2] =
 
 // Player locations as a percentage of width/height
 // [nplayers][chairnum][x/y]
-double	pc[kMaxNumberOfPlayers+1][kMaxNumberOfPlayers][kNumberOfCardsPerPlayer] = {
+const int kNumberOfScreenDimensions = 2;
+double	pc[kMaxNumberOfPlayers+1][kMaxNumberOfPlayers][kNumberOfScreenDimensions] = {
   // 0 chairs
 	{ {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	
   // 1 chair
@@ -142,7 +144,7 @@ COpenHoldemView::COpenHoldemView() {
     _playername_last[i] = "";
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
-		for (int j=0; j<kNumberOfCardsPerPlayer; j++)
+		for (int j=0; j<NumberOfCardsPerPlayer(); j++)
 		{
 			_card_player_last[i][j] = CARD_NOCARD;
 		}

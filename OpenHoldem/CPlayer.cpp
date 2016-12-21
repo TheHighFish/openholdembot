@@ -27,7 +27,7 @@ void CPlayer::Reset() {
   set_name("");
   _balance.Reset();
   _bet.Reset();
-  for (int i=0; i<kNumberOfCardsPerPlayer; ++i) {
+  for (int i=0; i<kMaxNumberOfCardsPerPlayer; ++i) {
     _hole_cards[i].ClearValue();
   }
   set_seated(false);

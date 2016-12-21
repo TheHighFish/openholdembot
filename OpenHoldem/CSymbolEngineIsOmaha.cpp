@@ -24,6 +24,20 @@
 
 CSymbolEngineIsOmaha *p_symbol_engine_isomaha = NULL;
 
+// The number of cards per player depends on the game-type.
+// This affects cards to be scraped and evaluated.
+// The data containers must be large enough to store kMaxNumberOfCardsPerPlayer.
+int NumberOfCardsPerPlayer() {
+  if (p_symbol_engine_isomaha == NULL) {
+    // Not yet initialized. Keep the OpenHoldem default
+    return kNumberOfCardsPerPlayerHoldEm;
+  }
+  if (p_symbol_engine_isomaha->isomaha()) {
+    return kNumberOfCardsPerPlayerOmaha;
+  }
+  return kNumberOfCardsPerPlayerHoldEm;
+}
+
 CSymbolEngineIsOmaha::CSymbolEngineIsOmaha()
 {
 	// The values of some symbol-engines depend on other engines.
