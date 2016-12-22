@@ -27,7 +27,6 @@ class CReplayFrame {
 	// private functions and variables - not available via accessors or mutators
 	void CreateReplayFrame();
 	void CreateReplaySessionDirectoryIfNecessary();
-	CString GetCardHtml(unsigned int card);
 	CString GetPlayerInfoAsHTML();
 	CString GetButtonStatesAsHTML();
 	CString GetBlindInfoAsHTML();

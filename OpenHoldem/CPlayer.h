@@ -29,6 +29,7 @@ class CPlayer {
  public:
   void CheckPlayerCardsForConsistency();
   CString Cards();
+  CString CardsAsHTML();
  public:
   bool IsAllin();
   // Having to post both blinds at once happens at some casinos

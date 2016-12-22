@@ -65,6 +65,17 @@ CString CPlayer::Cards() {
   return "NONE";
 }
 
+CString CPlayer::CardsAsHTML() {
+  // Returning ranks and suits (symbols, colourful) in case of cards
+  // Returning "**" on case of card-backs
+  // Returning non-breaking spaces in case of no cards
+  CString result;
+  for (int i = 0; i < NumberOfCardsPerPlayer(); ++i) {
+    result += hole_cards(i)->ToHTML();
+  }
+  return result;
+}
+
 bool CPlayer::HasKnownCards() {
   for (int i = 0; i < NumberOfCardsPerPlayer(); ++i) {
     if (!_hole_cards[i].IsKnownCard()) {

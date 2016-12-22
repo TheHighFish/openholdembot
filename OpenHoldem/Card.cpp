@@ -120,3 +120,38 @@ bool Card::IsAnyCard() {
 CString Card::ToString() {
   return StdDeck_cardString(_value);  
 }
+
+CString Card::ToHTML() {
+  // code extracted from former CReplayFrame.cpp
+  CString suit, color, rank, final;
+  if (IsCardBack()) {
+    rank = "*";
+    suit = "*";
+    color = "black";
+  } else if (IsNoCard()) {
+    rank = "&nbsp";
+    suit = "&nbsp";
+    color = "black";
+  } else if (StdDeck_SUIT(_value) == Suit_CLUBS) {
+    suit = "&clubs;";
+    color = "green";
+  } else if (StdDeck_SUIT(_value) == Suit_DIAMONDS) {
+    suit = "&diams;";
+    color = "blue";
+  } else if (StdDeck_SUIT(_value) == Suit_HEARTS) {
+    suit = "&hearts;";
+    color = "red";
+  } else if (StdDeck_SUIT(_value) == Suit_SPADES) {
+    suit = "&spades;";
+    color = "black";
+  } else {
+    rank = "&nbsp";
+    suit = "&nbsp";
+    color = "black";
+  }
+  if (IsKnownCard()) {
+    rank.Format("%c", GetRankCharacter());
+  }
+  final.Format("<font color=%s>%s%s</font>", color, rank, suit);
+  return final;
+}

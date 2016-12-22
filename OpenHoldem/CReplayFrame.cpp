@@ -170,42 +170,6 @@ CString CReplayFrame::GeneralInfo() {
   return result;
 }
 
-CString CReplayFrame::GetCardHtml(unsigned int card) {
-	CString suit, color, rank, final;
-  suit =	card == CARD_BACK ? "*" :
-	  card == CARD_NOCARD ? "&nbsp" :
-	  StdDeck_SUIT(card) == Suit_CLUBS ? "&clubs;" :
-	  StdDeck_SUIT(card) == Suit_DIAMONDS ? "&diams;" :
-	  StdDeck_SUIT(card) == Suit_HEARTS ? "&hearts;" :
-	  StdDeck_SUIT(card) == Suit_SPADES ? "&spades;" :
-	  "&nbsp";
-  color = card == CARD_BACK ? "black" :
-		card == CARD_NOCARD ? "black" :
-		StdDeck_SUIT(card) == Suit_CLUBS ? "green" :
-		StdDeck_SUIT(card) == Suit_DIAMONDS ? "blue" :
-		StdDeck_SUIT(card) == Suit_HEARTS ? "red" :
-		StdDeck_SUIT(card) == Suit_SPADES ? "black" :
-		"black";
-  rank =	card == CARD_BACK ? "*" :
-	  card == CARD_NOCARD ? " " :
-	  StdDeck_RANK(card) == Rank_ACE ? "A" :
-	  StdDeck_RANK(card) == Rank_KING ? "K" :
-	  StdDeck_RANK(card) == Rank_QUEEN ? "Q" :
-	  StdDeck_RANK(card) == Rank_JACK ? "J" :
-	  StdDeck_RANK(card) == Rank_TEN ? "T" :
-	  StdDeck_RANK(card) == Rank_9 ? "9" :
-	  StdDeck_RANK(card) == Rank_8 ? "8" :
-	  StdDeck_RANK(card) == Rank_7 ? "7" :
-		StdDeck_RANK(card) == Rank_6 ? "6" :
-		StdDeck_RANK(card) == Rank_5 ? "5" :
-		StdDeck_RANK(card) == Rank_4 ? "4" :
-		StdDeck_RANK(card) == Rank_3 ? "3" :
-		StdDeck_RANK(card) == Rank_2 ? "2" :
-		"&nbsp";
-	final.Format("<font color=%s>%s%s</font>", color, rank, suit);
-	return final;
-}
-
 CString CReplayFrame::GetPlayerInfoAsHTML() {
 	CString player_info, text;
 	// Table header for: SFABD (seated, active, button, dealt, playing),
@@ -246,7 +210,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
 		player_info += text;  
 		// Cards
     text.Format("      <td>%s</td>\n",
-      GetCardHtml(p_table_state->Player(i)->Cards());
+      p_table_state->Player(i)->CardsAsHTML());
 		player_info += text;  
 		// Bet
 		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->_bet.GetValue());
@@ -305,12 +269,12 @@ CString CReplayFrame::GetCommonCardsAsHTML() {
 	common_cards += "<tr><th>commoncard</th></tr>\n";
 	common_cards += "<tr>\n";
 	// Common cards
-	text.Format("<td>%s%s%s%s%s</td>\n",
-    GetCardHtml(p_table_state->CommonCards(0)->GetValue()),
-    GetCardHtml(p_table_state->CommonCards(1)->GetValue()),
-    GetCardHtml(p_table_state->CommonCards(2)->GetValue()),
-    GetCardHtml(p_table_state->TurnCard()->GetValue()),
-    GetCardHtml(p_table_state->RiverCard()->GetValue()));
+  text.Format("<td>%s%s%s%s%s</td>\n",
+    p_table_state->CommonCards(0)->ToHTML(),
+    p_table_state->CommonCards(1)->ToHTML(),
+    p_table_state->CommonCards(2)->ToHTML(),
+    p_table_state->TurnCard()->ToHTML(),
+    p_table_state->RiverCard()->ToHTML());
 	common_cards += text;
 	// Table footer
 	common_cards += "</tr>\n";

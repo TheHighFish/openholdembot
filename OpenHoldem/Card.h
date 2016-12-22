@@ -41,6 +41,7 @@ class Card {
   bool IsAnyCard();    // Card or cardback
  public:
   CString ToString();
+  CString ToHTML();
  private:
   int _value;
 };
