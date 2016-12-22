@@ -40,7 +40,9 @@ public:
 	void UpdateOnHeartbeat();
 public:
 	// Public accessors
-	bool isomaha()		{ return false; }
+  bool isomaha() { return _isomaha; }
+private:
+  bool _isomaha;
 };
 
 extern CSymbolEngineIsOmaha *p_symbol_engine_isomaha;

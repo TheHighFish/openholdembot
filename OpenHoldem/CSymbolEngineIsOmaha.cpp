@@ -19,6 +19,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CTableState.h"
 #include "MagicNumbers.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
@@ -38,23 +39,23 @@ int NumberOfCardsPerPlayer() {
   return kNumberOfCardsPerPlayerHoldEm;
 }
 
-CSymbolEngineIsOmaha::CSymbolEngineIsOmaha()
-{
+CSymbolEngineIsOmaha::CSymbolEngineIsOmaha() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
+  _isomaha = false;
 }
 
 CSymbolEngineIsOmaha::~CSymbolEngineIsOmaha()
 {}
 
-void CSymbolEngineIsOmaha::InitOnStartup()
-{
+void CSymbolEngineIsOmaha::InitOnStartup() {
 	UpdateOnConnection();
 }
 
-void CSymbolEngineIsOmaha::UpdateOnConnection()
-{}
+void CSymbolEngineIsOmaha::UpdateOnConnection() {
+  _isomaha = false;
+}
 
 void CSymbolEngineIsOmaha::UpdateOnHandreset()
 {}
@@ -65,14 +66,30 @@ void CSymbolEngineIsOmaha::UpdateOnNewRound()
 void CSymbolEngineIsOmaha::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineIsOmaha::UpdateOnHeartbeat()
-{}
+void CSymbolEngineIsOmaha::UpdateOnHeartbeat() {
+  if (_isomaha) {
+    write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] Already Omaha\n");
+    return;
+  }
+  if (!p_tablemap->SupportsOmaha()) {
+    write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] Omaha not supported by tablemap\n");
+    return;
+  }
+  // Checking the two "additional" cards
+  if (p_table_state->User()->hole_cards(2)->IsKnownCard()
+    && p_table_state->User()->hole_cards(3)->IsKnownCard()) {
+    write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] Found Omaha hole-cards\n");
+    _isomaha = true;
+    return;
+  }
+  write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] No indications for Omaha found\n");
+}
 
 bool CSymbolEngineIsOmaha::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "isomaha", 7)==0 && strlen(name)==7)	{
     // Up to now only Hold'Em supported
-		*result = false;
+		*result = isomaha();
     return true;
 	}
   // Symbol of a different symbol-engine

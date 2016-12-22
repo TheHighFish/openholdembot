@@ -11,7 +11,6 @@
 //
 //*******************************************************************************
 
-
 #include "StdAfx.h"
 #include "CTablemap.h"
 
@@ -38,6 +37,20 @@ CTablemap::CTablemap(void) {
 
 CTablemap::~CTablemap(void) {
 	ClearTablemap();
+}
+
+bool CTablemap::SupportsOmaha() {
+  // Checkling for more cards than necessary for HoldEm
+  // Checking player0 which exists in every tablemap.
+  if (ItemExists("p0cardface2")) {
+    // Additional card-faces supported
+    return true;
+  }
+  if (ItemExists("p0cardface2rank")) {
+    // Additional card-ranks (and suits) supported
+    return true;
+  }
+  return false;
 }
 
 int CTablemap::GetTMSymbol(CString name, int default)

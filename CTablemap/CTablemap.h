@@ -121,6 +121,7 @@ class CTablemap {
 	uint32_t CTablemap::CalculateHashValue(IMapCI i_iter, const int type);
 	CString CreateH$Index(const unsigned int number, const CString name);
 	uint32_t CreateI$Index(const CString name, const int width, const int height, const uint32_t *pixels);
+  bool SupportsOmaha(); 
  public:
 	// public accessors
 	const ZMap *z$() { return &_z$; }
