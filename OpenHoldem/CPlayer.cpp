@@ -15,6 +15,7 @@
 #include "CPlayer.h"
 
 #include "CBetroundCalculator.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineTableLimits.h"
 
 CPlayer::CPlayer() {
@@ -41,13 +42,21 @@ bool CPlayer::HasAnyCards() {
 	// but for cardbacks or cards.
 	// This way we can play all cards face-up at PokerAcademy.
 	// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=13384
-  return (_hole_cards[0].IsAnyCard() && _hole_cards[1].IsAnyCard());
+  for (int i = 0; i < NumberOfCardsPerPlayer(); ++i) {
+    if (!_hole_cards[i].IsAnyCard()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 CString CPlayer::Cards() {
 	// log new hand
   if (HasKnownCards()) {
-    CString result = _hole_cards[0].ToString() + _hole_cards[1].ToString();
+    CString result; 
+    for (int i = 0; i < NumberOfCardsPerPlayer(); ++i) {
+      result += _hole_cards[i].ToString();
+    }
     return result;
   }
   if (HasAnyCards()) {
@@ -57,7 +66,12 @@ CString CPlayer::Cards() {
 }
 
 bool CPlayer::HasKnownCards() {
-  return (_hole_cards[0].IsKnownCard() && _hole_cards[1].IsKnownCard());
+  for (int i = 0; i < NumberOfCardsPerPlayer(); ++i) {
+    if (!_hole_cards[i].IsKnownCard()) {
+      return false;
+    }
+  }
+  return true;
 }
 
 void CPlayer::CheckPlayerCardsForConsistency() {
@@ -68,8 +82,12 @@ void CPlayer::CheckPlayerCardsForConsistency() {
     // We assume, that we see something that differs from the background,
     // probably cardbacks, that sometimes get scraped as JJsuited or 88suited
     // by bad tablemaps.
+    // Above check was designed for HoldEm, and we keep it that way,
+    // as we don't want to consider any error-correction if 3 of 4 cards are good.
     _hole_cards[0].SetValue(CARD_BACK);
     _hole_cards[1].SetValue(CARD_BACK);
+    _hole_cards[2].SetValue(CARD_BACK);
+    _hole_cards[3].SetValue(CARD_BACK);
   } 
 }
 
@@ -105,8 +123,7 @@ CString CPlayer::DataDump() {
   // Seated, active, playing, dealer
   if (seated()) {
     result += "S";
-  }
-  else {
+  } else {
     result += "-";
   }
   if (active()) {
@@ -133,6 +150,4 @@ CString CPlayer::DataDump() {
   money.Format("%12.2f  %12.2f", _bet.GetValue(), _balance.GetValue());
   result += money;
   return result;
-
-
 }
