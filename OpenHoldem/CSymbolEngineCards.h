@@ -9,7 +9,7 @@
 //
 // Purpose: Cards, ranks and suits.
 //   Partially Omaha-compatible.
-//   Some symbols like "uspair" are for HoldEm only.
+//   Some symbols like "ispair" are for HoldEm only.
 //
 //******************************************************************************
 

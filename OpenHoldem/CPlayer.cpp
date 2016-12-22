@@ -18,6 +18,9 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineTableLimits.h"
 
+// Blobal dummy to handle access to non-existing cards easily
+Card dummy_card_nocard;
+
 CPlayer::CPlayer() {
 }
 
@@ -83,6 +86,18 @@ bool CPlayer::HasKnownCards() {
     }
   }
   return true;
+}
+
+Card* CPlayer::hole_cards(int index) {
+  // Make sure there is no index overflop
+  // and be extra careful, acce4ss may depend on user-input
+  if (index < 0) {
+    return &dummy_card_nocard;
+  }
+  if (index >= kMaxNumberOfCardsPerPlayer) {
+    return &dummy_card_nocard;
+  }
+  return &_hole_cards[index];
 }
 
 void CPlayer::CheckPlayerCardsForConsistency() {
