@@ -207,10 +207,18 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckSetOfItems("p", last_chair, "cardback", true);
   CheckSetOfItems("p", last_chair, "cardface0nocard", true);
   CheckSetOfItems("p", last_chair, "cardface1nocard", true);
+  if (p_tablemap->SupportsOmaha()) {
+    CheckSetOfItems("p", last_chair, "cardface2nocard", true);
+    CheckSetOfItems("p", last_chair, "cardface3nocard", true);
+  }
   // Check mandatory cards faces (or rank + suit) for every seat
   for (int i=0; i<nchairs; ++i) {
     CheckCardFaces("p", i, "cardface0");
     CheckCardFaces("p", i, "cardface1");
+    if (p_tablemap->SupportsOmaha()) {
+      CheckCardFaces("p", i, "cardface2");
+      CheckCardFaces("p", i, "cardface3");
+    }
   }
   CheckBetsOrChips();
   // Community cards
