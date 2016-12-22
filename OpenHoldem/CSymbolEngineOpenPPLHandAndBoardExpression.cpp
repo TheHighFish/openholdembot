@@ -71,6 +71,7 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnMyTurn() {
 
 void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnHeartbeat() {
 	_prime_coded_hole_cards = PrimeCodedRanks(
+    // !!!!! ATM hand§xy-expressions are for Holdem only
     p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
     p_table_state->User()->hole_cards(1)->GetOpenHoldemRank());
 	_prime_coded_board_cards = PrimeCodedRanks(

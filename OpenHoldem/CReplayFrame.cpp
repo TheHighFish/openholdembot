@@ -245,9 +245,8 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
 		text += "</td>\n";
 		player_info += text;  
 		// Cards
-		text.Format("      <td>%s%s</td>\n",
-      GetCardHtml(p_table_state->Player(i)->hole_cards(0)->GetValue()),
-      GetCardHtml(p_table_state->Player(i)->hole_cards(1)->GetValue()));
+    text.Format("      <td>%s</td>\n",
+      GetCardHtml(p_table_state->Player(i)->Cards());
 		player_info += text;  
 		// Bet
 		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->_bet.GetValue());
