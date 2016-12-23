@@ -19,6 +19,7 @@
 #include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEnginePokerval.h"
 #include "CTableState.h"
 #include "..\StringFunctionsDLL\string_functions.h"
@@ -70,10 +71,17 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnMyTurn() {
 }
 
 void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnHeartbeat() {
-	_prime_coded_hole_cards = PrimeCodedRanks(
-    // !!!!! ATM hand§xy-expressions are for Holdem only
-    p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
-    p_table_state->User()->hole_cards(1)->GetOpenHoldemRank());
+  if (p_symbol_engine_isomaha->isomaha()) {
+    _prime_coded_hole_cards = PrimeCodedRanks(
+      p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
+      p_table_state->User()->hole_cards(1)->GetOpenHoldemRank(),
+      p_table_state->User()->hole_cards(2)->GetOpenHoldemRank(),
+      p_table_state->User()->hole_cards(3)->GetOpenHoldemRank());
+  } else {
+    _prime_coded_hole_cards = PrimeCodedRanks(
+      p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
+      p_table_state->User()->hole_cards(1)->GetOpenHoldemRank());
+  }
 	_prime_coded_board_cards = PrimeCodedRanks(
     p_table_state->CommonCards(0)->GetOpenHoldemRank(),
     p_table_state->CommonCards(1)->GetOpenHoldemRank(),
