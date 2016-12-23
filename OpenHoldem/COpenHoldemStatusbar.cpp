@@ -46,7 +46,7 @@ void COpenHoldemStatusbar::InitAdvancedStatusbar() {
 	_status_bar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
 	_status_bar.SetPaneInfo(0, ID_INDICATOR_STATUS_ACTION, NULL, 100);
-	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 30);
+	_status_bar.SetPaneInfo(1, ID_INDICATOR_STATUS_PLCARDS, NULL, 60);
 	_status_bar.SetPaneInfo(2, ID_INDICATOR_STATUS_COMCARDS, NULL, 75);
 	_status_bar.SetPaneInfo(3, ID_INDICATOR_STATUS_POKERHAND, NULL, 65);	
 	_status_bar.SetPaneInfo(4, ID_INDICATOR_STATUS_HANDRANK, NULL, 55);
