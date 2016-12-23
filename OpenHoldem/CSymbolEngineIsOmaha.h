@@ -40,7 +40,7 @@ public:
 	void UpdateOnHeartbeat();
 public:
 	// Public accessors
-  bool isomaha() { return _isomaha; }
+  bool isomaha() { return true; } // !!!!! _isomaha;
 private:
   bool _isomaha;
 };

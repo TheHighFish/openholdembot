@@ -325,7 +325,9 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 				DrawPlayerCards(i);
 				DrawNameBox(i);
 				DrawBalanceBox(i);
-        DrawColourCodes(i);
+        // !! Disabled, as it gets rarely used
+        // and doesn't fit well to the Omaha cards.
+        // DrawColourCodes(i);
 			}
 			// Drawing a bet, even if no player seated.
 			// The player might have left the table, 
@@ -913,6 +915,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 }
 
 void COpenHoldemView::DrawPlayerCards(const int chair) {
+  //!!!!!
 	if (!p_table_state->Player(chair)->active())	{
 		// Forget about inactive players, they have no cards.
 		// Don't draw them to point out the mistake faster
@@ -921,20 +924,25 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
 	}
 	// Get size of current client window
 	GetClientRect(&_client_rect);
-	// Draw player cards (first)
-  Card *player_card_0 = p_table_state->Player(chair)->hole_cards(0);
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
-    chair, player_card_0->ToString());
-  int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 5;
-  int pos_x_left   = pos_x_right - CARDSIZEX;
-  int pos_y_top    = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2;
+  // Calculate fixed y-position
+  int pos_y_top = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY / 2;
   int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
-	DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
-  // Draw player cards (second)
-  Card *player_card_1 = p_table_state->Player(chair)->hole_cards(1);
-  pos_x_right = pos_x_right + CARDSIZEX - 9; 
-  pos_x_left  = pos_x_right - CARDSIZEX;
-	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
+  // x-offset between two cards, with some overlap due ti space restrictions
+  int x_offset_to_next_card = CARDSIZEX - 14;
+  // Calculate starting position for first card
+  int first_pos_x_right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 5;
+  if (p_symbol_engine_isomaha->isomaha()) {
+    // Original positions were designed for HoldEm.
+    // If we play Omaha, then move everything one card to the left
+    // for better centralization.
+    first_pos_x_right -= x_offset_to_next_card;
+  }
+  for (int i = 0; i < kMaxNumberOfCardsPerPlayer; ++i) { //!!!!!
+    Card *player_card_0 = p_table_state->Player(chair)->hole_cards(0);
+    int pos_x_right = first_pos_x_right + i * x_offset_to_next_card;
+    int pos_x_left = pos_x_right - CARDSIZEX;
+    DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom, true);
+  }
 }
 
 void COpenHoldemView::DrawColourCodes(const int chair) {
