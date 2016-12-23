@@ -1,3 +1,13 @@
+v9.4.3b 2016-12-23
+==================
+BUG FIXES:	
+- BotsLastPreflopAction did in some cases still not get updated properly
+  after autoplayer-actions.
+  Thanks to WantPlayPoker and ChuckNeverMuck for reporting.
+  The fixed library is in the sticky thread for OpenHoldem 9.x.
+  [THF]
+  
+
 v9.4.3 2016-12-21
 ==================
 NEW STUFF:
