@@ -30,6 +30,7 @@ CSymbolEnginePrwin::CSymbolEnginePrwin() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
+  assert(p_symbol_engine_isomaha != NULL);
 	assert(p_symbol_engine_pokerval != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
 	assert(p_symbol_engine_userchair != NULL);
