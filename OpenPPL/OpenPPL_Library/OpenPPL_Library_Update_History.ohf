@@ -73,7 +73,13 @@
 // and we need both values at the same heartbeat,
 // one for execution (bot-logic) and the other one to update the history.
 // The most easy solution was this code-clone.
-WHEN (betround != ConstBetRoundPreflop) RETURN BotsLastPreflopAction FORCE
+//
+// We removed the first lines of BotsLastAction
+// WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+// WHEN (betround != ConstBetRoundPreflop) RETURN BotsLastPreflopAction FORCE
+// because BotsActionsOnThisRoundIncludingChecks and BotsLastPreflopAction
+// could be [cached] after the first action and we could get wrong results.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20395
 // Computing BotsLastAction from prevation
 // k_prevaction_undefined = -2
 // k_prevaction_fold = -1
@@ -183,7 +189,6 @@ WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
 WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
 WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MaxOpponentStackSize
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemBotsLastPreflopAction_BotsLastAction
 WHEN (betround == ConstBetRoundPreflop) SET me_st_MemMissingSmallBlind_MissingSmallBlind
 // Finally remember a heartbeat ID so that be become able to detect
 // if a symbol gets used before the next scrape (e.g by the debug-tab).

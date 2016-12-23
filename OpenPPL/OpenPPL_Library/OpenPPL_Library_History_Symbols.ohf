@@ -86,6 +86,8 @@ WHEN (me_re_MemBets > 0) RETURN me_re_MemBets FORCE
 WHEN ((AmountToCall > 0) AND (TotalInvestedThisRound <= Ante)) RETURN 1 FORCE
 
 ##BotsLastAction##
+// Just to be extra safe...
+WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
 // Computing BotsLastAction from prevation
 // k_prevaction_undefined = -2
 // k_prevaction_fold = -1
