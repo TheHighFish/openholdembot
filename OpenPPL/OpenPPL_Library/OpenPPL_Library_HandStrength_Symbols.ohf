@@ -106,14 +106,6 @@ WHEN Others RETURN HoldEm_HadSecondTopPairOnFlop FORCE
 WHEN isomaha RETURN Omaha_HadTopPairOnTurn FORCE
 WHEN Others RETURN HoldEm_HadTopPairOnTurn FORCE
 
-##FirstHoleCardPairsTheFlop##
-WHEN isomaha RETURN Omaha_FirstHoleCardPairsTheFlop FORCE
-WHEN Others RETURN HoldEm_FirstHoleCardPairsTheFlop FORCE
-
-##SecondHoleCardPairsTheFlop##
-WHEN isomaha RETURN Omaha_SecondHoleCardPairsTheFlop FORCE
-WHEN Others RETURN HoldEm_SecondHoleCardPairsTheFlop FORCE
-
 ##HadTwoPairOnFlop##
 WHEN isomaha RETURN Omaha_HadTwoPairOnFlop FORCE
 WHEN Others RETURN HoldEm_HadTwoPairOnFlop FORCE
@@ -229,10 +221,6 @@ WHEN Others RETURN HoldEm_HaveFifthNutFlush FORCE
 ##HaveFifthNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveFifthNutFlushDraw FORCE
 WHEN Others RETURN HoldEm_HaveFifthNutFlushDraw FORCE
-
-##FifthBestBoardCard##
-WHEN isomaha RETURN Omaha_FifthBestBoardCard FORCE
-WHEN Others RETURN HoldEm_FifthBestBoardCard FORCE
 
 ##HaveFifthOverPair##
 WHEN isomaha RETURN Omaha_HaveFifthOverPair FORCE
@@ -425,10 +413,6 @@ WHEN Others RETURN HoldEm_HaveTopTrips FORCE
 ##HaveTrips##
 WHEN isomaha RETURN Omaha_HaveTrips FORCE
 WHEN Others RETURN HoldEm_HaveTrips FORCE
-
-##TripsRank##
-WHEN isomaha RETURN Omaha_TripsRank FORCE
-WHEN Others RETURN HoldEm_TripsRank FORCE
 
 ##HaveStraight##
 WHEN isomaha RETURN Omaha_HaveStraight FORCE

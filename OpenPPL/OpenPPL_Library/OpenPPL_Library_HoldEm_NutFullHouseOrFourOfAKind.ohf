@@ -333,7 +333,7 @@ HINT_We_Dont_Have_A_FullHouse_At_All
 [pokerval & fullhouse] ? NutFullHouseOrFourOfAKind_PairOnBoard_WeHitThePairAndAnotherCard :
 HINT_We_Dont_Have_A_FullHouse_At_All
 
-##Holdem_NutFullHouseOrFourOfAKind##
+##HoldEm_NutFullHouseOrFourOfAKind##
 [(pokerval & (fullhouse | fourofakind)) == 0] ? HINT_We_Dont_Have_A_FullHouse_At_All : 
 QuadsOnBoard     ? NutFullHouseOrFourOfAKind_FourOfAKindOnBoard :
 FullHouseOnBoard ? NutFullHouseOrFourOfAKind_FullHouseOnBoard :
