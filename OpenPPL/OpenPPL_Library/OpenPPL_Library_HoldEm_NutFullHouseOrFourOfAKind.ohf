@@ -341,3 +341,28 @@ TripsOnBoard     ? NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard :
 TwoPairOnBoard   ? NutFullHouseOrFourOfAKind_TwoPairsOnBoard :
 PairOnBoard      ? NutFullHouseOrFourOfAKind_PairOnBoard :
 HINT_We_Dont_Have_A_FullHouse_At_All
+
+##BoardKicker_FourOfAKindOnBoard##
+(betround == ConstBetRoundRiver) ? HighestUnpairedBoardCard : 2
+
+##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WeHaveOverPairToPair##
+// 3 is the best strength possible, because two quads are always possible
+3
+// 1 OverPair for each overcard = 1 higher full house
++ (ConstCardAce - rankhiplayer)
+// Higher SET possible with pair onboard?
++ [(RankOfTopPairOnBoard > rankhiplayer) ? 1 : 0 ]
+// If the cards on board are higher than our pair,
+// we have to subtract them again, as otherwise we count them twice,
+// as set/quads and OverPair.
++ [(RankOfTopPairOnBoard > rankhiplayer) ? -1 : 0 ]
++ [(RankOfSetOnBoard  > rankhiplayer) ? -1 : 0 ]
+
+##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePlayTheBoard##
+// 3 is the best strength possible, because two quads are always possible
+3
+// 1 OverPair for each overcard = 1 higher full house
++ (ConstCardAce - rankhiplayer)
+// +1 if the pair is higher as the SET (higher SET possible)
+// -1 if the pair is higher as the SET (counted twice as OverPair / set)
+// but these cases neutralize each other
