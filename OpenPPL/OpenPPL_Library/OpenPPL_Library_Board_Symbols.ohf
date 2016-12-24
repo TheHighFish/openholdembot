@@ -181,6 +181,9 @@ OR (ThirdFlopCard == ConstCardKing)
 ##LowCardsOnBoard##
 `RankBitsCommonLowCardsOnly
 
+##LowestBitOfRankBitsCommon##
+(1<<ranklocommon)
+
 ##MoreThanOneStraightPossibleOnFlop##
 StraightPossibleOnFlop AND NOT ExactlyOneStraightPossibleOnFlop
 

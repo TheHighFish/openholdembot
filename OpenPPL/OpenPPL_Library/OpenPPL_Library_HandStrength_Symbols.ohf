@@ -462,9 +462,9 @@ WHEN Others RETURN HoldEm_PairInHand FORCE
 WHEN isomaha RETURN Omaha_RunnerRunnerFlushPossibleAtRiver FORCE
 WHEN Others RETURN HoldEm_RunnerRunnerFlushPossibleAtRiver FORCE
 
-##OverCards##
-WHEN isomaha RETURN Omaha_OverCards FORCE
-WHEN Others RETURN HoldEm_OverCards FORCE
+##Overcards##
+WHEN isomaha RETURN Omaha_Overcards FORCE
+WHEN Others RETURN HoldEm_Overcards FORCE
 
 ##SuitsInHand##
 WHEN isomaha RETURN Omaha_SuitsInHand FORCE
