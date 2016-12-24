@@ -119,7 +119,7 @@ void CFormulaParser::ParseLibrary(CString library_path) {
   CFile library_file(library_path,
     CFile::modeRead | CFile::shareDenyWrite);
   write_log(preferences.debug_parser(), 
-	    "[FormulaParser] Going to load and parse OpenPPL-library\n");
+	    "[FormulaParser] Going to load and parse library %s\n", library_path);
   CArchive library_archive(&library_file, CArchive::load); 
   _is_parsing_read_only_function_library = true;
   ParseFile(library_archive);
@@ -143,6 +143,8 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
     }
     if (!VerifyFunctionHeader(function_header)) {
       // Skip this function
+      write_log(preferences.debug_parser(),
+        "[FormulaParser] Skipping bad function {%s]\n", function_header);
       continue;
     }
     ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
@@ -306,15 +308,11 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
 
 void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line) {
   _tokenizer.SetInput(function_text);
-  // Check for empty function
-  int token_ID = _tokenizer.GetToken();
-  if ((token_ID == kTokenEndOfFile)
-      || (token_ID == kTokenEndOfFunction)) {
-    // Parsing finished (for this function or altogether)
-    return;
-  } else {
-    _tokenizer.PushBack();
-  }   
+  // No longer any check for end of file or end of function here.
+  // This prevents the parsing of empry functions,
+  // which is especially necessary for OpenPPL-Omaha
+  // (partially implemented)
+  // !!!!!www
   if (isdigit(_function_name[0])) {
     // Date like ##2014-02-09 23:16:55##
     // To be completely ignored
