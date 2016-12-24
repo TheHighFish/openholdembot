@@ -290,11 +290,14 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			_active_last[i] = p_table_state->Player(i)->active();
 			update_it = true;
 		}
-    //!!!!!
     if (_card_player_last[i][0] != p_table_state->Player(i)->hole_cards(0)->GetValue()
-        || _card_player_last[i][1] != p_table_state->Player(i)->hole_cards(1)->GetValue()) 		{
+        || _card_player_last[i][1] != p_table_state->Player(i)->hole_cards(1)->GetValue()
+        || _card_player_last[i][2] != p_table_state->Player(i)->hole_cards(2)->GetValue()
+        || _card_player_last[i][3] != p_table_state->Player(i)->hole_cards(3)->GetValue()) {
 			_card_player_last[i][0] = p_table_state->Player(i)->hole_cards(0)->GetValue();
 			_card_player_last[i][1] = p_table_state->Player(i)->hole_cards(1)->GetValue();
+      _card_player_last[i][2] = p_table_state->Player(i)->hole_cards(2)->GetValue();
+      _card_player_last[i][3] = p_table_state->Player(i)->hole_cards(3)->GetValue();
 			update_it = true;
 		}
 		if (_dealer_last[i] != p_table_state->Player(i)->dealer()) {
@@ -937,11 +940,11 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
     // for better centralization.
     first_pos_x_right -= x_offset_to_next_card;
   }
-  for (int i = 0; i < kMaxNumberOfCardsPerPlayer; ++i) { //!!!!!
-    Card *player_card_0 = p_table_state->Player(chair)->hole_cards(0);
+  for (int i = 0; i < kMaxNumberOfCardsPerPlayer; ++i) { 
+    Card *player_card_N = p_table_state->Player(chair)->hole_cards(i);
     int pos_x_right = first_pos_x_right + i * x_offset_to_next_card;
     int pos_x_left = pos_x_right - CARDSIZEX;
-    DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom, true);
+    DrawCard(player_card_N, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom, true);
   }
 }
 
