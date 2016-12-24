@@ -309,7 +309,7 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
 void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line) {
   _tokenizer.SetInput(function_text);
   // No longer any check for end of file or end of function here.
-  // This prevents the parsing of empry functions,
+  // This prevents the parsing of empty functions,
   // which is especially necessary for OpenPPL-Omaha
   // (partially implemented)
   // !!!!!www

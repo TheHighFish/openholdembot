@@ -306,6 +306,10 @@ OR LowestFlopCardPairedOnTurn
 OR (SecondFlopCard==ConstCardQueen)
 OR (ThirdFlopCard==ConstCardQueen)
 
+##RankBitsCommonWithoutLowestBit##
+// we negate lowest-bit and then do an and-operation
+rankbitscommon & ~LowestBitOfRankBitsCommon
+
 ##RiverCardIsOvercardToBoard##
 [   RiverCard > FirstFlopCard
 AND RiverCard > SecondFlopCard
@@ -409,6 +413,26 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
 (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
 (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
+
+##ThirdBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopTwoBits & 0b100000000000000) != 0 ? ConstCardAce :
+(RankBitsCommonWithoutTopTwoBits & 0b010000000000000) != 0 ? ConstCardKing :
+(RankBitsCommonWithoutTopTwoBits & 0b001000000000000) != 0 ? ConstCardQueen :
+(RankBitsCommonWithoutTopTwoBits & 0b000100000000000) != 0 ? ConstCardJack :
+(RankBitsCommonWithoutTopTwoBits & 0b000010000000000) != 0 ? ConstCardTen :
+(RankBitsCommonWithoutTopTwoBits & 0b000001000000000) != 0 ? ConstCardNine :
+(RankBitsCommonWithoutTopTwoBits & 0b000000100000000) != 0 ? ConstCardEight :
+(RankBitsCommonWithoutTopTwoBits & 0b000000010000000) != 0 ? ConstCardSeven :
+(RankBitsCommonWithoutTopTwoBits & 0b000000001000000) != 0 ? ConstCardSix :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000100000) != 0 ? ConstCardFive :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000010000) != 0 ? ConstCardFour :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000001000) != 0 ? ConstCardThree :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000000100) != 0 ? ConstCardTwo :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
 
 ##ThreeCardStraightOnBoard##
 nstraightcommon >= 3
