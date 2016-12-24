@@ -64,420 +64,420 @@
 
 ##HadOverPairOnFlop##
 WHEN isomaha RETURN Omaha_HadOverPairOnFlop FORCE
-WHEN Others RETURN Holdem_HadOverPairOnFlop FORCE
+WHEN Others RETURN HoldEm_HadOverPairOnFlop FORCE
 
 ##HadOverPairOnTurn##
 WHEN isomaha RETURN Omaha_HadOverPairOnTurn FORCE
-WHEN Others RETURN Holdem_HadOverPairOnTurn FORCE
+WHEN Others RETURN HoldEm_HadOverPairOnTurn FORCE
 
 ##HadSecondOverPairOnFlop##
 WHEN isomaha RETURN Omaha_HadSecondOverPairOnFlop FORCE
-WHEN Others RETURN Holdem_HadSecondOverPairOnFlop FORCE
+WHEN Others RETURN HoldEm_HadSecondOverPairOnFlop FORCE
 
 ##HadSecondOverPairOnTurn##
 WHEN isomaha RETURN Omaha_HadSecondOverPairOnTurn FORCE
-WHEN Others RETURN Holdem_HadSecondOverPairOnTurn FORCE
+WHEN Others RETURN HoldEm_HadSecondOverPairOnTurn FORCE
 
 ##HadPairOnFlop##
 WHEN isomaha RETURN Omaha_HadPairOnFlop FORCE
-WHEN Others RETURN Holdem_HadPairOnFlop FORCE
+WHEN Others RETURN HoldEm_HadPairOnFlop FORCE
 
 ##HadPairOnTurn##
 WHEN isomaha RETURN Omaha_HadPairOnTurn FORCE
-WHEN Others RETURN Holdem_HadPairOnTurn FORCE
+WHEN Others RETURN HoldEm_HadPairOnTurn FORCE
 
 ##HadSetOnFlop##
 WHEN isomaha RETURN Omaha_HadSetOnFlop FORCE
-WHEN Others RETURN Holdem_HadSetOnFlop FORCE
+WHEN Others RETURN HoldEm_HadSetOnFlop FORCE
 
 ##HadSetOnTurn##
 WHEN isomaha RETURN Omaha_HadSetOnTurn FORCE
-WHEN Others RETURN Holdem_HadSetOnTurn FORCE
+WHEN Others RETURN HoldEm_HadSetOnTurn FORCE
 
 ##HadTopPairOnFlop##
 WHEN isomaha RETURN Omaha_HadTopPairOnFlop FORCE
-WHEN Others RETURN Holdem_HadTopPairOnFlop FORCE
+WHEN Others RETURN HoldEm_HadTopPairOnFlop FORCE
 
 ##HadSecondTopPairOnFlop##
 WHEN isomaha RETURN Omaha_HadSecondTopPairOnFlop FORCE
-WHEN Others RETURN Holdem_HadSecondTopPairOnFlop FORCE
+WHEN Others RETURN HoldEm_HadSecondTopPairOnFlop FORCE
 
 ##HadTopPairOnTurn##
 WHEN isomaha RETURN Omaha_HadTopPairOnTurn FORCE
-WHEN Others RETURN Holdem_HadTopPairOnTurn FORCE
+WHEN Others RETURN HoldEm_HadTopPairOnTurn FORCE
 
 ##FirstHoleCardPairsTheFlop##
 WHEN isomaha RETURN Omaha_FirstHoleCardPairsTheFlop FORCE
-WHEN Others RETURN Holdem_FirstHoleCardPairsTheFlop FORCE
+WHEN Others RETURN HoldEm_FirstHoleCardPairsTheFlop FORCE
 
 ##SecondHoleCardPairsTheFlop##
 WHEN isomaha RETURN Omaha_SecondHoleCardPairsTheFlop FORCE
-WHEN Others RETURN Holdem_SecondHoleCardPairsTheFlop FORCE
+WHEN Others RETURN HoldEm_SecondHoleCardPairsTheFlop FORCE
 
 ##HadTwoPairOnFlop##
 WHEN isomaha RETURN Omaha_HadTwoPairOnFlop FORCE
-WHEN Others RETURN Holdem_HadTwoPairOnFlop FORCE
+WHEN Others RETURN HoldEm_HadTwoPairOnFlop FORCE
 
 ##HaveBackdoorStraightDraw##
 WHEN isomaha RETURN Omaha_HaveBackdoorStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveBackdoorStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveBackdoorStraightDraw FORCE
 
 ##HaveSecondBestKicker##
 WHEN isomaha RETURN Omaha_HaveSecondBestKicker FORCE
-WHEN Others RETURN Holdem_HaveSecondBestKicker FORCE
+WHEN Others RETURN HoldEm_HaveSecondBestKicker FORCE
 
 ##HaveSecondBestKickerOrBetter##
 WHEN isomaha RETURN Omaha_HaveSecondBestKickerOrBetter FORCE
-WHEN Others RETURN Holdem_HaveSecondBestKickerOrBetter FORCE
+WHEN Others RETURN HoldEm_HaveSecondBestKickerOrBetter FORCE
 
 ##HaveSecondBestOverPair##
 WHEN isomaha RETURN Omaha_HaveSecondBestOverPair FORCE
-WHEN Others RETURN Holdem_HaveSecondBestOverPair FORCE
+WHEN Others RETURN HoldEm_HaveSecondBestOverPair FORCE
 
 ##HaveSecondBestOverPairOrBetter##
 WHEN isomaha RETURN Omaha_HaveSecondBestOverPairOrBetter FORCE
-WHEN Others RETURN Holdem_HaveSecondBestOverPairOrBetter FORCE
+WHEN Others RETURN HoldEm_HaveSecondBestOverPairOrBetter FORCE
 
 ##HaveSecondNutFlush##
 WHEN isomaha RETURN Omaha_HaveSecondNutFlush FORCE
-WHEN Others RETURN Holdem_HaveSecondNutFlush FORCE
+WHEN Others RETURN HoldEm_HaveSecondNutFlush FORCE
 
 ##HaveSecondNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveSecondNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveSecondNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveSecondNutFlushDraw FORCE
 
 ##HaveSecondNutStraight##
 WHEN isomaha RETURN Omaha_HaveSecondNutStraight FORCE
-WHEN Others RETURN Holdem_HaveSecondNutStraight FORCE
+WHEN Others RETURN HoldEm_HaveSecondNutStraight FORCE
 
 ##HaveSecondOverPair##
 WHEN isomaha RETURN Omaha_HaveSecondOverPair FORCE
-WHEN Others RETURN Holdem_HaveSecondOverPair FORCE
+WHEN Others RETURN HoldEm_HaveSecondOverPair FORCE
 
 ##HaveSecondTopPair##
 WHEN isomaha RETURN Omaha_HaveSecondTopPair FORCE
-WHEN Others RETURN Holdem_HaveSecondTopPair FORCE
+WHEN Others RETURN HoldEm_HaveSecondTopPair FORCE
 
 ##HaveSecondTopSet##
 WHEN isomaha RETURN Omaha_HaveSecondTopSet FORCE
-WHEN Others RETURN Holdem_HaveSecondTopSet FORCE
+WHEN Others RETURN HoldEm_HaveSecondTopSet FORCE
 
 ##HaveThirdBestKicker##
 WHEN isomaha RETURN Omaha_HaveThirdBestKicker FORCE
-WHEN Others RETURN Holdem_HaveThirdBestKicker FORCE
+WHEN Others RETURN HoldEm_HaveThirdBestKicker FORCE
 
 ##HaveThirdBestKickerOrBetter##
 WHEN isomaha RETURN Omaha_HaveThirdBestKickerOrBetter FORCE
-WHEN Others RETURN Holdem_HaveThirdBestKickerOrBetter FORCE
+WHEN Others RETURN HoldEm_HaveThirdBestKickerOrBetter FORCE
 
 ##HaveThirdBestOverPair##
 WHEN isomaha RETURN Omaha_HaveThirdBestOverPair FORCE
-WHEN Others RETURN Holdem_HaveThirdBestOverPair FORCE
+WHEN Others RETURN HoldEm_HaveThirdBestOverPair FORCE
 
 ##HaveThirdBestOverPairOrBetter##
 WHEN isomaha RETURN Omaha_HaveThirdBestOverPairOrBetter FORCE
-WHEN Others RETURN Holdem_HaveThirdBestOverPairOrBetter FORCE
+WHEN Others RETURN HoldEm_HaveThirdBestOverPairOrBetter FORCE
 
 ##HaveThirdNutFlush##
 WHEN isomaha RETURN Omaha_HaveThirdNutFlush FORCE
-WHEN Others RETURN Holdem_HaveThirdNutFlush FORCE
+WHEN Others RETURN HoldEm_HaveThirdNutFlush FORCE
 
 ##HaveThirdNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveThirdNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveThirdNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveThirdNutFlushDraw FORCE
 
 ##HaveThirdOverPair##
 WHEN isomaha RETURN Omaha_HaveThirdOverPair FORCE
-WHEN Others RETURN Holdem_HaveThirdOverPair FORCE
+WHEN Others RETURN HoldEm_HaveThirdOverPair FORCE
 
 ##HaveThirdTopPair##
 WHEN isomaha RETURN Omaha_HaveThirdTopPair FORCE
-WHEN Others RETURN Holdem_HaveThirdTopPair FORCE
+WHEN Others RETURN HoldEm_HaveThirdTopPair FORCE
 
 ##HaveFifthTopPair##
 WHEN isomaha RETURN Omaha_HaveFifthTopPair FORCE
-WHEN Others RETURN Holdem_HaveFifthTopPair FORCE
+WHEN Others RETURN HoldEm_HaveFifthTopPair FORCE
 
 ##HaveThirdTopSet##
 WHEN isomaha RETURN Omaha_HaveThirdTopSet FORCE
-WHEN Others RETURN Holdem_HaveThirdTopSet FORCE
+WHEN Others RETURN HoldEm_HaveThirdTopSet FORCE
 
 ##HaveFourthNutFlush##
 WHEN isomaha RETURN Omaha_HaveFourthNutFlush FORCE
-WHEN Others RETURN Holdem_HaveFourthNutFlush FORCE
+WHEN Others RETURN HoldEm_HaveFourthNutFlush FORCE
 
 ##HaveFourthNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveFourthNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveFourthNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveFourthNutFlushDraw FORCE
 
 ##HaveFourthOverPair##
 WHEN isomaha RETURN Omaha_HaveFourthOverPair FORCE
-WHEN Others RETURN Holdem_HaveFourthOverPair FORCE
+WHEN Others RETURN HoldEm_HaveFourthOverPair FORCE
 
 ##HaveFourthTopPair##
 WHEN isomaha RETURN Omaha_HaveFourthTopPair FORCE
-WHEN Others RETURN Holdem_HaveFourthTopPair FORCE
+WHEN Others RETURN HoldEm_HaveFourthTopPair FORCE
 
 ##HaveFourthTopSet##
 WHEN isomaha RETURN Omaha_HaveFourthTopSet FORCE
-WHEN Others RETURN Holdem_HaveFourthTopSet FORCE
+WHEN Others RETURN HoldEm_HaveFourthTopSet FORCE
 
 ##HaveFifthNutFlush##
 WHEN isomaha RETURN Omaha_HaveFifthNutFlush FORCE
-WHEN Others RETURN Holdem_HaveFifthNutFlush FORCE
+WHEN Others RETURN HoldEm_HaveFifthNutFlush FORCE
 
 ##HaveFifthNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveFifthNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveFifthNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveFifthNutFlushDraw FORCE
 
 ##FifthBestBoardCard##
 WHEN isomaha RETURN Omaha_FifthBestBoardCard FORCE
-WHEN Others RETURN Holdem_FifthBestBoardCard FORCE
+WHEN Others RETURN HoldEm_FifthBestBoardCard FORCE
 
 ##HaveFifthOverPair##
 WHEN isomaha RETURN Omaha_HaveFifthOverPair FORCE
-WHEN Others RETURN Holdem_HaveFifthOverPair FORCE
+WHEN Others RETURN HoldEm_HaveFifthOverPair FORCE
 
 ##HaveAnyKindOfInsideStraightDraw##
 WHEN isomaha RETURN Omaha_HaveAnyKindOfInsideStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveAnyKindOfInsideStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveAnyKindOfInsideStraightDraw FORCE
 
 ##HaveBackdoorFlushDrawContributingTwoCards##
-WHEN isomaha RETURN Omaha_ FORCE
-WHEN Others RETURN Holdem_ FORCE
+WHEN isomaha RETURN Omaha_HaveBackdoorFlushDrawContributingTwoCards FORCE
+WHEN Others RETURN HoldEm_HaveBackdoorFlushDrawContributingTwoCards FORCE
 
 ##HaveBackdoorNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveBackdoorNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveBackdoorNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveBackdoorNutFlushDraw FORCE
 
 ##HaveBackdoorSecondNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveBackdoorSecondNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveBackdoorSecondNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveBackdoorSecondNutFlushDraw FORCE
 
 ##HaveBackdoorThirdNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveBackdoorThirdNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveBackdoorThirdNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveBackdoorThirdNutFlushDraw FORCE
  
 ##HaveBackdoorFlushDraw##
 WHEN isomaha RETURN Omaha_HaveBackdoorFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveBackdoorFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveBackdoorFlushDraw FORCE
 
 ##HaveBestKicker##
 WHEN isomaha RETURN Omaha_HaveBestKicker FORCE
-WHEN Others RETURN Holdem_HaveBestKicker FORCE
+WHEN Others RETURN HoldEm_HaveBestKicker FORCE
 
 ##HaveBestKickerOrBetter##
 WHEN isomaha RETURN Omaha_HaveBestKickerOrBetter FORCE
-WHEN Others RETURN Holdem_HaveBestKickerOrBetter FORCE
+WHEN Others RETURN HoldEm_HaveBestKickerOrBetter FORCE
 
 ##HaveBestOverPair##
 WHEN isomaha RETURN Omaha_HaveBestOverPair FORCE
-WHEN Others RETURN Holdem_HaveBestOverPair FORCE
+WHEN Others RETURN HoldEm_HaveBestOverPair FORCE
 
 ##HaveBestOverPairOrBetter##
 WHEN isomaha RETURN Omaha_HaveBestOverPairOrBetter FORCE
-WHEN Others RETURN Holdem_HaveBestOverPairOrBetter FORCE
+WHEN Others RETURN HoldEm_HaveBestOverPairOrBetter FORCE
 
 ##HaveBottomPair##
 WHEN isomaha RETURN Omaha_HaveBottomPair FORCE
-WHEN Others RETURN Holdem_HaveBottomPair FORCE
+WHEN Others RETURN HoldEm_HaveBottomPair FORCE
 
 ##HaveSecondBottomPair##
 WHEN isomaha RETURN Omaha_HaveSecondBottomPair FORCE
-WHEN Others RETURN Holdem_HaveSecondBottomPair FORCE
+WHEN Others RETURN HoldEm_HaveSecondBottomPair FORCE
 
 ##HaveBottomSet##
 WHEN isomaha RETURN Omaha_HaveBottomSet FORCE
-WHEN Others RETURN Holdem_HaveBottomSet FORCE
+WHEN Others RETURN HoldEm_HaveBottomSet FORCE
 
 ##HaveBottomTrips##
 WHEN isomaha RETURN Omaha_HaveBottomTrips FORCE
-WHEN Others RETURN Holdem_HaveBottomTrips FORCE
+WHEN Others RETURN HoldEm_HaveBottomTrips FORCE
 
 ##HaveBottomTwoPair##
 WHEN isomaha RETURN Omaha_HaveBottomTwoPair FORCE
-WHEN Others RETURN Holdem_HaveBottomTwoPair FORCE
+WHEN Others RETURN HoldEm_HaveBottomTwoPair FORCE
 
 ##HaveDoubleGutshotDraw##
 WHEN isomaha RETURN Omaha_HaveDoubleGutshotDraw FORCE
-WHEN Others RETURN Holdem_HaveDoubleGutshotDraw FORCE
+WHEN Others RETURN HoldEm_HaveDoubleGutshotDraw FORCE
 
 ##HaveFlush##
 WHEN isomaha RETURN Omaha_HaveFlush FORCE
-WHEN Others RETURN Holdem_HaveFlush FORCE
+WHEN Others RETURN HoldEm_HaveFlush FORCE
 
 ##HaveFlushDraw##
 WHEN isomaha RETURN Omaha_HaveFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveFlushDraw FORCE
 
 ##HaveFlushDrawContributingTwoCards##
 WHEN isomaha RETURN Omaha_HaveFlushDrawContributingTwoCards FORCE
-WHEN Others RETURN Holdem_HaveFlushDrawContributingTwoCards FORCE
+WHEN Others RETURN HoldEm_HaveFlushDrawContributingTwoCards FORCE
 
 ##HaveGoodFlushDrawContributingOnlyOneCard##
 WHEN isomaha RETURN Omaha_HaveGoodFlushDrawContributingOnlyOneCard FORCE
-WHEN Others RETURN Holdem_HaveGoodFlushDrawContributingOnlyOneCard FORCE
+WHEN Others RETURN HoldEm_HaveGoodFlushDrawContributingOnlyOneCard FORCE
 
 ##HaveAnyFlushDrawContributingOnlyOneCard##
 WHEN isomaha RETURN Omaha_HaveAnyFlushDrawContributingOnlyOneCard FORCE
-WHEN Others RETURN Holdem_HaveAnyFlushDrawContributingOnlyOneCard FORCE
+WHEN Others RETURN HoldEm_HaveAnyFlushDrawContributingOnlyOneCard FORCE
 
 ##HaveFullHouse##
 WHEN isomaha RETURN Omaha_HaveFullHouse FORCE
-WHEN Others RETURN Holdem_HaveFullHouse FORCE
+WHEN Others RETURN HoldEm_HaveFullHouse FORCE
 
 ##HaveNothing##
 WHEN isomaha RETURN Omaha_HaveNothing FORCE
-WHEN Others RETURN Holdem_HaveNothing FORCE
+WHEN Others RETURN HoldEm_HaveNothing FORCE
 
 ##HaveNutFlush##
 WHEN isomaha RETURN Omaha_HaveNutFlush FORCE
-WHEN Others RETURN Holdem_HaveNutFlush FORCE
+WHEN Others RETURN HoldEm_HaveNutFlush FORCE
 
 ##HaveNutFlushCard##
 WHEN isomaha RETURN Omaha_HaveNutFlushCard FORCE
-WHEN Others RETURN Holdem_HaveNutFlushCard FORCE
+WHEN Others RETURN HoldEm_HaveNutFlushCard FORCE
 
 ##HaveNutFlushDraw##
 WHEN isomaha RETURN Omaha_HaveNutFlushDraw FORCE
-WHEN Others RETURN Holdem_HaveNutFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveNutFlushDraw FORCE
  
 ##HaveNutStraight##
 WHEN isomaha RETURN Omaha_HaveNutStraight FORCE
-WHEN Others RETURN Holdem_HaveNutStraight FORCE
+WHEN Others RETURN HoldEm_HaveNutStraight FORCE
 
 ##MyKicker##
 WHEN isomaha RETURN Omaha_MyKicker FORCE
-WHEN Others RETURN Holdem_MyKicker FORCE
+WHEN Others RETURN HoldEm_MyKicker FORCE
 
 ##NumberOfBetterKickers##
 WHEN isomaha RETURN Omaha_NumberOfBetterKickers FORCE
-WHEN Others RETURN Holdem_NumberOfBetterKickers FORCE
+WHEN Others RETURN HoldEm_NumberOfBetterKickers FORCE
 
 ##NutFullHouseOrFourOfAKind##
 WHEN isomaha RETURN Omaha_NutFullHouseOrFourOfAKind FORCE
-WHEN Others RETURN Holdem_NutFullHouseOrFourOfAKind FORCE
+WHEN Others RETURN HoldEm_NutFullHouseOrFourOfAKind FORCE
 
 ##HaveNutStraightDraw##
 WHEN isomaha RETURN Omaha_HaveNutStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveNutStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveNutStraightDraw FORCE
 
 ##HaveUnDiscountedNutStraightDraw##
 WHEN isomaha RETURN Omaha_HaveUnDiscountedNutStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveUnDiscountedNutStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveUnDiscountedNutStraightDraw FORCE
 
 ##HaveInsideNutStraightDraw##
 WHEN isomaha RETURN Omaha_HaveInsideNutStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveInsideNutStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveInsideNutStraightDraw FORCE
 
 ##HaveInsideStraightDraw##
 WHEN isomaha RETURN Omaha_HaveInsideStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveInsideStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveInsideStraightDraw FORCE
 
 ##HaveNuts##
 WHEN isomaha RETURN Omaha_HaveNuts FORCE
-WHEN Others RETURN Holdem_HaveNuts FORCE
+WHEN Others RETURN HoldEm_HaveNuts FORCE
 
 ##HigherStraightFlushPossible##
 WHEN isomaha RETURN Omaha_HigherStraightFlushPossible FORCE
-WHEN Others RETURN Holdem_HigherStraightFlushPossible FORCE
+WHEN Others RETURN HoldEm_HigherStraightFlushPossible FORCE
 
 ##HaveNutStraightFlush##
 WHEN isomaha RETURN Omaha_HaveNutStraightFlush FORCE
-WHEN Others RETURN Holdem_HaveNutStraightFlush FORCE
+WHEN Others RETURN HoldEm_HaveNutStraightFlush FORCE
 
 ##HaveOpenEndedStraightDraw##
 WHEN isomaha RETURN Omaha_HaveOpenEndedStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveOpenEndedStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveOpenEndedStraightDraw FORCE
 
 ##HaveQuads##
 WHEN isomaha RETURN Omaha_HaveQuads FORCE
-WHEN Others RETURN Holdem_HaveQuads FORCE
+WHEN Others RETURN HoldEm_HaveQuads FORCE
 
 ##HaveOverPair##
 WHEN isomaha RETURN Omaha_HaveOverPair FORCE
-WHEN Others RETURN Holdem_HaveOverPair FORCE
+WHEN Others RETURN HoldEm_HaveOverPair FORCE
 
 ##HaveOverPairOrBetter##
 WHEN isomaha RETURN Omaha_HaveOverPairOrBetter FORCE
-WHEN Others RETURN Holdem_HaveOverPairOrBetter FORCE
+WHEN Others RETURN HoldEm_HaveOverPairOrBetter FORCE
 
 ##HavePair##
 WHEN isomaha RETURN Omaha_HavePair FORCE
-WHEN Others RETURN Holdem_HavePair FORCE
+WHEN Others RETURN HoldEm_HavePair FORCE
 
 ##HavePocketPair##
 WHEN isomaha RETURN Omaha_HavePocketPair FORCE
-WHEN Others RETURN Holdem_HavePocketPair FORCE
+WHEN Others RETURN HoldEm_HavePocketPair FORCE
 
 ##HaveRunnerRunnerFlushAtRiver##
 WHEN isomaha RETURN Omaha_HaveRunnerRunnerFlushAtRiver FORCE
-WHEN Others RETURN Holdem_HaveRunnerRunnerFlushAtRiver FORCE
+WHEN Others RETURN HoldEm_HaveRunnerRunnerFlushAtRiver FORCE
 
 ##HaveSet##
 WHEN isomaha RETURN Omaha_HaveSet FORCE
-WHEN Others RETURN Holdem_HaveSet FORCE
+WHEN Others RETURN HoldEm_HaveSet FORCE
 
 ##HaveTopTrips##
 WHEN isomaha RETURN Omaha_HaveTopTrips FORCE
-WHEN Others RETURN Holdem_HaveTopTrips FORCE
+WHEN Others RETURN HoldEm_HaveTopTrips FORCE
 
 ##HaveTrips##
 WHEN isomaha RETURN Omaha_HaveTrips FORCE
-WHEN Others RETURN Holdem_HaveTrips FORCE
+WHEN Others RETURN HoldEm_HaveTrips FORCE
 
 ##TripsRank##
 WHEN isomaha RETURN Omaha_TripsRank FORCE
-WHEN Others RETURN Holdem_TripsRank FORCE
+WHEN Others RETURN HoldEm_TripsRank FORCE
 
 ##HaveStraight##
 WHEN isomaha RETURN Omaha_HaveStraight FORCE
-WHEN Others RETURN Holdem_HaveStraight FORCE
+WHEN Others RETURN HoldEm_HaveStraight FORCE
 
 ##HaveStraightDraw##
 WHEN isomaha RETURN Omaha_HaveStraightDraw FORCE
-WHEN Others RETURN Holdem_HaveStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveStraightDraw FORCE
 
 ##HaveStraightFlush##
 WHEN isomaha RETURN Omaha_HaveStraightFlush FORCE
-WHEN Others RETURN Holdem_HaveStraightFlush FORCE
+WHEN Others RETURN HoldEm_HaveStraightFlush FORCE
 
 ##HaveTopNonBoardPairedPair##
 WHEN isomaha RETURN Omaha_HaveTopNonBoardPairedPair FORCE
-WHEN Others RETURN Holdem_HaveTopNonBoardPairedPair FORCE
+WHEN Others RETURN HoldEm_HaveTopNonBoardPairedPair FORCE
 
 ##HaveTopPair##
 WHEN isomaha RETURN Omaha_HaveTopPair FORCE
-WHEN Others RETURN Holdem_HaveTopPair FORCE
+WHEN Others RETURN HoldEm_HaveTopPair FORCE
 
 ##HaveTopSet##
 WHEN isomaha RETURN Omaha_HaveTopSet FORCE
-WHEN Others RETURN Holdem_HaveTopSet FORCE
+WHEN Others RETURN HoldEm_HaveTopSet FORCE
 
 ##HaveTopTwoPair##
 WHEN isomaha RETURN Omaha_HaveTopTwoPair FORCE
-WHEN Others RETURN Holdem_HaveTopTwoPair FORCE
+WHEN Others RETURN HoldEm_HaveTopTwoPair FORCE
 
 ##HaveTwoPair##
 WHEN isomaha RETURN Omaha_HaveTwoPair FORCE
-WHEN Others RETURN Holdem_HaveTwoPair FORCE
+WHEN Others RETURN HoldEm_HaveTwoPair FORCE
 
 ##HaveUnderPair##
 WHEN isomaha RETURN Omaha_HaveUnderPair FORCE
-WHEN Others RETURN Holdem_HaveUnderPair FORCE
+WHEN Others RETURN HoldEm_HaveUnderPair FORCE
 
 ##HaveUnderStraight##
 WHEN isomaha RETURN Omaha_HaveUnderStraight FORCE
-WHEN Others RETURN Holdem_HaveUnderStraight FORCE
+WHEN Others RETURN HoldEm_HaveUnderStraight FORCE
 
 ##PairInHand##
 WHEN isomaha RETURN Omaha_PairInHand FORCE
-WHEN Others RETURN Holdem_PairInHand FORCE
+WHEN Others RETURN HoldEm_PairInHand FORCE
 
 ##RunnerRunnerFlushPossibleAtRiver##
 WHEN isomaha RETURN Omaha_RunnerRunnerFlushPossibleAtRiver FORCE
-WHEN Others RETURN Holdem_RunnerRunnerFlushPossibleAtRiver FORCE
+WHEN Others RETURN HoldEm_RunnerRunnerFlushPossibleAtRiver FORCE
 
 ##SuitsInHand##
 WHEN isomaha RETURN Omaha_SuitsInHand FORCE
-WHEN Others RETURN Holdem_SuitsInHand FORCE
+WHEN Others RETURN HoldEm_SuitsInHand FORCE
