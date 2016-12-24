@@ -91,8 +91,8 @@ WHEN isomaha RETURN Omaha_HadSetOnFlop FORCE
 WHEN Others RETURN Holdem_HadSetOnFlop FORCE
 
 ##HadSetOnTurn##
-WHEN isomaha RETURN Omaha_HadSetOnTurn# FORCE
-WHEN Others RETURN Holdem_HadSetOnTurn# FORCE
+WHEN isomaha RETURN Omaha_HadSetOnTurn FORCE
+WHEN Others RETURN Holdem_HadSetOnTurn FORCE
 
 ##HadTopPairOnFlop##
 WHEN isomaha RETURN Omaha_HadTopPairOnFlop FORCE
