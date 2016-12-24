@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 7.0.2 or later
+// Required OpenHoldem version: 11.0.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -333,7 +333,7 @@ HINT_We_Dont_Have_A_FullHouse_At_All
 [pokerval & fullhouse] ? NutFullHouseOrFourOfAKind_PairOnBoard_WeHitThePairAndAnotherCard :
 HINT_We_Dont_Have_A_FullHouse_At_All
 
-##NutFullHouseOrFourOfAKind##
+##Holdem_NutFullHouseOrFourOfAKind##
 [(pokerval & (fullhouse | fourofakind)) == 0] ? HINT_We_Dont_Have_A_FullHouse_At_All : 
 QuadsOnBoard     ? NutFullHouseOrFourOfAKind_FourOfAKindOnBoard :
 FullHouseOnBoard ? NutFullHouseOrFourOfAKind_FullHouseOnBoard :

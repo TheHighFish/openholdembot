@@ -58,20 +58,9 @@
 
 //*****************************************************************************
 //
-// OpenPPL - Various Other Symbols
+// OpenPPL - NutFullHouseOrFourOfAKind
 //
 //*****************************************************************************
 
-##Ante##
-// Ante in big blinds
-WHEN (bblind > 0) RETURN (ante / bblind) FORCE
-WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE
 
-##IsFinalTable##
-isfinaltable
-
-##Others##
-AlwaysTrue
-
-##AlwaysTrue##
-1
+##Omaha_NutFullHouseOrFourOfAKind_PairOnBoard_WeHitThePairAndAnotherCard##

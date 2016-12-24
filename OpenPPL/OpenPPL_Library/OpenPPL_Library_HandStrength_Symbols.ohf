@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 7.0.2 or later
+// Required OpenHoldem version: 11.0.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -63,1167 +63,421 @@
 //*****************************************************************************
 
 ##HadOverPairOnFlop##
-[   ispair
-AND RankOfFirstHoleCard > FirstFlopCard
-AND RankOfFirstHoleCard > SecondFlopCard
-AND RankOfFirstHoleCard > ThirdFlopCard ]
+WHEN isomaha RETURN Omaha_HadOverPairOnFlop FORCE
+WHEN Others RETURN Holdem_HadOverPairOnFlop FORCE
 
 ##HadOverPairOnTurn##
-[   ispair
-AND RankOfFirstHoleCard > FirstFlopCard
-AND RankOfFirstHoleCard > SecondFlopCard
-AND RankOfFirstHoleCard > ThirdFlopCard 
-AND RankOfFirstHoleCard > TurnCard ]
+WHEN isomaha RETURN Omaha_HadOverPairOnTurn FORCE
+WHEN Others RETURN Holdem_HadOverPairOnTurn FORCE
 
 ##HadSecondOverPairOnFlop##
-    ispair
-AND rankhiplayer < TopFlopCard
-AND rankhiplayer > SecondTopFlopCard
+WHEN isomaha RETURN Omaha_HadSecondOverPairOnFlop FORCE
+WHEN Others RETURN Holdem_HadSecondOverPairOnFlop FORCE
 
 ##HadSecondOverPairOnTurn##
-HadSecondOverPairOnFlop AND (($$cr3==TopFlopCard)OR ($$cr3<TopFlopCard))
+WHEN isomaha RETURN Omaha_HadSecondOverPairOnTurn FORCE
+WHEN Others RETURN Holdem_HadSecondOverPairOnTurn FORCE
 
 ##HadPairOnFlop##
-// Pair in the hand
-WHEN ispair RETURN True FORCE
-// Pairing the board
-WHEN FirstHoleCardPairsTheFlop  RETURN True FORCE
-WHEN SecondHoleCardPairsTheFlop RETURN True FORCE 
+WHEN isomaha RETURN Omaha_HadPairOnFlop FORCE
+WHEN Others RETURN Holdem_HadPairOnFlop FORCE
 
 ##HadPairOnTurn##
-// We already had a pair at the flop...
-WHEN HadPairOnFlop RETURN True FORCE
-// ...or got a new one at the turn
-WHEN (RankOfFirstHoleCard == TurnCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard == TurnCard) RETURN True FORCE
-// But we ignore FlopCardPairedOnTurn
-// because we only want to consider pairs
-// where we contribute at least one hole-card.
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20297
+WHEN isomaha RETURN Omaha_HadPairOnTurn FORCE
+WHEN Others RETURN Holdem_HadPairOnTurn FORCE
 
 ##HadSetOnFlop##
-PairInHand AND (RankOfFirstHoleCard==$$cr0 OR RankOfFirstHoleCard==$$cr1 OR RankOfFirstHoleCard==$$cr2) 
+WHEN isomaha RETURN Omaha_HadSetOnFlop FORCE
+WHEN Others RETURN Holdem_HadSetOnFlop FORCE
 
 ##HadSetOnTurn##
-HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3) 
+WHEN isomaha RETURN Omaha_HadSetOnTurn# FORCE
+WHEN Others RETURN Holdem_HadSetOnTurn# FORCE
 
 ##HadTopPairOnFlop##
-[(RankOfFirstHoleCard == HighestRankOnFlop) OR (RankOfSecondHoleCard == HighestRankOnFlop)]
+WHEN isomaha RETURN Omaha_HadTopPairOnFlop FORCE
+WHEN Others RETURN Holdem_HadTopPairOnFlop FORCE
 
 ##HadSecondTopPairOnFlop##
-[(RankOfFirstHoleCard == SecondTopFlopCard) OR (RankOfSecondHoleCard == SecondTopFlopCard)]
-
-
-##HighestRankOnTurn##
-((TurnCard > HighestRankOnFlop) ? TurnCard : HighestRankOnFlop)
+WHEN isomaha RETURN Omaha_HadSecondTopPairOnFlop FORCE
+WHEN Others RETURN Holdem_HadSecondTopPairOnFlop FORCE
 
 ##HadTopPairOnTurn##
-[ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
+WHEN isomaha RETURN Omaha_HadTopPairOnTurn FORCE
+WHEN Others RETURN Holdem_HadTopPairOnTurn FORCE
 
 ##FirstHoleCardPairsTheFlop##
-WHEN (RankOfFirstHoleCard  == FirstFlopCard)  RETURN True FORCE
-WHEN (RankOfFirstHoleCard  == SecondFlopCard) RETURN True FORCE
-WHEN (RankOfFirstHoleCard  == ThirdFlopCard)  RETURN True FORCE
-WHEN Others RETURN False FORCE
+WHEN isomaha RETURN Omaha_FirstHoleCardPairsTheFlop FORCE
+WHEN Others RETURN Holdem_FirstHoleCardPairsTheFlop FORCE
 
 ##SecondHoleCardPairsTheFlop##
-WHEN (RankOfSecondHoleCard  == FirstFlopCard)  RETURN True FORCE
-WHEN (RankOfSecondHoleCard  == SecondFlopCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard  == ThirdFlopCard)  RETURN True FORCE
-WHEN Others RETURN False FORCE
+WHEN isomaha RETURN Omaha_SecondHoleCardPairsTheFlop FORCE
+WHEN Others RETURN Holdem_SecondHoleCardPairsTheFlop FORCE
 
 ##HadTwoPairOnFlop##
-WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN True FORCE
-WHEN Others RETURN False FORCE
-
-##HaveGoodBackdoorStraightDrawAKQJT##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b111100000000000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b111110000000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDrawKQJT9##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b011111000000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDrawQJT98##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b001111100000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDrawJT987##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000111110000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDrawT9876##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000011111000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDraw98765##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000001111100000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDraw87654##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000111110000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDraw76543##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000011111000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDraw65432##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards, but not the idiot-end.
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000001111100) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
-
-##HaveGoodBackdoorStraightDraw54321##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
-// We have to contribute both hole-cards.
-// contrary to the other functions we allow the idiot-end.
-// for a backdoor-wheeldraw to an A2345-straight
-// a) because AX(s) will be in our range quite offen
-// b) because an opponent only dominates us 
-//    if he holds 6X (X = 2..5) and hits (quite unlikely).
-// ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000000111110) != 2) RETURN False FORCE
-// Hole-cards and board-cards must contribute threee cards to a straight.
-// ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000000111110) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN isomaha RETURN Omaha_HadTwoPairOnFlop FORCE
+WHEN Others RETURN Holdem_HadTwoPairOnFlop FORCE
 
 ##HaveBackdoorStraightDraw##
-// This code only consider backdoor-straightdraws,
-// where we contribute both cards, not to the idiot end
-// (with the exception of A2345, see HaveGoodBackdoorStraightDraw54321).
-// This is not perfect, as there are other draws like backdoor-double-gutshots
-// like 34..7..TJ that are harder to hit and where we contribute only one 
-// (or no) card in some cases.
-// We don't consider them here.
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=12301
-   HaveGoodBackdoorStraightDrawAKQJT
-OR HaveGoodBackdoorStraightDrawKQJT9
-OR HaveGoodBackdoorStraightDrawQJT98
-OR HaveGoodBackdoorStraightDrawJT987
-OR HaveGoodBackdoorStraightDrawT9876
-OR HaveGoodBackdoorStraightDraw98765
-OR HaveGoodBackdoorStraightDraw87654
-OR HaveGoodBackdoorStraightDraw76543
-OR HaveGoodBackdoorStraightDraw65432
-OR HaveGoodBackdoorStraightDraw54321
+WHEN isomaha RETURN Omaha_HaveBackdoorStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveBackdoorStraightDraw FORCE
 
 ##HaveSecondBestKicker##
-(NumberOfBetterKickers == 1)
+WHEN isomaha RETURN Omaha_HaveSecondBestKicker FORCE
+WHEN Others RETURN Holdem_HaveSecondBestKicker FORCE
 
 ##HaveSecondBestKickerOrBetter##
-HaveSecondBestKicker OR HaveBestKickerOrBetter
+WHEN isomaha RETURN Omaha_HaveSecondBestKickerOrBetter FORCE
+WHEN Others RETURN Holdem_HaveSecondBestKickerOrBetter FORCE
 
 ##HaveSecondBestOverPair##
-    ($KK
-AND FirstFlopCard < ConstCardKing
-AND SecondFlopCard < ConstCardKing
-AND ThirdFlopCard < ConstCardKing
-AND TurnCard < ConstCardKing
-AND RiverCard < ConstCardKing)
+WHEN isomaha RETURN Omaha_HaveSecondBestOverPair FORCE
+WHEN Others RETURN Holdem_HaveSecondBestOverPair FORCE
 
 ##HaveSecondBestOverPairOrBetter##
-(HaveSecondBestOverPair OR HaveBestOverPairOrBetter)
+WHEN isomaha RETURN Omaha_HaveSecondBestOverPairOrBetter FORCE
+WHEN Others RETURN Holdem_HaveSecondBestOverPairOrBetter FORCE
 
 ##HaveSecondNutFlush##
-[HaveFlush AND (NumberOfUnknownSuitedOvercards == 1)]
+WHEN isomaha RETURN Omaha_HaveSecondNutFlush FORCE
+WHEN Others RETURN Holdem_HaveSecondNutFlush FORCE
 
 ##HaveSecondNutFlushDraw##
-HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 1)
+WHEN isomaha RETURN Omaha_HaveSecondNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveSecondNutFlushDraw FORCE
 
 ##HaveSecondNutStraight##
-HaveStraight AND (NumberOfPossibleBetterStraights == 1)
+WHEN isomaha RETURN Omaha_HaveSecondNutStraight FORCE
+WHEN Others RETURN Holdem_HaveSecondNutStraight FORCE
 
 ##HaveSecondOverPair##
-ispair AND (RankOfFirstHoleCard < BestBoardCard) AND (RankOfFirstHoleCard > SecondBestBoardCard)
+WHEN isomaha RETURN Omaha_HaveSecondOverPair FORCE
+WHEN Others RETURN Holdem_HaveSecondOverPair FORCE
 
 ##HaveSecondTopPair##
-RankOfFirstHoleCard == SecondBestBoardCard OR RankOfSecondHoleCard == SecondBestBoardCard
+WHEN isomaha RETURN Omaha_HaveSecondTopPair FORCE
+WHEN Others RETURN Holdem_HaveSecondTopPair FORCE
 
 ##HaveSecondTopSet##
-ispair AND RankOfFirstHoleCard == SecondBestBoardCard
+WHEN isomaha RETURN Omaha_HaveSecondTopSet FORCE
+WHEN Others RETURN Holdem_HaveSecondTopSet FORCE
 
 ##HaveThirdBestKicker##
-(NumberOfBetterKickers == 2)
+WHEN isomaha RETURN Omaha_HaveThirdBestKicker FORCE
+WHEN Others RETURN Holdem_HaveThirdBestKicker FORCE
 
 ##HaveThirdBestKickerOrBetter##
-HaveThirdBestKicker OR HaveSecondBestKickerOrBetter
+WHEN isomaha RETURN Omaha_HaveThirdBestKickerOrBetter FORCE
+WHEN Others RETURN Holdem_HaveThirdBestKickerOrBetter FORCE
 
 ##HaveThirdBestOverPair##
-    $QQ
-AND FirstFlopCard < ConstCardQueen
-AND SecondFlopCard < ConstCardQueen
-AND ThirdFlopCard < ConstCardQueen
-AND TurnCard < ConstCardQueen
-AND RiverCard < ConstCardQueen
-
-##ThirdBestBoardCard##
-// Only considering individual ranks, paired cards get ignored this way
-// 14 (ace) can't happen, but anyway...
-(RankBitsCommonWithoutTopTwoBits & 0b100000000000000) != 0 ? ConstCardAce :
-(RankBitsCommonWithoutTopTwoBits & 0b010000000000000) != 0 ? ConstCardKing :
-(RankBitsCommonWithoutTopTwoBits & 0b001000000000000) != 0 ? ConstCardQueen :
-(RankBitsCommonWithoutTopTwoBits & 0b000100000000000) != 0 ? ConstCardJack :
-(RankBitsCommonWithoutTopTwoBits & 0b000010000000000) != 0 ? ConstCardTen :
-(RankBitsCommonWithoutTopTwoBits & 0b000001000000000) != 0 ? ConstCardNine :
-(RankBitsCommonWithoutTopTwoBits & 0b000000100000000) != 0 ? ConstCardEight :
-(RankBitsCommonWithoutTopTwoBits & 0b000000010000000) != 0 ? ConstCardSeven :
-(RankBitsCommonWithoutTopTwoBits & 0b000000001000000) != 0 ? ConstCardSix :
-(RankBitsCommonWithoutTopTwoBits & 0b000000000100000) != 0 ? ConstCardFive :
-(RankBitsCommonWithoutTopTwoBits & 0b000000000010000) != 0 ? ConstCardFour :
-(RankBitsCommonWithoutTopTwoBits & 0b000000000001000) != 0 ? ConstCardThree :
-(RankBitsCommonWithoutTopTwoBits & 0b000000000000100) != 0 ? ConstCardTwo :
-// Last two bits are ace (low) and unused.
-// Both ignored.
--1
+WHEN isomaha RETURN Omaha_HaveThirdBestOverPair FORCE
+WHEN Others RETURN Holdem_HaveThirdBestOverPair FORCE
 
 ##HaveThirdBestOverPairOrBetter##
-(HaveThirdBestOverPair OR  HaveSecondBestOverPairOrBetter)
+WHEN isomaha RETURN Omaha_HaveThirdBestOverPairOrBetter FORCE
+WHEN Others RETURN Holdem_HaveThirdBestOverPairOrBetter FORCE
 
 ##HaveThirdNutFlush##
-[HaveFlush AND (NumberOfUnknownSuitedOvercards == 2)]
+WHEN isomaha RETURN Omaha_HaveThirdNutFlush FORCE
+WHEN Others RETURN Holdem_HaveThirdNutFlush FORCE
 
 ##HaveThirdNutFlushDraw##
-HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 2)
+WHEN isomaha RETURN Omaha_HaveThirdNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveThirdNutFlushDraw FORCE
 
 ##HaveThirdOverPair##
-ispair AND (RankOfFirstHoleCard < SecondBestBoardCard) AND (RankOfFirstHoleCard > ThirdBestBoardCard)
+WHEN isomaha RETURN Omaha_HaveThirdOverPair FORCE
+WHEN Others RETURN Holdem_HaveThirdOverPair FORCE
 
 ##HaveThirdTopPair##
-RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBoardCard
-
-##ThirdTopPairRank##
-(RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBoardCard) ? ThirdBestBoardCard :0
+WHEN isomaha RETURN Omaha_HaveThirdTopPair FORCE
+WHEN Others RETURN Holdem_HaveThirdTopPair FORCE
 
 ##HaveFifthTopPair##
-RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard 
-
-##FifthTopPairRank##
-(RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard) ? FifthBestBoardCard: 0
+WHEN isomaha RETURN Omaha_HaveFifthTopPair FORCE
+WHEN Others RETURN Holdem_HaveFifthTopPair FORCE
 
 ##HaveThirdTopSet##
-ispair AND RankOfFirstHoleCard == ThirdBestBoardCard
+WHEN isomaha RETURN Omaha_HaveThirdTopSet FORCE
+WHEN Others RETURN Holdem_HaveThirdTopSet FORCE
 
 ##HaveFourthNutFlush##
-[HaveFlush AND (NumberOfUnknownSuitedOvercards == 3)]
+WHEN isomaha RETURN Omaha_HaveFourthNutFlush FORCE
+WHEN Others RETURN Holdem_HaveFourthNutFlush FORCE
 
 ##HaveFourthNutFlushDraw##
-HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 3)
-
-##FourthBestBoardCard##
-// Only considering individual ranks, paired cards get ignored this way
-// 14 (ace) can't happen, but anyway...
-(RankBitsCommonWithoutTopThreeBits & 0b100000000000000) != 0 ? ConstCardAce :
-(RankBitsCommonWithoutTopThreeBits & 0b010000000000000) != 0 ? ConstCardKing :
-(RankBitsCommonWithoutTopThreeBits & 0b001000000000000) != 0 ? ConstCardQueen :
-(RankBitsCommonWithoutTopThreeBits & 0b000100000000000) != 0 ? ConstCardJack :
-(RankBitsCommonWithoutTopThreeBits & 0b000010000000000) != 0 ? ConstCardTen :
-(RankBitsCommonWithoutTopThreeBits & 0b000001000000000) != 0 ? ConstCardNine :
-(RankBitsCommonWithoutTopThreeBits & 0b000000100000000) != 0 ? ConstCardEight :
-(RankBitsCommonWithoutTopThreeBits & 0b000000010000000) != 0 ? ConstCardSeven :
-(RankBitsCommonWithoutTopThreeBits & 0b000000001000000) != 0 ? ConstCardSix :
-(RankBitsCommonWithoutTopThreeBits & 0b000000000100000) != 0 ? ConstCardFive :
-(RankBitsCommonWithoutTopThreeBits & 0b000000000010000) != 0 ? ConstCardFour :
-(RankBitsCommonWithoutTopThreeBits & 0b000000000001000) != 0 ? ConstCardThree :
-(RankBitsCommonWithoutTopThreeBits & 0b000000000000100) != 0 ? ConstCardTwo :
-// Last two bits are ace (low) and unused.
-// Both ignored.
--1
+WHEN isomaha RETURN Omaha_HaveFourthNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveFourthNutFlushDraw FORCE
 
 ##HaveFourthOverPair##
-ispair AND (RankOfFirstHoleCard < ThirdBestBoardCard) AND (RankOfFirstHoleCard > FourthBestBoardCard)
+WHEN isomaha RETURN Omaha_HaveFourthOverPair FORCE
+WHEN Others RETURN Holdem_HaveFourthOverPair FORCE
 
 ##HaveFourthTopPair##
-RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard
-
-##FourthTopPairRank##
-(RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard) ? FourthBestBoardCard : 0
+WHEN isomaha RETURN Omaha_HaveFourthTopPair FORCE
+WHEN Others RETURN Holdem_HaveFourthTopPair FORCE
 
 ##HaveFourthTopSet##
-ispair AND RankOfFirstHoleCard == FourthBestBoardCard
+WHEN isomaha RETURN Omaha_HaveFourthTopSet FORCE
+WHEN Others RETURN Holdem_HaveFourthTopSet FORCE
 
 ##HaveFifthNutFlush##
-[HaveFlush AND (NumberOfUnknownSuitedOvercards == 4)]
+WHEN isomaha RETURN Omaha_HaveFifthNutFlush FORCE
+WHEN Others RETURN Holdem_HaveFifthNutFlush FORCE
 
 ##HaveFifthNutFlushDraw##
-HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 4)
+WHEN isomaha RETURN Omaha_HaveFifthNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveFifthNutFlushDraw FORCE
 
 ##FifthBestBoardCard##
-// Only considering individual ranks, paired cards get ignored this way
-// 14 (ace) can't happen, but anyway...
-(RankBitsCommonWithoutTopFourBits & 0b100000000000000) != 0 ? ConstCardAce :
-(RankBitsCommonWithoutTopFourBits & 0b010000000000000) != 0 ? ConstCardKing :
-(RankBitsCommonWithoutTopFourBits & 0b001000000000000) != 0 ? ConstCardQueen :
-(RankBitsCommonWithoutTopFourBits & 0b000100000000000) != 0 ? ConstCardJack :
-(RankBitsCommonWithoutTopFourBits & 0b000010000000000) != 0 ? ConstCardTen :
-(RankBitsCommonWithoutTopFourBits & 0b000001000000000) != 0 ? ConstCardNine :
-(RankBitsCommonWithoutTopFourBits & 0b000000100000000) != 0 ? ConstCardEight :
-(RankBitsCommonWithoutTopFourBits & 0b000000010000000) != 0 ? ConstCardSeven :
-(RankBitsCommonWithoutTopFourBits & 0b000000001000000) != 0 ? ConstCardSix :
-(RankBitsCommonWithoutTopFourBits & 0b000000000100000) != 0 ? ConstCardFive :
-(RankBitsCommonWithoutTopFourBits & 0b000000000010000) != 0 ? ConstCardFour :
-(RankBitsCommonWithoutTopFourBits & 0b000000000001000) != 0 ? ConstCardThree :
-(RankBitsCommonWithoutTopFourBits & 0b000000000000100) != 0 ? ConstCardTwo :
-// Last two bits are ace (low) and unused.
-// Both ignored.
--1
+WHEN isomaha RETURN Omaha_FifthBestBoardCard FORCE
+WHEN Others RETURN Holdem_FifthBestBoardCard FORCE
 
 ##HaveFifthOverPair##
-ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard > FifthBestBoardCard)
+WHEN isomaha RETURN Omaha_HaveFifthOverPair FORCE
+WHEN Others RETURN Holdem_HaveFifthOverPair FORCE
 
 ##HaveAnyKindOfInsideStraightDraw##
-// Note: This does also count straightdraws at the board,
-// where we don't contribute any card. Special care should be taken
-// in HaveInsideStraightDraw
-	 (nstraightfill <= 1)
-AND NOT HaveStraight 
+WHEN isomaha RETURN Omaha_HaveAnyKindOfInsideStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveAnyKindOfInsideStraightDraw FORCE
 
 ##HaveBackdoorFlushDrawContributingTwoCards##
-    (betround == ConstBetRoundFlop)
-AND (nsuited >= 3)
-AND ($$ps0 == tsuit)
-AND ($$ps1 == tsuit)
+WHEN isomaha RETURN Omaha_ FORCE
+WHEN Others RETURN Holdem_ FORCE
 
 ##HaveBackdoorNutFlushDraw##
-    (betround == ConstBetRoundFlop)
-AND (nsuited >= 3)
-AND (nsuited > nsuitedcommon) 
-AND (NumberOfUnknownSuitedOvercards == 0)
+WHEN isomaha RETURN Omaha_HaveBackdoorNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveBackdoorNutFlushDraw FORCE
 
 ##HaveBackdoorSecondNutFlushDraw##
-    (betround == ConstBetRoundFlop)
-AND (nsuited >= 3)
-AND (nsuited > nsuitedcommon) 
-AND (NumberOfUnknownSuitedOvercards == 1)
+WHEN isomaha RETURN Omaha_HaveBackdoorSecondNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveBackdoorSecondNutFlushDraw FORCE
 
 ##HaveBackdoorThirdNutFlushDraw##
-    (betround == ConstBetRoundFlop)
-AND (nsuited >= 3)
-AND (nsuited > nsuitedcommon) 
-AND (NumberOfUnknownSuitedOvercards == 2)
-
+WHEN isomaha RETURN Omaha_HaveBackdoorThirdNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveBackdoorThirdNutFlushDraw FORCE
+ 
 ##HaveBackdoorFlushDraw##
-   HaveBackdoorFlushDrawContributingTwoCards
-OR HaveBackdoorNutFlushDraw
-OR HaveBackdoorSecondNutFlushDraw
+WHEN isomaha RETURN Omaha_HaveBackdoorFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveBackdoorFlushDraw FORCE
 
 ##HaveBestKicker##
-(NumberOfBetterKickers == 0)
+WHEN isomaha RETURN Omaha_HaveBestKicker FORCE
+WHEN Others RETURN Holdem_HaveBestKicker FORCE
 
 ##HaveBestKickerOrBetter##
-(HaveBestKicker OR HavePair OR HaveOverPairOrBetter)
+WHEN isomaha RETURN Omaha_HaveBestKickerOrBetter FORCE
+WHEN Others RETURN Holdem_HaveBestKickerOrBetter FORCE
 
 ##HaveBestOverPair##
-   ($AA
-AND FirstFlopCard < ConstCardAce
-AND SecondFlopCard < ConstCardAce
-AND ThirdFlopCard < ConstCardAce
-AND TurnCard < ConstCardAce
-AND RiverCard < ConstCardAce)
+WHEN isomaha RETURN Omaha_HaveBestOverPair FORCE
+WHEN Others RETURN Holdem_HaveBestOverPair FORCE
 
 ##HaveBestOverPairOrBetter##
-  (HaveBestOverPair
-OR HaveTwoPair
-OR HaveSet
-OR HaveTrips
-OR HaveStraight
-OR HaveFlush
-OR HaveFullHouse
-OR HaveQuads
-OR HaveStraightFlush)
-
-##LowestBitOfRankBitsCommon##
-(1<<ranklocommon)
-
-##RankBitsCommonWithoutLowestBit##
-// we negate lowest-bit and then do an and-operation
-rankbitscommon & ~LowestBitOfRankBitsCommon
-
-##LowestBoardCard##
-ranklocommon
-
-##SecondLowestBoardCard##
-(RankBitsCommonWithoutLowestBit & 0b000000000000100) == 0b000000000000100 ? ConstCardTwo   :
-(RankBitsCommonWithoutLowestBit & 0b000000000001000) == 0b000000000001000 ? ConstCardThree :
-(RankBitsCommonWithoutLowestBit & 0b000000000010000) == 0b000000000010000 ? ConstCardFour  :
-(RankBitsCommonWithoutLowestBit & 0b000000000100000) == 0b000000000100000 ? ConstCardFive  :
-(RankBitsCommonWithoutLowestBit & 0b000000001000000) == 0b000000001000000 ? ConstCardSix   :
-(RankBitsCommonWithoutLowestBit & 0b000000010000000) == 0b000000010000000 ? ConstCardSeven :
-(RankBitsCommonWithoutLowestBit & 0b000000100000000) == 0b000000100000000 ? ConstCardEight :
-(RankBitsCommonWithoutLowestBit & 0b000001000000000) == 0b000001000000000 ? ConstCardNine  :
-(RankBitsCommonWithoutLowestBit & 0b000010000000000) == 0b000010000000000 ? ConstCardTen   :
-(RankBitsCommonWithoutLowestBit & 0b000100000000000) == 0b000100000000000 ? ConstCardJack  :
-(RankBitsCommonWithoutLowestBit & 0b001000000000000) == 0b001000000000000 ? ConstCardQueen :
-(RankBitsCommonWithoutLowestBit & 0b010000000000000) == 0b010000000000000 ? ConstCardKing  :
-(RankBitsCommonWithoutLowestBit & 0b100000000000000) == 0b100000000000000 ? ConstCardAce   :
--1
+WHEN isomaha RETURN Omaha_HaveBestOverPairOrBetter FORCE
+WHEN Others RETURN Holdem_HaveBestOverPairOrBetter FORCE
 
 ##HaveBottomPair##
-WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveBottomPair FORCE
+WHEN Others RETURN Holdem_HaveBottomPair FORCE
 
 ##HaveSecondBottomPair##
-WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveSecondBottomPair FORCE
+WHEN Others RETURN Holdem_HaveSecondBottomPair FORCE
 
 ##HaveBottomSet##
-WHEN ispair AND HaveBottomPair RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveBottomSet FORCE
+WHEN Others RETURN Holdem_HaveBottomSet FORCE
 
 ##HaveBottomTrips##
-WHEN RankOfFirstHoleCard  == RankOfBottomPairOnBoard RETURN True FORCE
-WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveBottomTrips FORCE
+WHEN Others RETURN Holdem_HaveBottomTrips FORCE
 
 ##HaveBottomTwoPair##
-WHEN HaveBottomPair AND HaveSecondBottomPair RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveBottomTwoPair FORCE
+WHEN Others RETURN Holdem_HaveBottomTwoPair FORCE
 
 ##HaveDoubleGutshotDraw##
-   `((rankbits >> 1) & 0b1011101) == 5  // A_345_7
-OR `((rankbits >> 2) & 0b1011101) == 5  // 2_456_8
-OR `((rankbits >> 3) & 0b1011101) == 5  // 3_567_9
-OR `((rankbits >> 4) & 0b1011101) == 5  // 4_678_T
-OR `((rankbits >> 5) & 0b1011101) == 5  // 5_789_J
-OR `((rankbits >> 6) & 0b1011101) == 5  // 6_89T_Q
-OR `((rankbits >> 7) & 0b1011101) == 5  // 8_9TJ_K
-OR `((rankbits >> 8) & 0b1011101) == 5  // 9_TJQ_A
-OR `((rankbits >> 1) & 0b11011011) == 6 // A2_45_78
-OR `((rankbits >> 2) & 0b11011011) == 6 // 23_56_89
-OR `((rankbits >> 3) & 0b11011011) == 6 // 34_67_9T
-OR `((rankbits >> 4) & 0b11011011) == 6 // 45_78_TJ
-OR `((rankbits >> 5) & 0b11011011) == 6 // 56_89_JQ
-OR `((rankbits >> 6) & 0b11011011) == 6 // 67_9T_QK
-OR `((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
+WHEN isomaha RETURN Omaha_HaveDoubleGutshotDraw FORCE
+WHEN Others RETURN Holdem_HaveDoubleGutshotDraw FORCE
 
 ##HaveFlush##
-(nsuited >= 5)
+WHEN isomaha RETURN Omaha_HaveFlush FORCE
+WHEN Others RETURN Holdem_HaveFlush FORCE
 
 ##HaveFlushDraw##
-// Modified, because Shanky BonusBots definition is not very practical
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
-// 
-// Good one, contributing 2 cards
-WHEN HaveFlushDrawContributingTwoCards RETURN True FORCE		
-// Best one
-WHEN HaveNutFlushDraw RETURN True FORCE	
-// Contributing only single card:
-WHEN HaveGoodFlushDrawContributingOnlyOneCard RETURN True FORCE	
+WHEN isomaha RETURN Omaha_HaveFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveFlushDraw FORCE
 
 ##HaveFlushDrawContributingTwoCards##
-WHEN ((nsuited == 4) AND (nsuitedcommon == 2)) RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveFlushDrawContributingTwoCards FORCE
+WHEN Others RETURN Holdem_HaveFlushDrawContributingTwoCards FORCE
 
 ##HaveGoodFlushDrawContributingOnlyOneCard##
-// The quality of flush-draws with just one card in hand
-// depends on the probability of an opponent holding a better card
-// depends on the number of opponents.
-// http://www.maxinmontreal.com/forums/viewforum.php?f=156
-WHEN (NOT HaveAnyFlushDrawContributingOnlyOneCard) RETURN False FORCE
-// Headsup: at least fifth-best
-WHEN ((nopponentsplaying = 1) AND (NumberOfUnknownSuitedOvercards <= 4)) RETURN True FORCE
-// 3-handed: at least third-best
-WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN True FORCE
-// 4-handed: at least second-best
-WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveGoodFlushDrawContributingOnlyOneCard FORCE
+WHEN Others RETURN Holdem_HaveGoodFlushDrawContributingOnlyOneCard FORCE
 
 ##HaveAnyFlushDrawContributingOnlyOneCard##
-WHEN ((nsuited >= 4) AND (nsuitedcommon > 2)) RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveAnyFlushDrawContributingOnlyOneCard FORCE
+WHEN Others RETURN Holdem_HaveAnyFlushDrawContributingOnlyOneCard FORCE
 
 ##HaveFullHouse##
-isfullhouse OR HaveQuads
+WHEN isomaha RETURN Omaha_HaveFullHouse FORCE
+WHEN Others RETURN Holdem_HaveFullHouse FORCE
 
 ##HaveNothing##
-NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
-// AND NOT HaveBackdoorStraightDraw
+WHEN isomaha RETURN Omaha_HaveNothing FORCE
+WHEN Others RETURN Holdem_HaveNothing FORCE
 
 ##HaveNutFlush##
-    HaveNutStraightFlush
-OR [HaveFlush AND (NumberOfUnknownSuitedOvercards == 0)]
+WHEN isomaha RETURN Omaha_HaveNutFlush FORCE
+WHEN Others RETURN Holdem_HaveNutFlush FORCE
 
 ##HaveNutFlushCard##
-(NumberOfUnknownSuitedOvercards == 0)
+WHEN isomaha RETURN Omaha_HaveNutFlushCard FORCE
+WHEN Others RETURN Holdem_HaveNutFlushCard FORCE
 
 ##HaveNutFlushDraw##
-    HaveNutStraightFlush
-OR [(nsuited >= 4) AND (NumberOfUnknownSuitedOvercards == 0)]
-
+WHEN isomaha RETURN Omaha_HaveNutFlushDraw FORCE
+WHEN Others RETURN Holdem_HaveNutFlushDraw FORCE
+ 
 ##HaveNutStraight##
-[ishistraight OR HaveNutStraightFlush]
+WHEN isomaha RETURN Omaha_HaveNutStraight FORCE
+WHEN Others RETURN Holdem_HaveNutStraight FORCE
 
 ##MyKicker##
-WHEN isfourofakind  RETURN MadeHandFifthCardRank  FORCE
-WHEN istwopair      RETURN MadeHandFifthCardRank  FORCE
-WHEN isthreeofakind RETURN MadeHandFourthCardRank FORCE
-WHEN isonepair      RETURN MadeHandThirdCardRank  FORCE
-WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
-
+WHEN isomaha RETURN Omaha_MyKicker FORCE
+WHEN Others RETURN Holdem_MyKicker FORCE
 
 ##NumberOfBetterKickers##
-// Cards better than my kicker...
-[(ConstCardAce - MyKicker)
-// ...minus the cards in my 5-card-hand which are better than my kicker
-// (We have to shift the kicker out of rankbitspoker, therefore +1)
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
-- (`(rankbitspoker >> (MyKicker + 1)))]
-
-##NutsOnBoard##
-nhands == nhandsti
-
-##RankBitsCommonWithAdditionalAce##
-rankbitscommon | 0b100000000000010
-
-##RankBitsCommonWithAdditionalKing##
-rankbitscommon | 0b010000000000000
-
-##RankBitsCommonWithAdditionalQueen##
-rankbitscommon | 0b001000000000000
-
-##RankBitsCommonWithAdditionalJack##
-rankbitscommon | 0b000100000000000
-
-##RankBitsCommonWithAdditionalTen##
-rankbitscommon | 0b000010000000000
-
-##RankBitsCommonWithAdditionalNine##
-rankbitscommon | 0b000001000000000
-
-##RankBitsCommonWithAdditionalEight##
-rankbitscommon | 0b000000100000000
-
-##RankBitsCommonWithAdditionalSeven##
-rankbitscommon | 0b000000010000000
-
-##RankBitsCommonWithAdditionalSix##
-rankbitscommon | 0b000000001000000
-
-##RankBitsCommonWithAdditionalFive##
-rankbitscommon | 0b000000000100000
-
-##RankBitsCommonWithAdditionalFour##
-rankbitscommon | 0b000000000010000
-
-##RankBitsCommonWithAdditionalThree##
-rankbitscommon | 0b000000000001000
-
-##RankBitsCommonWithAdditionalTwo##
-rankbitscommon | 0b000000000000100
-
-##BestPossibleStraightForVillainIfAceHitsTheBoard##
-`(RankBitsCommonWithAdditionalAce & 0b111110000000000) >= 3 ? ConstCardAce :
-// We can ignore all straights without an ace here
-`(RankBitsCommonWithAdditionalAce & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfKingHitsTheBoard##
-`(RankBitsCommonWithAdditionalKing & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalKing & 0b011111000000000) >= 3 ? ConstCardKing :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfQueenHitsTheBoard##
-`(RankBitsCommonWithAdditionalQueen & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalQueen & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalQueen & 0b001111100000000) >= 3 ? ConstCardQueen :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfJackHitsTheBoard##
-`(RankBitsCommonWithAdditionalJack & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalJack & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalJack & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalJack & 0b000111110000000) >= 3 ? ConstCardJack :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfTenHitsTheBoard##
-`(RankBitsCommonWithAdditionalTen & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalTen & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalTen & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalTen & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalTen & 0b000011111000000) >= 3 ? ConstCardTen :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfNineHitsTheBoard##
-`(RankBitsCommonWithAdditionalNine & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalNine & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalNine & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalNine & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalNine & 0b000001111100000) >= 3 ? ConstCardNine :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfEightHitsTheBoard##
-`(RankBitsCommonWithAdditionalEight & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalEight & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalEight & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalEight & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalEight & 0b000000111110000) >= 3 ? ConstCardEight :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfSevenHitsTheBoard##
-`(RankBitsCommonWithAdditionalSeven & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalSeven & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalSeven & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalSeven & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalSeven & 0b000000011111000) >= 3 ? ConstCardSeven :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfSixHitsTheBoard##
-`(RankBitsCommonWithAdditionalSix & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalSix & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalSix & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalSix & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalSix & 0b000000001111100) >= 3 ? ConstCardSix :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfFiveHitsTheBoard##
-`(RankBitsCommonWithAdditionalFive & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalFive & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalFive & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalFive & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalFive & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfFourHitsTheBoard##
-`(RankBitsCommonWithAdditionalFour & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalFour & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalFour & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalFour & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfThreeHitsTheBoard##
-`(RankBitsCommonWithAdditionalThree & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalThree & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalThree & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForVillainIfTwoHitsTheBoard##
-`(RankBitsCommonWithAdditionalTwo & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalTwo & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##RankBitsWithAdditionalAce##
-rankbits | 0b100000000000010
-
-##RankBitsWithAdditionalKing##
-rankbits | 0b010000000000000
-
-##RankBitsWithAdditionalQueen##
-rankbits | 0b001000000000000
-
-##RankBitsWithAdditionalJack##
-rankbits | 0b000100000000000
-
-##RankBitsWithAdditionalTen##
-rankbits | 0b000010000000000
-
-##RankBitsWithAdditionalNine##
-rankbits | 0b000001000000000
-
-##RankBitsWithAdditionalEight##
-rankbits | 0b000000100000000
-
-##RankBitsWithAdditionalSeven##
-rankbits | 0b000000010000000
-
-##RankBitsWithAdditionalSix##
-rankbits | 0b000000001000000
-
-##RankBitsWithAdditionalFive##
-rankbits | 0b000000000100000
-
-##RankBitsWithAdditionalFour##
-rankbits | 0b000000000010000
-
-##RankBitsWithAdditionalThree##
-rankbits | 0b000000000001000
-
-##RankBitsWithAdditionalTwo##
-rankbits | 0b000000000000100
-
-##BestPossibleStraightForUsIfAceHitsTheBoard##
-`(RankBitsWithAdditionalAce & 0b111110000000000) >= 5 ? ConstCardAce :
-// We can ignore all straights without an ace here
-`(RankBitsWithAdditionalAce & 0b000000000111110) >= 5 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfKingHitsTheBoard##
-`(RankBitsWithAdditionalKing & 0b111110000000000) >= 5 ? ConstCardAce :
-`(RankBitsWithAdditionalKing & 0b011111000000000) >= 5 ? ConstCardKing :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfQueenHitsTheBoard##
-`(RankBitsWithAdditionalQueen & 0b111110000000000) >= 5 ? ConstCardAce :
-`(RankBitsWithAdditionalQueen & 0b011111000000000) >= 5 ? ConstCardKing :
-`(RankBitsWithAdditionalQueen & 0b001111100000000) >= 5 ? ConstCardQueen :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfJackHitsTheBoard##
-`(RankBitsWithAdditionalJack & 0b111110000000000) >= 5 ? ConstCardAce :
-`(RankBitsWithAdditionalJack & 0b011111000000000) >= 5 ? ConstCardKing :
-`(RankBitsWithAdditionalJack & 0b001111100000000) >= 5 ? ConstCardQueen :
-`(RankBitsWithAdditionalJack & 0b000111110000000) >= 5 ? ConstCardJack :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfTenHitsTheBoard##
-`(RankBitsWithAdditionalTen & 0b111110000000000) >= 5 ? ConstCardAce :
-`(RankBitsWithAdditionalTen & 0b011111000000000) >= 5 ? ConstCardKing :
-`(RankBitsWithAdditionalTen & 0b001111100000000) >= 5 ? ConstCardQueen :
-`(RankBitsWithAdditionalTen & 0b000111110000000) >= 5 ? ConstCardJack :
-`(RankBitsWithAdditionalTen & 0b000011111000000) >= 5 ? ConstCardTen :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfNineHitsTheBoard##
-`(RankBitsWithAdditionalNine & 0b011111000000000) >= 5 ? ConstCardKing :
-`(RankBitsWithAdditionalNine & 0b001111100000000) >= 5 ? ConstCardQueen :
-`(RankBitsWithAdditionalNine & 0b000111110000000) >= 5 ? ConstCardJack :
-`(RankBitsWithAdditionalNine & 0b000011111000000) >= 5 ? ConstCardTen :
-`(RankBitsWithAdditionalNine & 0b000001111100000) >= 5 ? ConstCardNine :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfEightHitsTheBoard##
-`(RankBitsWithAdditionalEight & 0b001111100000000) >= 5 ? ConstCardQueen :
-`(RankBitsWithAdditionalEight & 0b000111110000000) >= 5 ? ConstCardJack :
-`(RankBitsWithAdditionalEight & 0b000011111000000) >= 5 ? ConstCardTen :
-`(RankBitsWithAdditionalEight & 0b000001111100000) >= 5 ? ConstCardNine :
-`(RankBitsWithAdditionalEight & 0b000000111110000) >= 5 ? ConstCardEight :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfSevenHitsTheBoard##
-`(RankBitsWithAdditionalSeven & 0b000111110000000) >= 5 ? ConstCardJack :
-`(RankBitsWithAdditionalSeven & 0b000011111000000) >= 5 ? ConstCardTen :
-`(RankBitsWithAdditionalSeven & 0b000001111100000) >= 5 ? ConstCardNine :
-`(RankBitsWithAdditionalSeven & 0b000000111110000) >= 5 ? ConstCardEight :
-`(RankBitsWithAdditionalSeven & 0b000000011111000) >= 5 ? ConstCardSeven :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfSixHitsTheBoard##
-`(RankBitsWithAdditionalSix & 0b000011111000000) >= 5 ? ConstCardTen :
-`(RankBitsWithAdditionalSix & 0b000001111100000) >= 5 ? ConstCardNine :
-`(RankBitsWithAdditionalSix & 0b000000111110000) >= 5 ? ConstCardEight :
-`(RankBitsWithAdditionalSix & 0b000000011111000) >= 5 ? ConstCardSeven :
-`(RankBitsWithAdditionalSix & 0b000000001111100) >= 5 ? ConstCardSix :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfFiveHitsTheBoard##
-`(RankBitsWithAdditionalFive & 0b000001111100000) >= 5 ? ConstCardNine :
-`(RankBitsWithAdditionalFive & 0b000000111110000) >= 5 ? ConstCardEight :
-`(RankBitsWithAdditionalFive & 0b000000011111000) >= 5 ? ConstCardSeven :
-`(RankBitsWithAdditionalFive & 0b000000001111100) >= 5 ? ConstCardSix :
-`(RankBitsWithAdditionalFive & 0b000000000111110) >= 5 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfFourHitsTheBoard##
-`(RankBitsWithAdditionalFour & 0b000000111110000) >= 5 ? ConstCardEight :
-`(RankBitsWithAdditionalFour & 0b000000011111000) >= 5 ? ConstCardSeven :
-`(RankBitsWithAdditionalFour & 0b000000001111100) >= 5 ? ConstCardSix :
-`(RankBitsWithAdditionalFour & 0b000000000111110) >= 5 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfThreeHitsTheBoard##
-`(RankBitsWithAdditionalThree & 0b000000011111000) >= 5 ? ConstCardSeven :
-`(RankBitsWithAdditionalThree & 0b000000001111100) >= 5 ? ConstCardSix :
-`(RankBitsWithAdditionalThree & 0b000000000111110) >= 5 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##BestPossibleStraightForUsIfTwoHitsTheBoard##
-`(RankBitsWithAdditionalTwo & 0b000000001111100) >= 5 ? ConstCardSix :
-`(RankBitsWithAdditionalTwo & 0b000000000111110) >= 5 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
-
-##GetBestPossibleStraightIfAceHitsTheBoard##
-    (BestPossibleStraightForUsIfAceHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfAceHitsTheBoard >= BestPossibleStraightForVillainIfAceHitsTheBoard)
-
-##GetBestPossibleStraightIfKingHitsTheBoard##
-    (BestPossibleStraightForUsIfKingHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfKingHitsTheBoard >= BestPossibleStraightForVillainIfKingHitsTheBoard)
-
-##GetBestPossibleStraightIfQueenHitsTheBoard##
-    (BestPossibleStraightForUsIfQueenHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfQueenHitsTheBoard >= BestPossibleStraightForVillainIfQueenHitsTheBoard)
-
-##GetBestPossibleStraightIfJackHitsTheBoard##
-    (BestPossibleStraightForUsIfJackHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfJackHitsTheBoard >= BestPossibleStraightForVillainIfJackHitsTheBoard)
-
-##GetBestPossibleStraightIfTenHitsTheBoard##
-    (BestPossibleStraightForUsIfTenHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfTenHitsTheBoard >= BestPossibleStraightForVillainIfTenHitsTheBoard)
-
-##GetBestPossibleStraightIfNineHitsTheBoard##
-    (BestPossibleStraightForUsIfNineHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfNineHitsTheBoard >= BestPossibleStraightForVillainIfNineHitsTheBoard)
-
-##GetBestPossibleStraightIfEightHitsTheBoard##
-    (BestPossibleStraightForUsIfEightHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfEightHitsTheBoard >= BestPossibleStraightForVillainIfEightHitsTheBoard)
-
-##GetBestPossibleStraightIfSevenHitsTheBoard##
-    (BestPossibleStraightForUsIfSevenHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfSevenHitsTheBoard >= BestPossibleStraightForVillainIfSevenHitsTheBoard)
-
-##GetBestPossibleStraightIfSixHitsTheBoard##
-    (BestPossibleStraightForUsIfSixHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfSixHitsTheBoard >= BestPossibleStraightForVillainIfSixHitsTheBoard)
-
-##GetBestPossibleStraightIfFiveHitsTheBoard##
-    (BestPossibleStraightForUsIfFiveHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfFiveHitsTheBoard >= BestPossibleStraightForVillainIfFiveHitsTheBoard)
-
-##GetBestPossibleStraightIfFourHitsTheBoard##
-    (BestPossibleStraightForUsIfFourHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfFourHitsTheBoard >= BestPossibleStraightForVillainIfFourHitsTheBoard)
-
-##GetBestPossibleStraightIfThreeHitsTheBoard##
-    (BestPossibleStraightForUsIfThreeHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfThreeHitsTheBoard >= BestPossibleStraightForVillainIfThreeHitsTheBoard)
-
-##GetBestPossibleStraightIfTwoHitsTheBoard##
-    (BestPossibleStraightForUsIfTwoHitsTheBoard != -1)
-AND (BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightForVillainIfTwoHitsTheBoard)
-
-##NumberOfCardranksThatGiveUsTheBestPossibleStraight##
-  GetBestPossibleStraightIfAceHitsTheBoard
-+ GetBestPossibleStraightIfKingHitsTheBoard
-+ GetBestPossibleStraightIfQueenHitsTheBoard
-+ GetBestPossibleStraightIfJackHitsTheBoard
-+ GetBestPossibleStraightIfTenHitsTheBoard
-+ GetBestPossibleStraightIfNineHitsTheBoard
-+ GetBestPossibleStraightIfEightHitsTheBoard
-+ GetBestPossibleStraightIfSevenHitsTheBoard
-+ GetBestPossibleStraightIfSixHitsTheBoard
-+ GetBestPossibleStraightIfFiveHitsTheBoard
-+ GetBestPossibleStraightIfFourHitsTheBoard
-+ GetBestPossibleStraightIfThreeHitsTheBoard
-+ GetBestPossibleStraightIfTwoHitsTheBoard
+WHEN isomaha RETURN Omaha_NumberOfBetterKickers FORCE
+WHEN Others RETURN Holdem_NumberOfBetterKickers FORCE
+
+##NutFullHouseOrFourOfAKind##
+WHEN isomaha RETURN Omaha_NutFullHouseOrFourOfAKind FORCE
+WHEN Others RETURN Holdem_NutFullHouseOrFourOfAKind FORCE
 
 ##HaveNutStraightDraw##
-WHEN FlushDrawPossible RETURN HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw FORCE
-WHEN HaveNutStraight RETURN True FORCE
-WHEN HaveUnDiscountedNutStraightDraw RETURN True FORCE
+WHEN isomaha RETURN Omaha_HaveNutStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveNutStraightDraw FORCE
 
 ##HaveUnDiscountedNutStraightDraw##
-(NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) 
+WHEN isomaha RETURN Omaha_HaveUnDiscountedNutStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveUnDiscountedNutStraightDraw FORCE
 
 ##HaveInsideNutStraightDraw##
-   (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
-AND NOT HaveStraight
+WHEN isomaha RETURN Omaha_HaveInsideNutStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveInsideNutStraightDraw FORCE
 
 ##HaveInsideStraightDraw##
-HaveAnyKindOfInsideStraightDraw
+WHEN isomaha RETURN Omaha_HaveInsideStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveInsideStraightDraw FORCE
 
 ##HaveNuts##
-(nhandshi == 0)
+WHEN isomaha RETURN Omaha_HaveNuts FORCE
+WHEN Others RETURN Holdem_HaveNuts FORCE
 
 ##HigherStraightFlushPossible##
-// Main idea:
-// I already use 3 (out of up to 5) SF-cards at the board.
-// The guy with the higher flush also has to use at least 3.
-// Therefore we have to share at least 1 card.
-// (at my higher end and at his bottom end.
-// Therefore a SF must be possible with the 5 cards above my flush-card
-// and at least 3 of these 5 cards must be at the board.
-isroyalflush ? False :
-NOT isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
-(`((srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
+WHEN isomaha RETURN Omaha_HigherStraightFlushPossible FORCE
+WHEN Others RETURN Holdem_HigherStraightFlushPossible FORCE
 
 ##HaveNutStraightFlush##
-// nhandshi seems to be wrong for bottom straightflushes without an easy fix:
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=17571
-// Therefore we do no longer use it here.
-isstraightflush AND NOT HigherStraightFlushPossible
+WHEN isomaha RETURN Omaha_HaveNutStraightFlush FORCE
+WHEN Others RETURN Holdem_HaveNutStraightFlush FORCE
 
 ##HaveOpenEndedStraightDraw##
-[  ((rankbits >> 0) & 0b111100) == 0b111100 // 5432
-OR ((rankbits >> 1) & 0b111100) == 0b111100 // 6543
-OR ((rankbits >> 2) & 0b111100) == 0b111100 // 7654
-OR ((rankbits >> 3) & 0b111100) == 0b111100 // 8765
-OR ((rankbits >> 4) & 0b111100) == 0b111100 // 9876
-OR ((rankbits >> 5) & 0b111100) == 0b111100 // T987
-OR ((rankbits >> 6) & 0b111100) == 0b111100 // JT98
-OR ((rankbits >> 7) & 0b111100) == 0b111100 // QJT9
-OR ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT 
-] AND NOT HaveStraight
+WHEN isomaha RETURN Omaha_HaveOpenEndedStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveOpenEndedStraightDraw FORCE
 
 ##HaveQuads##
-[ isfourofakind AND (nrankedcommon < 4) ]
+WHEN isomaha RETURN Omaha_HaveQuads FORCE
+WHEN Others RETURN Holdem_HaveQuads FORCE
 
 ##HaveOverPair##
-ispair AND (rankhiplayer > rankhicommon)
+WHEN isomaha RETURN Omaha_HaveOverPair FORCE
+WHEN Others RETURN Holdem_HaveOverPair FORCE
 
 ##HaveOverPairOrBetter##
-HaveOverPair OR HaveBestOverPairOrBetter
+WHEN isomaha RETURN Omaha_HaveOverPairOrBetter FORCE
+WHEN Others RETURN Holdem_HaveOverPairOrBetter FORCE
 
 ##HavePair##
-[  RankOfFirstHoleCard==RankOfSecondHoleCard
-OR RankOfFirstHoleCard==FirstFlopCard 
-OR RankOfFirstHoleCard==SecondFlopCard 
-OR RankOfFirstHoleCard==ThirdFlopCard 
-OR RankOfFirstHoleCard==TurnCard 
-OR RankOfFirstHoleCard==RiverCard
-OR RankOfSecondHoleCard==FirstFlopCard 
-OR RankOfSecondHoleCard==SecondFlopCard 
-OR RankOfSecondHoleCard==ThirdFlopCard 
-OR RankOfSecondHoleCard==TurnCard 
-OR RankOfSecondHoleCard==RiverCard ]
+WHEN isomaha RETURN Omaha_HavePair FORCE
+WHEN Others RETURN Holdem_HavePair FORCE
 
 ##HavePocketPair##
-ispair
+WHEN isomaha RETURN Omaha_HavePocketPair FORCE
+WHEN Others RETURN Holdem_HavePocketPair FORCE
 
 ##HaveRunnerRunnerFlushAtRiver##
-(betround == ConstBetRoundRiver AND HaveFlush AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+WHEN isomaha RETURN Omaha_HaveRunnerRunnerFlushAtRiver FORCE
+WHEN Others RETURN Holdem_HaveRunnerRunnerFlushAtRiver FORCE
 
 ##HaveSet##
-[  ispair
-AND (  FirstHoleCardPairsTheFlop 
-    OR (RankOfFirstHoleCard == TurnCard) 
-    OR (RankOfFirstHoleCard == RiverCard)) ]
+WHEN isomaha RETURN Omaha_HaveSet FORCE
+WHEN Others RETURN Holdem_HaveSet FORCE
 
 ##HaveTopTrips##
-(NOT ispair AND (RankOfFirstHoleCard == RankOfTopPairOnBoard OR RankOfSecondHoleCard == RankOfTopPairOnBoard))
+WHEN isomaha RETURN Omaha_HaveTopTrips FORCE
+WHEN Others RETURN Holdem_HaveTopTrips FORCE
 
 ##HaveTrips##
-NOT ispair
-AND   [(pokerval & threeofakind) AND NOT (pokervalcommon & threeofakind)
-   OR ((pokerval & fullhouse)    AND `(pcbits & 0b11100) == 1)
-   OR  (pokerval & fourofakind)  AND NOT (pokervalcommon & fourofakind)]
+WHEN isomaha RETURN Omaha_HaveTrips FORCE
+WHEN Others RETURN Holdem_HaveTrips FORCE
 
 ##TripsRank##
-WHEN HaveTrips AND HaveTopPair       RETURN TopPairRank FORCE
-WHEN HaveTrips AND HaveSecondTopPair RETURN SecondTopPairRank FORCE
-WHEN HaveTrips AND HaveThirdTopPair  RETURN ThirdTopPairRank FORCE
-WHEN HaveTrips AND HaveFourthTopPair RETURN FourthTopPairRank FORCE
-WHEN HaveTrips AND HaveFifthTopPair  RETURN FifthTopPairRank FORCE
-
-##TripsKickerRank##
-WHEN HaveTrips AND TripsRank==RankOfFirstHoleCard  RETURN RankOfSecondHoleCard FORCE
-WHEN HaveTrips AND TripsRank==RankOfSecondHoleCard RETURN RankOfFirstHoleCard FORCE
+WHEN isomaha RETURN Omaha_TripsRank FORCE
+WHEN Others RETURN Holdem_TripsRank FORCE
 
 ##HaveStraight##
-(nstraightfill == 0)
+WHEN isomaha RETURN Omaha_HaveStraight FORCE
+WHEN Others RETURN Holdem_HaveStraight FORCE
 
 ##HaveStraightDraw##
-   (HaveOpenEndedStraightDraw OR HaveDoubleGutshotDraw)
-AND NOT HaveStraight 
+WHEN isomaha RETURN Omaha_HaveStraightDraw FORCE
+WHEN Others RETURN Holdem_HaveStraightDraw FORCE
 
 ##HaveStraightFlush##
-(isstraightflush OR isroyalflush)
-
-##CommonCard0Paired##
-(FirstFlopCard == SecondFlopCard OR FirstFlopCard == ThirdFlopCard OR FirstFlopCard == TurnCard OR FirstFlopCard == RiverCard)
-
-##CommonCard1Paired##
-(SecondFlopCard == FirstFlopCard OR SecondFlopCard == ThirdFlopCard OR SecondFlopCard == TurnCard OR SecondFlopCard == RiverCard)
-
-##CommonCard2Paired##
-(ThirdFlopCard == FirstFlopCard OR ThirdFlopCard == SecondFlopCard OR ThirdFlopCard == TurnCard OR ThirdFlopCard == RiverCard)
-
-##CommonCard3Paired##
-(TurnCard == FirstFlopCard OR TurnCard == SecondFlopCard OR TurnCard == ThirdFlopCard OR TurnCard == RiverCard)
-
-##CommonCard4Paired##
-(RiverCard == FirstFlopCard OR RiverCard == SecondFlopCard OR RiverCard == ThirdFlopCard OR FirstFlopCard == TurnCard)
-
-##RankBitsCommonTopBoardPair##
-// Rankbits
-// AKQJT98765432a-
-// So we have to shift 1 to the left just by the rank of the card
-WHEN (RankOfTopPairOnBoard > 0) RETURN  (1 << RankOfTopPairOnBoard) FORCE
-WHEN Others RETURN 0 FORCE
-
-##RankBitsCommonBottomBoardPair##
-// Rankbits
-// AKQJT98765432a-
-// So we have to shift 1 to the left just by the rank of the card
-// So we have to shift 1 to the left just by the rank of the card
-WHEN (RankOfBottomPairOnBoard > 0) RETURN  (1 << RankOfBottomPairOnBoard) FORCE
-WHEN Others RETURN 0 FORCE
-
-##RankBitsCommonBoardPairs##
-RankBitsCommonTopBoardPair | RankBitsCommonBottomBoardPair
-
-##RankBitsCommonWithoutPairs##
-rankbitscommon & (~RankBitsCommonBoardPairs)
-
-##HighestUnpairedBoardCard##
-(RankBitsCommonWithoutPairs >> ConstCardAce)   & 1 ? ConstCardAce   :
-(RankBitsCommonWithoutPairs >> ConstCardKing)  & 1 ? ConstCardKing  :
-(RankBitsCommonWithoutPairs >> ConstCardQueen) & 1 ? ConstCardQueen :
-(RankBitsCommonWithoutPairs >> ConstCardJack)  & 1 ? ConstCardJack  :
-(RankBitsCommonWithoutPairs >> ConstCardTen)   & 1 ? ConstCardTen   :
-(RankBitsCommonWithoutPairs >> ConstCardNine)  & 1 ? ConstCardNine  :
-(RankBitsCommonWithoutPairs >> ConstCardEight) & 1 ? ConstCardEight :
-(RankBitsCommonWithoutPairs >> ConstCardSeven) & 1 ? ConstCardSeven :
-(RankBitsCommonWithoutPairs >> ConstCardSix)   & 1 ? ConstCardSix   :
-(RankBitsCommonWithoutPairs >> ConstCardFive)  & 1 ? ConstCardFive  :
-(RankBitsCommonWithoutPairs >> ConstCardFour)  & 1 ? ConstCardFour  :
-(RankBitsCommonWithoutPairs >> ConstCardThree) & 1 ? ConstCardThree :
-(RankBitsCommonWithoutPairs >> ConstCardTwo)   & 1 ? ConstCardTwo   : 0
+WHEN isomaha RETURN Omaha_HaveStraightFlush FORCE
+WHEN Others RETURN Holdem_HaveStraightFlush FORCE
 
 ##HaveTopNonBoardPairedPair##
-   [(betround >= ConstBetRoundFlop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
-OR [(betround >= ConstBetRoundFlop) AND (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
+WHEN isomaha RETURN Omaha_HaveTopNonBoardPairedPair FORCE
+WHEN Others RETURN Holdem_HaveTopNonBoardPairedPair FORCE
 
 ##HaveTopPair##
-[ RankOfFirstHoleCard==rankhicommon OR RankOfSecondHoleCard==rankhicommon ]
-
-##TopPairRank##
-WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfFirstHoleCard  FORCE
-WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfSecondHoleCard FORCE
-WHEN Others RETURN 0 FORCE
-
-##TopPairKickerRank##
-WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfSecondHoleCard  FORCE
-WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfFirstHoleCard FORCE
-WHEN Others RETURN 0 FORCE
-
-##SecondTopPairRank##
-HaveSecondTopPair AND RankOfFirstHoleCard  == SecondBestBoardCard ? RankOfFirstHoleCard :
-HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecondHoleCard :
-0
+WHEN isomaha RETURN Omaha_HaveTopPair FORCE
+WHEN Others RETURN Holdem_HaveTopPair FORCE
 
 ##HaveTopSet##
-(ispair AND (rankhiplayer == rankhicommon))
+WHEN isomaha RETURN Omaha_HaveTopSet FORCE
+WHEN Others RETURN Holdem_HaveTopSet FORCE
 
 ##HaveTopTwoPair##
-(HaveTopPair AND HaveSecondTopPair)
-
-##RankbitsCommonWithoutAceLow##
-// Don't count ace twice in HaveTwoPair
-// bit0 is unused
-// bit 2 is ace low
-rankbitscommon & ConstAllRanksWithoutAceLow
+WHEN isomaha RETURN Omaha_HaveTopTwoPair FORCE
+WHEN Others RETURN Holdem_HaveTopTwoPair FORCE
 
 ##HaveTwoPair##
-`(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2
+WHEN isomaha RETURN Omaha_HaveTwoPair FORCE
+WHEN Others RETURN Holdem_HaveTwoPair FORCE
 
 ##HaveUnderPair##
-[ ispair AND rankhiplayer<ranklocommon ]
-
-##HigherHoleCardInPokerVal##
-WHEN (pcbits BitAnd 0b10000) RETURN FirstCardOfPokerVal  FORCE
-WHEN (pcbits BitAnd 0b01000) RETURN SecondCardOfPokerVal FORCE
-WHEN (pcbits BitAnd 0b00100) RETURN ThirdCardOfPokerVal  FORCE
-WHEN (pcbits BitAnd 0b00010) RETURN FourthCardOfPokerVal FORCE
-WHEN (pcbits BitAnd 0b00001) RETURN FifthCardOfPokerVal  FORCE
-
-##HigherHoleCardInPokerValPaired##
-   (HigherHoleCardInPokerVal == FirstFlopCard)
-OR (HigherHoleCardInPokerVal == SecondFlopCard)
-OR (HigherHoleCardInPokerVal == ThirdFlopCard)
-OR (HigherHoleCardInPokerVal == TurnCard)
-OR (HigherHoleCardInPokerVal == RiverCard)
+WHEN isomaha RETURN Omaha_HaveUnderPair FORCE
+WHEN Others RETURN Holdem_HaveUnderPair FORCE
 
 ##HaveUnderStraight##
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19504
-WHEN NOT HaveStraight RETURN False FORCE
-WHEN HaveNutStraight  RETURN False FORCE
-WHEN StraightOnBoard  RETURN False FORCE
-WHEN (pcbits == 0b00011) RETURN True FORCE
-WHEN (pcbits == 0b00001) RETURN True FORCE
-WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN True FORCE
-
-##NumberOfUnknownSuitedOvercards##
-// Suited unknown overcards to holecards,
-// e.g. on Board Ah Th, in Hand Jh 9h => 2 suited overcards: Kh Qh.
-`(Srankbitsavailable >> srankhiplayer)
-
-##BoardKicker_FourOfAKindOnBoard##
-(betround == ConstBetRoundRiver) ? HighestUnpairedBoardCard : 2
-
-##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WeHaveOverPairToPair##
-// 3 is the best strength possible, because two quads are always possible
-3
-// 1 OverPair for each overcard = 1 higher full house
-+ (ConstCardAce - rankhiplayer)
-// Higher SET possible with pair onboard?
-+ [(RankOfTopPairOnBoard > rankhiplayer) ? 1 : 0 ]
-// If the cards on board are higher than our pair,
-// we have to subtract them again, as otherwise we count them twice,
-// as set/quads and OverPair.
-+ [(RankOfTopPairOnBoard > rankhiplayer) ? -1 : 0 ]
-+ [(RankOfSetOnBoard  > rankhiplayer) ? -1 : 0 ]
-
-##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePlayTheBoard##
-// 3 is the best strength possible, because two quads are always possible
-3
-// 1 OverPair for each overcard = 1 higher full house
-+ (ConstCardAce - rankhiplayer)
-// +1 if the pair is higher as the SET (higher SET possible)
-// -1 if the pair is higher as the SET (counted twice as OverPair / set)
-// but these cases neutralize each other
-
-##RankOfPairOfFullHouse##
-// The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)
-// XXXX are the rank of the set
-// YYYY are the rank of the pair
-(pokerval & 0b1111)
-
-##RankOfSetOfFullHouse##
-// The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)
-// XXXX are the rank of the set
-// YYYY are the rank of the pair
-((pokerval >> 12) & 0b1111)
-
-##Overcards##
-((RankOfFirstHoleCard > rankhicommon)  AND (RankOfSecondHoleCard > rankhicommon))  ? 2 :
-((RankOfFirstHoleCard > rankhicommon)  OR (RankOfSecondHoleCard > rankhicommon))  ? 1 :
-((RankOfFirstHoleCard <= rankhicommon) AND (RankOfSecondHoleCard <= rankhicommon)) ? 0 : 0
+WHEN isomaha RETURN Omaha_HaveUnderStraight FORCE
+WHEN Others RETURN Holdem_HaveUnderStraight FORCE
 
 ##PairInHand##
-ispair
+WHEN isomaha RETURN Omaha_PairInHand FORCE
+WHEN Others RETURN Holdem_PairInHand FORCE
 
 ##RunnerRunnerFlushPossibleAtRiver##
-(betround == ConstBetRoundRiver AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+WHEN isomaha RETURN Omaha_RunnerRunnerFlushPossibleAtRiver FORCE
+WHEN Others RETURN Holdem_RunnerRunnerFlushPossibleAtRiver FORCE
 
 ##SuitsInHand##
-($$ps0 == $$ps1) ? 1 :
-($$ps0 != $$ps1) ? 2 :
-0
+WHEN isomaha RETURN Omaha_SuitsInHand FORCE
+WHEN Others RETURN Holdem_SuitsInHand FORCE
