@@ -22,7 +22,7 @@
 #include "..\OpenHoldem\MagicNumbers.h"
 #include "OpenScrape.h"
 
-const int k_number_of_circular_cloneable_regions = 32;
+const int k_number_of_circular_cloneable_regions = 39;
 
 // 1st string: name of 0-region
 // 2nd string: prefix before number
@@ -36,12 +36,20 @@ const CString circular_cloneable_regions[k_number_of_circular_cloneable_regions]
  {"p0cardback",        "p", "cardback"},
  {"p0cardface0",       "p", "cardface0"},
  {"p0cardface1",       "p", "cardface1"},
+ {"p0cardface2",       "p", "cardface2" },
+ {"p0cardface3",       "p", "cardface3" },
  {"p0cardface0nocard", "p", "cardface0nocard"},
  {"p0cardface1nocard", "p", "cardface1nocard"},
+ {"p0cardface2nocard", "p", "cardface2nocard" },
+ {"p0cardface3nocard", "p", "cardface3nocard" },
  {"p0cardface0rank",   "p", "cardface0rank"},
  {"p0cardface0suit",   "p", "cardface0suit"},
  {"p0cardface1rank",   "p", "cardface1rank"},
  {"p0cardface1suit",   "p", "cardface1suit"},
+ {"p0cardface2rank",   "p", "cardface2rank" },
+ {"p0cardface2suit",   "p", "cardface2suit" },
+ {"p0cardface3rank",   "p", "cardface3rank" },
+ {"p0cardface3suit",   "p", "cardface3suit" },
  {"p0dealer",          "p", "dealer",},
  {"p0name",            "p", "name"},
  {"p0colourcode",      "p", "colourcode"},

@@ -57,7 +57,7 @@ CString ListOfStrings() {
   return list;
 }
 
-//!!!!! to be checked and removed
+//!!!! to be checked and removed
 // "scraperdll""balancenumbersonly" defaultlabels
 // !!!!!ubalance "uname",
 
