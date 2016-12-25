@@ -67,9 +67,11 @@ double pc[kMaxNumberOfPlayers][2] =
 // Player bet locations relative to player locations above
 // numbers are in pixel units
 // [chairnum][x/y]
+// Chairs 2, 3, 5, 7 need special care to avoid overlap
+// by Omaha-cards
 int pcbet[kMaxNumberOfPlayers][2] = 
-	{ {-40,+53}, {-40,+37}, {-40,+0}, {-40,-20}, {-40,-40}, 
-	  {+40,-40}, {+40,-20}, {+40,+0}, {+40,+37}, {+40,+53} 
+	{ {-40,+53}, {-40,+37}, {-70,+0}, {-70,-20}, {-40,-40}, 
+	  {+40,-40}, {+50,-20}, {+70,+0}, {+40,+37}, {+40,+53} 
 	};
 
 // Dealer button locations relative to player locations above
