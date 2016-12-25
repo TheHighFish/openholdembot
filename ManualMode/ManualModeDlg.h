@@ -37,8 +37,16 @@ extern char	startup_path[MAX_PATH];
 
 
 enum {
-	P0C0, P0C1, P1C0, P1C1, P2C0, P2C1, P3C0, P3C1, P4C0, P4C1, 
-	P5C0, P5C1,	P6C0, P6C1, P7C0, P7C1, P8C0, P8C1, P9C0, P9C1,
+	P0C0, P0C1, P0C2, P0C3, 
+  P1C0, P1C1, P1C2, P1C3,
+  P2C0, P2C1, P2C2, P2C3,
+  P3C0, P3C1, P3C2, P3C3,
+  P4C0, P4C1, P4C2, P4C3,
+	P5C0, P5C1, P5C2, P5C3,
+  P6C0, P6C1, P6C2, P6C3,
+  P7C0, P7C1, P7C2, P7C3,
+  P8C0, P8C1, P8C2, P8C3,
+  P9C0, P9C1, P9C2, P9C3,
 	CC0, CC1, CC2, CC3, CC4,
 	PN0, PN1, PN2, PN3, PN4, PN5, PN6, PN7, PN8, PN9,
 	PB0, PB1, PB2, PB3, PB4, PB5, PB6, PB7, PB8, PB9,
@@ -65,7 +73,7 @@ protected:
 	CFont		cFont, cFont_sm;
 
 	CardMask			used_cards;
-	unsigned int	card[25];  // aligns with enum above 0-19 player cards, 20-24 common cards
+	unsigned int	card[45];  // aligns with enum above 0-39 player cards, 40-44 common cards
 	bool			    seated[10], active[10];
 	bool				  dealer[10];
 	CString				playername[10];
@@ -214,4 +222,9 @@ private:
 	void HandleButtonClick(int click_loc);
 	void ExecuteSwag();
   void SetDealerPosition(int chair);
+private:
+  bool IsOmaha();
+  int NumberOfCardsPerPlayer();
+  void SetPlayerCard(int chair, int index, int card_value);
+  int GetPlayerCard(int chair, int index);
 };
