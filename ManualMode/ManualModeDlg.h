@@ -227,4 +227,7 @@ private:
   int NumberOfCardsPerPlayer();
   void SetPlayerCard(int chair, int index, int card_value);
   int GetPlayerCard(int chair, int index);
+private:
+  int PlayerCardLeft(int chair, int index);
+  int PlayerCardTop(int chair);
 };

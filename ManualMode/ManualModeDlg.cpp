@@ -59,7 +59,7 @@ int		cc[kNumberOfCommunityCards][2] =
 
 // Player locations as a percentage of width/height
 // [chairnum][x/y]
-double	pc[kMaxNumberOfPlayers][2] = 
+double pc[kMaxNumberOfPlayers][2] = 
 	{ {.68,.11}, {.83,.21}, {.93,.47}, {.83,.73}, {.68,.83}, 
 	  {.32,.83}, {.17,.73}, {.07,.47}, {.17,.21}, {.32,.11} 
 	};
@@ -371,6 +371,20 @@ void CManualModeDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
+int CManualModeDlg::PlayerCardLeft(int chair, int index) {
+  RECT cr;
+  GetClientRect(&cr);
+  //const int x_offset = CARDSIZEX + 3;
+  const int x_offset = CARDSIZEX - 5;
+  return cr.right * pc[chair][0] - CARDSIZEX - 2 + index * x_offset;
+}
+
+int CManualModeDlg::PlayerCardTop(int chair) {
+  RECT cr;
+  GetClientRect(&cr);
+  return cr.bottom * pc[chair][1] - CARDSIZEY / 2 - 5;
+}
+
 bool CManualModeDlg::IsOmaha() {
   return true;
 }
@@ -407,7 +421,6 @@ void CManualModeDlg::OnPaint() {
 		CDialog::OnPaint();
 
 		RECT		cr;
-
 		// Get size of current client window
 		GetClientRect(&cr);
 
@@ -425,11 +438,9 @@ void CManualModeDlg::OnPaint() {
       if (seated[i])
         draw_seated_active_circle(i);
 
-      // Draw player cards
-      int x_offset = CARDSIZEX + 3;
+      // Draw player cards      
       for (int j = 0; j < NumberOfCardsPerPlayer(); ++j) {
-        //!!!!
-        draw_card(GetPlayerCard(i, j), cr.right * pc[i][0] - CARDSIZEX - 2 + j * x_offset, cr.bottom * pc[i][1] - CARDSIZEY / 2 - 5);
+        draw_card(GetPlayerCard(i, j), PlayerCardLeft(i, j), PlayerCardTop(i));
       }
       // Draw dealer button
       if (dealer[i])
