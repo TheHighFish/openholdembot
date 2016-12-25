@@ -313,8 +313,6 @@ void CManualModeDlg::clear_scrape_areas(void)
 
 BOOL CManualModeDlg::OnInitDialog() 
 {
-	int			max_x, max_y;
-
 	CDialog::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
@@ -374,9 +372,21 @@ void CManualModeDlg::OnSysCommand(UINT nID, LPARAM lParam)
 int CManualModeDlg::PlayerCardLeft(int chair, int index) {
   RECT cr;
   GetClientRect(&cr);
-  //const int x_offset = CARDSIZEX + 3;
-  const int x_offset = CARDSIZEX - 5;
-  return cr.right * pc[chair][0] - CARDSIZEX - 2 + index * x_offset;
+  //const int x_offset = CARDSIZEX + 8;
+  const int x_offset = CARDSIZEX - 14;
+  int x_position = cr.right * pc[chair][0] - CARDSIZEX - 2 + index * x_offset;
+  if (IsOmaha()) {
+    // Original positions were designed for HoldEm
+    // Shift everything one card to the left 
+    // for better centralization and less overlap
+    x_position -= x_offset;
+  }
+  if (chair == 7) {
+    // Chair 7 (9 o'clock position on the very left)
+    // needs to be shifted, otherwise one card would be invisible
+    x_position += x_offset;
+  }
+  return x_position;
 }
 
 int CManualModeDlg::PlayerCardTop(int chair) {
@@ -1785,35 +1795,29 @@ void CManualModeDlg::get_click_loc(CPoint p)
 
 	}
 
-	// see if we clicked on a player's first card
-	for (int i=0; i<kMaxNumberOfPlayers; i++) 
-	{
-		if (p.x >= cr.right * pc[i][0] - CARDSIZEX - 2 && 
-			p.x <= cr.right * pc[i][0] - 2 &&
-			p.y >= cr.bottom * pc[i][1] - CARDSIZEY/2 - 5 &&
-			p.y <= cr.bottom * pc[i][1] + CARDSIZEY/2 - 6) 
-		{
-      //!!!!!?
-			click_loc = P0C0+i*2;
-			click_chair = i;
-			return;
-		}
+	// See if we clicked on a player's card
+  // We draw players and cards in increasing order
+  // Due to space restrictions cards might overlap (for Omaha).
+  // Therefore we search inreversed order 
+  // to get the top-most card and avoid confusion.
+  for (int i = kMaxNumberOfPlayers - 1; i >= 0; --i) {
+    for (int j = kMaxNumberOfCardsPerPlayer - 1; j >= 0; --j)
+    {
+      int left = PlayerCardLeft(i, j);
+      int top = PlayerCardTop(i);
+      int right = left + CARDSIZEX - 1;
+      int bottom = top + CARDSIZEY - 1;
+      if (p.x >= left &&
+        p.x <= right &&
+        p.y >= top &&
+        p.y <= bottom)
+      {
+        click_loc = P0C0 + i * kNumberOfCardsPerPlayerOmaha + j;
+        click_chair = i;
+        return;
+      }
+    }
 	}
-
-	// see if we clicked on a player's second card
-	for (int i=0; i<kMaxNumberOfPlayers; i++) 
-	{
-		if (p.x >= cr.right * pc[i][0] + 1 && 
-			p.x <= cr.right * pc[i][0] + CARDSIZEX + 1 &&
-			p.y >= cr.bottom * pc[i][1] - CARDSIZEY/2 - 5 &&
-			p.y <= cr.bottom * pc[i][1] + CARDSIZEY/2 - 6) 
-		{
-			click_loc = P0C1+i*2;
-			click_chair = i;
-			return;
-		}
-	}
-
 	// see if we clicked on the center info box
 	if (p.x >= cr.right/2-60 && p.x <= cr.right/2+60 &&
 		p.y >= 4 &&	p.y <= 78) 
