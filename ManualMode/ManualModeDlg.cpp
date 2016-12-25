@@ -444,26 +444,29 @@ void CManualModeDlg::OnPaint() {
     // Draw collection of player info
     // Very early to avoid overwriting of other info
     // if we play 4-card-HoldEm, which needs more space
-    for (int i = 0; i < kMaxNumberOfPlayers; i++)
+    for (int i = 0; i < kMaxNumberOfPlayers; ++i)
     {
+      // We want to draw chair 6 first and 5 last
+      // due to some overlap of cards for Omaha
+      int chair = (6 + i) % kMaxNumberOfPlayers;
       // Draw active circle
-      if (seated[i])
-        draw_seated_active_circle(i);
+      if (seated[chair])
+        draw_seated_active_circle(chair);
 
       // Draw player cards      
       for (int j = 0; j < NumberOfCardsPerPlayer(); ++j) {
-        draw_card(GetPlayerCard(i, j), PlayerCardLeft(i, j), PlayerCardTop(i));
+        draw_card(GetPlayerCard(chair, j), PlayerCardLeft(chair, j), PlayerCardTop(chair));
       }
       // Draw dealer button
-      if (dealer[i])
-        draw_dealer_button(i);
+      if (dealer[chair])
+        draw_dealer_button(chair);
 
       // Draw name and balance boxes
-      draw_name_box(i);
-      draw_balance_box(i);
+      draw_name_box(chair);
+      draw_balance_box(chair);
 
       // Draw player bet
-      draw_player_bet(i);
+      draw_player_bet(chair);
     }
 
 		// Draw button state indicators
@@ -875,9 +878,9 @@ void CManualModeDlg::draw_center_info_box(void)
 	GetClientRect(&cr);
 
 	// Figure placement of box
-	left = cr.right/2-60;
+	left = cr.right/2-65;
 	top = 4;
-	right = cr.right/2+60;
+	right = cr.right/2+45;
 	bottom = 78;
 
 	pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -1797,6 +1800,15 @@ void CManualModeDlg::get_click_loc(CPoint p)
 
 	}
 
+  // see if we clicked on the center info box
+  if (p.x >= cr.right / 2 - 65 && p.x <= cr.right / 2 + 45 &&
+    p.y >= 4 && p.y <= 78)
+  {
+    click_loc = CIB;
+    click_chair = -1;
+    return;
+  }
+
 	// See if we clicked on a player's card
   // We draw players and cards in increasing order
   // Due to space restrictions cards might overlap (for Omaha).
@@ -1819,14 +1831,6 @@ void CManualModeDlg::get_click_loc(CPoint p)
         return;
       }
     }
-	}
-	// see if we clicked on the center info box
-	if (p.x >= cr.right/2-60 && p.x <= cr.right/2+60 &&
-		p.y >= 4 &&	p.y <= 78) 
-	{
-		click_loc = CIB;
-		click_chair = -1;
-		return;
 	}
 
 	// see if we clicked on a button
