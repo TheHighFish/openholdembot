@@ -34,11 +34,13 @@ public:
 	CEdit m_BigBet;
 	CEdit m_Ante;
 	CComboBox m_GameType;
+  CComboBox m_HoldemOmaha;
 	CComboBox m_Network;
 	CButton m_Tournament;
 
 	CString	m_sblind, m_bblind, m_bigbet, m_ante, m_network;
 	int		m_gametype;
+  bool  m_is_omaha;
 	bool	m_tournament;
 
 protected:

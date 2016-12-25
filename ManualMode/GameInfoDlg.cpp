@@ -44,6 +44,7 @@ void CGameInfoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_GAME_TYPE, m_GameType);
 	DDX_Control(pDX, IDC_NETWORK, m_Network);
 	DDX_Control(pDX, IDC_TOURNAMENT, m_Tournament);
+  DDX_Control(pDX, IDC_HOLDEM_OMAHA, m_HoldemOmaha);
 }
 
 
@@ -87,7 +88,6 @@ BOOL CGameInfoDlg::OnInitDialog()
 	m_Network.AddString("Everest");
 	m_Network.AddString("Boss");
 	m_Network.AddString("Betfair");
-
 	m_Network.SelectString(0, m_network);
 
 	if (m_gametype == LIMIT_NL)
@@ -104,6 +104,15 @@ BOOL CGameInfoDlg::OnInitDialog()
 
 	m_SmallBlind.SetFocus();
 	m_SmallBlind.SetSel(MAKEWORD(0, -1));
+
+  m_HoldemOmaha.AddString("Hold'Em");
+  m_HoldemOmaha.AddString("Omaha");
+  if (m_is_omaha) {
+    m_HoldemOmaha.SelectString(0, "Omaha");
+  }
+  else {
+    m_HoldemOmaha.SelectString(0, "Hold'Em");
+  }
 
 	if (pPlacement != NULL) SetWindowPlacement(pPlacement);
 
