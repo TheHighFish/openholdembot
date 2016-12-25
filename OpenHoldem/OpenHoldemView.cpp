@@ -931,16 +931,16 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
   int pos_y_top = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY / 2;
   int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
   // x-offset between two cards, with some overlap due ti space restrictions
-  int x_offset_to_next_card = CARDSIZEX - 14;
+  int x_offset_to_next_card = CARDSIZEX - 12;
   // Calculate starting position for first card
-  int first_pos_x_right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 5;
+  int first_pos_x_right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 7;
   if (p_symbol_engine_isomaha->isomaha()) {
     // Original positions were designed for HoldEm.
     // If we play Omaha, then move everything one card to the left
     // for better centralization.
     first_pos_x_right -= x_offset_to_next_card;
   }
-  for (int i = 0; i < kMaxNumberOfCardsPerPlayer; ++i) { 
+  for (int i = 0; i < NumberOfCardsPerPlayer(); ++i) { 
     Card *player_card_N = p_table_state->Player(chair)->hole_cards(i);
     int pos_x_right = first_pos_x_right + i * x_offset_to_next_card;
     int pos_x_left = pos_x_right - CARDSIZEX;
