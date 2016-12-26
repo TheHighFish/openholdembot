@@ -347,6 +347,7 @@ BOOL CManualModeDlg::OnInitDialog()
 	
 	clear_scrape_areas();
 	istournament = false;
+  isomaha = false;
 	handnumber = "1";
 	sblind = "5";
 	bblind = "10";
@@ -374,7 +375,6 @@ void CManualModeDlg::OnSysCommand(UINT nID, LPARAM lParam)
 int CManualModeDlg::PlayerCardLeft(int chair, int index) {
   RECT cr;
   GetClientRect(&cr);
-  //const int x_offset = CARDSIZEX + 8;
   const int x_offset = CARDSIZEX - 14;
   int x_position = cr.right * pc[chair][0] - CARDSIZEX - 2 + index * x_offset;
   if (IsOmaha()) {
@@ -398,7 +398,7 @@ int CManualModeDlg::PlayerCardTop(int chair) {
 }
 
 bool CManualModeDlg::IsOmaha() {
-  return true;
+  return isomaha;
 }
 
 int CManualModeDlg::NumberOfCardsPerPlayer() {
@@ -1450,7 +1450,7 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		gameinfo.m_gametype = limit;
 		gameinfo.m_network = network;
 		gameinfo.m_tournament = istournament;
-
+    gameinfo.m_is_omaha = isomaha;
 		if (gameinfo.DoModal() == IDOK) 
 		{
 			sblind = gameinfo.m_sblind;
@@ -1460,7 +1460,8 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			limit = gameinfo.m_gametype;
 			network = gameinfo.m_network;
 			istournament = gameinfo.m_tournament;
-			InvalidateRect(NULL, true);
+      isomaha = gameinfo.m_is_omaha;
+      InvalidateRect(NULL, true);
 		}
 	}
 

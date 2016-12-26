@@ -89,6 +89,7 @@ protected:
 	int					  limit;
 	CString				network;
 	bool				  istournament;
+  bool				  isomaha;
 
 	double				raise_amount;
 

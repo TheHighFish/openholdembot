@@ -102,17 +102,13 @@ BOOL CGameInfoDlg::OnInitDialog()
 	else
 		m_Tournament.SetCheck(BST_UNCHECKED);
 
+  if (m_is_omaha)
+    m_HoldemOmaha.SetCheck(BST_CHECKED);
+  else
+    m_HoldemOmaha.SetCheck(BST_UNCHECKED);
+
 	m_SmallBlind.SetFocus();
 	m_SmallBlind.SetSel(MAKEWORD(0, -1));
-
-  m_HoldemOmaha.AddString("Hold'Em");
-  m_HoldemOmaha.AddString("Omaha");
-  if (m_is_omaha) {
-    m_HoldemOmaha.SelectString(0, "Omaha");
-  }
-  else {
-    m_HoldemOmaha.SelectString(0, "Hold'Em");
-  }
 
 	if (pPlacement != NULL) SetWindowPlacement(pPlacement);
 
@@ -120,31 +116,31 @@ BOOL CGameInfoDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CGameInfoDlg::OnBnClickedOk() 
+void CGameInfoDlg::OnBnClickedOk()
 {
-	CString str;
+  CString str;
 
-	m_SmallBlind.GetWindowText(m_sblind);
-	m_BigBlind.GetWindowText(m_bblind);
-	m_BigBet.GetWindowText(m_bigbet);
-	m_Ante.GetWindowText(m_ante);
-	// The constants here are not identical with the gametype constants
-	// we use elsewhere. The constants used here simply depend on the order 
-	// of choices in the drop-down-box.
-	if (m_GameType.GetCurSel() == 0) {
-		m_gametype = LIMIT_FL;
-	}
-	else if (m_GameType.GetCurSel() == 1) {
-		m_gametype = LIMIT_PL;
-	}
-	else if (m_GameType.GetCurSel() == 2) {
-		m_gametype = LIMIT_NL;
-	}
-	else 
-	{
-		// This should not happem, but the user can edit the input
-		m_gametype = LIMIT_FL;
-	}
+  m_SmallBlind.GetWindowText(m_sblind);
+  m_BigBlind.GetWindowText(m_bblind);
+  m_BigBet.GetWindowText(m_bigbet);
+  m_Ante.GetWindowText(m_ante);
+  // The constants here are not identical with the gametype constants
+  // we use elsewhere. The constants used here simply depend on the order 
+  // of choices in the drop-down-box.
+  if (m_GameType.GetCurSel() == 0) {
+    m_gametype = LIMIT_FL;
+  }
+  else if (m_GameType.GetCurSel() == 1) {
+    m_gametype = LIMIT_PL;
+  }
+  else if (m_GameType.GetCurSel() == 2) {
+    m_gametype = LIMIT_NL;
+  }
+  else
+  {
+    // This should not happem, but the user can edit the input
+    m_gametype = LIMIT_FL;
+  }
 
 	m_Network.GetLBText(m_Network.GetCurSel(), m_network);
 
@@ -155,6 +151,7 @@ void CGameInfoDlg::OnBnClickedOk()
 	}
 	
 	m_tournament = m_Tournament.GetCheck() & BST_CHECKED;
+  m_is_omaha = m_HoldemOmaha.GetCheck() & BST_CHECKED;
 
 	if (pPlacement == NULL) 
 		pPlacement = (WINDOWPLACEMENT*) malloc(sizeof(WINDOWPLACEMENT));
