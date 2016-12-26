@@ -66,10 +66,9 @@ BOOL CGameInfoDlg::OnInitDialog()
 	m_BigBlind.SetWindowText(m_bblind);
 	m_BigBet.SetWindowText(m_bigbet);
 	m_Ante.SetWindowText(m_ante);
+  m_GameType.AddString("No Limit");
 	m_GameType.AddString("Fixed Limit");
 	m_GameType.AddString("Pot Limit");
-	m_GameType.AddString("No Limit");
-	m_GameType.SetWindowPos(NULL, 81, 121, 138, 75, SWP_SHOWWINDOW);
 	m_Network.AddString("Stars");
 	m_Network.AddString("Party");
 	m_Network.AddString("Ultimate");
