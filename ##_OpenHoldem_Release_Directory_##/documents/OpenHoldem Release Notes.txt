@@ -1,17 +1,42 @@
 v11.0.0 2016-12-26
 =================
 NEW STUFF:
-- Support for Omaha.
-  OpenScrape provides now additional sy,bols for the 3rd and 4th card,
-  named pXcardface2 and pXcardface3 (where X = 0..9 is the player)
-  pXcardfaceYrank (Y = 0..3 for the cards), pXcardfaceYsuit 
-  and pXcardfaceYnocard.
-  The region-cloner got also adapted to support two more cards.
-  If a tablemap supports both game-types at once,
-  then it is expected that cards 0 and 1 scrape the cards for Hold'em.
+- OpenHoldem aupports now Omaha.
+  It scrapes up to four cards for every player
+  if the loaded tablemap contains additional card symbols
+  (pXcardfaceY, pXcardfaceYrank, pXcardfaceYsuit, pXcardfaceYnocard).
+  Based on this information it calculates bassic symbols like
+    * $$pcX (card symbols)
+	* $$prX (rank symbols)
+	* $$psX (suit symbols)
+	* isomaha (true if more than two cards have been seen for a player)
+  Furtermore some basic symbols work for both Hold'em and Omaha
+    * nsuitedcommon and similar
+	* rankbitscommon and similar
+  More advanced features:
+    * hand$xyz-symbols work with up to four cards too
+	* PokerTracker-queries auto-adapt for Omaha
+  Not yet implemented and to be done by volunteers:
+    * symbol engines for advanced hand-strength evaluation
+	* PrWin-calculations for Omaha (optional)
+	* OpenPPl-handstrength-symbols 
+  For details please see the sticky post about OpenHoldem 11.0%
+  and the new forum section for Omaha.
   [OpenHoldem, SingleMalt, THF]
   
+MAINTENANCE:
+- Shooting replay-frames does no longer require the autoplayer.
+  
 
+v9.4.3c 2016-12-25
+==================
+BUG FIXES:	
+- !!!!!
+  Thanks to SweetPork for reporting and to ChuckNeverMuck
+  who did all the work.
+  [THF]
+  
+  
 v9.4.3b 2016-12-23
 ==================
 BUG FIXES:	
