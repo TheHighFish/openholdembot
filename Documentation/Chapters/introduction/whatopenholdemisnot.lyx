@@ -134,9 +134,18 @@ OpenHoldem does not allow for automated collusion.
 \begin_layout Standard
 OpenHoldem is not a general-purpose poker botting engine for all styles
  of poker.
-  It is intentionally suited only to the "Texas Hold'em" flavor of poker
- favored by the majority of online players today.
-  Don't ask if it supports Omaha --- it doesn't.
+  It was intentionally suited only to the "Texas Hold'em" flavor of poker
+ favored by the majority of online players today, and at present is supports
+ 
+\begin_inset Quotes eld
+\end_inset
+
+four-card-Hold'em
+\begin_inset Quotes erd
+\end_inset
+
+ also.
+ But don't ask if it supports Stud or Razz --- it does not.
 \end_layout
 
 \end_body
