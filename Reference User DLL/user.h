@@ -36,6 +36,7 @@ const int kNumberOfHoldemStatesForDLL = 256;
 
 // SHoldemePlayer
 // used for sequence of 256 consequive table-states
+// !!!! Needs 2 more cards for Omaha, if not entirely removed
 struct holdem_player {
     char            m_name[16]          ;       //player name if known
     double          m_balance           ;       //player balance 
