@@ -1,3 +1,11 @@
+v11.0.0 2016-12-26
+=================
+NEW STUFF:
+- Support for Omaha.
+  Click the game-info-dialog and select the desired game-type.
+  The rest work like before.
+  [OpenHoldem, SingleMalt, THF]
+
 v9.2.6 2016-08-30
 =================
 NEW STUFF:

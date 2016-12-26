@@ -1,3 +1,17 @@
+v11.0.0 2016-12-26
+=================
+NEW STUFF:
+- Support for Omaha.
+  OpenScrape provides now additional sy,bols for the 3rd and 4th card,
+  named pXcardface2 and pXcardface3 (where X = 0..9 is the player)
+  pXcardfaceYrank (Y = 0..3 for the cards), pXcardfaceYsuit 
+  and pXcardfaceYnocard.
+  The region-cloner got also adapted to support two more cards.
+  If a tablemap supports both game-types at once,
+  then it is expected that cards 0 and 1 scrape the cards for Hold'em.
+  [OpenHoldem, SingleMalt, THF]
+  
+
 v9.4.3b 2016-12-23
 ==================
 BUG FIXES:	
