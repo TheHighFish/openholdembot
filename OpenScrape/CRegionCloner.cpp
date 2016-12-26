@@ -31,7 +31,6 @@ const CString circular_cloneable_regions[k_number_of_circular_cloneable_regions]
 {{"p0active",          "p", "active"},  
 // we should already have pXbalance regions, so don't clone them
 // {"p0balance",         "p", "balance"},
-//!!!!! more cards
  {"p0bet",             "p", "bet"},
  {"p0cardback",        "p", "cardback"},
  {"p0cardface0",       "p", "cardface0"},

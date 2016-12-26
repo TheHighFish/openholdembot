@@ -64,11 +64,6 @@ void CSymbolEngineReplayFrameController::UpdateOnHeartbeat() {
     write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as connected to OHReplay\n");
 		return;	
 	}
-  if(!p_autoplayer->autoplayer_engaged()){
-    // No point in shooting frames if the autoplayer is turned off
-    write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as autoplayer turned off\n");
-		return;	
-	}
 	if (p_lazyscraper->IsIdenticalScrape()) {
 	  // There is no benefit in duplicate frames, so we abort
 	  write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as identical scrape\n");

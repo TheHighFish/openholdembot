@@ -1625,7 +1625,6 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		// Set state of no cards item
 		mii.fState = active[click_chair] &&
-      //!!!!!?????
 					 (GetPlayerCard(click_chair, 0) !=CARD_NOCARD 
              || GetPlayerCard(click_chair, 1) != CARD_NOCARD
              || GetPlayerCard(click_chair, 2) != CARD_NOCARD

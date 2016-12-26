@@ -918,7 +918,6 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 }
 
 void COpenHoldemView::DrawPlayerCards(const int chair) {
-  //!!!!!
 	if (!p_table_state->Player(chair)->active())	{
 		// Forget about inactive players, they have no cards.
 		// Don't draw them to point out the mistake faster
