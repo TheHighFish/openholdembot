@@ -931,7 +931,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
   int pos_y_top = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY / 2;
   int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
   // x-offset between two cards, with some overlap due ti space restrictions
-  int x_offset_to_next_card = CARDSIZEX - 12;
+  int x_offset_to_next_card = CARDSIZEX - 10;
   // Calculate starting position for first card
   int first_pos_x_right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 7;
   if (p_symbol_engine_isomaha->isomaha()) {
@@ -940,7 +940,10 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
     // for better centralization.
     first_pos_x_right -= x_offset_to_next_card;
   }
-  for (int i = 0; i < NumberOfCardsPerPlayer(); ++i) { 
+  int number_of_cards = NumberOfCardsPerPlayer();
+  write_log(preferences.debug_alltherest(), "[GUI] Drawing %d player cards for chair %d\n", 
+    number_of_cards, chair);
+  for (int i = 0; i < number_of_cards; ++i) {
     Card *player_card_N = p_table_state->Player(chair)->hole_cards(i);
     int pos_x_right = first_pos_x_right + i * x_offset_to_next_card;
     int pos_x_left = pos_x_right - CARDSIZEX;
