@@ -9574,7 +9574,8 @@ The actual card value or rank/suit value for both your hand and the board
  The card symbols are not case sensitive.
  $$ is required.
  A - is p for player, c for common B - is c for card, r for rank, s for
- suit # - is the card number (player 0-1, common 0-4) 
+ suit # - is the card number (player 0-1 for Holdem and 0-3 for Omaha, common
+ 0-4) 
 \end_layout
 
 \begin_layout Standard
@@ -9632,7 +9633,7 @@ the card value for player card zero (1st dealt card)
 \begin_inset Text
 
 \begin_layout Plain Layout
-$$pr1
+$$pr3
 \end_layout
 
 \end_inset
@@ -9641,7 +9642,7 @@ $$pr1
 \begin_inset Text
 
 \begin_layout Plain Layout
-the rank value of player card one (2nd dealt card)
+the rank value of player card three (4th dealt card, Omaha)
 \end_layout
 
 \end_inset
