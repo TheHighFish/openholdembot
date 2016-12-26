@@ -450,7 +450,7 @@ int CScraper::ScrapeNoCard(CString base_name){
 //   * cardbacks
 int CScraper::ScrapeCard(CString name) {
   // First: in case of player cards try to scrape card-backs
-  // This hasd to be the very first one,
+  // This has to be the very first one,
   // because some casinos use different locations for cardbacks and cards
   // which would cause problems for the nocard-regioms
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17960
@@ -498,7 +498,11 @@ int CScraper::ScrapeCard(CString name) {
 void CScraper::ScrapePlayerCards(int chair) {
 	CString card_name;
 	int card = CARD_UNDEFINED;
-	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
+  int number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerHoldEm;
+  if (p_tablemap->SupportsOmaha()) {
+    number_of_cards_to_be_scraped = kNumberOfCardsPerPlayerOmaha;
+  }
+	for (int i=0; i<number_of_cards_to_be_scraped; i++) {
 		card_name.Format("p%dcardface%d", chair, i);
 		if ((i > 0) 
       && ((card == CARD_UNDEFINED) || (card == CARD_BACK) || (card == CARD_NOCARD))) {
