@@ -1,5 +1,5 @@
-v11.0.0 2016-12-26
-=================
+v11.0.0 2016-12-27
+==================
 NEW STUFF:
 - OpenHoldem aupports now Omaha.
   It scrapes up to four cards for every player
@@ -31,9 +31,9 @@ MAINTENANCE:
 v9.4.3c 2016-12-25
 ==================
 BUG FIXES:	
-- !!!!!
-  Thanks to SweetPork for reporting and to ChuckNeverMuck
-  who did all the work.
+- OpenPPL memory-symbols for RaisesBeforeFlop, onFlop, OnTurn were broken
+  due to wrong naming. Thanks to SweetPork and WantPlayPoker for reporting 
+  and to ChuckNeverMuck who did all the work.
   [THF]
   
   
@@ -92,61 +92,6 @@ BUG FIXES:
   [THF]
 
 
-v9.4.1 2016-12-12
-==================
-NEW STUFF:
-- Supporting six more autoplayer buttons, 
-  needed by increasing number of hopper functions.
-  The buttons, states and labels are named i0button..i9button 
-  and iAbutton..iFbutton.
-  [THF]
-
-BUG FIXES:	
-- Replay-frames on my turn could be missing.
-  Thanks to AlexTheKing88 for reporting.
-  [THF]
-- The reimplemented symbol nopponentscalling could be wrong
-  under certain conditions in the big blind, also affecting "Calls".
-  Thanks to SweetPork for reporting.
-  [THF]
-- If a function got deleted with the formula-editor
-  and it was still displayed in an open tab,
-  then on closing the editor OpenHoldem asked
-  if the user wanted to apply his changes
-  and copied the deleted function back to the formula-set.
-  Thanks to LikeHeadsup for reporting.
-  [THF]
-- The table-positioning option "tiled" did not 
-  reuse formerly occupied slots correctly.
-  Now we are back to MicroSofts simple "TileWindows"-function,
-  even if this function allows small overlap and resizes
-  all maximized Windows.
-  This seems to be acceptable for our users.
-  Thanks to OpenGeek for reporting.
-  [THF]
-
-MAINTENANCE:
-- The implementation of the additional button labels iXlabelY
-  turned out to be missing, formerly buggy and not needed at all.
-  Therefore these tablemap regions get now officially removed.
-  Thanks to JohnNash for reporting.
-  [THF]
-- Even more title preprocessing.
-  Thanks to KindBot for reporting yet another Euro-sign
-  in one of the many country-specific versions of extended ASCII.
-  [THF]
-
-
-v9.4.2 2016-12-13
-==================
-BUG FIXES:	
-- BotsLastPreflopAction did in some cases not get updated properly
-  after autoplayer-actions due to symbol-caching
-  (depending partially on old and partially on already updated symbol values)
-  Thanks to JMonderson for reporting.
-  [THF]
-
-  
 v9.4.1 2016-12-12
 ==================
 NEW STUFF:
