@@ -2043,6 +2043,7 @@ void CManualModeDlg::SetDealerPosition(int chair) {
 
 void CManualModeDlg::OnFold() 
 { 
+  click_chair = Userchair();
   do_fold();
   InvalidateRect(NULL, true);
 }
@@ -2298,12 +2299,15 @@ int CManualModeDlg::GetPlayerCard(int chair, int index) {
 
 void CManualModeDlg::do_fold(void)
 {
+  if (click_chair < 0) {
+    return;
+  }
   for (int j = 0; j < NumberOfCardsPerPlayer(); ++j) {
     if (GetPlayerCard(click_chair, j != CARD_NOCARD
       && GetPlayerCard(click_chair, j) != CARD_BACK))
     {
       CardMask_UNSET(used_cards, GetPlayerCard(click_chair, j));
-      SetPlayerCard(click_chair, j, CARD_BACK);
+      SetPlayerCard(click_chair, j, CARD_NOCARD);
     }
   }
 }
@@ -2454,8 +2458,8 @@ int CManualModeDlg::Userchair()
 	// First chair (clockwise) that has cards
 	for (int i=kFirstChair; i<=kLastChair; i++)
 	{
-		if ((card[2 * i] != CARD_BACK)
-			&& (card[2 * i] != CARD_NOCARD))
+		if ((GetPlayerCard(i, 0) != CARD_BACK)
+			&& (GetPlayerCard(i, 0) != CARD_NOCARD))
 		{
 			return i;
 		}
