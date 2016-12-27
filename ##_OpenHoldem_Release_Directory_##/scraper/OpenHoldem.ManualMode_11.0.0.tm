@@ -2,7 +2,7 @@
 
 // OpenScrape 9.3.1
 
-// 2016-12-26 20:23:52
+// 2016-12-27 21:25:51
 // 32 bits per pixel
 
 //
@@ -33,16 +33,16 @@ s$ttlimits1                 ^*- ^L tourney - blinds ^s/^b - ante ^a
 // regions
 //
 
-r$c0cardface0        193 144 211 185        0    0 H0
-r$c0cardface0nocard  213 170 213 170   b6b6b6   10 C
-r$c0cardface1        232 144 250 185        0    0 H0
-r$c0cardface1nocard  243 170 243 170   b6b6b6   10 C
-r$c0cardface2        271 144 289 185        0    0 H0
-r$c0cardface2nocard  282 170 282 170   b6b6b6   10 C
-r$c0cardface3        310 144 328 185        0    0 H0
-r$c0cardface3nocard  317 170 317 170   b6b6b6   10 C
-r$c0cardface4        349 144 367 185        0    0 H0
-r$c0cardface4nocard  360 170 360 170   b6b6b6   10 C
+r$c0cardface0        193 144 211 170        0    0 H0
+r$c0cardface0nocard  212 142 212 142   b6b6b6   10 C
+r$c0cardface1        232 144 250 170        0    0 H0
+r$c0cardface1nocard  243 142 243 142   b6b6b6   10 C
+r$c0cardface2        271 144 289 170        0    0 H0
+r$c0cardface2nocard  282 142 282 142   b6b6b6   10 C
+r$c0cardface3        310 144 328 170        0    0 H0
+r$c0cardface3nocard  317 142 317 142   b6b6b6   10 C
+r$c0cardface4        349 144 367 170        0    0 H0
+r$c0cardface4nocard  360 142 360 142   b6b6b6   10 C
 r$c0handnumber       277   6 329  16        0    0 T0
 r$c0pot0             251  49 329  58        0    0 T0
 r$i0button           491 320 502 331   ff0000    0 N
@@ -100,7 +100,7 @@ r$p1cardface1nocard  472  40 472  40   b6b6b6   10 C
 r$p1cardface2        418  42 436  68        0    0 H0
 r$p1cardface2nocard  443  40 443  40   b6b6b6   10 C
 r$p1cardface3        484  42 502  68        0    0 H0
-r$p1cardface3nocard  510  40 510  40    40404  -10 C
+r$p1cardface3nocard  510  40 510  40   b6b6b6   10 C
 r$p1dealer           414 117 417 119       ff    0 C
 r$p1name             441  87 509  99        0    0 T0
 r$p1seated           471  31 479  31        0    0 C
@@ -109,7 +109,7 @@ r$p2balance          508 189 556 201        0    0 T0
 r$p2bet              422 150 463 163   ffffff    0 T0
 r$p2cardback         497 164 503 170     ffff    0 H0
 r$p2cardface0        497 129 515 155        0    0 H0
-r$p2cardface0nocard  504 127 504 127   ffffff  -10 C
+r$p2cardface0nocard  504 127 504 127   b6b6b6   10 C
 r$p2cardface1        519 129 537 155        0    0 H0
 r$p2cardface1nocard  531 127 531 127   b6b6b6   10 C
 r$p2cardface2        475 129 493 155        0    0 H0
@@ -597,13 +597,13 @@ h0$3h                 9c645b32
 h0$6d                 9f2bcd8d
 h0$5c                 a01dd444
 h0$Ks                 a2122df6
-h0$9c                 a5d2501e
 h0$Qh                 a8ce9538
 h0$Td                 ac2c4fab
 h0$8d                 ac866134
 h0$7h                 b3f14194
 h0$Jd                 b493bff4
 h0$8s                 b93422b3
+h0$9c                 bbac392c
 h0$9d                 c145537c
 h0$7c                 c410247d
 h0$6s                 d030d903
@@ -830,34 +830,6 @@ ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000000cc000000cc000000cc000000cc000000cc000000cc000000cc00ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff000000cc000000cc000000cc000000cc000000cc00ffffff00ffffff00
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff000000cc000000cc000000cc00ffffff00ffffff00ffffff00
-i$9c               19  27 
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff0004040400
-ffffff00ffffff000099330000993300009933000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff0004040400
-ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff0004040400
-ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff0004040400
-ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b20004040400
-ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff0004040400
-ffffff00ffffff00009933000099330000993300009933000099330000993300ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff0004040400
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff0004040400
-ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff0004040400
-ffffff00ffffff0000993300009933000099330000993300ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff00009933000099330004040400
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300009933000099330000993300009933000099330004040400
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff00009933000099330004040400
-ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00a4a0a000
-ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00a4a0a000
-ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
-0099330000993300ffffff0000993300ffffff000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
-00993300009933000099330000993300009933000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
-0099330000993300ffffff0000993300ffffff000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00
-ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff000099330000993300ffffff00
-ffffff000099330000993300009933000099330000993300ffffff00ffffff00ffffff00b2b2b200ffffff0000993300009933000099330000993300009933000099330000993300ffffff00
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff000099330000993300ffffff00
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff0000993300
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff0000993300
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00009933000099330000993300
-ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00
 i$Jc               19  27 
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff00ffffff0000993300009933000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
@@ -1634,6 +1606,34 @@ ffffff00ffffff0000000000ffffff00ffffff00ffffff00ffffff0000000000
 ffffff00ffffff00000000000000000000000000000000000000000000000000
 ffffff0000000000ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff0000000000ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+i$9c               19  27 
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+ffffff00ffffff000099330000993300009933000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200b2b2b200
+ffffff000099330000993300ffffff00ffffff00ffffff000099330000993300ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+ffffff00ffffff00009933000099330000993300009933000099330000993300ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00
+ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00
+ffffff00ffffff0000993300009933000099330000993300ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff000099330000993300ffffff00
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff0000993300009933000099330000993300009933000099330000993300ffffff00
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff000099330000993300ffffff00
+ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00ffffff00
+ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00
+ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+0099330000993300ffffff0000993300ffffff000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+00993300009933000099330000993300009933000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
+0099330000993300ffffff0000993300ffffff000099330000993300ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00
+ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff00ffffff00
+ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff000099330000993300ffffff00
+ffffff000099330000993300009933000099330000993300ffffff00ffffff00ffffff00b2b2b200ffffff0000993300009933000099330000993300009933000099330000993300ffffff00
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff000099330000993300ffffff0000993300ffffff000099330000993300ffffff00
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff0000993300ffffff00ffffff00ffffff0000993300
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00009933000099330000993300ffffff00ffffff0000993300
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00009933000099330000993300
+ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00b2b2b200ffffff00ffffff00ffffff00ffffff00ffffff00ffffff000099330000993300ffffff00
 i$2c               19  27 
 ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
 ffffff000099330000993300009933000099330000993300ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00ffffff00
