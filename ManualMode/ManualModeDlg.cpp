@@ -1817,6 +1817,12 @@ void CManualModeDlg::get_click_loc(CPoint p)
   for (int i = kMaxNumberOfPlayers - 1; i >= 0; --i) {
     for (int j = kMaxNumberOfCardsPerPlayer - 1; j >= 0; --j)
     {
+      if (!IsOmaha() && (j >= kNumberOfCardsPerPlayerHoldEm)) {
+        // Skip cards 0 and 3 if we are playing Hold'em
+        // It is annoying if we accidentaly set an invisible card
+        // or if a visible card is not everywhere clickable
+        continue;
+      }
       int left = PlayerCardLeft(i, j);
       int top = PlayerCardTop(i);
       int right = left + CARDSIZEX - 1;
