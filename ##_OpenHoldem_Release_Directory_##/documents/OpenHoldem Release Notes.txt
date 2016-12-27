@@ -10,7 +10,7 @@ NEW STUFF:
 	* $$prX (rank symbols)
 	* $$psX (suit symbols)
 	* isomaha (true if more than two cards have been seen for a player)
-  Furtermore some basic symbols work for both Hold'em and Omaha
+  Furthermore some basic symbols work for both Hold'em and Omaha
     * nsuitedcommon and similar
 	* rankbitscommon and similar
   More advanced features:
@@ -26,6 +26,11 @@ NEW STUFF:
   
 MAINTENANCE:
 - Shooting replay-frames does no longer require the autoplayer.
+
+BUG FIXES:	
+- Empty functions got ignored on parsing, but they are meaningful.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
   
 
 v9.4.3c 2016-12-25
