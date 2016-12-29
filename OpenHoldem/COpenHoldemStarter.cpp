@@ -21,22 +21,30 @@
 #include "CSessionCounter.h"
 #include "CSymbolEngineTime.h"
 
-COpenHoldemStarter *p_openholdem_starter = NULL;
-
 // For connection and popup handling
-const int kMinNumberOfUnoccupiedBotsneeded = 1;
-const int kSecondsToWaitBeforeTermination = 600;
+const int kMinNumberOfUnoccupiedBotsNeeded =   1;
+const int kSecondsToWaitBeforeTermination  = 600;
+const int kSecondsToWaitBeforeNextStart    =   5;
 
 COpenHoldemStarter::COpenHoldemStarter() {
+  time(&_starting_time_of_last_instance);
 }
 
 COpenHoldemStarter::~COpenHoldemStarter() {
 }
 
 void COpenHoldemStarter::StartNewInstanceIfNeeded() {
-  if (p_sharedmem->NUnoccupiedBots() >= kMinNumberOfUnoccupiedBotsneeded) {
+  if (p_sharedmem->NUnoccupiedBots() >= kMinNumberOfUnoccupiedBotsNeeded) {
     // Enough instance available for new connections / popup handling
     write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] No bots needed, enough free instances.\n");
+    return;
+  }
+  time_t current_time;
+  time(&current_time);
+  if (current_time - _starting_time_of_last_instance < kSecondsToWaitBeforeNextStart) {
+    // Another instance got started only recently.
+    // Grant it some seconds to show up
+    // and don't flood the screen with new bots.
     return;
   }
   if (p_sharedmem->LowestConnectedSessionID() != p_sessioncounter->session_id()) {
@@ -46,6 +54,7 @@ void COpenHoldemStarter::StartNewInstanceIfNeeded() {
     return;
   }
   //!!!!! if preferences
+  time(&_starting_time_of_last_instance);
   //! delay until next start
   // No error-checking, as Openholdem exists (at least when we started).
   // http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153%28v=vs.85%29.aspx
@@ -65,7 +74,7 @@ void COpenHoldemStarter::CloseThisInstanceIfNoLongerNeeded() {
     // Instance needed for playing
     return;
   }
-  if (p_sharedmem->NUnoccupiedBots() <= kMinNumberOfUnoccupiedBotsneeded) {
+  if (p_sharedmem->NUnoccupiedBots() <= kMinNumberOfUnoccupiedBotsNeeded) {
     // Instance needed for new connections / popup handling
     return;
   }

@@ -20,8 +20,6 @@
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
 #include "CHeartbeatDelay.h"
-#include "CSymbolEngineChipAmounts.h"
-#include "CSymbolEngineReplayFrameController.h"
 #include "CEngineContainer.h"
 #include "CGameState.h"
 #include "CIteratorThread.h"
@@ -34,6 +32,8 @@
 #include "CReplayFrame.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
+#include "CSymbolEngineChipAmounts.h"
+#include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableMapLoader.h"
@@ -52,6 +52,7 @@ CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
 long int			    CHeartbeatThread::_heartbeat_counter = 0;
 CHeartbeatThread  *CHeartbeatThread::pParent = NULL;
 CHeartbeatDelay   CHeartbeatThread::_heartbeat_delay;
+COpenHoldemStarter CHeartbeatThread::_openholdem_starter;
 
 CHeartbeatThread::CHeartbeatThread() {
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
@@ -126,8 +127,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
       } 		
 		}
 #ifdef OPENHOLDEM_11_1_0
-    p_openholdem_starter->StartNewInstanceIfNeeded();
-    p_openholdem_starter->CloseThisInstanceIfNoLongerNeeded();
+    _openholdem_starter.StartNewInstanceIfNeeded();
+    _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
 #endif OPENHOLDEM_11_1_0
     _heartbeat_delay.FlexibleSleep();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");

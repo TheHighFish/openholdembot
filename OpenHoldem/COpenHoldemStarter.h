@@ -12,6 +12,9 @@
 //
 //******************************************************************************
 
+// For time_t
+#include "corecrt.h"
+
 class COpenHoldemStarter {
 public:
   COpenHoldemStarter();
@@ -20,6 +23,6 @@ public:
   void StartNewInstanceIfNeeded();
   void CloseThisInstanceIfNoLongerNeeded();
 private:
+  time_t _starting_time_of_last_instance;
 };
 
-extern COpenHoldemStarter *p_openholdem_starter;
