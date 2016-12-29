@@ -14,6 +14,9 @@
 #ifndef INC_STDAFX_H
 #define INC_STDAFX_H
 
+//!!!!!!!
+//#define OPENHOLDEM_11_1_0
+
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently,
 // but are changed infrequently

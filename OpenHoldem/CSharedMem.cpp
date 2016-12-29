@@ -219,21 +219,47 @@ bool CSharedMem::IsAnyOpenHoldemProcess(int PID) {
 }
 
 int CSharedMem::LowestConnectedSessionID() {
-  for (int i = 0; i<MAX_SESSION_IDS; i++) {
-    if (attached_poker_windows[i] == NULL) {
-      continue;
-    }
-    if (IsWindow(attached_poker_windows[i])) {
+  for (int i = 0; i<MAX_SESSION_IDS; ++i) {
+    if (attached_poker_windows[i] != NULL) {
       return i;
     }
   }
   return kUndefined;
 }
 
-int NBotsPresent() {
-  return 0; //!!!!!
+int CSharedMem::LowestUnconnectedSessionID() {
+  for (int i = 0; i<MAX_SESSION_IDS; ++i) {
+    if (openholdem_PIDs[i] != 0) {
+      // ID not used (bot probably terminated)
+      continue;
+    }
+    if (attached_poker_windows[i] != NULL) {
+      return i;
+    }
+  }
+  return kUndefined;
 }
 
-int NTablesConnected() {
-  return 0; //!!!!!
+int CSharedMem::NBotsPresent() {
+  int result = 0;
+  for (int i = 0; i < MAX_SESSION_IDS; ++i) {
+    if (openholdem_PIDs[i] != 0) {
+      ++result;
+    }
+  }
+  return result;
+}
+
+int CSharedMem::NUnoccupiedBots() {
+  return (NBotsPresent() - NTablesConnected());
+}
+
+int CSharedMem::NTablesConnected() {
+  int result = 0;
+  for (int i = 0; i < MAX_SESSION_IDS; ++i) {
+    if (attached_poker_windows[i] != 0) {
+      ++result;
+    }
+  }
+  return result;
 }

@@ -16,9 +16,12 @@
 
 #include "CAutoConnector.h"
 #include "CFilenames.h"
+#include "CPreferences.h"
 #include "CSharedMem.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineTime.h"
+
+COpenHoldemStarter *p_openholdem_starter = NULL;
 
 // For connection and popup handling
 const int kMinNumberOfUnoccupiedBotsneeded = 1;
@@ -33,22 +36,27 @@ COpenHoldemStarter::~COpenHoldemStarter() {
 void COpenHoldemStarter::StartNewInstanceIfNeeded() {
   if (p_sharedmem->NUnoccupiedBots() >= kMinNumberOfUnoccupiedBotsneeded) {
     // Enough instance available for new connections / popup handling
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] No bots needed, enough free instances.\n");
     return;
   }
   if (p_sharedmem->LowestConnectedSessionID() != p_sessioncounter->session_id()) {
     // Only one instance should handle auto-starting.
     // This might delay auto-starting until the first connection, which is OK.
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Not my business to start new instances.\n");
     return;
   }
   //!!!!! if preferences
+  //! delay until next start
   // No error-checking, as Openholdem exists (at least when we started).
   // http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153%28v=vs.85%29.aspx
+  write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Starting new instance [%s].\n",
+    p_filenames->ExecutableFilename());
   ShellExecute(
     NULL,               // Pointer to parent window; not needed
     "open",             // "open" == "execute" for an executable
     p_filenames->ExecutableFilename(),
     NULL, 		          // Parameters
-    p_filenames->ToolsDirectory(), // Working directory, location of ManualMode
+    "",                 // Working directory
     SW_SHOWNORMAL);		  // Active window, default size
 }
 
