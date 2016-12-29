@@ -252,6 +252,9 @@
     <ClCompile Include="OpenHoldemDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+	<ClCompile Include="COpenHoldemStarter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Singletons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -417,7 +420,7 @@
     <ClCompile Include="CSymbolengineDealerchair.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
-	<ClCompile Include="CSymbolengineDebug.cpp">
+    <ClCompile Include="CSymbolengineDebug.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
     <ClCompile Include="CSymbolEngineEventLogging.cpp">
@@ -980,12 +983,6 @@
     <None Include="..\StringFunctionsDLL\string_functions.cpp">
       <Filter>Temp</Filter>
     </None>
-    <None Include="CSymbolengineDebug.h">
-      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
-    </None>
-    <None Include="CSymbolengineDebug.cpp">
-      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CFileSystemMonitor.h">
@@ -1049,6 +1046,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OpenHoldemDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+	<ClInclude Include="COpenHoldemStarter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
@@ -1195,7 +1195,7 @@
     <ClInclude Include="CSymbolEngineDealerchair.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
-	<ClInclude Include="CSymbolEngineDebug.h">
+    <ClInclude Include="CSymbolEngineDebug.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="CSymbolEngineEventLogging.h">

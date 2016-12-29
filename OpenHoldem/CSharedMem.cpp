@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Synchronization, mainly info about connected tables
+//   for the auto-connector
 //
 //******************************************************************************
 
@@ -217,3 +218,22 @@ bool CSharedMem::IsAnyOpenHoldemProcess(int PID) {
 	return false;
 }
 
+int CSharedMem::LowestConnectedSessionID() {
+  for (int i = 0; i<MAX_SESSION_IDS; i++) {
+    if (attached_poker_windows[i] == NULL) {
+      continue;
+    }
+    if (IsWindow(attached_poker_windows[i])) {
+      return i;
+    }
+  }
+  return kUndefined;
+}
+
+int NBotsPresent() {
+  return 0; //!!!!!
+}
+
+int NTablesConnected() {
+  return 0; //!!!!!
+}

@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Synchronization, mainly info about connected tables
+//   for the auto-connector
 //
 //******************************************************************************
 
@@ -41,9 +42,20 @@ class CSharedMem {
 	HWND *GetDenseListOfConnectedPokerWindows();
 	int  SizeOfDenseListOfAttachedPokerWindows();
 	bool IsAnyOpenHoldemProcess(int PID);
+ public:
+  // For the auto-starter, as only one instance should start new bots
+  // and a mutex is not enough, starting usually needs some seconds.
+  // We can#t wait that long in the heartbeat and we can#t continue either
+  // as then another instance might start more nots.
+  int LowestConnectedSessionID();
+  // Same but for termination
+  int LowestUnconnectedSessionID();
+  int NTablesConnected();
+  int NUnoccupiedBots();
  private:
 	void CreateDenseListOfConnectedPokerWindows();
 	void VerifyMainMutexName();
+  int NBotsPresent();
  private:
 	CCritSec	m_critsec;
 };

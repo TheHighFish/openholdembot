@@ -27,6 +27,7 @@
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
 #include "COpenHoldemHopperCommunication.h"
+#include "COpenHoldemStarter.h"
 #include "COpenHoldemStatusbar.h"
 #include "COpenHoldemTitle.h"
 #include "CPreferences.h"
@@ -101,6 +102,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 			AfxEndThread(0);
 		}
     LogMemoryUsage("Begin of heartbeat thread cycle");
+    assert(p_openholdem_starter != NULL);
     assert(p_tablemap_loader != NULL);
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
     assert(p_autoconnector != NULL);
@@ -123,6 +125,10 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
         ScrapeEvaluateAct();
       } 		
 		}
+#ifdef OPENHOLDEM_11_1_0
+    p_openholdem_starter->StartNewInstanceIfNeeded();
+    p_openholdem_starter->CloseThisInstanceIfNoLongerNeeded();
+#endif OPENHOLDEM_11_1_0
     _heartbeat_delay.FlexibleSleep();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
 	}

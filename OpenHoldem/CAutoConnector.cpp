@@ -410,7 +410,7 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
   message.Format("DISCONNECTION -- %s", reason_for_disconnection);
 	WriteLogTableReset(message);
 
-	// Close OH, when table disappears and leaving enabled in preferences.
+	// Close OH, when table disappears and leaving enabled in preferences.//!!!!! can be removed due to OH-starter
 	if (preferences.autoconnector_close_when_table_disappears()) {
 		PostQuitMessage(0);
 	}

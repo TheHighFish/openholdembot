@@ -236,7 +236,7 @@
     <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />
-	<ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
+    <ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
@@ -259,6 +259,7 @@
     <ClCompile Include="mtrand.cpp" />
     <ClCompile Include="OpenHoldem.cpp" />
     <ClCompile Include="OpenHoldemDoc.cpp" />
+	<ClCompile Include="COpenHoldemStarter.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -335,7 +336,7 @@
     <ClCompile Include="CSymbolEngineCards.cpp" />
     <ClCompile Include="CSymbolEngineChipAmounts.cpp" />
     <ClCompile Include="CSymbolengineDealerchair.cpp" />
-	<ClCompile Include="CSymbolengineDebug.cpp" />
+    <ClCompile Include="CSymbolengineDebug.cpp" />
     <ClCompile Include="CSymbolEngineEventLogging.cpp" />
     <ClCompile Include="CSymbolEngineHandrank.cpp" />
     <ClCompile Include="CSymbolEngineHistory.cpp" />
@@ -525,7 +526,7 @@
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
-	<ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
+    <ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
     <ClInclude Include="CSymbolengineColourCodes.h" />
     <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
@@ -549,6 +550,7 @@
     <ClInclude Include="OH_MessageBox.h" />
     <ClInclude Include="OpenHoldem.h" />
     <ClInclude Include="OpenHoldemDoc.h" />
+    <ClInclude Include="COpenHoldemStarter.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Singletons.h" />
     <ClInclude Include="SLimitInfo.h" />
@@ -602,7 +604,7 @@
     <ClInclude Include="CSymbolEngineCards.h" />
     <ClInclude Include="CSymbolEngineChipAmounts.h" />
     <ClInclude Include="CSymbolEngineDealerchair.h" />
-	<ClInclude Include="CSymbolEngineDebug.h" />
+    <ClInclude Include="CSymbolEngineDebug.h" />
     <ClInclude Include="CSymbolEngineEventLogging.h" />
     <ClInclude Include="CSymbolEngineHandrank.h" />
     <ClInclude Include="CSymbolEngineHistory.h" />
