@@ -260,8 +260,11 @@ OneCardStraightPossible AND NOT MoreThanOneOneCardStraightPossible
 (nstraightcommon == 4 AND (`((rankbitscommon >> 10) & 0x1f) < 4) AND (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##OpenEndedStraightDrawPossibleOnFlop##
-[(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard - SecondTopFlopCard > 0) AND (TopFlopCard != ConstCardAce)]
-OR [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard - LowestFlopCard >0) AND (LowestFlopCard >= ConstCardTwo)]
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20413
+WHEN (TopFlopCard <= 2) RETURN False FORCE
+WHEN (LowestFlopCard < 2) RETURN False FORCE
+WHEN [(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard != SecondTopFlopCard) AND (TopFlopCard != ConstCardAce)] RETURN True FORCE
+WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != LowestFlopCard >0)] RETURN True FORCE
 
 ##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
