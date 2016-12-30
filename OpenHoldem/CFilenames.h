@@ -15,7 +15,7 @@
 #define INC_CFILENAMES_H
 
 // OpenPPL-files in the botlogic-directory
-const int kNumberOfOpenPPLLibraries = 23;
+const int kNumberOfOpenPPLLibraries = 24;
 const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Ante_Others_IsFinalTable.ohf",
   "OpenPPL_Library_Bets_Pots_And_Stacks.ohf",
@@ -28,6 +28,7 @@ const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_History_Symbols.ohf",
   "OpenPPL_Library_HoldEm_HandStrength_Symbols.ohf",
   "OpenPPL_Library_HoldEm_NutFullHouseOrFourOfAKind.ohf",
+  "OpenPPL_Library_Omaha_Board_Symbols.ohf",
   "OpenPPL_Library_Omaha_HandStrength_Symbols.ohf",
   "OpenPPL_Library_Omaha_NutFullHouseOrFourOfAKind.ohf",
   "OpenPPL_Library_Players_and_Opponents.ohf",

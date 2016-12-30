@@ -58,7 +58,7 @@
 
 //*****************************************************************************
 //
-// OpenPPL - HandStrength Symbols
+// OpenPPL - HandStrength Symbols Omaha
 //
 //*****************************************************************************
 
@@ -400,3 +400,57 @@
 
 ##Omaha_SuitsInHand##
 
+//*****************************************************************************
+//
+// OpenPPL - HandStrength Symbols Omaha only
+//   (but some of them might be useful for Hold'em too)
+//
+//*****************************************************************************
+
+##LowCardsInHand##
+
+##SuitsInHand##
+
+##DoubleSuited##
+
+##FourCardStraightInHand##
+
+##FourCardsWith1GapInHan##
+
+##Have10OutStraightDraw##
+
+##Have12OutStraightDraw##
+
+##Have16OutStraightDraw##
+
+##Have2ndNutLow##
+
+##Have2ndNutLowDraw##
+
+##Have3rdNutLow##
+
+##Have3rdNutLowDraw##
+
+##Have4thNutLow##
+
+##Have4thNutLowDraw##
+
+##HaveLow##
+
+##HaveNutLow##
+
+##HaveNutLowBackdoorDraw##
+
+##HaveNutLowDraw##
+
+##HaveNutLowDrawWithBackup##
+
+##HaveNutLowWithBackup##
+
+##ThreeCardStraightInHand##
+
+##ThreeCardsWith1gapInHand##
+
+##TripsInHand##
+
+##TwoPairInHand##
