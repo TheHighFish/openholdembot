@@ -23,7 +23,7 @@
 
 // For connection and popup handling
 const int kMinNumberOfUnoccupiedBotsNeeded =   1;
-const int kSecondsToWaitBeforeTermination  = 600;
+const int kSecondsToWaitBeforeTermination  = 120;
 const int kSecondsToWaitBeforeNextStart    =   5;
 
 COpenHoldemStarter::COpenHoldemStarter() {
@@ -71,23 +71,31 @@ void COpenHoldemStarter::StartNewInstanceIfNeeded() {
 
 void COpenHoldemStarter::CloseThisInstanceIfNoLongerNeeded() {
   if (p_autoconnector->IsConnected()) {
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Playing, therefore still needed.\n");
     // Instance needed for playing
     return;
   }
   if (p_sharedmem->NUnoccupiedBots() <= kMinNumberOfUnoccupiedBotsNeeded) {
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Needed for new connections.\n");
     // Instance needed for new connections / popup handling
     return;
   }
   if (p_symbol_engine_time->elapsedauto() < kSecondsToWaitBeforeTermination) {
     // Don't shut down immediately
     // Instance might be needed soon again
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Not waited long enough for shutdown.\n");
     return;
   }
   if (p_sharedmem->LowestUnconnectedSessionID() != p_sessioncounter->session_id()) {
     // Only one instance should tzerminate at a time
     // to keep one instance available
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Not my turn to shutdown.\n");
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Lowest free ID: %d\n", p_sharedmem->LowestUnconnectedSessionID());
+    write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] My ID: %d\n", p_sessioncounter->session_id());
     return;
   }
+  write_log(preferences.debug_alltherest(), "[COpenHoldemStarter] Shutting down this instance.\n");
   //!!!!! if preferences
   PostQuitMessage(0);
+  exit(0);
 }

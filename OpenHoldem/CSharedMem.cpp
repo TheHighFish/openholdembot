@@ -229,11 +229,11 @@ int CSharedMem::LowestConnectedSessionID() {
 
 int CSharedMem::LowestUnconnectedSessionID() {
   for (int i = 0; i<MAX_SESSION_IDS; ++i) {
-    if (openholdem_PIDs[i] != 0) {
+    if (openholdem_PIDs[i] == 0) {
       // ID not used (bot probably terminated)
       continue;
     }
-    if (attached_poker_windows[i] != NULL) {
+    if (attached_poker_windows[i] == NULL) {
       return i;
     }
   }
