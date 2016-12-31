@@ -1,3 +1,21 @@
+v11.1.0 2017-xx-xx
+==================
+NEW STUFF:
+- OpenHoldem autostarter that takes care that enough free instances
+  of OpenHoldem are running.
+  [THF]
+- New memory-commands:
+    * me_add_symbol_value
+    * me_sub_symbol_value
+  that can be used in addition to me_st_, me_re_ and me_inc
+  to manipulate memory-symbols more easily.
+  [THF]
+  
+
+v11.0.1 2017-xx-xx
+==================
+
+
 v11.0.0 2016-12-27
 ==================
 NEW STUFF:

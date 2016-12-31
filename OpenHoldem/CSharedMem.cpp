@@ -83,6 +83,7 @@ CSharedMem::~CSharedMem() {
   table_positions[p_sessioncounter->session_id()].left   = 0;
   table_positions[p_sessioncounter->session_id()].right  = 0;
   table_positions[p_sessioncounter->session_id()].top    = 0;
+  MessageBox(0, "SharedMem", "Terminating", 0); //!!!!!
 }
 
 bool CSharedMem::PokerWindowAttached(HWND Window) {

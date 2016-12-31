@@ -53,6 +53,7 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
   // Covering both me_st_ and me_inc_ here.
   // me_re_ is a normal identifier, as it
   // doesn't require a continuation at the next condition.
+  // Also me_add_ amd me_sub_ since openHoldem 11.1.0.
   if (name.Left(3) == "me_") {
     double temp_result;
     p_symbol_engine_memory_symbols->EvaluateSymbol(name,

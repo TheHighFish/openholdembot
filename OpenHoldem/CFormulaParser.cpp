@@ -670,7 +670,9 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
       "Valid options:\n"
       "   * user-variable (user_utg_limp_raised)\n"
       "   * memory-store-command (me_st_pi_3_141592653)\n"
-      "   * memory-increment-command (me_inc_flopsseen)\n");
+      "   * memory-increment-command (me_inc_flopsseen)\n"
+      "   * memory-add-command (me_add_outs_4)\n"
+      "   * memory-sub-command (me_sub_outs_1_5)\n");
 		return NULL;
 	}
 	TPParseTreeTerminalNodeIdentifier user_variable 

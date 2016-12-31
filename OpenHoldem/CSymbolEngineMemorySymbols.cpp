@@ -77,33 +77,107 @@ void CSymbolEngineMemorySymbols::ErrorUnnamedMemorySymbol(CString command) {
 
 void CSymbolEngineMemorySymbols::Store(CString command) {
   assert(command.Left(6) == "me_st_");
-  CString command_without_prefix = command.Mid(6); 
-  write_log(preferences.debug_memorysymbols(), 
-    "[CSymbolEngineMemorySymbols] command without prefix> %s\n", command_without_prefix);
-  // Get the name of the symbol, up to the next underscore
-  int position_of_first_underscore = command_without_prefix.Find('_');
-  write_log(preferences.debug_memorysymbols(), 
-    "[CSymbolEngineMemorySymbols] position of under-score: %i\n", 
-    position_of_first_underscore);
-  if (position_of_first_underscore <= 0) {
-    // Missing right hand side expression, including under-score
-    ErrorInvalidMemoryStoreCommand(command);
-    return;
+  CString right_hand_side = RightHandSide(command);
+  CString left_hand_side = LeftHandSide(command);
+  assert(right_hand_side != "");
+  assert(leftt_hand_side != "");
+  double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
+  _memory_symbols[LowerCaseKey(left_hand_side)] = evaluated_right_hand_side;
+}
+
+void CSymbolEngineMemorySymbols::Add(CString command) {
+  assert(command.Left(7) == "me_add_");
+  CString right_hand_side = RightHandSide(command);
+  CString left_hand_side = LeftHandSide(command);
+  assert(right_hand_side != "");
+  assert(leftt_hand_side != "");
+  double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
+  _memory_symbols[LowerCaseKey(left_hand_side)] += evaluated_right_hand_side;
+}
+
+void CSymbolEngineMemorySymbols::Sub(CString command) {
+  assert(command.Left(7) == "me_sub_");
+  CString right_hand_side = RightHandSide(command);
+  CString left_hand_side = LeftHandSide(command);
+  assert(right_hand_side != "");
+  assert(leftt_hand_side != "");
+  double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
+  _memory_symbols[LowerCaseKey(left_hand_side)] -= evaluated_right_hand_side;
+}
+
+void CSymbolEngineMemorySymbols::Increment(CString command) {
+  assert(command.Left(7) == "me_inc_");
+  CString left_hand_side = LeftHandSide(command);
+  assert(leftt_hand_side != "");
+  ++_memory_symbols[LowerCaseKey(left_hand_side)];
+}
+
+double CSymbolEngineMemorySymbols::Recall(CString command) {
+  assert(command.Left(6) == "me_re_");
+  CString left_hand_side = LeftHandSide(command);
+  assert(leftt_hand_side != "");
+  return _memory_symbols[LowerCaseKey(left_hand_side)];
+}
+
+// Finds the Nth occurance of a char in a string
+// Returns -1 if not found or found less than N times.
+int FindNth(CString s, char c, int nth_occurance_to_find) {
+  int next_position = 0;
+  for (int i = 0; i < nth_occurance_to_find; ++i) {
+    next_position = s.Find(c, next_position);
+    if (next_position < 0) {
+      // Not found
+      return kUndefined;
+    }
+    // Advance to first char after finding
+    ++next_position;
   }
-  CString symbol_name = command_without_prefix.Left(position_of_first_underscore);
-  write_log(preferences.debug_memorysymbols(), 
-    "[CSymbolEngineMemorySymbols] symbol name: %s\n", symbol_name);
-  // Get the right hand value after the underscore
-  CString right_hand_side = command_without_prefix.Mid(position_of_first_underscore + 1);
-  write_log(preferences.debug_memorysymbols(), 
-    "[CSymbolEngineMemorySymbols] right hand side: %s\n", right_hand_side);
-  if (right_hand_side == "") {
-    // Empty right hand side expression after under-score
+  // Move back to last finding
+  --next_position;
+  return next_position;
+
+}
+
+CString CSymbolEngineMemorySymbols::RightHandSide(CString command) {
+  assert(command.Left(3) == "me_");
+  assert(command.GetLength() > 6);
+  int third_underscore = FindNth(command, '_', 3);
+  if (third_underscore < 0) {
     ErrorInvalidMemoryStoreCommand(command);
-    return;
+    return "error";
   }
-  double result = EvaluateRightHandExpression(right_hand_side);
-  _memory_symbols[LowerCaseKey(symbol_name)] = result;
+  CString result = command.Mid(third_underscore + 1);
+  if (result == "") {
+    ErrorInvalidMemoryStoreCommand(command);
+    return "error";
+  }
+  return result;
+}
+
+CString CSymbolEngineMemorySymbols::LeftHandSide(CString command) {
+  assert(command.Left(3) == "me_");
+  assert(command.GetLength() > 6);
+  int second_underscore = FindNth(command, '_', 2);
+  int third_underscore = FindNth(command, '_', 3);
+  if (second_underscore < 0) {
+    ErrorInvalidMemoryStoreCommand(command);
+    return "error";
+  }
+  CString result;
+  if (third_underscore < 0) {
+    // No right-hand-side argument
+    // Left-hand-side starts at second under-score till the very end.
+    result = command.Mid(second_underscore + 1);
+  }
+  else {
+    int left_length = third_underscore - second_underscore - 1;
+    result = command.Mid(second_underscore + 1, left_length);
+  }
+  if (result == "") {
+    ErrorInvalidMemoryStoreCommand(command);
+    return "error";
+  }
+  return result;
 }
 
 double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_hand_value) {
@@ -130,26 +204,6 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
   return result;
 }
 
-void CSymbolEngineMemorySymbols::Increment(CString command) {
-  assert(command.Left(7) == "me_inc_");
-  CString symbol_name = command.Mid(7);
-  if (symbol_name == "") {
-    ErrorUnnamedMemorySymbol(command);
-    return;
-  }
-  ++_memory_symbols[LowerCaseKey(symbol_name)];
-}
-
-double CSymbolEngineMemorySymbols::Recall(CString command) {
-  assert(command.Left(6) == "me_re_");
-  CString symbol_name = command.Mid(6);
-  if (symbol_name == "") {
-    ErrorUnnamedMemorySymbol(command);
-    return kUndefinedZero;
-  }
-  return _memory_symbols[LowerCaseKey(symbol_name)];
-}
-
 bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   // memory-commands
   // "name" = query
@@ -168,7 +222,19 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result
       Increment(name);
       *result = kUndefinedZero;
       return true;
-    } else {
+    } 
+#ifdef OPENHOLDEM_11_1_0    
+    else if (memcmp(name, "me_add_", 7) == 0) {
+      Add(name);
+      *result = kUndefinedZero;
+      return true;
+    } else if (memcmp(name, "me_sub_", 7) == 0) {
+      Sub(name);
+      *result = kUndefinedZero;
+      return true;
+    } 
+#endif OPENHOLDEM_11_1_0   
+    else {
     // Looks like a memory-command, but is invalid
     return false;
     }

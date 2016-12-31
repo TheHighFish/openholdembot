@@ -34,8 +34,12 @@ class CSymbolEngineMemorySymbols: public CVirtualSymbolEngine {
  private:
   void Store(CString command);
   void Increment(CString command);
+  void Add(CString command);
+  void Sub(CString command);
   double Recall(CString command);
  private:
+  CString RightHandSide(CString command);
+  CString LeftHandSide(CString command);
   double EvaluateRightHandExpression(CString right_hand_value);
  private:
   void ErrorInvalidMemoryStoreCommand(CString command);
