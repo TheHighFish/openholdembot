@@ -270,7 +270,7 @@ WHEN (SecondTopFlopCard < 2) RETURN False FORCE
 WHEN (LowestFlopCard < 2) RETURN False FORCE
 WHEN TripsOnFlopOnBoard RETURN False FORCE
 WHEN [(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard != SecondTopFlopCard) AND (TopFlopCard != ConstCardAce)] RETURN True FORCE
-WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != LowestFlopCard > 0)] RETURN True FORCE
+WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != LowestFlopCard)] RETURN True FORCE
 
 ##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
