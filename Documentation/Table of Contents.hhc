@@ -600,6 +600,10 @@
 				<param name="Local" value="Chapters\automation\Rebuys.html.LyXconv\Rebuys.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Table Changes in MTTs">
+				<param name="Local" value="Chapters\automation\table_changes_in_tournaments.html.LyXconv\table_changes_in_tournaments.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Setting Process CPU Afinity">
 				<param name="Local" value="Chapters\automation\SettingProcessCPUAfinity.html.LyXconv\SettingProcessCPUAfinity.html">
 				</OBJECT>
