@@ -261,7 +261,7 @@ void draw_cur_frame()
 		SetWindowPos(g_hWnd, NULL, 0, 0, 320, 240, SWP_NOMOVE | SWP_NOZORDER);
 		hdc = GetDC(g_hWnd);
 		SetTextColor(hdc, RGB(220,0,0));
-		sprintf_s(text, 2048, "OHReplay 2.0.0\n");
+		sprintf_s(text, 2048, "OHReplay 11.0.1\n");
 		strcat_s(text, 2048, "----------------------------------\n");
 		strcat_s(text, 2048, "Open a frame: SysMenu/Open, Ctrl-O, F2\n\n");
 		strcat_s(text, 2048, "Next frame: Tab\n");
@@ -409,7 +409,9 @@ bool select_frame(char *szFile, char *szFileTitle, int *name_start, int *name_en
 	ofn.lpstrFileTitle = szFileTitle;
 	ofn.lpstrFileTitle[0] = '\0';
 	ofn.nMaxFileTitle = MAX_PATH;
-	ofn.lpstrFilter = "OpenHoldem Frames (.htm)\0*.htm\0\0";
+  // Supporting pure bitmaps now because too much beginners don't send complete frames.
+  // This way we can use at least the image info, but not the table-title in the HTML
+	ofn.lpstrFilter = "OpenHoldem Frames (.htm)\0*.htm\0Bitmaps (.bmp)\0*.bmp\0\0";
 	ofn.nFilterIndex = 1;
 	ofn.lpstrTitle = "Select OpenHoldem frame to OPEN";
 	ofn.lpstrInitialDir = NULL;
