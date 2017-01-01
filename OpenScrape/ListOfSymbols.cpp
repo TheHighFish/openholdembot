@@ -21,7 +21,7 @@ std::vector<CString> list_of_regions;
 std::vector<CString> list_of_sizes;
 std::vector<CString> list_of_symbols;
 
-CString ListOfStrings() {
+CString ListOfSymbols() {
   CString list;
   // The function RangeOfSymbols adds a space after every symbol.
   // Individual symbols that get added to the list 
@@ -147,10 +147,39 @@ CString ListOfRegions() {
   return list;
 }
 
+std::vector<CString> SplitStringToStringVector(CString s, char delimiter) {
+  // Add a delimiter to the end of input for more easy tokenization
+  CString temp_input = s + delimiter;
+  std::vector<CString> result;
+  int length = temp_input.GetLength();
+  int pos = 0;
+  int last_pos = -1;
+  while (pos < length) {
+    if ((temp_input[pos] == delimiter) && (pos != last_pos)) {
+      int length_of_substring = pos - last_pos - 1;
+      if (length_of_substring <= 0) {
+        ++pos;
+        continue;
+      }
+      CString substring = temp_input.Mid(last_pos + 1, length_of_substring);
+      result.push_back(substring);
+      last_pos = pos;
+    }
+    ++pos;
+  }
+  return result;
+}
+
 CString ListOfSizes() {
   return "clientsizemin clientsizemax targetsize";
 }
 
 void BuildVectorsOfScraperSymbols() {
+  const char kSpace = ' ';
+  CString sizes = ListOfSizes();
   CString regions = ListOfRegions();
+  CString symbols = ListOfSymbols();
+  list_of_sizes = SplitStringToStringVector(sizes, kSpace);
+  list_of_regions = SplitStringToStringVector(regions, kSpace);
+  list_of_symbols = SplitStringToStringVector(symbols, kSpace);
 }

@@ -1,3 +1,11 @@
+v11.0.1 2017-01-xx
+=================
+BUG FIXES:
+- Due to a rewritten list of symbols that missed a small piece of code
+  it was only possible to edit and clone symbols, but not to create new ones.
+  Thanks to Guysmo for reporting.
+  [THF]
+
 v11.0.0 2016-12-26
 =================
 NEW STUFF:

@@ -25,7 +25,6 @@
 
 //!!!!!ugly temp workaround
 #include "..\StringFunctionsDLL\string_functions.cpp"
-
 // COpenScrapeView
 
 IMPLEMENT_DYNCREATE(COpenScrapeView, CView)
@@ -480,30 +479,25 @@ BOOL COpenScrapeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void COpenScrapeView::blink_rect(void)
 {
-	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString				sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
+	COpenScrapeDoc *pDoc = COpenScrapeDoc::GetDocument();
+	CString				 sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
+	CDC					   *pDC = GetDC();
+	CPen				   *pTempPen, oldpen;
+	CBrush				 *pTempBrush, oldbrush;	
 
-	CDC					*pDC = GetDC();
-	CPen				*pTempPen, oldpen;
-	CBrush				*pTempBrush, oldbrush;	
-
-	if (dragging)  return;
-
-
-	// Set pen and brush
+  if (dragging) {
+    return;
+  }
+  // Set pen and brush
 	pTempPen = (CPen*)pDC->SelectObject(pDoc->blink_on ? green_pen : red_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 	pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
-	if (!dragging)
-	{
-		RMapCI r_iter=p_tablemap->r$()->find(sel.GetString());
-
-		if (r_iter != p_tablemap->r$()->end())
-			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
-	}
-
+	RMapCI r_iter=p_tablemap->r$()->find(sel.GetString());
+  if (r_iter != p_tablemap->r$()->end()) {
+    pDC->Rectangle(r_iter->second.left - 1, r_iter->second.top - 1, r_iter->second.right + 2, r_iter->second.bottom + 2);
+  }
 	// Clean up
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);

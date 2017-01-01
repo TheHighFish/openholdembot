@@ -46,7 +46,9 @@ const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c
 // CDlgTableMap dialog
 CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER
+  __SEH_SET_EXCEPTION_HANDLER
+
+  BuildVectorsOfScraperSymbols();
 
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
@@ -1581,7 +1583,7 @@ void CDlgTableMap::OnBnClickedNew() {
 		dlgregions.titletext = "New Region record";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
-    assert(list_of_regions[list_of_regions.size() - 1] != NULL);
+    assert(list_of_regions[list_of_regions.size() - 1] != "");
 		for (int i=0; i<list_of_regions.size(); i++) {
       // Ignore empty strings
       // This should no longer happen with the new way we build lists
@@ -1592,7 +1594,7 @@ void CDlgTableMap::OnBnClickedNew() {
         CString tablemap_string = r_iter->second.name;
         CString allowed_string = list_of_regions[i];
         assert(tablemap_string != "");
-        assert(allowed_string != NULL);
+        assert(allowed_string != "");
         if (tablemap_string == "") continue;
 				if (tablemap_string == allowed_string) {  
 					used_string = true;

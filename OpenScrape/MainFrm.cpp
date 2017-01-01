@@ -430,14 +430,18 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
-
+  if (!pDoc) {
+    return;
+  }
+  if (!pView) {
+    return;
+  }
 	if (nIDEvent == BLINKER_TIMER) 
 	{
 		pDoc->blink_on = !pDoc->blink_on;
 		pView->blink_rect();
 
 	}
-
 	CFrameWnd::OnTimer(nIDEvent);
 }
 
