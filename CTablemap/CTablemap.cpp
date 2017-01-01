@@ -191,10 +191,39 @@ void CTablemap::ClearTablemap() {
 	ClearIMap();
 }
 
-void CTablemap::WarnAboutGeneralTableMapError(int error_code, int line)
+void CTablemap::WarnAboutGeneralTableMapError(int line, int error_code)
 {
 	CString error;
-	error.Format("Error code: %d  line: %d", error_code, line);
+	error.Format("Error code: %d  line: %d\n", error_code, line);
+  switch (error_code) {
+  case ERR_EOF:
+    error += "Unexpected end of file";
+    break;
+  case ERR_SYNTAX:					  
+    error += "Syntax error";
+    break;
+  case ERR_VERSION:					  
+    error += "Unsupported file version";
+    break;
+  case ERR_NOTMASTER:				  
+    error += "Not a master file";
+    break;
+  case ERR_HASH_COLL:				  
+    error += "Hash collision";
+    break;
+  case ERR_REGION_SIZE:				
+    error += "Invalid region size";
+    break;
+  case ERR_UNK_LN_TYPE:				
+    error += "Unknown line type";
+    break;
+  case ERR_INV_HASH_TYPE:			
+    error += "Invalid hash type";
+    break;
+  case ERR_INCOMPLETEMASTER:  
+    error += "Incomplete master file";
+    break;
+  }
 	OH_MessageBox_Error_Warning(error, "Table map load error");
 }
 
@@ -228,14 +257,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
 #endif
-
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
 	CString		MaxFontGroup = "", MaxHashGroup = "";
 	int			  pos = 0, x = 0, y = 0;
-
 	MaxFontGroup.Format("%d", k_max_number_of_font_groups_in_tablemap);
 	MaxHashGroup.Format("%d", k_max_number_of_hash_groups_in_tablemap);
-
 	// temp
 	STablemapSize      hold_size;
 	STablemapSymbol    hold_symbol;
@@ -244,37 +270,29 @@ int CTablemap::LoadTablemap(const CString _fname) {
 	STablemapHashPoint hold_hash_point;
 	STablemapHashValue hold_hash_value;
 	STablemapImage		 hold_image;
-
 	// Clean up the global.profile structure
 	ClearTablemap();
-
 	CSLock lock(m_critsec);
-	
   assert(_fname != "");
 	_filename = _fname;
 	_filepath = _fname;
 	// Open the selected file
 	CFile cfFile(_filename, CFile::modeRead | CFile::shareDenyNone);
-
 	// Load its contents into a CArchive
 	CArchive ar (&cfFile, CArchive::load);
-
 	// Read the first line of the CArchive into strLine
 	strLine = "";
 	int linenum = 1;
-
 	// Failed, so quit
 	if (!ar.ReadString(strLine))
 	{
 		WarnAboutGeneralTableMapError(linenum, ERR_EOF);
 		return ERR_EOF;
 	}
-
 	// skip any blank lines
 	while (strLine.GetLength() == 0) 
 	{
 		linenum++;
-
 		// Failed, so quit
 		if (!ar.ReadString(strLine)) 
 		{
@@ -282,7 +300,6 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			return ERR_EOF;
 		}
 	}
-	
 	//
 	// Validate file version (always first line).
 	// It should always be version 2.
@@ -302,29 +319,23 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			"\n"
 			"To avoid costly mis-scrapes and crashes OpenHoldem will terminate now.\n",
 			_filename);
-
 		OH_MessageBox_Error_Warning(error_message, "Table map load error");
 		PostQuitMessage(1);
 		return ERR_VERSION;
 	}
-
-	// Repeat while there are lines in the file left to process
+  // Repeat while there are lines in the file left to process
 	do {
 		// Trim the line
 		strLine.Trim();
-
 		// If the line is empty, skip it
 		if (strLine.GetLength() == 0)
 			continue;
-
 		// Extract the line type
 		pos=0;
 		strLineType = strLine.Tokenize(" \t", pos);
-
 		// Skip comment lines
 		if (strLineType.Left(2) == "//")
 			continue;
-
 		// Skip version lines
 		if (strLineType == VER_OPENHOLDEM_1 ||
 				strLineType == VER_OPENHOLDEM_2 ||
@@ -333,13 +344,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		{
 			continue;
 		}
-
 		// Handle z$ lines (sizes)
 		if (strLineType.Left(2) == "z$") 
 		{
 			// name
 			hold_size.name = strLineType.Mid(2);
-
 			// width
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
@@ -347,9 +356,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}
-
 			hold_size.width = atol(token.GetString());
-
 			// height
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
@@ -357,13 +364,10 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}
-
 			hold_size.height = atol(token.GetString());
-
 			if (!z$_insert(hold_size))
 			{
 				ZMapCI z_iter = _z$.find(hold_size.name);
-
 				if (z_iter != _z$.end())
 				{
 					t.Format("'%s' skipped, as this size record already exists.\nYou have to fix that tablemap.", strLine);
@@ -375,13 +379,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				}
 			}
 		}
-
 		// Handle s$ lines (symbols/string)
 		else if (strLineType.Left(2) == "s$") 
 		{
 			// name
 			hold_symbol.name = strLineType.Mid(2);
-
 			// text
 			hold_symbol.text = strLine.Mid(strLineType.GetLength());
 			hold_symbol.text.Trim();
@@ -390,7 +392,6 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}
-
 			// Skip _s$hXtype lines
 			if (strLineType.Left(3) == "s$h" && strLineType.Mid(4,4) == "type")
 			{

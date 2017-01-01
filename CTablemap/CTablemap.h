@@ -194,7 +194,7 @@ class CTablemap {
 	// private functions
 	void ClearIMap();
 	void WriteSectionHeader(CArchive& ar, CString header);
-	void WarnAboutGeneralTableMapError(int error_code, int line);
+	void WarnAboutGeneralTableMapError(int line, int error_code);
   void ErrorHashCollision(CString name1, CString name2);
  private:
 	// private variables - use public accessors and public mutators to address these
