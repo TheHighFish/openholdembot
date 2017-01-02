@@ -183,12 +183,12 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineGameType
   p_symbol_engine_gametype = new CSymbolEngineGameType;
   AddSymbolEngine(p_symbol_engine_gametype);
-  // CSymbolEngineCards
-  p_symbol_engine_cards = new CSymbolEngineCards();
-  AddSymbolEngine(p_symbol_engine_cards);
   // CSymbolEngineIsOmaha
   p_symbol_engine_isomaha = new CSymbolEngineIsOmaha();
   AddSymbolEngine(p_symbol_engine_isomaha);
+  // CSymbolEngineCards
+  p_symbol_engine_cards = new CSymbolEngineCards();
+  AddSymbolEngine(p_symbol_engine_cards);
   // CSymbolEnginePokerval
   p_symbol_engine_pokerval = new CSymbolEnginePokerval();
   AddSymbolEngine(p_symbol_engine_pokerval);
