@@ -191,6 +191,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Size matches; checking the rest...\n");
   
   // Check for match positive title text matches
+  //!!!!!!!
 	good_pos_title = false;
 	if ((tablemap_connection_data[MapIndex].TitleText != "")
 		  && title.Find(tablemap_connection_data[MapIndex].TitleText) != -1) 	{

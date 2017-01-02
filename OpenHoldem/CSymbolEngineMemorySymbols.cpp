@@ -80,7 +80,7 @@ void CSymbolEngineMemorySymbols::Store(CString command) {
   CString right_hand_side = RightHandSide(command);
   CString left_hand_side = LeftHandSide(command);
   assert(right_hand_side != "");
-  assert(leftt_hand_side != "");
+  assert(left_hand_side != "");
   double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
   _memory_symbols[LowerCaseKey(left_hand_side)] = evaluated_right_hand_side;
 }
@@ -90,7 +90,7 @@ void CSymbolEngineMemorySymbols::Add(CString command) {
   CString right_hand_side = RightHandSide(command);
   CString left_hand_side = LeftHandSide(command);
   assert(right_hand_side != "");
-  assert(leftt_hand_side != "");
+  assert(left_hand_side != "");
   double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
   _memory_symbols[LowerCaseKey(left_hand_side)] += evaluated_right_hand_side;
 }
@@ -100,7 +100,7 @@ void CSymbolEngineMemorySymbols::Sub(CString command) {
   CString right_hand_side = RightHandSide(command);
   CString left_hand_side = LeftHandSide(command);
   assert(right_hand_side != "");
-  assert(leftt_hand_side != "");
+  assert(left_hand_side != "");
   double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
   _memory_symbols[LowerCaseKey(left_hand_side)] -= evaluated_right_hand_side;
 }
@@ -108,14 +108,14 @@ void CSymbolEngineMemorySymbols::Sub(CString command) {
 void CSymbolEngineMemorySymbols::Increment(CString command) {
   assert(command.Left(7) == "me_inc_");
   CString left_hand_side = LeftHandSide(command);
-  assert(leftt_hand_side != "");
+  assert(left_hand_side != "");
   ++_memory_symbols[LowerCaseKey(left_hand_side)];
 }
 
 double CSymbolEngineMemorySymbols::Recall(CString command) {
   assert(command.Left(6) == "me_re_");
   CString left_hand_side = LeftHandSide(command);
-  assert(leftt_hand_side != "");
+  assert(left_hand_side != "");
   return _memory_symbols[LowerCaseKey(left_hand_side)];
 }
 

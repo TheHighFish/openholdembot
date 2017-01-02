@@ -144,7 +144,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 	if (!IsWindowVisible(hwnd))	return true;
   // If there is no caption on this window, then return
 	GetWindowText(hwnd, text, sizeof(text));
-	if (strlen(text) == 0) return true;
+	if (strlen(text) == 0) return true; //!!!!!!!
  
   title = text;                                                                                                                                                                                                            if ((_memicmp(text, "oh sn", 5) == 0) || (_memicmp(text, "oh mt", 5) == 0) || (_memicmp(text, "oh hy", 5) == 0)) { write_log(preferences.debug_autoconnector(), "[CAutoConnector] cycling through candidate list\n"); vali_err = true; } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                    
 	// Found a candidate window, get client area rect
@@ -352,7 +352,7 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
   CDlgScraperOutput::DestroyWindowSafely();
 
   // Make sure autoplayer is off
- write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
+  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
   p_autoplayer->EngageAutoplayer(false);
 
 	// Wait for mutex - "forever" if necessary, as we have to clean up.

@@ -33,9 +33,11 @@ class CTablemapCompletenessChecker {
   void VerifySingleC0limitsItem(CString name);
  private:
   void ErrorMissingItem(CString item);
+  void ErrorMissingTablepoint();
   void ErrorDeprecatedItem(CString item);
   void ErrorSwagRenamed();
   void ErrorClientsizeReplaced();
+  void VerifyTitleTexts();
   bool IsNoLimitMap();
  private:
   bool _error_flag;

@@ -387,8 +387,12 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			// text
 			hold_symbol.text = strLine.Mid(strLineType.GetLength());
 			hold_symbol.text.Trim();
-			if (hold_symbol.text.GetLength()==0)
+			if ((hold_symbol.text.GetLength() == 0) && (hold_symbol.name != "titletext"))
 			{
+        // Symbols must be non-empty.
+        // With the single exception of an empty main title-tedt,
+        // supported since version 11.0.1
+        // www!!!!!
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}

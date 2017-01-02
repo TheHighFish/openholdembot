@@ -83,7 +83,9 @@ CSharedMem::~CSharedMem() {
   table_positions[p_sessioncounter->session_id()].left   = 0;
   table_positions[p_sessioncounter->session_id()].right  = 0;
   table_positions[p_sessioncounter->session_id()].top    = 0;
-  MessageBox(0, "SharedMem", "Terminating", 0); //!!!!!
+  CString s;
+  s.Format("SharedMem %i", p_sessioncounter->session_id());
+  MessageBox(0, s, "Terminating", 0); //!!!!!
 }
 
 bool CSharedMem::PokerWindowAttached(HWND Window) {
@@ -229,7 +231,7 @@ int CSharedMem::LowestConnectedSessionID() {
 }
 
 int CSharedMem::LowestUnconnectedSessionID() {
-  for (int i = 0; i<MAX_SESSION_IDS; ++i) {
+  for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] == 0) {
       // ID not used (bot probably terminated)
       continue;
