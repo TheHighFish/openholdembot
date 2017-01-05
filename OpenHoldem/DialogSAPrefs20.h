@@ -38,26 +38,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
-
-protected:  
-	// Debugging
-	CButton  	m_RadioButton_autoconnector;
-	CButton  	m_RadioButton_autoplayer;
-	CButton  	m_RadioButton_heartbeat;
-	CButton  	m_RadioButton_prwin;
-	CButton  	m_RadioButton_icm;
-	CButton  	m_RadioButton_occlusionchecker;
-	CButton  	m_RadioButton_pokertracker;
-	CButton  	m_RadioButton_rebuy;
-	CButton  	m_RadioButton_replayframes;
-	CButton  	m_RadioButton_scraper;
-	CButton  	m_RadioButton_sessioncounter;
-	CButton  	m_RadioButton_stableframescounter;
-	CButton  	m_RadioButton_symbolengine;
-	CButton  	m_RadioButton_blindlocking;
-	CButton		m_RadioButton_memorysymbols;
-	CButton		m_RadioButton_dll_extension;
-	CButton  	m_RadioButton_alltherest;
 };
 
 #endif
