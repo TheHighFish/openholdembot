@@ -255,6 +255,9 @@
 	<ClCompile Include="COpenHoldemStarter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+	<ClCompile Include="CWatchdog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Singletons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -1049,6 +1052,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
 	<ClInclude Include="COpenHoldemStarter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+	<ClInclude Include="CWatchdog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">

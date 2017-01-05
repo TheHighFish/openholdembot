@@ -37,16 +37,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
-#pragma data_seg(".ohshmem") // names are limited to 8 chars, including the dot.
+#pragma data_seg(".ohshme2") // names are limited to 8 chars, including the dot. //!!!!!
 
-__declspec(allocate(".ohshmem"))	static	HWND	 attached_poker_windows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
-__declspec(allocate(".ohshmem"))	static	time_t last_failed_attempt_to_connect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
-__declspec(allocate(".ohshmem"))	static	int		 session_ID_of_last_instance_that_failed_to_connect; 
-__declspec(allocate(".ohshmem"))	static	HWND	 dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
-__declspec(allocate(".ohshmem"))	static	int		 size_of_dense_list_of_attached_poker_windows;
-__declspec(allocate(".ohshmem"))	static	int		 CRC_of_main_mutexname;
-__declspec(allocate(".ohshmem"))	static	int    openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
-__declspec(allocate(".ohshmem"))	static	RECT   table_positions[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
+__declspec(allocate(".ohshme2"))	static	HWND	 attached_poker_windows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
+__declspec(allocate(".ohshme2"))	static	time_t last_failed_attempt_to_connect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
+__declspec(allocate(".ohshme2"))	static	int		 session_ID_of_last_instance_that_failed_to_connect; 
+__declspec(allocate(".ohshme2"))	static	HWND	 dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
+__declspec(allocate(".ohshme2"))	static	int		 size_of_dense_list_of_attached_poker_windows;
+__declspec(allocate(".ohshme2"))	static	int		 CRC_of_main_mutexname;
+__declspec(allocate(".ohshme2"))	static	int    openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
+__declspec(allocate(".ohshme2"))	static	RECT   table_positions[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
 
 #pragma data_seg()
 #pragma comment(linker, "/SECTION:.ohshmem,RWS")		// RWS: read, write, shared
@@ -68,6 +68,9 @@ CSharedMem::CSharedMem() {
 	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
 	int my_PID = GetCurrentProcessId();
 	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
+  CString s;
+  s.Format("Id %i PID %i", p_sessioncounter->session_id(), my_PID);
+  MessageBox(0, s, "SharedMem", 0);
   table_positions[p_sessioncounter->session_id()].bottom = 0;
   table_positions[p_sessioncounter->session_id()].left   = 0;
   table_positions[p_sessioncounter->session_id()].right  = 0;
@@ -75,14 +78,7 @@ CSharedMem::CSharedMem() {
 }
 
 CSharedMem::~CSharedMem() {
-	// Clear my process ID
-	openholdem_PIDs[p_sessioncounter->session_id()] = 0;
-	// Clear my attached window
-	attached_poker_windows[p_sessioncounter->session_id()] = NULL;
-  table_positions[p_sessioncounter->session_id()].bottom = 0;
-  table_positions[p_sessioncounter->session_id()].left   = 0;
-  table_positions[p_sessioncounter->session_id()].right  = 0;
-  table_positions[p_sessioncounter->session_id()].top    = 0;
+  CleanUpProcessMemory(p_sessioncounter->session_id());
   CString s;
   s.Format("SharedMem %i", p_sessioncounter->session_id());
   MessageBox(0, s, "Terminating", 0); //!!!!!
@@ -231,25 +227,36 @@ int CSharedMem::LowestConnectedSessionID() {
 }
 
 int CSharedMem::LowestUnconnectedSessionID() {
+  write_log(preferences.debug_alltherest(), "[CSharedMem] LowestUnconnectedSessionID()\n");
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] == 0) {
       // ID not used (bot probably terminated)
+      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i not runing\n", i);
       continue;
     }
     if (attached_poker_windows[i] == NULL) {
+      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i not connected\n", i);
+      return i;
+    }
+    if (!IsWindow(attached_poker_windows[i])) {
+      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i connected to not a window\n", i);
       return i;
     }
   }
+  write_log(preferences.debug_alltherest(), "[CSharedMem] LowestUnconnectedSessionID not found\n");
   return kUndefined;
 }
 
 int CSharedMem::NBotsPresent() {
+  write_log(preferences.debug_alltherest(), "[CSharedMem] NBotsPresent()\n");
   int result = 0;
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] != 0) {
+      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i running\n", i);
       ++result;
     }
   }
+  write_log(preferences.debug_alltherest(), "[CSharedMem] NBotsPresent: %i\n", result);
   return result;
 }
 
@@ -265,4 +272,25 @@ int CSharedMem::NTablesConnected() {
     }
   }
   return result;
+}
+
+bool CSharedMem::IsDeadOpenHoldemProcess(int open_holdem_iD) {
+  if (openholdem_PIDs[open_holdem_iD] == NULL) {
+    return false;
+  }
+  if (/*!!!!!ProcessE*/ openholdem_PIDs[open_holdem_iD] == NULL) {
+    return false;
+  }
+  return true;
+}
+
+void CSharedMem::CleanUpProcessMemory(int open_holdem_iD) {
+  // Clear my process ID
+  openholdem_PIDs[open_holdem_iD] = 0;
+  // Clear my attached window
+  attached_poker_windows[open_holdem_iD] = NULL;
+  table_positions[open_holdem_iD].bottom = 0;
+  table_positions[open_holdem_iD].left = 0;
+  table_positions[open_holdem_iD].right = 0;
+  table_positions[open_holdem_iD].top = 0;
 }

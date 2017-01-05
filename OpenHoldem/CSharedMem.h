@@ -42,6 +42,8 @@ class CSharedMem {
 	HWND *GetDenseListOfConnectedPokerWindows();
 	int  SizeOfDenseListOfAttachedPokerWindows();
 	bool IsAnyOpenHoldemProcess(int PID);
+  bool IsDeadOpenHoldemProcess(int open_holdem_iD);
+  void CleanUpProcessMemory(int open_holdem_iD);
  public:
   // For the auto-starter, as only one instance should start new bots
   // and a mutex is not enough, starting usually needs some seconds.

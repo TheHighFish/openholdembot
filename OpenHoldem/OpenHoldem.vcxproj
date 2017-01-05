@@ -260,6 +260,7 @@
     <ClCompile Include="OpenHoldem.cpp" />
     <ClCompile Include="OpenHoldemDoc.cpp" />
 	<ClCompile Include="COpenHoldemStarter.cpp" />
+	<ClCompile Include="CWatchdog.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -551,6 +552,7 @@
     <ClInclude Include="OpenHoldem.h" />
     <ClInclude Include="OpenHoldemDoc.h" />
     <ClInclude Include="COpenHoldemStarter.h" />
+	<ClInclude Include="CWatchdog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Singletons.h" />
     <ClInclude Include="SLimitInfo.h" />
