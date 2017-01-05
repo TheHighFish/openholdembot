@@ -251,6 +251,7 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
       case 0xFFFFFF80:
         // "Euro" in some unknown extended ASCII-encoding.
         // Replace it by Dollars, as Euro is extended ASCII.
+        // "Proprietary Windows" according to https://de.wikipedia.org/wiki/Eurozeichen
         s->SetAt(i, '$');
         break;
       case 0xFFFFFF88:
@@ -261,10 +262,17 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
         break;
       case 0xFFFFFFA0:
         // "Non-breakable space" in extended ASCII Latin-1 encoding
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=60#p143155
         s->SetAt(i, ' ');
         break;
+      case 0xFFFFFFA2:
+        // Cent symbol
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=60#p143155
+        // https://www.atwebresults.com/ascii-codes.php?type=2
+        s->SetAt(i, 'c');
+        break;
       case 0xFFFFFFA3:
-        // British pinds
+        // British pounds
         // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p142990
         s->SetAt(i, '$');
         break;
