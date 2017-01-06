@@ -120,7 +120,7 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 
 bool CScraper::EvaluateRegion(CString name, CString *result) {
   __HDC_HEADER
-  write_log(preferences.debug_alltherest(),
+  write_log(preferences.debug_scraper(),
     "[CScraper] EvaluateRegion %s\n", name);
 	CTransform	trans;
 	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
@@ -129,10 +129,10 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
     ++total_region_counter;
 		if (ProcessRegion(r_iter)) {
       ++identical_region_counter;
-      write_log(preferences.debug_alltherest(),
+      write_log(preferences.debug_scraper(),
         "[CScraper] Region %s identical\n", name);
     } else {
-      write_log(preferences.debug_alltherest(),
+      write_log(preferences.debug_scraper(),
         "[CScraper] Region %s NOT identical\n", name);
     }
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);

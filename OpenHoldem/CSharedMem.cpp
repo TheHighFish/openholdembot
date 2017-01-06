@@ -227,36 +227,36 @@ int CSharedMem::LowestConnectedSessionID() {
 }
 
 int CSharedMem::LowestUnconnectedSessionID() {
-  write_log(preferences.debug_alltherest(), "[CSharedMem] LowestUnconnectedSessionID()\n");
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] LowestUnconnectedSessionID()\n");
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] == 0) {
       // ID not used (bot probably terminated)
-      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i not runing\n", i);
+      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i not runing\n", i);
       continue;
     }
     if (attached_poker_windows[i] == NULL) {
-      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i not connected\n", i);
+      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i not connected\n", i);
       return i;
     }
     if (!IsWindow(attached_poker_windows[i])) {
-      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i connected to not a window\n", i);
+      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i connected to not a window\n", i);
       return i;
     }
   }
-  write_log(preferences.debug_alltherest(), "[CSharedMem] LowestUnconnectedSessionID not found\n");
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] LowestUnconnectedSessionID not found\n");
   return kUndefined;
 }
 
 int CSharedMem::NBotsPresent() {
-  write_log(preferences.debug_alltherest(), "[CSharedMem] NBotsPresent()\n");
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] NBotsPresent()\n");
   int result = 0;
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] != 0) {
-      write_log(preferences.debug_alltherest(), "[CSharedMem] ID %i running\n", i);
+      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i running\n", i);
       ++result;
     }
   }
-  write_log(preferences.debug_alltherest(), "[CSharedMem] NBotsPresent: %i\n", result);
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] NBotsPresent: %i\n", result);
   return result;
 }
 

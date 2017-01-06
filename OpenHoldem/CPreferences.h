@@ -87,6 +87,9 @@ enum {
   k_prefs_debug_hand_and_baord_expressions,
   k_prefs_debug_tokenizer,
   k_prefs_debug_tablepoints,
+  k_prefs_debug_sharedmem,
+  k_prefs_debug_singletons,
+  k_prefs_debug_autostarter,
 	k_prefs_engage_autoplayer,
 	k_prefs_restore_position_and_focus,
 	k_prefs_use_auto_replay,
@@ -266,6 +269,9 @@ class CPreferences {
   const bool  debug_hand_and_baord_expressions() { return prefs_numerical_values[k_prefs_debug_hand_and_baord_expressions]; }
   const bool  debug_tokenizer() { return prefs_numerical_values[k_prefs_debug_tokenizer]; }
   const bool  debug_tablepoints() { return prefs_numerical_values[k_prefs_debug_tablepoints]; }
+  const bool  debug_sharedmem() { return prefs_numerical_values[k_prefs_debug_sharedmem]; }
+  const bool  debug_singletons() { return prefs_numerical_values[k_prefs_debug_singletons]; }
+  const bool  debug_autostarter() { return prefs_numerical_values[k_prefs_debug_autostarter]; }
 
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }

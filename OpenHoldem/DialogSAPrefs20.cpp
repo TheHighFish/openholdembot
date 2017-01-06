@@ -48,9 +48,9 @@ END_MESSAGE_MAP()
 // Button position
 const int kPositionFirstX =   4;
 const int kPositionFirstY =  23;
-const int kPositionDeltaX = 130;
+const int kPositionDeltaX = 155;
 const int kPositionDeltaY =  22;
-const int kButtonWidthX   = 110;
+const int kButtonWidthX   = 150;
 const int kButtonWidthY   =  10;
 const int kMaxButtonsInYDirection = 23;
 
@@ -74,6 +74,7 @@ void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
   AlignButton(IDC_DEBUG_AUTOCONNECTOR);
   AlignButton(IDC_DEBUG_AUTOPLAYER);
   AlignButton(IDC_DEBUG_AUTO_TRACE);
+  AlignButton(IDC_DEBUG_AUTOSTARTER);
   AlignButton(IDC_DEBUG_BETSIZE_ADJUSTMENT);
   AlignButton(IDC_DEBUG_BLINDLOCKING);
   AlignButton(IDC_DEBUG_BOARD_EXPRESSIONS);
@@ -104,6 +105,8 @@ void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
   AlignButton(IDC_DEBUG_SCRAPER);
   AlignButton(IDC_DEBUG_SCRAPER_PREPROCESSOR);
   AlignButton(IDC_DEBUG_SESSIONCOUNTER);
+  AlignButton(IDC_DEBUG_SHAREDMEM);
+  AlignButton(IDC_DEBUG_SINGLETONS);
   AlignButton(IDC_DEBUG_STABLEFRAMESCOUNTER);
   AlignButton(IDC_DEBUG_SYMBOLENGINE);
   AlignButton(IDC_DEBUG_SYMBOLENGINE_OPENPPL);
@@ -113,8 +116,8 @@ void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
   AlignButton(IDC_DEBUG_TABLE_POSITIONER);
   AlignButton(IDC_DEBUG_TOKENIZER);
   AlignButton(IDC_DEBUG_VERSUS);
-  // "all the rest" at the very end
-  // it contains all temp-debug.
+  // "all the rest" at the very end.
+  // It contains all temp-debug.
   AlignButton(IDC_DEBUG_ALLTHEREST);
 }
 
@@ -167,6 +170,9 @@ BOOL CDlgSAPrefs20::OnInitDialog()
   CheckDlgButton(IDC_DEBUG_BOARD_EXPRESSIONS, preferences.debug_hand_and_baord_expressions() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_TOKENIZER, preferences.debug_tokenizer() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_TABLEPOINTS, preferences.debug_tablepoints() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_SHAREDMEM, preferences.debug_sharedmem() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_SINGLETONS, preferences.debug_singletons() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_AUTOSTARTER, preferences.debug_autostarter() ? MF_CHECKED : MF_UNCHECKED);
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -218,6 +224,9 @@ void CDlgSAPrefs20::OnOK()
   preferences.SetValue(k_prefs_debug_hand_and_baord_expressions, IsDlgButtonChecked(IDC_DEBUG_BOARD_EXPRESSIONS));
   preferences.SetValue(k_prefs_debug_tokenizer, IsDlgButtonChecked(IDC_DEBUG_TOKENIZER));
   preferences.SetValue(k_prefs_debug_tablepoints, IsDlgButtonChecked(IDC_DEBUG_TABLEPOINTS));
+  preferences.SetValue(k_prefs_debug_sharedmem, IsDlgButtonChecked(IDC_DEBUG_SHAREDMEM));
+  preferences.SetValue(k_prefs_debug_singletons, IsDlgButtonChecked(IDC_DEBUG_SINGLETONS));
+  preferences.SetValue(k_prefs_debug_autostarter, IsDlgButtonChecked(IDC_DEBUG_AUTOSTARTER));
 	CSAPrefsSubDlg::OnOK();
 }
 

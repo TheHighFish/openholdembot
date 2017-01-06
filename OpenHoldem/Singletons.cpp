@@ -52,112 +52,118 @@
 #include "CVersionInfo.h"
 #include "CWhiteInfoBox.h"
 
+/*!!!#define CREATE_SINGLETON(singleton_variable, class_type) { \ 
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create \n"); \ 
+  assert(!singleton_variable); \ 
+  singleton_variable = new class_type; \ 
+}*/
+
 void InstantiateAllSingletons() {
   // Instantiation of all singletons, except session-counter.
   // session-counter has to be done do earlier, as it is needed 
   // to create the log-file, which might be needed before this point.
   // This function gets executed exactly once at startup.
   // So the global class-pointers have to be NULL.
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTableTitle\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CTableTitle\n");
   assert(!p_table_title);
   p_table_title = new CTableTitle;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CStringMatch\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CStringMatch\n");
   assert(!p_string_match);
   p_string_match = new CStringMatch;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayerTrace\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CAutoplayerTrace\n");
   assert(!p_autoplayer_trace);
   p_autoplayer_trace = new CAutoplayerTrace;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTableState\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CTableState\n");
   assert(!p_table_state);
   p_table_state = new CTableState;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CHandresetDetector\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CHandresetDetector\n");
   assert(!p_handreset_detector);
   p_handreset_detector = new CHandresetDetector;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CConfigurationCheck\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CConfigurationCheck\n");
   assert(!p_configurationcheck);
   p_configurationcheck = new CConfigurationCheck;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayerFunctions\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CAutoplayerFunctions\n");
   assert(!p_autoplayer_functions);
   p_autoplayer_functions = new CAutoplayerFunctions;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CSharedMem\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CSharedMem\n");
   assert(!p_sharedmem);
   p_sharedmem = new CSharedMem;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CStableFramesCounter\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CStableFramesCounter\n");
   assert(!p_stableframescounter);
   p_stableframescounter = new CStableFramesCounter;                                                                                                                                                         
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CScraper\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CScraper\n");
   assert(!p_scraper); 
   p_scraper = new CScraper;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CLazyScraper\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CLazyScraper\n");
   assert(!p_lazyscraper);
   p_lazyscraper = new CLazyScraper;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablemap\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CTablemap\n");
   assert(!p_tablemap);
   p_tablemap = new CTablemap;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablemapAccess\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CTablemapAccess\n");
   assert(!p_tablemap_access);
   p_tablemap_access = new CTablemapAccess;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CDebugTab\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDebugTab\n");
   assert(p_debug_tab == NULL);
   p_debug_tab = new CDebugTab;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CParserSymbolTable\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CParserSymbolTable\n");
   assert(!p_parser_symbol_table);
   p_parser_symbol_table = new CParserSymbolTable;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFormulaParser\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CFormulaParser\n");
   assert(!p_formula_parser);
   p_formula_parser = new CFormulaParser;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoplayer\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CAutoplayer\n");
   assert(!p_autoplayer);
   p_autoplayer = new CAutoplayer();
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPokerTrackerThread\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CPokerTrackerThread\n");
   assert(!p_pokertracker_thread);
   p_pokertracker_thread = new CPokerTrackerThread;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CDllExtension\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDllExtension\n");
   assert(!p_dll_extension);
   p_dll_extension = new CDllExtension;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CGameState\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CGameState\n");
   assert(!p_game_state);
   p_game_state = new CGameState;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CValidator\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CValidator\n");
   assert(!p_validator);
   p_validator = new CValidator;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTablePositioner\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CTablePositioner\n");
   assert(!p_table_positioner);
   p_table_positioner = new CTablePositioner;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CFileSystemMonitor\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CFileSystemMonitor\n");
   assert(!p_filesystem_monitor);
   p_filesystem_monitor = new CFileSystemMonitor;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CTableMapLoader\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CTableMapLoader\n");
   assert(!p_tablemap_loader);
   p_tablemap_loader = new CTableMapLoader;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CVersionInfo\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CVersionInfo\n");
   assert(!p_version_info);
   p_version_info = new CVersionInfo;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CPopupHandler\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CPopupHandler\n");
   assert(!p_popup_handler);
   p_popup_handler = new CPopupHandler;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CAutoConnector\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CAutoConnector\n");
   assert(!p_autoconnector);
   p_autoconnector = new CAutoConnector;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create COpenHoldemTitle\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create COpenHoldemTitle\n");
   assert(!p_openholdem_title);
   p_openholdem_title = new COpenHoldemTitle;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CWhiteInfoBox\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CWhiteInfoBox\n");
   assert(!p_white_info_box);
   p_white_info_box = new CWhiteInfoBox;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CEngineContainer\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CEngineContainer\n");
   assert(!p_engine_container);
   p_engine_container = new CEngineContainer;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CRebuyManagement\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CRebuyManagement\n");
   assert(!p_rebuymanagement); 
   p_rebuymanagement = new CRebuyManagement;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create COcclusionCheck\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create COcclusionCheck\n");
   assert(!p_occlusioncheck);
   p_occlusioncheck = new COcclusionCheck;
-  write_log(preferences.debug_alltherest(), "[Singletons] Going to create CCasinoInterface\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CCasinoInterface\n");
   assert(!p_casino_interface);
   p_casino_interface = new CCasinoInterface;
-  write_log(preferences.debug_alltherest(), "[Singletons] All singletons created.\n");
+  write_log(preferences.debug_singletons(), "[Singletons] All singletons created.\n");
 }
 
 void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance() {
@@ -172,19 +178,19 @@ bool all_threads_stopped = false;
 // To be executed first,
 // as these threads might access some variables.
 void StopThreads() {
-	write_log(preferences.debug_alltherest(), "[Singletons] StopThreads()\n");
+	write_log(preferences.debug_singletons(), "[Singletons] StopThreads()\n");
 	if (p_heartbeat_thread)	{
-		write_log(preferences.debug_alltherest(), "[Singletons] Deleting heartbeat-thread\n");
+		write_log(preferences.debug_singletons(), "[Singletons] Deleting heartbeat-thread\n");
 		delete p_heartbeat_thread;
 		p_heartbeat_thread = NULL;
 	}
 	if (p_iterator_thread) {
-		write_log(preferences.debug_alltherest(), "[Singletons] Deleting iterator-thread\n");
+		write_log(preferences.debug_singletons(), "[Singletons] Deleting iterator-thread\n");
 		delete p_iterator_thread;
 		p_iterator_thread = NULL;
 	}
 	if (p_pokertracker_thread) { 
-		write_log(preferences.debug_alltherest(), "[Singletons] Deleting PokerTracker-thread\n");
+		write_log(preferences.debug_singletons(), "[Singletons] Deleting PokerTracker-thread\n");
 		delete p_pokertracker_thread; 
 		p_pokertracker_thread = NULL; 
 	}
@@ -204,7 +210,7 @@ void DeleteAllSingletons() {
   if (!all_threads_stopped) {
     // Explicit check to check potential pronlems 
     // that don't happen in debug-mode.
-    write_log(preferences.debug_alltherest(), 
+    write_log(preferences.debug_singletons(), 
       "[Singletons] ERROR: threads not stopped.\n");
     assert(all_threads_stopped);
   }
@@ -214,75 +220,75 @@ void DeleteAllSingletons() {
   // that depends on other classes, e.g. the destructor of the autoconnector
   // needs its session_id (CSessionCounter).
   //
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting casino interface\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting casino interface\n");
   DELETE_AND_CLEAR(p_casino_interface)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting occlusion check\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting occlusion check\n");
   DELETE_AND_CLEAR(p_occlusioncheck)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting rebuy management\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting rebuy management\n");
   DELETE_AND_CLEAR(p_rebuymanagement)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting engine container\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting engine container\n");
   DELETE_AND_CLEAR(p_engine_container)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting white info box\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting white info box\n");
   DELETE_AND_CLEAR(p_white_info_box)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting OpenHoldem title\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting OpenHoldem title\n");
   DELETE_AND_CLEAR(p_openholdem_title)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting popup handler\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting popup handler\n");
   DELETE_AND_CLEAR(p_popup_handler)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting autoconnector\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting autoconnector\n");
   DELETE_AND_CLEAR(p_autoconnector)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting version_info\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting version_info\n");
   DELETE_AND_CLEAR(p_version_info)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting tablemap loader\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting tablemap loader\n");
   DELETE_AND_CLEAR(p_tablemap_loader)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 01\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 01\n");
   DELETE_AND_CLEAR(p_filesystem_monitor)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 02\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 02\n");
   DELETE_AND_CLEAR(p_table_positioner)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 03\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 03\n");
   DELETE_AND_CLEAR(p_validator)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 05\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 05\n");
   DELETE_AND_CLEAR(p_game_state)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 06\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 06\n");
   DELETE_AND_CLEAR(p_dll_extension)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 07\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 07\n");
   DELETE_AND_CLEAR(p_autoplayer)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 08\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 08\n");
   DELETE_AND_CLEAR(p_formula_parser)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 09\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 09\n");
   DELETE_AND_CLEAR(p_parser_symbol_table)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 10\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 10\n");
   DELETE_AND_CLEAR(p_debug_tab)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 11\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 11\n");
   DELETE_AND_CLEAR(p_tablemap_access)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 12\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 12\n");
   DELETE_AND_CLEAR(p_tablemap)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 13\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 13\n");
   DELETE_AND_CLEAR(p_lazyscraper)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 15\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 15\n");
   DELETE_AND_CLEAR(p_scraper)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 16\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 16\n");
   DELETE_AND_CLEAR(p_stableframescounter)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 17\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 17\n");
   DELETE_AND_CLEAR(p_sharedmem)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 18\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 18\n");
   DELETE_AND_CLEAR(p_sessioncounter)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 19\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 19\n");
   DELETE_AND_CLEAR(p_autoplayer_functions)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 20\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 20\n");
   DELETE_AND_CLEAR(p_configurationcheck)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 21\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 21\n");
   DELETE_AND_CLEAR(p_handreset_detector)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 22\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 22\n");
   DELETE_AND_CLEAR(p_autoplayer_trace)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 23\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 23\n");
   DELETE_AND_CLEAR(p_table_state)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 24\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 24\n");
   DELETE_AND_CLEAR(p_string_match)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 25\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 25\n");
   DELETE_AND_CLEAR(p_filenames)
-  write_log(preferences.debug_alltherest(), "[Singletons] Deleting 26\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 26\n");
   DELETE_AND_CLEAR(p_table_title)
-  write_log(preferences.debug_alltherest(), "[Singletons] All singletons successfully deleted\n");
+  write_log(preferences.debug_singletons(), "[Singletons] All singletons successfully deleted\n");
 }
   
   
