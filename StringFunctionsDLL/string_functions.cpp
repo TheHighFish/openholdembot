@@ -431,7 +431,7 @@ void WarnAboutNonASCIICharacters(const CString *s) {
 #ifdef OPENHOLDEM_PROGRAM
       OH_MessageBox_Error_Warning(message);
 #else
-      MessageBox(0, message, "Debug-Info", 0);
+      MessageBox(0, message, "Warning", 0);
 #endif
     }
   }

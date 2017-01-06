@@ -67,7 +67,9 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
-	StopThread();
+  // !!! Probably not needed, as we call Singleton::StopThreads()
+  // when we exit an instance and here happens a freezing
+	// StopThread();
 }
 
 void CPokerTrackerThread::StartThread()

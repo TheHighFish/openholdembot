@@ -58,6 +58,7 @@ class CSharedMem {
 	void CreateDenseListOfConnectedPokerWindows();
 	void VerifyMainMutexName();
   int NBotsPresent();
+  void Dump(); 
  private:
 	CCritSec	m_critsec;
 };

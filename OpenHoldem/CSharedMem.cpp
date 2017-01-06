@@ -37,7 +37,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
-#pragma data_seg(".ohshmem") // names are limited to 8 chars, including the dot. //!!!!!
+#pragma data_seg(".ohshmem") // names are limited to 8 chars, including the dot. 
 
 __declspec(allocate(".ohshmem"))	static	HWND	 attached_poker_windows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
 __declspec(allocate(".ohshmem"))	static	time_t last_failed_attempt_to_connect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
@@ -68,9 +68,6 @@ CSharedMem::CSharedMem() {
 	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
 	int my_PID = GetCurrentProcessId();
 	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
-  CString s;
-  s.Format("Id %i PID %i", p_sessioncounter->session_id(), my_PID);
-  MessageBox(0, s, "SharedMem", 0);
   table_positions[p_sessioncounter->session_id()].bottom = 0;
   table_positions[p_sessioncounter->session_id()].left   = 0;
   table_positions[p_sessioncounter->session_id()].right  = 0;
@@ -78,10 +75,7 @@ CSharedMem::CSharedMem() {
 }
 
 CSharedMem::~CSharedMem() {
-  CleanUpProcessMemory(p_sessioncounter->session_id());
-  CString s;
-  s.Format("SharedMem %i", p_sessioncounter->session_id());
-  MessageBox(0, s, "Terminating", 0); //!!!!!
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] Terminating %d\n", p_sessioncounter->session_id());
 }
 
 bool CSharedMem::PokerWindowAttached(HWND Window) {
@@ -218,6 +212,7 @@ bool CSharedMem::IsAnyOpenHoldemProcess(int PID) {
 }
 
 int CSharedMem::LowestConnectedSessionID() {
+  Dump();
   for (int i = 0; i<MAX_SESSION_IDS; ++i) {
     if (attached_poker_windows[i] != NULL) {
       return i;
@@ -227,6 +222,7 @@ int CSharedMem::LowestConnectedSessionID() {
 }
 
 int CSharedMem::LowestUnconnectedSessionID() {
+  Dump();
   write_log(preferences.debug_sharedmem(), "[CSharedMem] LowestUnconnectedSessionID()\n");
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] == 0) {
@@ -248,6 +244,7 @@ int CSharedMem::LowestUnconnectedSessionID() {
 }
 
 int CSharedMem::NBotsPresent() {
+  Dump();
   write_log(preferences.debug_sharedmem(), "[CSharedMem] NBotsPresent()\n");
   int result = 0;
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
@@ -261,10 +258,12 @@ int CSharedMem::NBotsPresent() {
 }
 
 int CSharedMem::NUnoccupiedBots() {
+  Dump();
   return (NBotsPresent() - NTablesConnected());
 }
 
 int CSharedMem::NTablesConnected() {
+  Dump();
   int result = 0;
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (attached_poker_windows[i] != 0) {
@@ -283,7 +282,8 @@ bool CSharedMem::IsDeadOpenHoldemProcess(int open_holdem_iD) {
   if (hProcess != NULL) {
     return false;
   }
-  MessageBox(0, "Dead", "", 0);
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] Dead process %d %d detected\n",
+    open_holdem_iD, openholdem_PIDs[open_holdem_iD]);
   return true;
 }
 
@@ -296,4 +296,19 @@ void CSharedMem::CleanUpProcessMemory(int open_holdem_iD) {
   table_positions[open_holdem_iD].left = 0;
   table_positions[open_holdem_iD].right = 0;
   table_positions[open_holdem_iD].top = 0;
+}
+
+void CSharedMem::Dump() {
+  if (!preferences.debug_sharedmem()) {
+    return;
+  }
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] last failed attempt to connect: %d\n", last_failed_attempt_to_connect);
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] failed session ID &d\n", session_ID_of_last_instance_that_failed_to_connect);
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] CRC of main mutex name %d\n", CRC_of_main_mutexname);
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] size of dense list %d\n", size_of_dense_list_of_attached_poker_windows);
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] ID  OpenHoldem-PID     poker-table\n");
+  for (int i = 0; i < MAX_SESSION_IDS; ++i) {
+    write_log(preferences.debug_sharedmem(), "[CSharedMem] %2d %15d %15d\n", 
+      i, openholdem_PIDs[i], attached_poker_windows[i]);
+  }
 }

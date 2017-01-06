@@ -132,7 +132,6 @@ CString CFunction::Serialize() {
   if (_parse_tree_node != NULL) {
     result = _parse_tree_node->Serialize();
   }
-  //MessageBox(0, result, _name, 0);
   return result;
 }
 
