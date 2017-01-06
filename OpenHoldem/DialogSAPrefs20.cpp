@@ -45,10 +45,83 @@ void CDlgSAPrefs20::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDlgSAPrefs20, CDialog)
 END_MESSAGE_MAP()
 
+// Button position
+const int kPositionFirstX =   4;
+const int kPositionFirstY =  23;
+const int kPositionDeltaX = 130;
+const int kPositionDeltaY =  22;
+const int kButtonWidthX   = 110;
+const int kButtonWidthY   =  10;
+const int kMaxButtonsInYDirection = 23;
+
+void CDlgSAPrefs20::AlignButton(int button_ID) {
+  assert(_buttons_aligned >= 0);
+  assert(_buttons_aligned <= 100);
+  int x_slot = _buttons_aligned / kMaxButtonsInYDirection;
+  int y_slot = _buttons_aligned % kMaxButtonsInYDirection;
+  int x_position = kPositionFirstX + x_slot * kPositionDeltaX;
+  int y_position = kPositionFirstY + y_slot * kPositionDeltaY;
+  CWnd* button = GetDlgItem(button_ID);
+  assert(button != NULL);
+  button->SetWindowPos(NULL, x_position, y_position, kButtonWidthX, kButtonWidthY, SWP_SHOWWINDOW);
+  ++_buttons_aligned;
+}
+
+void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
+  _buttons_aligned = 0;
+  AlignButton(IDC_DEBUG_ALLIN_ADJUSTMENT);
+  AlignButton(IDC_DEBUG_AST_PRIORITY_ORDERING);
+  AlignButton(IDC_DEBUG_AUTOCONNECTOR);
+  AlignButton(IDC_DEBUG_AUTOPLAYER);
+  AlignButton(IDC_DEBUG_AUTO_TRACE);
+  AlignButton(IDC_DEBUG_BETSIZE_ADJUSTMENT);
+  AlignButton(IDC_DEBUG_BLINDLOCKING);
+  AlignButton(IDC_DEBUG_BOARD_EXPRESSIONS);
+  AlignButton(IDC_DEBUG_DLL_EXTENSION);
+  AlignButton(IDC_DEBUG_ENGINE_CONTAINER);
+  AlignButton(IDC_DEBUG_FILENAMES);
+  AlignButton(IDC_DEBUG_FILESYSTEM_MONITOR);
+  AlignButton(IDC_DEBUG_FORMULA);
+  AlignButton(IDC_DEBUG_GUI);
+  AlignButton(IDC_DEBUG_HANDHISTORY);
+  AlignButton(IDC_DEBUG_HANDRESET_DETECTOR);
+  AlignButton(IDC_DEBUG_HEARTBEAT);
+  AlignButton(IDC_DEBUG_HOPPER_MESSAGES);
+  AlignButton(IDC_DEBUG_ICM);
+  AlignButton(IDC_DEBUG_ISTOURNAMENT);
+  AlignButton(IDC_DEBUG_LAZY_SCRAPER);
+  AlignButton(IDC_DEBUG_MEMORY_SYMBOLS);
+  AlignButton(IDC_DEBUG_MEMORY_USAGE);
+  AlignButton(IDC_DEBUG_OCCLUSSION);
+  AlignButton(IDC_DEBUG_OPENHOLDEM);
+  AlignButton(IDC_DEBUG_PARSER);
+  AlignButton(IDC_DEBUG_POKERTRACKER);
+  AlignButton(IDC_DEBUG_POPUP_BLOCKER);
+  AlignButton(IDC_DEBUG_PREFERENCES);
+  AlignButton(IDC_DEBUG_PRWIN);
+  AlignButton(IDC_DEBUG_REBUY);
+  AlignButton(IDC_DEBUG_REPLAYFRAMES);
+  AlignButton(IDC_DEBUG_SCRAPER);
+  AlignButton(IDC_DEBUG_SCRAPER_PREPROCESSOR);
+  AlignButton(IDC_DEBUG_SESSIONCOUNTER);
+  AlignButton(IDC_DEBUG_STABLEFRAMESCOUNTER);
+  AlignButton(IDC_DEBUG_SYMBOLENGINE);
+  AlignButton(IDC_DEBUG_SYMBOLENGINE_OPENPPL);
+  AlignButton(IDC_DEBUG_TABLE_LIMITS);
+  AlignButton(IDC_DEBUG_TABLEMAP_LOADER);
+  AlignButton(IDC_DEBUG_TABLEPOINTS);
+  AlignButton(IDC_DEBUG_TABLE_POSITIONER);
+  AlignButton(IDC_DEBUG_TOKENIZER);
+  AlignButton(IDC_DEBUG_VERSUS);
+  // "all the rest" at the very end
+  // it contains all temp-debug.
+  AlignButton(IDC_DEBUG_ALLTHEREST);
+}
 
 // CDlgSAPrefs20 message handlers
 BOOL CDlgSAPrefs20::OnInitDialog()
 {	
+  AlignbuttonsInAlphabeticalOrder();
 	CheckDlgButton(IDC_DEBUG_AUTOCONNECTOR , preferences.debug_autoconnector() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_AUTOPLAYER, preferences.debug_autoplayer() ? MF_CHECKED : MF_UNCHECKED);
 	CheckDlgButton(IDC_DEBUG_HEARTBEAT, preferences.debug_heartbeat() ? MF_CHECKED : MF_UNCHECKED);

@@ -38,6 +38,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
+private:
+  void AlignbuttonsInAlphabeticalOrder();
+  void AlignButton(int button_ID);
+private:
+  int _buttons_aligned;
 };
 
 #endif
