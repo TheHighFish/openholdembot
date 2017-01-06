@@ -23,7 +23,7 @@ CWatchdog::CWatchdog() {
 CWatchdog::~CWatchdog() {
 }
 
-void CWatchdog::WatchForDeadProcessed() {
+void CWatchdog::WatchForDeadProcesses() {
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (p_sharedmem->IsDeadOpenHoldemProcess(i)) {
       p_sharedmem->CleanUpProcessMemory(i);

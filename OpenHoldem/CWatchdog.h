@@ -20,5 +20,5 @@ public:
   CWatchdog();
   ~CWatchdog();
 public:
-  void WatchForDeadProcessed();
+  void WatchForDeadProcesses();
 };

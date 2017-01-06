@@ -17,6 +17,7 @@
 #include "..\CCritSec\CCritSec.h"
 #include "CHeartbeatDelay.h"
 #include "COpenHoldemStarter.h"
+#include "CWatchdog.h"
 
 class CHeartbeatThread {
  public:
@@ -44,6 +45,7 @@ class CHeartbeatThread {
  private:
   static CHeartbeatDelay _heartbeat_delay;
   static COpenHoldemStarter _openholdem_starter;
+  static CWatchdog _watchdog;
  private:
 	HANDLE		_m_stop_thread;
 	HANDLE		_m_wait_thread;

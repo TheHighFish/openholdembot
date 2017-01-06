@@ -47,12 +47,13 @@
 #include "NumericalFunctions.h"
 #include "OpenHoldem.h"
 
-CHeartbeatThread	*p_heartbeat_thread = NULL;
-CRITICAL_SECTION	CHeartbeatThread::cs_update_in_progress;
-long int			    CHeartbeatThread::_heartbeat_counter = 0;
-CHeartbeatThread  *CHeartbeatThread::pParent = NULL;
-CHeartbeatDelay   CHeartbeatThread::_heartbeat_delay;
+CHeartbeatThread	 *p_heartbeat_thread = NULL;
+CRITICAL_SECTION	 CHeartbeatThread::cs_update_in_progress;
+long int			     CHeartbeatThread::_heartbeat_counter = 0;
+CHeartbeatThread   *CHeartbeatThread::pParent = NULL;
+CHeartbeatDelay    CHeartbeatThread::_heartbeat_delay;
 COpenHoldemStarter CHeartbeatThread::_openholdem_starter;
+CWatchdog          CHeartbeatThread::_watchdog;
 
 CHeartbeatThread::CHeartbeatThread() {
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
@@ -126,6 +127,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
       } 		
 		}
 #ifdef OPENHOLDEM_11_1_0
+    _watchdog.WatchForDeadProcesses();
     _openholdem_starter.StartNewInstanceIfNeeded();
     _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
 #endif OPENHOLDEM_11_1_0

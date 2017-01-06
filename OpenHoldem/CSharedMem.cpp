@@ -37,16 +37,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
-#pragma data_seg(".ohshme2") // names are limited to 8 chars, including the dot. //!!!!!
+#pragma data_seg(".ohshmem") // names are limited to 8 chars, including the dot. //!!!!!
 
-__declspec(allocate(".ohshme2"))	static	HWND	 attached_poker_windows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
-__declspec(allocate(".ohshme2"))	static	time_t last_failed_attempt_to_connect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
-__declspec(allocate(".ohshme2"))	static	int		 session_ID_of_last_instance_that_failed_to_connect; 
-__declspec(allocate(".ohshme2"))	static	HWND	 dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
-__declspec(allocate(".ohshme2"))	static	int		 size_of_dense_list_of_attached_poker_windows;
-__declspec(allocate(".ohshme2"))	static	int		 CRC_of_main_mutexname;
-__declspec(allocate(".ohshme2"))	static	int    openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
-__declspec(allocate(".ohshme2"))	static	RECT   table_positions[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
+__declspec(allocate(".ohshmem"))	static	HWND	 attached_poker_windows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
+__declspec(allocate(".ohshmem"))	static	time_t last_failed_attempt_to_connect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
+__declspec(allocate(".ohshmem"))	static	int		 session_ID_of_last_instance_that_failed_to_connect; 
+__declspec(allocate(".ohshmem"))	static	HWND	 dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
+__declspec(allocate(".ohshmem"))	static	int		 size_of_dense_list_of_attached_poker_windows;
+__declspec(allocate(".ohshmem"))	static	int		 CRC_of_main_mutexname;
+__declspec(allocate(".ohshmem"))	static	int    openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
+__declspec(allocate(".ohshmem"))	static	RECT   table_positions[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
 
 #pragma data_seg()
 #pragma comment(linker, "/SECTION:.ohshmem,RWS")		// RWS: read, write, shared
@@ -57,7 +57,7 @@ __declspec(allocate(".ohshme2"))	static	RECT   table_positions[MAX_SESSION_IDS] 
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
-CSharedMem	*p_sharedmem = NULL;
+CSharedMem *p_sharedmem = NULL;
 
 CSharedMem::CSharedMem() {
 	// We can verify the mutex here,
@@ -278,9 +278,12 @@ bool CSharedMem::IsDeadOpenHoldemProcess(int open_holdem_iD) {
   if (openholdem_PIDs[open_holdem_iD] == NULL) {
     return false;
   }
-  if (/*!!!!!ProcessE*/ openholdem_PIDs[open_holdem_iD] == NULL) {
+  HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION,
+    FALSE, openholdem_PIDs[open_holdem_iD]);
+  if (hProcess != NULL) {
     return false;
   }
+  MessageBox(0, "Dead", "", 0);
   return true;
 }
 
