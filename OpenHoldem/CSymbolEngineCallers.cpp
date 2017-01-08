@@ -100,7 +100,7 @@ void CSymbolEngineCallers::CalculateCallers() {
   int first_possible_raiser = p_symbol_engine_raisers->FirstPossibleActor();
   int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor() + _nchairs;
   assert(last_possible_raiser > first_possible_raiser);
-  assert((last_possible_raiser - first_possible_raiser) <= _nchairs);
+  assert((last_possible_raiser - first_possible_raiser) <= (2 * _nchairs));
   assert(p_symbol_engine_debug != NULL);
   int chairs_seen = 0;
   double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);

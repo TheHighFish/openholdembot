@@ -20,6 +20,7 @@
 #include "CSharedMem.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineTime.h"
+#include "OpenHoldem.h"
 
 // For connection and popup handling
 const int kMinNumberOfUnoccupiedBotsNeeded =   1;
@@ -96,6 +97,8 @@ void COpenHoldemStarter::CloseThisInstanceIfNoLongerNeeded() {
   }
   write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] Shutting down this instance.\n");
   //!!!!! if preferences
-  PostQuitMessage(0);
-  exit(0);
+  //PostMessage(NULL, WM_QUIT, NULL, NULL);
+  //PostThreadMessage(NULL, WM_QUIT, NULL, NULL);
+  PostMessage(theApp.m_pMainWnd->GetSafeHwnd(), WM_QUIT, NULL, NULL);
+  //exit(0);
 }

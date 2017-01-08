@@ -127,7 +127,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
       } 		
 		}
 #ifdef OPENHOLDEM_11_1_0
-    _watchdog.WatchForDeadProcesses();
+    _watchdog.HandleCrashedAndFrozenProcesses();
     _openholdem_starter.StartNewInstanceIfNeeded();
     _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
 #endif OPENHOLDEM_11_1_0

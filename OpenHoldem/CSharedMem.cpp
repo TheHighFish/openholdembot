@@ -37,16 +37,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
-#pragma data_seg(".ohshmem") // names are limited to 8 chars, including the dot. 
+#pragma data_seg(kOpenHoldemSharedmemorySegment)  
 
-__declspec(allocate(".ohshmem"))	static	HWND	 attached_poker_windows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
-__declspec(allocate(".ohshmem"))	static	time_t last_failed_attempt_to_connect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
-__declspec(allocate(".ohshmem"))	static	int		 session_ID_of_last_instance_that_failed_to_connect; 
-__declspec(allocate(".ohshmem"))	static	HWND	 dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
-__declspec(allocate(".ohshmem"))	static	int		 size_of_dense_list_of_attached_poker_windows;
-__declspec(allocate(".ohshmem"))	static	int		 CRC_of_main_mutexname;
-__declspec(allocate(".ohshmem"))	static	int    openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
-__declspec(allocate(".ohshmem"))	static	RECT   table_positions[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	HWND	 attached_poker_windows[MAX_SESSION_IDS] = { NULL };	// for the auto-connector
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	time_t last_failed_attempt_to_connect;	// last time any instance failed; to avoid superflous attempts by other instances of OH
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	int		 session_ID_of_last_instance_that_failed_to_connect;
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	HWND	 dense_list_of_attached_poker_windows[MAX_SESSION_IDS] = { NULL }; // for the table positioner
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	int		 size_of_dense_list_of_attached_poker_windows;
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	int		 CRC_of_main_mutexname;
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	int    openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
+__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	RECT   table_positions[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
 
 #pragma data_seg()
 #pragma comment(linker, "/SECTION:.ohshmem,RWS")		// RWS: read, write, shared
@@ -273,17 +273,32 @@ int CSharedMem::NTablesConnected() {
   return result;
 }
 
+//http://stackoverflow.com/questions/1238379/detecting-if-a-process-is-still-runnning
+bool isProcessRunning(DWORD processID)
+{
+  if (HANDLE process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, processID))
+  {
+    DWORD exitCodeOut;
+    // GetExitCodeProcess returns zero on failure
+    if (GetExitCodeProcess(process, &exitCodeOut) != 0)
+    {
+      // Return if the process is still active
+      return exitCodeOut == STILL_ACTIVE;
+    }
+  }
+  return false;
+}
+
 bool CSharedMem::IsDeadOpenHoldemProcess(int open_holdem_iD) {
   if (openholdem_PIDs[open_holdem_iD] == NULL) {
     return false;
   }
-  HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION,
-    FALSE, openholdem_PIDs[open_holdem_iD]);
-  if (hProcess != NULL) {
+  if (isProcessRunning(openholdem_PIDs[open_holdem_iD])) {
     return false;
   }
   write_log(preferences.debug_sharedmem(), "[CSharedMem] Dead process %d %d detected\n",
     open_holdem_iD, openholdem_PIDs[open_holdem_iD]);
+  MessageBox(0, "Dead", "", 0); //!!!!!
   return true;
 }
 
@@ -311,4 +326,10 @@ void CSharedMem::Dump() {
     write_log(preferences.debug_sharedmem(), "[CSharedMem] %2d %15d %15d\n", 
       i, openholdem_PIDs[i], attached_poker_windows[i]);
   }
+}
+
+int CSharedMem::OpenHoldemProcessID(int session_ID) {
+  assert(session_ID >= 0);
+  assert(session_ID < MAX_SESSION_IDS);
+  return openholdem_PIDs[session_ID];
 }

@@ -4,11 +4,16 @@ NEW STUFF:
 - OpenHoldem autostarter that takes care that enough free instances
   of OpenHoldem are running.
   [THF]
+- A so-called "watchdog" cares now about crashed and frozen
+  instences of OpenHoldem and cleans up if necessary,
+  so that auto-starter and auto-connector can work properly.
+  This feature became necessary, because OH sometimes crashes at termination.
+  [THF]
 - New memory-commands:
     * me_add_symbol_value
     * me_sub_symbol_value
   that can be used in addition to me_st_, me_re_ and me_inc
-  to manipulate memory-symbols more easily.
+  to manipulate memory-symbols more easily, e.g. when creating outs-counters.
   [THF]
   
 

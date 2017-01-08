@@ -26,6 +26,10 @@
 //
 // We chose the first solution for its simplicity
 
+// names are limited to 8 chars, including the dot.
+// If you changes this name you also have to change the linker pragmas
+#define kOpenHoldemSharedmemorySegment ".ohshmem"
+
 class CSharedMem {
  public:
 	CSharedMem();
@@ -54,6 +58,8 @@ class CSharedMem {
   int LowestUnconnectedSessionID();
   int NTablesConnected();
   int NUnoccupiedBots();
+ public:
+  int OpenHoldemProcessID(int session_ID);
  private:
 	void CreateDenseListOfConnectedPokerWindows();
 	void VerifyMainMutexName();
