@@ -273,7 +273,7 @@ WHEN (LowestFlopCard = TopFlopCard) RETURN True FORCE
 WHEN (TopFlopCard <= 2) RETURN False FORCE
 WHEN (SecondTopFlopCard < 2) RETURN False FORCE
 WHEN (LowestFlopCard < 2) RETURN False FORCE
-WHEN TripsOnFlopOnBoard RETURN False FORCE
+WHEN TripsOnBoardOnFlop RETURN False FORCE
 WHEN [(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard != SecondTopFlopCard) AND (TopFlopCard != ConstCardAce)] RETURN True FORCE
 WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != LowestFlopCard)] RETURN True FORCE
 
