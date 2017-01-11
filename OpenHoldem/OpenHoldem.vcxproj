@@ -259,8 +259,8 @@
     <ClCompile Include="mtrand.cpp" />
     <ClCompile Include="OpenHoldem.cpp" />
     <ClCompile Include="OpenHoldemDoc.cpp" />
-	<ClCompile Include="COpenHoldemStarter.cpp" />
-	<ClCompile Include="CWatchdog.cpp" />
+    <ClCompile Include="COpenHoldemStarter.cpp" />
+    <ClCompile Include="CWatchdog.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -370,7 +370,6 @@
     <ClCompile Include="PokerChat.cpp" />
     <ClCompile Include="SwagAdjustment.cpp" />
     <ClCompile Include="CAutoConnector.cpp" />
-    <ClCompile Include="CAutoConnectorThread.cpp" />
     <ClCompile Include="CTableMapLoader.cpp" />
     <ClCompile Include="CTablePositioner.cpp" />
     <ClCompile Include="CTablepointChecker.cpp" />
@@ -552,7 +551,7 @@
     <ClInclude Include="OpenHoldem.h" />
     <ClInclude Include="OpenHoldemDoc.h" />
     <ClInclude Include="COpenHoldemStarter.h" />
-	<ClInclude Include="CWatchdog.h" />
+    <ClInclude Include="CWatchdog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Singletons.h" />
     <ClInclude Include="SLimitInfo.h" />
@@ -679,7 +678,6 @@
     <ClInclude Include="PokerChat.hpp" />
     <ClInclude Include="SwagAdjustment.h" />
     <ClInclude Include="CAutoConnector.h" />
-    <ClInclude Include="CAutoConnectorThread.h" />
     <ClInclude Include="CTableMapLoader.h" />
     <ClInclude Include="CTablePositioner.h" />
     <ClInclude Include="CTablepointChecker.h" />

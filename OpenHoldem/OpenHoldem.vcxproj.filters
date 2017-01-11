@@ -252,10 +252,10 @@
     <ClCompile Include="OpenHoldemDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClCompile Include="COpenHoldemStarter.cpp">
+    <ClCompile Include="COpenHoldemStarter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClCompile Include="CWatchdog.cpp">
+    <ClCompile Include="CWatchdog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Singletons.cpp">
@@ -517,9 +517,6 @@
       <Filter>Source Files\AutoPlayer</Filter>
     </ClCompile>
     <ClCompile Include="CAutoConnector.cpp">
-      <Filter>Source Files\AutoConnector</Filter>
-    </ClCompile>
-    <ClCompile Include="CAutoConnectorThread.cpp">
       <Filter>Source Files\AutoConnector</Filter>
     </ClCompile>
     <ClCompile Include="CTableMapLoader.cpp">
@@ -1051,10 +1048,10 @@
     <ClInclude Include="OpenHoldemDoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-	<ClInclude Include="COpenHoldemStarter.h">
+    <ClInclude Include="COpenHoldemStarter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-	<ClInclude Include="CWatchdog.h">
+    <ClInclude Include="CWatchdog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
@@ -1367,9 +1364,6 @@
       <Filter>Header Files\AutoPlayer</Filter>
     </ClInclude>
     <ClInclude Include="CAutoConnector.h">
-      <Filter>Header Files\AutoConnector</Filter>
-    </ClInclude>
-    <ClInclude Include="CAutoConnectorThread.h">
       <Filter>Header Files\AutoConnector</Filter>
     </ClInclude>
     <ClInclude Include="CTableMapLoader.h">
