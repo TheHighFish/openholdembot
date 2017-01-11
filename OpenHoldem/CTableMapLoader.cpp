@@ -234,7 +234,19 @@ bool TablemapMatchesWindowByTitle(int MapIndex, HWND window) {
   CString title = text;
   if ((tablemap_connection_data[MapIndex].TitleText != "")
     && title.Find(tablemap_connection_data[MapIndex].TitleText) != -1) {
+    // Matching non-empty title-text
     write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Title [%s] matches.\n", title);
+    return true;
+  }
+  if ((tablemap_connection_data[MapIndex].TitleText == "")
+    && (title == "")) {
+    // Matching empty title-text (since version 11.0.1)
+    // Exact match, as partial matching makes no sense
+    // This also requires tablepoints to make sure that we don't randomly
+    // connect to crappy ghost-windows. The existence of tablepoints
+    // gets verified by the TablemapcompletenessChecker.
+    // www!!!!!
+    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Empty title [%s] matches.\n", title);
     return true;
   }
   // titletext din't match

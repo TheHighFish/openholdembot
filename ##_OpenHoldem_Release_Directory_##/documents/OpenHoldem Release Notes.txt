@@ -19,6 +19,19 @@ NEW STUFF:
 
 v11.0.1 2017-xx-xx
 ==================
+NEW STUFF:
+- OpenHoldem is now able to connect to tables with empty title.
+  This requires an empty titletext in the tablemap
+  and also at least one additional tablepoint to make sure 
+  that we don't randomly connect to crappy ghost-windows.
+  Thanks to for reporting the former limitation of OpenHoldem.
+  
+MAINTENANCE:
+- Removed supoort of a "scraper-DLL" for alternative input-methods
+  like hooking and DLL-injection, as it was never used by anybody,
+  its implementation got lost years ago (scraper-optimizations for 4.x),
+  nobodey complained and the code demanded simplifications.
+  [THF]
 
 
 v11.0.0 2016-12-27
