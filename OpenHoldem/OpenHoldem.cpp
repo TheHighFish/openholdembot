@@ -62,12 +62,8 @@ BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
 	ON_COMMAND(ID_FINISH_INITIALIZATION, &COpenHoldemApp::FinishInitialization)
 END_MESSAGE_MAP()
 
-// COpenHoldemApp construction
-COpenHoldemApp::COpenHoldemApp() {
-	_dll_scraper_process_message = NULL;
-	_dll_scraper_override = NULL;
-}
-
+// COpenHoldemApp construction
+COpenHoldemApp::COpenHoldemApp() {}
 // COpenHoldemApp destruction
 COpenHoldemApp::~COpenHoldemApp() {
 }
@@ -256,14 +252,6 @@ int COpenHoldemApp::ExitInstance() {
 	Scintilla_ReleaseResources();
   stop_log();
 	return CWinApp::ExitInstance();
-}
-
-void COpenHoldemApp::UnloadScraperDLL() {
-	if (_scraper_dll)
-		FreeLibrary(_scraper_dll);
-	_scraper_dll = NULL;
-	_dll_scraper_process_message = NULL;
-	_dll_scraper_override = NULL;
 }
 
 // CDlgAbout dialog used for App About

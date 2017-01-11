@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: automatically connecting to unserved poker-tables,
+//   using shared memory and a mutex to synchronize with other instaces.
 //
 //******************************************************************************
 
@@ -41,8 +42,8 @@
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 
-CAutoConnector						*p_autoconnector = NULL;
-CArray <STableList, STableList>		g_tlist; 
+CAutoConnector *p_autoconnector = NULL;
+CArray <STableList, STableList> g_tlist; 
 
 CAutoConnector::CAutoConnector() {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] CAutoConnector()\n");
@@ -144,13 +145,13 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 	if (!IsWindowVisible(hwnd))	return true;
   // If there is no caption on this window, then return
 	GetWindowText(hwnd, text, sizeof(text));
-	if (strlen(text) == 0) return true; //!!!!!!!
- 
+#ifndef OPENHOLDEM_11_1_0
+	if (strlen(text) == 0) return true; 
+#endif
   title = text;                                                                                                                                                                                                            if ((_memicmp(text, "oh sn", 5) == 0) || (_memicmp(text, "oh mt", 5) == 0) || (_memicmp(text, "oh hy", 5) == 0)) { write_log(preferences.debug_autoconnector(), "[CAutoConnector] cycling through candidate list\n"); vali_err = true; } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                    
 	// Found a candidate window, get client area rect
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
 	GetClientRect(hwnd, &crect);
-
 	// See if it matches the currently loaded table map
 	if (Check_TM_Against_Single_Window(tablemap_index, hwnd, crect, title)) {
 		// Filter out served tables already here,
@@ -290,12 +291,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			if (m_ScraperOutputDlg) {
 				m_ScraperOutputDlg->Reset();
 			}
-      LoadScraperDLL();
 			p_flags_toolbar->ResetButtonsOnConnect();
-      // Send "connect" and HWND to scraper DLL, if loaded
-			if (theApp._dll_scraper_process_message) {
-				(theApp._dll_scraper_process_message) ("connect", &_attached_hwnd);
-      }
       // The main GUI gets created by another thread.
       // This can be slowed down if there are popups (parse-errors).
       // Handle the race-condition
@@ -317,34 +313,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 	return (SelectedItem != kUndefined);
 }
 
-void CAutoConnector::LoadScraperDLL() {
-	// scraper.dll - failure in load is NOT fatal
-	theApp.UnloadScraperDLL();
-	CString filename = p_tablemap->scraperdll();
-	if (filename.IsEmpty()) return;
-	// Otherwise: try to load DLL
-	p_filenames->SwitchToOpenHoldemDirectory();
-	theApp._scraper_dll = LoadLibrary(filename);
-
-	if (theApp._scraper_dll == NULL) {
-		CString	error_message;
-		error_message.Format("Unable to load scraper-dll: \"%s\"\n\n"
-			"Error-code: %d", filename, GetLastError());
-		OH_MessageBox_Error_Warning(error_message);
-		return;
-	}
-
-	theApp._dll_scraper_process_message = (scraper_process_message_t) GetProcAddress(theApp._scraper_dll, "ProcessMessage");
-	theApp._dll_scraper_override = (scraper_override_t) GetProcAddress(theApp._scraper_dll, "OverrideScraper");
-
-	if (theApp._dll_scraper_process_message==NULL || theApp._dll_scraper_override==NULL)	{
-		OH_MessageBox_Error_Warning("Unable to find all symbols in scraper.dll");
-		theApp.UnloadScraperDLL();
-	}	else {
-		write_log(preferences.debug_autoconnector(), "[CAutoConnector] scraper.dll (%s) loaded, ProcessMessage and OverrideScraper found.\n", filename);
-	}
-}
-
 void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
 
@@ -361,13 +329,6 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
   _autoconnector_mutex->Lock(INFINITE);
 	p_engine_container->UpdateOnDisconnection();
-
-	// Send "disconnect" to scraper DLL, if loaded
-	if (theApp._dll_scraper_process_message) {
-		(theApp._dll_scraper_process_message) ("disconnect", NULL);
-  }
-	theApp.UnloadScraperDLL();
-
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
   // Stop timer that checks for valid hwnd, then unattach OH. 	375 	// Unattach OH.

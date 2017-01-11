@@ -552,10 +552,6 @@
 			<param name="Local" value="Chapters\extensions\KeyBoardDLL.html.LyXconv\KeyBoardDLL.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Scraper-DLL">
-			<param name="Local" value="Chapters\extensions\ScraperDLL.html.LyXconv\ScraperDLL.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="PokerTracker-Query-Definitions-DLL">
 			<param name="Local" value="Chapters\extensions\pokertracker_query_definitions_dll.html.LyXconv\pokertracker_query_definitions_dll.html">
 			</OBJECT>

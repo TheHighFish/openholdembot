@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: automatically connecting to unserved poker-tables,
+//   using shared memory and a mutex to synchronize with other instaces.
 //
 //******************************************************************************
 
@@ -32,7 +33,6 @@ class CAutoConnector {
 	const HWND attached_hwnd()    { return _attached_hwnd; }
  private:
 	int SelectTableMapAndWindowAutomatically();
-	void LoadScraperDLL();
 	void WriteLogTableReset(CString event_and_reason);
  private:
 	void Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_index, HWND targetHWnd);
@@ -47,11 +47,11 @@ class CAutoConnector {
 	void GoIntoPopupBlockingMode();
  private:
 	// private variables - use public accessors and public mutators to address these
-	HWND		  _attached_hwnd; // Table that we are attached to
-	CCritSec	m_critsec;
+	HWND     _attached_hwnd; // Table that we are attached to
+	CCritSec m_critsec;
  private:
 	// Mutex used for cross-instance autoconnector coordination
-	CMutex	*_autoconnector_mutex;
+	CMutex *_autoconnector_mutex;
 };
 
 extern  CAutoConnector *p_autoconnector;

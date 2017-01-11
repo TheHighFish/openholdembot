@@ -170,14 +170,13 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 // as it has to be called by the callback-function 
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title) {
-	bool good_pos_title = false, good_neg_title = false; 
+  bool good_pos_title = false;
+  bool good_neg_title = false;
   bool good_table_points = false;
 	CString	s;
-
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Check_TM_Against_Single_Window(..)\n");
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Checking map nr. %d\n", MapIndex);
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Window title: %s\n", title);
-	
 	// Check for client size that falls within min/max
 	if (!((r.right   >= tablemap_connection_data[MapIndex].ClientSizeMinX)
 			&& (r.right  <= tablemap_connection_data[MapIndex].ClientSizeMaxX)
@@ -189,7 +188,6 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		return false;
 	}
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Size matches; checking the rest...\n");
-  
   // Check for match positive title text matches
   //!!!!!!!
 	good_pos_title = false;
@@ -211,7 +209,6 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title)
 		write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] No good title.\n");
 		return false;
 	}
-
 	// Check for no negative title text matches
 	good_neg_title = false;
 	if ((tablemap_connection_data[MapIndex].NegativeTitleText != "")

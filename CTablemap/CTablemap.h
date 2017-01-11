@@ -162,7 +162,6 @@ class CTablemap {
 	const CString titletext()	       	 { return GetTMSymbol("titletext"); } 
 	const CString network()			       { return GetTMSymbol("network"); } 
 	const CString chipscrapemethod()   { return GetTMSymbol("chipscrapemethod"); }
-	const CString scraperdll()		     { return GetTMSymbol("scraperdll"); }
  public:
 	const CString filename() { return _filename; }
 	const CString filepath() { return _filepath; }

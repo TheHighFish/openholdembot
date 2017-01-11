@@ -25,7 +25,6 @@
 
 #include "..\..\Reference Mouse DLL\mousedll.h"
 #include "..\..\Reference Keyboard DLL\keyboarddll.h"
-#include "..\..\Reference Scraper DLL\scraperdll.h"
 
 // COpenHoldemApp:
 // See OpenHoldem.cpp for the implementation of this class
@@ -41,7 +40,6 @@ class COpenHoldemApp : public CWinApp {
 	DECLARE_MESSAGE_MAP()
 	virtual int ExitInstance();
  public:
-	void UnloadScraperDLL();
 	void StoreLastRecentlyUsedFileList();
  private:
 	void LoadLastRecentlyUsedFileList();
@@ -55,9 +53,6 @@ class COpenHoldemApp : public CWinApp {
 	keyboard_sendkey_t      _dll_keyboard_sendkey;
 	HMODULE	_mouse_dll;
 	HMODULE	_keyboard_dll;
-  HMODULE	_scraper_dll;
-	scraper_process_message_t	_dll_scraper_process_message;
-	scraper_override_t _dll_scraper_override;
  private:
 	void FinishInitialization();
   void InitializeThreads();
