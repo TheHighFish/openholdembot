@@ -312,6 +312,7 @@ void CTablemapCompletenessChecker::VerifyTitleTexts() {
   if (!p_tablemap->ItemExists("titletext")) {
     return;
   }
+  return; //!!!!!
   if (p_tablemap->GetTMSymbol("titletext") == "") {
     // Since version 11.0.1 we support empty titletexts 
     // But then at least one tablepoint is required

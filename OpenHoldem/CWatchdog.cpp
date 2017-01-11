@@ -28,7 +28,6 @@ __declspec(allocate(kOpenHoldemSharedmemorySegment)) static	time_t timestamps_op
 const int kSecondsToconsiderAProcessAsFrozen = 15;
 
 CWatchdog::CWatchdog() {
-  MarkThisInstanceAsAlive();
 }
 
 CWatchdog::~CWatchdog() {
@@ -56,6 +55,7 @@ void CWatchdog::MarkThisInstanceAsAlive() {
 void CWatchdog::WatchForCrashedProcesses() {
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (p_sharedmem->IsDeadOpenHoldemProcess(i)) {
+      timestamps_openholdem_alive[i] = 0;
       p_sharedmem->CleanUpProcessMemory(i);
     }
   }
@@ -96,6 +96,8 @@ void CWatchdog::WatchForFrozenProcesses() {
         continue;
       }
       KillProcess(p_sharedmem->OpenHoldemProcessID(i));
+      timestamps_openholdem_alive[i] = 0;
+      p_sharedmem->CleanUpProcessMemory(i);
     }
   }
 }

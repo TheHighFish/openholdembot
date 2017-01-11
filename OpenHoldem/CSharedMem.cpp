@@ -298,7 +298,6 @@ bool CSharedMem::IsDeadOpenHoldemProcess(int open_holdem_iD) {
   }
   write_log(preferences.debug_sharedmem(), "[CSharedMem] Dead process %d %d detected\n",
     open_holdem_iD, openholdem_PIDs[open_holdem_iD]);
-  MessageBox(0, "Dead", "", 0); //!!!!!
   return true;
 }
 
