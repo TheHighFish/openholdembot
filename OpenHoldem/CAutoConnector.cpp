@@ -99,15 +99,9 @@ void CAutoConnector::CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd) {
   int num_loaded_tablemaps = p_tablemap_loader->NumberOfTableMapsLoaded();
   int num_matching_tablemaps = 0;
   CString matching_tablemaps = "";
-  char text[MAX_WINDOW_TITLE] = { 0 };
-  GetWindowText(hwnd, text, sizeof(text));
-  CString title = text;
-  RECT    crect;
-  GetClientRect(hwnd, &crect);
-
   for (int i=0; i<num_loaded_tablemaps; ++i) {
-    // See if it matches the currently loaded(?????) table map
-    if (Check_TM_Against_Single_Window(i, hwnd, crect, title)) {
+    // See if it matches the specified table map
+    if (Check_TM_Against_Single_Window(i, hwnd)) {
       ++num_matching_tablemaps;
       // Build "list" of matching tablemaps
       matching_tablemaps += p_tablemap_loader->GetTablemapPathToLoad(i);
@@ -115,6 +109,9 @@ void CAutoConnector::CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd) {
     }
   }
   if (num_matching_tablemaps > 1) {
+    char text[MAX_WINDOW_TITLE] = { 0 };
+    GetWindowText(hwnd, text, sizeof(text));
+    CString title = text;
     CString error_message;
     error_message.Format("%s%s%s%s%s%s%s%s%s",
       "More then one tablemap fits to the same table\n\n",
@@ -143,17 +140,17 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 	if (GetParent(hwnd) != NULL) return true;
   // If this window is not visible, then return
 	if (!IsWindowVisible(hwnd))	return true;
+#ifndef OPENHOLDEM_11_1_0 //!!!!!!!
   // If there is no caption on this window, then return
-	GetWindowText(hwnd, text, sizeof(text));
-#ifndef OPENHOLDEM_11_1_0
+  GetWindowText(hwnd, text, sizeof(text));
 	if (strlen(text) == 0) return true; 
-#endif
-  title = text;                                                                                                                                                                                                            if ((_memicmp(text, "oh sn", 5) == 0) || (_memicmp(text, "oh mt", 5) == 0) || (_memicmp(text, "oh hy", 5) == 0)) { write_log(preferences.debug_autoconnector(), "[CAutoConnector] cycling through candidate list\n"); vali_err = true; } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                    
+  title = text;
+#endif                                                                                                                                                                                                           if ((_memicmp(text, "oh sn", 5) == 0) || (_memicmp(text, "oh mt", 5) == 0) || (_memicmp(text, "oh hy", 5) == 0)) { write_log(preferences.debug_autoconnector(), "[CAutoConnector] cycling through candidate list\n"); vali_err = true; } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                    
 	// Found a candidate window, get client area rect
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
 	GetClientRect(hwnd, &crect);
 	// See if it matches the currently loaded table map
-	if (Check_TM_Against_Single_Window(tablemap_index, hwnd, crect, title)) {
+  if (Check_TM_Against_Single_Window(tablemap_index, hwnd)) { 
 		// Filter out served tables already here,
 		// otherwise the other list used in the dialog
 		// to select windows manually will cause us lots of headaches,

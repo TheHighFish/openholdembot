@@ -29,7 +29,7 @@ CTablepointChecker::CTablepointChecker() {
 CTablepointChecker::~CTablepointChecker() {
 }
 
-bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_index, RECT r) {
+bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_index) {
   write_log(preferences.debug_tablepoints(), "[CTablepointChecker] CheckTablepoints()\n");
   // Function for checking tablepoints of not connected tables.
   // taking an extra screenshot
@@ -43,14 +43,16 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
   HBITMAP	hbmScreen = NULL, hOldScreenBitmap = NULL;
   CTransform	trans;
   if (tablemap_connection_data[tablemap_index].TablePointCount > 0) {
+    RECT crect;
+    GetClientRect(window_candidate, &crect);
     for (int i = 0; i<tablemap_connection_data[tablemap_index].TablePointCount; i++) {
       // Allocate heap space for BITMAPINFO
       BITMAPINFO  *bmi;
       int         info_len = sizeof(BITMAPINFOHEADER) + 1024;
       bmi = (BITMAPINFO *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, info_len);
       // Check table points for match
-      width = r.right - r.left;
-      height = r.bottom - r.top;
+      width = crect.right - crect.left;
+      height = crect.bottom - crect.top;
       hdcScreen = GetDC(window_candidate);
       hdcCompatible = CreateCompatibleDC(hdcScreen);
       hbmScreen = CreateCompatibleBitmap(hdcScreen, width, height);

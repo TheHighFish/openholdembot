@@ -22,7 +22,7 @@ class CTablepointChecker {
   CTablepointChecker();
   ~CTablepointChecker();
  public:
-  bool CheckTablepoints(HWND window_candidate, int tablemap_index, RECT r);
+  bool CheckTablepoints(HWND window_candidate, int tablemap_index);
   bool CheckTablepointsOfCurrentTablemap();
   bool TablepointsMismatchedTheLastNHeartbeats();
  private:

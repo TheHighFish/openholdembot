@@ -19,7 +19,7 @@
 // This function has to be global and can't be part of the class,
 // as it has to be called by the callback-function 
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
-bool Check_TM_Against_Single_Window(int MapIndex, HWND h, RECT r, CString title);
+bool Check_TM_Against_Single_Window(int MapIndex, HWND h);
 
 class CTableMapLoader {
  public:
