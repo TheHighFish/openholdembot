@@ -33,7 +33,7 @@ BUG FIXES:
   [THF]
   
 MAINTENANCE:
-- Removed supoort of a "scraper-DLL" for alternative input-methods
+- Removed support of a "scraper-DLL" for alternative input-methods
   like hooking and DLL-injection, as it was never used by anybody,
   its implementation got lost years ago (scraper-optimizations for 4.x),
   nobodey complained and the code demanded simplifications.
