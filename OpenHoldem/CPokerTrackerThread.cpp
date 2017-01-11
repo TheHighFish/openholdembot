@@ -739,13 +739,17 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam) {
 		} else if (PQstatus(pParent->_pgconn) != CONNECTION_OK) {
       pParent->Reconnect();
     }
-		double players = p_symbol_engine_active_dealt_playing->nopponentsseated() 
-			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0);
+    double players = p_symbol_engine_active_dealt_playing->nplayersseated();
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", (int)players);
 		if (players < 2) {
+      // It looks like empty tables can cause long sleeping if we continue.
+      // Therefore we skip processing if there are too few players
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20427
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Not enough players to justify iteration...\n");
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] For beginners: possible tablemap-problem?\n");
-			write_log(preferences.debug_pokertracker(), "[PokerTracker] Continuing anyway...\n");
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] Skipping all DB-lookups...\n");
+      LightSleep(3000, pParent);
+      continue;
 		}
 		// Avoiding division by zero and setting sleep time
 		AdaptValueToMinMaxRange(&players, 1, kMaxNumberOfPlayers);
