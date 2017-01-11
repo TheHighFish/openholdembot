@@ -26,6 +26,12 @@ NEW STUFF:
   that we don't randomly connect to crappy ghost-windows.
   Thanks to for reporting the former limitation of OpenHoldem.
   
+BUG FIXES:
+- The symbol NutsOnBoard got lost when the OpenPPL-library
+  got reorganized for Omaha.
+  Thanks to JohnNash for reporting.
+  [THF]
+  
 MAINTENANCE:
 - Removed supoort of a "scraper-DLL" for alternative input-methods
   like hooking and DLL-injection, as it was never used by anybody,

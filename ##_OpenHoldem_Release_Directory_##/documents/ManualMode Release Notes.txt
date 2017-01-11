@@ -1,5 +1,12 @@
+v11.0.1 2016-01-xx
+==================
+BUG FIXES: 
+- All folds happened at the userchair.
+  Thanks to Stars83 for reporting.
+  [THF]
+
 v11.0.0 2016-12-26
-=================
+==================
 NEW STUFF:
 - Support for Omaha.
   Click the game-info-dialog and select the desired game-type.

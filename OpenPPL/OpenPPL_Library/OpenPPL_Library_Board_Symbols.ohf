@@ -238,6 +238,11 @@ DoubleGutShotOnBoard OR OpenEndedStraightDrawOnBoard
 + (OneCardStraightPossibleOnTurn_SixHigh   ? 1 : 0)
 + (OneCardStraightPossibleOnTurn_FiveHigh  ? 1 : 0)
 
+##NutsOnBoard##
+// This function got designed for Hold'em,
+// it is practically meaning-less for Omaha.
+nhands == nhandsti
+
 ##OneCardFlushPossible##
 (nsuitedcommon >= 4)
 
