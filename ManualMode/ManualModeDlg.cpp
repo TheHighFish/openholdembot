@@ -2043,7 +2043,6 @@ void CManualModeDlg::SetDealerPosition(int chair) {
 
 void CManualModeDlg::OnFold() 
 { 
-  click_chair = Userchair();
   do_fold();
   InvalidateRect(NULL, true);
 }

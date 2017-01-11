@@ -735,9 +735,6 @@
       <Project>{03de5c1c-773f-47cf-ad7c-470f68c6400e}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\Reference Scraper DLL\Reference Scraper DLL.vcxproj">
-      <Project>{f7cf9cce-04e1-4a98-bb34-eef00a7e1aa1}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\scintilla\vcbuild\SciLexer.vcxproj">
       <Project>{e757a486-9770-4db4-8299-00e22986e604}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
