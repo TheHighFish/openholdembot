@@ -26,13 +26,12 @@ class CAutoConnector {
 	bool Connect(HWND targetHWnd);
 	void Disconnect(CString reason_for_disconnection);
 	bool IsConnected();
-	double TimeSincelast_failed_attempt_to_connect(); // seconds
+	double SecondsSinceLastFailedAttemptToConnect(); 
  public:
 	// public accessors
 	const HWND attached_hwnd()    { return _attached_hwnd; }
  private:
-	int SelectTableMapAndWindow(int Choices);
-	int SelectTableMapAndWindowAutomatically(int Choices);
+	int SelectTableMapAndWindowAutomatically();
 	void LoadScraperDLL();
 	void WriteLogTableReset(CString event_and_reason);
  private:

@@ -211,7 +211,7 @@ void CAutoConnector::GoIntoPopupBlockingMode() {
 }
 
 bool CAutoConnector::Connect(HWND targetHWnd) {
-	int					N = 0, line = 0, ret = 0;
+	int					line = 0, ret = 0;
 	char				title[MAX_WINDOW_TITLE] = {0};
 	int					SelectedItem = kUndefined;
 	CString			current_path = "";
@@ -254,12 +254,13 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 		Check_TM_Against_All_Windows_Or_TargetHWND(tablemap_index, targetHWnd);
 	}
 	// Put global candidate table list in table select dialog variables
-	N = (int) g_tlist.GetSize();
-  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of table candidates: %i\n", N);
-	if (N == 0) {
+	int n_window_candidates = (int) g_tlist.GetSize();
+  write_log(preferences.debug_autoconnector(), "[CAutoConnector] Number of table candidates: %i\n", 
+    n_window_candidates);
+	if (n_window_candidates == 0) {
 		FailedToConnectBecauseNoWindowInList();
 	}	else 	{
-		SelectedItem = SelectTableMapAndWindow(N);
+		SelectedItem = SelectTableMapAndWindowAutomatically();
 		if (SelectedItem == kUndefined) {
 			FailedToConnectProbablyBecauseAllTablesAlreadyServed();
 		}	else {
@@ -417,15 +418,10 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect done\n");
 }
 
-int CAutoConnector::SelectTableMapAndWindow(int Choices) {
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindow(..)\n");
-	// Always connecting automatically
-	return SelectTableMapAndWindowAutomatically(Choices);
-}
-
-int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices) {
+int CAutoConnector::SelectTableMapAndWindowAutomatically() {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] SelectTableMapAndWindowAutomatically(..)\n");
-	for (int i=0; i<Choices; ++i) {
+  int n_window_candidates = (int)g_tlist.GetSize();
+	for (int i=0; i<n_window_candidates; ++i) {
 		if (!p_sharedmem->PokerWindowAttached(g_tlist[i].hwnd))	{
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Chosen (table, TM)-pair in list: %d\n", i);
 			return i;
@@ -436,7 +432,7 @@ int CAutoConnector::SelectTableMapAndWindowAutomatically(int Choices) {
 	return kUndefined;
 }
 
-double CAutoConnector::TimeSincelast_failed_attempt_to_connect() {
+double CAutoConnector::SecondsSinceLastFailedAttemptToConnect() {
 	time_t last_failed_attempt_to_connect = p_sharedmem->GetTimeOfLastFailedAttemptToConnect(); 
 	time_t CurrentTime;
 	time(&CurrentTime);

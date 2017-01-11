@@ -187,7 +187,7 @@ void CHeartbeatThread::AutoConnect() {
   write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_D\n");
 	assert(!p_autoconnector->IsConnected());
 	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) {
-		if (p_autoconnector->TimeSincelast_failed_attempt_to_connect() > 1 /* seconds */) {
+		if (p_autoconnector->SecondsSinceLastFailedAttemptToConnect() > 1 /* seconds */) {
 			write_log(preferences.debug_autoconnector(), "[CHeartbeatThread] going to call Connect()\n");
 			p_autoconnector->Connect(NULL);
 		}	else {
