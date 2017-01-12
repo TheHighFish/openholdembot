@@ -31,6 +31,10 @@ BUG FIXES:
   got reorganized for Omaha.
   Thanks to JohnNash for reporting.
   [THF]
+- The PokerTracker-Thread could sometimes freeze OH 
+  if it connected to an empty table.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
   
 MAINTENANCE:
 - Removed support of a "scraper-DLL" for alternative input-methods

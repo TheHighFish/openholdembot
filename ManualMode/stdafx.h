@@ -65,8 +65,8 @@
 
 
 // Version
-#define VERSION_NUMBER			11.00
-#define VERSION_TEXT				"11.0.0.0"  // change version number in ManualMode.rc also, when needed
+#define VERSION_NUMBER			11.01
+#define VERSION_TEXT				"11.0.1.0"  // change version number in ManualMode.rc also, when needed
 
 
 
