@@ -258,6 +258,14 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
         // "Euro" in some unknown extended ASCII-encoding,
         // displayed as "Modifier letter circumflex accent" in latin-1
         // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=141946#p141916
+        // Probably Western Europe encoding, also reported here (Germany):
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=90#p143386
+        s->SetAt(i, '$');
+        break;
+      case 0xFFFFFF92:
+        // Yet another encoding of "Euro",
+        // probably Western Europe encoding (Germany)
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=90#p143386
         s->SetAt(i, '$');
         break;
       case 0xFFFFFFA0:
