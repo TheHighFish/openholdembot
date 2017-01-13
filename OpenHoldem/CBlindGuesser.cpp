@@ -18,6 +18,7 @@
 #include "CBlindLevels.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHistory.h"
@@ -156,15 +157,15 @@ double CBlindGuesser::ReasonableLookingHalfBlindValue(double known_value) {
 // All parameters are out-parameters only
 // Guessing according to Want2Learns method
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60
-void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind, 
-                                                        double *bblind, 
-                                                        double *bbet) {
+void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
+  double *bblind,
+  double *bbet) {
   // Everything is unknown, init to zero
   *sblind = kUndefinedZero;
   *bblind = kUndefinedZero;
-  *bbet   = kUndefinedZero;
+  *bbet = kUndefinedZero;
   // Search first two bets...
-  double first_bet_after_dealer  = 0.0;
+  double first_bet_after_dealer = 0.0;
   double second_bet_after_dealer = 0.0;
   bool   first_chair_immediatelly_after_dealer_betting = false;
 
@@ -173,14 +174,14 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   // but this looks acceptable, because we have to guess only
   // verz few times and don't have to act at the verz first heartbeat
   // (because of stable frames).
-  int dealer = p_symbol_engine_dealerchair->dealerchair();  
+  int dealer = p_symbol_engine_dealerchair->dealerchair();
   // Exit on undefined or wrong dealer (outdated, from last hand)
-  if ((dealer == kUndefined) || (p_table_state->Player(dealer)->dealer() == false)) { 
+  if ((dealer == kUndefined) || (p_table_state->Player(dealer)->dealer() == false)) {
     return;
   }
   int first_chair = dealer + 1;
-  int last_chair  = dealer + p_tablemap->nchairs();
-  for (int i=first_chair; i<=last_chair; ++i) {
+  int last_chair = dealer + p_tablemap->nchairs();
+  for (int i = first_chair; i <= last_chair; ++i) {
     int normalized_chair = i % p_tablemap->nchairs();
     double players_bet = p_table_state->Player(normalized_chair)->_bet.GetValue();
     if (players_bet <= 0) continue;
@@ -192,34 +193,54 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
       if (normalized_chair == (first_chair % p_tablemap->nchairs())) {
         first_chair_immediatelly_after_dealer_betting = true;
       }
-    } else if (second_bet_after_dealer <= 0) {
+    }
+    else if (second_bet_after_dealer <= 0) {
       second_bet_after_dealer = players_bet;
-      // 2nd blind found. No need to search anz further
+      // 2nd blind found. No need to search any further
       break;
     }
   }
-  if (first_chair_immediatelly_after_dealer_betting) {
+  assert(p_symbol_engine_active_dealt_playing != NULL);
+  if ((second_bet_after_dealer <= 2 * first_bet_after_dealer) &&
+    (second_bet_after_dealer > 0.0) &&
+    (p_symbol_engine_active_dealt_playing->nplayersdealt() == 2)) {
+    // Special handling for reveresed blinds headsup
+    // !!!!! www
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19102
+    write_log(preferences.debug_table_limits(),
+      "[CBlindGuesser] Game is headsup\n");
+    write_log(preferences.debug_table_limits(),
+      "[CBlindGuesser] Swapping reversed blinds\n");
+    *sblind = second_bet_after_dealer;
+    *bblind = first_bet_after_dealer;
+  }
+  else if (first_chair_immediatelly_after_dealer_betting) {
     // Can't be a missing small-blind.
     // Therefore this is the small blind,
     // except maybe for headsup
-    assert(first_bet_after_dealer > 0) ;
+    assert(first_bet_after_dealer > 0);
     *sblind = first_bet_after_dealer;
-  } else if (second_bet_after_dealer == 0.0) {
+  }
+  else if (second_bet_after_dealer == 0.0) {
     // Only one blind, must be big-blind, small-blind missing
     *bblind = first_bet_after_dealer;
-  } else if (second_bet_after_dealer > 2.5 * first_bet_after_dealer) {
+  }
+  else if (second_bet_after_dealer > 2.5 * first_bet_after_dealer) {
     // Missing small blind and UTG raising to more than 2 big blinds.
     *bblind = first_bet_after_dealer;
-  } else if (second_bet_after_dealer == first_bet_after_dealer) {
+  }
+  else if (second_bet_after_dealer == first_bet_after_dealer) {
     // Either completing small-blind
     // or missing small-blind and limping UTG
     *bblind = first_bet_after_dealer;
-  } else if (second_bet_after_dealer == 2 * first_bet_after_dealer) {
+  }
+  else if (second_bet_after_dealer == 2 * first_bet_after_dealer) {
     // Could be either small-blind/bblind
     // or missing small-blind and min-raising UTG
     // We don't know exactly
     *sblind = first_bet_after_dealer;
-  } else {
+  }
+  else {
     // Assume the first bet is "normal" and therefore small-blind
     *sblind = first_bet_after_dealer;
   }
