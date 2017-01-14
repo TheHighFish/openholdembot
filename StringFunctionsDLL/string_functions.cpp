@@ -47,6 +47,7 @@
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "..\OpenHoldem\OH_MessageBox.h"
+#include "..\OpenHoldem\CSymbolEngineReplayFrameController.h"
 #endif
 
 const char kUnprintableBeepChar = 0x07;
@@ -427,12 +428,19 @@ void WarnAboutNonASCIICharacters(const CString *s) {
   for (int i = 0; i < length; ++i) {
     char current_char = s->GetAt(i);
     if (!isascii(current_char)) {
+#ifdef OPENHOLDEM_PROGRAM
+      // Shooting a replay-frame for closer inspection.
+      // Should be handled somewhere else, preferrably in OH,
+      // as this soon to be DLL will be used by various programs
+      p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+#endif
       unsigned int char_value = unsigned int(current_char);
       int signed_char_value = int(current_char);
       CString message;
       message.Format("Unexpected character inside title or number\n"
         "Probably extended ASCII or Unicode\n"
         "Numerical value: %x, %d\n"
+        "OpenHoldem shot a replay-frame automatically\n"
         "Please report to the developers\n"
         "http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167",
         char_value, signed_char_value);
