@@ -191,7 +191,7 @@ bool TablemapMatchesWindowByTablepoints(int MapIndex, HWND window);
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND windowwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND window) { 
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Check_TM_Against_Single_Window(..)\n");
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Checking map [%d\n] and window [%d]", 
+  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Checking map [%d] and window [%d]\n", 
     MapIndex, window);
   if (!TablemapMatchesWindowBySize(MapIndex, window)) {
     write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Size does not match\n");
