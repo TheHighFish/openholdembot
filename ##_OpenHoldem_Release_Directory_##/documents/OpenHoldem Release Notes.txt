@@ -25,7 +25,10 @@ NEW STUFF:
   This requires an empty titletext in the tablemap
   and also at least one additional tablepoint to make sure 
   that we don't randomly connect to crappy ghost-windows.
-  Thanks to for reporting the former limitation of OpenHoldem.
+  Thanks to 2235xtb for reporting this former limitation of OpenHoldem.
+- Shooting a replay-frame automatidcally in case of
+  unknown special characters in the title.
+  [THF]
   
 BUG FIXES:
 - The symbol NutsOnBoard got lost when the OpenPPL-library
@@ -42,7 +45,7 @@ BUG FIXES:
   Thanks to ChuckneverMuck for reporting this funny bug and for the fix.
   [THF]  
 - Omproved blind-guessing headsup in case we don't get any info from the title.
-  [THF]}
+  [THF]
 
 MAINTENANCE:
 - Removed support of a "scraper-DLL" for alternative input-methods
@@ -50,6 +53,10 @@ MAINTENANCE:
   its implementation got lost years ago (scraper-optimizations for 4.x),
   nobodey complained and the code demanded simplifications.
   So OpenHoldem is back to good old screen-scraping.
+  [THF]
+- Even more title preprocessing.
+  Thanks to Gratiszzzz, Pobar, Micro111 and Joe1111 for reporting
+  some more special characters.
   [THF]
 
 
