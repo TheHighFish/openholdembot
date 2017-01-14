@@ -68,8 +68,9 @@ char CTokenizer::CURRENT_CHARACTER() {
     // Invalid character, usually unicode, copy-pasted from a web-page,
     // and or non-ASCII-characters in a comment.
     // No longer throwing an error, trying to handle it gracefully.
-    // Returning kTokenEndOfFunction stop processing
-    // and avoid too much error messages.
+    // Returning kTokenEndOfFunction stops processing
+    // and avoids too much error messages.
+    ++_token_end_pointer;
     return kTokenEndOfFunction;
   }
   return next_char;
