@@ -6,7 +6,7 @@ NEW STUFF:
   if they are unused for a certain time.
   [THF]
 - A so-called "watchdog" cares now about crashed and frozen
-  instences of OpenHoldem and cleans up if necessary,
+  instances of OpenHoldem and cleans up if necessary,
   so that auto-starter and auto-connector can work properly.
   This feature became necessary, because OH sometimes crashes at termination.
   [THF]
@@ -18,7 +18,7 @@ NEW STUFF:
   [THF]
   
 
-v11.0.1 2017-xx-xx
+v11.0.1 2017-01-14
 ==================
 NEW STUFF:
 - OpenHoldem is now able to connect to tables with empty title.

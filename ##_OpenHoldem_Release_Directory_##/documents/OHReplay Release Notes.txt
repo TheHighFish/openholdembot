@@ -1,4 +1,4 @@
-v11.0.1. 2017-01-xx
+v11.0.1. 2017-01-14
 ===================
 NEW STUFF:
 - Supporting pure bitmaps now because too much beginners don't send complete frames.

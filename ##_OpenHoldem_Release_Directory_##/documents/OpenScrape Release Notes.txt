@@ -1,4 +1,4 @@
-v11.0.1 2017-01-xx
+v11.0.1 2017-01-14
 =================
 BUG FIXES:
 - Due to a rewritten list of symbols that missed a small piece of code

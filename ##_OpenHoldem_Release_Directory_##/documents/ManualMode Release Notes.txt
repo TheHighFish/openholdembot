@@ -1,4 +1,4 @@
-v11.0.1 2016-01-xx
+v11.0.1 2016-01-14
 ==================
 BUG FIXES: 
 - All folds happened at the userchair.
