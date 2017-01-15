@@ -44,7 +44,7 @@ BUG FIXES:
   (difference between highest card and lowest card (undefined -1) <= 3)
   Thanks to ChuckneverMuck for reporting this funny bug and for the fix.
   [THF]  
-- Omproved blind-guessing headsup in case we don't get any info from the title.
+- Improved blind-guessing headsup in case we don't get any info from the title.
   [THF]
 
 MAINTENANCE:

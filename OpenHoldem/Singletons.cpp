@@ -289,6 +289,7 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 26\n");
   DELETE_AND_CLEAR(p_table_title)
   write_log(preferences.debug_singletons(), "[Singletons] All singletons successfully deleted\n");
+  MessageBox(0, "Successfully deleted", "Info", 0); //!!!!!
 }
   
   

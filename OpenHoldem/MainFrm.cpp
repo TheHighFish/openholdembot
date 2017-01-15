@@ -424,7 +424,25 @@ BOOL CMainFrame::DestroyWindow() {
 	GetWindowPlacement(&wp); 		
 	preferences.SetValue(k_prefs_main_x, wp.rcNormalPosition.left); 		
  	preferences.SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
-  return CFrameWnd::DestroyWindow();
+  write_log(preferences.debug_gui(), "[GUI] Going to delete the GUI\n");
+  write_log(preferences.debug_gui(), "[GUI] this = [%i]\n", this);
+  // All OK here
+  assert(AfxCheckMemory());
+  // !!!!!!! 
+  // Crash on termination happens here
+  // Tried to simply forget bool success = CFrameWnd::DestroyWindow();
+  // but a non-destroyed window causes an endless-loop on termination.
+  //
+  // "delete this;" also can't be right,
+  // as it gets executed automatically by PostNCDestroy.
+  // If we do it anyway it causes a crash in OnTimer()
+  // 
+  // This CMainframe-object correctly lives on the heap, not on the stack
+  // as it got created by IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
+  // and therefore it must be able to be destroyed / deleted.
+  bool success = CFrameWnd::DestroyWindow();
+  write_log(preferences.debug_gui(), "[GUI] Window deleted\n");
+  return success;
 }
 
 void CMainFrame::OnFileOpen() 
