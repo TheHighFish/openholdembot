@@ -26,30 +26,31 @@ const TCHAR k_KeyboardLayout_UK_US_English[KL_NAMELENGTH] = "00000409";
 
 CConfigurationCheck::CConfigurationCheck()
 {
-	CheckEverything();
+  CheckEnabledConfigurationChecks(false);
 }
 
 CConfigurationCheck::~CConfigurationCheck()
 {}
 
-void CConfigurationCheck::CheckEverything()
+void CConfigurationCheck::ForceAllConfigurationChercks() {
+  CheckEnabledConfigurationChecks(true);
+}
+
+void CConfigurationCheck::CheckEnabledConfigurationChecks(bool force_all)
 {
 	// Check really critical settings in any case.
 	// OpenHoldem will never work, if these are not right.
 	CheckColourDepth();
 	CheckForSwapMouseBtns();
-
 	// OpenHoldem may or may not work, if these are not right.
-	if (preferences.configurationcheck_input_settings())
+	if (preferences.configurationcheck_input_settings() || force_all)
 	{
 		CheckInputSettings();
 	}
-
 	// No longer checking CheckForClassicalTheme();
   // as now (9.1.3) all themes (probably) are supported
   // out of the box with the same tablemaps.
-
-	if (preferences.configurationcheck_font_settings())
+	if (preferences.configurationcheck_font_settings() || force_all)
 	{
 		CheckForFontSmoothing();
 	}

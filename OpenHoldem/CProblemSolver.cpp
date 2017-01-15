@@ -16,6 +16,7 @@
 
 #include "CAutoConnector.h"
 #include "CCasinoInterface.h"
+#include "CConfigurationCheck.h"
 #include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePokerval.h"
@@ -73,6 +74,7 @@ bool CProblemSolver::NotEnoughButtonsVisible() {
 
 void CProblemSolver::TryToDetectBeginnersProblems()
 {
+  p_configurationcheck->ForceAllConfigurationChercks();
 	if (NoTableMapsInScraperFolder())
 	{
 		OH_MessageBox_Interactive(

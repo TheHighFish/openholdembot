@@ -20,10 +20,11 @@ class CConfigurationCheck
 public:
 	CConfigurationCheck();
 	~CConfigurationCheck();
-
+public:
+  // For Menu -> ProblemSolver
+  void ForceAllConfigurationChercks();
 private:
-	void CheckEverything();
-
+  void CheckEnabledConfigurationChecks(bool force_all);
 private:
 	HKEY GetHive(CString mhive);
 	bool OpenKey(CString mhive, CString registry_path);
