@@ -135,7 +135,6 @@ BEGIN
             MENUITEM "By &Type",                    ID_GROUPREGIONS_BYTYPE
             MENUITEM "By &Name",                    ID_GROUPREGIONS_BYNAME
         END
-        MENUITEM "&Ungroup Regions",            ID_VIEW_UNGROUPREGIONS
         MENUITEM SEPARATOR
         MENUITEM "Current size: 0x0",           ID_VIEW_CURRENTWINDOWSIZE
     END

@@ -19,7 +19,7 @@
 #include "StickyButton.h"
 
 // Region grouping types
-enum {UNGROUPED, BY_TYPE, BY_NAME};
+enum {BY_TYPE = 1, BY_NAME = 2};
 
 // CDlgTableMap dialog
 class CDlgTableMap : public CDialog

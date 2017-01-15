@@ -1636,19 +1636,8 @@ void CDlgTableMap::OnBnClickedNew() {
 
 					// Add new record to tree
 					HTREEITEM new_hti = NULL;
-					if (region_grouping==UNGROUPED)
-					{
-						new_hti = m_TableMapTree.InsertItem(new_region.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
-						m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
-					}
-
-					else
-					{
-						new_hti = InsertGroupedRegion(new_region.name);
-					}
-
+					new_hti = InsertGroupedRegion(new_region.name);
 					m_TableMapTree.SelectItem(new_hti);
-
 					pDoc->SetModifiedFlag(true);
 					Invalidate(false);
 				}
@@ -2863,14 +2852,11 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Regions");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 
-	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
-		m_TableMapTree.InsertItem(r_iter->second.name, parent);
-
-	if (region_grouping) 
-		GroupRegions(); 
-	else 
-		UngroupRegions();
-
+  for (RMapCI r_iter = p_tablemap->r$()->begin(); r_iter != p_tablemap->r$()->end(); r_iter++) {
+    m_TableMapTree.InsertItem(r_iter->second.name, parent);
+  }
+  GroupRegions(); 
+	
 	m_TableMapTree.SortChildren(parent);
 
 	// t$ records
@@ -3411,7 +3397,7 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 			break;
 
 		case BY_NAME:
-
+    default:
 			if (regionName.Find("cardface")!=-1 && regionName.Find("rank")!=-1)
 				groupName = "cardface-rank";
 

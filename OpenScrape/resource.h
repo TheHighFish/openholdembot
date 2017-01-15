@@ -117,7 +117,6 @@
 #define ID_VIEW_GROUPREGIONS            32781
 #define ID_GROUPREGIONS_BYTYPE          32782
 #define ID_GROUPREGIONS_BYNAME          32783
-#define ID_VIEW_UNGROUPREGIONS          32784
 #define ID_MAIN_TOOLBAR_PREV            32785
 #define ID_MAIN_TOOLBAR_NEXT            32786
 #define ID_VIEW_PREV                    32787

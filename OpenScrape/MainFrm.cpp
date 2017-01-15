@@ -61,10 +61,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnUpdateEditDuplicateregion)
 	ON_COMMAND(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnGroupregionsBytype)
 	ON_COMMAND(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnGroupregionsByname)
-	ON_COMMAND(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnViewUngroupregions)
 	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnUpdateGroupregionsBytype)
 	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnUpdateGroupregionsByname)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnUpdateViewUngroupregions)
 END_MESSAGE_MAP()
 
 static UINT openscrape_indicators[] =
@@ -701,20 +699,6 @@ void CMainFrame::OnGroupregionsByname()
 	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
 }
 
-void CMainFrame::OnViewUngroupregions()
-{
-	Registry		reg;
-	reg.read_reg();
-	reg.region_grouping = UNGROUPED;
-	reg.write_reg();
-
-	theApp.m_TableMapDlg->region_grouping = UNGROUPED;
-	theApp.m_TableMapDlg->UngroupRegions();
-
-	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetTypeNode("Regions");
-	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
-}
-
 void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
@@ -763,11 +747,6 @@ void CMainFrame::OnUpdateGroupregionsBytype(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateGroupregionsByname(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==BY_NAME);
-}
-
-void CMainFrame::OnUpdateViewUngroupregions(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==UNGROUPED);
 }
 
 void CMainFrame::SaveBmpPbits(void)

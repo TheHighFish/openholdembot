@@ -18,6 +18,7 @@
 #include "registry.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "DialogTableMap.h"
 
 Registry::Registry(void) 
 {
@@ -46,7 +47,7 @@ void Registry::read_reg(void)
 	grhash_dx = 380;
 	grhash_dy = 330;
 
-	region_grouping =0; // None
+	region_grouping = BY_TYPE; // None
 
 	hkResult = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\OpenHoldem\\OpenScrape", 0, KEY_READ, &hKey);
 	if (hkResult==ERROR_SUCCESS) {
