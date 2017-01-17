@@ -62,8 +62,11 @@ BEGIN_MESSAGE_MAP(COpenHoldemApp, CWinApp)
 	ON_COMMAND(ID_FINISH_INITIALIZATION, &COpenHoldemApp::FinishInitialization)
 END_MESSAGE_MAP()
 
-// COpenHoldemApp construction
-COpenHoldemApp::COpenHoldemApp() {}
+// COpenHoldemApp construction
+
+COpenHoldemApp::COpenHoldemApp() {
+}
+
 // COpenHoldemApp destruction
 COpenHoldemApp::~COpenHoldemApp() {
 }
@@ -247,6 +250,9 @@ void COpenHoldemApp::FinishInitialization() {
 }
 
 int COpenHoldemApp::ExitInstance() {
+  // First all timers and threads have to be stopped, 
+  // then all singletons can (have to) be deleted.
+  PMainframe()->KillTimers();
   StopThreads();
 	DeleteAllSingletons();
 	Scintilla_ReleaseResources();

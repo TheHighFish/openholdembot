@@ -21,6 +21,15 @@ NEW STUFF:
   [THF]
   
 
+v11.0.2 2017-01-xx
+==================
+BUG FIXES:
+- Fixed a race-condition at termination. Some timer-functions were still alive
+  and sometimes accessing data that already got deleted when OH was shutting down,
+  thus leading to an invalid memory access.
+  [THF]
+
+  
 v11.0.1 2017-01-14
 ==================
 NEW STUFF:

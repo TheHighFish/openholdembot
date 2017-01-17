@@ -4,9 +4,9 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\CCritSec\CCritSec.h"
 
-#define		HWND_CHECK_TIMER				1
-#define		ENABLE_BUTTONS_TIMER			2
-#define		UPDATE_STATUS_BAR_TIMER			3
+#define HWND_CHECK_TIMER				1
+#define ENABLE_BUTTONS_TIMER    2
+#define UPDATE_STATUS_BAR_TIMER 3
 
 class CMainFrame : public CFrameWnd 
 {
@@ -29,8 +29,6 @@ protected: // create from serialization only
 	afx_msg void OnFileLoadOpenPPL();
 	afx_msg void OnFileLoadTableMap();
 	afx_msg void OnDllLoad();
-	afx_msg void OnBnClickedRedCircle();
-	afx_msg void OnBnClickedGreenCircle();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnUpdateStatus(CCmdUI *pCmdUI);
 	afx_msg void OnAutoplayer();
@@ -66,11 +64,8 @@ public:
 	afx_msg void OnHelp();
 	afx_msg void OnHelpOpenPPL();
 	afx_msg void OnHelpForums();
-
 public:
-  void StartTimer();
-  void KillTimer();
-
+  void KillTimers();
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();

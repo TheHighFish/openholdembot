@@ -447,8 +447,7 @@ BOOL CMainFrame::DestroyWindow() {
   return success;
 }
 
-void CMainFrame::OnFileOpen() 
-{
+void CMainFrame::OnFileOpen() {
     COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();   
    
     if (!pDoc->SaveModified())
@@ -472,10 +471,11 @@ void CMainFrame::OnFileOpen()
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-  //!!!!! Race-condition here in this function during termination if OnTimer is in progess
-  //!!!!! and p_autoconnector becomes dangling.
-  //!!!!! Early exit if any resource is no longer available.
-  //!!!!! This is no real fix, it just reduces the risk of failure
+  // There was a race-condition in this function during termination 
+  // if OnTimer was in progress and p_autoconnector became dangling.
+  // This is probably fixed, as we now kill the timers
+  // before we delete singleton, but we keep these safety-meassures.
+  // It is OK to skip CWnd::OnTimer(nIDEvent); if we terminate.
   if (p_flags_toolbar == NULL) {
     return;
   }
@@ -486,16 +486,13 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
     return;
   }
   // Try to get the critical information as early as possible
-  // after we know that p_autoconnector is valid.
-  // reduced risk of race-condition as long as there is no real fix.
+  // after we know that p_autoconnector is (ATM) valid.
   bool is_connected = p_autoconnector->IsConnected();
   if (nIDEvent == HWND_CHECK_TIMER) {
-    // Here!!!!!!????? We have the auto-connector-thread
-    /*
  	  if (!IsWindow(p_autoconnector->attached_hwnd())) { 		
  	    // Table disappeared 		
  	    p_autoconnector->Disconnect("table disappeared"); 		 		
-    }*/
+    }
  	} else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
@@ -627,6 +624,11 @@ void CMainFrame::OnUpdateViewScraperOutput(CCmdUI *pCmdUI) {
 // Other functions
 
 void CMainFrame::KillTimers() { 		
+  // It is very important that we kill all timers as early as possible
+  // on termination. otherwise the timer-functions might access
+  // objects loke the auto_connector that already are destructed,
+  // thus causing a memory-access-error.
+  //!!!!!www
  	CFrameWnd::KillTimer(HWND_CHECK_TIMER);
   CFrameWnd::KillTimer(ENABLE_BUTTONS_TIMER);
   CFrameWnd::KillTimer(UPDATE_STATUS_BAR_TIMER);

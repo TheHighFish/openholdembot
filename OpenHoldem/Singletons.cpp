@@ -200,7 +200,8 @@ void StopThreads() {
 #define DELETE_AND_CLEAR(object_pointer) if (object_pointer)	{ delete object_pointer; object_pointer = NULL; }
 
 void DeleteAllSingletons() {
-  // First all threads have to be stopped, then all singletons can (have to) be deleted
+  // First all timers and threads have to be stopped, 
+  // then all singletons can (have to) be deleted.
   // StopThreads gets called by CMainFrame::DestroyWindow()
   // DeleteAllSingletons() by COpenHoldemApp::ExitInstance()
   // Correct order should be guaranteed, because of

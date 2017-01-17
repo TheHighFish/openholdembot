@@ -140,13 +140,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-
-	// Set toolbar button status
-	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-
 	// Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
-
 	return 0;
 }
 
