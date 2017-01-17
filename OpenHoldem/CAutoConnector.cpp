@@ -291,9 +291,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
       // This can be slowed down if there are popups (parse-errors).
       // Handle the race-condition
       WAIT_FOR_CONDITION(PMainframe() != NULL)
-      // Start timer that checks for continued existence of attached HWND 		
       assert(PMainframe() != NULL);
-     	PMainframe()->StartTimer();
 			// Reset display
 			PMainframe()->ResetDisplay();
       // log OH title bar text and table reset
@@ -326,9 +324,6 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	p_engine_container->UpdateOnDisconnection();
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
-  // Stop timer that checks for valid hwnd, then unattach OH. 	375 	// Unattach OH.
- 	PMainframe()->KillTimer();
-
 	// Unattach OH.
 	p_flags_toolbar->UnattachOHFromPokerWindow();
 	p_flags_toolbar->ResetButtonsOnDisconnect();

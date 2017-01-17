@@ -191,6 +191,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	SetTimer(ENABLE_BUTTONS_TIMER, 50, 0);
 	// Start timer that updates status bar
 	SetTimer(UPDATE_STATUS_BAR_TIMER, 500, 0);
+  // Start timer that checks for continued existence of attached HWND 		
+  SetTimer(HWND_CHECK_TIMER, 200, 0);
 	return 0;
 }
 
@@ -470,38 +472,48 @@ void CMainFrame::OnFileOpen()
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-	RECT			att_rect = {0}, wrect = {0};
-
+  //!!!!! Race-condition here in this function during termination if OnTimer is in progess
+  //!!!!! and p_autoconnector becomes dangling.
+  //!!!!! Early exit if any resource is no longer available.
+  //!!!!! This is no real fix, it just reduces the risk of failure
+  if (p_flags_toolbar == NULL) {
+    return;
+  }
+  if (p_openholdem_statusbar == NULL) {
+    return;
+  }
+  if (p_autoconnector == NULL) {
+    return;
+  }
+  // Try to get the critical information as early as possible
+  // after we know that p_autoconnector is valid.
+  // reduced risk of race-condition as long as there is no real fix.
+  bool is_connected = p_autoconnector->IsConnected();
   if (nIDEvent == HWND_CHECK_TIMER) {
+    // Here!!!!!!????? We have the auto-connector-thread
+    /*
  	  if (!IsWindow(p_autoconnector->attached_hwnd())) { 		
  	    // Table disappeared 		
  	    p_autoconnector->Disconnect("table disappeared"); 		 		
-    }
+    }*/
  	} else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_E\n");
-		if (p_symbol_engine_userchair != NULL
-			  && p_autoconnector->IsConnected()) 	{
+		if (is_connected) 	{
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_F\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_G\n");
+      p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
+      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_L\n");
 		}	else {
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_H\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_I\n");
-		}
-    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_J\n");
-		if (p_autoconnector->attached_hwnd() != NULL) {
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_K\n");
-			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_L\n");
-    }	else {
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_M\n");
       p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_N\n");
-    }
+		}
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_O\n");
 	}	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_P\n");
@@ -614,13 +626,10 @@ void CMainFrame::OnUpdateViewScraperOutput(CCmdUI *pCmdUI) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Other functions
 
-void CMainFrame::StartTimer() { 		
- 	// Start timer that checks for continued existence of attached HWND 		
- 	SetTimer(HWND_CHECK_TIMER, 200, 0); 		
-}
-
-void CMainFrame::KillTimer() { 		
- 	CFrameWnd::KillTimer(HWND_CHECK_TIMER); 		
+void CMainFrame::KillTimers() { 		
+ 	CFrameWnd::KillTimer(HWND_CHECK_TIMER);
+  CFrameWnd::KillTimer(ENABLE_BUTTONS_TIMER);
+  CFrameWnd::KillTimer(UPDATE_STATUS_BAR_TIMER);
 }
 
 void CMainFrame::ResetDisplay()
