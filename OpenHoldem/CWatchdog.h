@@ -22,8 +22,11 @@ public:
 public:
   void HandleCrashedAndFrozenProcesses();
 private:
-  void MarkInstanceAsAlive(int session_ID);
-  void MarkThisInstanceAsAlive();
   void WatchForCrashedProcesses();
   void WatchForFrozenProcesses();
+private:
+  void MarkInstanceAsAlive(int session_ID);
+  void MarkThisInstanceAsAlive();
+  void MarkInstanceAsDead(int session_ID);
+  void MarkThisInstanceAsDead();
 };

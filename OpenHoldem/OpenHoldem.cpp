@@ -342,7 +342,7 @@ void COpenHoldemApp::OpenLastRecentlyUsedFile() {
 
 void COpenHoldemApp::InitializeThreads() {
   // Heartbeat thread cares about everything: connecting, scraping, playing
- write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
+  write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
   assert(p_heartbeat_thread == NULL);
   p_heartbeat_thread = new CHeartbeatThread;
   assert(p_heartbeat_thread != NULL);

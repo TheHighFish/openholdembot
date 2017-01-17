@@ -25,12 +25,16 @@ __declspec(allocate(kOpenHoldemSharedmemorySegment)) static	time_t timestamps_op
 #pragma data_seg()
 #pragma comment(linker, "/SECTION:.ohshmem,RWS")		// RWS: read, write, shared
 
-const int kSecondsToconsiderAProcessAsFrozen = 15;
+const int kSecondsToconsiderAProcessAsFrozen = 60;
 
 CWatchdog::CWatchdog() {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] CWatchdog()\n");
+  MarkThisInstanceAsAlive();
 }
 
 CWatchdog::~CWatchdog() {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] ~CWatchdog()\n");
+  MarkThisInstanceAsDead();
 }
 
 void CWatchdog::HandleCrashedAndFrozenProcesses() {
@@ -40,6 +44,7 @@ void CWatchdog::HandleCrashedAndFrozenProcesses() {
 }
 
 void CWatchdog::MarkInstanceAsAlive(int session_ID) {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] Marking instance %d alive\n", session_ID);
   assert(session_ID >=  0);
   assert(session_ID < MAX_SESSION_IDS);
   time_t current_time;
@@ -48,19 +53,36 @@ void CWatchdog::MarkInstanceAsAlive(int session_ID) {
 }
 
 void CWatchdog::MarkThisInstanceAsAlive() {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] Marking this instance alive\n");
   assert(p_sessioncounter != NULL);
   MarkInstanceAsAlive(p_sessioncounter->session_id());
 }
 
+void CWatchdog::MarkInstanceAsDead(int session_ID) {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] Marking instance %d dead\n", session_ID);
+  assert(session_ID >= 0);
+  assert(session_ID < MAX_SESSION_IDS);
+  timestamps_openholdem_alive[session_ID] = kUndefinedZero;
+}
+
+void CWatchdog::MarkThisInstanceAsDead() {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] Marking this instance dead\n");
+  assert(p_sessioncounter != NULL);
+  MarkInstanceAsDead(p_sessioncounter->session_id());
+}
+
 void CWatchdog::WatchForCrashedProcesses() {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] Watching for crashed processes\n");
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (p_sharedmem->IsDeadOpenHoldemProcess(i)) {
-      timestamps_openholdem_alive[i] = 0;
+      write_log(preferences.debug_watchdog(), "[CWatchdog] Found crashed process and cleaning up\n");
+      MarkInstanceAsDead(i);;
       p_sharedmem->CleanUpProcessMemory(i);
     }
   }
 }
 
+// !!! move to dll
 BOOL KillProcess(DWORD dwProcessId) {
   // http://stackoverflow.com/questions/2443738/c-terminateprocess-function !!!
   DWORD dwDesiredAccess = PROCESS_TERMINATE;
@@ -76,6 +98,7 @@ BOOL KillProcess(DWORD dwProcessId) {
 }
 
 void CWatchdog::WatchForFrozenProcesses() {
+  write_log(preferences.debug_watchdog(), "[CWatchdog] Watching for frozen processes\n");
   time_t current_time;
   time(&current_time);
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
@@ -92,13 +115,19 @@ void CWatchdog::WatchForFrozenProcesses() {
         // we should already have killed it.
         // Probably a new process which does not yet proper heartbeating,
         // fix its time-stamp and grant it some time to continue.
+        write_log(preferences.debug_watchdog(), "[CWatchdog] Deep freeze detected %i, PID: %i\n",
+          i, p_sharedmem->OpenHoldemProcessID(i));
+        write_log(preferences.debug_watchdog(), "[CWatchdog] Might be stale data\n");
+        write_log(preferences.debug_watchdog(), "[CWatchdog] Granting more time\n");
+        p_sharedmem->OpenHoldemProcessID(i);
         MarkInstanceAsAlive(i);
         continue;
       }
+      write_log(preferences.debug_watchdog(), "[CWatchdog] Killing frozen process %i, PID: %i\n",
+        i, p_sharedmem->OpenHoldemProcessID(i));
       KillProcess(p_sharedmem->OpenHoldemProcessID(i));
-      timestamps_openholdem_alive[i] = 0;
+      MarkInstanceAsDead(i);
       p_sharedmem->CleanUpProcessMemory(i);
     }
   }
 }
-

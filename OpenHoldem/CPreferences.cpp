@@ -81,6 +81,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_sharedmem",
   "debug_singletons",
   "debug_autostarter",
+  "debug_watchdog",
 	"engage_autoplayer",
 	"restore_position_and_focus",
 	"use_auto_replay",
