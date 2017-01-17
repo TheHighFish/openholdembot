@@ -57,10 +57,6 @@ CString ListOfSymbols() {
   return list;
 }
 
-//!!!! to be checked and removed
-// "scraperdll""balancenumbersonly" defaultlabels
-// !!!!!ubalance "uname",
-
 CString ListOfRegions() {
   CString list;
   list += RangeOfSymbols("c0cardface%i", 0, 4);

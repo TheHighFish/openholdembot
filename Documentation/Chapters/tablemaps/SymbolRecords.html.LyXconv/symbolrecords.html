@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2016-08-20"/>
+<meta name="create-date" content="2017-01-17"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -583,15 +583,6 @@ Optional parameter to specify the maximum number of digits for a valid handnumbe
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 25%;">
-balancenumbersonly 
-</td>
-<td align="left" valign="top" style="width: 75%;">
-This Symbol instructs the screen scraper that all characters besides numbers (0-9 and dot/decimal separator) are stripped from the text transform result for balance regions. This is useful for those casinos that include spurious/changing alphanumeric information in their balance boxes. Setting this string to "True" or "Yes" will enable balance cleansing, any other value or the absence of this Symbol will result in no balance cleansing. 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
 cardscrapemethod
 </td>
 <td align="left" valign="top" style="width: 75%;">
@@ -614,15 +605,6 @@ chipscrapemethod
 </td>
 <td align="left" valign="top" style="width: 75%;">
 This Symbol instructs the “chip stack counter” within the screen scraper engine to act in one of three distinct modes of operation: If this Symbol is not present, or does not match one of the other formats, the “chip stack counter” begins counting chips at the 00 Region record, stops counting a given stack when a chip match is not found, and stops counting all stacks when the first chip in a given stack is not matched. This is the default, pre-2.0 behavior. If this symbol is set to "All”, then the scraper engine will check all 200 possible chip locations (10 stacks of 20 chips) every time a chip count is required. If this symbol is set to the format "XxY", where X is an integer between 1 and 10 representing the number of stacks, and Y is an integer between 1 and 20 representing the number of chips in each stack, then the scraper engine will check X times Y chip locations every time a chip count is required. 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 25%;">
-Scraperdll
-</td>
-<td align="left" valign="top" style="width: 75%;">
-This Symbol instructs OpenHoldem to load a user-supplied external scraper override DLL when this Table Map is used. This external DLL can be used to override the results of the internal scraper engine. This DLL is called immediately after the internal scraper engine finishes its pass every heartbeat, at which point the current state of the internal screen scraper is passed to the DLL for inspection and modification. A reference scraper DLL is provided in the source code as a starting point. An obvious use of this would be to hook or inject the target casino client to retrieve better state information than that which could be collected using the built-in pixel-based screen scraper. 
 </td>
 
 </tr>

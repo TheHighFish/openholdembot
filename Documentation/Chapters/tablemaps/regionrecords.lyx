@@ -1700,7 +1700,7 @@ These are alternatives to the p0active-p9active regions, and are used for
  If any other result is returned, such as "false", "inactive", "out" or
  "away", then the chair is not considered to be active.
  Results are case-insensitive.
- ubalance, 
+ 
 \end_layout
 
 \end_inset

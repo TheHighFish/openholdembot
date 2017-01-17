@@ -172,7 +172,7 @@ Valid symbol records
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="25" columns="2">
+<lyxtabular version="3" rows="23" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -1094,33 +1094,6 @@ r to reduce the risk of bad scrapes and incorrect handresets.
 \begin_inset Text
 
 \begin_layout Plain Layout
-balancenumbersonly 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-This Symbol instructs the screen scraper that all characters besides numbers
- (0-9 and dot/decimal separator) are stripped from the text transform result
- for balance regions.
- This is useful for those casinos that include spurious/changing alphanumeric
- information in their balance boxes.
- Setting this string to "True" or "Yes" will enable balance cleansing, any
- other value or the absence of this Symbol will result in no balance cleansing.
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 cardscrapemethod
 \end_layout
 
@@ -1180,37 +1153,6 @@ This Symbol instructs the “chip stack counter” within the screen scraper
  1 and 10 representing the number of stacks, and Y is an integer between
  1 and 20 representing the number of chips in each stack, then the scraper
  engine will check X times Y chip locations every time a chip count is required.
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Scraperdll
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-This Symbol instructs OpenHoldem to load a user-supplied external scraper
- override DLL when this Table Map is used.
- This external DLL can be used to override the results of the internal scraper
- engine.
- This DLL is called immediately after the internal scraper engine finishes
- its pass every heartbeat, at which point the current state of the internal
- screen scraper is passed to the DLL for inspection and modification.
- A reference scraper DLL is provided in the source code as a starting point.
- An obvious use of this would be to hook or inject the target casino client
- to retrieve better state information than that which could be collected
- using the built-in pixel-based screen scraper.
  
 \end_layout
 
