@@ -35,6 +35,7 @@
 #include "CPreferences.h"
 #include "CSymbolEngineOpenPPL.h"
 #include "CValidator.h"
+#include "CWatchdog.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
@@ -307,6 +308,13 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
 }
 
 void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line) {
+  // During startuo we parse the libraries and the last recent bot-logic.
+  // The heartbeat does not yet exist, the watchdog does not yet work.
+  // Unfortunatelly parsing some bot-loghic like the legendary
+  // 20 MB Flopzilla code takes a bit longer than other instances
+  // watchdog expects, that's why the parser regularly has to shout "ALIVE!"
+  assert(p_watchdog != NULL);
+  p_watchdog->MarkThisInstanceAsAlive();
   _tokenizer.SetInput(function_text);
   // No longer any check for end of file or end of function here.
   // This prevents the parsing of empty functions,

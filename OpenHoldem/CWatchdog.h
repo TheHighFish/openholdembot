@@ -21,12 +21,12 @@ public:
   ~CWatchdog();
 public:
   void HandleCrashedAndFrozenProcesses();
+  void MarkThisInstanceAsAlive();
 private:
   void WatchForCrashedProcesses();
   void WatchForFrozenProcesses();
 private:
   void MarkInstanceAsAlive(int session_ID);
-  void MarkThisInstanceAsAlive();
   void MarkInstanceAsDead(int session_ID);
   void MarkThisInstanceAsDead();
 };
