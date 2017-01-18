@@ -497,7 +497,10 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // after we know that p_autoconnector is (ATM) valid.
   bool is_connected = p_autoconnector->IsConnected();
   if (nIDEvent == HWND_CHECK_TIMER) {
- 	  if (!IsWindow(p_autoconnector->attached_hwnd())) { 		
+    // Important: check is_conected first.
+    // Checking only garbage HWND, then disconnecting
+    // can lead to freezing if it colludes with Connect()
+ 	  if (is_connected && !IsWindow(p_autoconnector->attached_hwnd())) { 		
  	    // Table disappeared 		
  	    p_autoconnector->Disconnect("table disappeared"); 		 		
     }

@@ -308,6 +308,14 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 
 void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
+  if (!IsConnected()) {
+    // Be extra safe.
+    // This stupid error happened, when OnTimer() only checked if the window 
+    // still existed, but not if we were connected at all.
+    // Then Diconnect() plus Connect() lead to freezing.
+    write_log(k_always_log_errors, "[CAutoConnector] ERROR: Disconnect() called while not connected\n");
+    return;
+  }
 
   // First close scraper-output-dialog,
   // as an updating dialog without a connected table can crash.
@@ -320,7 +328,9 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
-  _autoconnector_mutex->Lock(INFINITE);
+  _autoconnector_mutex->Lock(INFINITE); //!!!!!!! here freezing
+  // I thread calling Connect() from heartbeat
+  // 1 thread calling Disconnect from Ontimer()
 	p_engine_container->UpdateOnDisconnection();
 	// Clear "attached" info
 	set_attached_hwnd(NULL);
