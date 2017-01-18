@@ -85,8 +85,8 @@ Let's assume you start a new map completely from scratch.
 \end_layout
 
 \begin_layout Itemize
-z$clientsize first.
- It is absolutely necessary for connection.
+z$clientsizemin/max and z$targetsize first.
+ They are absolutely necessary for connection.
 \end_layout
 
 \begin_layout Itemize

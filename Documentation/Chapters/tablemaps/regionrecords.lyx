@@ -158,10 +158,6 @@ The majority of the right side of the Table Map Editor window is used to
 \end_layout
 
 \begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
 Starting at the top, there is a rectangle group box.
  This group box allows you to define the extents (left, right, top, bottom)
  of the region record’s bounding rectangle.
@@ -765,30 +761,6 @@ Ten regions to specify where the game state engine should find the current
  To avoid bad scrapes and invalid handresets the handnumber is optionally
  ranged between s$handnumber_min_expected_digits and s$handnumber_max_expected_d
 igits.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-c0istournament
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Used to identify if this table is a tournament game.
- Any transform can be used equally well with this region.
- If the result from this region’s transform is anything besides blank (empty
- string) then this region is considered to represent a tournament game.
- 
 \end_layout
 
 \end_inset
@@ -1670,6 +1642,33 @@ Step 1 : Ensure that the poker site uses static landings for all of the
  In a worst case situation, there may be 100 chip regions * 10 players =
  1000 region definitions required to scrape chips! (So now go look at scraping
  the bet text instead) 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+tablepoint0 - tablepoint9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These optional regions can be used to distinguish casinos and tables that
+ can't be recognized by usual means, i.e.
+ by tablesize and titletexts only.
+ Tablepoints are usually colour-transforms that get placed at identifying
+ regions of the table.
+ In case tablepoints get used OpenHoldem will regularly check them again
+ and reconnect with a different tablemap in case of a changing table-theme
+ (final table in MTTs).
 \end_layout
 
 \end_inset

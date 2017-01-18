@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-17"/>
+<meta name="create-date" content="2017-01-18"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -263,15 +263,6 @@ c0handnumber, c0handnumber1 - c0handnumber9
 </td>
 <td align="left" valign="top" style="width: 85%;">
 Ten regions to specify where the game state engine should find the current handnumber. The first region found with valid numeric information will be used and the remainder skipped. c0handnumber is searched first, then c0handnumber1 to c0handnumber9 in that order. The handnumber will be used internally to detect handresets (depending on handresetmethod) and is also accessible at the DLL-level. To avoid bad scrapes and invalid handresets the handnumber is optionally ranged between s$handnumber_min_expected_digits and s$handnumber_max_expected_digits.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 15%;">
-c0istournament
-</td>
-<td align="left" valign="top" style="width: 85%;">
-Used to identify if this table is a tournament game. Any transform can be used equally well with this region. If the result from this region’s transform is anything besides blank (empty string) then this region is considered to represent a tournament game. 
 </td>
 
 </tr>
@@ -611,6 +602,15 @@ Note: Chip scraping should *only* be used if the actual numeric bet text cannot 
 Step 1 : Ensure that the poker site uses static landings for all of the chip stacks. Step 2 : Determine the size of an individual chip, and should include any portion of the chip that is painted anywhere within the window regardless of how faded or transparent. Step 3 : Create regions for the initial base of each player’s chip stacks with the size determined in step 2; p0chip00, p1chip00, ..., p9chip00. Step 4 : Create vertical stride chip regions for each player’s chip stack; p0chip01, p1chip01, ..., p9chip01. These regions should perfectly surround the 2nd chip that rests above the base pXchip00. Step 5 : Create horizontal stride chip regions for each player’s chip stack; p0chip10, p1chip10, ..., p9chip10. These regions should perfectly surround the base chip in the second stack. Step 6 : Optional and rare: If the vertical stride between chips in a stack is not uniform, then you will need to define pXchip02-pXchip09 for each chip in the stack. For those sites with non-uniform vertical chip strides, this means that there is a limit of 10 chips per stack that will be recognized by the engine. Step 7 : Optional and rare: If the horizontal stride between chip stacks is not uniform, then you will need to define pXchip10-pXchip90 for each stack. For those sites with non-uniform horizontal chip strides, this means that there is a limit of 10 stacks that will be recognized by the engine. In a worst case situation, there may be 100 chip regions * 10 players = 1000 region definitions required to scrape chips! (So now go look at scraping the bet text instead) 
 </div>
 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+tablepoint0 - tablepoint9
+</td>
+<td align="left" valign="top" style="width: 85%;">
+These optional regions can be used to distinguish casinos and tables that can’t be recognized by usual means, i.e. by tablesize and titletexts only. Tablepoints are usually colour-transforms that get placed at identifying regions of the table. In case tablepoints get used OpenHoldem will regularly check them again and reconnect with a different tablemap in case of a changing table-theme (final table in MTTs).
 </td>
 
 </tr>
