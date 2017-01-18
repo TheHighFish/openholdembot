@@ -51,10 +51,8 @@ long int			     CHeartbeatThread::_heartbeat_counter = 0;
 CHeartbeatThread   *CHeartbeatThread::pParent = NULL;
 CHeartbeatDelay    CHeartbeatThread::_heartbeat_delay;
 COpenHoldemStarter CHeartbeatThread::_openholdem_starter;
-CWatchdog          *CHeartbeatThread::_p_watchdog = NULL;
 
 CHeartbeatThread::CHeartbeatThread() {
-  _p_watchdog = new CWatchdog;
 	InitializeCriticalSectionAndSpinCount(&cs_update_in_progress, 4000);
   _heartbeat_counter = 0;
   // Create events
@@ -74,10 +72,7 @@ CHeartbeatThread::~CHeartbeatThread() {
 	::CloseHandle(_m_wait_thread);
 
 	DeleteCriticalSection(&cs_update_in_progress);
-
 	p_heartbeat_thread = NULL;
-  delete _p_watchdog;
-  _p_watchdog = NULL;
 }
 
 void CHeartbeatThread::StartThread() {
@@ -128,7 +123,8 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
       } 		
 		}
 #ifdef OPENHOLDEM_11_1_0
-    _p_watchdog->HandleCrashedAndFrozenProcesses();
+    assert(p_watchdog != NULL);
+    p_watchdog->HandleCrashedAndFrozenProcesses();
     _openholdem_starter.StartNewInstanceIfNeeded();
     _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
 #endif OPENHOLDEM_11_1_0

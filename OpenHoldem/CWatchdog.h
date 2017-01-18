@@ -30,3 +30,5 @@ private:
   void MarkInstanceAsDead(int session_ID);
   void MarkThisInstanceAsDead();
 };
+
+extern CWatchdog *p_watchdog;

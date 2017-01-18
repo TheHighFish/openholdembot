@@ -45,9 +45,6 @@ class CHeartbeatThread {
  private:
   static CHeartbeatDelay _heartbeat_delay;
   static COpenHoldemStarter _openholdem_starter;
-  // The watchdog must be initialized dynamically by CHeartbeatthread
-  // as it depends on CSessionCounter
-  static CWatchdog *_p_watchdog;
  private:
 	HANDLE		_m_stop_thread;
 	HANDLE		_m_wait_thread;

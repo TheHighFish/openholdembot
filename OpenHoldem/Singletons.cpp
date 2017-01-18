@@ -50,6 +50,7 @@
 #include "CTableTitle.h"
 #include "CValidator.h"
 #include "CVersionInfo.h"
+#include "CWatchdog.h"
 #include "CWhiteInfoBox.h"
 
 /*!!!#define CREATE_SINGLETON(singleton_variable, class_type) { \ 
@@ -64,6 +65,9 @@ void InstantiateAllSingletons() {
   // to create the log-file, which might be needed before this point.
   // This function gets executed exactly once at startup.
   // So the global class-pointers have to be NULL.
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CWatchdog\n");
+  assert(!p_watchdog);
+  p_watchdog = new CWatchdog;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CTableTitle\n");
   assert(!p_table_title);
   p_table_title = new CTableTitle;
@@ -289,6 +293,8 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_filenames)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 26\n");
   DELETE_AND_CLEAR(p_table_title)
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 27\n");
+  DELETE_AND_CLEAR(p_watchdog)
   write_log(preferences.debug_singletons(), "[Singletons] All singletons successfully deleted\n");
   MessageBox(0, "Successfully deleted", "Info", 0); //!!!!!
 }

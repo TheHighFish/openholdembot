@@ -263,7 +263,7 @@
     <ClCompile Include="CWatchdog.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
-    <ClCompile Include="stdafx.cpp">
+	<ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -288,8 +288,6 @@
     <ClCompile Include="DialogSAPrefs16.cpp" />
     <ClCompile Include="DialogSAPrefs17.cpp" />
     <ClCompile Include="DialogSAPrefs18.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="DialogSAPrefs19.cpp" />
     <ClCompile Include="DialogSAPrefs2.cpp" />
@@ -299,16 +297,9 @@
     <ClCompile Include="DialogSAPrefs3.cpp" />
     <ClCompile Include="DialogSAPrefs4.cpp" />
     <ClCompile Include="DialogSAPrefs6.cpp" />
-    <ClCompile Include="DialogSAPrefs7.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="DialogSAPrefs7.cpp" />
     <ClCompile Include="DialogSAPrefs8.cpp" />
-    <ClCompile Include="DialogSAPrefs9.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="DialogSAPrefs9.cpp" />
     <ClCompile Include="SAPrefsDialog.cpp" />
     <ClCompile Include="SAPrefsStatic.cpp" />
     <ClCompile Include="SAPrefsSubDlg.cpp" />

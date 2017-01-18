@@ -261,9 +261,6 @@
     <ClCompile Include="Singletons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\winmgr\SizerBar.cpp">
       <Filter>Source Files\winmgr</Filter>
     </ClCompile>
@@ -645,9 +642,6 @@
     <ClCompile Include="CPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DialogSAPrefs7.cpp">
-      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
-    </ClCompile>
     <ClCompile Include="CWhiteInfoBox.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
@@ -717,9 +711,6 @@
     <ClCompile Include="CSymbolEngineColourCodes.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
-    <ClCompile Include="DialogSAPrefs9.cpp">
-      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
-    </ClCompile>
     <ClCompile Include="SLimitInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -779,6 +770,12 @@
     </ClCompile>
     <ClCompile Include="CBetsizeInputBox.cpp">
       <Filter>Source Files\AutoPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs7.cpp">
+      <Filter>Source Files\GUI\prefs_dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogSAPrefs9.cpp">
+      <Filter>Source Files\GUI\prefs_dlg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1525,9 +1522,6 @@
     <ClInclude Include="CWhiteInfoBox.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="DialogSAPrefs7.h">
-      <Filter>Source Files\GUI\Unused_might_be_recycled</Filter>
-    </ClInclude>
     <ClInclude Include="CSymbolEngineICM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1653,6 +1647,9 @@
     </ClInclude>
     <ClInclude Include="CCasinoHotkey.h">
       <Filter>Header Files\AutoPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogSAPrefs7.h">
+      <Filter>Header Files\GUI\prefs_dlg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
