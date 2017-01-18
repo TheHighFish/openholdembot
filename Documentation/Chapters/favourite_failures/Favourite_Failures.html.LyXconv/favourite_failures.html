@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2016-11-27"/>
+<meta name="create-date" content="2017-01-18"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -30,7 +30,7 @@ This chapter will teach you about the most common beginners mistakes. They all h
 But it won’t hurt if you read on and learn to know these potential pitfalls.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-1"></a>OpenHoldem does not connect to the table (I)
+<a class="toc" name="toc-Section-1"></a>OpenHoldem does not connect to the table
 </h2>
 <div class="Unindented">
 <i>Reason: Table not recognized because of incorrect system-settings.</i>
@@ -97,42 +97,13 @@ turn off all kind of animations
 
 </ul>
 <h2 class="Section">
-<a class="toc" name="toc-Section-4"></a>OpenHoldem does not play (III)
-</h2>
-<div class="Unindented">
-Some people have the problem that OpenHoldem &ldquo;does niot act&rdquo; despite the log clearly shows the opposite:
-</div>
-<div class="Indented">
-<div class="listing">
-<pre class="listing">2016-03-26 00:23:05 -   Best action:   f$betsize = 30.00
-2016-03-26 00:23:05 -   Action taken:  f$betsize
-</pre>
-</div>
-
-</div>
-<div class="Indented">
-The reason: OpenHoldem did act, but the casino did not react. This can be caused by the security settings of some Windows versions, that prevent the generation of virtual keyboard events. Possible solutions:
-</div>
-<ul>
-<li>
-change these security settings
-</li>
-<li>
-run OpenHoldem and your casino as the same user
-</li>
-<li>
-if all else fails run OpenHoldem with admin privileges (not recommended, as then any potential crash can crash the entire system)
-</li>
-
-</ul>
-<h2 class="Section">
-<a class="toc" name="toc-Section-5"></a>OpenHoldem calls any hand
+<a class="toc" name="toc-Section-4"></a>OpenHoldem calls any hand
 </h2>
 <div class="Unindented">
 <i>Reason: Tablemap does not detect bet amounts.</i>
 </div>
 <div class="Indented">
-If OpenHoldem calls every hand — except maybe the strong ones — this is probably neither a bug in OpenHoldem nor bad logic in the bot but a problem with the Tablemap or with your settings again: The TM does most probably not recognize your opponents bet, so OpenHoldem thinks you have a free play and calls.
+If OpenHoldem calls every hand — except maybe the strong ones — this is probably neither a bug in OpenHoldem nor bad logic in the bot, but a problem with the Tablemap or with your settings again: The TM does most probably not recognize your opponents bet, so OpenHoldem thinks you have a free play and calls.
 </div>
 <div class="Indented">
 Whenever you experience strange actions, you should ask yourself the following questions (<a class="FlexURL" href="http://forum.winholdem.net/wbb/viewtopic.php?f=38&amp;t=12408">http://forum.winholdem.net/wbb/viewtopic.php?f=38&amp;t=12408</a>):
@@ -187,7 +158,7 @@ You can check the values for these symbols in the debug-tab of the formula-edito
 If you want to investigate in detail how OpenHoldem did choose a decision, you should enable the full autoplayer-trace in the preferences and have a look at the log-files.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-6"></a>OpenHoldem pushes any hand
+<a class="toc" name="toc-Section-5"></a>OpenHoldem pushes any hand
 </h2>
 <div class="Unindented">
 <i>Reason: can’t connect to license server. ;-)</i>
@@ -205,13 +176,33 @@ Customer: I bought early August. Now it is September.<br/>
 Admin: Sorry. My partner is on holiday.
 </blockquote>
 <h2 class="Section">
-<a class="toc" name="toc-Section-7"></a>OpenHoldem does not work in ManualMode
+<a class="toc" name="toc-Section-6"></a>OpenHoldem does not work in ManualMode
 </h2>
 <div class="Unindented">
 <i>Reason: Not your turn or userchair not recognized.</i>
 </div>
 <div class="Indented">
 To work properly OpenHoldem must have recognized the userchair. Also some symbols are only valid when it is your turn to act. So you should highlight some buttons in ManualMode; just click them; usually they are grey, which means not existent.
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-7"></a>OpenHoldem executes the wrong action
+</h2>
+<div class="Unindented">
+<div class="listing">
+<pre class="listing">********* Basic Info ***********************************************************
+2016-12-25 10:48:24 - Version:       9.4.3.0 
+...
+2016-12-25 10:48:24 - f$betsize:       65.00 
+2016-12-25 10:48:24 - Formulas:      FCKR. 
+2016-12-25 10:48:24 - Buttons:       FC..A 
+2016-12-25 10:48:24 - Best action:   f$betsize 
+2016-12-25 10:48:24 - Action taken:  f$call
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+Sometimes new users complain that OpenHoldem executes the wrong action. The most common reason — after bad bot-logic — are &ldquo;missing&rdquo; buttons that did not get recognized by the tablemap. In the example above no raise-button could not be found that at many casinos gets used to confirm the betsize. As a consequence OpenHoldem chose a so-called backup-action.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-8"></a>OpenHoldem acts multiple times
@@ -355,10 +346,7 @@ If OpenHoldem connects to all tables but one (despite having enough instances of
 If you get a freeplay, it might be that your check-button (or a check/fold-button!) is at the same location where usually the fold-button is located. If you have a simple way to detect buttons (e.g. by colour) you probably will recognize that button as fold. So OpenHoldem — not seeing a check-button — will check by clicking &ldquo;fold&rdquo; and didfold will be true. Similar things can happen if buttons move, e.g. a call-button at the raise-position when you can only fold or call allin.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-18"></a>
-</h2>
-<h2 class="Section">
-<a class="toc" name="toc-Section-19"></a>History symbols do not work
+<a class="toc" name="toc-Section-18"></a>History symbols do not work
 </h2>
 <div class="Unindented">
 <i>Reason: Incorrect hand-reset.</i>
@@ -370,7 +358,7 @@ Some symbols only require the current gamestate to be calculated (e.g. dealercha
 This problem has now practically disappeared, since OpenHoldem supports nine different handreset-methods, but only accepts a hand-reset if multiple methods fire at the same time.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-20"></a>When the blinds increase OpenHoldem keeps the old values
+<a class="toc" name="toc-Section-19"></a>When the blinds increase OpenHoldem keeps the old values
 </h2>
 <div class="Unindented">
 <i>Reason: tournament not recognized.</i>
@@ -397,7 +385,7 @@ scraped MTT_symbols like players_remaining.
 However in some very rare cases it might be that all methods of recognizing a tournament fail. Some casino tables don’t display helpful titles or have no titles at all. The tablemap might not provide support for optional tournament information and even the &ldquo;beautiful sum of chips&rdquo; might not fit if you connect in the middle of an MTT. The methods of detecting tournaments still get fine-tuned, so if you experience this problem please get in contact with us. Istournament-help-threat: <a class="FlexURL" href="http://www.maxinmontreal.com/forums/viewtopic.php?f=117&amp;t=16104">http://www.maxinmontreal.com/forums/viewtopic.php?f=117&amp;t=16104</a>.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-21"></a>Pokerval does not work
+<a class="toc" name="toc-Section-20"></a>Pokerval does not work
 </h2>
 <div class="Unindented">
 <i>Reason: Pokerval is a bitvector. You are probably confusing logical operations and bitwise operations.</i>
@@ -406,7 +394,7 @@ However in some very rare cases it might be that all methods of recognizing a to
 In short: boolean operations work on true/false-values; bitwise operations work on long series of 0/1-values simultaneously. Lots of wisdom has been written about both topics — too much to explain it here. If you don’t really understand what I am talking about, then you <i>really </i>should take a pause from coding and study the chapter about OH-script. There is no way around it.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-22"></a>PokerTracker does not work
+<a class="toc" name="toc-Section-21"></a>PokerTracker does not work
 </h2>
 <div class="Unindented">
 <i>Reason: Invalid Sitename in the TableMap</i>
@@ -415,7 +403,7 @@ In short: boolean operations work on true/false-values; bitwise operations work 
 OpenHoldem supports Poker Tracker functionality for a dozen different casinos. To query the correct stats OpenHoldem must know, at what casino you currently play. This happens by the TableMap symbols <i>sitename</i> and <i>network</i>. Please refer to the PokerTracker and TableMap section of this manual for a detailed explanantion what to do.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-23"></a>Quickfolding AA and other unexpected plays
+<a class="toc" name="toc-Section-22"></a>Quickfolding AA and other unexpected plays
 </h2>
 <div class="Unindented">
 <i>Reason: Unstable frames and careless coding.</i>
@@ -457,10 +445,21 @@ This way mis-scrapes will not be able to defeat your fine strategy. Instead a mi
 This failure gets now prevented too, as OpenHoldem will will execute f$prefold only if both cards are known. However: as you can see lots of things could go wrong if you are careless. Therefore it is always a good idea to keep these potential pitfalls in mind and prefer a conservative style of coding your bot.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-24"></a>OpenHoldem acts, but nothing happens (Windows 7)
+<a class="toc" name="toc-Section-23"></a>OpenHoldem acts, but nothing happens (Windows 7)
 </h2>
 <div class="Unindented">
-Some people reported that OpenHoldem acts, but nothing happens. The casino did not react. As it turned out this problem was caused by Windows user account control (UAC). OpenHoldem (or Bring) simply missed the right to generate mouse-clicks and keyboard-events. To fix this just modify the permissions like below.
+Some people have the problem that OpenHoldem &ldquo;does not act&rdquo; despite the log clearly shows the opposite:
+</div>
+<div class="Indented">
+<div class="listing">
+<pre class="listing">2016-03-26 00:23:05 -   Best action:   f$betsize = 30.00
+2016-03-26 00:23:05 -   Action taken:  f$betsize
+</pre>
+</div>
+
+</div>
+<div class="Indented">
+The reason: OpenHoldem did act, but the casino did not react. As it turned out this problem was caused by Windows user account control (UAC), that prevents the generation of virtual keyboard events. OpenHoldem (or Bring) simply missed the necessary right to generate mouse-clicks and keyboard-events. To fix this just modify the permissions like below.
 </div>
 <div class="Indented">
 <div class="float">
@@ -495,9 +494,6 @@ If all else fails run OpenHoldem as administrator.
 </div>
 
 </div>
-<h2 class="Section">
-<a class="toc" name="toc-Section-25"></a>
-</h2>
 
 </div>
 </body>

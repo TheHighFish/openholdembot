@@ -114,19 +114,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Graphics
 	filename C:/Users/user4444/Documents/OpenHoldem/Documentation/Chapters/gui/images/menu_problem_solver.JPG
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -140,7 +132,7 @@ But it won't hurt if you read on and learn to know these potential pitfalls.
 \end_layout
 
 \begin_layout Section
-OpenHoldem does not connect to the table (I)
+OpenHoldem does not connect to the table
 \end_layout
 
 \begin_layout Standard
@@ -273,62 +265,6 @@ always use replay-frames
 \end_layout
 
 \begin_layout Section
-OpenHoldem does not play (III)
-\end_layout
-
-\begin_layout Standard
-Some people have the problem that OpenHoldem 
-\begin_inset Quotes eld
-\end_inset
-
-does niot act
-\begin_inset Quotes erd
-\end_inset
-
- despite the log clearly shows the opposite:
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-2016-03-26 00:23:05 -   Best action:   f$betsize = 30.00
-\end_layout
-
-\begin_layout Plain Layout
-
-2016-03-26 00:23:05 -   Action taken:  f$betsize
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The reason: OpenHoldem did act, but the casino did not react.
- This can be caused by the security settings of some Windows versions, that
- prevent the generation of virtual keyboard events.
- Possible solutions:
-\end_layout
-
-\begin_layout Itemize
-change these security settings
-\end_layout
-
-\begin_layout Itemize
-run OpenHoldem and your casino as the same user
-\end_layout
-
-\begin_layout Itemize
-if all else fails run OpenHoldem with admin privileges (not recommended,
- as then any potential crash can crash the entire system)
-\end_layout
-
-\begin_layout Section
 OpenHoldem calls any hand
 \end_layout
 
@@ -340,7 +276,7 @@ Reason: Tablemap does not detect bet amounts.
 
 \begin_layout Standard
 If OpenHoldem calls every hand --- except maybe the strong ones --- this
- is probably neither a bug in OpenHoldem nor bad logic in the bot but a
+ is probably neither a bug in OpenHoldem nor bad logic in the bot, but a
  problem with the Tablemap or with your settings again: The TM does most
  probably not recognize your opponents bet, so OpenHoldem thinks you have
  a free play and calls.
@@ -519,6 +455,77 @@ To work properly OpenHoldem must have recognized the userchair.
  Also some symbols are only valid when it is your turn to act.
  So you should highlight some buttons in ManualMode; just click them; usually
  they are grey, which means not existent.
+\end_layout
+
+\begin_layout Section
+OpenHoldem executes the wrong action
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+********* Basic Info ***********************************************************
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-12-25 10:48:24 - Version:       9.4.3.0 
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-12-25 10:48:24 - f$betsize:       65.00 
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-12-25 10:48:24 - Formulas:      FCKR.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-12-25 10:48:24 - Buttons:       FC..A 
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-12-25 10:48:24 - Best action:   f$betsize 
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-12-25 10:48:24 - Action taken:  f$call
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sometimes new users complain that OpenHoldem executes the wrong action.
+ The most common reason -- after bad bot-logic -- are 
+\begin_inset Quotes eld
+\end_inset
+
+missing
+\begin_inset Quotes erd
+\end_inset
+
+ buttons that did not get recognized by the tablemap.
+ In the example above no raise-button could not be found that at many casinos
+ gets used to confirm the betsize.
+ As a consequence OpenHoldem chose a so-called backup-action.
 \end_layout
 
 \begin_layout Section
@@ -903,54 +910,6 @@ fold
 \end_layout
 
 \begin_layout Section
-\begin_inset Note Note
-status open
-
-\begin_layout Section
-There are only N players dealt, but OpenHoldem says 10
-\end_layout
-
-\begin_layout Plain Layout
-
-\emph on
-Reason: It's a feature, not a bug.
-\end_layout
-
-\begin_layout Plain Layout
-Recognizing dealt players (nplayersdealt) and similar symbols (dealtbits
- and dealposition) has always been a problem due to fast folds in early
- position.
- The 
-\begin_inset Quotes eld
-\end_inset
-
-obvious
-\begin_inset Quotes erd
-\end_inset
-
- way to deal with it was to avoid unreliable symbols and use e.g.
- nchairsdealtleft to get your position (or nchairsdealtright in the blinds),
- as these are always reliable (you get stable frames, once it is your turn
- the first time and the players to your left did not yet act; if you are
- BB the SB will have a bet in front of him).
-\end_layout
-
-\begin_layout Plain Layout
-However --- beginners complained too much and so we had to change the code:
- We do now consider players as dealt, if they are active (e.g.
- sitting in).
- Strictly speaking this is not really correct (e.g.
- a player could be sitting out and come back - but that happens less frequently
- than fast folds in early position).
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
 History symbols do not work
 \end_layout
 
@@ -1273,12 +1232,43 @@ OpenHoldem acts, but nothing happens (Windows 7)
 \end_layout
 
 \begin_layout Standard
-Some people reported that OpenHoldem acts, but nothing happens.
- The casino did not react.
+Some people have the problem that OpenHoldem 
+\begin_inset Quotes eld
+\end_inset
+
+does not act
+\begin_inset Quotes erd
+\end_inset
+
+ despite the log clearly shows the opposite:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+2016-03-26 00:23:05 -   Best action:   f$betsize = 30.00
+\end_layout
+
+\begin_layout Plain Layout
+
+2016-03-26 00:23:05 -   Action taken:  f$betsize
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The reason: OpenHoldem did act, but the casino did not react.
  As it turned out this problem was caused by Windows user account control
- (UAC).
- OpenHoldem (or Bring) simply missed the right to generate mouse-clicks
- and keyboard-events.
+ (UAC), that prevents the generation of virtual keyboard events.
+ OpenHoldem (or Bring) simply missed the necessary right to generate mouse-click
+s and keyboard-events.
  To fix this just modify the permissions like below.
 \end_layout
 
@@ -1351,49 +1341,6 @@ status open
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-\begin_inset Note Note
-status open
-
-\begin_layout Section
-ITDONOWORKS!!!!! ITISBUG!!!!!!!!!!!!!
-\end_layout
-
-\begin_layout Plain Layout
-
-\emph on
-Reason: Outdated version.
-\end_layout
-
-\begin_layout Plain Layout
-Finally the most favourite 
-\begin_inset Quotes eld
-\end_inset
-
-bug
-\begin_inset Quotes erd
-\end_inset
-
- report of all.
- If this ever was a bug you can bet your ass that it got fixed in the latest
- version.
- Before you ever write such a 
-\begin_inset Quotes eld
-\end_inset
-
-bug
-\begin_inset Quotes erd
-\end_inset
-
- report please consider to read the manual (congratulations, you already
- do so!) and to try the latest official version.
 \end_layout
 
 \end_inset
