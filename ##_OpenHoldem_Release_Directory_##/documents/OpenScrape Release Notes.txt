@@ -1,5 +1,14 @@
+v11.0.2 2017-01-xx
+==================
+BUG FIXES:
+- It was not possible to edit the tablemap symbols 
+  "titletext", "!titletext", "ttlimits" because the 
+  rewritten list of symbols was incomplete.
+  Thanks to Chillit for reporting.
+  [THF]
+
 v11.0.1 2017-01-14
-=================
+==================
 BUG FIXES:
 - Due to a rewritten list of symbols that missed a small piece of code
   it was only possible to edit and clone symbols, but not to create new ones.
@@ -7,7 +16,7 @@ BUG FIXES:
   [THF]
 
 v11.0.0 2016-12-26
-=================
+==================
 NEW STUFF:
 - Support for Omaha.
   OpenScrape provides now additional symbols for the 3rd and 4th card,
@@ -21,7 +30,7 @@ NEW STUFF:
   
 
 v9.3.0 2016-10-29
-==================
+=================
 NEW STUFF:
 - Improved preprocessing of tiles, bets, balances and pots 
   to handle non-standard number formats (extra dots, spaces in numbers, ...)

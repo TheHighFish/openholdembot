@@ -53,6 +53,9 @@ CString ListOfSymbols() {
   list += "network ";
   list += "potmethod ";
   list += "sitename ";
+  list += "titletext ";
+  list += "!titletext ";
+  list += "ttlimits ";
   list += "use_comma_instead_of_dot ";
   return list;
 }
