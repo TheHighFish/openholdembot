@@ -147,7 +147,7 @@ bool CAutoplayerButton::IsLeave() {
 }
 
 bool CAutoplayerButton::IsRematch() {
-  return (_label.MakeLower().Left(5) == "rematch");
+  return (_label.MakeLower().Left(7) == "rematch");
 }
 
 bool CAutoplayerButton::IsPrefold() {
