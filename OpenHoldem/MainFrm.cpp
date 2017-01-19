@@ -395,7 +395,6 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page19, "Handhistory Generator");
-  dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page6,  "Poker Tracker v4");
 	dlg.AddPage(page22, "Popup Blocker");
