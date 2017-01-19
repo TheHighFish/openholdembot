@@ -104,11 +104,6 @@ void CSharedMem::MarkPokerWindowAsAttached(HWND Window) {
 	attached_poker_windows[p_sessioncounter->session_id()] = Window;	
 }
 
-void CSharedMem::MarkPokerWindowAsUnAttached() {
-	ENT;
-	attached_poker_windows[p_sessioncounter->session_id()] = NULL;
-}
-
 void CSharedMem::RememberTimeOfLastFailedAttemptToConnect() {
 	ENT;
 	time(&last_failed_attempt_to_connect);

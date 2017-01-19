@@ -38,9 +38,7 @@ class CAutoConnector {
 	void Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_index, HWND targetHWnd);
   void CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd);
  private:
-	#define ENT CSLock lock(m_critsec);
-	void set_attached_hwnd(const HWND h) { ENT _attached_hwnd = h; }
-	#undef ENT
+  void set_attached_hwnd(const HWND table);
  private:
 	void FailedToConnectBecauseNoWindowInList();
 	void FailedToConnectProbablyBecauseAllTablesAlreadyServed();

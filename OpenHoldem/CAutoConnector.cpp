@@ -49,7 +49,6 @@ CAutoConnector::CAutoConnector() {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] CAutoConnector()\n");
   CString MutexName = preferences.mutex_name() + "AutoConnector";
 	_autoconnector_mutex = new CMutex(false, MutexName);
-  p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
 }
 
@@ -64,7 +63,6 @@ CAutoConnector::~CAutoConnector() {
 		_autoconnector_mutex = NULL;
 	}
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Marking table as not atached\n");
-	p_sharedmem->MarkPokerWindowAsUnAttached();
 	set_attached_hwnd(NULL);
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Finished\n");
 }
@@ -125,6 +123,13 @@ void CAutoConnector::CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd) {
       "to make the tablemap-selection-process unambiguous.");
     OH_MessageBox_Error_Warning(error_message);
   }
+}
+
+void CAutoConnector::set_attached_hwnd(const HWND table) {
+  CSLock lock(m_critsec);
+  _attached_hwnd = table;
+  assert(p_sharedmem != NULL);
+  p_sharedmem->MarkPokerWindowAsAttached(table);
 }
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
@@ -261,8 +266,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			FailedToConnectProbablyBecauseAllTablesAlreadyServed();
 		}	else {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
-			p_sharedmem->MarkPokerWindowAsAttached(g_tlist[SelectedItem].hwnd);
-			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window marked at shared memory\n");
       // Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
       CheckIfWindowMatchesMoreThanOneTablemap(_attached_hwnd);
@@ -337,11 +340,6 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	// Unattach OH.
 	p_flags_toolbar->UnattachOHFromPokerWindow();
 	p_flags_toolbar->ResetButtonsOnDisconnect();
-
-	// Mark table as not attached
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Marking table as not attached\n");
-	p_sharedmem->MarkPokerWindowAsUnAttached();
-
 	// Release mutex as soon as possible, after critical work is done
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();	

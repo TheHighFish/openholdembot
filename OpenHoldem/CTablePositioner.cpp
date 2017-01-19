@@ -76,8 +76,10 @@ void CTablePositioner::PositionMyWindow() {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Not doing anything because of preferences.\n");
 	}
   GetWindowRect(p_autoconnector->attached_hwnd(), &_table_position);
-  _table_size_x = _table_position.right  - _table_position.left;  _table_size_y = _table_position.bottom - _table_position.top;
-  SystemParametersInfo(SPI_GETWORKAREA, NULL, &_desktop_rectangle, NULL);
+  _table_size_x = _table_position.right  - _table_position.left;
+  _table_size_y = _table_position.bottom - _table_position.top;
+  SystemParametersInfo(SPI_GETWORKAREA, NULL, &_desktop_rectangle, NULL);
+
 }
 
 // Precondition: position and size defined
@@ -135,5 +137,15 @@ void CTablePositioner::ResizeToTargetSize() {
   ResizeToClientSize(p_autoconnector->attached_hwnd(), width, height);
 }
 
-void CTablePositioner::MoveToTopLeft() {  write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToTopLeft()\n");  GetWindowRect(p_autoconnector->attached_hwnd(), &_table_position);  _table_size_x = _table_position.right - _table_position.left;  _table_size_y = _table_position.bottom - _table_position.top;  _table_position.left = 0;  _table_position.top = 0;  MoveWindowToItsPosition();  SystemParametersInfo(SPI_GETWORKAREA, NULL, &_desktop_rectangle, NULL);}
+void CTablePositioner::MoveToTopLeft() {
+  write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToTopLeft()\n");
+  GetWindowRect(p_autoconnector->attached_hwnd(), &_table_position);
+  _table_size_x = _table_position.right - _table_position.left;
+  _table_size_y = _table_position.bottom - _table_position.top;
+  _table_position.left = 0;
+  _table_position.top = 0;
+  MoveWindowToItsPosition();
+  SystemParametersInfo(SPI_GETWORKAREA, NULL, &_desktop_rectangle, NULL);
+}
+
 

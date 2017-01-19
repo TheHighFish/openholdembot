@@ -39,7 +39,6 @@ class CSharedMem {
 	bool PokerWindowAttached(HWND Window);
 	bool AnyWindowAttached();
 	void MarkPokerWindowAsAttached(HWND Window);
-	void MarkPokerWindowAsUnAttached();
 	void RememberTimeOfLastFailedAttemptToConnect();
 	time_t GetTimeOfLastFailedAttemptToConnect();
 	// Used for the table positioner
