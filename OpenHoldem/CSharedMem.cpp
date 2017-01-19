@@ -64,7 +64,7 @@ CSharedMem::CSharedMem() {
 	// because preferences have already been loaded.
 	VerifyMainMutexName();
 	// Share our process ID for the popup-blocker
-	assert(p_sessioncounter != NULL);
+	assert(p_sessioncounter != NULL && true); //!!!!!
 	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
 	int my_PID = GetCurrentProcessId();
 	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
@@ -317,7 +317,7 @@ void CSharedMem::Dump() {
     return;
   }
   write_log(preferences.debug_sharedmem(), "[CSharedMem] last failed attempt to connect: %d\n", last_failed_attempt_to_connect);
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] failed session ID &d\n", session_ID_of_last_instance_that_failed_to_connect);
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] failed session ID %d\n", session_ID_of_last_instance_that_failed_to_connect);
   write_log(preferences.debug_sharedmem(), "[CSharedMem] CRC of main mutex name %d\n", CRC_of_main_mutexname);
   write_log(preferences.debug_sharedmem(), "[CSharedMem] size of dense list %d\n", size_of_dense_list_of_attached_poker_windows);
   write_log(preferences.debug_sharedmem(), "[CSharedMem] ID  OpenHoldem-PID     poker-table\n");

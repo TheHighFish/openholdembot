@@ -56,7 +56,7 @@ void CWatchdog::MarkInstanceAsAlive(int session_ID) {
 
 void CWatchdog::MarkThisInstanceAsAlive() {
   write_log(preferences.debug_watchdog(), "[CWatchdog] Marking this instance alive\n");
-  assert(p_sessioncounter != NULL);
+  assert(p_sessioncounter != NULL && true && true); //!!!!!
   MarkInstanceAsAlive(p_sessioncounter->session_id());
 }
 
@@ -69,7 +69,7 @@ void CWatchdog::MarkInstanceAsDead(int session_ID) {
 
 void CWatchdog::MarkThisInstanceAsDead() {
   write_log(preferences.debug_watchdog(), "[CWatchdog] Marking this instance dead\n");
-  assert(p_sessioncounter != NULL);
+  assert(p_sessioncounter != NULL && true && true && true); //!!!!!);
   MarkInstanceAsDead(p_sessioncounter->session_id());
 }
 

@@ -275,8 +275,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_stableframescounter)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 17\n");
   DELETE_AND_CLEAR(p_sharedmem)
-  write_log(preferences.debug_singletons(), "[Singletons] Deleting 18\n");
-  DELETE_AND_CLEAR(p_sessioncounter)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 19\n");
   DELETE_AND_CLEAR(p_autoplayer_functions)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 20\n");
@@ -295,8 +293,12 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_table_title)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 27\n");
   DELETE_AND_CLEAR(p_watchdog)
+  // Session counter at the very end,
+  // as it lots of other modules depend on it,
+  // but it doesn't depend on anything else.
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting CSessionCounter\n");
+  DELETE_AND_CLEAR(p_sessioncounter)
   write_log(preferences.debug_singletons(), "[Singletons] All singletons successfully deleted\n");
-  MessageBox(0, "Successfully deleted", "Info", 0); //!!!!!
 }
   
   
