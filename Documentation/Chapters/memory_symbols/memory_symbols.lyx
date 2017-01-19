@@ -264,7 +264,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-to reset these two values on handreset to zero (which means false in tzhe
+to reset these two values on handreset to zero (which means false in the
  second case).
 \end_layout
 

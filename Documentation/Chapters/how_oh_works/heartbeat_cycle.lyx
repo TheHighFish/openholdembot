@@ -382,7 +382,7 @@ f$fold
 
 \begin_layout Plain Layout
 The autoplayer works -- as the name suggests -- automatically, but the necessary
- actions differ a bit for esch casino, therefore the autoplayer can be customize
+ actions differ a bit for each casino, therefore the autoplayer can be customize
 d with the tablemap.
  For example you can tell how an old betsize should be selected before a
  new one can be entered:
