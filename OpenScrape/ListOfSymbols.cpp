@@ -46,6 +46,7 @@ CString ListOfSymbols() {
   list += "betsizeinterpretationmethod ";
   list += "betsizeselectionmethod ";
   list += "buttonclickmethod ";
+  list += "c0limits";
   list += "cardscrapemethod ";
   list += "chipscrapemethod ";
   list += "islobby ";
