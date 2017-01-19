@@ -39,7 +39,6 @@ protected:
 	virtual void OnOK();
 private:
 	afx_msg void OnBnClickedDisableMsgbox();
-
 public:
 	CButton		_gui_start_minimized_Button;
 	CButton		m_disable_msgbox;

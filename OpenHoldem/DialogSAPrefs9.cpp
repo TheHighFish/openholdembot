@@ -7,7 +7,7 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Preferences dialog for auto-starter and auto-shutdown
 //
 //******************************************************************************
 
@@ -35,23 +35,24 @@ CDlgSAPrefs9::~CDlgSAPrefs9()
 
 void CDlgSAPrefs9::DoDataExchange(CDataExchange* pDX)
 {
-	CSAPrefsSubDlg::DoDataExchange(pDX);
+  CDialog::DoDataExchange(pDX);
+  DDX_Control(pDX, IDC_USE_AUTO_STARTER, m_use_auto_starter);
+  DDX_Control(pDX, IDC_USE_AUTO_SHUTDOWN, m_use_auto_shutdown);
 }
 
 BOOL CDlgSAPrefs9::OnInitDialog()
 {
-	CSAPrefsSubDlg::OnInitDialog();
-
+  CSAPrefsSubDlg::OnInitDialog();
+  m_use_auto_starter.SetCheck(preferences.use_auto_starter() ? BST_CHECKED : BST_UNCHECKED);
+  m_use_auto_shutdown.SetCheck(preferences.use_auto_shutdown() ? BST_CHECKED : BST_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CDlgSAPrefs9::OnOK()
 {
+  preferences.SetValue(k_prefs_use_auto_starter, m_use_auto_starter.GetCheck() == BST_CHECKED ? true : false);
+  preferences.SetValue(k_prefs_use_auto_shutdown, m_use_auto_shutdown.GetCheck() == BST_CHECKED ? true : false);
 	CSAPrefsSubDlg::OnOK();
 }
 
-BEGIN_MESSAGE_MAP(CDlgSAPrefs9, CDialog)
-END_MESSAGE_MAP()
-
-// DialogSAPrefs9 message handlers

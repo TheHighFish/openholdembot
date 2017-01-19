@@ -139,13 +139,8 @@
 #define IDC_PT_PASS                     1103
 #define IDC_PT_DBNAME                   1104
 #define IDC_PT_DBNAME2                  1105
-#define IDC_ICM_1                       1110
-#define IDC_ICM_2                       1111
-#define IDC_ICM_3                       1112
-#define IDC_ICM_4                       1113
-#define IDC_CHECK1                      1114
-#define IDC_AUTOPLAYER_UPON_CONNECTION  1114
-#define IDC_ICM_5                       1114
+#define IDC_CHECK1                      1106
+#define IDC_AUTOPLAYER_UPON_CONNECTION  1107
 #define IDC_CHECK2                      1115
 #define IDC_CHECK3                      1116
 #define IDC_CHECK4                      1117
@@ -443,6 +438,17 @@
 #define IDC_DEBUG_SINGLETONS            1414  
 #define IDC_DEBUG_AUTOSTARTER           1415 
 #define IDC_DEBUG_WATCHDOG              1416 
+#define IDC_USE_AUTO_STARTER            1417
+#define IDC_USE_AUTO_SHUTDOWN           1418
+#define IDC_ICM_1                       1121
+#define IDC_ICM_2                       1122
+#define IDC_ICM_3                       1123
+#define IDC_ICM_4                       1124
+#define IDC_ICM_5                       1125
+#define IDC_ICM_6                       1126
+#define IDC_ICM_7                       1127
+#define IDC_ICM_8                       1128
+#define IDC_ICM_9                       1129
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -552,7 +558,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         33000
-#define _APS_NEXT_CONTROL_VALUE         1417
+#define _APS_NEXT_CONTROL_VALUE         1430
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

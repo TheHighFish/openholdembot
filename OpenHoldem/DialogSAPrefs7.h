@@ -36,6 +36,7 @@ protected:
 
 	enum { IDD = IDD_SAPREFS7 };
 	CEdit m_ICM1, m_ICM2, m_ICM3, m_ICM4, m_ICM5;
+  CEdit m_ICM6, m_ICM7, m_ICM8, m_ICM9;
 
 	DECLARE_MESSAGE_MAP()
 };

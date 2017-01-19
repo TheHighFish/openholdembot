@@ -386,15 +386,15 @@ void CMainFrame::OnEditPreferences()
 	// add pages
 	dlg.AddPage(page14, "Auto-Connector");
 	dlg.AddPage(page2,  "Autoplayer");
+#ifdef OPENHOLDEM_11_1_0
+  dlg.AddPage(page9, "Auto-starter");
+#endif
 	dlg.AddPage(page10, "Chat");
 	dlg.AddPage(page17, "Configuration Check");
 	dlg.AddPage(page20, "Debugging");
 	dlg.AddPage(page3,  "DLL Extension");
 	dlg.AddPage(page15, "GUI");
 	dlg.AddPage(page19, "Handhistory Generator");
-#ifdef OPENHOLDEM_11_1_0
-  dlg.AddPage(page9,  "Hopper");
-#endif
   dlg.AddPage(page7,  "ICM");
 	dlg.AddPage(page11, "Logging");
 	dlg.AddPage(page6,  "Poker Tracker v4");

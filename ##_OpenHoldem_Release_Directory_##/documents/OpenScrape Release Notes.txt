@@ -2,9 +2,10 @@ v11.0.2 2017-01-xx
 ==================
 BUG FIXES:
 - It was not possible to edit the tablemap symbols 
-  "titletext", "!titletext", "ttlimits" because the 
-  rewritten list of symbols was incomplete.
-  Thanks to Chillit for reporting.
+  "titletext", "!titletext", "ttlimits" and "c0limits" because 
+  the  rewritten list of symbols was incomplete.
+  Thanks to Chillit for reporting and to ChuckNeverMuck 
+  for finding the reason of the problem.
   [THF]
 
 v11.0.1 2017-01-14

@@ -96,6 +96,8 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"validator_use_heuristic_rules",
 	"validator_shoot_replayframe_on_error",
   "validator_enabled",
+  "use_auto_starter",
+  "use_auto_shutdown",
 	"autoconnector_close_when_table_disappears",
 	"gui_start_minimized", 
 	"rebuy_condition_no_cards",

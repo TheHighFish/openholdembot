@@ -125,8 +125,12 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 #ifdef OPENHOLDEM_11_1_0
     assert(p_watchdog != NULL);
     p_watchdog->HandleCrashedAndFrozenProcesses();
-    _openholdem_starter.StartNewInstanceIfNeeded();
-    _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
+    if (preferences.use_auto_starter()) {
+      _openholdem_starter.StartNewInstanceIfNeeded();
+    }
+    if (preferences.use_auto_shutdown()) {
+      _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
+    }
 #endif OPENHOLDEM_11_1_0
     _heartbeat_delay.FlexibleSleep();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");

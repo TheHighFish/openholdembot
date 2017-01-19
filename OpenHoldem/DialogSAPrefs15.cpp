@@ -29,7 +29,6 @@ IMPLEMENT_DYNAMIC(CDlgSAPrefs15, CDialog)
 CDlgSAPrefs15::CDlgSAPrefs15(CWnd* pParent /*=NULL*/)
 	: CSAPrefsSubDlg(CDlgSAPrefs15::IDD, pParent)
 {
-
 }
 
 CDlgSAPrefs15::~CDlgSAPrefs15()
