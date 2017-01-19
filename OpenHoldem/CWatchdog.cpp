@@ -125,11 +125,20 @@ void CWatchdog::WatchForFrozenProcesses() {
         MarkInstanceAsAlive(i);
         continue;
       }
+#ifndef _DEBUG
       write_log(preferences.debug_watchdog(), "[CWatchdog] Killing frozen process %i, PID: %i\n",
         i, p_sharedmem->OpenHoldemProcessID(i));
       KillProcess(p_sharedmem->OpenHoldemProcessID(i));
       MarkInstanceAsDead(i);
       p_sharedmem->CleanUpProcessMemory(i);
+#else
+      // Don't kill any processes in debug.mode
+      // It is extremely annoying if we hit a breakpoint
+      // and another instance kills the paused program.
+#endif _DEBUG
+      write_log(preferences.debug_watchdog(), 
+        "[CWatchdog] Skipped killing frozen process %i, PID: %i because of debug-mode\n",
+        i, p_sharedmem->OpenHoldemProcessID(i));
     }
   }
 }
