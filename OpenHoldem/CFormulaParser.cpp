@@ -131,7 +131,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
   _source_file_name = formula_file.GetFile()->GetFilePath();
   InitNewParse();
   p_function_collection->DeleteAll(false, true);
-  p_function_collection->SetTitle(formula_file.GetFile()->GetFileName());
+  p_function_collection->SetFormulaName(formula_file.GetFile()->GetFileName());
   p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
   while (true) {
     int starting_line = _formula_file_splitter.starting_line_of_current_function();
@@ -320,7 +320,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
   // This prevents the parsing of empty functions,
   // which is especially necessary for OpenPPL-Omaha
   // (partially implemented)
-  // !!!!!www
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20386
   if (isdigit(_function_name[0])) {
     // Date like ##2014-02-09 23:16:55##
     // To be completely ignored

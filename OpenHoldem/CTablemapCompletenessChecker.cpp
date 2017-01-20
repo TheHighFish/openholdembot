@@ -316,7 +316,7 @@ void CTablemapCompletenessChecker::VerifyTitleTexts() {
     // Since version 11.0.1 we support empty titletexts 
     // But then at least one tablepoint is required
     // in addition to clientsizemin/max to avoid random connections.
-    // www!!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20382
     if (!p_tablemap->ItemExists("tablepoint0")) {
       ErrorMissingTablepoint();
     }

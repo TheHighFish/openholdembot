@@ -392,7 +392,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
         // Symbols must be non-empty.
         // With the single exception of an empty main title-tedt,
         // supported since version 11.0.1
-        // www!!!!!
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20382
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}

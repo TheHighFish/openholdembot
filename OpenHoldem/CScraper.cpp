@@ -609,7 +609,7 @@ CString CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   // which probably got converted to 1 by StringToMoney.
   // That's why we return an empty string "" again
   // to support all the people who don't scrape "nothing" as 0 or allin.
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20277
   return "";
 }
 

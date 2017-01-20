@@ -437,7 +437,7 @@ BOOL CMainFrame::DestroyWindow() {
   write_log(preferences.debug_gui(), "[GUI] this = [%i]\n", this);
   // All OK here
   assert(AfxCheckMemory());
-  // !!!!!!! 
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20459
   // Crash on termination happens here
   // Tried to simply forget bool success = CFrameWnd::DestroyWindow();
   // but a non-destroyed window causes an endless-loop on termination.
@@ -641,7 +641,7 @@ void CMainFrame::KillTimers() {
   // on termination. otherwise the timer-functions might access
   // objects loke the auto_connector that already are destructed,
   // thus causing a memory-access-error.
-  //!!!!!www
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20459
  	CFrameWnd::KillTimer(HWND_CHECK_TIMER);
   CFrameWnd::KillTimer(ENABLE_BUTTONS_TIMER);
   CFrameWnd::KillTimer(UPDATE_STATUS_BAR_TIMER);

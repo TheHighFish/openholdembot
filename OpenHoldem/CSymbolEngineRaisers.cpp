@@ -192,7 +192,9 @@ double CSymbolEngineRaisers::MinimumStartingBetCurrentOrbit(bool searching_for_r
     // Start with big blind and forget about WinHoldem "blind raisers".
     return p_symbol_engine_tablelimits->bblind();
   } 
-  // !!!!! www.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20361
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20387
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=261&t=20226
   // We can't start with 1 bb, as this would recognize the BB as a caller.
   // We can't start with 0 bb either, as this would discard a limping SB
   // as a raiser if we are in BB.

@@ -353,9 +353,7 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
-  _autoconnector_mutex->Lock(INFINITE); //!!!!!!! here freezing
-  // I thread calling Connect() from heartbeat
-  // 1 thread calling Disconnect from Ontimer()
+  _autoconnector_mutex->Lock(INFINITE); 
 	p_engine_container->UpdateOnDisconnection();
 	// Clear "attached" info
 	set_attached_hwnd(NULL);

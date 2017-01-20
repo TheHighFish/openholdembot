@@ -90,7 +90,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   CString FormulaPath()     { return _path; }
   CString DLLPath();
  protected:
-  void SetTitle(CString title)	{ _title = title; }
+  void FormulaName(CString formula_name)	{ _formula_name = formula_name; }
   void SetPath(CString path)	  { _path = path; }
   // For OpenPPL, which evaluates f$preflop, ...
   // instead of f$beep, f$alli, ...
@@ -105,7 +105,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   void ExecuteSelftest();  
  private:
   std::map<CString, COHScriptObject*> _function_map;
-  CString _title;
+  CString _formula_name;
   CString _path;
   bool _openPPL_library_loaded;
  private:

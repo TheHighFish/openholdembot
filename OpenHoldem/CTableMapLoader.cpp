@@ -245,7 +245,7 @@ bool TablemapMatchesWindowByTitle(int MapIndex, HWND window) {
     // This also requires tablepoints to make sure that we don't randomly
     // connect to crappy ghost-windows. The existence of tablepoints
     // gets verified by the TablemapcompletenessChecker.
-    // www!!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20382
     write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Empty title [%s] matches.\n", title);
     return true;
   }

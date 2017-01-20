@@ -205,7 +205,6 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
     (second_bet_after_dealer > 0.0) &&
     (p_symbol_engine_active_dealt_playing->nplayersdealt() == 2)) {
     // Special handling for reveresed blinds headsup
-    // !!!!! www
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19102
     write_log(preferences.debug_table_limits(),
       "[CBlindGuesser] Game is headsup\n");

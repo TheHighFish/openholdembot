@@ -54,7 +54,6 @@ void COpenHoldemStarter::StartNewInstanceIfNeeded() {
     write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] Not my business to start new instances.\n");
     return;
   }
-  //!!!!! if preferences
   time(&_starting_time_of_last_instance);
   //! delay until next start
   // No error-checking, as Openholdem exists (at least when we started).
@@ -96,9 +95,5 @@ void COpenHoldemStarter::CloseThisInstanceIfNoLongerNeeded() {
     return;
   }
   write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] Shutting down this instance.\n");
-  //!!!!! if preferences
-  //PostMessage(NULL, WM_QUIT, NULL, NULL);
-  //PostThreadMessage(NULL, WM_QUIT, NULL, NULL);
   PostMessage(theApp.m_pMainWnd->GetSafeHwnd(), WM_QUIT, NULL, NULL);
-  //exit(0);
 }
