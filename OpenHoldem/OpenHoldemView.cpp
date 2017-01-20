@@ -175,6 +175,7 @@ void COpenHoldemView::OnDraw(CDC* pDC) {
 }
 
 void COpenHoldemView::OnTimer(UINT_PTR nIDEvent) {
+  write_log(preferences.debug_timers(), "[GUI] COpenHoldemView::OnTimer()\n");
 	if (nIDEvent == DISPLAY_UPDATE_TIMER) 
 	{
 		// Only do this if we are not in the middle of a scraper/symbol update

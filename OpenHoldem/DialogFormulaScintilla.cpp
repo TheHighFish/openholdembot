@@ -1668,12 +1668,10 @@ void CDlgFormulaScintilla::OnEditSelectAll()
 
 void CDlgFormulaScintilla::OnTimer(UINT_PTR nIDEvent) {
 	CMenu *edit_menu = this->GetMenu()->GetSubMenu(1);
-
 	if (nIDEvent == MENU_UPDATE_TIMER) 
 	{
 		HandleEnables(false);
 	}
-
 	// Update debug tab (if auto button is pressed)
 	else if (nIDEvent == DEBUG_UPDATE_TIMER)
 	{

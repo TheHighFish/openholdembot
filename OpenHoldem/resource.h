@@ -438,8 +438,9 @@
 #define IDC_DEBUG_SINGLETONS            1414  
 #define IDC_DEBUG_AUTOSTARTER           1415 
 #define IDC_DEBUG_WATCHDOG              1416 
-#define IDC_USE_AUTO_STARTER            1417
-#define IDC_USE_AUTO_SHUTDOWN           1418
+#define IDC_DEBUG_TIMERS                1417
+#define IDC_USE_AUTO_STARTER            1418
+#define IDC_USE_AUTO_SHUTDOWN           1419
 #define IDC_ICM_1                       1121
 #define IDC_ICM_2                       1122
 #define IDC_ICM_3                       1123

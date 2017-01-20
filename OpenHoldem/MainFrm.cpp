@@ -478,6 +478,7 @@ void CMainFrame::OnFileOpen() {
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
+  write_log(preferences.debug_timers(), "[GUI] CMainFrame::OnTimer()\n");
   // There was a race-condition in this function during termination 
   // if OnTimer was in progress and p_autoconnector became dangling.
   // This is probably fixed, as we now kill the timers
@@ -496,11 +497,13 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   // after we know that p_autoconnector is (ATM) valid.
   bool is_connected = p_autoconnector->IsConnected();
   if (nIDEvent == HWND_CHECK_TIMER) {
+    write_log(preferences.debug_timers(), "[GUI] OnTimer checking table connection\n");
     // Important: check is_conected first.
     // Checking only garbage HWND, then disconnecting
     // can lead to freezing if it colludes with Connect()
  	  if (is_connected && !IsWindow(p_autoconnector->attached_hwnd())) { 		
  	    // Table disappeared 		
+      write_log(preferences.debug_timers(), "[GUI] OnTimer found disappeared window()\n");
  	    p_autoconnector->Disconnect("table disappeared"); 		 		
     }
  	} else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
@@ -509,12 +512,14 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		// without the need to know the userchair to act on secondary formulas.
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_E\n");
 		if (is_connected) 	{
+      write_log(preferences.debug_timers(), "[GUI] OnTimer enabling buttons\n");
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_F\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_G\n");
       p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_L\n");
 		}	else {
+      write_log(preferences.debug_timers(), "[GUI] OnTimer disabling buttons\n");
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_H\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_I\n");
@@ -523,6 +528,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		}
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_O\n");
 	}	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
+    write_log(preferences.debug_timers(), "[GUI] OnTimer updating statusbar\n");
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_P\n");
 		p_openholdem_statusbar->OnUpdateStatusbar();
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_Q\n");

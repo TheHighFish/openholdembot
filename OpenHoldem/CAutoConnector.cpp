@@ -68,7 +68,8 @@ CAutoConnector::~CAutoConnector() {
 }
 
 bool CAutoConnector::IsConnected() {
-  bool result = (_attached_hwnd != NULL) && IsWindow(_attached_hwnd);
+  HWND table = attached_hwnd();
+  bool result = (table != NULL) && IsWindow(table);
   write_log(preferences.debug_autoconnector(), "[CAutoConnector] IsConnected: %s\n",
     Bool2CString(result));
 	return result;
@@ -268,7 +269,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Window [%d] selected\n", g_tlist[SelectedItem].hwnd);
       // Load correct tablemap, and save hwnd/rect/numchairs of table that we are "attached" to
 			set_attached_hwnd(g_tlist[SelectedItem].hwnd);
-      CheckIfWindowMatchesMoreThanOneTablemap(_attached_hwnd);
+      CheckIfWindowMatchesMoreThanOneTablemap(attached_hwnd());
 			assert(p_tablemap != NULL);
       CString tablemap_to_load = p_tablemap_loader->GetTablemapPathToLoad(g_tlist[SelectedItem].tablemap_index);
 			write_log(preferences.debug_autoconnector(), "[CAutoConnector] Selected tablemap: %s\n", tablemap_to_load);
