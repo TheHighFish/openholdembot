@@ -71,7 +71,7 @@ void COpenHoldemStarter::StartNewInstanceIfNeeded() {
 }
 
 void COpenHoldemStarter::CloseThisInstanceIfNoLongerNeeded() {
-  if (p_autoconnector->IsConnected()) {
+  if (p_autoconnector->IsConnectedToAnything()) {
     write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] Playing, therefore still needed.\n");
     // Instance needed for playing
     return;

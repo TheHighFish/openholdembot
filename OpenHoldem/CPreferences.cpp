@@ -204,12 +204,13 @@ void CPreferences::InitDefaults(void) {
 	prefs_numerical_values[k_prefs_engage_autoplayer] = true;
 	prefs_numerical_values[k_prefs_restore_position_and_focus] = false;
 	prefs_numerical_values[k_prefs_use_auto_replay] = true;
+  prefs_numerical_values[k_prefs_use_auto_starter] = true;
 	prefs_numerical_values[k_prefs_debug_preferences] = true; // To assure that we log at least the initialization of this value
 	prefs_numerical_values[k_prefs_rebuy_condition_no_cards] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion] = true;
-	prefs_numerical_values[k_prefs_configurationcheck_input_settings] = false;
 	prefs_numerical_values[k_prefs_configurationcheck_font_settings] = true;
+  prefs_numerical_values[k_prefs_configurationcheck_input_settings] = false;
   // Ints
 	prefs_numerical_values[k_prefs_formula_dx] = 640;
 	prefs_numerical_values[k_prefs_formula_dy] = 400;

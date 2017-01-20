@@ -51,7 +51,7 @@ void CHeartbeatDelay::FlexibleSleep() {
 
 double CHeartbeatDelay::SleepingFactor() {
   write_log(preferences.debug_alltherest(), "[CHeartbeatDelay] location Johnny_A\n");
-  if (!p_autoconnector->IsConnected()) {
+  if (!p_autoconnector->IsConnectedToAnything()) {
     // Keep heartbeat_delay as is
     // We want fast auto-connects 
     // and the auto-connector is extremely optimized.

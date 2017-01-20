@@ -128,7 +128,7 @@ bool CTablepointChecker::CheckTablepointsOfCurrentTablemap() {
   // the already existing screenshot of the scraper.
   assert(p_autoconnector != NULL);
   write_log(preferences.debug_alltherest(), "[CTablePointChecker] location Johnny_4\n");
-  assert(p_autoconnector->IsConnected());
+  assert(p_autoconnector->IsConnectedToAnything());
   for (int i = 0; i < k_max_number_of_tablepoints; ++i) {
     assert(p_tablemap != NULL);
     CString tablepointX;

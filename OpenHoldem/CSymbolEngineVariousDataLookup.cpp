@@ -105,7 +105,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     // Don't show name messagebox if in parsing-mode
     write_log(preferences.debug_alltherest(), "[CSymbolEngineVariousDataLookup] location Johnny_8\n");
     if (p_formula_parser->IsParsing()
-        || !p_autoconnector->IsConnected()
+        || !p_autoconnector->IsConnectedToAnything()
 	      || !p_symbol_engine_userchair->userchair_confirmed()) {
 	    *result = 0;
     } else {

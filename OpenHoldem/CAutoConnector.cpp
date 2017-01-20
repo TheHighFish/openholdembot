@@ -67,14 +67,38 @@ CAutoConnector::~CAutoConnector() {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] ~CAutoConnector() Finished\n");
 }
 
-bool CAutoConnector::IsConnected() {
+bool CAutoConnector::IsConnectedToAnything() {
   HWND table = attached_hwnd();
-  bool result = (table != NULL) && IsWindow(table);
-  write_log(preferences.debug_autoconnector(), "[CAutoConnector] IsConnected: %s\n",
+  bool result = (table != NULL);
+  write_log(preferences.debug_autoconnector(), 
+    "[CAutoConnector] IsConnectedToAnything: %s\n",
     Bool2CString(result));
 	return result;
 }
 
+bool CAutoConnector::IsConnectedToExistingWindow() {
+  if (!IsConnectedToAnything()) {
+    return false;
+  }
+  HWND table = attached_hwnd();
+  bool result = IsWindow(table);
+  write_log(preferences.debug_autoconnector(), 
+    "[CAutoConnector] IsConnectedToexistingWindow: %s\n",
+    Bool2CString(result));
+  return result;
+}
+
+bool CAutoConnector::IsConnectedToGoneWindow() {
+  if (!IsConnectedToAnything()) {
+    return false;
+  }
+  if (IsConnectedToExistingWindow()) {
+    return false;
+  }
+  write_log(preferences.debug_autoconnector(), 
+    "[CAutoConnector] IsConnectedToGoneWindow: true\n");
+  return true;
+}
 
 void CAutoConnector::Check_TM_Against_All_Windows_Or_TargetHWND(int tablemap_index, HWND targetHWnd) {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Check_TM_Against_All_Windows(..)\n");
@@ -312,7 +336,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 
 void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Disconnect()\n");
-  if (!IsConnected()) {
+  if (!IsConnectedToAnything()) {
     // Be extra safe.
     // This stupid error happened, when OnTimer() only checked if the window 
     // still existed, but not if we were connected at all.
@@ -320,15 +344,12 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
     write_log(k_always_log_errors, "[CAutoConnector] ERROR: Disconnect() called while not connected\n");
     return;
   }
-
   // First close scraper-output-dialog,
   // as an updating dialog without a connected table can crash.
   CDlgScraperOutput::DestroyWindowSafely();
-
   // Make sure autoplayer is off
   write_log(preferences.debug_autoconnector(), "[CAutoConnector] Stopping autoplayer\n");
   p_autoplayer->EngageAutoplayer(false);
-
 	// Wait for mutex - "forever" if necessary, as we have to clean up.
 	ASSERT(_autoconnector_mutex->m_hObject != NULL); 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Locking autoconnector-mutex\n");
@@ -344,25 +365,19 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
 	// Release mutex as soon as possible, after critical work is done
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Unlocking autoconnector-mutex\n");
 	_autoconnector_mutex->Unlock();	
-
 	// Delete bitmaps
 	p_scraper->DeleteBitmaps();
-
-	// Clear scraper fields
+  // Clear scraper fields
 	p_table_state->Reset();
   p_casino_interface->Reset();
-
 	// Reset symbols
 	p_engine_container->UpdateOnConnection();
-
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] UpdateOnConnection executed (disconnection)\n");
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Going to continue with window title\n");
-
 	// Change window title
 	p_openholdem_title->UpdateTitle();
 	// Reset Display 
 	PMainframe()->ResetDisplay();
-
 	// Reset "ScraperOutput" dialog, if it is live
 	if (m_ScraperOutputDlg)	{
 		m_ScraperOutputDlg->Reset();
@@ -370,7 +385,6 @@ void CAutoConnector::Disconnect(CString reason_for_disconnection) {
   CString message;
   message.Format("DISCONNECTION -- %s", reason_for_disconnection);
 	WriteLogTableReset(message);
-
 	// Close OH, when table disappears and leaving enabled in preferences.//!!!!! can be removed due to OH-starter
 	if (preferences.autoconnector_close_when_table_disappears()) {
 		PostQuitMessage(0);

@@ -26,8 +26,11 @@ class CAutoConnector {
  public:
 	bool Connect(HWND targetHWnd);
 	void Disconnect(CString reason_for_disconnection);
-	bool IsConnected();
 	double SecondsSinceLastFailedAttemptToConnect(); 
+ public:
+  bool IsConnectedToAnything();
+  bool IsConnectedToExistingWindow();
+  bool IsConnectedToGoneWindow();
  public:
 	// public accessors
 	const HWND attached_hwnd()    { return _attached_hwnd; }

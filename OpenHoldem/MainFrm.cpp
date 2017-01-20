@@ -493,15 +493,12 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
   if (p_autoconnector == NULL) {
     return;
   }
-  // Try to get the critical information as early as possible
-  // after we know that p_autoconnector is (ATM) valid.
-  bool is_connected = p_autoconnector->IsConnected();
   if (nIDEvent == HWND_CHECK_TIMER) {
     write_log(preferences.debug_timers(), "[GUI] OnTimer checking table connection\n");
     // Important: check is_conected first.
     // Checking only garbage HWND, then disconnecting
     // can lead to freezing if it colludes with Connect()
- 	  if (is_connected && !IsWindow(p_autoconnector->attached_hwnd())) { 		
+ 	  if (p_autoconnector->IsConnectedToGoneWindow()) {
  	    // Table disappeared 		
       write_log(preferences.debug_timers(), "[GUI] OnTimer found disappeared window()\n");
  	    p_autoconnector->Disconnect("table disappeared"); 		 		
@@ -511,7 +508,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
     write_log(preferences.debug_alltherest(), "[GUI] location Johnny_E\n");
-		if (is_connected) 	{
+		if (p_autoconnector->IsConnectedToAnything()) 	{
       write_log(preferences.debug_timers(), "[GUI] OnTimer enabling buttons\n");
       write_log(preferences.debug_alltherest(), "[GUI] location Johnny_F\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);

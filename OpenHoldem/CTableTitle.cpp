@@ -39,7 +39,7 @@ CTableTitle::~CTableTitle() {
 
 void CTableTitle::UpdateTitle() {
 #ifdef OPENHOLDEM_PROGRAM
-  if (!p_autoconnector->IsConnected()) {
+  if (!p_autoconnector->IsConnectedToAnything()) {
     return;
   }
 	char title[MAX_WINDOW_TITLE];
