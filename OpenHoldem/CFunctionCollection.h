@@ -86,11 +86,11 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   COHScriptObject *GetFirst();
   COHScriptObject *GetNext();
  public:
-  CString Title()           { return _title; }
+  CString FormulaName()     { return _formula_name; }
   CString FormulaPath()     { return _path; }
   CString DLLPath();
  protected:
-  void FormulaName(CString formula_name)	{ _formula_name = formula_name; }
+  void SetFormulaName(CString formula_name)	{ _formula_name = formula_name; }
   void SetPath(CString path)	  { _path = path; }
   // For OpenPPL, which evaluates f$preflop, ...
   // instead of f$beep, f$alli, ...

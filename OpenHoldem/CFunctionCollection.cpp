@@ -27,7 +27,7 @@
 CFunctionCollection *p_function_collection = NULL;
 
 CFunctionCollection::CFunctionCollection(){
-  _title = "";
+  SetFormulaName("");
   _path = "";
   _openPPL_library_loaded = false;
   DeleteAll(true, true);
@@ -265,7 +265,7 @@ void CFunctionCollection::SetEmptyDefaultBot() {
     "[CFunctionCollection] SetEmptyDefaultBot()\n");
   CSLock lock(m_critsec);
   DeleteAll(false, true);
-  _title = "NoName";
+  SetFormulaName("NoName");
   // After setting the bot we should parse it so that OH can evaluate and act
   ParseAll();
   // Parser, function-collection and library initialized 

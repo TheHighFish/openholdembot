@@ -50,7 +50,7 @@ CString CVersionInfo::GetVersionInfo()
 		"  DLL      [%s]\n",
 		VERSION_TEXT,
 		_openholdem_MD5,
-		p_function_collection->Title(),
+		p_function_collection->FormulaName(),
 		p_tablemap->filename(),
 		p_function_collection->DLLPath());
 	return version_info;

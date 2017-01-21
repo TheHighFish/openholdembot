@@ -56,7 +56,7 @@ CString COpenHoldemTitle::FullTitle() {
 		full_title.Format("%s - %s (%s)", p_function_collection->FormulaName(),
 			p_tablemap->sitename(), p_table_title->Title());
 	}	else {
-		full_title.Format("%s", p_function_collection->Title());
+		full_title.Format("%s", p_function_collection->FormulaName());
 	}
 	return full_title;
 }

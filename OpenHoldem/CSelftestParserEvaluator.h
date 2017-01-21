@@ -42,8 +42,8 @@ const char* const kSelftestFunction =
   "   WHEN 1 SET me_st_pi_2_141\n"
   "   WHEN 1 SET me_inc_pi\n"
   // !!!!! Seems to work in f$test but not in SelfTest
-  "//   WHEN (me_re_pi < 3.1) RETURN 14 FORCE\n"
-  "//   WHEN (me_re_pi > 3.2) RETURN 15 FORCE\n"
+  "   WHEN (me_re_pi < 3.1) RETURN 14 FORCE\n"
+  "   WHEN (me_re_pi > 3.2) RETURN 15 FORCE\n"
   "// The next OEWC has to be evaluated\n"
   "WHEN user_asdf AND user_true\n"
   "   // Next: testing inequality and negationfirst\n" 
