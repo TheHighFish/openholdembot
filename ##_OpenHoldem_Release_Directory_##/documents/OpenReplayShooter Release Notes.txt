@@ -1,0 +1,5 @@
+v1.0.0 2017-01-xx
+==================
+NEW STUFF:
+- Initial Release of OpenReplayShooter, formerly known as "WindowCaptureTool"
+  [Termitapalahermita]

@@ -1,4 +1,4 @@
-﻿namespace WindowsCapture
+﻿namespace OpenReplayShooter
 {
     partial class frmMain
     {
@@ -226,7 +226,7 @@
             this.MaximizeBox = false;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Windows image capture";
+            this.Text = "OpenReplayShooter";
             ((System.ComponentModel.ISupportInitialize)(this.nFiles)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nDelay)).EndInit();
             this.ResumeLayout(false);

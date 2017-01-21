@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace WindowsCapture
+namespace OpenReplayShooter
 {
     static class Program
     {

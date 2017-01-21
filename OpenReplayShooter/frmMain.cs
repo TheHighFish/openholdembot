@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace WindowsCapture
+namespace OpenReplayShooter
 {
     public partial class frmMain : Form
     {
@@ -37,7 +37,7 @@ namespace WindowsCapture
 
                     if (File.Exists(file)) File.Delete(file);
                     if (!User32.IsWindowVisible(hWnd))
-                        throw new Exception("Window not exists");
+                        throw new Exception("Window does not exist");
                     User32.ShowWindow(hWnd, 9);
                     //User32.SetForegroundWindow(hWnd);
                     CaptureWindow(hWnd).Save(file, ImageFormat.Bmp);
