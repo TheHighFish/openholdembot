@@ -24,7 +24,7 @@
 
 // For connection and popup handling
 const int kMinNumberOfUnoccupiedBotsNeeded =   1;
-const int kSecondsToWaitBeforeTermination  =   3; //!!!!!
+const int kSecondsToWaitBeforeTermination  = 120;
 const int kSecondsToWaitBeforeNextStart    =   5;
 
 COpenHoldemStarter::COpenHoldemStarter() {

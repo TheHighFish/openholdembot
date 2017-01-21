@@ -116,14 +116,6 @@ void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) 
 	tablemap_connection_data[_number_of_tablemaps_loaded].FilePath = cmap->filepath();
 	tablemap_connection_data[_number_of_tablemaps_loaded].SiteName = cmap->sitename();
 	tablemap_connection_data[_number_of_tablemaps_loaded].TitleText = cmap->titletext();
-	if (cmap->sitename() == "") {
-		CString error_message;
-		error_message.Format("Tablemap contains no sitename.\n"
-			"Sitenames are necessary to recognize duplicate TMs\n"
-			"(and for other features like PokerTracker).\n\n",
-			"%s", cmap->filepath());
-		OH_MessageBox_Error_Warning(error_message, "Warning");
-	}
 	// Get clientsize info through TM-access-class
 	p_tablemap_access->GetClientSize("clientsizemin", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMinY);
 	p_tablemap_access->GetClientSize("clientsizemax", &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxX, &tablemap_connection_data[_number_of_tablemaps_loaded].ClientSizeMaxY);
