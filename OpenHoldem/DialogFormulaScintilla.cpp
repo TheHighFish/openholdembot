@@ -2337,10 +2337,8 @@ void CDlgFormulaScintilla::PopulateSymbols()
 	AddSymbol(parent, "me_st_", "Stores a value. Example: me_st_abc_123_45 - stores the value '123.45' in variable 'abc'.");
 	AddSymbol(parent, "me_re_", "Retrieves a previously stored value. Example: me_re_abc - retrieves the value from variable 'abc'.");
   AddSymbol(parent, "me_inc_", "Increments a previously stored value. Example: me_inc_abc - increments the value in variable 'abc'.");
-#ifdef OPENHOLDEM_11_1_0
   AddSymbol(parent, "me_add_", "Adds a value to a memory symbol. Example: me_add_outs_4'.");
   AddSymbol(parent, "me_sub_", "Subtracts a value from a memory symbol. Example: me_sub_outs_1_5");
-#endif OPENHOLDEM_11_1_0
 
 	mainParent = parent = AddSymbolTitle("Hand Symbols", NULL, hCatItem);
 	AddSymbol(parent, "$RR", "You can reference your dealt hand directly by using the $ symbols. The general form of the $ hand symbols are: $RRs. The $ character is required followed by 1 or 2 standard card rank characters. The hand symbols are not case sensitive.");

@@ -74,7 +74,7 @@ void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
   AlignButton(IDC_DEBUG_AUTOCONNECTOR);
   AlignButton(IDC_DEBUG_AUTOPLAYER);
   AlignButton(IDC_DEBUG_AUTO_TRACE);
-  //!!!!AlignButton(IDC_DEBUG_AUTOSTARTER);
+  AlignButton(IDC_DEBUG_AUTOSTARTER);
   AlignButton(IDC_DEBUG_BETSIZE_ADJUSTMENT);
   AlignButton(IDC_DEBUG_BLINDLOCKING);
   AlignButton(IDC_DEBUG_BOARD_EXPRESSIONS);
@@ -118,7 +118,7 @@ void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
   AlignButton(IDC_DEBUG_TIMERS);
   AlignButton(IDC_DEBUG_TOKENIZER);
   AlignButton(IDC_DEBUG_VERSUS);
-  //!!!!!AlignButton(IDC_DEBUG_WATCHDOG);
+  AlignButton(IDC_DEBUG_WATCHDOG);
   // "all the rest" at the very end.
   // It contains all temp-debug.
   AlignButton(IDC_DEBUG_ALLTHEREST);

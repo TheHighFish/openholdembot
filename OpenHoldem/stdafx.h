@@ -14,9 +14,6 @@
 #ifndef INC_STDAFX_H
 #define INC_STDAFX_H
 
-//!!!!!!!
-//#define OPENHOLDEM_11_1_0
-
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently,
 // but are changed infrequently
@@ -137,8 +134,8 @@
 #include <string.h>
 
 // Version
-#define VERSION_NUMBER			11.02
-#define VERSION_TEXT				"11.0.2.0"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER			11.10
+#define VERSION_TEXT				"11.1.0.0"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"

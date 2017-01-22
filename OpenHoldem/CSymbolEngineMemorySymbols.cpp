@@ -222,9 +222,7 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result
       Increment(name);
       *result = kUndefinedZero;
       return true;
-    } 
-#ifdef OPENHOLDEM_11_1_0    
-    else if (memcmp(name, "me_add_", 7) == 0) {
+    } else if (memcmp(name, "me_add_", 7) == 0) {
       Add(name);
       *result = kUndefinedZero;
       return true;
@@ -233,7 +231,6 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result
       *result = kUndefinedZero;
       return true;
     } 
-#endif OPENHOLDEM_11_1_0   
     else {
     // Looks like a memory-command, but is invalid
     return false;

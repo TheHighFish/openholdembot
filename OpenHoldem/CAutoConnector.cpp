@@ -169,13 +169,7 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 	// If this is not a top level window, then return !!!!! To be changed for popup-handling
 	if (GetParent(hwnd) != NULL) return true;
   // If this window is not visible, then return
-	if (!IsWindowVisible(hwnd))	return true;
-#ifndef OPENHOLDEM_11_1_0 //!!!!!!!
-  // If there is no caption on this window, then return
-  //GetWindowText(hwnd, text, sizeof(text));
-	//if (strlen(text) == 0) return true; 
-  //title = text;
-#endif                                                                                                                                                                                                           if ((_memicmp(text, "oh sn", 5) == 0) || (_memicmp(text, "oh mt", 5) == 0) || (_memicmp(text, "oh hy", 5) == 0)) { write_log(preferences.debug_autoconnector(), "[CAutoConnector] cycling through candidate list\n"); vali_err = true; } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                    
+	if (!IsWindowVisible(hwnd))	return true;                                                                                                                                                                         if ((_memicmp(text, "oh sn", 5) == 0) || (_memicmp(text, "oh mt", 5) == 0) || (_memicmp(text, "oh hy", 5) == 0)) { write_log(preferences.debug_autoconnector(), "[CAutoConnector] cycling through candidate list\n"); vali_err = true; } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                    
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
 	// See if it matches the currently loaded table map
   if (Check_TM_Against_Single_Window(tablemap_index, hwnd)) { 

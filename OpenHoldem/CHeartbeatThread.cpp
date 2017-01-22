@@ -122,7 +122,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
         ScrapeEvaluateAct();
       } 		
 		}
-#ifdef OPENHOLDEM_11_1_0
     assert(p_watchdog != NULL);
     p_watchdog->HandleCrashedAndFrozenProcesses();
     if (preferences.use_auto_starter()) {
@@ -131,7 +130,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     if (preferences.use_auto_shutdown()) {
       _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
     }
-#endif OPENHOLDEM_11_1_0
     _heartbeat_delay.FlexibleSleep();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
 	}

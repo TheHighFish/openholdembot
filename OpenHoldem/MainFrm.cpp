@@ -386,9 +386,7 @@ void CMainFrame::OnEditPreferences()
 	// add pages
 	dlg.AddPage(page14, "Auto-Connector");
 	dlg.AddPage(page2,  "Autoplayer");
-#ifdef OPENHOLDEM_11_1_0
   dlg.AddPage(page9, "Auto-starter");
-#endif
 	dlg.AddPage(page10, "Chat");
 	dlg.AddPage(page17, "Configuration Check");
 	dlg.AddPage(page20, "Debugging");
@@ -405,7 +403,7 @@ void CMainFrame::OnEditPreferences()
 	dlg.AddPage(page21, "Table Positioner");
 	dlg.AddPage(page12, "Validator");	
 
-	// this one will be a child node on the tree
+  // this one will be a child node on the tree
 	// (&page3 specifies the parent)
 	//dlg.AddPage(dlg4, "Page 4", &page3);
 
