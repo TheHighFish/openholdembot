@@ -219,12 +219,6 @@ void CDlgEditSymbols::SetDefaultValues()
 		m_Value.AddString("Double");
 	}
 	
-	else if (name.MakeLower() == "balancenumbersonly")
-	{
-		m_Value.AddString("False");
-		m_Value.AddString("True");
-	}
-	
 	else if (name.MakeLower() == "chipscrapemethod")
 	{
 		m_Value.AddString("Original");
