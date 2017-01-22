@@ -939,7 +939,12 @@ OR RankOfSecondHoleCard==RiverCard ]
 ispair
 
 ##HoldEm_HaveRunnerRunnerFlushAtRiver##
-(betround == ConstBetRoundRiver AND HaveFlush AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=20307&p=143536#p143536
+    HaveFlush
+AND (betround == ConstBetRoundRiver)
+AND (nsuited == 5)
+AND (SuitsOnFlop >= 2)
+AND (TurnSuit==RiverSuit) 
 
 ##HoldEm_HaveSet##
 [  ispair
