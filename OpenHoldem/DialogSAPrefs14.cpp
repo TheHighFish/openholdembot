@@ -41,7 +41,6 @@ void CDlgSAPrefs14::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_3, _autoconnector_connect_never);
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_4, _autoconnector_connect_once);
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_5, _autoconnector_connect_permanent);
-	DDX_Control(pDX, IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS, _autoconnector_close_when_table_disappears);
 }
 
 
@@ -69,9 +68,6 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 	{
 		_autoconnector_connect_permanent.SetCheck(true);
 	}
-
-	_autoconnector_close_when_table_disappears.SetCheck(preferences.autoconnector_close_when_table_disappears());
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -85,7 +81,5 @@ void CDlgSAPrefs14::OnOK() {
 	}	else { // _autoconnector_connect_permanent.GetCheck() == BST_CHECKED 
 		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
 	}
-
-	preferences.SetValue(k_prefs_autoconnector_close_when_table_disappears, _autoconnector_close_when_table_disappears.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }

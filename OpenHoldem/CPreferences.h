@@ -108,7 +108,6 @@ enum {
   k_prefs_validator_enabled,
   k_prefs_use_auto_starter,
   k_prefs_use_auto_shutdown,
-  k_prefs_autoconnector_close_when_table_disappears,
 	k_prefs_gui_start_minimized, 
 	k_prefs_rebuy_condition_no_cards,
 	k_prefs_rebuy_condition_change_in_handnumber,
@@ -302,7 +301,6 @@ class CPreferences {
   const bool use_auto_shutdown() { return prefs_numerical_values[k_prefs_use_auto_starter]; }
 	// Auto-connector
 	const int autoconnector_when_to_connect() { return prefs_numerical_values[k_prefs_autoconnector_when_to_connect]; }
-	const bool autoconnector_close_when_table_disappears() { return prefs_numerical_values[k_prefs_autoconnector_close_when_table_disappears]; }
 	// GUI
 	const bool gui_start_minimized() { return prefs_numerical_values[k_prefs_gui_start_minimized]; }
 	// Rebuy

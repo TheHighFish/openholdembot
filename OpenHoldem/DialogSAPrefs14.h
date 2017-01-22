@@ -35,7 +35,6 @@ private:
 	CButton _autoconnector_connect_never;
 	CButton _autoconnector_connect_once;
 	CButton _autoconnector_connect_permanent;
-	CButton _autoconnector_close_when_table_disappears;
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
