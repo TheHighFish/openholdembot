@@ -116,7 +116,7 @@ built-in
  The OH-script-philosophy is: full control to the user.
  Therefore the end-user has to care about backup-actions on his own and
  add e.g.
- a rule that makes f$betpot_2_3 true if f$petpot_3_4 was true but could
+ a rule that makes f$betpot_2_3 true if f$betpot_3_4 was true but could
  not get executed.
 \end_layout
 
