@@ -20,7 +20,6 @@ NEW STUFF:
   and then wonder why ITDONOWORKS!!!!!
   [THF]
   
-
 MAINTENANCE:
 - Removed the option "close when table disappears",
   as it became redundant.
