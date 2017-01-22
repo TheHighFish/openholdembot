@@ -43,6 +43,7 @@ CopyNeededFile($binary_optimized_dir, $new_openholdem_dir, "OpenHoldem.lib")
 ; Copy tools like ManualMode to the tools-directory
 CopyNeededFile($binary_dir, $new_tools_dir, "ManualMode.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OHReplay.exe")
+CopyNeededFile($binary_dir, $new_tools_dir, "OpenReplayShooter.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OpenScrape.exe")
 ; Copy DLLs to the new directory  plus their LIBs to support linking
 CopyNeededFile($binary_dir, $new_openholdem_dir, "DumperDll.dll")
