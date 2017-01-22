@@ -285,7 +285,7 @@ BEGIN
     LTEXT           "Version 11.1.0",IDC_STATIC,32,22,208,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
-    LTEXT           "https://github.com/OpenHoldem",IDC_STATIC,32,66,208,8
+    LTEXT           "https://github.com/OpenHoldem/openholdembot/",IDC_STATIC,32,66,208,8
     LTEXT           "https://sites.google.com/site/openholdempokerbot/downloads",IDC_STATIC,32,78,208,8
     LTEXT           "Disclaimer: this is an open-source project.",IDC_STATIC,32,98,208,8,SS_NOPREFIX
     LTEXT           "We are not related to any shops, stores and/or scam-artists.",IDC_STATIC,32,110,208,8,SS_NOPREFIX
