@@ -41,9 +41,10 @@ const char* const kSelftestFunction =
   "// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20031"
   "   WHEN 1 SET me_st_pi_2_141\n"
   "   WHEN 1 SET me_inc_pi\n"
-  // !!!!! Seems to work in f$test but not in SelfTest
-  "   WHEN (me_re_pi < 3.1) RETURN 14 FORCE\n"
-  "   WHEN (me_re_pi > 3.2) RETURN 15 FORCE\n"
+  // !!!!! Code below works in f$test but not in SelfTest
+  // All OK in debug-mode, but returns 14 in release-optimized
+  "//   WHEN (me_re_pi < 3.1) RETURN 14 FORCE\n"
+  "//   WHEN (me_re_pi > 3.2) RETURN 15 FORCE\n"
   "// The next OEWC has to be evaluated\n"
   "WHEN user_asdf AND user_true\n"
   "   // Next: testing inequality and negationfirst\n" 

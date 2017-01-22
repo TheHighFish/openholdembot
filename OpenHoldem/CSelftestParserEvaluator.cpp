@@ -15,6 +15,7 @@
 #include "CSelftestParserEvaluator.h"
 
 #include "CFunctionCollection.h"
+#include "CSymbolEngineMemorySymbols.h"
 #include "OH_MessageBox.h"
 
 CSelftestParserEvaluator::CSelftestParserEvaluator() {
