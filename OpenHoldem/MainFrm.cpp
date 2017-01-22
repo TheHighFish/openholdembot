@@ -290,7 +290,7 @@ void CMainFrame::OnEditViewLog()
 	{
 		return;
 	}
-	ShellExecute(NULL, "open", p_filenames->LogFilename(), NULL, NULL, SW_SHOW);
+	ShellExecute(NULL, "open", p_filenames->LogFilePath(), NULL, NULL, SW_SHOW);
 }
 
 void CMainFrame::OnEditTagLog() {

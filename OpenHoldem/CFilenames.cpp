@@ -174,7 +174,7 @@ CString CFilenames::LogsDirectory() {
 	return path;
 };
 
-CString CFilenames::LogFilename() {
+CString CFilenames::LogFilePath() {
 	CString path;
 	path.Format("%soh_%lu.log", LogsDirectory(), p_sessioncounter->session_id());
   Log("LogFilename", path.GetString());

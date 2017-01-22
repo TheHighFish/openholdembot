@@ -34,7 +34,7 @@
 FILE *log_fp = NULL;
 CCritSec log_critsec;  // Used to ensure only one thread at a time writes to log file
 bool footer_needs_to_be_written = false;
-char *footer = "********************************************************************************\n";
+const char *footer = "********************************************************************************\n";
 
 void write_footer_if_necessary() {
   if (footer_needs_to_be_written == false) return;
@@ -105,13 +105,11 @@ char *get_time(char * timebuf) {
         *(timebuf+5) = '1';
         *(timebuf+6) = '2';
     }
-
     *(timebuf+7) = '-';
     memcpy(timebuf+8, tmptime+8, 2); //dd
     *(timebuf+10) = ' ';
     memcpy(timebuf+11, tmptime+11, 8); //HH:mm:ss
     *(timebuf+19) = '\0';
-
     return timebuf;
 }
 
@@ -240,7 +238,7 @@ to_return:
 
 void delete_log() {
   // Log file must not be open
-  CString fn = p_filenames->LogFilename();
+  CString fn = p_filenames->LogFilePath();
   remove(fn.GetString());
 }
 
@@ -250,13 +248,17 @@ void clear_log() {
   start_log();
 }
 
+void update_log_filename() { //!!!!!
+  assert(log_fp != NULL);
+  rename("oh_0.log", "oh_0__PokerStars_NL_200.log");
+}
+
 void start_log(void) {
   if (log_fp != NULL) {
     return;
   }
 	CSLock lock(log_critsec);
-
-	CString fn = p_filenames->LogFilename();
+	CString fn = p_filenames->LogFilePath();
 	// Check, if file exists and size is too large
 	struct stat file_stats = { 0 };
 	if (stat(fn.GetString(), &file_stats) == 0) {
@@ -273,26 +275,24 @@ void start_log(void) {
 	}
 }
 
-void write_log_vl(bool debug_settings_for_this_message, char* fmt, va_list vl) {
+void write_log_vl(bool debug_settings_for_this_message, const char* fmt, va_list vl) {
   char		buff[10000] ;
   char		nowtime[26];
   
   write_footer_if_necessary();
-	if (debug_settings_for_this_message == false)
-		return;
-
+  if (debug_settings_for_this_message == false) {
+    return;
+  }
   if (log_fp != NULL) {
 		CSLock lock(log_critsec);
-
-        vsprintf_s(buff, 10000, fmt, vl);
+    vsprintf_s(buff, 10000, fmt, vl);
 		get_time(nowtime);
     fprintf(log_fp, "%s > %s", nowtime, buff);
-
     fflush(log_fp);
   }
 }
 
-void write_log(bool debug_settings_for_this_message, char* fmt, ...) {
+void write_log(bool debug_settings_for_this_message, const char* fmt, ...) {
   char		buff[10000];
   va_list		ap;
   char		nowtime[26];
@@ -311,7 +311,7 @@ void write_log(bool debug_settings_for_this_message, char* fmt, ...) {
   fflush(log_fp);
 }
 
-void write_log_nostamp(bool debug_settings_for_this_message, char* fmt, ...) 
+void write_log_nostamp(bool debug_settings_for_this_message, const char* fmt, ...) 
 {
 	char		buff[10000] ;
   va_list		ap;
@@ -339,7 +339,7 @@ void stop_log(void) {
   log_fp = NULL;
 }
 
-void write_log_separator(bool debug_settings_for_this_message, char* header_message) {
+void write_log_separator(bool debug_settings_for_this_message, const char* header_message) {
   if ((header_message == NULL) || (strcmp(header_message, "") == 0)) {
     // Empty header, i.e. footer
     // Don't write it immediatelly to avoid multiple consecutive headers

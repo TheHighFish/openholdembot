@@ -19,6 +19,12 @@ NEW STUFF:
   as experience shows that new users often turn all checks off
   and then wonder why ITDONOWORKS!!!!!
   [THF]
+  
+
+MAINTENANCE:
+- Removed the option "close when table disappears",
+  as it became redundant.
+  [THF]
 
 
 v11.0.2 2017-01-22

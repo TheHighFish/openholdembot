@@ -58,7 +58,6 @@ class CFilenames {
   CString ToolsDirectory();
 public:
   // Filenames
-	CString LogFilename();
 	CString MiniDumpFilename();
 	CString ReplayBitmapFilename(int frame_number);
 	CString ReplayHTMLFilename(int frame_number);
@@ -67,6 +66,7 @@ public:
 public:
   // Paths
   CString IniFilePath();
+  CString LogFilePath();
   CString VersusPath();
   CString CustomLibraryPath();
   CString ManualModePath();

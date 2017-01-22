@@ -236,8 +236,6 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 	int					SelectedItem = kUndefined;
 	CString			current_path = "";
 	BOOL				bFound = false;
-	CFileFind   hFile;
-
   // Potential race-condition, as some objects
   // (especially GUI objects) get created by another thread.
   // We just skip connection if OH is not yet initialized.
@@ -318,6 +316,7 @@ bool CAutoConnector::Connect(HWND targetHWnd) {
 			PMainframe()->ResetDisplay();
       // log OH title bar text and table reset
       WriteLogTableReset("NEW CONNECTION");
+      update_log_filename(); //!!!!!
       p_table_positioner->ResizeToTargetSize();
 			p_table_positioner->PositionMyWindow();
 			p_autoplayer->EngageAutoPlayerUponConnectionIfNeeded();
