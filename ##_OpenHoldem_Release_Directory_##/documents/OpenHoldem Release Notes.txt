@@ -1,3 +1,26 @@
+v11.1.0 2017-xx-xx
+==================
+NEW STUFF:
+- OpenHoldem autostarter that takes care that enough free instances
+  of OpenHoldem are running. It also shuts down superfluis bots
+  if they are unused for a certain time.
+  [THF]
+- A so-called "watchdog" cares now about crashed and frozen
+  instances of OpenHoldem and cleans up if necessary,
+  so that auto-starter and auto-connector can work properly.
+  This feature became necessary, because OH sometimes crashes at termination.
+  [THF]
+- New memory-commands:
+    * me_add_symbol_value
+    * me_sub_symbol_value
+  that can be used in addition to me_st_, me_re_ and me_inc
+  to manipulate memory-symbols more easily, e.g for creating outs-counters.
+- The problem solver executes now also all configuration checks,
+  as experience shows that new users often turn all checks off
+  and then wonder why ITDONOWORKS!!!!!
+  [THF]
+
+
 v11.0.2 2017-01-22
 ==================
 BUG FIXES:
@@ -6,8 +29,8 @@ BUG FIXES:
   thus leading to an invalid memory access.
   [THF]
 - Improved HaveRunnerRunnerFlushAtRiver.
-  Thanks th ChuckNeverMuch and Salem for reporting
-  and sugegstioing improvements.
+  Thanks to ChuckNeverMuch and Salem for reporting
+  and sugegsting improvements.
   [THF]
 
   
