@@ -467,6 +467,34 @@ Building Symbols On Your Own
 \end_layout
 
 \begin_layout Section*
+Controlflow of Open-Ended When-Conditions
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/when_conditions_control_flow.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
 Structure Of A PPL-File
 \end_layout
 
