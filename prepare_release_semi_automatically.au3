@@ -46,8 +46,6 @@ CopyNeededFile($binary_dir, $new_tools_dir, "OHReplay.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OpenReplayShooter.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OpenScrape.exe")
 ; Copy DLLs to the new directory  plus their LIBs to support linking
-CopyNeededFile($binary_dir, $new_openholdem_dir, "DumperDll.dll")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "SymbolDumperUserDll.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "keyboard.dll")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "Reference Keyboard DLL.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "mouse.dll")
