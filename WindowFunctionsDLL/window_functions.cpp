@@ -51,6 +51,9 @@
 RECT desktop_dimensions;
 bool desktop_dimensions_calculated = false;
 
+// Replacement for MicroSofts CascadeWindows 
+// http://msdn.microsoft.com/en-us/library/windows/desktop/ms632674(v=vs.85).aspx
+// which can't be used as it resizes back to default
 void CascadeSingleWindow(HWND window, int cascade_position) {
   const int kCascadedDeltaX = 30;
   const int kCascadedDeltaY = 30;
@@ -58,7 +61,7 @@ void CascadeSingleWindow(HWND window, int cascade_position) {
   int x = (cascade_position + 1) * kCascadedDeltaX;
   int y = (cascade_position + 1) * kCascadedDeltaY;
   MoveWindow(window, x, y);
-}
+}lke
 
 void GetWindowSize(HWND window, int *width, int* height) {
   if (window == NULL) {
@@ -101,6 +104,101 @@ void MoveWindow(HWND window, int x, int y) {
 
 void MoveWindowToTopLeft(HWND window) {
   MoveWindow(window, 0, 0);
+}
+
+// !!! to do: move tzo numerical functions (DLL)
+bool isInRange(int value, int first, int last) {
+  if (value < first) {
+    return false;
+  }
+  if (value > last) {
+    return false;
+  }
+  return true;
+}
+
+// Replacement for MicroSofts TileWindows
+// http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
+// Unfortunatelly this fucntion had 2 disadvantages:
+//   * it allows small overlaps
+//   * it resizes all full-screen-windows back to default
+// TileSingleWindow has to be called for all windows,
+// starting with one window plus an empty list of other windows
+// then next window plus list of already positioned windows
+//
+// Keep other windows at current place.
+// Find a free space for this one.
+// Move it to top left, if not possible.
+void TileSingleWindow(HWND this_window, HWND *null_terminated_list_of_other_windows) {
+  RECT desktop_rectangle;
+  SystemParametersInfo(SPI_GETWORKAREA, NULL, &desktop_rectangle, NULL);
+  int table_width, table_height;
+  GetWindowSize(this_window, &table_width, &table_height);
+  // We don#t have to search the whole desktop,
+  // as the window has to fit on the screen,
+  // right and below of the top-left coordinates.
+  RECT search_area;
+  search_area.left = desktop_rectangle.left;
+  search_area.top = desktop_rectangle.top;
+  search_area.right = desktop_rectangle.right - table_width;
+  search_area.bottom = desktop_rectangle.bottom - table_height;
+  // First search a free slot, the dumb and reliable way
+  const int kDeltaX = 8;
+  for (int x = search_area.left; x < search_area.right; x += kDeltaX) {
+    for (int y = search_area.top; y < search_area.bottom; ++y) {
+      // Look for a conflict with every other window
+      int right_x = x + table_width - 1;
+      int bottom_y = y + table_height - 1;
+      assert(null_terminated_list_of_other_windows != NULL);
+      // Create a copy of the pointer, we need the original later again
+      HWND* list_of_windows = null_terminated_list_of_other_windows;
+      while (*list_of_windows != NULL) {
+        if (*list_of_windows == this_window) {
+          // Window to be positioned might be in list of "other" windows
+          // which we get from auto-connector. Ignore it
+          ++list_of_windows;
+          continue;
+        }
+        RECT other_window_position;
+        GetWindowRect(*list_of_windows, &other_window_position);
+        bool x_range_overlaps = false;
+        bool y_range_overlaps = false;
+        if (isInRange(x, other_window_position.left, other_window_position.right)) {
+          x_range_overlaps = true;
+        }
+        else if (isInRange(right_x, other_window_position.left, other_window_position.right)) {
+          x_range_overlaps = true;
+        }
+        if (isInRange(y, other_window_position.top, other_window_position.bottom)) {
+          y_range_overlaps = true;
+        }
+        else if (isInRange(bottom_y, other_window_position.top, other_window_position.bottom)) {
+          y_range_overlaps = true;
+        }
+        if (x_range_overlaps && y_range_overlaps) {
+          goto conflict_with_any_window_continue_with_next_x_or_y;
+        }
+        // No conflict with this window
+        // Try next one
+        ++list_of_windows;
+      }
+      // End of list reached
+      // No overlap found
+      // Heureka!
+      MoveWindow(this_window, x, y);
+      return;
+      // GOTO-label to jump out of inner loop on conflict
+    conflict_with_any_window_continue_with_next_x_or_y:
+      // Skip some hundred y-coordinates that are guaranteed to fail
+      // Scroll down to bottom of last overlapping window
+      int next_y = bottom_y + 1;
+      assert(next_y > y);
+      y = next_y;
+    }
+  }
+  // Failed
+  // Move to top-left (lobby-position) to reduce overlaps and damage.
+  MoveWindowToTopLeft(this_window);
 }
 
 bool WinCalculateDesktopDimensions() {

@@ -46,7 +46,6 @@ __declspec(allocate(kOpenHoldemSharedmemorySegment)) static	HWND	 dense_list_of_
 __declspec(allocate(kOpenHoldemSharedmemorySegment)) static	int		 size_of_dense_list_of_attached_poker_windows;
 __declspec(allocate(kOpenHoldemSharedmemorySegment)) static	int		 CRC_of_main_mutexname;
 __declspec(allocate(kOpenHoldemSharedmemorySegment)) static	int    openholdem_PIDs[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
-__declspec(allocate(kOpenHoldemSharedmemorySegment)) static	RECT   table_positions[MAX_SESSION_IDS] = { NULL }; // process IDs for popup-blocker
 
 #pragma data_seg()
 #pragma comment(linker, "/SECTION:.ohshmem,RWS")		// RWS: read, write, shared
@@ -68,10 +67,6 @@ CSharedMem::CSharedMem() {
 	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
 	int my_PID = GetCurrentProcessId();
 	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
-  table_positions[p_sessioncounter->session_id()].bottom = 0;
-  table_positions[p_sessioncounter->session_id()].left   = 0;
-  table_positions[p_sessioncounter->session_id()].right  = 0;
-  table_positions[p_sessioncounter->session_id()].top    = 0;
 }
 
 CSharedMem::~CSharedMem() {
@@ -301,10 +296,6 @@ void CSharedMem::CleanUpProcessMemory(int open_holdem_iD) {
   openholdem_PIDs[open_holdem_iD] = 0;
   // Clear my attached window
   attached_poker_windows[open_holdem_iD] = NULL;
-  table_positions[open_holdem_iD].bottom = 0;
-  table_positions[open_holdem_iD].left = 0;
-  table_positions[open_holdem_iD].right = 0;
-  table_positions[open_holdem_iD].top = 0;
 }
 
 void CSharedMem::Dump() {

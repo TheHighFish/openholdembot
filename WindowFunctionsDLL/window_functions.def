@@ -9,6 +9,7 @@ MoveWindow
 MoveWindowToTopLeft
 ResizeToClientSize
 ResizeToTotalSize
+TileSingleWindow
 WinBelongsToExecutable 
 WinGetTitle
 WinIsBring
