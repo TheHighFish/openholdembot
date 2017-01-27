@@ -99,6 +99,7 @@ bool CAutoplayerButton::IsRaise() {
 
 bool CAutoplayerButton::IsCall() {
   CString s_lower_case = _label.MakeLower();
+  // !!!!! Here somewtime trouble
   s_lower_case = s_lower_case.Left(4);
   return (s_lower_case == "call" || s_lower_case == "caii" || s_lower_case == "ca11");
 }

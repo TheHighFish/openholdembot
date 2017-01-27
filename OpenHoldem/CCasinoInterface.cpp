@@ -270,6 +270,7 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
         }
         break;
       case k_standard_function_prefold:
+        //!!!!!problem here
         if (_technical_autoplayer_buttons[i].IsPrefold()) {
           return &_technical_autoplayer_buttons[i];
         }
