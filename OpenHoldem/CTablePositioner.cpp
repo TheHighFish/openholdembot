@@ -47,12 +47,21 @@ void TileSingleWindow(HWND this_window, HWND *null_terminated_list_of_other_wind
   // Move itz to top left, if not possible.
   RECT desktop_rectangle;
   SystemParametersInfo(SPI_GETWORKAREA, NULL, &desktop_rectangle, NULL);
-  int width, height;
-  GetWindowSize(this_window, &width, &height);
-  // First search a free slot, the dumb and reliable way.
-  for (int x = 0; x < desktop_rectangle.right; ++x) {
+  int table_width, table_height;
+  GetWindowSize(this_window, &table_width, &table_height);
+  // We don#t have to search the whole desktop,
+  // as the window has to fit on the screen,
+  // right and below of the top-left coordinates.
+  RECT search_area;
+  search_area.left = desktop_rectangle.left;
+  search_area.top = desktop_rectangle.top;
+  search_area.right = desktop_rectangle.right - table_width;
+  search_area.bottom = desktop_rectangle.bottom - table_height;
+  // First search a free slot, the dumb and reliable way
+  const int kDeltaX = 8; 
+  for (int x = search_area.left; x < search_area.right; x += kDeltaX) {
     write_log(true, "Searching (%i, y)\n", x); //!!!!!
-    for (int y = 0; y < desktop_rectangle.bottom; ++y) {
+    for (int y = search_area.top; y < search_area.bottom; ++y) {
       write_log(true, "Searching (%i, %i)\n", x, y); //!!!!!
       // Look for a conflict with every other window
       int right_x = x + width - 1;
@@ -98,7 +107,11 @@ void TileSingleWindow(HWND this_window, HWND *null_terminated_list_of_other_wind
       return;
 // GOTO-label to jump out of inner loop on conflict
     conflict_with_any_window_continue_with_next_x_or_y:
-      ; //!!!!!
+      // Skip some hundred y-coordinates that are guaranteed to fail
+      // Scroll down to bottom of last overlapping window
+      int next_y = bottom_y + 1;
+      assert(next_y > y);
+      y = next_y;
     }
   }
   // Failed
