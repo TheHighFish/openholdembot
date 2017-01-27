@@ -16,6 +16,7 @@
 
 #include "CAutoConnector.h"
 #include "CPreferences.h"
+#include "CSessionCounter.h"
 #include "CSharedMem.h"
 #include "../CTablemap/CTableMapAccess.h"
 #include "MagicNumbers.h"
@@ -25,8 +26,9 @@
 
 CTablePositioner *p_table_positioner = NULL;
 
-CTablePositioner::CTablePositioner()
-{}
+CTablePositioner::CTablePositioner() {
+  SystemParametersInfo(SPI_GETWORKAREA, NULL, &_desktop_rectangle, NULL);
+}
 
 CTablePositioner::~CTablePositioner()
 {}
@@ -37,7 +39,9 @@ void CTablePositioner::PositionMyWindow() {
 	// Use the shared memory (auto-connector) for that. 
 	HWNDs_of_child_windows = p_sharedmem->GetDenseListOfConnectedPokerWindows();
 	_number_of_tables = p_sharedmem->SizeOfDenseListOfAttachedPokerWindows();
+  GetTableSize(p_autoconnector->attached_hwnd());
   if (_number_of_tables <= 0)	{
+    write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() No connected tables. going to return.\n");
 		// Do nothing if there are 0 tables connected.
 		// Actually an empty list of tables consists of only NULLs,
 		// but if MicroSofts table-arranging functions see a NULL
@@ -45,10 +49,10 @@ void CTablePositioner::PositionMyWindow() {
 		// That's not what we want.
 		return;
 	}
-  /*if (p_tablemap->islobby()) {
+  if (p_tablemap->islobby()) {
     write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to handle the lobby...\n", _number_of_tables);
     MoveToTopLeft();
-  }	else*/ if (preferences.table_positioner_options() == k_position_tables_tiled) {
+  }	else if (preferences.table_positioner_options() == k_position_tables_tiled) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to tile %d windows...\n", _number_of_tables);
 		// Tiling windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms633554(v=vs.85).aspx
 		// Unfortunatelly this fucntion had 2 disadvantages:
@@ -65,21 +69,17 @@ void CTablePositioner::PositionMyWindow() {
 	}	else if (preferences.table_positioner_options() == k_position_tables_cascaded) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to cascade %d windows...\n", _number_of_tables);
 		// Cascading windows: http://msdn.microsoft.com/en-us/library/windows/desktop/ms632674(v=vs.85).aspx
-		CascadeWindows(
+		/*CascadeWindows(
 			NULL,				// Parent; NULL = whole desktop
 			NULL,				// How; NULL means: order specified in the lpKids array
 			NULL,				// Target area; NULL = parent window, here desktop
 			_number_of_tables,
-			HWNDs_of_child_windows);
+			HWNDs_of_child_windows);*/
+    CascadeWindow(p_autoconnector->attached_hwnd(), p_sessioncounter->session_id());
 	}	else {
 		// preferences.table_positioner_options() == k_position_tables_never
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Not doing anything because of preferences.\n");
 	}
-  GetWindowRect(p_autoconnector->attached_hwnd(), &_table_position);
-  _table_size_x = _table_position.right  - _table_position.left;
-  _table_size_y = _table_position.bottom - _table_position.top;
-  SystemParametersInfo(SPI_GETWORKAREA, NULL, &_desktop_rectangle, NULL);
-
 }
 
 // Precondition: position and size defined
@@ -139,13 +139,32 @@ void CTablePositioner::ResizeToTargetSize() {
 
 void CTablePositioner::MoveToTopLeft() {
   write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToTopLeft()\n");
-  GetWindowRect(p_autoconnector->attached_hwnd(), &_table_position);
-  _table_size_x = _table_position.right - _table_position.left;
-  _table_size_y = _table_position.bottom - _table_position.top;
+  GetTableSize(p_autoconnector->attached_hwnd());
   _table_position.left = 0;
   _table_position.top = 0;
   MoveWindowToItsPosition();
-  SystemParametersInfo(SPI_GETWORKAREA, NULL, &_desktop_rectangle, NULL);
 }
 
+void CTablePositioner::CascadeWindow(HWND window, int position) {
+  write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Cascading window %i to position %i\n", 
+    window, position);
+  const int kCascadedDeltaX = 30;
+  const int kCascadedDeltaY = 20;
+  // We don't use the position (0, 0) because it is reserved for the lobby
+  _table_position.left = (position + 1) * kCascadedDeltaX;
+  _table_position.top = (position + 1) * kCascadedDeltaY;
+  MoveWindowToItsPosition();
+}
 
+void CTablePositioner::GetTableSize(HWND window) {
+  if (window == NULL) {
+    return;
+  }
+  if (!IsWindow(window)) {
+    return;
+  }
+  RECT window_rect;
+  GetWindowRect(window, &window_rect);
+  _table_size_x = window_rect.right - window_rect.left;
+  _table_size_y = window_rect.bottom - window_rect.top;
+}

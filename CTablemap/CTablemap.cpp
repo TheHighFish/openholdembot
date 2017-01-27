@@ -71,6 +71,7 @@ int CTablemap::GetTMSymbol(CString name, int default)
 		// not found
 		return default;
 	}
+  //!!!!!!! Here sometimes problem, it seems to point into nirvana
 	CString value = it->second.text.GetString();
 	CString s = value.MakeLower();
 	// "sgl click" and "single", "dbl click" and "double"
