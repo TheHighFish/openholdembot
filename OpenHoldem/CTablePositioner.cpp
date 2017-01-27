@@ -24,33 +24,6 @@
 #include "..\WindowFunctionsDLL\window_functions.h"
 #include "Winuser.h"
 
-
-
-
-
-void MoveWindow(HWND window, int x, int y) {
-  RECT desktop_rectangle;
-  SystemParametersInfo(SPI_GETWORKAREA, NULL, &desktop_rectangle, NULL);
-  write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveWindowToItsPosition()\n");
-  // Consistancy checks
-  if (x < 0
-    || x >= desktop_rectangle.right
-    || y < 0
-    || y >= desktop_rectangle.bottom) {
-    // Values out of sane range
-    write_log(preferences.debug_table_positioner(), "[CTablePositioner] Values out of sane range; probably not yet initialized\n");
-    write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_left_x   = %i\n", x);
-    write_log(preferences.debug_table_positioner(), "[CTablePositioner] _new_top_y    = %i\n", y);
-    return;
-  }
-  RECT current_position;
-  GetWindowRect(p_autoconnector->attached_hwnd(), &current_position);
-  int width = current_position.right - current_position.left;
-  int height = current_position.bottom - current_position.top;
-  const bool kRedrawWindow = true;
-  MoveWindow(p_autoconnector->attached_hwnd(), x, y, width, height, kRedrawWindow);
-}
-
 // To be called once per heartbeat
 void CTablePositioner::AlwaysKeepPositionIfEnabled() {
   if (!preferences.table_positioner_always_keep_position()
@@ -81,39 +54,6 @@ void CTablePositioner::ResizeToTargetSize() {
   ResizeToClientSize(p_autoconnector->attached_hwnd(), width, height);
 }
 
-void MoveWindowToTopLeft(HWND window) {
-  write_log(preferences.debug_table_positioner(), "[CTablePositioner] MoveToTopLeft()\n");
-  MoveWindow(window, 0, 0);
-}
-
-void CascadeWindow(HWND window, int cascade_position) {
-  write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Cascading window %i to position %i\n",
-    window, cascade_position);
-  const int kCascadedDeltaX = 30;
-  const int kCascadedDeltaY = 20;
-  // We don't use the position (0, 0) because it is reserved for the lobby
-  int x = (cascade_position + 1) * kCascadedDeltaX;
-  int y = (cascade_position + 1) * kCascadedDeltaY;
-  MoveWindow(window, x, y);
-}
-
-void GetTableSize(HWND window, int *width, int* height) {
-  if (window == NULL) {
-    return;
-  }
-  if (!IsWindow(window)) {
-    return;
-  }
-  RECT window_rect;
-  GetWindowRect(window, &window_rect);
-  *width = window_rect.right - window_rect.left;
-  *height = window_rect.bottom - window_rect.top;
-}
-
-
-
-
-
 CTablePositioner *p_table_positioner = NULL;
 
 CTablePositioner::CTablePositioner() {
@@ -129,7 +69,7 @@ void CTablePositioner::PositionMyWindow() {
 	// Use the shared memory (auto-connector) for that. 
 	HWNDs_of_child_windows = p_sharedmem->GetDenseListOfConnectedPokerWindows();
 	_number_of_tables = p_sharedmem->SizeOfDenseListOfAttachedPokerWindows();
-  GetTableSize(p_autoconnector->attached_hwnd(),
+  GetWindowSize(p_autoconnector->attached_hwnd(),
     &_table_size_x, &_table_size_y);
   if (_number_of_tables <= 0)	{
     write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() No connected tables. going to return.\n");
@@ -166,7 +106,7 @@ void CTablePositioner::PositionMyWindow() {
 			NULL,				// Target area; NULL = parent window, here desktop
 			_number_of_tables,
 			HWNDs_of_child_windows);*/
-    CascadeWindow(p_autoconnector->attached_hwnd(), p_sessioncounter->session_id());
+    CascadeSingleWindow(p_autoconnector->attached_hwnd(), p_sessioncounter->session_id());
 	}	else {
 		// preferences.table_positioner_options() == k_position_tables_never
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Not doing anything because of preferences.\n");

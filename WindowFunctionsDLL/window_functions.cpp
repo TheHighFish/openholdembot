@@ -51,9 +51,56 @@
 RECT desktop_dimensions;
 bool desktop_dimensions_calculated = false;
 
+void CascadeSingleWindow(HWND window, int cascade_position) {
+  const int kCascadedDeltaX = 30;
+  const int kCascadedDeltaY = 30;
+  // We don't use the position (0, 0) because it is reserved for the lobby
+  int x = (cascade_position + 1) * kCascadedDeltaX;
+  int y = (cascade_position + 1) * kCascadedDeltaY;
+  MoveWindow(window, x, y);
+}
+
+void GetWindowSize(HWND window, int *width, int* height) {
+  if (window == NULL) {
+    return;
+  }
+  if (!IsWindow(window)) {
+    return;
+  }
+  RECT window_rect;
+  GetWindowRect(window, &window_rect);
+  *width = window_rect.right - window_rect.left;
+  *height = window_rect.bottom - window_rect.top;
+}
+
 void MinimizeWindow(HWND window) {
   // http://msdn.microsoft.com/en-us/library/windows/desktop/ms633548%28v=vs.85%29.aspx
   ShowWindow(window, SW_MINIMIZE);
+}
+
+void MoveWindow(HWND window, int x, int y) {
+  RECT desktop_rectangle;
+  SystemParametersInfo(SPI_GETWORKAREA, NULL, &desktop_rectangle, NULL);
+  // Consistancy checks
+  if (x < 0
+    || x >= desktop_rectangle.right
+    || y < 0
+    || y >= desktop_rectangle.bottom) {
+    // Values out of sane range, do nothing
+    return;
+  }
+  RECT current_position;
+  GetWindowRect(window, &current_position);
+  int width = current_position.right - current_position.left;
+  int height = current_position.bottom - current_position.top;
+  const bool kRedrawWindow = true;
+  // Equally named sdystem call that needs additional (superfluous) 
+  // resizing-parameters.
+  MoveWindow(window, x, y, width, height, kRedrawWindow);
+}
+
+void MoveWindowToTopLeft(HWND window) {
+  MoveWindow(window, 0, 0);
 }
 
 bool WinCalculateDesktopDimensions() {

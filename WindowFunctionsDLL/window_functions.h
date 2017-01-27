@@ -28,7 +28,11 @@
 
 WINDOW_FUNCTIONS_API int CalculateTotalHeightForClientHeight(HWND window, int desired_client_height);
 WINDOW_FUNCTIONS_API int CalculateTotalWidthForClientWidth(HWND window, int desired_client_width);
+WINDOW_FUNCTIONS_API void CascadeSingleWindow(HWND window, int cascade_position);
+WINDOW_FUNCTIONS_API void GetWindowSize(HWND window, int *width, int* height);
 WINDOW_FUNCTIONS_API void MinimizeWindow(HWND window);
+WINDOW_FUNCTIONS_API void MoveWindow(HWND window, int x, int y);
+WINDOW_FUNCTIONS_API void MoveWindowToTopLeft(HWND window);
 WINDOW_FUNCTIONS_API void ResizeToClientSize(HWND window, int new_width, int new_height);
 WINDOW_FUNCTIONS_API void ResizeToTotalSize(HWND window, int new_width, int new_height);
 WINDOW_FUNCTIONS_API bool WinBelongsToExecutable(HWND window, const char* program_name);
