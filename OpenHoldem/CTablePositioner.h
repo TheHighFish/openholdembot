@@ -25,12 +25,6 @@ class CTablePositioner {
 	void AlwaysKeepPositionIfEnabled();
   void ResizeToTargetSize();
  private:
-	void MoveWindowToItsPosition();
-  void MoveToTopLeft();
- private:
-  void CascadeWindow(HWND window, int position);
-  void GetTableSize(HWND window);
- private:
 	int _number_of_tables;
 	HWND *HWNDs_of_child_windows;
 	int _table_size_x;
