@@ -172,7 +172,7 @@ Valid symbol records
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="23" columns="2">
+<lyxtabular version="3" rows="24" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -1160,11 +1160,37 @@ This Symbol instructs the “chip stack counter” within the screen scraper
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 islobby
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+If this symbol exists and is non-zero OpenHoldem will know that it is connected
+ to a lobby window (for table.positioning and shutdown-handling).
+ The tablemap-completeness checker will be turned off and the OH-script-symbol
+ islobby will become true.
+ Lobby-windows will always be positioned at the top-left of the screen where
+ absolute coordinates equal relative window-coordinates to make hoppers
+ more robust in case of lost focus.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ispopup
 \end_layout
 
 \end_inset
@@ -1174,9 +1200,12 @@ islobby
 
 \begin_layout Plain Layout
 If this symbol exists and is non-zero OpenHoldem will know that it is connected
- to a lobby window (for table.positioning and shutdown-handling).
- The tablemap-completeness checker will be turned off and the OH-script-symbol
- islobby will become true.
+ to a popup window.
+ The tablemap-completeness checker and the table-positioner will be be turned
+ off and the OH-script-symbol ispopup will become true.
+ This feature can be used to connect OpenHoldem to known popup-windows with
+ a minimalistic tablemap and then click confirmation-buttons with the i86x-regio
+ns or do other simple hopper-tasks.
 \end_layout
 
 \end_inset

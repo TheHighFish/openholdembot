@@ -1,4 +1,4 @@
-v11.1.0 2017-xx-xx
+v11.1.0 2017-02-xx
 ==================
 NEW STUFF:
 - OpenHoldem autostarter that takes care that enough free instances
@@ -17,12 +17,25 @@ NEW STUFF:
   to manipulate memory-symbols more easily, e.g for creating outs-counters.
 - The problem solver executes now also all configuration checks,
   as experience shows that new users often turn all checks off
-  and then wonder why ITDONOWORKS!!!!!
+  and then wonder why "ITDONOWORKS!!!!!"
+  [THF]
+- OpenHoldem is now able to connect to popup-windows
+  (also called non-top-level or child-windows)
+  e.g. to click a confirmation-button
+  or maybe even to do more complicated hopper-tasks in the future.
+  All you need is a mimimalistic tablemap for connection
+  and a symbols s$ispopup that disables the TM-completeness-checker.
   [THF]
   
 MAINTENANCE:
 - Removed the option "close when table disappears",
   as it became redundant.
+  [THF]
+- Reimplemented large parts of the table-positioner 
+  to get rid of MicroSofts TileWindows and CascadeWindows functions
+  that resized all tables back to default.
+  The code could be simplified significantly 
+  and seems to work fine now.
   [THF]
 
 

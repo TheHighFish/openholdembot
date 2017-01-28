@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Source code:           https://github.com/OpenHoldem/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -166,11 +166,12 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..)\n");
 	write_log(preferences.debug_autoconnector(), "[CAutoConnector] Tablemap nr. %d\n", tablemap_index);
-	// If this is not a top level window, then return !!!!! To be changed for popup-handling
-	if (GetParent(hwnd) != NULL) return true;
-  // If this window is not visible, then return
 	if (!IsWindowVisible(hwnd))	return true;                                                                                                                                                                         if ((_memicmp(text, "oh sn", 5) == 0) || (_memicmp(text, "oh mt", 5) == 0) || (_memicmp(text, "oh hy", 5) == 0)) { write_log(preferences.debug_autoconnector(), "[CAutoConnector] cycling through candidate list\n"); vali_err = true; } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                    
-	write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
+  // Since OH 11.1.0 We do no longer check for (GetParent(hwnd) != NULL) 
+  // because we want OpenHoldem to be able to connect to popups
+  // e.g. to click a confirmation-button
+  // or maybe even do more complicated hopper-tasks in the future.
+  write_log(preferences.debug_autoconnector(), "[CAutoConnector] EnumProcTopLevelWindowList(..) found a window candidate...\n");
 	// See if it matches the currently loaded table map
   if (Check_TM_Against_Single_Window(tablemap_index, hwnd)) { 
 		// Filter out served tables already here,

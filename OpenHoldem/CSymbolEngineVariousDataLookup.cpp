@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Source code:           https://github.com/OpenHoldem/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -126,6 +126,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *re
     *result = int(p_autoconnector->attached_hwnd());
   } else if ((memcmp(name, "islobby", 7)==0) && (strlen(name)==7)) {
     *result = p_tablemap->islobby();
+  }  else if ((memcmp(name, "ispopup", 7) == 0) && (strlen(name) == 7)) {
+    *result = p_tablemap->ispopup();
   } else if ((memcmp(name, "title$", 6) == 0) && (strlen(name) >= 7)) {
     assert(p_table_title != NULL);
     CString substring = CString(name).Mid(6);
@@ -148,7 +150,7 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // e.g. "dll$, pl_ chair$, ....
   CString list = "dll$ pl_ vs$ msgbox$ log$ "
     "betround fmax f flagbits "
-    "session version islobby "
+    "session version islobby ispopup"
     "handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);
   return list;

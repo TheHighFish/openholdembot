@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Source code:           https://github.com/OpenHoldem/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -50,10 +50,12 @@ void CTablePositioner::PositionMyWindow() {
 		// That's not what we want.
 		return;
 	}
-  if (p_tablemap->islobby()) { // !!!!! to do: ispopup
-    write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to handle the lobby...\n", _number_of_tables);
+  if (p_tablemap->islobby()) { 
+    write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to handle the lobby...\n");
     MoveWindowToTopLeft(p_autoconnector->attached_hwnd());
-  }	else if (preferences.table_positioner_options() == k_position_tables_tiled) {
+  } else if (p_tablemap->ispopup()) { 
+    write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Ignoring connected popup...\n");
+  } else if (preferences.table_positioner_options() == k_position_tables_tiled) {
 		write_log(preferences.debug_table_positioner(), "[CTablePositioner] PositionMyWindow() Going to tile %d windows...\n", _number_of_tables);	
     TileSingleWindow(p_autoconnector->attached_hwnd(), HWNDs_of_child_windows);
 	}	else if (preferences.table_positioner_options() == k_position_tables_cascaded) {

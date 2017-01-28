@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-17"/>
+<meta name="create-date" content="2017-01-28"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -613,7 +613,16 @@ This Symbol instructs the “chip stack counter” within the screen scraper eng
 islobby
 </td>
 <td align="left" valign="top" style="width: 75%;">
-If this symbol exists and is non-zero OpenHoldem will know that it is connected to a lobby window (for table.positioning and shutdown-handling). The tablemap-completeness checker will be turned off and the OH-script-symbol islobby will become true.
+If this symbol exists and is non-zero OpenHoldem will know that it is connected to a lobby window (for table.positioning and shutdown-handling). The tablemap-completeness checker will be turned off and the OH-script-symbol islobby will become true. Lobby-windows will always be positioned at the top-left of the screen where absolute coordinates equal relative window-coordinates to make hoppers more robust in case of lost focus.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 25%;">
+ispopup
+</td>
+<td align="left" valign="top" style="width: 75%;">
+If this symbol exists and is non-zero OpenHoldem will know that it is connected to a popup window. The tablemap-completeness checker and the table-positioner will be be turned off and the OH-script-symbol ispopup will become true. This feature can be used to connect OpenHoldem to known popup-windows with a minimalistic tablemap and then click confirmation-buttons with the i86x-regions or do other simple hopper-tasks.
 </td>
 
 </tr>

@@ -1,9 +1,9 @@
 //*******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Source code:           https://github.com/OpenHoldem/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //*******************************************************************************
 //
@@ -158,6 +158,7 @@ class CTablemap {
 	const int HandNumberMaxExpectedDigits() { return GetTMSymbol("handnumber_max_expected_digits", 0); }
   const bool use_comma_instead_of_dot()   { return GetTMSymbol("use_comma_instead_of_dot", false); }
   const bool islobby()               { return GetTMSymbol("islobby", false); }
+  const bool ispopup()               { return GetTMSymbol("ispopup", false); }
 	const CString sitename()		       { return GetTMSymbol("sitename"); } 
 	const CString titletext()	       	 { return GetTMSymbol("titletext"); } 
 	const CString network()			       { return GetTMSymbol("network"); } 

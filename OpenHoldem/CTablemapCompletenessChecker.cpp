@@ -1,10 +1,10 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Source code:           https://github.com/OpenHoldem/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
-//
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+// 
 //******************************************************************************
 //
 // Purpose: 
@@ -193,8 +193,10 @@ void CTablemapCompletenessChecker::VerifyMap() {
   CheckItem("clientsizemin");
   CheckItem("clientsizemax");
   CheckItem("targetsize");
-  // All the rest is only needed for tables, but not for the lobby
+  // All the rest is only needed for tables, 
+  // but not for lobby-tablemaps or popup-TMs
   if (p_tablemap->islobby()) return;
+  if (p_tablemap->ispopup()) return;
   // Basic info, needed by every table
   CheckItem("nchairs");
   CheckItem("network");
