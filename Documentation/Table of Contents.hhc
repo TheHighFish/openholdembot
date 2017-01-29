@@ -592,20 +592,24 @@
 				<param name="Local" value="Chapters\automation\AvoidRaceConditions.html.LyXconv\AvoidRaceConditions.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Rebuys">
-				<param name="Local" value="Chapters\automation\Rebuys.html.LyXconv\Rebuys.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Table Changes in MTTs">
-				<param name="Local" value="Chapters\automation\table_changes_in_tournaments.html.LyXconv\table_changes_in_tournaments.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Setting Process CPU Afinity">
 				<param name="Local" value="Chapters\automation\SettingProcessCPUAfinity.html.LyXconv\SettingProcessCPUAfinity.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Setting Windows Classic Theme">
 				<param name="Local" value="Chapters\automation\setting_windows_classic_theme.html.LyXconv\setting_windows_classic_theme.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Rebuys">
+				<param name="Local" value="Chapters\automation\Rebuys.html.LyXconv\Rebuys.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Handling Popup Windows">
+				<param name="Local" value="Chapters\automation\handling_popup_windows.html.LyXconv\handling_popup_windows.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Table Changes in MTTs">
+				<param name="Local" value="Chapters\automation\table_changes_in_tournaments.html.LyXconv\table_changes_in_tournaments.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">

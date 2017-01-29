@@ -127,8 +127,8 @@ The casino opens a new table with a different table-theme, e.g.
 The casino keeps the old-table, but changes the table-theme.
  Don't worry.
  OpenHoldem will check the tablepoints regularly and if they do no longer
- match it will disconnect from the table and connect again, this time with
- the correct tablemap.
+ match for a certain time then OpenHoldem will disconnect from the table
+ and connect again, this time with the correct tablemap.
  And then OpenHoldem will continue playing like before.
 \end_layout
 
