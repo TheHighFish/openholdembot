@@ -20,10 +20,10 @@ class CStringMatch {
 	CStringMatch();
 	~CStringMatch();
  public:
-	const bool IsNumeric(const CString t);
+	const bool IsNumeric(const CString t);// !!! unused
 	const bool IsStringSeated(const CString s);
 	const bool IsStringActive(const CString s);
-	const bool IsStringCardback(const CString s);
+	const bool IsStringCardback(const CString s); // !!! unused
 	const bool IsStringDealer(const CString s);
   const bool IsStringAllin(const CString s);
 };
