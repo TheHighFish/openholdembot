@@ -72,8 +72,14 @@ int CTablemap::GetTMSymbol(CString name, int default)
 		return default;
 	}
   //!!!!!! Here sometimes problem, it seems to point into nirvana
+#ifdef OPENJOLDEM_PROGRAM
+  write_log(preferences.debug_alltherest(), "[CTablemap] location Johnny_S\n");
+#endif
 	CString value = it->second.text.GetString();
 	CString s = value.MakeLower();
+#ifdef OPENHOLDEM_PROGRAM
+  write_log(preferences.debug_alltherest(), "[CTablemap] location Johnny_T\n");
+#endif
 	// "sgl click" and "single", "dbl click" and "double"
 	// are inconsistent naming, but can now be used interchangeably
 	// as the named constants have the same value
