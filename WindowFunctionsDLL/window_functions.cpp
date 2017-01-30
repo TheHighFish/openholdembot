@@ -61,7 +61,7 @@ void CascadeSingleWindow(HWND window, int cascade_position) {
   int x = (cascade_position + 1) * kCascadedDeltaX;
   int y = (cascade_position + 1) * kCascadedDeltaY;
   MoveWindow(window, x, y);
-}lke
+}
 
 void GetWindowSize(HWND window, int *width, int* height) {
   if (window == NULL) {

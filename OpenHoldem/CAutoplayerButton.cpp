@@ -37,6 +37,7 @@ void CAutoplayerButton::SetTechnicalName(const CString name) {
 void CAutoplayerButton::Reset() {
   _label = "";
   _technical_name = "";
+  _button_type = kUndefined;
   SetClickable(false);
 }
   
@@ -80,13 +81,14 @@ void CAutoplayerButton::SetState(const CString state) {
 
 void CAutoplayerButton::SetLabel(const CString label) {
   _label = label;
+  PrecomputeButtonType();
 }
 
-bool CAutoplayerButton::IsAllin() {
+bool CAutoplayerButton::IsLabelAllin() {
   return p_string_match->IsStringAllin(_label);
 }
 
-bool CAutoplayerButton::IsRaise() {
+bool CAutoplayerButton::IsLabelRaise() {
   CString s_lower_case = _label.MakeLower();
   s_lower_case = s_lower_case.Left(5);
   return (s_lower_case == "raise"
@@ -97,26 +99,25 @@ bool CAutoplayerButton::IsRaise() {
     || s_lower_case.Left(4) == "swag");
 }
 
-bool CAutoplayerButton::IsCall() {
+bool CAutoplayerButton::IsLabelCall() {
   CString s_lower_case = _label.MakeLower();
-  // !!!!! Here sometimes trouble
   s_lower_case = s_lower_case.Left(4);
   return (s_lower_case == "call" || s_lower_case == "caii" || s_lower_case == "ca11");
 }
 
-bool CAutoplayerButton::IsCheck() {
+bool CAutoplayerButton::IsLabelCheck() {
   CString s_lower_case = _label.MakeLower();
   s_lower_case = s_lower_case.Left(5);
   return (s_lower_case == "check" || s_lower_case == "cheok");
 }
 
-bool CAutoplayerButton::IsFold() {
+bool CAutoplayerButton::IsLabelFold() {
   CString s_lower_case = _label.MakeLower();
   s_lower_case = s_lower_case.Left(4);
   return (s_lower_case == "fold" || s_lower_case == "fo1d" || s_lower_case == "foid");
 }
 
-bool CAutoplayerButton::IsAutopost() {
+bool CAutoplayerButton::IsLabelAutopost() {
   CString s_lower_case = _label;
   s_lower_case.Remove(' ');
   s_lower_case.Remove('-');
@@ -125,7 +126,7 @@ bool CAutoplayerButton::IsAutopost() {
   return (s_lower_case == "autopost" || s_lower_case == "aut0p0st");
 }
 
-bool CAutoplayerButton::IsSitin() {
+bool CAutoplayerButton::IsLabelSitin() {
   CString s_lower_case = _label;
   s_lower_case.MakeLower();
   s_lower_case.Remove(' ');
@@ -134,7 +135,7 @@ bool CAutoplayerButton::IsSitin() {
   return (s_lower_case == "sitin" || s_lower_case == "s1t1n");
 }
 
-bool CAutoplayerButton::IsSitout() {
+bool CAutoplayerButton::IsLabelSitout() {
   CString s_lower_case = _label;
   s_lower_case.MakeLower();
   s_lower_case.Remove(' ');
@@ -143,17 +144,46 @@ bool CAutoplayerButton::IsSitout() {
   return (s_lower_case == "sitout" || s_lower_case == "s1tout" || s_lower_case == "sit0ut" || s_lower_case == "s1t0ut");
 }
 
-bool CAutoplayerButton::IsLeave() {
+bool CAutoplayerButton::IsLabelLeave() {
   return (_label.MakeLower().Left(5) == "leave");
 }
 
-bool CAutoplayerButton::IsRematch() {
+bool CAutoplayerButton::IsLabelRematch() {
   return (_label.MakeLower().Left(7) == "rematch");
 }
 
-bool CAutoplayerButton::IsPrefold() {
+bool CAutoplayerButton::IsLabelPrefold() {
   return (_label.MakeLower().Left(7) == "prefold");
 }
 
-
-
+// We precompute the button-type from the label, because their was a raise-condition
+// when COpenHoldemView::UpdateDisplay(), triggered by a timer,
+// accessed the button-labels (non-elementary data)
+// which could at the same time be changed by the scraper (part of the heart-beat-).
+// We could have added mutexes, but were not sure about performance,
+// so we switched to an atomic data-type without pointers instead.
+void CAutoplayerButton::PrecomputeButtonType() {
+  if (IsLabelAllin()) {
+    _button_type = k_autoplayer_function_allin;
+  } else if (IsLabelRaise()) {
+    _button_type = k_autoplayer_function_raise;
+  } else if (IsLabelCall()) {
+    _button_type = k_autoplayer_function_call;
+  } else if (IsLabelCheck()) {
+    _button_type = k_autoplayer_function_check;
+  } else if (IsLabelFold()) {
+    _button_type = k_autoplayer_function_fold;
+  } else if (IsLabelAutopost()) { 
+    _button_type = k_hopper_function_autopost;
+  } else if (IsLabelSitin()) {
+    _button_type = k_hopper_function_sitin;
+  } else if (IsLabelSitout()) {
+    _button_type = k_hopper_function_sitout;
+  } else if (IsLabelLeave()) {
+    _button_type = k_hopper_function_leave;
+  } else if (IsLabelRematch()) {
+    _button_type = k_hopper_function_rematch;
+  } else if (IsLabelPrefold()) { 
+    _button_type = k_standard_function_prefold;
+  }
+}

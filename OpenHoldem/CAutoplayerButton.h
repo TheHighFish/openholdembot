@@ -30,23 +30,17 @@ class CAutoplayerButton {
     return _clickable; 
   }
  public:
-  // The button-type of iX-buttons depends on the scraped label.
-  // BetPot-buttons don't have a label, they get identified by ID
-  // (position in button-array).
-  // There might be multiple (moving) buttons for one action,
-  // named e.g allin1 and allin2, this works as we check
-  // only the first N characters.
-  bool IsAllin();
-  bool IsRaise();
-  bool IsCall();
-  bool IsCheck();
-  bool IsFold();
-  bool IsAutopost();
-  bool IsSitin();
-  bool IsSitout();
-  bool IsLeave();
-  bool IsRematch();
-  bool IsPrefold();
+  bool IsAllin()    { return _button_type == k_autoplayer_function_allin; }
+  bool IsRaise()    { return _button_type == k_autoplayer_function_raise; }
+  bool IsCall()     { return _button_type == k_autoplayer_function_call; }
+  bool IsCheck()    { return _button_type == k_autoplayer_function_check; }
+  bool IsFold()     { return _button_type == k_autoplayer_function_fold; }
+  bool IsAutopost() { return _button_type == k_hopper_function_autopost; }
+  bool IsSitin()    { return _button_type == k_hopper_function_sitin; }
+  bool IsSitout()   { return _button_type == k_hopper_function_sitout; }
+  bool IsLeave()    { return _button_type == k_hopper_function_leave; }
+  bool IsRematch()  { return _button_type == k_hopper_function_rematch; }
+  bool IsPrefold()  { return _button_type == k_standard_function_prefold; }
  protected:
   // To be used by the scraper
   void SetClickable(bool clickable);
@@ -56,11 +50,32 @@ class CAutoplayerButton {
  protected:
   CCasinoHotkey _hotkey;
  private:
+  // The button-type of iX-buttons depends on the scraped label.
+  // BetPot-buttons don't have a label, they get identified by ID
+  // (position in button-array).
+  // There might be multiple (moving) buttons for one action,
+  // named e.g allin1 and allin2, this works as we check
+  // only the first N characters.
+  bool IsLabelAllin();
+  bool IsLabelRaise();
+  bool IsLabelCall();
+  bool IsLabelCheck();
+  bool IsLabelFold();
+  bool IsLabelAutopost();
+  bool IsLabelSitin();
+  bool IsLabelSitout();
+  bool IsLabelLeave();
+  bool IsLabelRematch();
+  bool IsLabelPrefold();
+ private:
+  void PrecomputeButtonType();
+ private:
   bool _clickable;
   // label = logical name, e.g. "raise"
   CString _label;
   // technical name = tablemap-object, e.g. "i3button"
   CString _technical_name;
+  int _button_type;
 };
 
 #endif // INC_CAUTOPLAYERBUTTON_H
