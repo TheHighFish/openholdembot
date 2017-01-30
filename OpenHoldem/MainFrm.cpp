@@ -624,11 +624,11 @@ void CMainFrame::OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI) {
 }
 
 void CMainFrame::OnUpdateViewShootreplayframe(CCmdUI *pCmdUI) {
-	pCmdUI->Enable(p_autoconnector->attached_hwnd() != NULL);
+	pCmdUI->Enable(p_autoconnector->IsConnectedToAnything());
 }
 
 void CMainFrame::OnUpdateViewScraperOutput(CCmdUI *pCmdUI) {
-	pCmdUI->Enable(p_autoconnector->attached_hwnd() != NULL);
+	pCmdUI->Enable(p_autoconnector->IsConnectedToAnything());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
