@@ -175,7 +175,6 @@ CMainFrame::~CMainFrame()
 {
 	if (p_flags_toolbar != NULL)
 	{
-		p_flags_toolbar->~CFlagsToolbar();
 		delete(p_flags_toolbar);
 	}
 }
@@ -426,6 +425,7 @@ void CMainFrame::OnEditPreferences()
 BOOL CMainFrame::DestroyWindow() {
 	p_dll_extension->Unload();
 	StopThreads();
+  PMainframe()->KillTimers(); //!!!!
 	// Save window position
   WINDOWPLACEMENT wp;
 	GetWindowPlacement(&wp); 		
@@ -436,7 +436,7 @@ BOOL CMainFrame::DestroyWindow() {
   // All OK here
   assert(AfxCheckMemory());
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20459
-  // Crash on termination happens here
+  // !!!!! Crash on termination happens here
   // Tried to simply forget bool success = CFrameWnd::DestroyWindow();
   // but a non-destroyed window causes an endless-loop on termination.
   //
@@ -447,7 +447,9 @@ BOOL CMainFrame::DestroyWindow() {
   // This CMainframe-object correctly lives on the heap, not on the stack
   // as it got created by IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
   // and therefore it must be able to be destroyed / deleted.
-  bool success = CFrameWnd::DestroyWindow();
+  //!!!!!bool success = CFrameWnd::DestroyWindow();
+  bool success = true; //!!!!!
+  delete this; //!!!!!
   write_log(preferences.debug_gui(), "[GUI] Window deleted\n");
   return success;
 }

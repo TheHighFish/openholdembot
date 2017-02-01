@@ -38,7 +38,7 @@ public:
 	bool EvaluateSymbol(const char *name, double *result, bool log = false);
 	CString SymbolsProvided();;
 public:
-	int nhands()		{ return (_nhandshi + _nhandslo + _nhandsti); }
+	int nhands()		  { return (_nhandshi + _nhandslo + _nhandsti); }
 	int nhandshi()		{ return _nhandshi; }
 	int nhandslo()		{ return _nhandslo; }
 	int nhandsti()		{ return _nhandsti; }

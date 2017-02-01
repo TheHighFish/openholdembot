@@ -35,7 +35,6 @@ class CIteratorThread {
   int  IteratorThreadProgress()   { return _iterations_calculated; }
  public:
 	void StartPrWinComputationsIfNeeded();
-  void StartIteratorThread();
 	void set_prw1326_useme(const int i)	{ _prw1326.useme = i;}
 	const	sprw1326 *prw1326()	          { return &_prw1326; }
  public:
