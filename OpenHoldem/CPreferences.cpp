@@ -204,7 +204,7 @@ void CPreferences::InitDefaults(void) {
 	prefs_numerical_values[k_prefs_restore_position_and_focus] = false;
 	prefs_numerical_values[k_prefs_use_auto_replay] = true;
   prefs_numerical_values[k_prefs_use_auto_starter] = true;
-  prefs_numerical_values[k_prefs_use_auto_shutdown] = true;
+  //!!!prefs_numerical_values[k_prefs_use_auto_shutdown] = true;
 	prefs_numerical_values[k_prefs_debug_preferences] = true; // To assure that we log at least the initialization of this value
 	prefs_numerical_values[k_prefs_rebuy_condition_no_cards] = true;
 	prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber] = true;
