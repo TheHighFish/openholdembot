@@ -46,19 +46,9 @@ protected: // create from serialization only
 	afx_msg void OnUpdateViewShootreplayframe(CCmdUI *pCmdUI);
   afx_msg void OnUpdateViewScraperOutput(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditForceuserchair(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
 
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnDllLoadspecificfile();
-	afx_msg void OnPerlLoadFormula();
-	afx_msg void OnPerlLoadSpecificFormula();
-	afx_msg void OnPerlEditMainFormula();
-	afx_msg void OnPerlCheckSyntax();
-	afx_msg void OnPerlReloadFormula();
 	afx_msg void OnHelpProblemSolver();
 public:
 	afx_msg void OnHelp();
