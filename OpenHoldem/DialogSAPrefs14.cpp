@@ -39,7 +39,6 @@ void CDlgSAPrefs14::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_3, _autoconnector_connect_never);
-	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_4, _autoconnector_connect_once);
 	DDX_Control(pDX, IDC_RADIO_AUTOCONNECTOR_5, _autoconnector_connect_permanent);
 }
 
@@ -60,10 +59,6 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 	{
 		_autoconnector_connect_never.SetCheck(true);
 	}
-	else if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once)
-	{
-		_autoconnector_connect_once.SetCheck(true);
-	}
 	else // k_AutoConnector_Connect_Permanent
 	{
 		_autoconnector_connect_permanent.SetCheck(true);
@@ -76,8 +71,6 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 void CDlgSAPrefs14::OnOK() {
 	if (bool(_autoconnector_connect_never.GetCheck()) == true) {
 		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
-	}	else if (bool(_autoconnector_connect_once.GetCheck()) == BST_CHECKED) {
-		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Once);
 	}	else { // _autoconnector_connect_permanent.GetCheck() == BST_CHECKED 
 		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
 	}

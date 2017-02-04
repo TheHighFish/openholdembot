@@ -242,11 +242,6 @@ void COpenHoldemApp::FinishInitialization() {
 	m_pMainWnd->SetActiveWindow();
 	m_pMainWnd->SetFocus();
 	m_pMainWnd->SetForegroundWindow();
-  // autoconnect on start, if preferred
-	write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to connect\n");
-	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Once) {
-		p_autoconnector->Connect(NULL);
-	}
 }
 
 int COpenHoldemApp::ExitInstance() {

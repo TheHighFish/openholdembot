@@ -24,6 +24,11 @@ BUG FIXES:
   The unfixed 5 leaks that couldn't get diagnozed exactly
   are leaa than 1 KB large altogether according to VLD.
   [THF]
+  
+MAINTENANCE:
+- Removed the auto-connector-option to connect once which doesn't make much sense.
+  Openholdem will now connect either never (by hopper-messages) or always.
+  [THF]
 
 
 v11.1.0 2017-02-01

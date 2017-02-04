@@ -355,10 +355,9 @@
 #define IDC_STATIC_REBUY_SCRIPT         1329
 #define IDC_REBUY_EDIT_SCRIPT           1330
 #define IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN 1331
-#define IDC_RADIO_AUTOCONNECTOR_3       1333
-#define IDC_RADIO_AUTOCONNECTOR_4       1334
-#define IDC_RADIO3                      1335
-#define IDC_RADIO_AUTOCONNECTOR_5       1335
+#define IDC_RADIO_AUTOCONNECTOR_3       1332
+#define IDC_RADIO3                      1333
+#define IDC_RADIO_AUTOCONNECTOR_5       1334
 #define IDC_RADIO_SCRAPE_ALWAYS         1335
 #define IDC_SCROLLBAR1                  1336
 #define IDC_SPIN1                       1337

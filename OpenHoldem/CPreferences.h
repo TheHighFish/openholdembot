@@ -21,7 +21,6 @@
 // global preferences constants
 enum {
 	k_AutoConnector_Connect_Never		= 0,
-	k_AutoConnector_Connect_Once		= 1,
 	k_AutoConnector_Connect_Permanent	= 2,
 };
 
