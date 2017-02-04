@@ -250,10 +250,9 @@ void COpenHoldemApp::FinishInitialization() {
 }
 
 int COpenHoldemApp::ExitInstance() {
-  // First all timers and threads have to be stopped, 
-  // then all singletons can (have to) be deleted.
-  PMainframe()->KillTimers();
-  StopThreads();
+  // timers and threads are already stopped 
+  // by CMainFrame::DestroyWindow().
+  // Now we cancontinue with singletons.
 	DeleteAllSingletons();
 	Scintilla_ReleaseResources();
   stop_log();

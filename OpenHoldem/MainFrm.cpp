@@ -425,7 +425,7 @@ void CMainFrame::OnEditPreferences()
 BOOL CMainFrame::DestroyWindow() {
 	p_dll_extension->Unload();
 	StopThreads();
-  PMainframe()->KillTimers(); //!!!!
+  PMainframe()->KillTimers();
 	// Save window position
   WINDOWPLACEMENT wp;
 	GetWindowPlacement(&wp); 		
@@ -436,20 +436,9 @@ BOOL CMainFrame::DestroyWindow() {
   // All OK here
   assert(AfxCheckMemory());
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20459
-  // !!!!! Crash on termination happens here
-  // Tried to simply forget bool success = CFrameWnd::DestroyWindow();
-  // but a non-destroyed window causes an endless-loop on termination.
-  //
-  // "delete this;" also can't be right,
-  // as it gets executed automatically by PostNCDestroy.
-  // If we do it anyway it causes a crash in OnTimer()
-  // 
-  // This CMainframe-object correctly lives on the heap, not on the stack
-  // as it got created by IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
-  // and therefore it must be able to be destroyed / deleted.
-  //!!!!!bool success = CFrameWnd::DestroyWindow();
-  bool success = true; //!!!!!
-  delete this; //!!!!!
+  // probably caused by incorrect order of deletion,
+  // caused by incorrect position of StopThreads and KillTimers.
+  bool success = CFrameWnd::DestroyWindow(); 
   write_log(preferences.debug_gui(), "[GUI] Window deleted\n");
   return success;
 }

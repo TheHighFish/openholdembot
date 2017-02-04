@@ -7,6 +7,11 @@ BUG FIXES:
   turned out to be superfluous we removed it.
   And voila, the bug was gone.
   [THF]
+- OpenHoldem crashed at showdown.
+  As it turned out some worker-threads got stopped at the wrong time,
+  indirectly causing an object being deleted twice,
+  thus leading to a memory-access-error very late at termination.
+  [THF]
 
 
 v11.1.0 2017-02-01
