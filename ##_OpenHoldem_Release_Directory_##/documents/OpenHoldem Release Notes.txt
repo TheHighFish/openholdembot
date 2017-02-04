@@ -1,3 +1,14 @@
+v11.1.1 2017-02-xx
+==================
+BUG FIXES:
+- The scraper output dialog crashed regularly, 
+  very deep in the recursive constructor of a 3rd-party window-managing component. 
+  As this window-managing library (originally designed for Windows 98)
+  turned out to be superfluous we removed it.
+  And voila, the bug was gone.
+  [THF]
+
+
 v11.1.0 2017-02-01
 ==================
 NEW STUFF:
