@@ -1,4 +1,4 @@
-v11.1.1 2017-02-xx
+v11.1.1 2017-02-06
 ==================
 BUG FIXES:
 - The scraper output dialog crashed regularly, 
@@ -6,6 +6,7 @@ BUG FIXES:
   As this window-managing library (originally designed for Windows 98)
   turned out to be superfluous we removed it.
   And voila, the bug was gone.
+  Thanks to NickPerry for reporeting.
   [THF]
 - OpenHoldem crashed at showdown.
   As it turned out some worker-threads got stopped at the wrong time,
@@ -14,15 +15,16 @@ BUG FIXES:
   [THF]
 - After the crash had been fixed most memory got released correctly again.
   Then it became possible to care about OpenHoldems memory leaks,
-  i.e. onjects that didn't get deleted on termination:
+  i.e. objects that didn't get deleted on termination:
     * statusbar
-	* flags-toolbar
-	* pens and brushes for painting the table.
-	* the "special" symbol engine CbetroundCalculator
-	* the OpenPPL-functzion for the self-test of parser andf evaluator
+    * flags-toolbar
+    * pens and brushes for painting the table.
+    * the "special" symbol engine CbetroundCalculator
+    * the OpenPPL-function for the self-test of parser and evaluator
   The total leaked memory was less than 5 KB in size.
   The unfixed 5 leaks that couldn't get diagnozed exactly
   are leaa than 1 KB large altogether according to VLD.
+  Thanks to Aintnosunshine for reminding us of the memory leaks.
   [THF]
   
 MAINTENANCE:
