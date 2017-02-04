@@ -224,7 +224,7 @@ void CPreferences::InitDefaults(void) {
 	prefs_numerical_values[k_prefs_autoconnector_when_to_connect] = k_AutoConnector_Connect_Permanent;
 	prefs_numerical_values[k_prefs_rebuy_minimum_time_to_next_try] = 30;
 	prefs_numerical_values[k_prefs_lazy_scraping_when_to_scrape] = k_lazy_scraping_always;
-	prefs_numerical_values[k_prefs_table_positioner_options] = k_position_tables_tiled;
+	prefs_numerical_values[k_prefs_table_positioner_options] = k_position_tables_cascaded;
   // Doubles
 	prefs_numerical_values[k_prefs_icm_prize1] = kUndefinedZero;
 	// CString
