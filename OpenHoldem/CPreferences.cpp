@@ -123,10 +123,6 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 	"formula_y",
 	"formula_dx",
 	"formula_dy",
-	"scraper_x",
-	"scraper_y",
-	"scraper_dx",
-	"scraper_dy",
 	"main_x",
 	"main_y",
 	"autoconnector_when_to_connect",
@@ -214,8 +210,6 @@ void CPreferences::InitDefaults(void) {
   // Ints
 	prefs_numerical_values[k_prefs_formula_dx] = 640;
 	prefs_numerical_values[k_prefs_formula_dy] = 400;
-	prefs_numerical_values[k_prefs_scraper_dx] = 340;
-	prefs_numerical_values[k_prefs_scraper_dy] = 250;
 	prefs_numerical_values[k_prefs_frame_delay] = 2;
 	prefs_numerical_values[k_prefs_click_delay] = 250;
 	prefs_numerical_values[k_prefs_swag_delay_1] = 400;

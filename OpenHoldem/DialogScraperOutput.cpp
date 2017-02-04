@@ -87,7 +87,6 @@ END_MESSAGE_MAP()
 
 // CDlgScraperOutput message handlers
 BOOL CDlgScraperOutput::OnInitDialog() {
-	int			max_x = 0, max_y = 0;
 	RECT		rect = {0};
 
 	in_startup = true;
@@ -105,12 +104,6 @@ BOOL CDlgScraperOutput::OnInitDialog() {
 	// Set dialog icon
 	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
 	this->SetIcon(hIcon, FALSE);
-
-	// Restore window location and size, precision preference
-  max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
-	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-//!!!!!	::SetWindowPos(m_hWnd, HWND_TOP, min(preferences.scraper_x(), max_x), min(preferences.scraper_y(), max_y),
-	  //preferences.scraper_dx(), preferences.scraper_dy(), SWP_NOCOPYBITS);
 	m_Zoom.SetCurSel(preferences.scraper_zoom());
 	m_Zoom.GetWindowRect(&rect);
 	m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
@@ -133,12 +126,7 @@ BOOL CDlgScraperOutput::DestroyWindow() {
 
 	// Save settings to registry
 	GetWindowPlacement(&wp);
-	preferences.SetValue(k_prefs_scraper_x, wp.rcNormalPosition.left);
-	preferences.SetValue(k_prefs_scraper_y, wp.rcNormalPosition.top);
-	preferences.SetValue(k_prefs_scraper_dx, wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-	preferences.SetValue(k_prefs_scraper_dy, wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-	preferences.SetValue(k_prefs_scraper_zoom, m_Zoom.GetCurSel());
-
+  preferences.SetValue(k_prefs_scraper_zoom, m_Zoom.GetCurSel());
 	// Uncheck scraper output button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 

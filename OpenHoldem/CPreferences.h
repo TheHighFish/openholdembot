@@ -132,10 +132,6 @@ enum {
 	k_prefs_formula_y,
 	k_prefs_formula_dx,
 	k_prefs_formula_dy,
-	k_prefs_scraper_x,
-	k_prefs_scraper_y,
-	k_prefs_scraper_dx,
-	k_prefs_scraper_dy,
 	k_prefs_main_x,
 	k_prefs_main_y,
 	k_prefs_autoconnector_when_to_connect,
@@ -281,11 +277,6 @@ class CPreferences {
 	// Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }
 	const int main_y() { return prefs_numerical_values[k_prefs_main_y]; }
-	// Scraper window locations
-	const int scraper_x() { return prefs_numerical_values[k_prefs_scraper_x]; }
-	const int scraper_y() { return prefs_numerical_values[k_prefs_scraper_y]; }
-	const int scraper_dx() { return prefs_numerical_values[k_prefs_scraper_dx]; }
-	const int scraper_dy() { return prefs_numerical_values[k_prefs_scraper_dy]; }
 	// Formula window locations
 	const int formula_x() { return prefs_numerical_values[k_prefs_formula_x]; }
 	const int formula_y() { return prefs_numerical_values[k_prefs_formula_y]; }
