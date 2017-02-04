@@ -285,8 +285,10 @@ void CFunctionCollection::ExecuteSelftest() {
   p_function->SetAsReadOnlyLibraryFunction();
   CSelftestParserEvaluator selftest;
   selftest.Test();
-  // The function stays in the collection until the very end
-  // and then gets released together with the OpenPPL-symbols.
+  // The function should stay in the collection until the very end
+  // and then should get released together with the OpenPPL-symbols.
+  // As VLD indicates that this DONOWORKS we delete it here.
+  p_function_collection->Delete(name);
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {

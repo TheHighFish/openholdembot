@@ -105,7 +105,7 @@ void CEngineContainer::CreateSymbolEngines() {
   // Some symbols to be calculated depend on symbols of other engines.
   // The engines inserted first will be called first later.
   // But we assure correct ordering by assertions in the constructors of the engines.
-
+  //
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
   AddSymbolEngine(p_function_collection);
@@ -260,6 +260,7 @@ void CEngineContainer::CreateSymbolEngines() {
 
 void CEngineContainer::DestroyAllSymbolEngines() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
+  DestroyAllSpecialSymbolEngines();
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Going to delete symbol engine %i\n", i);
 		delete _symbol_engines[i];

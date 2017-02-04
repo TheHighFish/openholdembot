@@ -177,6 +177,9 @@ CMainFrame::~CMainFrame()
 	{
 		delete(p_flags_toolbar);
 	}
+  if (p_openholdem_statusbar != NULL) {
+    delete p_openholdem_statusbar;
+  }
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {

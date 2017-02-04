@@ -12,6 +12,18 @@ BUG FIXES:
   indirectly causing an object being deleted twice,
   thus leading to a memory-access-error very late at termination.
   [THF]
+- After the crash had been fixed most memory got released correctly again.
+  Then it became possible to care about OpenHoldems memory leaks,
+  i.e. onjects that didn't get deleted on termination:
+    * statusbar
+	* flags-toolbar
+	* pens and brushes for painting the table.
+	* the "special" symbol engine CbetroundCalculator
+	* the OpenPPL-functzion for the self-test of parser andf evaluator
+  The total leaked memory was less than 5 KB in size.
+  The unfixed 5 leaks that couldn't get diagnozed exactly
+  are leaa than 1 KB large altogether according to VLD.
+  [THF]
 
 
 v11.1.0 2017-02-01

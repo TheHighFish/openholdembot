@@ -153,6 +153,16 @@ COpenHoldemView::COpenHoldemView() {
 }
 
 COpenHoldemView::~COpenHoldemView() {
+  _black_pen.DeleteObject();
+  _green_pen.DeleteObject();
+  _red_pen.DeleteObject();
+  _blue_pen.DeleteObject();
+  _white_dot_pen.DeleteObject();
+  _null_pen.DeleteObject();
+  _white_brush.DeleteObject();
+  _gray_brush.DeleteObject();
+  _red_brush.DeleteObject();
+  _yellow_brush.DeleteObject();
 }
 
 BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) {
