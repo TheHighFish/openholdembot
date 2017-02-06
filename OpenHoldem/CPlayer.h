@@ -55,7 +55,7 @@ class CPlayer {
   void set_colourcode(int new_colourcode) { _colourcode = new_colourcode; }
  public:
   // Public setters (must only be used by CScraper)
-  void set_seated(bool is_seated) { _seated = is_seated; }
+  void set_seated(bool is_seated);
   void set_active(bool is_active) { _active = is_active; }
   void set_dealer(bool is_dealer) { _dealer = is_dealer; }
  public:

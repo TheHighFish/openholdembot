@@ -1,5 +1,20 @@
 v11.1.1 2017-02-06
 ==================
+NEW STUFF:
+- Added forgotten symbol BotsActionsOnTurn.
+  Thanks to JPhol123 for reporting.
+  [THF]
+
+BUG FIXES:
+- If a player left the table, there was some stale data left in memory,
+  that did get neither reset noor overwritten by the lazy-scraper.
+  This didn't affect any symbols, but the player-info in the log.
+  Thanks to Micro111 for reporting.
+  [THF]
+
+
+v11.1.1 2017-02-06
+==================
 BUG FIXES:
 - The scraper output dialog crashed regularly, 
   very deep in the recursive constructor of a 3rd-party window-managing component. 

@@ -34,7 +34,9 @@ void CPlayer::Reset() {
   for (int i=0; i<kMaxNumberOfCardsPerPlayer; ++i) {
     _hole_cards[i].ClearValue();
   }
-  set_seated(false);
+  // We can't use set_seated(false) here, as set_seated(false) 
+  // will call Reset() again; endless recursion
+  _seated = false;
   set_active(false);
   set_dealer(false);
   set_colourcode(kUndefinedZero);
@@ -141,6 +143,17 @@ bool CPlayer::PostingBothBlinds() {
     && IsApproximatellyEqual(bet_in_cents, both_blinds_in_cents));
 }
 
+void CPlayer::set_seated(bool is_seated) { 
+  if ((is_seated == false) && seated()) {
+    // Change from seated to non-seated
+    // We should clear all player data in this case
+    // as the lazy-scraper stops on empty seats
+    // www !!!!!
+    Reset();
+  }
+  _seated = is_seated; 
+}
+
 CString CPlayer::DataDump() {
   CString result = "";
   // 20 digits, right alighned
@@ -154,20 +167,17 @@ CString CPlayer::DataDump() {
   }
   if (active()) {
     result += "A";
-  }
-  else {
+  }  else {
     result += "-";
   }
   if (HasAnyCards()) {
     result += "P";
-  }
-  else {
+  } else {
     result += "-";
   }
   if (dealer()) {
     result += "D";
-  }
-  else {
+  } else {
     result += "-";
   }
   result += "  ";

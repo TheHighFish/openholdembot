@@ -140,6 +140,15 @@ WHEN Others RETURN
   + didcallround2 
   + didraisround2 
   + didbetsizeround2) FORCE
+
+##BotsActionsOnTurn##
+WHEN (betround == ConstBetRoundTurn) RETURN BotsActionsOnThisRound FORCE
+WHEN Others RETURN
+  ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+  // Checks are not counted
+  + didcallround3 
+  + didraisround3 
+  + didbetsizeround3) FORCE
   
 ##ActionCounterCorrectionForUpdateInProgress##
 // If we update OpenPPL memory symbols after an autoplayer-action
