@@ -67,6 +67,9 @@ CSharedMem::CSharedMem() {
 	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
 	int my_PID = GetCurrentProcessId();
 	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
+  write_log(preferences.debug_sharedmem(), "[CSharedMem] %d PID %d\n",
+    p_sessioncounter->session_id(), my_PID);
+
 }
 
 CSharedMem::~CSharedMem() {

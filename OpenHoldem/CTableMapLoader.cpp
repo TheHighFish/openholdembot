@@ -201,7 +201,7 @@ bool Check_TM_Against_Single_Window(int MapIndex, HWND window) {
     write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Tablepoint does not match\n");
     return false;
   }
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Tablemap [%d\n] matches window [%d]", 
+  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Tablemap [%d] matches window [%d]\n", 
     MapIndex, window);
   return true;
 }
