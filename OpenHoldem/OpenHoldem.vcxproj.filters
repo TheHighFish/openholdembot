@@ -750,6 +750,9 @@
     <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
+	<ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
     <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
@@ -1631,6 +1634,9 @@
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+	<ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
     <ClInclude Include="CHeartbeatDelay.h">

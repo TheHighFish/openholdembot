@@ -224,6 +224,7 @@
     <ClCompile Include="CParseTreeOperatorNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
+	<ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeNumber.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp" />
@@ -505,6 +506,7 @@
     <ClInclude Include="CParseTreeOperatorNode.h" />
     <ClInclude Include="CParseTreeTerminalNode.h" />
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
+	<ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
     <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
     <ClInclude Include="CParseTreeTerminalNodeNumber.h" />
     <ClInclude Include="CParseTreeTerminalNodeuserVariable.h" />

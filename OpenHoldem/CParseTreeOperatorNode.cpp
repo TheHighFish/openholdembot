@@ -58,25 +58,8 @@ void CParseTreeOperatorNode::MakeTernaryOperator(int node_type, TPParseTreeNode 
 	_first_sibbling = first_sibbling;
 	_second_sibbling = second_sibbling;
 	_third_sibbling = third_sibbling;
-
 }
 
-void CParseTreeOperatorNode::MakeRaiseToAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
-	_node_type = kTokenActionRaiseToBigBlinds;
-	_first_sibbling = raise_by_amount_in_big_blinds;
-}
-
-void CParseTreeOperatorNode::MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds) {
-	_node_type = kTokenActionRaiseByBigBlinds;
-	_first_sibbling = raise_by_amount_in_big_blinds;
-}
-
-// Values to be expected in the range (0..100] or more, not (0..1]
-void CParseTreeOperatorNode::MakeRaiseByPercentagedPotsizeAction(
-  	TPParseTreeNode raise_by_amount_percentage) {
-	_node_type = kTokenActionRaiseByPercentagedPotsize;
-	_first_sibbling = raise_by_amount_percentage;
-}
 
 void CParseTreeOperatorNode::MakeWhenCondition(TPParseTreeNode condition) {
   _node_type = kTokenOperatorConditionalWhen;
@@ -91,47 +74,8 @@ double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
     "[CParseTreeOperatorNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
-	// Actions first, which are "unary".
-	// We have to encode all possible outcomes in a single floating-point,
-	// therefore:
-	// * positive values mean: raise size (by big-blinds, raise-to-semantics) 
-	// * negative values mean: elementary actions
-	if (_node_type == kTokenActionRaiseToBigBlinds)	{
-    // RaiseTo N Force
-		return EvaluateSibbling(_first_sibbling, log);
-	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
-    // RaiseBy N Force
-    double raise_by_amount_in_bblinds = EvaluateSibbling(_first_sibbling, log);
-    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
-      + raise_by_amount_in_bblinds;
-   write_log(preferences.debug_formula(), 
-      "[CParseTreeOperatorNode] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
-      raise_by_amount_in_bblinds,
-      p_symbol_engine_chip_amounts->ncallbets(),
-      final_betsize_in_bblinds);
-		return final_betsize_in_bblinds;
-	}	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)	{
-    // RaiseBy X% Force
-		double raise_by_percentage = EvaluateSibbling(_first_sibbling, log);
-    assert(p_symbol_engine_tablelimits->bet() > 0);
-		double pot_size_after_call_in_big_blinds = 
-      (p_symbol_engine_chip_amounts->pot() / p_symbol_engine_tablelimits->bet()) 
-      + p_symbol_engine_chip_amounts->nbetstocall();
-    assert(pot_size_after_call_in_big_blinds >= 0);
-		double raise_by_amount_in_bblinds = 0.01 * raise_by_percentage
-			* pot_size_after_call_in_big_blinds;
-    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
-      + raise_by_amount_in_bblinds;
-   write_log(preferences.debug_formula(), 
-      "[CParseTreeOperatorNode] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
-      raise_by_percentage,
-      pot_size_after_call_in_big_blinds,
-      raise_by_amount_in_bblinds,
-      final_betsize_in_bblinds);
-    return final_betsize_in_bblinds;
-  } 
-	// Finally operators
-	else if (TokenIsUnary(_node_type)) {
+	// operators
+  if (TokenIsUnary(_node_type)) {
 		return EvaluateUnaryExpression(log);
 	}	else if (TokenIsBinary(_node_type))	{
 		return EvaluateBinaryExpression(log);

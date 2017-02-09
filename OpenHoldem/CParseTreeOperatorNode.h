@@ -29,14 +29,8 @@ class CParseTreeOperatorNode: public CParseTreeNode {
   void MakeTernaryOperator(int node_type, TPParseTreeNode first_sibbling,
     TPParseTreeNode second_sibbling, TPParseTreeNode third_sibbling);
  public:
-  void MakeRaiseToAction(TPParseTreeNode raise_by_amount_in_big_blinds);
-  void MakeRaiseByAction(TPParseTreeNode raise_by_amount_in_big_blinds);
-  // Values to be expected in the range (0..100] (or more), not (0..1]
-  void MakeRaiseByPercentagedPotsizeAction(TPParseTreeNode raise_by_amount_percentage);
   void MakeWhenCondition(TPParseTreeNode condition);
  public:
-  //double Evaluate(bool log = false);
-  //CString EvaluateToString(bool log = false);
   bool EvaluatesToBinaryNumber();
  public:
   // For debugging output

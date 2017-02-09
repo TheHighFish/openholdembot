@@ -22,6 +22,7 @@ typedef CParseTreeNode *TPParseTreeNode;
 class CParseTreeNode {
   friend class CParseTreeOperatorNode;
   friend class CParseTreeTerminalNode;
+  friend class CParseTreeTerminalNodeBetsizeAction;
   friend class CParseTreeTerminalNodeFixedAction;
   friend class CParseTreeTerminalNodeIdentifier;
   friend class CParseTreeTerminalNodeNumber;

@@ -7,7 +7,7 @@ NEW STUFF:
 
 BUG FIXES:
 - If a player left the table, there was some stale data left in memory,
-  that did get neither reset noor overwritten by the lazy-scraper.
+  that did get neither reset nor overwritten by the lazy-scraper.
   This didn't affect any symbols, but the player-info in the log.
   Thanks to Micro111 for reporting.
   [THF]

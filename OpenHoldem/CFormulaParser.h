@@ -22,6 +22,7 @@
 #include "CParseTreeOperatorNode.h"
 #include "CParseTreeRotator.h"
 #include "CParseTreeTerminalNode.h"
+#include "CParseTreeTerminalNodeBetsizeAction.h"
 #include "CTokenizer.h"
 
 class CFormulaParser {
@@ -76,8 +77,8 @@ class CFormulaParser {
  private:
   // OpenPPL
   TPParseTreeOperatorNode ParseOpenEndedWhenConditionSequence();
-  TPParseTreeOperatorNode ParseOpenPPLRaiseToExpression();
-  TPParseTreeOperatorNode ParseOpenPPLRaiseByExpression();
+  TPParseTreeTerminalNodeBetsizeAction ParseOpenPPLRaiseToExpression();
+  TPParseTreeTerminalNodeBetsizeAction ParseOpenPPLRaiseByExpression();
   TPParseTreeNode ParseOpenPPLAction();
  private:
   TPParseTreeTerminalNode ParseOpenPPLUserVar(); 

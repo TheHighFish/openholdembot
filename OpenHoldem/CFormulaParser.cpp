@@ -28,6 +28,7 @@
 #include "CParseTreeOperatorNode.h"
 #include "CParseTreeRotator.h"
 #include "CParseTreeTerminalNode.h"
+#include "CParseTreeTerminalNodeBetsizeAction.h"
 #include "CParseTreeTerminalNodeFixedAction.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
 #include "CParseTreeTerminalNodeNumber.h"
@@ -758,10 +759,10 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 	return false;
 }
 
-TPParseTreeOperatorNode CFormulaParser::ParseOpenPPLRaiseToExpression() { 
+TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpression() {
   // RaiseTo N Force
 	// Keyword RaiseTo got already consumed
-	TPParseTreeOperatorNode action = new CParseTreeOperatorNode(_tokenizer.LineRelative());
+	TPParseTreeTerminalNodeBetsizeAction action = new CParseTreeTerminalNodeBetsizeAction(_tokenizer.LineRelative());
 	TPParseTreeNode expression;
 	int _token_ID = _tokenizer.LookAhead();
 	if ((_token_ID == kTokenNumber)
@@ -777,13 +778,13 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenPPLRaiseToExpression() {
 	return action;
 }
 
-TPParseTreeOperatorNode CFormulaParser::ParseOpenPPLRaiseByExpression() { 
+TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpression() {
 	// There are 3 possibilities
 	//   RAISE <Amount> FORCE
 	//   RAISE <PercentagedPot>% FORCE
 	//
 	// Keyword RAISE got already consumed
-	TPParseTreeOperatorNode action = new CParseTreeOperatorNode(_tokenizer.LineRelative());
+  TPParseTreeTerminalNodeBetsizeAction action = new CParseTreeTerminalNodeBetsizeAction(_tokenizer.LineRelative());
 	TPParseTreeNode expression;
 	int _token_ID = _tokenizer.LookAhead();
 	if ((_token_ID == kTokenNumber)

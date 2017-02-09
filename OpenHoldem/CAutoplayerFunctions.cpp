@@ -79,6 +79,10 @@ void CAutoplayerFunctions::CalcPrimaryFormulasOpenPPL() {
 }
 
 void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, int action) {
+  if (action == k_autoplayer_function_betsize) {
+    // Not an elementary action
+    return;
+  }
   CString action_name;
   // Translate aqutoplayer-constant to OPPL-action-name
   switch (action) {
@@ -109,6 +113,8 @@ void CAutoplayerFunctions::CheckIfDecisionMatchesElementaryAction(int decision, 
     case k_autoplayer_function_betpot_1_4:
       action_name = "RaiseFourthPot";
       break;
+    // k_autoplayer_function_betsize already handled above
+    // Not an elementary action -> return
     case k_autoplayer_function_raise:
       action_name = "Raise";
       break;
