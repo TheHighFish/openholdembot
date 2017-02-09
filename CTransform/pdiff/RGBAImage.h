@@ -17,10 +17,6 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #ifndef _RGBAIMAGE_H
 #define _RGBAIMAGE_H
 
-//!!!!!!
-//#include <string>
-//#include <stdafx.h>
-//#include <afxwin.h>
 #include <string>
 
 // assumes data is in the ABGR format
