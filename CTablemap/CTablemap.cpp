@@ -183,6 +183,7 @@ void CTablemap::ClearTablemap() {
 	_valid = false;
 	_filepath = "";
 	_filename = "";
+  _nchairs = kUndefinedZero;
 	_z$.clear();
 	_s$.clear();
 	_r$.clear();
@@ -772,11 +773,9 @@ int CTablemap::LoadTablemap(const CString _fname) {
 		}
 
 		linenum++;
-	}
-	while (ar.ReadString(strLine));
-
+	} while (ar.ReadString(strLine));
+  InitNChairs();
 	_valid = true;
-
 	return SUCCESS;
 }
 
@@ -1191,3 +1190,19 @@ uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int
 
 	return index;
 }
+
+void CTablemap::InitNChairs() {
+  // Previously this lookup-code was in the accessor nchairs()
+  // but sometimes we got a crash related to string-operations
+  // (3rd-party-code) somewhere deep inside GetTMSymbol().
+  // As we didn't find the reason we now avoid these string operations#
+  // and pre-compute nchairs once.
+  int n = GetTMSymbol("nchairs", kMaxNumberOfPlayers);
+  if (n >= 2 && n <= kMaxNumberOfPlayers) {
+    _nchairs = n;
+  } else {
+    _nchairs = kMaxNumberOfPlayers;
+  }
+}
+
+ 

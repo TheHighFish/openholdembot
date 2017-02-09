@@ -143,8 +143,7 @@ class CTablemap {
   void GetTMRegion(const CString name, RECT *region);
  public:
 	// commonly used strings 
-	inline const int nchairs()		{ int n = GetTMSymbol("nchairs", 10);
-									                return (n>=2 && n<=10) ? n : 10; }
+  inline const int nchairs()         { return _nchairs; }
 	inline int LastChair()			       { return (nchairs() - 1); }
 	const int swagtextmethod()		     { return GetTMSymbol("betsizeinterpretationmethod", 0); }
 	const int potmethod()			         { return GetTMSymbol("potmethod", 0); }
@@ -197,6 +196,8 @@ class CTablemap {
 	void WarnAboutGeneralTableMapError(int line, int error_code);
   void ErrorHashCollision(CString name1, CString name2);
  private:
+  void InitNChairs();
+ private:
 	// private variables - use public accessors and public mutators to address these
 	bool		_valid;
 	CString	_filename;
@@ -210,7 +211,8 @@ class CTablemap {
 	IMap		_i$; // indexed on a uint32_t hash of: name+all pixels in RBGA hex format
  private:
 	// private functions and variables - not available via accessors or mutators
-	CCritSec		m_critsec;
+	CCritSec m_critsec;
+  int      _nchairs;
 };
 
 extern CTablemap *p_tablemap;

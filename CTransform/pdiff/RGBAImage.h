@@ -18,6 +18,9 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #define _RGBAIMAGE_H
 
 //!!!!!!
+//#include <string>
+//#include <stdafx.h>
+//#include <afxwin.h>
 #include <string>
 
 // assumes data is in the ABGR format
@@ -43,7 +46,7 @@ public:
 	void Set(int x, int y, unsigned int d) { Data[x + y * Width] = d; }
 	unsigned int Get(int x, int y) const { return Data[x + y * Width]; }
 	unsigned int Get(int i) const { return Data[i]; }
-	const std::string &Get_Name(void) const { return Name; }
+  const std::string &Get_Name(void) const { return Name; }
 	
 	bool WritePPM();
 #ifdef NOT_OPENHOLDEM
@@ -53,7 +56,7 @@ public:
 protected:
 	int Width;
 	int Height;
-	std::string Name;
+  std::string Name;
 	unsigned int *Data;
 };
 
