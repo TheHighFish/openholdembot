@@ -62,14 +62,18 @@ CSharedMem::CSharedMem() {
 	// We can verify the mutex here,
 	// because preferences have already been loaded.
 	VerifyMainMutexName();
-	// Share our process ID for the popup-blocker
+	// Share our process ID for autostarter, watchdog and popup-blocker
 	assert(p_sessioncounter != NULL);
 	AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS-1);
 	int my_PID = GetCurrentProcessId();
 	openholdem_PIDs[p_sessioncounter->session_id()] = my_PID;
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] %d PID %d\n",
-    p_sessioncounter->session_id(), my_PID);
-
+  if (my_PID == 0) {
+    OH_MessageBox_Error_Warning("Unable to query my own process ID.\n"
+      "This might be caused by Windows XP security settings.\n"
+      "Going to terminate.\n"
+      ""); //www!!!!!
+    PostQuitMessage(-1);
+  }
 }
 
 CSharedMem::~CSharedMem() {
