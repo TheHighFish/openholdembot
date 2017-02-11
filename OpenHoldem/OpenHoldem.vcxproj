@@ -250,6 +250,7 @@
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CTableTitle.cpp" />
+	<ClCompile Include="CTitleEvaluator.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="CWhiteInfoBox.cpp" />
     <ClCompile Include="debug.cpp" />
@@ -532,6 +533,7 @@
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CTableTitle.h" />
+	<ClInclude Include="CTitleEvaluator.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="CWhiteInfoBox.h" />
     <ClInclude Include="debug.h" />

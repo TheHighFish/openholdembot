@@ -735,6 +735,9 @@
     <ClCompile Include="CTableTitle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+	<ClCompile Include="CTitleEvaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="mtrand.cpp">
       <Filter>Source Files\PrWin</Filter>
     </ClCompile>
@@ -1613,6 +1616,9 @@
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="CTableTitle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+	<ClInclude Include="CTitleEvaluator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mtrand.h">

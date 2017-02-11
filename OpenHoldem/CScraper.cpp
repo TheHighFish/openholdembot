@@ -786,14 +786,6 @@ void CScraper::ScrapeLimits() {
 			write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
 		}
 	}
-	double l_sblind = kUndefined;
-  double l_bblind = kUndefined; 
-  double l_bbet   = kUndefined; 
-  double l_ante   = kUndefined;
-  double l_sb_bb  = kUndefined;
-  double l_bb_BB  = kUndefined;
-  double l_buyin  = kUndefined;
-	int    l_limit  = kUndefined;
 	// These are scraped from specific regions earlier in this
 	// function.  Use the values we scraped (if any) to seed
 	// the l_ locals so that we don't blindly overwrite the

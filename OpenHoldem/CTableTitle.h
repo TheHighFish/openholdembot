@@ -21,7 +21,7 @@ class CTableTitle {
   ~CTableTitle();
  public:
   // Must be executed exactly once per heartbeat by the scraper
-  // as we also use this function to re,e,ber the last title.
+  // as we also use this function to remember the last title.
   void UpdateTitle();
   void Clear();
   CString Title();
@@ -35,8 +35,6 @@ class CTableTitle {
  protected:
   // Accessible by OpenScrape (CDlgEditSymbols)
   void SetTitle(CString new_title);
- private:
-  void SelfTest();
  private:
   CString _title;
   CString _preprocessed_title;
