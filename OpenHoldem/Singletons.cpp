@@ -95,6 +95,9 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CStableFramesCounter\n");
   assert(!p_stableframescounter);
   p_stableframescounter = new CStableFramesCounter;                                                                                                                                                         
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CTitleEvaluator\n");
+  assert(!p_title_evaluator);
+  p_title_evaluator = new CTitleEvaluator;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CScraper\n");
   assert(!p_scraper); 
   p_scraper = new CScraper;
@@ -269,8 +272,10 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_tablemap)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 13\n");
   DELETE_AND_CLEAR(p_lazyscraper)
-  write_log(preferences.debug_singletons(), "[Singletons] Deleting 15\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 14\n");
   DELETE_AND_CLEAR(p_scraper)
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 15\n");
+  DELETE_AND_CLEAR(p_title_evaluator)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 16\n");
   DELETE_AND_CLEAR(p_stableframescounter)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 17\n");

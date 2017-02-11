@@ -39,23 +39,13 @@ class CTableEvaluator {
   double _bb_BB;
   double _buyin;
   int    _limit;
+  CString _handnumber;
+ private:
+  // Verbose results for OpenScrape
+  // Everything in one string
+  CString _results_for_openscrape;
 };
 
 extern CTableEvaluator *p_title_evaluator;
 
 #endif INC_CTITLEEVALUATOR_H
-
-
-/*!!!!!
-void CTransform::ParseStringBSL(const CString text,
-  const CString format,
-  CString *results_for_openscrape = NULL,
-  CString *handnumber = NULL,
-  double *sblind = NULL,
-  double *bblind = NULL,
-  double *bbet = NULL,
-  double *ante = NULL,
-  int    *limit = NULL,
-  double *sb_bb = NULL,
-  double *bb_BB = NULL,
-  double *buyin = NULL);*/

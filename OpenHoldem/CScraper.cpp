@@ -756,7 +756,6 @@ void CScraper::ScrapeMTTRegions() {
 void CScraper::ScrapeLimits() {
 	__HDC_HEADER
 	CString				text = "";
-	bool				  got_new_scrape = false, log_blind_change = false;
 	CTransform		trans;
 	CString				s = "";
 	RMapCI				r_iter = p_tablemap->r$()->end();
@@ -771,7 +770,6 @@ void CScraper::ScrapeLimits() {
 	if (EvaluateRegion("c0handnumber", &text)) {
 		if (text!="") {
       p_table_state->_s_limit_info._handnumber = extractHandnumFromString(text);
-			got_new_scrape = true;
 		}
 		write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
 	}
@@ -781,7 +779,6 @@ void CScraper::ScrapeLimits() {
 		if (EvaluateRegion(s, &text))	{
 			if (text!="")	{
 				p_table_state->_s_limit_info._handnumber = extractHandnumFromString (text);
-				got_new_scrape = true;
 			}
 			write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
 		}
