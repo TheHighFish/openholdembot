@@ -63,8 +63,6 @@ class CTransform
 								 int *x_begin, int *x_end, int *y_begin, int *y_end);
 	void CalcHexmash(const int left, const int right, const int top, const int bottom, 
 						   const bool (*ch)[MAX_CHAR_HEIGHT], CString *hexmash, const bool withspace=false);
-  //!!!!! not here
-	double StringToMoney(const CString str);
  private:
 	// private functions and variables - not available via accessors or mutators
 	int CTypeTransform(RMapCI region, const HDC hdc, CString *text, COLORREF *cr_avg);

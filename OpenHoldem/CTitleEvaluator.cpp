@@ -22,9 +22,6 @@
 #include "CTableTitle.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
-//!!!!!
-#include "..\CTransform\CTransform.h"
-
 CTitleEvaluator *p_title_evaluator = NULL;
 
 CTitleEvaluator::CTitleEvaluator() {
@@ -216,8 +213,7 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
         token += title[place_in_title];
         place_in_title++;
       }
-      CTransform t;
-      number = t.StringToMoney(token);
+      StringToMoney(token);
       temp = Number2CString(number);
       if (number_type == "^s") {
         _results_for_openscrape.Append("^s (sblind)\t= " + temp + "\r\n");

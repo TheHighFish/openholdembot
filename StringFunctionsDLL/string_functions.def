@@ -20,4 +20,5 @@ RightCharacter
 RightDigitCharacterToNumber
 StringAIsPrefixOfStringB
 StringIsExactMatch
+StringToMoney
 WarnAboutNonASCIICharacters
