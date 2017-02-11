@@ -7,29 +7,33 @@
 //
 //******************************************************************************
 //
-// Purpose: Evaluating titletext (ttlimits)
-//   and the craped c0limitsX
+// Purpose: Evaluating titletext (ttlimits),
+//   the craped c0limitsX and similar info
+//   formerly CScraper::ScrapeLimits()
 //
 //******************************************************************************
 
 #ifndef INC_CTITLEEVALUATOR_H
 #define INC_CTITLEEVALUATOR_H
 
-class CTableEvaluator {
+class CTitleEvaluator {
   friend class CDlgEditSymbols;
  public:
-  CTableEvaluator();
-  ~CTableEvaluator();
+  CTitleEvaluator();
+  ~CTitleEvaluator();
  public:
   void ClearAllDataOncePerHeartbeat();
+  void EvaluateScrapedHandNumbers();
   void EvaluateTitleText();
   void EvaluateScrapedTitleTexts();
+  void EvaluateScrapedGameInfo();
  private:
   void EvaluateC0LimitsX(CString c0limitsX);
   // Process ttlimits and c0limitsX.
   // Accept only full matches, discard partial matches.
   // Aggregate data in case of multiple perfect matches.
   bool ProcessTitle(CString title, CString ttlimits_format);
+  CString ExtractHandnumFromString(CString t);
  private:
   double _sblind;
   double _bblind;
@@ -46,6 +50,6 @@ class CTableEvaluator {
   CString _results_for_openscrape;
 };
 
-extern CTableEvaluator *p_title_evaluator;
+extern CTitleEvaluator *p_title_evaluator;
 
 #endif INC_CTITLEEVALUATOR_H

@@ -48,6 +48,7 @@
 #include "CTablePositioner.h"
 #include "CTableState.h"
 #include "CTableTitle.h"
+#include "CTitleEvaluator.h"
 #include "CValidator.h"
 #include "CVersionInfo.h"
 #include "CWatchdog.h"

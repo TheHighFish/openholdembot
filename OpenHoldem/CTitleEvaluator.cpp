@@ -7,8 +7,9 @@
 //
 //******************************************************************************
 //
-// Purpose: Evaluating titletext (ttlimits)
-//   and the craped c0limitsX
+// Purpose: Evaluating titletext (ttlimits),
+//   the craped c0limitsX and similar info
+//   formerly CScraper::ScrapeLimits()
 //
 //******************************************************************************
 
@@ -17,21 +18,22 @@
 
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CTableState.h"
 #include "CTableTitle.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
 //!!!!!
 #include "..\CTransform\CTransform.h"
 
-CTableEvaluator *p_title_evaluator = NULL;
+CTitleEvaluator *p_title_evaluator = NULL;
 
-CTableEvaluator::CTableEvaluator() {
+CTitleEvaluator::CTitleEvaluator() {
 }
 
-CTableEvaluator::~CTableEvaluator() {
+CTitleEvaluator::~CTitleEvaluator() {
 }
 
-void CTableEvaluator::ClearAllDataOncePerHeartbeat() {
+void CTitleEvaluator::ClearAllDataOncePerHeartbeat() {
   _sblind = kUndefined;
   _bblind = kUndefined;
   _bbet = kUndefined;
@@ -42,7 +44,42 @@ void CTableEvaluator::ClearAllDataOncePerHeartbeat() {
   _limit = kUndefined;
 }
 
-void CTableEvaluator::EvaluateTitleText() {
+void CTitleEvaluator::EvaluateScrapedHandNumbers() {
+  CString text;
+  // r$c0handnumber
+  if (p_scraper->EvaluateRegion("c0handnumber", &text)) {
+    if (text != "") {
+      p_table_state->_s_limit_info._handnumber = ExtractHandnumFromString(text);
+    }
+    write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
+  }
+  for (int j = 0; j <= 9; j++) {
+    // r$c0handnumberX
+    CString tablemap_symbol;
+    tablemap_symbol.Format("c0handnumber%d", j);
+    if (p_scraper->EvaluateRegion(tablemap_symbol, &text)) {
+      if (text != "") {
+        p_table_state->_s_limit_info._handnumber = ExtractHandnumFromString(text);
+      }
+      write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
+    }
+  }
+}
+
+CString CTitleEvaluator::ExtractHandnumFromString(CString t) {
+  CString resulting_handumber_digits_only;
+  // Check for bad parameters
+  if (!t || t == "") return "";
+  for (int i = 0; i<t.GetLength(); i++) {
+    if (isdigit(t[i]))
+    {
+      resulting_handumber_digits_only += t[i];
+    }
+  }
+  return resulting_handumber_digits_only;
+}
+
+void CTitleEvaluator::EvaluateTitleText() {
   CString titletext = p_table_title->PreprocessedTitle();
   CString title_format = p_tablemap->GetTMSymbol("ttlimits");
   ProcessTitle(titletext, title_format);
@@ -53,7 +90,7 @@ void CTableEvaluator::EvaluateTitleText() {
   }
 }
 
-void CTableEvaluator::EvaluateScrapedTitleTexts() {
+void CTitleEvaluator::EvaluateScrapedTitleTexts() {
   EvaluateC0LimitsX("c0limits");
   for (int i = 0; i < k_max_number_of_titletexts; i++) {
     CString c0limitsX;
@@ -62,11 +99,18 @@ void CTableEvaluator::EvaluateScrapedTitleTexts() {
   }
 }
 
-void CTableEvaluator::EvaluateC0LimitsX(CString c0limitsX) {
-  // Lookup s$c0limitsX
+void CTitleEvaluator::EvaluateC0LimitsX(CString c0limitsX) {
+  // c0limits needs both
+  // * a region r$c0limits to define where to scrape the limis 
+  // * a symbol s$c0limits to define how to interpret the scrape text,
+  //   similar to s$ttlimits
+  // First lookup s$c0limitsX
   CString title_format = p_tablemap->GetTMSymbol(c0limitsX);
   if (title_format == "") {
     // Not supported by tablemap
+    // Missing s$c0limits could crash OpenHoldem in the past
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=18865
+    // but CTablemapCompletenessChecker now also takes care
     return;
   }
   // Scrape the region r$c0limitsX from the table
@@ -74,6 +118,26 @@ void CTableEvaluator::EvaluateC0LimitsX(CString c0limitsX) {
   if (p_scraper->EvaluateRegion(c0limitsX, &scraped_title)) {
     ProcessTitle(scraped_title, title_format);
   }
+}
+
+void CTitleEvaluator::EvaluateScrapedGameInfo() {
+  CString result;
+  // r$c0smallblind
+  p_scraper->EvaluateRegion("c0smallblind", &result);
+  p_table_state->_s_limit_info._sblind.SetValue(result);
+  // r$c0bigblind
+  p_scraper->EvaluateRegion("c0bigblind", &result);
+  p_table_state->_s_limit_info._bblind.SetValue(result);
+  // r$c0bigbet
+  p_scraper->EvaluateRegion("c0bigbet", &result);
+  p_table_state->_s_limit_info._bbet.SetValue(result);
+  // r$c0ante
+  p_scraper->EvaluateRegion("c0ante", &result);
+  p_table_state->_s_limit_info._ante.SetValue(result);
+  // r$c0isfinaltable
+  p_scraper->EvaluateTrueFalseRegion(&p_table_state->_s_limit_info._is_final_table, "c0isfinaltable");
+  write_log(preferences.debug_scraper(), "[CScraper] small blind at the very end: %.2f\n",
+    p_table_state->_s_limit_info._sblind.GetValue());
 }
 
 // Former ParseStringBSL()
@@ -84,7 +148,7 @@ void CTableEvaluator::EvaluateC0LimitsX(CString c0limitsX) {
 // to get a cleanner interface and cleaner code.
 // The other in-out-parameters must be initialized with kUndefined now
 // (or with the empty string). This value represents the same information.
-bool CTableEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
+bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   // Temp results
   // We only copy them back if title and format match perfectly
   CString new_handnumber = "";
@@ -354,3 +418,39 @@ bool CTableEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
 #endif
   return true;
 }
+
+
+/*
+// save what we just scanned through
+if (l_handnumber != "") {
+p_table_state->_s_limit_info._handnumber = l_handnumber;
+}
+if (l_sblind != kUndefined) {
+p_table_state->_s_limit_info._sblind.SetValue(Number2CString(l_sblind));
+}
+if (l_bblind != kUndefined) {
+p_table_state->_s_limit_info._bblind.SetValue(Number2CString(l_bblind));
+}
+if (l_bbet != kUndefined) {
+p_table_state->_s_limit_info._bbet.SetValue(Number2CString(l_bbet));
+}
+if (l_ante != kUndefined) {
+p_table_state->_s_limit_info._ante.SetValue(Number2CString(l_ante));
+}
+if (l_limit != kUndefined) {
+p_table_state->_s_limit_info._limit = l_limit;
+}
+if (l_sb_bb != kUndefined) {
+p_table_state->_s_limit_info._sb_bb.SetValue(Number2CString(l_sb_bb));
+}
+if (l_bb_BB != kUndefined) {
+p_table_state->_s_limit_info._bb_BB.SetValue(Number2CString(l_bb_BB));
+}
+if (l_buyin != kUndefined) {
+p_table_state->_s_limit_info._buyin.SetValue(Number2CString(l_buyin));
+}
+
+
+/*write_log(preferences.debug_scraper(), "[CScraper] ttlimits(X), result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
+l_sblind, l_bblind, l_bbet, l_ante, l_limit);
+*/

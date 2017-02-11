@@ -17,7 +17,7 @@
 #include "CScrapedMoney.h"
 
 class CLimitInfo {
-  friend class CScraper;
+  friend class CTitleEvaluator;
  public:
   CLimitInfo();
   ~CLimitInfo();
