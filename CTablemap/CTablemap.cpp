@@ -73,7 +73,7 @@ int CTablemap::GetTMSymbol(CString name, int default)
 	}
   //!!!!!! Here sometimes problem, it seems to point into nirvana
   // maybe fixed in 11.1.0
-#ifdef OPENJOLDEM_PROGRAM
+#ifdef OPENHOLDEM_PROGRAM
   write_log(preferences.debug_alltherest(), "[CTablemap] location Johnny_S\n");
 #endif
 	CString value = it->second.text.GetString();
