@@ -58,6 +58,9 @@ CopyNeededFile($binary_dir, $new_openholdem_dir, "window_functions.dll")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "window_functions.lib")
 ; Copy window_functions.lib to the tools-directory too,
 ; because ManualMode needs it
+; string_functions too for OpenScrape
+CopyNeededFile($binary_dir, $new_tools_dir, "string_functions.dll")
+CopyNeededFile($binary_dir, $new_tools_dir, "string_functions.lib")
 CopyNeededFile($binary_dir, $new_tools_dir, "window_functions.dll")
 CopyNeededFile($binary_dir, $new_tools_dir, "window_functions.lib")
 ; Add Keyboard_DLL_VmWare_Unity_Mode into separate directory
