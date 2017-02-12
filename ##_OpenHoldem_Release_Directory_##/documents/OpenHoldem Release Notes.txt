@@ -1,4 +1,4 @@
-v11.1.1 2017-02-06
+v11.1.2 2017-02-13
 ==================
 NEW STUFF:
 - Added forgotten symbol BotsActionsOnTurn.
@@ -11,7 +11,27 @@ BUG FIXES:
   This didn't affect any symbols, but the player-info in the log.
   Thanks to Micro111 for reporting.
   [THF]
-
+- If a tablemap contained multiple ttlimitsX
+  and more than one was partially matching,
+  then potentially bad data of a partial could overwrite
+  good data from a perfect previous match.
+  This has now been fixed; OpenHoldem requires a perfect match now
+  and if multiple ttlimits match perfectly then data gets aggregated.
+  Thanks to Brass Knuckles for reporting and to postenjak,
+  Poker_Dog, Qwerty and ZeeZooLaa for the helpful discussion.
+  [THF]
+- OpenHoldem crashed for some people, according to logs when updating the GUI.
+  For developers with a debug-build this sometimes happened in some string-function 
+  called by GetTablemapSymbol() called by nchairs() because of invalid memory-access. 
+  It could hardly have been a race-condition, because the symbol nchairs is de facto read-only. 
+  It didn't look heap-corruption either, because always the same symbol was affected.
+  To prevent this from happening we rewrote the nchairs-function,
+  that now always returns an integer (initialized on connection) 
+  instead of looking up the value again and again. 
+  Let's hope that the problem is fixed.
+  Thanks to JohnNash, Johnny, WantPlayPoker, ChillIt and ChuckNeverMuck
+  for reporting and for providing log-files,
+  [THF]
 
 v11.1.1 2017-02-06
 ==================
@@ -103,7 +123,7 @@ BUG FIXES:
   thus leading to an invalid memory access.
   [THF]
 - Improved HaveRunnerRunnerFlushAtRiver.
-  Thanks to ChuckNeverMuch and Salem for reporting
+  Thanks to ChuckNeverMuck and Salem for reporting
   and sugegsting improvements.
   [THF]
 
