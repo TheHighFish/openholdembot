@@ -54,12 +54,16 @@ bool CScrapedMoney::SetValue(CString scraped_value) {
   }
   double result = StringToMoney(scraped_value);
   if (result >= 0.0) {
-    _value = result;
-    return true;
+    return SetValue(result);
   }
   return false;
 }
 
+bool CScrapedMoney::SetValue(double new_value) {
+  _value = new_value;
+  return true;
+}
+
 void CScrapedMoney::Reset() {
-  _value = 0.0;
+  SetValue(0.0);
 }

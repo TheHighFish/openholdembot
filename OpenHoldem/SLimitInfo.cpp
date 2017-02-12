@@ -34,11 +34,11 @@ void CLimitInfo::Reset() {
   _is_final_table = false;
 }
 
-double CLimitInfo::sblind(bool is_fixed_limit) {
+double CLimitInfo::sblind() {
   if (_sblind.GetValue() > kUndefinedZero) {
     return _sblind.GetValue();
   }
-  if (!is_fixed_limit) {
+  if (_limit != kGametypeFL) {
     if (_sb_bb.GetValue() > kUndefinedZero) {
       return _sb_bb.GetValue();
     }
@@ -48,11 +48,11 @@ double CLimitInfo::sblind(bool is_fixed_limit) {
   return kUndefinedZero;
 }
 
-double CLimitInfo::bblind(bool is_fixed_limit) {
+double CLimitInfo::bblind() {
   if (_bblind.GetValue() > kUndefinedZero) {
     return _bblind.GetValue();
   }
-  if (is_fixed_limit) {
+  if (_limit == kGametypeFL) {
     if (_sb_bb.GetValue() > kUndefinedZero) {
       return _sb_bb.GetValue();
     } else {
@@ -62,11 +62,11 @@ double CLimitInfo::bblind(bool is_fixed_limit) {
   return kUndefinedZero;
 }
 
-double CLimitInfo::bbet(bool is_fixed_limit) {
+double CLimitInfo::bbet() {
   if (_bbet.GetValue() > kUndefinedZero) {
     return _bbet.GetValue();
   }
-  if (is_fixed_limit) {
+  if (_limit == kGametypeFL) {
     if (_bb_BB.GetValue() > kUndefinedZero) {
       return _bb_BB.GetValue();
     }

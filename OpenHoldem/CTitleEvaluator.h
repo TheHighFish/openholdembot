@@ -35,16 +35,6 @@ class CTitleEvaluator {
   bool ProcessTitle(CString title, CString ttlimits_format);
   CString ExtractHandnumFromString(CString t);
  private:
-  double _sblind;
-  double _bblind;
-  double _bbet;
-  double _ante;
-  double _sb_bb;
-  double _bb_BB;
-  double _buyin;
-  int    _limit;
-  CString _handnumber;
- private:
   // Verbose results for OpenScrape
   // Everything in one string
   CString _results_for_openscrape;

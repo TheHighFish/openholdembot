@@ -31,14 +31,7 @@ CTitleEvaluator::~CTitleEvaluator() {
 }
 
 void CTitleEvaluator::ClearAllDataOncePerHeartbeat() {
-  _sblind = kUndefined;
-  _bblind = kUndefined;
-  _bbet = kUndefined;
-  _ante = kUndefined;
-  _sb_bb = kUndefined;
-  _bb_BB = kUndefined;
-  _buyin = kUndefined;
-  _limit = kUndefined;
+  p_table_state->_s_limit_info.Reset();
 }
 
 void CTitleEvaluator::EvaluateScrapedHandNumbers() {
@@ -369,32 +362,32 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   // Write temporary results back.
   // Only if the lnown value is "undefined",
   // without any worries about the new value
-  if (_handnumber == "") {
-    _handnumber = new_handnumber;
+  if (p_table_state->_s_limit_info.handnumber() == "") {
+    p_table_state->_s_limit_info._handnumber = new_handnumber;
   }
-  if (_sblind == kUndefined) {
-    _sblind = new_sblind;
+  if (p_table_state->_s_limit_info.sblind() == kUndefined) {
+    p_table_state->_s_limit_info._sblind.SetValue(new_sblind);
   }
-  if (_bblind == kUndefined) {
-    _bblind = new_bblind;
+  if (p_table_state->_s_limit_info.bblind() == kUndefined) {
+    p_table_state->_s_limit_info._bblind.SetValue(new_bblind);
   }
-  if (_bbet == kUndefined) {
-    _bbet = new_bbet;
+  if (p_table_state->_s_limit_info.bbet() == kUndefined) {
+    p_table_state->_s_limit_info._bbet.SetValue(new_bbet);
   }
-  if (_ante == kUndefined) {
-    _ante = new_ante;
+  if (p_table_state->_s_limit_info.ante() == kUndefined) {
+    p_table_state->_s_limit_info._ante.SetValue(new_ante);
   }
-  if (_limit == kUndefined) {
-    _limit = new_limit;
+  if (p_table_state->_s_limit_info.limit() == kUndefined) {
+    p_table_state->_s_limit_info._limit = new_limit;
   }
-  if (_sb_bb == kUndefined) {
-    _sb_bb = new_sb_bb;
+  if (p_table_state->_s_limit_info._sb_bb.GetValue() == kUndefined) {
+    p_table_state->_s_limit_info._sb_bb.SetValue(new_sb_bb);
   }
-  if (_bb_BB == kUndefined) {
-    _bb_BB = new_bb_BB;
+  if (p_table_state->_s_limit_info._bb_BB.GetValue() == kUndefined) {
+    p_table_state->_s_limit_info._bb_BB.SetValue(new_bb_BB);
   }
-  if (_buyin == kUndefined) {
-    _buyin = new_buyin;
+  if (p_table_state->_s_limit_info.buyin() == kUndefined) {
+    p_table_state->_s_limit_info._buyin.SetValue(new_buyin);
   }
 #ifdef OPENHOLDEM_PROGRAM
   write_log(preferences.debug_scraper(),
@@ -404,13 +397,19 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
     title, ttlimits_format);
   write_log(preferences.debug_scraper(),
     "[CTransform] handnumber = %s, sblind = %f, bblind = %f\n",
-    _handnumber, _sblind, _bblind);
+    p_table_state->_s_limit_info.handnumber(), 
+    p_table_state->_s_limit_info.sblind(),
+    p_table_state->_s_limit_info.bblind());
   write_log(preferences.debug_scraper(),
     "[CTransform] bbet = %f, ante = %f, limit = %d, sb_bb = %f, bb_BB = %f\n",
-    _bbet, _ante, _limit, _sb_bb, _bb_BB);
+    p_table_state->_s_limit_info.bbet(), 
+    p_table_state->_s_limit_info.ante(), 
+    p_table_state->_s_limit_info.limit(), 
+    p_table_state->_s_limit_info._sb_bb.GetValue(), 
+    p_table_state->_s_limit_info._bb_BB.GetValue());
   write_log(preferences.debug_scraper(),
     "[CTransform] buyin = %d\n",
-    _buyin);
+    p_table_state->_s_limit_info.buyin());
 #endif
   return true;
 }
