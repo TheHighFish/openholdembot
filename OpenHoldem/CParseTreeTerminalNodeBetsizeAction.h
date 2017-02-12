@@ -17,7 +17,6 @@
 #include "CParseTreeNode.h"
 
 class CParseTreeTerminalNodeBetsizeAction: public CParseTreeNode {
-  //!!!!!friend class CFormulaParser;
   friend class CParseTreeRotator;
  public:
    CParseTreeTerminalNodeBetsizeAction(int relative_line_number);

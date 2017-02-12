@@ -34,6 +34,7 @@ class CScraper {
  public:
   // For scraping custom regions at the DLL-level
   bool EvaluateRegion(CString name, CString *result);
+  void EvaluateTrueFalseRegion(bool *result, const CString name);
  public:
   bool IsCommonAnimation();
  protected:
@@ -74,11 +75,9 @@ class CScraper {
 	void ScrapeBet(const int chair);
 	void ScrapePots();
 	void ScrapeLimits();
-	const CString extractHandnumFromString(const CString t);
 	const double DoChipScrape(RMapCI r_iter);
  private:
 	bool ProcessRegion(RMapCI r_iter);
-  void EvaluateTrueFalseRegion(bool *result, const CString name);
 	bool IsExtendedNumberic(CString text);
  private:
   void ResetLimitInfo();

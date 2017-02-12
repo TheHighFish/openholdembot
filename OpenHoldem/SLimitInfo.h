@@ -17,7 +17,7 @@
 #include "CScrapedMoney.h"
 
 class CLimitInfo {
-  friend class CScraper;
+  friend class CTitleEvaluator;
  public:
   CLimitInfo();
   ~CLimitInfo();
@@ -31,9 +31,9 @@ class CLimitInfo {
   //   * _bbet
   //   * _sb_bb
   //   * _bb_BB 
-  double	sblind(bool is_fixed_limit);
-	double	bblind(bool is_fixed_limit);
-	double	bbet(bool is_fixed_limit);
+  double	sblind();
+	double	bblind();
+	double	bbet();
  public:
   double	ante()           { return _ante.GetValue(); }
 	int		  limit()          { return _limit; }

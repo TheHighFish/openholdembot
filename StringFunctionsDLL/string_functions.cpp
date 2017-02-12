@@ -11,6 +11,10 @@
 //
 //******************************************************************************
 
+#ifndef OPENHOLDEM_PROGRAM //!!!!!
+#define _AFXDLL
+#endif
+
 // Needs to be defined here, before #include "window_functions.h"
 // to generate proper export- and inport-definitions
 #define STRING_FUNCTIONS_EXPORTS
@@ -37,6 +41,9 @@
 #define _WIN32_IE 0x0600	// Change this to the appropriate value to target other versions of IE.
 #endif
 
+//#define _AFXDLL //!!!!!
+
+#include <afxwin.h>
 #include <assert.h>
 #include <math.h>
 #include <windows.h>
@@ -416,6 +423,110 @@ bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b) {
 bool StringIsExactMatch(const char *string_a, const char *string_b) {
   return ((strlen(string_a) == strlen(string_b))
     && StringAIsPrefixOfStringB(string_a, string_b));
+}
+
+double StringToMoney(const CString inStr) {
+  CStringArray		 possibleValues;
+  CArray<int, int> possibleValuesMultiplier;
+  CString				   activeValue = "";
+  int					     iValueWithCurrencySymbol = -1;
+  bool				     currencySymbol = false;
+#ifdef OPENHOLDEM_PROGRAM
+  write_log(preferences.debug_scraper(),
+    "[CTransform] StringToMoney %s\n", inStr);
+#endif 
+  if (strlen(inStr) == 0) {
+    return kUndefinedZero;
+  }
+  if (inStr.FindOneOf("0123456789") < 0) {
+    return kUndefinedZero;
+  }
+  const char *str = inStr.GetString();
+  while (*str) {
+    switch (*str) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case '.':
+      activeValue += *str;
+      break;
+    case ',':
+      break;
+    case '$':
+    case '€':
+    case '£':
+      if (activeValue.GetLength() > 0) {
+        possibleValues.Add(activeValue);
+        possibleValuesMultiplier.Add(1);
+        activeValue.Empty();
+      }
+      currencySymbol = true;
+      break;
+    default:
+      if (activeValue.GetLength() > 0) {
+        int index = (int)possibleValues.Add(activeValue);
+        if (currencySymbol) {
+          iValueWithCurrencySymbol = index;
+        }
+        // Support for multiplier-symbols in bets and balances
+        // k = $1.000
+        // m = $1.000.000
+        // c = $0.01
+        // Both upper and lower cases
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=18939
+        if (*str == '¢' || *str == 'c' || *str == 'C') {
+          possibleValuesMultiplier.Add(-100);
+        }
+        else if (*str == 'k' || *str == 'K') {
+          possibleValuesMultiplier.Add(1000);
+        }
+        else if (*str == 'm' || *str == 'M') {
+          possibleValuesMultiplier.Add(1000000);
+        }
+        else {
+          possibleValuesMultiplier.Add(1);
+        }
+        activeValue.Empty();
+      }
+      break;
+    }
+    ++str;
+  }
+  if (activeValue.GetLength() > 0) {
+    int index = (int)possibleValues.Add(activeValue);
+    possibleValuesMultiplier.Add(1);
+    if (currencySymbol) {
+      iValueWithCurrencySymbol = index;
+    }
+  }
+  double number = 0.0;
+  int iValueToUse = -1;
+  if (possibleValues.GetSize() == 1) {
+    iValueToUse = 0;
+  }
+  else if (iValueWithCurrencySymbol >= 0) {
+    iValueToUse = iValueWithCurrencySymbol;
+  }
+  else if (possibleValues.GetSize() > 1) {
+    iValueToUse = 0;
+  }
+  if (iValueToUse >= 0) {
+    number = atof(possibleValues[iValueToUse].GetString());
+    if (possibleValuesMultiplier[iValueToUse] < 0) {
+      number /= -possibleValuesMultiplier[iValueToUse];
+    }
+    else {
+      number *= possibleValuesMultiplier[iValueToUse];
+    }
+  }
+  return number;
 }
 
 void WarnAboutNonASCIICharacters(const CString *s) {

@@ -19,9 +19,7 @@
 
 #include "stdafx.h"
 #include "CScrapedMoney.h"
-
 #include "..\StringFunctionsDLL\string_functions.h"
-#include "..\CTransform\CTransform.h" // !!! R
 
 CScrapedMoney::CScrapedMoney() {
   Reset();
@@ -54,15 +52,18 @@ bool CScrapedMoney::SetValue(CString scraped_value) {
     // Again: evaluate only meaningful input
     return false;
   }
-  CTransform c;
-  double result = c.StringToMoney(scraped_value);
+  double result = StringToMoney(scraped_value);
   if (result >= 0.0) {
-    _value = result;
-    return true;
+    return SetValue(result);
   }
   return false;
 }
 
+bool CScrapedMoney::SetValue(double new_value) {
+  _value = new_value;
+  return true;
+}
+
 void CScrapedMoney::Reset() {
-  _value = 0.0;
+  SetValue(0.0);
 }

@@ -24,6 +24,7 @@ class CScrapedMoney {
  public:
   // returns true if the scraped value is a number and non-negative
   bool SetValue(CString scraped_value);
+  bool SetValue(double new_value);
   void Reset();
   double GetValue() { return _value; }
  private:
