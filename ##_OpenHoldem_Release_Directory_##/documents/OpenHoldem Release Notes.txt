@@ -13,7 +13,7 @@ BUG FIXES:
   [THF]
 - If a tablemap contained multiple ttlimitsX
   and more than one was partially matching,
-  then potentially bad data of a partial could overwrite
+  then potentially bad data of a partial match could overwrite
   good data from a perfect previous match.
   This has now been fixed; OpenHoldem requires a perfect match now
   and if multiple ttlimits match perfectly then data gets aggregated.
@@ -24,7 +24,7 @@ BUG FIXES:
   For developers with a debug-build this sometimes happened in some string-function 
   called by GetTablemapSymbol() called by nchairs() because of invalid memory-access. 
   It could hardly have been a race-condition, because the symbol nchairs is de facto read-only. 
-  It didn't look heap-corruption either, because always the same symbol was affected.
+  It didn't look like heap-corruption either, because always the same symbol was affected.
   To prevent this from happening we rewrote the nchairs-function,
   that now always returns an integer (initialized on connection) 
   instead of looking up the value again and again. 
@@ -32,7 +32,8 @@ BUG FIXES:
   Thanks to JohnNash, Johnny, WantPlayPoker, ChillIt and ChuckNeverMuck
   for reporting and for providing log-files,
   [THF]
-
+  
+  
 v11.1.1 2017-02-06
 ==================
 BUG FIXES:
