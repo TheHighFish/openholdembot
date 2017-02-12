@@ -206,7 +206,7 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
         token += title[place_in_title];
         place_in_title++;
       }
-      StringToMoney(token);
+      number = StringToMoney(token);
       temp = Number2CString(number);
       if (number_type == "^s") {
         _results_for_openscrape.Append("^s (sblind)\t= " + temp + "\r\n");
@@ -365,28 +365,28 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   if (p_table_state->_s_limit_info.handnumber() == "") {
     p_table_state->_s_limit_info._handnumber = new_handnumber;
   }
-  if (p_table_state->_s_limit_info.sblind() == kUndefined) {
+  if (p_table_state->_s_limit_info.sblind() <= kUndefinedZero) {
     p_table_state->_s_limit_info._sblind.SetValue(new_sblind);
   }
-  if (p_table_state->_s_limit_info.bblind() == kUndefined) {
+  if (p_table_state->_s_limit_info.bblind() <= kUndefinedZero) {
     p_table_state->_s_limit_info._bblind.SetValue(new_bblind);
   }
-  if (p_table_state->_s_limit_info.bbet() == kUndefined) {
+  if (p_table_state->_s_limit_info.bbet() <= kUndefinedZero) {
     p_table_state->_s_limit_info._bbet.SetValue(new_bbet);
   }
-  if (p_table_state->_s_limit_info.ante() == kUndefined) {
+  if (p_table_state->_s_limit_info.ante() <= kUndefinedZero) {
     p_table_state->_s_limit_info._ante.SetValue(new_ante);
   }
-  if (p_table_state->_s_limit_info.limit() == kUndefined) {
+  if (p_table_state->_s_limit_info.limit() <= kUndefinedZero) {
     p_table_state->_s_limit_info._limit = new_limit;
   }
-  if (p_table_state->_s_limit_info._sb_bb.GetValue() == kUndefined) {
+  if (p_table_state->_s_limit_info._sb_bb.GetValue() <= kUndefinedZero) {
     p_table_state->_s_limit_info._sb_bb.SetValue(new_sb_bb);
   }
-  if (p_table_state->_s_limit_info._bb_BB.GetValue() == kUndefined) {
+  if (p_table_state->_s_limit_info._bb_BB.GetValue() <= kUndefinedZero) {
     p_table_state->_s_limit_info._bb_BB.SetValue(new_bb_BB);
   }
-  if (p_table_state->_s_limit_info.buyin() == kUndefined) {
+  if (p_table_state->_s_limit_info.buyin() <= kUndefinedZero) {
     p_table_state->_s_limit_info._buyin.SetValue(new_buyin);
   }
 #ifdef OPENHOLDEM_PROGRAM
