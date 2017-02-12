@@ -3,9 +3,11 @@ EXPORTS
 Bool2CString
 CStringRemoveLeft
 CStringRemoveRight
-DigitCharacterToNumber;
+DigitCharacterToNumber
+KeepBalanceNumbersOnly
 IntToBinaryString
 Number2CString
+RangeOfSymbols
 RemoveExtraDotsInNumbers
 RemoveLeftWhiteSpace
 RemoveMultipleWhiteSpaces

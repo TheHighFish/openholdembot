@@ -81,7 +81,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>psapi.lib;..\Release\String_Functions.lib;..\dbghelp\dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;..\Debug\String_Functions.lib;..\dbghelp\dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenScrape.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -145,10 +145,12 @@
     <ClCompile Include="DialogSelectTable.cpp" />
     <ClCompile Include="DialogTableMap.cpp" />
     <ClCompile Include="global.cpp" />
-	<ClCompile Include="ListOfSymbols.cpp" />
+    <ClCompile Include="ListOfSymbols.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="..\OpenHoldem\NumericalFunctions.cpp" />
-    <ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp" />
+    <ClCompile Include="..\OpenHoldem\CTableTitle.cpp" />
+	<ClCompile Include="..\OpenHoldem\CTitleEvaluator.cpp" />
+	<ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp" />
     <ClCompile Include="OpenScrape.cpp" />
     <ClCompile Include="OpenScrapeDoc.cpp" />
     <ClCompile Include="OpenScrapeView.cpp" />
@@ -169,6 +171,8 @@
     <ClCompile Include="..\CTablemap\CTablemapAccess.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\OpenHoldem\CTableTitle.h" />
+    <ClInclude Include="..\OpenHoldem\CTitleEvaluator.h" />
     <ClInclude Include="..\OpenHoldem\OH_MessageBox.h" />
     <ClInclude Include="CRegionCloner.h" />
     <ClInclude Include="debug.h" />
@@ -183,7 +187,7 @@
     <ClInclude Include="DialogSelectTable.h" />
     <ClInclude Include="DialogTableMap.h" />
     <ClInclude Include="global.h" />
-	<ClInclude Include="ListOfSymbols.h" />
+    <ClInclude Include="ListOfSymbols.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="..\OpenHoldem\NumericalFunctions.h" />
     <ClInclude Include="OpenScrape.h" />
@@ -205,9 +209,7 @@
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\OpenHoldem\CTableTitle.cpp" />
     <None Include="..\OpenHoldem\WebSafeColours.h" />
-    <None Include="..\StringFunctionsDLL\string_functions.cpp" />
     <None Include="res\cursor1.cur" />
     <None Include="res\drawrect.bmp" />
     <None Include="res\drawrect.cur" />

@@ -81,7 +81,7 @@
     <ClCompile Include="global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClCompile Include="ListOfSymbols.cpp">
+    <ClCompile Include="ListOfSymbols.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
@@ -138,7 +138,13 @@
     <ClCompile Include="..\OpenHoldem\WebSafeColours.cpp">
       <Filter>Source Files\CTransform</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp">
+    <ClCompile Include="..\OpenHoldem\CTableTitle.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
+    </ClCompile>
+	<ClCompile Include="..\OpenHoldem\CTitleEvaluator.cpp">
+      <Filter>Source Files\OpenHoldem_Functions</Filter>
+    </ClCompile>
+	<ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp">
       <Filter>Source Files\OpenHoldem_Functions</Filter>
     </ClCompile>
   </ItemGroup>
@@ -182,7 +188,7 @@
     <ClInclude Include="global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-	<ClInclude Include="ListOfSymbols.h">
+    <ClInclude Include="ListOfSymbols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainFrm.h">
@@ -242,7 +248,13 @@
     <ClInclude Include="..\CTablemap\CTableMapAccess.h">
       <Filter>Header Files\CTablemap</Filter>
     </ClInclude>
-    <ClInclude Include="..\OpenHoldem\OH_MessageBox.h">
+    <ClInclude Include="..\OpenHoldem\CTableTitle.h">
+      <Filter>Header Files\OpenHoldem_Functions</Filter>
+    </ClInclude>
+	<ClInclude Include="..\OpenHoldem\CTitleEvaluator.h">
+      <Filter>Header Files\OpenHoldem_Functions</Filter>
+    </ClInclude>
+	<ClInclude Include="..\OpenHoldem\OH_MessageBox.h">
       <Filter>Header Files\OpenHoldem_Functions</Filter>
     </ClInclude>
   </ItemGroup>
@@ -282,12 +294,6 @@
     </None>
     <None Include="..\OpenHoldem\WebSafeColours.h">
       <Filter>Header Files\CTransform</Filter>
-    </None>
-    <None Include="..\StringFunctionsDLL\string_functions.cpp">
-      <Filter>Source Files\OpenHoldem_Functions</Filter>
-    </None>
-    <None Include="..\OpenHoldem\CTableTitle.cpp">
-      <Filter>Source Files\OpenHoldem_Functions</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

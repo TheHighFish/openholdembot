@@ -103,7 +103,6 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
   CString preprocessed_title = tabletitle.PreprocessedTitle();
   m_Titletext_preprocessed.SetWindowText(preprocessed_title);
   CTitleEvaluator title_evaluator;
-  title_evaluator.ClearAllDataOncePerHeartbeat();
   title_evaluator.ProcessTitle(text, format);
   CString results = title_evaluator.GetAllCombinedResultsForOpenScrape();
 	m_ParseResults.SetWindowText(results.GetString());

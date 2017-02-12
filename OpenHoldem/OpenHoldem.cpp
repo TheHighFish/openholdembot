@@ -16,9 +16,6 @@
 #include "stdafx.h"
 #include "OpenHoldem.h"
 
-//!!!!! ugly temp solution
-//#include "..\StringFunctionsDLL\string_functions.cpp"
-
 #include <psapi.h>
 #include <windows.h>
 

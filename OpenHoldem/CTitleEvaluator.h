@@ -22,11 +22,13 @@ class CTitleEvaluator {
   CTitleEvaluator();
   ~CTitleEvaluator();
  public:
+#ifdef OPENHOLDEM_PROGRAM
   void ClearAllDataOncePerHeartbeat();
   void EvaluateScrapedHandNumbers();
   void EvaluateTitleText();
   void EvaluateScrapedTitleTexts();
   void EvaluateScrapedGameInfo();
+#endif
  public:
    CString GetAllCombinedResultsForOpenScrape() {
      return _results_for_openscrape; }

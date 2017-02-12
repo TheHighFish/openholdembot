@@ -23,8 +23,6 @@
 #define new DEBUG_NEW
 #endif
 
-//!!!!!ugly temp workaround
-#include "..\StringFunctionsDLL\string_functions.cpp"
 // COpenScrapeView
 
 IMPLEMENT_DYNCREATE(COpenScrapeView, CView)

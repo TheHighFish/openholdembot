@@ -11,9 +11,7 @@
 //
 //******************************************************************************
 
-#ifndef OPENHOLDEM_PROGRAM //!!!!!
 #define _AFXDLL
-#endif
 
 // Needs to be defined here, before #include "window_functions.h"
 // to generate proper export- and inport-definitions

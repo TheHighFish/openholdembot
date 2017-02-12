@@ -15,12 +15,14 @@
 
 #include "stdafx.h"
 #include "CTitleEvaluator.h"
+#include "..\StringFunctionsDLL\string_functions.h"
 
+#ifdef OPENHOLDEM_PROGRAM
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CTableState.h"
 #include "CTableTitle.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#endif 
 
 CTitleEvaluator *p_title_evaluator = NULL;
 
@@ -30,10 +32,13 @@ CTitleEvaluator::CTitleEvaluator() {
 CTitleEvaluator::~CTitleEvaluator() {
 }
 
+#ifdef OPENHOLDEM_PROGRAM
 void CTitleEvaluator::ClearAllDataOncePerHeartbeat() {
   p_table_state->_s_limit_info.Reset();
 }
+#endif
 
+#ifdef OPENHOLDEM_PROGRAM
 void CTitleEvaluator::EvaluateScrapedHandNumbers() {
   CString text;
   // r$c0handnumber
@@ -55,6 +60,7 @@ void CTitleEvaluator::EvaluateScrapedHandNumbers() {
     }
   }
 }
+#endif
 
 CString CTitleEvaluator::ExtractHandnumFromString(CString t) {
   CString resulting_handumber_digits_only;
@@ -69,6 +75,7 @@ CString CTitleEvaluator::ExtractHandnumFromString(CString t) {
   return resulting_handumber_digits_only;
 }
 
+#ifdef OPENHOLDEM_PROGRAM
 void CTitleEvaluator::EvaluateTitleText() {
   CString titletext = p_table_title->PreprocessedTitle();
   CString title_format = p_tablemap->GetTMSymbol("ttlimits");
@@ -79,7 +86,9 @@ void CTitleEvaluator::EvaluateTitleText() {
     ProcessTitle(titletext, title_format);
   }
 }
+#endif
 
+#ifdef OPENHOLDEM_PROGRAM
 void CTitleEvaluator::EvaluateScrapedTitleTexts() {
   EvaluateC0LimitsX("c0limits");
   for (int i = 0; i < k_max_number_of_titletexts; i++) {
@@ -88,7 +97,9 @@ void CTitleEvaluator::EvaluateScrapedTitleTexts() {
     EvaluateC0LimitsX(c0limitsX);
   }
 }
+#endif
 
+#ifdef OPENHOLDEM_PROGRAM
 void CTitleEvaluator::EvaluateC0LimitsX(CString c0limitsX) {
   // c0limits needs both
   // * a region r$c0limits to define where to scrape the limis 
@@ -109,7 +120,9 @@ void CTitleEvaluator::EvaluateC0LimitsX(CString c0limitsX) {
     ProcessTitle(scraped_title, title_format);
   }
 }
+#endif
 
+#ifdef OPENHOLDEM_PROGRAM
 void CTitleEvaluator::EvaluateScrapedGameInfo() {
   CString result;
   // r$c0smallblind
@@ -129,6 +142,7 @@ void CTitleEvaluator::EvaluateScrapedGameInfo() {
   write_log(preferences.debug_scraper(), "[CScraper] small blind at the very end: %.2f\n",
     p_table_state->_s_limit_info._sblind.GetValue());
 }
+#endif
 
 // Former ParseStringBSL()
 // For OpenHoldem 7.3.1 we removed the superfluous parameters
@@ -358,6 +372,7 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
       return false;
     }
   }
+#ifdef OPENHOLDEM_PROGRAM
   // Perfect match found.
   // Write temporary results back.
   // Only if the lnown value is "undefined",
@@ -389,7 +404,6 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   if (p_table_state->_s_limit_info.buyin() <= kUndefinedZero) {
     p_table_state->_s_limit_info._buyin.SetValue(new_buyin);
   }
-#ifdef OPENHOLDEM_PROGRAM
   write_log(preferences.debug_scraper(),
     "[CTransform] parsed title string\n");
   write_log(preferences.debug_scraper(),
