@@ -18,8 +18,7 @@
 #include "DialogEditSymbols.h"
 #include "OpenScrapeDoc.h"
 #include "..\OpenHoldem\CTableTitle.h"
-
-#include "..\OpenHoldem\CTableTitle.cpp"
+#include "..\OpenHoldem\CTitleEvaluator.h"
 
 // CDlgEditSymbols dialog
 
@@ -96,7 +95,6 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
 {
 	CString text, format;
 	COpenScrapeDoc	*pDoc = COpenScrapeDoc::GetDocument();
-	CTransform			trans;
 
 	m_Titletext.GetWindowText(text);
 	m_Value.GetWindowText(format);
@@ -104,7 +102,10 @@ void CDlgEditSymbols::OnBnClickedParsebutton()
   tabletitle.SetTitle(text);
   CString preprocessed_title = tabletitle.PreprocessedTitle();
   m_Titletext_preprocessed.SetWindowText(preprocessed_title);
-  trans.ParseStringBSL(preprocessed_title, format, &results);
+  CTitleEvaluator title_evaluator;
+  title_evaluator.ClearAllDataOncePerHeartbeat();
+  title_evaluator.ProcessTitle(text, format);
+  CString results = title_evaluator.GetAllCombinedResultsForOpenScrape();
 	m_ParseResults.SetWindowText(results.GetString());
 }
 

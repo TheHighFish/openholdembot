@@ -27,6 +27,9 @@ class CTitleEvaluator {
   void EvaluateTitleText();
   void EvaluateScrapedTitleTexts();
   void EvaluateScrapedGameInfo();
+ public:
+   CString GetAllCombinedResultsForOpenScrape() {
+     return _results_for_openscrape; }
  private:
   void EvaluateC0LimitsX(CString c0limitsX);
   // Process ttlimits and c0limitsX.
