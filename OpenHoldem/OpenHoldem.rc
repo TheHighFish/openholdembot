@@ -1232,14 +1232,11 @@ END
 STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "OpenHoldem\n\nformula\nOpenHoldem Files (*.ohf;)\n.ohf;.whf\nOpenHoldem.Document\nformula.Document"
-    ID_INDICATOR_STATUS_COMCARDS "ComCards"
-    ID_INDICATOR_STATUS_PRWIN "prwin"
-    ID_INDICATOR_STATUS_NOPP "nopp"
     ID_INDICATOR_STATUS_ACTION "action"
-    ID_INDICATOR_STATUS_NIT "f$prwin_number_of_iterations"
-    ID_INDICATOR_STATUS_POKERHAND "poker hand"
-    ID_INDICATOR_STATUS_HANDRANK "status handrank"
     ID_INDICATOR_FORMULA_CURPOS "current row"
+    ID_INDICATOR_STATUS_HANDRANK "status handrank"
+    ID_INDICATOR_STATUS_PRWIN "prwin"
+    ID_INDICATOR_STATUS_NIT "f$prwin_number_of_iterations"
 END
 
 STRINGTABLE
@@ -1336,7 +1333,6 @@ BEGIN
     AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
     AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
     AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
-    ID_INDICATOR_STATUS_PLCARDS "plcards"
 END
 
 STRINGTABLE
