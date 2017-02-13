@@ -144,7 +144,7 @@ bool CPlayer::PostingBothBlinds() {
 }
 
 void CPlayer::set_seated(bool is_seated) { 
-  if ((is_seated == false) && seated()) {
+  if ((is_seated == false)) {
     // Change from seated to non-seated
     // We should clear all player data in this case
     // as the lazy-scraper stops on empty seats

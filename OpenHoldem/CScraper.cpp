@@ -207,11 +207,11 @@ void CScraper::ScrapeBetpotButtons() {
 }
 
 void CScraper::ScrapeSeatedActive() {
-	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
-		p_table_state->Player(i)->set_seated(false);
-		p_table_state->Player(i)->set_active(false);
-	}
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
+    p_table_state->Player(i)->set_active(false);
+    // Me must NOT set_seated(false) here,
+    // as that would reset all player data.
+    // www!!!!!
 		ScrapeSeated(i);
 		if (p_table_state->Player(i)->seated()) {
 			ScrapeActive(i);
@@ -242,8 +242,9 @@ void CScraper::ScrapeBetsAndBalances() {
 void CScraper::ScrapeSeated(int chair) {
 	CString seated;
 	CString result;
-
-	p_table_state->Player(chair)->set_seated(false);
+  // Me must NOT set_seated(false) here,
+  // as that would reset all player data.
+  // www!!!!!
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
@@ -259,8 +260,11 @@ void CScraper::ScrapeSeated(int chair) {
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
 			p_table_state->Player(chair)->set_seated(p_string_match->IsStringSeated(result));
+      return;
 		}
 	}
+  // Failed. Not seated
+  p_table_state->Player(chair)->set_seated(false);
 }
 
 void CScraper::ScrapeDealer() {
@@ -268,11 +272,9 @@ void CScraper::ScrapeDealer() {
 	// That's why we scrape all chairs
 	CString dealer;
 	CString result;
-
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		p_table_state->Player(i)->set_dealer(false);
 	}
-
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		dealer.Format("p%ddealer", i);
 		if (EvaluateRegion(dealer, &result)) {

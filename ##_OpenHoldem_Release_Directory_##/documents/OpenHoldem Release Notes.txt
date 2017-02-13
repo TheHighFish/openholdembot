@@ -1,3 +1,13 @@
+v11.1.3 2017-02-14
+==================
+BUG FIXES:
+- The fix to clear all data of a player who left the table
+  broke scraping of the dealer-chair, as during a new scrape
+  a player could get temporary marked as "not seated".
+  Thanks to ChuckNeverMuck and Eden for reporting.
+  [THF]
+
+
 v11.1.2 2017-02-13
 ==================
 NEW STUFF:
