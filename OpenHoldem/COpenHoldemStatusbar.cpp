@@ -49,11 +49,14 @@ void COpenHoldemStatusbar::InitStatusbar() {
   int position = 0;
 	_status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_ACTION, NULL, 100);
   ++position;
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_DUMMY, NULL, 140);
+  ++position;
   _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_HANDRANK, NULL, 100);
   ++position;
   _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_PRWIN, NULL, 100);
   ++position;
-  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_NIT, SBPS_STRETCH, 240);
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_NIT, SBPS_STRETCH, 100);
+  //_status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_NIT, SBPS_STRETCH, 240);
 }
 
 void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position) {
@@ -61,6 +64,14 @@ void COpenHoldemStatusbar::GetWindowRect(RECT *statusbar_position) {
 }
 
 void COpenHoldemStatusbar::OnUpdateStatusbar() {
+  // Format data for display
+  // Handrank
+  _status_handrank.Format("%i/169", _handrank);
+  // PrWin: percentages instead of probabilities
+  _status_prwin.Format("PrWin %3.1f/%3.1f/%3.1f", 
+    100 * _prwin, 100 *_prtie, 100* _prlos);
+  // Iterations
+  _status_nit.Format("%i/%i", _iterations_calculated, _iterations_total);
   _status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_ACTION), LastAction());
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_HANDRANK), _status_handrank);
 	_status_bar.SetPaneText(_status_bar.CommandToIndex(ID_INDICATOR_STATUS_PRWIN), _status_prwin);
@@ -88,14 +99,11 @@ CString COpenHoldemStatusbar::LastAction() {
 }
 
 void COpenHoldemStatusbar::SetPrWin(double prwin, double prtie, double prlos) {
-  // Turn probabilities into percentages;
-  prwin *= 100;
-  prtie *= 100;
-  prlos *= 100;
-  // Format them for display
-  _status_prwin.Format("%3.1f/%3.1f/3.1f", prwin, prtie, prlos);
+  _prwin = prwin;
+  _prtie = prtie;
+  _prlos = prlos;
 }
 
 void COpenHoldemStatusbar::SetIterations(int calculated, int total) {
-  _status_nit.Format("%i/%i", calculated, total);
+  
 }

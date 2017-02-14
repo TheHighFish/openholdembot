@@ -10,9 +10,10 @@
 #define IDD_ABOUTBOX                    100
 #define IDR_MAINFRAME                   128
 #define IDI_ICON1                       130
-#define ID_INDICATOR_STATUS_PRWIN       130
-#define ID_INDICATOR_STATUS_ACTION      132
-#define ID_INDICATOR_STATUS_NIT         133
+#define ID_INDICATOR_STATUS_PRWIN       131
+#define ID_INDICATOR_STATUS_DUMMY       132
+#define ID_INDICATOR_STATUS_ACTION      133
+#define ID_INDICATOR_STATUS_NIT         134
 #define ID_INDICATOR_STATUS_HANDRANK    135
 #define IDD_DIALOG1                     136
 #define IDD_RENAME                      136

@@ -15,6 +15,7 @@
 #include "CSymbolEngineHandrank.h"
 
 #include <assert.h>
+#include "COpenHoldemStatusbar.h"
 #include "CScraper.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
@@ -101,6 +102,7 @@ void CSymbolEngineHandrank::UpdateOnMyTurn() {
 			break;
 		}
 	}
+  p_openholdem_statusbar->SetHandrank(_handrank169);
 
 	_handrank1326 = _handrank2652 / 2;											
 	_handrank1000 = 1000 * _handrank2652 / 2652;									
