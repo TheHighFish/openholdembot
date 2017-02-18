@@ -1,7 +1,7 @@
 ##f$Gecko_notes##
 //
 //
-// CHANGES:
+// TECHNICAL CHANGES:
 //   * OpenPPL-functions f$preflop..f$river added (all empty)
 //     to make Gecko OpenPPL-compatible
 //   * Splitting call formula
@@ -11,7 +11,7 @@
 //   * Betsizing
 //     - removed f$srai (called "Bet/raise strategy", returning true/false,
 //       despite it should return how much) and distributed it to f$preflop..f$river  
-//     - moved rule for strong hands to f$flop_turn_raise_strong_set
+//     - moved rule for strong set to f$flop_turn_raise_strong_set
 //     - renamed f$swag (unsupported) to f$best_netsize
 //   * Replaced ##nit## 1000 by f$prwin_number_of_iterations 50.000
 //     for more precise simulations
@@ -23,6 +23,9 @@
 //   * Replaced didswag by didbetsize
 //   *
 //   *
+// LOGICAL CHANGES:
+//
+//
 //
 // 
 // POKERTRACKER AUTORATE ICONS:
@@ -73,7 +76,7 @@ WHEN f$river_call Call FORCE
 [ br>1 && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
 [ br>1 && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 : 0
 
-##f$call_potcommitted##
+##f$call_potcommitted## //!!!! only preflop
 [ br>1 && f$committed                                  ] ? 1 : 0
 
 ##f$flop_turn_raise_strong_set##
@@ -136,6 +139,48 @@ f$dealposition==6 && !list900          ? 1 : 0
 | f$Preflop_Raiser_And_Callers_In_Front_Of_Me
 | f$Preflop_Multiple_Raisers
 | f$Preflop_React_To_Reraise)
+
+##f$stats_pfr##
+WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN Others RETURN pt_pfr_headsup FORCE
+
+##f$stats_vpip##
+WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN Others RETURN pt_vpip_headsup FORCE
+
+##f$stats_flopaf##
+WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN Others RETURN pt_aggf_headsup FORCE
+
+##f$stats_turnaf##
+WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN Others RETURN pt_aggt_headsup FORCE
+
+##f$stats_riveraf##
+WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN Others RETURN pt_aggr_headsup FORCE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##f$draws##
 (!f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && nstraightcommon<3 && !f$wheeldraw && nrankedcommon==1) ||
@@ -310,50 +355,7 @@ nopponentsseated==3 ? (dealpositionrais==3 ? 5 :
 nopponentsseated==2 ? (dealpositionrais==3 ? 6 : 0):
 0]
 
-##f$stats_pfr##
-[ 
-(opponentsplayingbits==1)  ? pt_pfr0 :
-(opponentsplayingbits==2)  ? pt_pfr1 :
-(opponentsplayingbits==4)  ? pt_pfr2 :
-(opponentsplayingbits==8)  ? pt_pfr3 :
-(opponentsplayingbits==16) ? pt_pfr4 :
-(opponentsplayingbits==32) ? pt_pfr5 : 0 ]
 
-##f$stats_vpip##
-[ 
-(opponentsplayingbits==1)  ? pt_vpip0 :
-(opponentsplayingbits==2)  ? pt_vpip1 :
-(opponentsplayingbits==4)  ? pt_vpip2 :
-(opponentsplayingbits==8)  ? pt_vpip3 :
-(opponentsplayingbits==16) ? pt_vpip4 :
-(opponentsplayingbits==32) ? pt_vpip5 : 0 ]
-
-##f$stats_flopaf##
-[ 
-(opponentsplayingbits==1)  ? pt_aggf0*(pt_wsdp0*4) :
-(opponentsplayingbits==2)  ? pt_aggf1*(pt_wsdp1*4) :
-(opponentsplayingbits==4)  ? pt_aggf2*(pt_wsdp2*4) :
-(opponentsplayingbits==8)  ? pt_aggf3*(pt_wsdp3*4) :
-(opponentsplayingbits==16) ? pt_aggf4*(pt_wsdp4*4) :
-(opponentsplayingbits==32) ? pt_aggf5*(pt_wsdp5*4) : 0 ]
-
-##f$stats_turnaf##
-[ 
-(opponentsplayingbits==1)  ? pt_aggt0*(pt_wsdp0*4) :
-(opponentsplayingbits==2)  ? pt_aggt1*(pt_wsdp1*4) :
-(opponentsplayingbits==4)  ? pt_aggt2*(pt_wsdp2*4) :
-(opponentsplayingbits==8)  ? pt_aggt3*(pt_wsdp3*4) :
-(opponentsplayingbits==16) ? pt_aggt4*(pt_wsdp4*4) :
-(opponentsplayingbits==32) ? pt_aggt5*(pt_wsdp5*4) : 0 ]
-
-##f$stats_riveraf##
-[ 
-(opponentsplayingbits==1)  ? pt_aggr0*(pt_wsdp0*4) :
-(opponentsplayingbits==2)  ? pt_aggr1*(pt_wsdp1*4) :
-(opponentsplayingbits==4)  ? pt_aggr2*(pt_wsdp2*4) :
-(opponentsplayingbits==8)  ? pt_aggr3*(pt_wsdp3*4) :
-(opponentsplayingbits==16) ? pt_aggr4*(pt_wsdp4*4) :
-(opponentsplayingbits==32) ? pt_aggr5*(pt_wsdp5*4) : 0 ]
 
 ##f$Initiative_Hero##
 br<=2 && nbetsround1>1 && !didcallround1 ? 1 :
