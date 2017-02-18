@@ -21,8 +21,17 @@
 //     as f$sitout, f$close, etc. can be handled by the user if desired.
 //   * Replaced "islist..." sy,bols by "list..."
 //   * Replaced didswag by didbetsize
-//   *
-//   *
+//   * Simplified the PokerTracker-functions
+//     f$stats_pfr, f$stats_vpip, f$stats_flopaf, f$stats_turnaf, f$stats_riveraf
+//     because headsup-stats are now availabele more easily
+//   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
+//
+//
+//
+//
+//
+//
+//
 // LOGICAL CHANGES:
 //
 //
@@ -123,12 +132,12 @@ nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
 ##f$prefold##
 // !!!! To be extended to FR
 // replace f$dealposition
-f$dealposition==1 && !list900          ? 1 :
-f$dealposition==2 && !list07 && call>0 ? 1 :
-f$dealposition==3 && !list01           ? 1 :
-f$dealposition==4 && !list02           ? 1 :
-f$dealposition==5 && !list05           ? 1 :
-f$dealposition==6 && !list900          ? 1 : 0
+InSmallBlind && !list900          ? 1 :
+InBigBlind && !list07 && call>0 ? 1 :
+InMiddlePosition2 && !list01           ? 1 :
+InMiddlePosition3 && !list02           ? 1 :
+InCutOff && !list05           ? 1 :
+InButton && !list900          ? 1 : 0
 
 ##f$preflop_raise##
 ( f$Preflop_First_In
@@ -254,8 +263,8 @@ WHEN Others RETURN pt_aggr_headsup FORCE
 ##f$actionpreflop_5##
 [ !(didbetsize || didrais || didcall) ] ? {
 
-    [ f$dealposition==1 ] ? call>sblind && call<6*bblind :
-    [ f$dealposition==2 ] ? call>0      && call<6*bblind :
+    [ InSmallBlind ] ? call>sblind && call<6*bblind :
+    [ InBigBlind ] ? call>0      && call<6*bblind :
     [ f$dealposition>=3 ] ? call>bblind && call<7*bblind : 0 } :
 
 0
@@ -266,17 +275,6 @@ WHEN Others RETURN pt_aggr_headsup FORCE
 ##f$actionpreflop_7##
 [ (didbetsize || didrais || didcall) && call<20*bblind ]
 
-##f$dealposition##
-[
-dealposition==1 ? 1:
-dealposition==2 ? 2:
-
-nchairsdealtleft==3 ? 3 :
-nchairsdealtleft==2 ? 4 :
-nchairsdealtleft==1 ? 5 :
-nchairsdealtleft==0 ? 6 :
-
-0]
 
 ##f$flop_call##
 [ f$Odds_and_Outs          ] ? 1 :
@@ -2303,11 +2301,11 @@ log$SERIOUS_ERROR
 (f$BettingAction_Unraised_Pot && nopponentscalling<=0)
 
 ##f$Chart_OpenRaise##
-   [ f$dealposition==1 && list900 ] // 50%
-|| [ f$dealposition==3 && list01  ] // 10%
-|| [ f$dealposition==4 && list02  ] // 15%
-|| [ f$dealposition==5 && list05  ] // 27%
-|| [ f$dealposition==6 && list900 ] // 40%
+   [ InSmallBlind && list900 ] // 50%
+|| [ InMiddlePosition2 && list01  ] // 10%
+|| [ InMiddlePosition3 && list02  ] // 15%
+|| [ InCutOff && list05  ] // 27%
+|| [ InButton && list900 ] // 40%
 
 
 //|| [ f$Position_CutOff     && (    f$Punten_Preflop_Cutoff<=2 && list05   // 27%
@@ -2342,14 +2340,14 @@ log$SERIOUS_ERROR
 (f$BettingAction_Number_Of_Raisers_Preflop==1 && nopponentsraising<=3)
 
 ##f$Chart_ReRaise##
-[ f$dealposition==1 ] ? { // sb
+[ InSmallBlind ] ? { // sb
 
     [ f$dealpositionrais==3 ] ? list13 : // 04%
     [ f$dealpositionrais==4 ] ? list14 : // 08%
     [ f$dealpositionrais==5 ] ? list15 : // 12%
     [ f$dealpositionrais==6 ] ? list02 : 0 } :
 
-[ f$dealposition==2 ] ? { // bb
+[ InBigBlind ] ? { // bb
 
     [ f$dealpositionrais==1 ] ? list03 : // 04%
     [ f$dealpositionrais==3 ] ? list13 : // 04%
@@ -2357,16 +2355,16 @@ log$SERIOUS_ERROR
     [ f$dealpositionrais==5 ] ? list15 : // 12%
     [ f$dealpositionrais==6 ] ? list02 : 0 } :
 
-[ f$dealposition==4 ] ? { // utg+1
+[ InMiddlePosition3 ] ? { // utg+1
 
     [ f$dealpositionrais==3 ] ? list13 : 0 } : // 04%
 
-[ f$dealposition==5 ] ? { // co
+[ InCutOff ] ? { // co
 
     [ f$dealpositionrais==3 ] ? list13 :       // 04%
     [ f$dealpositionrais==4 ] ? list14 : 0 } : // 08%
 
-[ f$dealposition==6 ] ? { // button
+[ InButton ] ? { // button
 
     [ f$dealpositionrais==3 ] ? list13 :       // 04%
     [ f$dealpositionrais==4 ] ? list14 :       // 08%
@@ -2395,26 +2393,26 @@ log$SERIOUS_ERROR
 || (f$Position_BigBlind   && list01)
 
 ##f$Chart_OneLimper##
-   [ f$dealposition==1 && list06 ]  // 30%
-|| [ f$dealposition==2 && list01 ]  // 13%
-|| [ f$dealposition==3 && list01 ]  // 13%
-|| [ f$dealposition==4 && list03 ]  // 16%
-|| [ f$dealposition==5 && list04 ]  // 23%
-|| [ f$dealposition==6 && list06 ]  // 30%
+   [ InSmallBlind && list06 ]  // 30%
+|| [ InBigBlind && list01 ]  // 13%
+|| [ InMiddlePosition2 && list01 ]  // 13%
+|| [ InMiddlePosition3 && list03 ]  // 16%
+|| [ InCutOff && list04 ]  // 23%
+|| [ InButton && list06 ]  // 30%
 
-//|| [ f$dealposition==5     && (                                           f$Punten_Limper_Cutoff1     < 1.00 && list04   // 23%
+//|| [ InCutOff     && (                                           f$Punten_Limper_Cutoff1     < 1.00 && list04   // 23%
   //                              || f$Punten_Limper_Cutoff1     >= 1.00 && f$Punten_Limper_Cutoff1     < 2.00 && list03   // 16%
     //                            || f$Punten_Limper_Cutoff1     >= 2.00                                       && list02)] // 15%
 
-//|| [ f$dealposition==6     && (                                           f$Punten_Limper_Button1     < 1.00 && list07   // 40%
+//|| [ InButton     && (                                           f$Punten_Limper_Button1     < 1.00 && list07   // 40%
   //                              || f$Punten_Limper_Button1     >= 1.00 && f$Punten_Limper_Button1     < 2.00 && list06   // 30%
     //                            || f$Punten_Limper_Button1     >= 2.00                                       && list05)] // 27%
 
-//|| [ f$dealposition==1     && (                                           f$Punten_Limper_Smallblind1 < 1.00 && list04   // 23%
+//|| [ InSmallBlind     && (                                           f$Punten_Limper_Smallblind1 < 1.00 && list04   // 23%
   //                              || f$Punten_Limper_Smallblind1 >= 1.00 && f$Punten_Limper_Smallblind1 < 2.00 && list03   // 16%
     //                            || f$Punten_Limper_Smallblind1 >= 2.00                                       && list01)] // 13%
 
-//|| [ f$dealposition==2     && (                                           f$Punten_Limper_Bigblind1   < 1.00 && list04   // 23%
+//|| [ InBigBlind     && (                                           f$Punten_Limper_Bigblind1   < 1.00 && list04   // 23%
   //                              || f$Punten_Limper_Bigblind1   >= 1.00 && f$Punten_Limper_Bigblind1   < 2.00 && list03   // 16%
     //                            || f$Punten_Limper_Bigblind1   >= 2.00                                       && list01)] // 13%
 
