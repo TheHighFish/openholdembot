@@ -1,4 +1,65 @@
-##2010-10-07 17:07:03##
+##f$Gecko_notes##
+//
+//
+// CHANGES:
+//   * OpenPPL-functions f$preflop..f$river added (all empty)
+//     to make Gecko OpenPPL-compatible
+//   * Splitting call formula
+//     - introducing f$call_nuts, f$call_minbets, call_potcommitted
+//     - removed superfluous backup action for betsizing (now built-in)
+//     - reused f$call_preflop..f$call_river
+//   * Replaced ##nit## 1000 by f$prwin_number_of_iterations 50.000
+//     for more precise simulations
+//   * Removed unused default formulas (dll, defcon, ...)
+//   *
+//   *
+//   *
+//   *
+//   *
+
+##f$preflop##
+WHEN f$call_nuts Call FORCE
+WHEN f$call_minbets Call FORCE
+WHEN f$call_potcommitted Call FORCE
+WHEN f$preflop_call Call FORCE // !!!! rename f$call_flop
+
+##f$flop##
+WHEN f$call_nuts Call FORCE
+WHEN f$call_minbets Call FORCE
+WHEN f$call_potcommitted Call FORCE
+WHEN f$flop_call Call FORCE
+
+##f$turn##
+WHEN f$call_nuts Call FORCE
+WHEN f$call_minbets Call FORCE
+WHEN f$call_potcommitted Call FORCE
+WHEN f$turn_call Call FORCE
+
+##f$river##
+WHEN f$call_nuts Call FORCE
+WHEN f$call_minbets Call FORCE
+WHEN f$call_potcommitted Call FORCE
+WHEN f$river_call Call FORCE
+
+##f$call_nuts##
+// Basic calls with nuts or free to check
+[ prwin>=0.98 ] ? 1 :
+[ call<=0.001 ] ? 1 :
+[ br==1 && ($AA||$KK) ] ? 1 : ///$$$$
+
+##f$call_minbets##
+[ br>1 && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
+[ br>1 && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 :
+
+##f$call_potcommitted##
+[ br>1 && f$committed                                  ] ? 1 :
+
+##f$prwin_number_of_iterations##
+50000
+
+
+
+
 
 ##notes##
 // PT AUTORATE ICONS:
@@ -9,22 +70,8 @@
 // MIDPAIR: 3 - 8 - 13
 // MANIAC : 4 - 9 - 14
 
-##dll##
 
 
-##bankroll##
-0.000000
-
-##defcon##
-0.000000
-
-##rake##
-0.000000
-
-##nit##
-1000
-
-##f$alli##
 
 
 ##f$swag##
@@ -52,24 +99,6 @@ call>0 && f$srai>0 ? {
 [ betround==3 ] ? f$turn_raise    :
 [ betround==4 ] ? f$river_raise   : 0
 
-##f$rais##
-
-
-##f$call##
-// Basic calls with nuts or free to check
-[ prwin>=0.98 ] ? 1 :
-[ call<=0.001 ] ? 1 :
-[ f$srai>0    ] ? 1 :
-[ br==1 && ($AA||$KK) ] ? 1 :
-
-[ br>1 && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
-[ br>1 && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 :
-[ br>1 && f$committed                                  ] ? 1 :
-
-[ betround==1 ] ? f$preflop_call :
-[ betround==2 ] ? f$flop_call    : 
-[ betround==3 ] ? f$turn_call    :
-[ betround==4 ] ? f$river_call   : 
 
 0
 
