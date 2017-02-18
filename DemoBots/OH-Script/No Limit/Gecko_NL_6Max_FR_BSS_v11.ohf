@@ -8,6 +8,11 @@
 //     - introducing f$call_nuts, f$call_minbets, call_potcommitted
 //     - removed superfluous backup action for betsizing (now built-in)
 //     - reused f$call_preflop..f$call_river
+//   * Betsizing
+//     - removed f$srai (called "Bet/raise strategy", returning true/false,
+//       despite it should return how much) and distributed it to f$preflop..f$river  
+//     - moved rule for strong hands to f$flop_turn_raise_strong_set
+//     - renamed f$swag (unsupported) to f$best_netsize
 //   * Replaced ##nit## 1000 by f$prwin_number_of_iterations 50.000
 //     for more precise simulations
 //   * Renamed f$P to f$prwin_number_of_opponents
@@ -15,7 +20,7 @@
 //   * Removed f$play formula (always play on)
 //     as f$sitout, f$close, etc. can be handled by the user if desired.
 //   * Replaced "islist..." sy,bols by "list..."
-//   *
+//   * Replaced didswag by didbetsize
 //   *
 //   *
 //
@@ -29,24 +34,30 @@
 // MANIAC : 4 - 9 - 14 
 
 ##f$preflop##
+WHEN f$preflop_raise RaiseTo f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$preflop_call Call FORCE // !!!! rename f$call_flop
 
 ##f$flop##
+WHEN f$flop_raise RaiseTo f$best_betsize FORCE
+WHEN f$flop_turn_raise_strong_set RaiseTo f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$flop_call Call FORCE
 
 ##f$turn##
+WHEN f$turn_raise RaiseTo f$best_betsize FORCE
+WHEN f$flop_turn_raise_strong_set RaiseTo f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$turn_call Call FORCE
 
 ##f$river##
+WHEN f$river_raise RaiseTo f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
@@ -56,14 +67,32 @@ WHEN f$river_call Call FORCE
 // Basic calls with nuts or free to check
 [ prwin>=0.98 ] ? 1 :
 [ call<=0.001 ] ? 1 :
-[ br==1 && ($AA||$KK) ] ? 1 : ///$$$$
+[ br==1 && ($AA||$KK) ] ? 1 : 0///$$$$
 
 ##f$call_minbets##
 [ br>1 && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
-[ br>1 && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 :
+[ br>1 && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 : 0
 
 ##f$call_potcommitted##
-[ br>1 && f$committed                                  ] ? 1 :
+[ br>1 && f$committed                                  ] ? 1 : 0
+
+##f$flop_turn_raise_strong_set##
+[ br>1 && br<4 && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 : 0
+
+##f$bet_betsize##
+// !!! might need + currentbet
+call<=0 && f$betsizing_strategy>0 ? {
+
+    f$Betsize_Adjusted>=balance && balance>0                                                                           ? f$balance          :
+    f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent>0 && f$stackopponent<=(f$Betsize_Adjusted*1.5) ? f$balance          :
+    f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent> (f$Betsize_Adjusted*1.5)                      ? f$Betsize_Adjusted :
+    f$Betsize_Adjusted<balance && nplayersplaying>=3                                                                   ? f$Betsize_Adjusted : 0 } :
+
+call>0 && f$betsizing_strategy>0 ? {
+
+    f$stackraiser>0 && !(f$stackraiser>=(f$currentbet_raischair-bblind) && f$stackraiser<=f$currentbet_raischair) && f$Betsize_Adjusted>=balance*0.75 ? f$balance          :
+    f$stackraiser>0 && !(f$stackraiser>=(f$currentbet_raischair-bblind) && f$stackraiser<=f$currentbet_raischair) && f$Betsize_Adjusted< balance*0.75 ? f$Betsize_Adjusted : 0 } :
+0
 
 ##f$prwin_number_of_iterations##
 50000
@@ -97,1036 +126,6 @@ f$dealposition==3 && !list01           ? 1 :
 f$dealposition==4 && !list02           ? 1 :
 f$dealposition==5 && !list05           ? 1 :
 f$dealposition==6 && !list900          ? 1 : 0
-
-
-
-
-
-
-
-
-
-##f$swag##
-call<=0 && f$srai>0 ? {
-
-    f$Betsize_Adjusted>=balance && balance>0                                                                           ? f$balance          :
-    f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent>0 && f$stackopponent<=(f$Betsize_Adjusted*1.5) ? f$balance          :
-    f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent> (f$Betsize_Adjusted*1.5)                      ? f$Betsize_Adjusted :
-    f$Betsize_Adjusted<balance && nplayersplaying>=3                                                                   ? f$Betsize_Adjusted : 0 } :
-
-call>0 && f$srai>0 ? {
-
-    f$stackraiser>0 && !(f$stackraiser>=(f$currentbet_raischair-bblind) && f$stackraiser<=f$currentbet_raischair) && f$Betsize_Adjusted>=balance*0.75 ? f$balance          :
-    f$stackraiser>0 && !(f$stackraiser>=(f$currentbet_raischair-bblind) && f$stackraiser<=f$currentbet_raischair) && f$Betsize_Adjusted< balance*0.75 ? f$Betsize_Adjusted : 0 } :
-
-0
-
-##f$srai##
-// Bet/raise strategy
-[ betround==1 ] ? f$preflop_raise : 
-
-[ br>1 && br<4 && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 :
-
-[ betround==2 ] ? f$flop_raise    :
-[ betround==3 ] ? f$turn_raise    :
-[ betround==4 ] ? f$river_raise   : 0
-
-
-0
-
-
-
-
-
-
-
-
-
-
-
-##list01##
-66  77  88  99  TT  JJ  QQ  KK  AA  
-ATS AJS AQS AKS KQS QJS JTS  
-JA  QA  KA
-
-##list02##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A9S ATS AJS AQS AKS  
-KTS KJS KQS  
-QJS  
-JTS  
-T9S  
-98S  
-TA  JA  QA  KA  
-JK  QK  
-
-##list03##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-KJS KQS  
-QTS QJS  
-JTS  
-T9S  
-98S  
-TA  JA  QA  KA  
-QK  
-
-##list04##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K9S KTS KJS KQS  
-Q9S QTS QJS  
-J8S J9S JTS  
-T8S T9S  
-98S  
-87S  
-76S  
-65S  
-9A  TA  JA  QA  KA  
-TK  JK  QK  
-TQ  JQ  
-TJ  
-
-##list05##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K8S K9S KTS KJS KQS  
-Q9S QTS QJS  
-J8S J9S JTS  
-T8S T9S  
-97S 98S  
-87S  
-76S  
-65S  
-54S  
-8A  9A  TA  JA  QA  KA  
-9K  TK  JK  QK  
-TQ  JQ  
-TJ  
-
-##list100##
-AA  KK  QQ  
-
-##list11##
-KK  AA  QQ  
-
-##list12##
-KK  AA  QQ  
-AKS  
-KA
-
-##list13##
-KK  AA  QQ  JJ  TT  
-AKS  
-KA
-
-##list14##
-KK  AA  QQ  JJ  TT  99  88  
-AKS AQS  
-KA
-
-##list15##
-KK  AA  QQ  JJ  TT  99  88  77  
-AKS AQS AJS ATS  
-KA  QA  JA  
-KQS  
-
-##list16##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  
-AKS AQS AJS ATS  
-KA  QA  JA  
-KQS  
-
-##list06##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K7S K8S K9S KTS KJS KQS  
-Q8S Q9S QTS QJS  
-J8S J9S JTS  
-T8S T9S  
-97S 98S  
-87S  
-76S  
-65S  
-54S  
-6A  7A  8A  9A  TA  JA  QA  KA  
-8K  9K  TK  JK  QK  
-TQ  JQ  
-TJ  
-
-##list07##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K7S K8S K9S KTS KJS KQS  
-Q8S Q9S QTS QJS  
-J8S J9S JTS  
-T7S T8S T9S  
-96S 97S 98S  
-86S 87S  
-75S 76S  
-64S 65S  
-54S  
-5A  6A  7A  8A  9A  TA  JA  QA  KA  
-9K  TK  JK  QK  
-9Q  TQ  JQ  
-9J  TJ  
-9T  
-
-##list08##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
-Q6S Q7S Q8S Q9S QTS QJS  
-J7S J8S J9S JTS  
-T6S T7S T8S T9S  
-95S 96S 97S 98S  
-85S 86S 87S  
-75S 76S  
-64S 65S  
-54S  
-2A  3A  4A  5A  6A  7A  8A  9A  TA  JA  QA  KA  
-8K  9K  TK  JK  QK  
-9Q  TQ  JQ  
-8J  9J  TJ
-8T  9T  
-89  
-
-##list00##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
-Q2S Q3S Q4S Q5S Q6S Q7S Q8S Q9S QTS QJS  
-J2S J3S J4S J5S J6S J7S J8S J9S JTS  
-T2S T3S T4S T5S T6S T7S T8S T9S  
-92S 93S 94S 95S 96S 97S 98S  
-82S 83S 84S 85S 86S 87S  
-72S 73S 74S 75S 76S  
-62S 63S 64S 65S  
-52S 53S 54S  
-42S 43S  
-32S  
-2A  3A  4A  5A  6A  7A  8A  9A  TA  JA  QA  KA  
-2K  3K  4K  5K  6K  7K  8K  9K  TK  JK  QK  
-2Q  3Q  4Q  5Q  6Q  7Q  8Q  9Q  TQ  JQ  
-2J  3J  4J  5J  6J  7J  8J  9J  TJ  
-2T  3T  4T  5T  6T  7T  8T  9T  
-29  39  49  59  69  79  89  
-28  38  48  58  68  78  
-27  37  47  57  67  
-26  36  46  56  
-25  35  45  
-24  34  
-23  
-
-##list10##
-KK  AA  
-
-##list17##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQS AKS  
-KA  
-KQS
-
-##list18##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQS AKS  
-KA  QK  
-KQS QJS JTS
-
-##list19##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQS AKS  
-KA  QK  
-KQS QJS JTS T9S 98S
-
-##list99##
-QQ  KK  AA  
-AKS  
-KA
-
-##list09##
-88  99  TT  JJ  QQ  KK  AA  
-AJS AQS AKS  
-KQS  
-KA  QA  
-
-##list101##
-AA  KK  QQ  
-
-##list102##
-AA  KK  QQ  JJ  
-
-##list103##
-AA  KK  QQ  JJ  TT  
-
-##list106##
-AA  KK  QQ  JJ  TT  99  
-AKS AQS  
-KA  
-
-##list107##
-AA  KK  QQ  JJ  TT  99  
-AKS AQS AJS  
-KA  QA
-
-##list108##
-AA  KK  QQ  JJ  TT  99  88  
-AKS AQS AJS ATS  
-KA  QA  JA  
-KQS 
-
-##list109##
-AA  KK  QQ  JJ  TT  99  88  77  66  
-AKS AQS AJS ATS  
-KA  QA  JA  
-KQS 
-
-##list110##
-AA  KK  QQ  JJ  TT  99  88  77  
-AKS AQS AJS ATS A9S A8S  
-KA  QA  JA  TA  9A  
-KQS  
-QK
-
-##list111##
-AA  KK  QQ  JJ  TT  99  88  77  66  
-AKS AQS AJS ATS A9S A8S  
-KA  QA  JA  TA  9A  
-KQS KJS  
-QJS   
-QK
-
-##list112##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  
-AKS AQS AJS ATS A9S A8S  
-KA  QA  JA  TA  9A  
-KQS KJS  
-QJS   
-JTS  
-T9S  
-QK
-
-##list113##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  
-AKS AQS AJS ATS A9S A8S A7S   
-KA  QA  JA  TA  9A  8A  
-KQS KJS  
-QJS   
-JTS  
-T9S  
-QK
-
-##list114##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S   
-KA  QA  JA  TA  9A  8A  
-KQS KJS  
-QJS   
-JTS  
-T9S  
-98S  
-QK
-
-##list115##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S   
-KA  QA  JA  TA  9A  8A  
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
-QK  JK  
-
-##list116##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S  
-KA  QA  JA  TA  9A  8A  7A  
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
-QK  JK  
-JQ  
-
-##list117##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S  
-KA  QA  JA  TA  9A  8A  7A  6A  
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
-QK  JK  TK  
-JQ  TQ  
-TJ  
-
-##list118##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S  
-KA  QA  JA  TA  9A  8A  7A  6A  5A  
-KQS KJS KTS K9S    
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
-76S  
-QK  JK  TK  
-JQ  TQ  
-TJ  
-9T  
-
-##list119##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S    
-QJS QTS Q9S  
-JTS  
-T9S  
-98S  
-87S  
-76S  
-65S  
-54S  
-43S  
-32S  
-QK  JK  TK  
-JQ  TQ  
-TJ  
-9T  
-
-##list120##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S     
-QJS QTS Q9S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S  
-65S  
-54S  
-43S  
-32S  
-QK  JK  TK  9K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-
-##list121##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
-QK  JK  TK  9K  
-JQ  TQ  9Q  
-TJ  9J  8J  
-9T  
-
-##list122##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S    
-JTS J9S J8S J7S J6S      
-T9S T8S T7S T6S   
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
-QK  JK  TK  9K  8K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-89  
-78  
-
-##list123##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S  
-98S 97S 96S    
-87S 86S 85S  
-76S 75S 74S  
-65S 64S 63S  
-54S 53S 52S  
-43S 42S  
-32S  
-QK  JK  TK  9K  8K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-89  
-78  
-
-##list124##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S T5S T4S T3S T2S  
-98S 97S 96S 95S 94S 93S 92S  
-87S 86S 85S 84S 83S 82S  
-76S 75S 74S 73S 72S  
-65S 64S 63S 62S  
-54S 53S 52S  
-43S 42S  
-32S  
-KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-QK  JK  TK  9K  8K  7K  6K  5K  4K  3K  2K
-JQ  TQ  9Q  8Q  7Q  6Q  5Q  4Q  3Q  2Q  
-TJ  9J  8J  7J  6J  5J  4J  3J  2J  
-9T  8T  7T  6T  5T  4T  3T  2T  
-89  79  69  59  49  39  29  
-78  68  58  48  38  28  
-67  57  47  37  27  
-56  46  36  26  
-45  35  25  
-34  24  
-
-##list125##
-TT  99  88  77  
-AQS AJS ATS 
-KA  QA  
-KQS  
-QJS  
-JTS  
-
-##list126##
-TT  99  88  77  66  55  
-AQS AJS ATS 
-KA  QA  JA  
-KQS  
-QJS  
-JTS  
-
-##list127##
-TT  99  88  77  66  55  
-AQS AJS ATS A9S 
-KA  QA  JA  TA  
-KQS KJS  
-QJS   
-JTS  
-
-##list128##
-TT  99  88  77  66  55  44  
-AQS AJS ATS A9S A8S  
-KA  QA  JA  TA  
-KQS KJS  
-QJS   
-JTS  
-QK
-
-##list129##
-TT  99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S  
-KA  QA  JA  TA  9A  
-KQS KJS  
-QJS   
-JTS  
-QK
-
-##list130##
-TT  99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S  
-KA  QA  JA  TA  9A  8A  
-KQS KJS KTS   
-QJS   
-JTS 
-T9S  
-QK
-
-##list131##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S 
-QA  JA  TA  9A  8A  7A  
-KQS KJS KTS 
-QJS QTS 
-JTS 
-T9S 
-98S 
-87S 
-76S 
-QK  JK  TK  
-JQ  TQ  
-
-##list132##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S 
-QA  JA  TA  9A  8A  7A  6A  5A  
-KQS KJS KTS 
-QJS QTS 
-JTS 
-T9S 
-98S 
-87S 
-76S 
-QK  JK  TK  
-JQ  TQ  
-TJ  
-
-##list133##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QA  JA  TA  9A  8A  7A  6A  5A  
-KQS KJS KTS K9S 
-QJS QTS Q9S 
-JTS J9S 
-T9S T8S 
-98S 97S 
-87S 
-76S 
-QK  JK  TK  
-JQ  TQ  
-TJ  
-
-##list134##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  
-KQS KJS KTS K9S 
-QJS QTS Q9S 
-JTS J9S 
-T9S T8S 
-98S 97S 
-87S 86S   
-76S 75S   
-65S 64S  
-54S 
-QK  JK  TK  
-JQ  TQ  
-TJ  
-
-##list135##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S 
-QJS QTS Q9S 
-JTS J9S 
-T9S T8S 
-98S 97S 
-87S 86S   
-76S 75S   
-65S 64S  
-54S 
-43S 
-32S  
-QK  JK  TK  9K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-
-##list136##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S K6S K5S 
-QJS QTS Q9S Q8S 
-JTS J9S J8S 
-T9S T8S T7S 
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
-QK  JK  TK  9K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-89  
-78  
-
-##list137##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S    
-JTS J9S J8S J7S J6S      
-T9S T8S T7S T6S   
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
-QK  JK  TK  9K  8K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-89  
-78  
-
-##list138##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S  
-98S 97S 96S 95S     
-87S 86S 85S 84S   
-76S 75S 74S 73S   
-65S 64S 63S 62S   
-54S 53S 52S  
-43S 42S  
-32S  
-QK  JK  TK  9K  8K  7K  6K  5K  
-JQ  TQ  9Q  8Q  
-TJ  9J  8J  
-9T  
-89  
-78  
-
-##list139##
-99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S T5S T4S T3S T2S  
-98S 97S 96S 95S 94S 93S 92S  
-87S 86S 85S 84S 83S 82S  
-76S 75S 74S 73S 72S  
-65S 64S 63S 62S  
-54S 53S 52S  
-43S 42S  
-32S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-QK  JK  TK  9K  8K  7K  6K  5K  4K  3K  2K
-JQ  TQ  9Q  8Q  7Q  6Q  5Q  4Q  3Q  
-TJ  9J  8J  7J  6J  5J  4J  3J  
-9T  8T  7T  6T  5T  4T  3T  
-89  79  69  59  49  39  
-78  68  58  48  38  
-67  57  47  37  
-56  46  36  
-45  35  
-
-##list140##
-99  88  77  66  55  44  33  22  
-AJS KQS QJS JTS T9S  
-QA  QK
-
-##list141##
-99  88  77  66  55  44  33  22  
-AJS ATS KQS QJS JTS T9S  
-QA  JA  QK  
-KQS
-
-##list142##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
-QA  JA  TA  
-KQS  
-QJS  
-JTS  
-T9S
-
-##list143##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
-QA  JA  TA  9A  
-KQS KJS  
-QJS   
-JTS  
-T9S  
-98S  
-QK
-
-##list144##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
-QA  JA  TA  9A  8A  
-KQS KJS  
-QJS   
-JTS  
-T9S  
-QK
-
-##list145##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
-QA  JA  TA  9A  8A  
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-QK  JK  
-
-##list146##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S  
-QA  JA  TA  9A  8A  7A  
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
-QK  JK  
-JQ  
-
-##list147##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S  
-QA  JA  TA  9A  8A  7A  6A  5A  
-KQS KJS KTS K9S    
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
-76S  
-QK  JK  TK  
-JQ  TQ  
-TJ  
-9T  
-
-##list148##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-KQS KJS KTS K9S    
-QJS QTS Q9S  
-JTS  
-T9S  
-98S  
-87S  
-76S  
-65S  
-54S  
-43S  
-32S  
-QK  JK  TK  
-JQ  TQ  
-TJ  
-9T  
-
-##list149##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S     
-QJS QTS Q9S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S  
-65S  
-54S  
-43S  
-32S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-QK  JK  TK  9K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-
-##list150##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-QK  JK  TK  9K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-
-##list151##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S    
-JTS J9S J8S J7S J6S      
-T9S T8S T7S T6S   
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-QK  JK  TK  9K  8K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-89  
-78  
-
-##list152##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S  
-98S 97S 96S    
-87S 86S 85S  
-76S 75S 74S  
-65S 64S 63S  
-54S 53S 52S  
-43S 42S  
-32S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-QK  JK  TK  9K  8K  
-JQ  TQ  9Q  
-TJ  9J  
-9T  
-89  
-78  
-
-##list153##
-99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S T5S T4S T3S T2S  
-98S 97S 96S 95S 94S 93S 92S  
-87S 86S 85S 84S 83S 82S  
-76S 75S 74S 73S 72S  
-65S 64S 63S 62S  
-54S 53S 52S  
-43S 42S  
-32S  
-QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
-QK  JK  TK  9K  8K  7K  6K  5K  4K  3K  2K
-JQ  TQ  9Q  8Q  7Q  6Q  5Q  4Q  3Q  2Q  
-TJ  9J  8J  7J  6J  5J  4J  3J  2J  
-9T  8T  7T  6T  5T  4T  3T  2T  
-89  79  69  59  49  39  29  
-78  68  58  48  38  28  
-67  57  47  37  27  
-56  46  36  26  
-45  35  25  
-34  24  
-
-##list154##
-88  77  66  55  44  33  22  
-AJS ATS A9S A8S  
-JA  
-KQS  
-QJS  
-JTS  
-T9S  
-98S  
-87S  
-
-##list155##
-88  77  66  55  44  33  22  
-ATS A9S A8S A7S A6S   
-JA  TA  
-KQS  
-QJS  
-JTS  
-T9S  
-98S  
-87S  
-
-##list156##
-88  77  66  55  44  33  22  
-ATS A9S A8S A7S A6S   
-JA  TA  9A  
-KQS KJS  
-QJS   
-JTS T9S  
-QK
-
-##list157##
-88  77  66  55  44  33  22  
-ATS A9S A8S A7S A6S   
-JA  TA  9A  8A  
-KQS KJS  
-QJS   
-JTS  
-T9S  
-98S  
-QK
-
-##list300##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS KQS QJS JTS T9S 98S 87S 76S 65S  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS J9S 
-KA  QA  JA  TA  
-
-##list301##
-AA  KK  QQ  JJ  TT  99  88  77  
-AKS KQS QJS JTS T9S 98S 
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS 
-KA  QA  JA  TA  
-
-##list302##
-AA  KK  QQ  JJ  TT  99  88  77  
-AKS KQS QJS JTS T9S 
-AQS AJS ATS A9S KJS KTS QTS 
-KA  QA  JA  TA  
-
-##list900##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
-Q2S Q3S Q4S Q5S Q6S Q7S Q8S Q9S QTS QJS  
-J6S J7S J8S J9S JTS  
-T5S T6S T7S T8S T9S  
-95S 96S 97S 98S  
-85S 86S 87S  
-75S 76S  
-64S 65S  
-54S  
-43S  
-32S  
-2A  3A  4A  5A  6A  7A  8A  9A  TA  JA  QA  KA  
-2K  3K  4K  5K  6K  7K  8K  9K  TK  JK  QK  
-2Q  3Q  4Q  5Q  6Q  7Q  8Q  9Q  TQ  JQ  
-7J  8J  9J  TJ
-7T  8T  9T  
-79  89  
-78  
-67  
 
 ##f$preflop_raise##
 ( f$Preflop_First_In
@@ -1208,7 +207,7 @@ T5S T6S T7S T8S T9S
 [ ncallbets<=1 && nopponentscalling>=3 ]
 
 ##f$actionpreflop_5##
-[ !(didswag || didrais || didcall) ] ? {
+[ !(didbetsize || didrais || didcall) ] ? {
 
     [ f$dealposition==1 ] ? call>sblind && call<6*bblind :
     [ f$dealposition==2 ] ? call>0      && call<6*bblind :
@@ -1217,10 +216,10 @@ T5S T6S T7S T8S T9S
 0
 
 ##f$actionpreflop_6##
-[ !(didswag || didrais || didcall) ] ? call>=6*bblind : 0
+[ !(didbetsize || didrais || didcall) ] ? call>=6*bblind : 0
 
 ##f$actionpreflop_7##
-[ (didswag || didrais || didcall) && call<20*bblind ]
+[ (didbetsize || didrais || didcall) && call<20*bblind ]
 
 ##f$dealposition##
 [
@@ -1283,7 +282,7 @@ nchairsdealtleft==0 ? 6 :
 0
 
 ##f$actionpreflop_8##
-[ (didswag || didrais || didcall) && call>=20*bblind ]
+[ (didbetsize || didrais || didcall) && call>=20*bblind ]
 
 ##f$dealpositionrais##
 [
@@ -1368,8 +367,8 @@ br==4 ? nbetsround3<=0 : 0
 
 ##f$Initiative_Villian##
 br<=2 ? didcallround1 && nbetsround1>1 :
-br==3 ? !didswaground2 && didcallround2 && nbetsround2>0 :
-br==4 ? !didswaground2 && didcallround3 && nbetsround3>0 : 0
+br==3 ? !didbetsizeround2 && didcallround2 && nbetsround2>0 :
+br==4 ? !didbetsizeround2 && didcallround3 && nbetsround3>0 : 0
 
 ##f$prwin##
 [prwin+(prtie/2)]**(1+f$threat)
@@ -1870,12 +869,12 @@ betposition==nplayersplaying
 
     [ call>bblind ] ? {
 
-        [ !didswag ] ? {
+        [ !didbetsize ] ? {
 
             [ call<=potcommon*.33 ] ? pot :
             [ call> potcommon*.33 ] ? f$currentbet_raischair*4 : 0 } :
 
-        [ didswag ] ? {
+        [ didbetsize ] ? {
 
             [ nbetsround1<=1 ] ? f$currentbet_raischair*4 :
 
@@ -1936,12 +935,12 @@ betposition==nplayersplaying
 
     [ call>bblind ] ? {
 
-        [ !didswag ] ? {
+        [ !didbetsize ] ? {
 
             [ call<=potcommon*.33 ] ? pot*0.8 :
             [ call> potcommon*.33 ] ? f$currentbet_raischair*4 : 0 } :
 
-        [ didswag ] ? {
+        [ didbetsize ] ? {
 
             [ nbetsround1<=1 ] ? f$currentbet_raischair*4 :
             [ nbetsround1>1  ] ? balance                  : 0 } : 0 } : 0 } :
@@ -2195,7 +1194,7 @@ betposition==nplayersplaying
 
     [ f$actionpostflop_1 ] ? {
 
-        [ nplayersplaying==2 && nplayersround2==2 && handsplayed>15 && !f$safeboard1 && !didcallround1 && nbetsround1>1 && nbetsround1<=6 && didswaground2 && !didcallround2 && nbetsround2<11 ] ? f$prwin>0.00 :
+        [ nplayersplaying==2 && nplayersround2==2 && handsplayed>15 && !f$safeboard1 && !didcallround1 && nbetsround1>1 && nbetsround1<=6 && didbetsizeround2 && !didcallround2 && nbetsround2<11 ] ? f$prwin>0.00 :
         [ nplayersplaying==2 && nbetsround2==0 ] ? f$prwin>0.70 :
         [ nplayersplaying>=3 && nbetsround2==0 ] ? f$prwin>0.75 :
         [ f$prwin>.80 ] ? 1 : 0 } :
@@ -2417,7 +1416,7 @@ br==3 ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)
 
 [ call>0 && pt_rhands>25 ] ? {
 
-  [ !didswag ] ? {
+  [ !didbetsize ] ? {
 
     [                    f$pt_raggt<=0.00 ] ? 0.00 :
     [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 0.50 :
@@ -2435,7 +1434,7 @@ br==3 ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)
     [ f$pt_raggt>4.00 && f$pt_raggt<=5.00 ] ? 0.00 :
     [ f$pt_raggt>5.00                     ] ? 0.00 : 0 } : 
 
-  [  didswag ] ? {
+  [  didbetsize ] ? {
 
     [                    f$pt_raggt<=0.00 ] ? 0.00 :
     [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 1.00 :
@@ -2482,7 +1481,7 @@ br==3 ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)
 
 [ call>0 && pt_rhands>25 ] ? {
 
-  [ !didswag ] ? {
+  [ !didbetsize ] ? {
 
     [                    f$pt_raggr<=0.00 ] ? 0.00 :
     [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 0.50 :
@@ -2500,7 +1499,7 @@ br==3 ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)
     [ f$pt_raggr>4.00 && f$pt_raggr<=5.00 ] ? 0.00 :
     [ f$pt_raggr>5.00                     ] ? 0.00 : 0 } : 
 
-  [  didswag ] ? {
+  [  didbetsize ] ? {
 
     [                    f$pt_raggr<=0.00 ] ? 0.00 :
     [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 1.00 :
@@ -2550,14 +1549,14 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 
 [ nbetsround1>1 && nbetsround1<=5 ] ? {
 
-    [ didswaground1 ] ? 1.0 :
+    [ didbetsizeround1 ] ? 1.0 :
     [ didcallround1 ] ? 0.8 : 0 } :
 
 [ nbetsround1>5 && nbetsround1<20 ] ? {
 
-    [ didswaground1 && !didcallround1 ] ? 0.8 :
-    [ didswaground1 &&  didcallround1 ] ? 0.6 :
-    [ didcallround1 && !didswaground1 ] ? 0.7 : 0 } :
+    [ didbetsizeround1 && !didcallround1 ] ? 0.8 :
+    [ didbetsizeround1 &&  didcallround1 ] ? 0.6 :
+    [ didcallround1 && !didbetsizeround1 ] ? 0.7 : 0 } :
 
 [ nbetsround1>20 ] ? 0.6 : 1
 
@@ -3077,7 +2076,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 ##f$preflop_call##
 [ $AA || $KK ] ? 1 : 
 
-[ !didswag ] ? {
+[ !didbetsize ] ? {
 
     [ ncallbets<=1 ] ? {
 
@@ -3087,7 +2086,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 
     [ ncallbets>1 && (call*8)<balance && (call*2)<pot && list17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
 
-[ didswag ] ? {
+[ didbetsize ] ? {
 
     [ call*4<pot                                                             ] ? 1 :
     [ (call*8)<balance && (call*2)<pot && list17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
@@ -3236,7 +2235,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 (f$BettingAction_One_Limper && f$Chart_OneLimper) ? 1 : 0
 
 ##f$Preflop_Raiser_In_Front_Of_Me##
-(f$BettingAction_Single_Raiser_Before_Us && !didswag && call<7*bblind && f$Chart_ReRaise) ? 1 :
+(f$BettingAction_Single_Raiser_Before_Us && !didbetsize && call<7*bblind && f$Chart_ReRaise) ? 1 :
 ($AA||$KK||$QQ) ? 1 : 0
 
 ##f$Position_Blinds##
@@ -3335,7 +2334,7 @@ log$SERIOUS_ERROR
 (nchairsdealtleft == 2)
 
 ##f$BettingAction_Hero_Did_Already_Act##
-(didrais || didcall || didchec || didswag)
+(didrais || didcall || didchec || didbetsize)
 
 ##f$BettingAction_Single_Raiser_Before_Us##
 (f$BettingAction_Number_Of_Raisers_Preflop==1 && nopponentsraising<=3)
@@ -4584,31 +3583,31 @@ currentbet4==bblind  ? pt_icon4 : 0 } :
 [ call<=0 ]
 
 ##f$actionpostflop_2##
-[ !didswag && (call>0) && (call<=bblind) ]
+[ !didbetsize && (call>0) && (call<=bblind) ]
 
 ##f$actionpostflop_3##
-[ !didswag && (call>bblind) && (call<=(potcommon*0.8)) && !f$actionpostflop_2 ]
+[ !didbetsize && (call>bblind) && (call<=(potcommon*0.8)) && !f$actionpostflop_2 ]
 
 ##f$actionpostflop_4##
-[ !didswag && (call>(potcommon*0.8)) && (call<=(potcommon*1.2)) && !f$actionpostflop_2 ]
+[ !didbetsize && (call>(potcommon*0.8)) && (call<=(potcommon*1.2)) && !f$actionpostflop_2 ]
 
 ##f$actionpostflop_5##
-[ !didswag && (call>(potcommon*1.2)) && !f$actionpostflop_2 ]
+[ !didbetsize && (call>(potcommon*1.2)) && !f$actionpostflop_2 ]
 
 ##f$actionpostflop_6##
-[ (didswag||didcall) && f$mycurrentbet<=potcommon && call<=f$mycurrentbet ]
+[ (didbetsize||didcall) && f$mycurrentbet<=potcommon && call<=f$mycurrentbet ]
 
 ##f$actionpostflop_7##
-[ (didswag||didcall) && (f$mycurrentbet<=potcommon) && (call>f$mycurrentbet) && (call<=(f$mycurrentbet*3.5)) ]
+[ (didbetsize||didcall) && (f$mycurrentbet<=potcommon) && (call>f$mycurrentbet) && (call<=(f$mycurrentbet*3.5)) ]
 
 ##f$actionpostflop_8##
-[ (didswag||didcall) && (f$mycurrentbet<=potcommon) && (call>(f$mycurrentbet*3.5)) ]
+[ (didbetsize||didcall) && (f$mycurrentbet<=potcommon) && (call>(f$mycurrentbet*3.5)) ]
 
 ##f$actionpostflop_9##
-[ didswag && (f$mycurrentbet>potcommon) && (f$mycurrentbet<=potcommon*3) ]
+[ didbetsize && (f$mycurrentbet>potcommon) && (f$mycurrentbet<=potcommon*3) ]
 
 ##f$actionpostflop_10##
-[ didswag && (f$mycurrentbet>potcommon*3) ]
+[ didbetsize && (f$mycurrentbet>potcommon*3) ]
 
 ##f$raisbits1##
 me_re_rais0
@@ -4819,8 +3818,8 @@ me_re_rais0
 0
 
 ##f$Initiative_GotRaised##
-br==3 ? didswaground2 && didcallround2 && nbetsround2>0 :
-br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
+br==3 ? didbetsizeround2 && didcallround2 && nbetsround2>0 :
+br==4 ? didbetsizeround3 && didcallround3 && nbetsround3>0 : 0
 
 ##f$nuts##
    [ nhandshi<=0 ]
@@ -4830,7 +3829,7 @@ br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
 [ nhandshi<=1 ]
 
 ##f$villiantakeover##
-[ br==3 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 ] ? {
+[ br==3 && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 ] ? {
 
     [ pt_raggf<=0.00 ] ?  0.50 :
 
@@ -4848,7 +3847,7 @@ br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
     [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
     [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
 
-[ br==4 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 ] ? {
+[ br==4 && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 ] ? {
 
     [ pt_raggf<=0.00 ] ? 0.50 :
 
@@ -4873,8 +3872,8 @@ br==4 ? didswaground3 && didcallround3 && nbetsround3>0 : 0
 
 ##f$betline##
 [ !didcallround1 && nbetsround1>1 && nbetsround1<=7 && // raise preflop
-  didswaground2 && !didcallround2 && nbetsround2>0 && nbetsround2<12 && // cbet flop
-  f$Position_Early && !didswag ] // early position, did not act yet
+  didbetsizeround2 && !didcallround2 && nbetsround2>0 && nbetsround2<12 && // cbet flop
+  f$Position_Early && !didbetsize ] // early position, did not act yet
 
 ##f$prwin1##
 [prwin+(prtie/2)]**(1+f$threat)
@@ -4928,7 +3927,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
 
 [ call>0 && pt_rhands>25 ] ? {
 
-  [ !didswag ] ? {
+  [ !didbetsize ] ? {
 
     [                    f$pt_raggt<=0.00 ] ? 0.00 :
     [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 0.50 :
@@ -4946,7 +3945,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
     [ f$pt_raggt>4.00 && f$pt_raggt<=5.00 ] ? 0.00 :
     [ f$pt_raggt>5.00                     ] ? 0.00 : 0 } : 
 
-  [  didswag ] ? {
+  [  didbetsize ] ? {
 
     [                    f$pt_raggt<=0.00 ] ? 0.00 :
     [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 1.00 :
@@ -4993,7 +3992,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
 
 [ call>0 && pt_rhands>25 ] ? {
 
-  [ !didswag ] ? {
+  [ !didbetsize ] ? {
 
     [                    f$pt_raggr<=0.00 ] ? 0.00 :
     [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 0.50 :
@@ -5011,7 +4010,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
     [ f$pt_raggr>4.00 && f$pt_raggr<=5.00 ] ? 0.00 :
     [ f$pt_raggr>5.00                     ] ? 0.00 : 0 } : 
 
-  [  didswag ] ? {
+  [  didbetsize ] ? {
 
     [                    f$pt_raggr<=0.00 ] ? 0.00 :
     [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 1.00 :
@@ -5122,7 +4121,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
 0
 
 ##f$villiantakeover1##
-[ br==3 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 && f$Position_Late ] ? {
+[ br==3 && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 && f$Position_Late ] ? {
 
     [ pt_raggf<=0.00 ] ?  0.50 :
 
@@ -5140,7 +4139,7 @@ br==4 ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_hav
     [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
     [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
 
-[ br==4 && !didcallround1 && nbetsround1>1 && !didswaground2 && didcallround2 && nbetsround3>0 && f$Position_Late ] ? {
+[ br==4 && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 && nbetsround3>0 && f$Position_Late ] ? {
 
     [ pt_raggf<=0.00 ] ? 0.50 :
 
@@ -5294,3 +4293,999 @@ br==2 ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 ##f$balance##
 (balance+bblind)
 
+
+0
+
+
+
+
+
+
+
+
+
+
+
+##list01##
+66  77  88  99  TT  JJ  QQ  KK  AA  
+ATS AJS AQS AKS KQS QJS JTS  
+JA  QA  KA
+
+##list02##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A9S ATS AJS AQS AKS  
+KTS KJS KQS  
+QJS  
+JTS  
+T9S  
+98S  
+TA  JA  QA  KA  
+JK  QK  
+
+##list03##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+KJS KQS  
+QTS QJS  
+JTS  
+T9S  
+98S  
+TA  JA  QA  KA  
+QK  
+
+##list04##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+K9S KTS KJS KQS  
+Q9S QTS QJS  
+J8S J9S JTS  
+T8S T9S  
+98S  
+87S  
+76S  
+65S  
+9A  TA  JA  QA  KA  
+TK  JK  QK  
+TQ  JQ  
+TJ  
+
+##list05##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+K8S K9S KTS KJS KQS  
+Q9S QTS QJS  
+J8S J9S JTS  
+T8S T9S  
+97S 98S  
+87S  
+76S  
+65S  
+54S  
+8A  9A  TA  JA  QA  KA  
+9K  TK  JK  QK  
+TQ  JQ  
+TJ  
+
+##list100##
+AA  KK  QQ  
+
+##list11##
+KK  AA  QQ  
+
+##list12##
+KK  AA  QQ  
+AKS  
+KA
+
+##list13##
+KK  AA  QQ  JJ  TT  
+AKS  
+KA
+
+##list14##
+KK  AA  QQ  JJ  TT  99  88  
+AKS AQS  
+KA
+
+##list15##
+KK  AA  QQ  JJ  TT  99  88  77  
+AKS AQS AJS ATS  
+KA  QA  JA  
+KQS  
+
+##list16##
+KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  
+AKS AQS AJS ATS  
+KA  QA  JA  
+KQS  
+
+##list06##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+K7S K8S K9S KTS KJS KQS  
+Q8S Q9S QTS QJS  
+J8S J9S JTS  
+T8S T9S  
+97S 98S  
+87S  
+76S  
+65S  
+54S  
+6A  7A  8A  9A  TA  JA  QA  KA  
+8K  9K  TK  JK  QK  
+TQ  JQ  
+TJ  
+
+##list07##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+K7S K8S K9S KTS KJS KQS  
+Q8S Q9S QTS QJS  
+J8S J9S JTS  
+T7S T8S T9S  
+96S 97S 98S  
+86S 87S  
+75S 76S  
+64S 65S  
+54S  
+5A  6A  7A  8A  9A  TA  JA  QA  KA  
+9K  TK  JK  QK  
+9Q  TQ  JQ  
+9J  TJ  
+9T  
+
+##list08##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
+Q6S Q7S Q8S Q9S QTS QJS  
+J7S J8S J9S JTS  
+T6S T7S T8S T9S  
+95S 96S 97S 98S  
+85S 86S 87S  
+75S 76S  
+64S 65S  
+54S  
+2A  3A  4A  5A  6A  7A  8A  9A  TA  JA  QA  KA  
+8K  9K  TK  JK  QK  
+9Q  TQ  JQ  
+8J  9J  TJ
+8T  9T  
+89  
+
+##list00##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
+Q2S Q3S Q4S Q5S Q6S Q7S Q8S Q9S QTS QJS  
+J2S J3S J4S J5S J6S J7S J8S J9S JTS  
+T2S T3S T4S T5S T6S T7S T8S T9S  
+92S 93S 94S 95S 96S 97S 98S  
+82S 83S 84S 85S 86S 87S  
+72S 73S 74S 75S 76S  
+62S 63S 64S 65S  
+52S 53S 54S  
+42S 43S  
+32S  
+2A  3A  4A  5A  6A  7A  8A  9A  TA  JA  QA  KA  
+2K  3K  4K  5K  6K  7K  8K  9K  TK  JK  QK  
+2Q  3Q  4Q  5Q  6Q  7Q  8Q  9Q  TQ  JQ  
+2J  3J  4J  5J  6J  7J  8J  9J  TJ  
+2T  3T  4T  5T  6T  7T  8T  9T  
+29  39  49  59  69  79  89  
+28  38  48  58  68  78  
+27  37  47  57  67  
+26  36  46  56  
+25  35  45  
+24  34  
+23  
+
+##list10##
+KK  AA  
+
+##list17##
+KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AQS AKS  
+KA  
+KQS
+
+##list18##
+KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AQS AKS  
+KA  QK  
+KQS QJS JTS
+
+##list19##
+KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AQS AKS  
+KA  QK  
+KQS QJS JTS T9S 98S
+
+##list99##
+QQ  KK  AA  
+AKS  
+KA
+
+##list09##
+88  99  TT  JJ  QQ  KK  AA  
+AJS AQS AKS  
+KQS  
+KA  QA  
+
+##list101##
+AA  KK  QQ  
+
+##list102##
+AA  KK  QQ  JJ  
+
+##list103##
+AA  KK  QQ  JJ  TT  
+
+##list106##
+AA  KK  QQ  JJ  TT  99  
+AKS AQS  
+KA  
+
+##list107##
+AA  KK  QQ  JJ  TT  99  
+AKS AQS AJS  
+KA  QA
+
+##list108##
+AA  KK  QQ  JJ  TT  99  88  
+AKS AQS AJS ATS  
+KA  QA  JA  
+KQS 
+
+##list109##
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKS AQS AJS ATS  
+KA  QA  JA  
+KQS 
+
+##list110##
+AA  KK  QQ  JJ  TT  99  88  77  
+AKS AQS AJS ATS A9S A8S  
+KA  QA  JA  TA  9A  
+KQS  
+QK
+
+##list111##
+AA  KK  QQ  JJ  TT  99  88  77  66  
+AKS AQS AJS ATS A9S A8S  
+KA  QA  JA  TA  9A  
+KQS KJS  
+QJS   
+QK
+
+##list112##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  
+AKS AQS AJS ATS A9S A8S  
+KA  QA  JA  TA  9A  
+KQS KJS  
+QJS   
+JTS  
+T9S  
+QK
+
+##list113##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  
+AKS AQS AJS ATS A9S A8S A7S   
+KA  QA  JA  TA  9A  8A  
+KQS KJS  
+QJS   
+JTS  
+T9S  
+QK
+
+##list114##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S   
+KA  QA  JA  TA  9A  8A  
+KQS KJS  
+QJS   
+JTS  
+T9S  
+98S  
+QK
+
+##list115##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S   
+KA  QA  JA  TA  9A  8A  
+KQS KJS KTS   
+QJS QTS  
+JTS  
+T9S  
+98S  
+QK  JK  
+
+##list116##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S  
+KA  QA  JA  TA  9A  8A  7A  
+KQS KJS KTS   
+QJS QTS  
+JTS  
+T9S  
+98S  
+87S  
+QK  JK  
+JQ  
+
+##list117##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S  
+KA  QA  JA  TA  9A  8A  7A  6A  
+KQS KJS KTS   
+QJS QTS  
+JTS  
+T9S  
+98S  
+87S  
+QK  JK  TK  
+JQ  TQ  
+TJ  
+
+##list118##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S  
+KA  QA  JA  TA  9A  8A  7A  6A  5A  
+KQS KJS KTS K9S    
+QJS QTS  
+JTS  
+T9S  
+98S  
+87S  
+76S  
+QK  JK  TK  
+JQ  TQ  
+TJ  
+9T  
+
+##list119##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S    
+QJS QTS Q9S  
+JTS  
+T9S  
+98S  
+87S  
+76S  
+65S  
+54S  
+43S  
+32S  
+QK  JK  TK  
+JQ  TQ  
+TJ  
+9T  
+
+##list120##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S     
+QJS QTS Q9S  
+JTS J9S J8S    
+T9S T8S  
+98S 97S   
+87S 86S   
+76S  
+65S  
+54S  
+43S  
+32S  
+QK  JK  TK  9K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+
+##list121##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S  
+JTS J9S J8S    
+T9S T8S  
+98S 97S   
+87S 86S   
+76S 75S   
+65S 64S  
+54S 53S  
+43S 42S  
+32S  
+QK  JK  TK  9K  
+JQ  TQ  9Q  
+TJ  9J  8J  
+9T  
+
+##list122##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S    
+JTS J9S J8S J7S J6S      
+T9S T8S T7S T6S   
+98S 97S 96S    
+87S 86S   
+76S 75S   
+65S 64S  
+54S 53S  
+43S 42S  
+32S  
+QK  JK  TK  9K  8K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+89  
+78  
+
+##list123##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
+JTS J9S J8S J7S J6S J5S J4S J3S J2S  
+T9S T8S T7S T6S  
+98S 97S 96S    
+87S 86S 85S  
+76S 75S 74S  
+65S 64S 63S  
+54S 53S 52S  
+43S 42S  
+32S  
+QK  JK  TK  9K  8K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+89  
+78  
+
+##list124##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
+JTS J9S J8S J7S J6S J5S J4S J3S J2S  
+T9S T8S T7S T6S T5S T4S T3S T2S  
+98S 97S 96S 95S 94S 93S 92S  
+87S 86S 85S 84S 83S 82S  
+76S 75S 74S 73S 72S  
+65S 64S 63S 62S  
+54S 53S 52S  
+43S 42S  
+32S  
+KA  QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+QK  JK  TK  9K  8K  7K  6K  5K  4K  3K  2K
+JQ  TQ  9Q  8Q  7Q  6Q  5Q  4Q  3Q  2Q  
+TJ  9J  8J  7J  6J  5J  4J  3J  2J  
+9T  8T  7T  6T  5T  4T  3T  2T  
+89  79  69  59  49  39  29  
+78  68  58  48  38  28  
+67  57  47  37  27  
+56  46  36  26  
+45  35  25  
+34  24  
+
+##list125##
+TT  99  88  77  
+AQS AJS ATS 
+KA  QA  
+KQS  
+QJS  
+JTS  
+
+##list126##
+TT  99  88  77  66  55  
+AQS AJS ATS 
+KA  QA  JA  
+KQS  
+QJS  
+JTS  
+
+##list127##
+TT  99  88  77  66  55  
+AQS AJS ATS A9S 
+KA  QA  JA  TA  
+KQS KJS  
+QJS   
+JTS  
+
+##list128##
+TT  99  88  77  66  55  44  
+AQS AJS ATS A9S A8S  
+KA  QA  JA  TA  
+KQS KJS  
+QJS   
+JTS  
+QK
+
+##list129##
+TT  99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S  
+KA  QA  JA  TA  9A  
+KQS KJS  
+QJS   
+JTS  
+QK
+
+##list130##
+TT  99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S  
+KA  QA  JA  TA  9A  8A  
+KQS KJS KTS   
+QJS   
+JTS 
+T9S  
+QK
+
+##list131##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S 
+QA  JA  TA  9A  8A  7A  
+KQS KJS KTS 
+QJS QTS 
+JTS 
+T9S 
+98S 
+87S 
+76S 
+QK  JK  TK  
+JQ  TQ  
+
+##list132##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S 
+QA  JA  TA  9A  8A  7A  6A  5A  
+KQS KJS KTS 
+QJS QTS 
+JTS 
+T9S 
+98S 
+87S 
+76S 
+QK  JK  TK  
+JQ  TQ  
+TJ  
+
+##list133##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+QA  JA  TA  9A  8A  7A  6A  5A  
+KQS KJS KTS K9S 
+QJS QTS Q9S 
+JTS J9S 
+T9S T8S 
+98S 97S 
+87S 
+76S 
+QK  JK  TK  
+JQ  TQ  
+TJ  
+
+##list134##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  
+KQS KJS KTS K9S 
+QJS QTS Q9S 
+JTS J9S 
+T9S T8S 
+98S 97S 
+87S 86S   
+76S 75S   
+65S 64S  
+54S 
+QK  JK  TK  
+JQ  TQ  
+TJ  
+
+##list135##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S 
+QJS QTS Q9S 
+JTS J9S 
+T9S T8S 
+98S 97S 
+87S 86S   
+76S 75S   
+65S 64S  
+54S 
+43S 
+32S  
+QK  JK  TK  9K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+
+##list136##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S K6S K5S 
+QJS QTS Q9S Q8S 
+JTS J9S J8S 
+T9S T8S T7S 
+98S 97S 96S    
+87S 86S   
+76S 75S   
+65S 64S  
+54S 53S  
+43S 42S  
+32S  
+QK  JK  TK  9K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+89  
+78  
+
+##list137##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S    
+JTS J9S J8S J7S J6S      
+T9S T8S T7S T6S   
+98S 97S 96S    
+87S 86S   
+76S 75S   
+65S 64S  
+54S 53S  
+43S 42S  
+32S  
+QK  JK  TK  9K  8K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+89  
+78  
+
+##list138##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
+JTS J9S J8S J7S J6S J5S J4S J3S J2S  
+T9S T8S T7S T6S  
+98S 97S 96S 95S     
+87S 86S 85S 84S   
+76S 75S 74S 73S   
+65S 64S 63S 62S   
+54S 53S 52S  
+43S 42S  
+32S  
+QK  JK  TK  9K  8K  7K  6K  5K  
+JQ  TQ  9Q  8Q  
+TJ  9J  8J  
+9T  
+89  
+78  
+
+##list139##
+99  88  77  66  55  44  33  22  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
+JTS J9S J8S J7S J6S J5S J4S J3S J2S  
+T9S T8S T7S T6S T5S T4S T3S T2S  
+98S 97S 96S 95S 94S 93S 92S  
+87S 86S 85S 84S 83S 82S  
+76S 75S 74S 73S 72S  
+65S 64S 63S 62S  
+54S 53S 52S  
+43S 42S  
+32S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+QK  JK  TK  9K  8K  7K  6K  5K  4K  3K  2K
+JQ  TQ  9Q  8Q  7Q  6Q  5Q  4Q  3Q  
+TJ  9J  8J  7J  6J  5J  4J  3J  
+9T  8T  7T  6T  5T  4T  3T  
+89  79  69  59  49  39  
+78  68  58  48  38  
+67  57  47  37  
+56  46  36  
+45  35  
+
+##list140##
+99  88  77  66  55  44  33  22  
+AJS KQS QJS JTS T9S  
+QA  QK
+
+##list141##
+99  88  77  66  55  44  33  22  
+AJS ATS KQS QJS JTS T9S  
+QA  JA  QK  
+KQS
+
+##list142##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S   
+QA  JA  TA  
+KQS  
+QJS  
+JTS  
+T9S
+
+##list143##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S   
+QA  JA  TA  9A  
+KQS KJS  
+QJS   
+JTS  
+T9S  
+98S  
+QK
+
+##list144##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S   
+QA  JA  TA  9A  8A  
+KQS KJS  
+QJS   
+JTS  
+T9S  
+QK
+
+##list145##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S   
+QA  JA  TA  9A  8A  
+KQS KJS KTS   
+QJS QTS  
+JTS  
+T9S  
+QK  JK  
+
+##list146##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S  
+QA  JA  TA  9A  8A  7A  
+KQS KJS KTS   
+QJS QTS  
+JTS  
+T9S  
+98S  
+87S  
+QK  JK  
+JQ  
+
+##list147##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S A5S A4S  
+QA  JA  TA  9A  8A  7A  6A  5A  
+KQS KJS KTS K9S    
+QJS QTS  
+JTS  
+T9S  
+98S  
+87S  
+76S  
+QK  JK  TK  
+JQ  TQ  
+TJ  
+9T  
+
+##list148##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+KQS KJS KTS K9S    
+QJS QTS Q9S  
+JTS  
+T9S  
+98S  
+87S  
+76S  
+65S  
+54S  
+43S  
+32S  
+QK  JK  TK  
+JQ  TQ  
+TJ  
+9T  
+
+##list149##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KQS KJS KTS K9S K8S K7S     
+QJS QTS Q9S  
+JTS J9S J8S    
+T9S T8S  
+98S 97S   
+87S 86S   
+76S  
+65S  
+54S  
+43S  
+32S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+QK  JK  TK  9K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+
+##list150##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S  
+JTS J9S J8S    
+T9S T8S  
+98S 97S   
+87S 86S   
+76S 75S   
+65S 64S  
+54S 53S  
+43S 42S  
+32S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+QK  JK  TK  9K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+
+##list151##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S    
+JTS J9S J8S J7S J6S      
+T9S T8S T7S T6S   
+98S 97S 96S    
+87S 86S   
+76S 75S   
+65S 64S  
+54S 53S  
+43S 42S  
+32S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+QK  JK  TK  9K  8K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+89  
+78  
+
+##list152##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
+JTS J9S J8S J7S J6S J5S J4S J3S J2S  
+T9S T8S T7S T6S  
+98S 97S 96S    
+87S 86S 85S  
+76S 75S 74S  
+65S 64S 63S  
+54S 53S 52S  
+43S 42S  
+32S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+QK  JK  TK  9K  8K  
+JQ  TQ  9Q  
+TJ  9J  
+9T  
+89  
+78  
+
+##list153##
+99  88  77  66  55  44  33  22  
+AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
+QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
+JTS J9S J8S J7S J6S J5S J4S J3S J2S  
+T9S T8S T7S T6S T5S T4S T3S T2S  
+98S 97S 96S 95S 94S 93S 92S  
+87S 86S 85S 84S 83S 82S  
+76S 75S 74S 73S 72S  
+65S 64S 63S 62S  
+54S 53S 52S  
+43S 42S  
+32S  
+QA  JA  TA  9A  8A  7A  6A  5A  4A  3A  2A  
+QK  JK  TK  9K  8K  7K  6K  5K  4K  3K  2K
+JQ  TQ  9Q  8Q  7Q  6Q  5Q  4Q  3Q  2Q  
+TJ  9J  8J  7J  6J  5J  4J  3J  2J  
+9T  8T  7T  6T  5T  4T  3T  2T  
+89  79  69  59  49  39  29  
+78  68  58  48  38  28  
+67  57  47  37  27  
+56  46  36  26  
+45  35  25  
+34  24  
+
+##list154##
+88  77  66  55  44  33  22  
+AJS ATS A9S A8S  
+JA  
+KQS  
+QJS  
+JTS  
+T9S  
+98S  
+87S  
+
+##list155##
+88  77  66  55  44  33  22  
+ATS A9S A8S A7S A6S   
+JA  TA  
+KQS  
+QJS  
+JTS  
+T9S  
+98S  
+87S  
+
+##list156##
+88  77  66  55  44  33  22  
+ATS A9S A8S A7S A6S   
+JA  TA  9A  
+KQS KJS  
+QJS   
+JTS T9S  
+QK
+
+##list157##
+88  77  66  55  44  33  22  
+ATS A9S A8S A7S A6S   
+JA  TA  9A  8A  
+KQS KJS  
+QJS   
+JTS  
+T9S  
+98S  
+QK
+
+##list300##
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKS KQS QJS JTS T9S 98S 87S 76S 65S  
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS J9S 
+KA  QA  JA  TA  
+
+##list301##
+AA  KK  QQ  JJ  TT  99  88  77  
+AKS KQS QJS JTS T9S 98S 
+AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS 
+KA  QA  JA  TA  
+
+##list302##
+AA  KK  QQ  JJ  TT  99  88  77  
+AKS KQS QJS JTS T9S 
+AQS AJS ATS A9S KJS KTS QTS 
+KA  QA  JA  TA  
+
+##list900##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
+K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
+Q2S Q3S Q4S Q5S Q6S Q7S Q8S Q9S QTS QJS  
+J6S J7S J8S J9S JTS  
+T5S T6S T7S T8S T9S  
+95S 96S 97S 98S  
+85S 86S 87S  
+75S 76S  
+64S 65S  
+54S  
+43S  
+32S  
+2A  3A  4A  5A  6A  7A  8A  9A  TA  JA  QA  KA  
+2K  3K  4K  5K  6K  7K  8K  9K  TK  JK  QK  
+2Q  3Q  4Q  5Q  6Q  7Q  8Q  9Q  TQ  JQ  
+7J  8J  9J  TJ
+7T  8T  9T  
+79  89  
+78  
+67  
