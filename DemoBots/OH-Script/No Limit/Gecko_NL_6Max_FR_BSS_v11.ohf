@@ -106,7 +106,7 @@ WHEN f$river_call Call FORCE
 // Basic calls with nuts or free to check
 [ prwin>=0.98 ] ? 1 :
 [ call<=0.001 ] ? 1 :
-[ IsPreflop && (hand$AA || hand$KK) ] ? 1 : 0///$$$$
+[ IsPreflop && (hand$AA || hand$KK) ] ? 1 : 0
 
 ##f$call_minbets##
 [ IsPostflop && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
@@ -127,24 +127,19 @@ WHEN IsTurn    AND f$flop_turn_raise_strong_set RETURN True FORCE
 WHEN IsRiver   AND f$river_raise   RETURN True FORCE
 
 ##f$best_betsize##
-// !!! might need + currentbet
+// !!! needs + currentbet
 WHEN NOT f$betsizing_strategy RETURN 0 FORCE
 WHEN AmountToCall <= 0
-  f$Betsize_Adjusted>=balance && balance>0                                                                           ? f$balance          :
-    f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent>0 && f$stackopponent<=(f$Betsize_Adjusted*1.5) ? f$balance          :
-    f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent> (f$Betsize_Adjusted*1.5)                      ? f$Betsize_Adjusted :
-    f$Betsize_Adjusted<balance && nplayersplaying>=3                                                                   ? f$Betsize_Adjusted : 0 } :
+    WHEN (f$Betsize_Adjusted >= balance) RETURN f$balance FORCE // f$balance? NOTNOTNOT
+    WHEN (f$Betsize_Adjusted < balance) AND (nplayersplaying == 2) AND (f$stackopponent > 0) AND (f$stackopponent <= (f$Betsize_Adjusted * 1.5)) RETURN f$balance FORCE
+    WHEN (f$Betsize_Adjusted < balance) AND (nplayersplaying == 2) AND (f$stackopponent > (f$Betsize_Adjusted * 1.5)) RETURN f$Betsize_Adjusted FORCE
+    WHEN (f$Betsize_Adjusted < balance) AND (nplayersplaying >= 3) RETURN f$Betsize_Adjusted FORCE
 WHEN Others
-
-
-
-    
-
-call>0 && f$betsizing_strategy>0 ? {
-
-    f$stackraiser>0 && !(f$stackraiser>=(f$currentbet_raischair-bblind) && f$stackraiser<=f$currentbet_raischair) && f$Betsize_Adjusted>=balance*0.75 ? f$balance          :
-    f$stackraiser>0 && !(f$stackraiser>=(f$currentbet_raischair-bblind) && f$stackraiser<=f$currentbet_raischair) && f$Betsize_Adjusted< balance*0.75 ? f$Betsize_Adjusted : 0 } :
-0
+    //!!!!! "And not" logic here unclear
+    WHEN (f$stackraiser > 0) AND NOT(f$stackraiser>=(f$currentbet_raischair-bblind) AND f$stackraiser<=f$currentbet_raischair) AND f$Betsize_Adjusted>=balance*0.75 RETURN f$balance FORCE
+    WHEN (f$stackraiser > 0) AND NOT(f$stackraiser>=(f$currentbet_raischair-bblind) AND f$stackraiser<=f$currentbet_raischair) AND f$Betsize_Adjusted< balance*0.75 RETURN f$Betsize_Adjusted FORCE
+    // Above code does not consider the case of "noraiser" 
+    WHEN Others RETURN f$Betsize_Adjusted FORCE
 
 ##f$prwin_number_of_iterations##
 50000
@@ -2133,7 +2128,10 @@ f$oppchair==6 ? f$pt_pfr*2.0 : 0
 (raischair==2) ? balance2 : 
 (raischair==3) ? balance3 : 
 (raischair==4) ? balance4 :
-(raischair==5) ? balance5 : 0 ]
+(raischair==5) ? balance5 : 
+f$balance //!!!! To be extended for preflop,
+// as there is no longer any blind-raiser
+]
 
 ##f$preflop_aggressor##
 [ nplayersround2>=3 && nplayersplaying==2 ]
@@ -4154,6 +4152,7 @@ IsRiver ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_h
 [ nrankedcommon==2 && istwopair && nplayersround2>2 && trankcommon>7 && !f$twopair ] ? 0.4 : 0
 
 ##f$realbalance##
+// !!! name it remaining-balance or change the code to work with balance
 IsPreflop ? {
 
     ncallbets<=1 ? {
