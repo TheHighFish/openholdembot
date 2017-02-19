@@ -22,7 +22,7 @@
 //   * Replaced "islist..." sy,bols by "list..."
 //   * Replaced didswag by didbetsize
 //   * Simplified the PokerTracker-functions
-//     f$stats_pfr, f$stats_vpip, f$stats_flopaf, f$stats_turnaf, f$stats_riveraf
+//     f$stats_pfr, f$stats_vpip, f$stats_flopaf, f$stats_turnaf, f$stats_riveraf, f$stats_wsdp
 //     because headsup-stats are now availabele more easily
 //   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
 //   * Replaced br by betround by even more verbosity: IsFlop, ...
@@ -49,15 +49,18 @@
 WHEN f$preflop_raise RaiseTo f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
-WHEN f$call_potcommitted Call FORCE
-WHEN f$preflop_call Call FORCE // !!!! rename f$call_flop
+// No WHEN f$call_potcommitted Call FORCE here.
+// AA and KK get handled by f$call_nuts.
+// With weaker hands we are already allin (small stack)
+// or have enough chips left that we are not committed
+WHEN f$preflop_call Call FORCE
 
 ##f$flop##
 WHEN f$flop_raise RaiseTo f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseTo f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
-WHEN f$call_potcommitted Call FORCE
+WHEN f$call_potcommitted FORCE Call 
 WHEN f$flop_call Call FORCE
 
 ##f$turn##
@@ -79,14 +82,13 @@ WHEN f$river_call Call FORCE
 // Basic calls with nuts or free to check
 [ prwin>=0.98 ] ? 1 :
 [ call<=0.001 ] ? 1 :
-[ IsPreflop && ($AA||$KK) ] ? 1 : 0///$$$$
+[ IsPreflop && (hand$AA || hand$KK) ] ? 1 : 0///$$$$
 
 ##f$call_minbets##
 [ IsPostflop && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
 [ IsPostflop && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 : 0
 
 ##f$call_potcommitted##
-//!!!! only preflop
 [ IsPostflop && f$committed                                  ] ? 1 : 0
 
 ##f$flop_turn_raise_strong_set##
@@ -2099,6 +2101,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 0
 
 ##f$stackopponent##
+// To be simplified by the multiplexer !!!
 [ 
 (opponentsplayingbits==1)  ? balance0 :
 (opponentsplayingbits==2)  ? balance1 :
@@ -2108,6 +2111,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 (opponentsplayingbits==32) ? balance5 : 0 ]
 
 ##f$stackraiser##
+// To be simplified by the multiplexer !!!
 [
 (raischair==0) ? balance0 : 
 (raischair==1) ? balance1 : 
@@ -2210,13 +2214,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 0
 
 ##f$stats_wsdp##
-[ 
-(opponentsplayingbits==1)  ? pt_wsdp0 :
-(opponentsplayingbits==2)  ? pt_wsdp1 :
-(opponentsplayingbits==4)  ? pt_wsdp2 :
-(opponentsplayingbits==8)  ? pt_wsdp3 :
-(opponentsplayingbits==16) ? pt_wsdp4 :
-(opponentsplayingbits==32) ? pt_wsdp5 : 0 ]
+pt_wsdp_headsup
 
 ##f$Preflop_First_In##
 (f$BettingAction_First_In && f$Chart_OpenRaise) ? 1 : 0
