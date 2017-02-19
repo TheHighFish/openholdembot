@@ -108,6 +108,14 @@ WHEN f$river_call Call FORCE
 ##f$flop_turn_raise_strong_set##
 [ IsPostflop && NOT IsRiver && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 : 0
 
+##f$betsizing_strategy##
+WHEN IsPreflop AND f$preflop_raise RETURN True FORCE
+WHEN IsFlop    AND f$flop_raise    RETURN True FORCE
+WHEN IsFlop    AND f$flop_turn_raise_strong_set RETURN True FORCE
+WHEN IsTurn    AND f$turn_raise    RETURN True FORCE
+WHEN IsTurn    AND f$flop_turn_raise_strong_set RETURN True FORCE
+WHEN IsRiver   AND f$river_raise   RETURN True FORCE
+
 ##f$best_betsize##
 // !!! might need + currentbet
 call<=0 && f$betsizing_strategy>0 ? {
