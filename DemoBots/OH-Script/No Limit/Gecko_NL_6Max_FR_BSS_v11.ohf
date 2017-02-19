@@ -30,7 +30,7 @@
 //   * Uniform naming for f$pt_-functions, no longer f$stats
 //   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
 //   * Replaced br by betround by even more verbosity: IsFlop, ...
-//   * Renamed handhand$AA, handhand$KK to more verbose handhandhand$AA, hsndhand$KK
+//   * Renamed hand$AA, hand$KK to more verbose handhand$AA, hsndhand$KK
 //
 //
 //
@@ -64,7 +64,7 @@ WHEN f$flop_raise RaiseTo f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseTo f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
-WHEN f$call_potcommitted FORCE Call 
+WHEN f$call_potcommitted Call FORCE 
 WHEN f$flop_call Call FORCE
 
 ##f$turn##
@@ -208,7 +208,7 @@ WHEN Others RETURN pt_aggr_headsup FORCE
 
 ((!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon==1) ||
 (!f$twopair && rankloplayer>rankhicommon && nstraightcommon<3 && nrankedcommon==1 && nsuited==4 && nsuitedcommon==2) ||
-(!f$twopair && handhand$AA && nsuitedcommon==3 && nsuited==4 && nrankedcommon==1) ||
+(!f$twopair && hand$AA && nsuitedcommon==3 && nsuited==4 && nrankedcommon==1) ||
 (!f$twopair && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ishipair && nsuitedcommon<3 && nrankedcommon==1 && (pokervalcommon < onepair)) ||
 (nsuited==4 && nsuited>nsuitedcommon && ishipair && nrankedcommon==1)) ? 3 :
 
@@ -2085,7 +2085,7 @@ f$oppchair==6 ? f$pt_pfr*2.0 : 0
 0
 
 ##f$preflop_call##
-[ handhand$AA || handhand$KK ] ? 1 : 
+[ hand$AA || hand$KK ] ? 1 : 
 
 [ !didbetsize ] ? {
 
