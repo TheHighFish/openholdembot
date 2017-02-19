@@ -47,7 +47,8 @@
 //     was not in use.
 //
 // LOGICAL CHANGES:
-//   NONE
+//   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
+//     Geckos code suggested that 0.67 would be right.
 //
 // TO DO:
 //   * implement pt_river_bet (currently changed to river_bet to make it load!!!!)
@@ -96,6 +97,11 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$river_call Call FORCE
 
+##f$allin_on_betsize_balance_ration##
+// Not present in Geckos original bot for OpenHoldem 2.x,
+// But his code suggests that he wants it this way.
+0.67
+
 ##f$call_nuts##
 // Basic calls with nuts or free to check
 [ prwin>=0.98 ] ? 1 :
@@ -122,12 +128,17 @@ WHEN IsRiver   AND f$river_raise   RETURN True FORCE
 
 ##f$best_betsize##
 // !!! might need + currentbet
-call<=0 && f$betsizing_strategy>0 ? {
-
-    f$Betsize_Adjusted>=balance && balance>0                                                                           ? f$balance          :
+WHEN NOT f$betsizing_strategy RETURN 0 FORCE
+WHEN AmountToCall <= 0
+  f$Betsize_Adjusted>=balance && balance>0                                                                           ? f$balance          :
     f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent>0 && f$stackopponent<=(f$Betsize_Adjusted*1.5) ? f$balance          :
     f$Betsize_Adjusted<balance && nplayersplaying==2 && f$stackopponent> (f$Betsize_Adjusted*1.5)                      ? f$Betsize_Adjusted :
     f$Betsize_Adjusted<balance && nplayersplaying>=3                                                                   ? f$Betsize_Adjusted : 0 } :
+WHEN Others
+
+
+
+    
 
 call>0 && f$betsizing_strategy>0 ? {
 
