@@ -261,7 +261,7 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 
     [ InSmallBlind ] ? call>sblind && call<6*bblind :
     [ InBigBlind ] ? call>0      && call<6*bblind :
-    [ f$dealposition>=3 ] ? call>bblind && call<7*bblind : 0 } :
+    [ NOT InTheBlinds ] ? call>bblind && call<7*bblind : 0 } :
 
 0
 
