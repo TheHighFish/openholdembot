@@ -41,7 +41,10 @@
 //   * Changed handlists from WinHoldem to OpenHoldem-style format, e.g.
 //       AK  ->  AKs
 //       KA  ->  AKo    
-//
+//   * Removed unused f$BettingAction_Freeplay
+//     OpenHoldem reported an undefined list40 there
+//     and it turned out the complete function 
+//     was not in use.
 //
 // LOGICAL CHANGES:
 //
@@ -2285,9 +2288,6 @@ pt_wtsd_headsup
 
 ##f$THIS_MUST_NOT_HAPPEN##
 log$SERIOUS_ERROR 
-
-##f$BettingAction_Freeplay##
-(nbetstocall == 0 || f$Position_SmallBlind && call==sblind && list40 )
 
 ##f$BettingAction_First_In##
 (f$BettingAction_Unraised_Pot && nopponentscalling<=0)
