@@ -36,8 +36,8 @@
 //   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
 //   * Replaced br by betround by even more verbosity: IsFlop, ...
 //   * Renamed hand$AA, hand$KK to more verbose handhand$AA, hsndhand$KK
-//
-//
+//   * Replaced nopponentsraising (unsupported) by a function f$nopponentsraising
+//     that counts the old WinHoldem way, including "blind raisers"
 //
 //
 //
@@ -2238,7 +2238,7 @@ pt_wtsd_headsup
 (f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us && list100) ? 1 : 0
 
 ##f$Preflop_Multiple_Raisers##
-(nopponentsraising>3 && list100) ? 1 : 0
+(f$nopponentsraising>3 && list100) ? 1 : 0
 
 ##f$Preflop_React_To_Reraise##
 (f$BettingAction_Raisers_Behind_Us && list100) ? 1 : 0
@@ -2349,7 +2349,7 @@ log$SERIOUS_ERROR
 (didrais || didcall || didchec || didbetsize)
 
 ##f$BettingAction_Single_Raiser_Before_Us##
-(f$BettingAction_Number_Of_Raisers_Preflop==1 && nopponentsraising<=3)
+(f$BettingAction_Number_Of_Raisers_Preflop==1 && f$nopponentsraising<=3)
 
 ##f$Chart_ReRaise##
 [ InSmallBlind ] ? { // sb
@@ -4281,11 +4281,8 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 ##f$balance##
 (balance+bblind)
 
-
-0
-
-
-
+##f$nopponentsraising##
+// to do
 
 
 
