@@ -28,7 +28,7 @@
 //   * Uniform naming for f$pt_-functions, no longer f$pt_
 //   * Adapted names of Pokertracker symbols to new naming conventions
 //     - pt_flop_af   -> pr_flop_af          (same for turn and river)
-//     
+//     - pt_fbbts     -> pt_bb_fold_to_steal (same for sb)
 //     - pt_hands_raischair -> pt_hands_raischair  (same for all other ptr_symbols)
 //   * Removed duplicate f$pt_vpip and f$pt_vpip
 //   * Uniform naming for f$pt_-functions, no longer f$stats
@@ -47,7 +47,11 @@
 //     was not in use.
 //
 // LOGICAL CHANGES:
+//   NONE
 //
+// TO DO:
+//   * implement pt_river_bet (currently changed to river_bet to make it load!!!!)
+//   * extend code to FR
 //
 //
 // 
@@ -2428,780 +2432,780 @@ log$SERIOUS_ERROR
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
 
 ##f$Player_Category##
-f$pt_icon==1  ? 1 :  // regular in balans			
-f$pt_icon==2  ? 2 :  // regular uit balans 3bet te weinig en fold te veel			
-f$pt_icon==3  ? 3 :  // regular uit balans 3bet te weinig en fold te weinig			
-f$pt_icon==4  ? 4 :  // regular uit balans 3bet te veel en fold te veel			
-f$pt_icon==5  ? 5 :  // regular uit balans 3bet te veel en fold te weinig			
-f$pt_icon==6  ? 6 :  // laffe nit fold te weinig			
-f$pt_icon==7  ? 7 :  // laffe nit fold te veel			
-f$pt_icon==8  ? 8 : // laffe nit fold normaal	
-f$pt_icon==9  ? 9 : // passieve donk fold te veel	
-f$pt_icon==10 ? 10 : // passieve donk fold te weinig	
-f$pt_icon==11 ? 11 : // passieve donk fold normaal	
-f$pt_icon==12 ? 12 : // agresieve donk fold te veel	
-f$pt_icon==13 ? 13 : // agresieve donk fold te weinig	
-f$pt_icon==14 ? 14 : 0// agresieve donk fold normaal	
+f$pt_river_bet==1  ? 1 :  // regular in balans			
+f$pt_river_bet==2  ? 2 :  // regular uit balans 3bet te weinig en fold te veel			
+f$pt_river_bet==3  ? 3 :  // regular uit balans 3bet te weinig en fold te weinig			
+f$pt_river_bet==4  ? 4 :  // regular uit balans 3bet te veel en fold te veel			
+f$pt_river_bet==5  ? 5 :  // regular uit balans 3bet te veel en fold te weinig			
+f$pt_river_bet==6  ? 6 :  // laffe nit fold te weinig			
+f$pt_river_bet==7  ? 7 :  // laffe nit fold te veel			
+f$pt_river_bet==8  ? 8 : // laffe nit fold normaal	
+f$pt_river_bet==9  ? 9 : // passieve donk fold te veel	
+f$pt_river_bet==10 ? 10 : // passieve donk fold te weinig	
+f$pt_river_bet==11 ? 11 : // passieve donk fold normaal	
+f$pt_river_bet==12 ? 12 : // agresieve donk fold te veel	
+f$pt_river_bet==13 ? 13 : // agresieve donk fold te weinig	
+f$pt_river_bet==14 ? 14 : 0// agresieve donk fold normaal	
 
 ##f$Player_1##
-f$pt_icon==1
+f$pt_river_bet==1
 
 ##f$Player_2##
-f$pt_icon==2
+f$pt_river_bet==2
 
 ##f$Player_3##
-f$pt_icon==3
+f$pt_river_bet==3
 
 ##f$Player_4##
-f$pt_icon==4
+f$pt_river_bet==4
 
 ##f$Player_5##
-f$pt_icon==5
+f$pt_river_bet==5
 
 ##f$Player_6##
-f$pt_icon==6
+f$pt_river_bet==6
 
 ##f$Player_7##
-f$pt_icon==7
+f$pt_river_bet==7
 
 ##f$Player_8##
-f$pt_icon==8
+f$pt_river_bet==8
 
 ##f$Player_9##
-f$pt_icon==9
+f$pt_river_bet==9
 
-##f$pt_icon##
+##f$pt_river_bet##
 [ 
-(opponentsplayingbits==1)  ? pt_icon0 : 
-(opponentsplayingbits==2)  ? pt_icon1 : 
-(opponentsplayingbits==4)  ? pt_icon2 : 
-(opponentsplayingbits==8)  ? pt_icon3 : 
-(opponentsplayingbits==16) ? pt_icon4 : 
-(opponentsplayingbits==32) ? pt_icon5 : 0 ]
+(opponentsplayingbits==1)  ? pt_river_bet0 : 
+(opponentsplayingbits==2)  ? pt_river_bet1 : 
+(opponentsplayingbits==4)  ? pt_river_bet2 : 
+(opponentsplayingbits==8)  ? pt_river_bet3 : 
+(opponentsplayingbits==16) ? pt_river_bet4 : 
+(opponentsplayingbits==32) ? pt_river_bet5 : 0 ]
 
 ##f$Player_10##
-f$pt_icon==10
+f$pt_river_bet==10
 
 ##f$Player_11##
-f$pt_icon==11
+f$pt_river_bet==11
 
 ##f$Player_12##
-f$pt_icon==12
+f$pt_river_bet==12
 
 ##f$Player_13##
-f$pt_icon==13
+f$pt_river_bet==13
 
 ##f$Player_14##
-f$pt_icon==14
+f$pt_river_bet==14
 
 ##f$Punten_Preflop_Cutoff##
 (userchair==0) ? {
 
-((pt_icon1<=0)  ? 2 :
- (pt_icon1==5)  ? 2 :
- (pt_icon1==6)  ? 2 :
- (pt_icon1==7)  ? 2 :
- (pt_icon1==8)  ? 2 :
- (pt_icon1==9)  ? 2 :
+((pt_river_bet1<=0)  ? 2 :
+ (pt_river_bet1==5)  ? 2 :
+ (pt_river_bet1==6)  ? 2 :
+ (pt_river_bet1==7)  ? 2 :
+ (pt_river_bet1==8)  ? 2 :
+ (pt_river_bet1==9)  ? 2 :
 
- (pt_icon1==10) ? 1 :
- (pt_icon1==11) ? 1 :
- (pt_icon1==12) ? 1 :
- (pt_icon1==13) ? 1 :
- (pt_icon1==14) ? 1 :
+ (pt_river_bet1==10) ? 1 :
+ (pt_river_bet1==11) ? 1 :
+ (pt_river_bet1==12) ? 1 :
+ (pt_river_bet1==13) ? 1 :
+ (pt_river_bet1==14) ? 1 :
 
- (pt_icon1==1)  ? 0 :
- (pt_icon1==2)  ? 0 :
- (pt_icon1==3)  ? 0 :
- (pt_icon1==4)  ? 0 : 0)+
+ (pt_river_bet1==1)  ? 0 :
+ (pt_river_bet1==2)  ? 0 :
+ (pt_river_bet1==3)  ? 0 :
+ (pt_river_bet1==4)  ? 0 : 0)+
 
-((pt_icon2<=0)  ? 2 :
- (pt_icon2==5)  ? 2 :
- (pt_icon2==6)  ? 2 :
- (pt_icon2==7)  ? 2 :
- (pt_icon2==8)  ? 2 :
- (pt_icon2==9)  ? 2 :
+((pt_river_bet2<=0)  ? 2 :
+ (pt_river_bet2==5)  ? 2 :
+ (pt_river_bet2==6)  ? 2 :
+ (pt_river_bet2==7)  ? 2 :
+ (pt_river_bet2==8)  ? 2 :
+ (pt_river_bet2==9)  ? 2 :
 
- (pt_icon2==10) ? 1 :
- (pt_icon2==11) ? 1 :
- (pt_icon2==12) ? 1 :
- (pt_icon2==13) ? 1 :
- (pt_icon2==14) ? 1 :
+ (pt_river_bet2==10) ? 1 :
+ (pt_river_bet2==11) ? 1 :
+ (pt_river_bet2==12) ? 1 :
+ (pt_river_bet2==13) ? 1 :
+ (pt_river_bet2==14) ? 1 :
 
- (pt_icon2==1)  ? 0 :
- (pt_icon2==2)  ? 0 :
- (pt_icon2==3)  ? 0 :
- (pt_icon2==4)  ? 0 : 0)+
+ (pt_river_bet2==1)  ? 0 :
+ (pt_river_bet2==2)  ? 0 :
+ (pt_river_bet2==3)  ? 0 :
+ (pt_river_bet2==4)  ? 0 : 0)+
 
-((pt_icon3<=0)  ? 2 :
- (pt_icon3==5)  ? 2 :
- (pt_icon3==6)  ? 2 :
- (pt_icon3==7)  ? 2 :
- (pt_icon3==8)  ? 2 :
- (pt_icon3==9)  ? 2 :
+((pt_river_bet3<=0)  ? 2 :
+ (pt_river_bet3==5)  ? 2 :
+ (pt_river_bet3==6)  ? 2 :
+ (pt_river_bet3==7)  ? 2 :
+ (pt_river_bet3==8)  ? 2 :
+ (pt_river_bet3==9)  ? 2 :
 
- (pt_icon3==10) ? 1 :
- (pt_icon3==11) ? 1 :
- (pt_icon3==12) ? 1 :
- (pt_icon3==13) ? 1 :
- (pt_icon3==14) ? 1 :
+ (pt_river_bet3==10) ? 1 :
+ (pt_river_bet3==11) ? 1 :
+ (pt_river_bet3==12) ? 1 :
+ (pt_river_bet3==13) ? 1 :
+ (pt_river_bet3==14) ? 1 :
 
- (pt_icon3==1)  ? 0 :
- (pt_icon3==2)  ? 0 :
- (pt_icon3==3)  ? 0 :
- (pt_icon3==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet3==1)  ? 0 :
+ (pt_river_bet3==2)  ? 0 :
+ (pt_river_bet3==3)  ? 0 :
+ (pt_river_bet3==4)  ? 0 : 0) + 0 } :
 
 // -------------------------------
 
 (userchair==1) ? {
 
-((pt_icon2<=0)  ? 2 :
- (pt_icon2==5)  ? 2 :
- (pt_icon2==6)  ? 2 :
- (pt_icon2==7)  ? 2 :
- (pt_icon2==8)  ? 2 :
- (pt_icon2==9)  ? 2 :
+((pt_river_bet2<=0)  ? 2 :
+ (pt_river_bet2==5)  ? 2 :
+ (pt_river_bet2==6)  ? 2 :
+ (pt_river_bet2==7)  ? 2 :
+ (pt_river_bet2==8)  ? 2 :
+ (pt_river_bet2==9)  ? 2 :
 
- (pt_icon2==10) ? 1 :
- (pt_icon2==11) ? 1 :
- (pt_icon2==12) ? 1 :
- (pt_icon2==13) ? 1 :
- (pt_icon2==14) ? 1 :
+ (pt_river_bet2==10) ? 1 :
+ (pt_river_bet2==11) ? 1 :
+ (pt_river_bet2==12) ? 1 :
+ (pt_river_bet2==13) ? 1 :
+ (pt_river_bet2==14) ? 1 :
 
- (pt_icon2==1)  ? 0 :
- (pt_icon2==2)  ? 0 :
- (pt_icon2==3)  ? 0 :
- (pt_icon2==4)  ? 0 : 0)+
+ (pt_river_bet2==1)  ? 0 :
+ (pt_river_bet2==2)  ? 0 :
+ (pt_river_bet2==3)  ? 0 :
+ (pt_river_bet2==4)  ? 0 : 0)+
 
-((pt_icon3<=0)  ? 2 :
- (pt_icon3==5)  ? 2 :
- (pt_icon3==6)  ? 2 :
- (pt_icon3==7)  ? 2 :
- (pt_icon3==8)  ? 2 :
- (pt_icon3==9)  ? 2 :
+((pt_river_bet3<=0)  ? 2 :
+ (pt_river_bet3==5)  ? 2 :
+ (pt_river_bet3==6)  ? 2 :
+ (pt_river_bet3==7)  ? 2 :
+ (pt_river_bet3==8)  ? 2 :
+ (pt_river_bet3==9)  ? 2 :
 
- (pt_icon3==10) ? 1 :
- (pt_icon3==11) ? 1 :
- (pt_icon3==12) ? 1 :
- (pt_icon3==13) ? 1 :
- (pt_icon3==14) ? 1 :
+ (pt_river_bet3==10) ? 1 :
+ (pt_river_bet3==11) ? 1 :
+ (pt_river_bet3==12) ? 1 :
+ (pt_river_bet3==13) ? 1 :
+ (pt_river_bet3==14) ? 1 :
 
- (pt_icon3==1)  ? 0 :
- (pt_icon3==2)  ? 0 :
- (pt_icon3==3)  ? 0 :
- (pt_icon3==4)  ? 0 : 0)+
+ (pt_river_bet3==1)  ? 0 :
+ (pt_river_bet3==2)  ? 0 :
+ (pt_river_bet3==3)  ? 0 :
+ (pt_river_bet3==4)  ? 0 : 0)+
 
-((pt_icon4<=0)  ? 2 :
- (pt_icon4==5)  ? 2 :
- (pt_icon4==6)  ? 2 :
- (pt_icon4==7)  ? 2 :
- (pt_icon4==8)  ? 2 :
- (pt_icon4==9)  ? 2 :
+((pt_river_bet4<=0)  ? 2 :
+ (pt_river_bet4==5)  ? 2 :
+ (pt_river_bet4==6)  ? 2 :
+ (pt_river_bet4==7)  ? 2 :
+ (pt_river_bet4==8)  ? 2 :
+ (pt_river_bet4==9)  ? 2 :
 
- (pt_icon4==10) ? 1 :
- (pt_icon4==11) ? 1 :
- (pt_icon4==12) ? 1 :
- (pt_icon4==13) ? 1 :
- (pt_icon4==14) ? 1 :
+ (pt_river_bet4==10) ? 1 :
+ (pt_river_bet4==11) ? 1 :
+ (pt_river_bet4==12) ? 1 :
+ (pt_river_bet4==13) ? 1 :
+ (pt_river_bet4==14) ? 1 :
 
- (pt_icon4==1)  ? 0 :
- (pt_icon4==2)  ? 0 :
- (pt_icon4==3)  ? 0 :
- (pt_icon4==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet4==1)  ? 0 :
+ (pt_river_bet4==2)  ? 0 :
+ (pt_river_bet4==3)  ? 0 :
+ (pt_river_bet4==4)  ? 0 : 0) + 0 } :
 
 // -----------------------------
 
 (userchair==2) ? {
 
-((pt_icon3<=0)  ? 2 :
- (pt_icon3==5)  ? 2 :
- (pt_icon3==6)  ? 2 :
- (pt_icon3==7)  ? 2 :
- (pt_icon3==8)  ? 2 :
- (pt_icon3==9)  ? 2 :
+((pt_river_bet3<=0)  ? 2 :
+ (pt_river_bet3==5)  ? 2 :
+ (pt_river_bet3==6)  ? 2 :
+ (pt_river_bet3==7)  ? 2 :
+ (pt_river_bet3==8)  ? 2 :
+ (pt_river_bet3==9)  ? 2 :
 
- (pt_icon3==10) ? 1 :
- (pt_icon3==11) ? 1 :
- (pt_icon3==12) ? 1 :
- (pt_icon3==13) ? 1 :
- (pt_icon3==14) ? 1 :
+ (pt_river_bet3==10) ? 1 :
+ (pt_river_bet3==11) ? 1 :
+ (pt_river_bet3==12) ? 1 :
+ (pt_river_bet3==13) ? 1 :
+ (pt_river_bet3==14) ? 1 :
 
- (pt_icon3==1)  ? 0 :
- (pt_icon3==2)  ? 0 :
- (pt_icon3==3)  ? 0 :
- (pt_icon3==4)  ? 0 : 0)+
+ (pt_river_bet3==1)  ? 0 :
+ (pt_river_bet3==2)  ? 0 :
+ (pt_river_bet3==3)  ? 0 :
+ (pt_river_bet3==4)  ? 0 : 0)+
 
-((pt_icon4<=0)  ? 2 :
- (pt_icon4==5)  ? 2 :
- (pt_icon4==6)  ? 2 :
- (pt_icon4==7)  ? 2 :
- (pt_icon4==8)  ? 2 :
- (pt_icon4==9)  ? 2 :
+((pt_river_bet4<=0)  ? 2 :
+ (pt_river_bet4==5)  ? 2 :
+ (pt_river_bet4==6)  ? 2 :
+ (pt_river_bet4==7)  ? 2 :
+ (pt_river_bet4==8)  ? 2 :
+ (pt_river_bet4==9)  ? 2 :
 
- (pt_icon4==10) ? 1 :
- (pt_icon4==11) ? 1 :
- (pt_icon4==12) ? 1 :
- (pt_icon4==13) ? 1 :
- (pt_icon4==14) ? 1 :
+ (pt_river_bet4==10) ? 1 :
+ (pt_river_bet4==11) ? 1 :
+ (pt_river_bet4==12) ? 1 :
+ (pt_river_bet4==13) ? 1 :
+ (pt_river_bet4==14) ? 1 :
 
- (pt_icon4==1)  ? 0 :
- (pt_icon4==2)  ? 0 :
- (pt_icon4==3)  ? 0 :
- (pt_icon4==4)  ? 0 : 0)+
+ (pt_river_bet4==1)  ? 0 :
+ (pt_river_bet4==2)  ? 0 :
+ (pt_river_bet4==3)  ? 0 :
+ (pt_river_bet4==4)  ? 0 : 0)+
 
-((pt_icon5<=0)  ? 2 :
- (pt_icon5==5)  ? 2 :
- (pt_icon5==6)  ? 2 :
- (pt_icon5==7)  ? 2 :
- (pt_icon5==8)  ? 2 :
- (pt_icon5==9)  ? 2 :
+((pt_river_bet5<=0)  ? 2 :
+ (pt_river_bet5==5)  ? 2 :
+ (pt_river_bet5==6)  ? 2 :
+ (pt_river_bet5==7)  ? 2 :
+ (pt_river_bet5==8)  ? 2 :
+ (pt_river_bet5==9)  ? 2 :
 
- (pt_icon5==10) ? 1 :
- (pt_icon5==11) ? 1 :
- (pt_icon5==12) ? 1 :
- (pt_icon5==13) ? 1 :
- (pt_icon5==14) ? 1 :
+ (pt_river_bet5==10) ? 1 :
+ (pt_river_bet5==11) ? 1 :
+ (pt_river_bet5==12) ? 1 :
+ (pt_river_bet5==13) ? 1 :
+ (pt_river_bet5==14) ? 1 :
 
- (pt_icon5==1)  ? 0 :
- (pt_icon5==2)  ? 0 :
- (pt_icon5==3)  ? 0 :
- (pt_icon5==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet5==1)  ? 0 :
+ (pt_river_bet5==2)  ? 0 :
+ (pt_river_bet5==3)  ? 0 :
+ (pt_river_bet5==4)  ? 0 : 0) + 0 } :
 
 (userchair==3) ? {
 
-((pt_icon4<=0)  ? 2 :
- (pt_icon4==5)  ? 2 :
- (pt_icon4==6)  ? 2 :
- (pt_icon4==7)  ? 2 :
- (pt_icon4==8)  ? 2 :
- (pt_icon4==9)  ? 2 :
+((pt_river_bet4<=0)  ? 2 :
+ (pt_river_bet4==5)  ? 2 :
+ (pt_river_bet4==6)  ? 2 :
+ (pt_river_bet4==7)  ? 2 :
+ (pt_river_bet4==8)  ? 2 :
+ (pt_river_bet4==9)  ? 2 :
 
- (pt_icon4==10) ? 1 :
- (pt_icon4==11) ? 1 :
- (pt_icon4==12) ? 1 :
- (pt_icon4==13) ? 1 :
- (pt_icon4==14) ? 1 :
+ (pt_river_bet4==10) ? 1 :
+ (pt_river_bet4==11) ? 1 :
+ (pt_river_bet4==12) ? 1 :
+ (pt_river_bet4==13) ? 1 :
+ (pt_river_bet4==14) ? 1 :
 
- (pt_icon4==1)  ? 0 :
- (pt_icon4==2)  ? 0 :
- (pt_icon4==3)  ? 0 :
- (pt_icon4==4)  ? 0 : 0)+
+ (pt_river_bet4==1)  ? 0 :
+ (pt_river_bet4==2)  ? 0 :
+ (pt_river_bet4==3)  ? 0 :
+ (pt_river_bet4==4)  ? 0 : 0)+
 
-((pt_icon5<=0)  ? 2 :
- (pt_icon5==5)  ? 2 :
- (pt_icon5==6)  ? 2 :
- (pt_icon5==7)  ? 2 :
- (pt_icon5==8)  ? 2 :
- (pt_icon5==9)  ? 2 :
+((pt_river_bet5<=0)  ? 2 :
+ (pt_river_bet5==5)  ? 2 :
+ (pt_river_bet5==6)  ? 2 :
+ (pt_river_bet5==7)  ? 2 :
+ (pt_river_bet5==8)  ? 2 :
+ (pt_river_bet5==9)  ? 2 :
 
- (pt_icon5==10) ? 1 :
- (pt_icon5==11) ? 1 :
- (pt_icon5==12) ? 1 :
- (pt_icon5==13) ? 1 :
- (pt_icon5==14) ? 1 :
+ (pt_river_bet5==10) ? 1 :
+ (pt_river_bet5==11) ? 1 :
+ (pt_river_bet5==12) ? 1 :
+ (pt_river_bet5==13) ? 1 :
+ (pt_river_bet5==14) ? 1 :
 
- (pt_icon5==1)  ? 0 :
- (pt_icon5==2)  ? 0 :
- (pt_icon5==3)  ? 0 :
- (pt_icon5==4)  ? 0 : 0)+
+ (pt_river_bet5==1)  ? 0 :
+ (pt_river_bet5==2)  ? 0 :
+ (pt_river_bet5==3)  ? 0 :
+ (pt_river_bet5==4)  ? 0 : 0)+
 
-((pt_icon0<=0)  ? 2 :
- (pt_icon0==5)  ? 2 :
- (pt_icon0==6)  ? 2 :
- (pt_icon0==7)  ? 2 :
- (pt_icon0==8)  ? 2 :
- (pt_icon0==9)  ? 2 :
+((pt_river_bet0<=0)  ? 2 :
+ (pt_river_bet0==5)  ? 2 :
+ (pt_river_bet0==6)  ? 2 :
+ (pt_river_bet0==7)  ? 2 :
+ (pt_river_bet0==8)  ? 2 :
+ (pt_river_bet0==9)  ? 2 :
 
- (pt_icon0==10) ? 1 :
- (pt_icon0==11) ? 1 :
- (pt_icon0==12) ? 1 :
- (pt_icon0==13) ? 1 :
- (pt_icon0==14) ? 1 :
+ (pt_river_bet0==10) ? 1 :
+ (pt_river_bet0==11) ? 1 :
+ (pt_river_bet0==12) ? 1 :
+ (pt_river_bet0==13) ? 1 :
+ (pt_river_bet0==14) ? 1 :
 
- (pt_icon0==1)  ? 0 :
- (pt_icon0==2)  ? 0 :
- (pt_icon0==3)  ? 0 :
- (pt_icon0==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet0==1)  ? 0 :
+ (pt_river_bet0==2)  ? 0 :
+ (pt_river_bet0==3)  ? 0 :
+ (pt_river_bet0==4)  ? 0 : 0) + 0 } :
 
 (userchair==4) ? {
 
-((pt_icon5<=0)  ? 2 :
- (pt_icon5==5)  ? 2 :
- (pt_icon5==6)  ? 2 :
- (pt_icon5==7)  ? 2 :
- (pt_icon5==8)  ? 2 :
- (pt_icon5==9)  ? 2 :
+((pt_river_bet5<=0)  ? 2 :
+ (pt_river_bet5==5)  ? 2 :
+ (pt_river_bet5==6)  ? 2 :
+ (pt_river_bet5==7)  ? 2 :
+ (pt_river_bet5==8)  ? 2 :
+ (pt_river_bet5==9)  ? 2 :
 
- (pt_icon5==10) ? 1 :
- (pt_icon5==11) ? 1 :
- (pt_icon5==12) ? 1 :
- (pt_icon5==13) ? 1 :
- (pt_icon5==14) ? 1 :
+ (pt_river_bet5==10) ? 1 :
+ (pt_river_bet5==11) ? 1 :
+ (pt_river_bet5==12) ? 1 :
+ (pt_river_bet5==13) ? 1 :
+ (pt_river_bet5==14) ? 1 :
 
- (pt_icon5==1)  ? 0 :
- (pt_icon5==2)  ? 0 :
- (pt_icon5==3)  ? 0 :
- (pt_icon5==4)  ? 0 : 0)+
+ (pt_river_bet5==1)  ? 0 :
+ (pt_river_bet5==2)  ? 0 :
+ (pt_river_bet5==3)  ? 0 :
+ (pt_river_bet5==4)  ? 0 : 0)+
 
-((pt_icon0<=0)  ? 2 :
- (pt_icon0==5)  ? 2 :
- (pt_icon0==6)  ? 2 :
- (pt_icon0==7)  ? 2 :
- (pt_icon0==8)  ? 2 :
- (pt_icon0==9)  ? 2 :
+((pt_river_bet0<=0)  ? 2 :
+ (pt_river_bet0==5)  ? 2 :
+ (pt_river_bet0==6)  ? 2 :
+ (pt_river_bet0==7)  ? 2 :
+ (pt_river_bet0==8)  ? 2 :
+ (pt_river_bet0==9)  ? 2 :
 
- (pt_icon0==10) ? 1 :
- (pt_icon0==11) ? 1 :
- (pt_icon0==12) ? 1 :
- (pt_icon0==13) ? 1 :
- (pt_icon0==14) ? 1 :
+ (pt_river_bet0==10) ? 1 :
+ (pt_river_bet0==11) ? 1 :
+ (pt_river_bet0==12) ? 1 :
+ (pt_river_bet0==13) ? 1 :
+ (pt_river_bet0==14) ? 1 :
 
- (pt_icon0==1)  ? 0 :
- (pt_icon0==2)  ? 0 :
- (pt_icon0==3)  ? 0 :
- (pt_icon0==4)  ? 0 : 0)+
+ (pt_river_bet0==1)  ? 0 :
+ (pt_river_bet0==2)  ? 0 :
+ (pt_river_bet0==3)  ? 0 :
+ (pt_river_bet0==4)  ? 0 : 0)+
 
-((pt_icon1<=0)  ? 2 :
- (pt_icon1==5)  ? 2 :
- (pt_icon1==6)  ? 2 :
- (pt_icon1==7)  ? 2 :
- (pt_icon1==8)  ? 2 :
- (pt_icon1==9)  ? 2 :
+((pt_river_bet1<=0)  ? 2 :
+ (pt_river_bet1==5)  ? 2 :
+ (pt_river_bet1==6)  ? 2 :
+ (pt_river_bet1==7)  ? 2 :
+ (pt_river_bet1==8)  ? 2 :
+ (pt_river_bet1==9)  ? 2 :
 
- (pt_icon1==10) ? 1 :
- (pt_icon1==11) ? 1 :
- (pt_icon1==12) ? 1 :
- (pt_icon1==13) ? 1 :
- (pt_icon1==14) ? 1 :
+ (pt_river_bet1==10) ? 1 :
+ (pt_river_bet1==11) ? 1 :
+ (pt_river_bet1==12) ? 1 :
+ (pt_river_bet1==13) ? 1 :
+ (pt_river_bet1==14) ? 1 :
 
- (pt_icon1==1)  ? 0 :
- (pt_icon1==2)  ? 0 :
- (pt_icon1==3)  ? 0 :
- (pt_icon1==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet1==1)  ? 0 :
+ (pt_river_bet1==2)  ? 0 :
+ (pt_river_bet1==3)  ? 0 :
+ (pt_river_bet1==4)  ? 0 : 0) + 0 } :
 
 (userchair==5) ? {
 
-((pt_icon0<=0)  ? 2 :
- (pt_icon0==5)  ? 2 :
- (pt_icon0==6)  ? 2 :
- (pt_icon0==7)  ? 2 :
- (pt_icon0==8)  ? 2 :
- (pt_icon0==9)  ? 2 :
+((pt_river_bet0<=0)  ? 2 :
+ (pt_river_bet0==5)  ? 2 :
+ (pt_river_bet0==6)  ? 2 :
+ (pt_river_bet0==7)  ? 2 :
+ (pt_river_bet0==8)  ? 2 :
+ (pt_river_bet0==9)  ? 2 :
 
- (pt_icon0==10) ? 1 :
- (pt_icon0==11) ? 1 :
- (pt_icon0==12) ? 1 :
- (pt_icon0==13) ? 1 :
- (pt_icon0==14) ? 1 :
+ (pt_river_bet0==10) ? 1 :
+ (pt_river_bet0==11) ? 1 :
+ (pt_river_bet0==12) ? 1 :
+ (pt_river_bet0==13) ? 1 :
+ (pt_river_bet0==14) ? 1 :
 
- (pt_icon0==1)  ? 0 :
- (pt_icon0==2)  ? 0 :
- (pt_icon0==3)  ? 0 :
- (pt_icon0==4)  ? 0 : 0)+
+ (pt_river_bet0==1)  ? 0 :
+ (pt_river_bet0==2)  ? 0 :
+ (pt_river_bet0==3)  ? 0 :
+ (pt_river_bet0==4)  ? 0 : 0)+
 
-((pt_icon1<=0)  ? 2 :
- (pt_icon1==5)  ? 2 :
- (pt_icon1==6)  ? 2 :
- (pt_icon1==7)  ? 2 :
- (pt_icon1==8)  ? 2 :
- (pt_icon1==9)  ? 2 :
+((pt_river_bet1<=0)  ? 2 :
+ (pt_river_bet1==5)  ? 2 :
+ (pt_river_bet1==6)  ? 2 :
+ (pt_river_bet1==7)  ? 2 :
+ (pt_river_bet1==8)  ? 2 :
+ (pt_river_bet1==9)  ? 2 :
 
- (pt_icon1==10) ? 1 :
- (pt_icon1==11) ? 1 :
- (pt_icon1==12) ? 1 :
- (pt_icon1==13) ? 1 :
- (pt_icon1==14) ? 1 :
+ (pt_river_bet1==10) ? 1 :
+ (pt_river_bet1==11) ? 1 :
+ (pt_river_bet1==12) ? 1 :
+ (pt_river_bet1==13) ? 1 :
+ (pt_river_bet1==14) ? 1 :
 
- (pt_icon1==1)  ? 0 :
- (pt_icon1==2)  ? 0 :
- (pt_icon1==3)  ? 0 :
- (pt_icon1==4)  ? 0 : 0)+
+ (pt_river_bet1==1)  ? 0 :
+ (pt_river_bet1==2)  ? 0 :
+ (pt_river_bet1==3)  ? 0 :
+ (pt_river_bet1==4)  ? 0 : 0)+
 
-((pt_icon2<=0)  ? 2 :
- (pt_icon2==5)  ? 2 :
- (pt_icon2==6)  ? 2 :
- (pt_icon2==7)  ? 2 :
- (pt_icon2==8)  ? 2 :
- (pt_icon2==9)  ? 2 :
+((pt_river_bet2<=0)  ? 2 :
+ (pt_river_bet2==5)  ? 2 :
+ (pt_river_bet2==6)  ? 2 :
+ (pt_river_bet2==7)  ? 2 :
+ (pt_river_bet2==8)  ? 2 :
+ (pt_river_bet2==9)  ? 2 :
 
- (pt_icon2==10) ? 1 :
- (pt_icon2==11) ? 1 :
- (pt_icon2==12) ? 1 :
- (pt_icon2==13) ? 1 :
- (pt_icon2==14) ? 1 :
+ (pt_river_bet2==10) ? 1 :
+ (pt_river_bet2==11) ? 1 :
+ (pt_river_bet2==12) ? 1 :
+ (pt_river_bet2==13) ? 1 :
+ (pt_river_bet2==14) ? 1 :
 
- (pt_icon2==1)  ? 0 :
- (pt_icon2==2)  ? 0 :
- (pt_icon2==3)  ? 0 :
- (pt_icon2==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet2==1)  ? 0 :
+ (pt_river_bet2==2)  ? 0 :
+ (pt_river_bet2==3)  ? 0 :
+ (pt_river_bet2==4)  ? 0 : 0) + 0 } :
 
 0
 
 ##f$Punten_Preflop_Button##
 (userchair==0) ? {
 
-((pt_icon1<=0)  ? 2 :
- (pt_icon1==5)  ? 2 :
- (pt_icon1==6)  ? 2 :
- (pt_icon1==7)  ? 2 :
- (pt_icon1==8)  ? 2 :
- (pt_icon1==9)  ? 2 :
+((pt_river_bet1<=0)  ? 2 :
+ (pt_river_bet1==5)  ? 2 :
+ (pt_river_bet1==6)  ? 2 :
+ (pt_river_bet1==7)  ? 2 :
+ (pt_river_bet1==8)  ? 2 :
+ (pt_river_bet1==9)  ? 2 :
 
- (pt_icon1==10) ? 1 :
- (pt_icon1==11) ? 1 :
- (pt_icon1==12) ? 1 :
- (pt_icon1==13) ? 1 :
- (pt_icon1==14) ? 1 :
+ (pt_river_bet1==10) ? 1 :
+ (pt_river_bet1==11) ? 1 :
+ (pt_river_bet1==12) ? 1 :
+ (pt_river_bet1==13) ? 1 :
+ (pt_river_bet1==14) ? 1 :
 
- (pt_icon1==1)  ? 0 :
- (pt_icon1==2)  ? 0 :
- (pt_icon1==3)  ? 0 :
- (pt_icon1==4)  ? 0 : 0) +
+ (pt_river_bet1==1)  ? 0 :
+ (pt_river_bet1==2)  ? 0 :
+ (pt_river_bet1==3)  ? 0 :
+ (pt_river_bet1==4)  ? 0 : 0) +
 
-((pt_icon2<=0)  ? 2 :
- (pt_icon2==5)  ? 2 :
- (pt_icon2==6)  ? 2 :
- (pt_icon2==7)  ? 2 :
- (pt_icon2==8)  ? 2 :
- (pt_icon2==9)  ? 2 :
+((pt_river_bet2<=0)  ? 2 :
+ (pt_river_bet2==5)  ? 2 :
+ (pt_river_bet2==6)  ? 2 :
+ (pt_river_bet2==7)  ? 2 :
+ (pt_river_bet2==8)  ? 2 :
+ (pt_river_bet2==9)  ? 2 :
 
- (pt_icon2==10) ? 1 :
- (pt_icon2==11) ? 1 :
- (pt_icon2==12) ? 1 :
- (pt_icon2==13) ? 1 :
- (pt_icon2==14) ? 1 :
+ (pt_river_bet2==10) ? 1 :
+ (pt_river_bet2==11) ? 1 :
+ (pt_river_bet2==12) ? 1 :
+ (pt_river_bet2==13) ? 1 :
+ (pt_river_bet2==14) ? 1 :
 
- (pt_icon2==1)  ? 0 :
- (pt_icon2==2)  ? 0 :
- (pt_icon2==3)  ? 0 :
- (pt_icon2==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet2==1)  ? 0 :
+ (pt_river_bet2==2)  ? 0 :
+ (pt_river_bet2==3)  ? 0 :
+ (pt_river_bet2==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==1) ? {
 
-((pt_icon2<=0)  ? 2 :
- (pt_icon2==5)  ? 2 :
- (pt_icon2==6)  ? 2 :
- (pt_icon2==7)  ? 2 :
- (pt_icon2==8)  ? 2 :
- (pt_icon2==9)  ? 2 :
+((pt_river_bet2<=0)  ? 2 :
+ (pt_river_bet2==5)  ? 2 :
+ (pt_river_bet2==6)  ? 2 :
+ (pt_river_bet2==7)  ? 2 :
+ (pt_river_bet2==8)  ? 2 :
+ (pt_river_bet2==9)  ? 2 :
 
- (pt_icon2==10) ? 1 :
- (pt_icon2==11) ? 1 :
- (pt_icon2==12) ? 1 :
- (pt_icon2==13) ? 1 :
- (pt_icon2==14) ? 1 :
+ (pt_river_bet2==10) ? 1 :
+ (pt_river_bet2==11) ? 1 :
+ (pt_river_bet2==12) ? 1 :
+ (pt_river_bet2==13) ? 1 :
+ (pt_river_bet2==14) ? 1 :
 
- (pt_icon2==1)  ? 0 :
- (pt_icon2==2)  ? 0 :
- (pt_icon2==3)  ? 0 :
- (pt_icon2==4)  ? 0 : 0) +
+ (pt_river_bet2==1)  ? 0 :
+ (pt_river_bet2==2)  ? 0 :
+ (pt_river_bet2==3)  ? 0 :
+ (pt_river_bet2==4)  ? 0 : 0) +
 
-((pt_icon3<=0)  ? 2 :
- (pt_icon3==5)  ? 2 :
- (pt_icon3==6)  ? 2 :
- (pt_icon3==7)  ? 2 :
- (pt_icon3==8)  ? 2 :
- (pt_icon3==9)  ? 2 :
+((pt_river_bet3<=0)  ? 2 :
+ (pt_river_bet3==5)  ? 2 :
+ (pt_river_bet3==6)  ? 2 :
+ (pt_river_bet3==7)  ? 2 :
+ (pt_river_bet3==8)  ? 2 :
+ (pt_river_bet3==9)  ? 2 :
 
- (pt_icon3==10) ? 1 :
- (pt_icon3==11) ? 1 :
- (pt_icon3==12) ? 1 :
- (pt_icon3==13) ? 1 :
- (pt_icon3==14) ? 1 :
+ (pt_river_bet3==10) ? 1 :
+ (pt_river_bet3==11) ? 1 :
+ (pt_river_bet3==12) ? 1 :
+ (pt_river_bet3==13) ? 1 :
+ (pt_river_bet3==14) ? 1 :
 
- (pt_icon3==1)  ? 0 :
- (pt_icon3==2)  ? 0 :
- (pt_icon3==3)  ? 0 :
- (pt_icon3==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet3==1)  ? 0 :
+ (pt_river_bet3==2)  ? 0 :
+ (pt_river_bet3==3)  ? 0 :
+ (pt_river_bet3==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==2) ? {
 
-((pt_icon3<=0)  ? 2 :
- (pt_icon3==5)  ? 2 :
- (pt_icon3==6)  ? 2 :
- (pt_icon3==7)  ? 2 :
- (pt_icon3==8)  ? 2 :
- (pt_icon3==9)  ? 2 :
+((pt_river_bet3<=0)  ? 2 :
+ (pt_river_bet3==5)  ? 2 :
+ (pt_river_bet3==6)  ? 2 :
+ (pt_river_bet3==7)  ? 2 :
+ (pt_river_bet3==8)  ? 2 :
+ (pt_river_bet3==9)  ? 2 :
 
- (pt_icon3==10) ? 1 :
- (pt_icon3==11) ? 1 :
- (pt_icon3==12) ? 1 :
- (pt_icon3==13) ? 1 :
- (pt_icon3==14) ? 1 :
+ (pt_river_bet3==10) ? 1 :
+ (pt_river_bet3==11) ? 1 :
+ (pt_river_bet3==12) ? 1 :
+ (pt_river_bet3==13) ? 1 :
+ (pt_river_bet3==14) ? 1 :
 
- (pt_icon3==1)  ? 0 :
- (pt_icon3==2)  ? 0 :
- (pt_icon3==3)  ? 0 :
- (pt_icon3==4)  ? 0 : 0) +
+ (pt_river_bet3==1)  ? 0 :
+ (pt_river_bet3==2)  ? 0 :
+ (pt_river_bet3==3)  ? 0 :
+ (pt_river_bet3==4)  ? 0 : 0) +
 
-((pt_icon4<=0)  ? 2 :
- (pt_icon4==5)  ? 2 :
- (pt_icon4==6)  ? 2 :
- (pt_icon4==7)  ? 2 :
- (pt_icon4==8)  ? 2 :
- (pt_icon4==9)  ? 2 :
+((pt_river_bet4<=0)  ? 2 :
+ (pt_river_bet4==5)  ? 2 :
+ (pt_river_bet4==6)  ? 2 :
+ (pt_river_bet4==7)  ? 2 :
+ (pt_river_bet4==8)  ? 2 :
+ (pt_river_bet4==9)  ? 2 :
 
- (pt_icon4==10) ? 1 :
- (pt_icon4==11) ? 1 :
- (pt_icon4==12) ? 1 :
- (pt_icon4==13) ? 1 :
- (pt_icon4==14) ? 1 :
+ (pt_river_bet4==10) ? 1 :
+ (pt_river_bet4==11) ? 1 :
+ (pt_river_bet4==12) ? 1 :
+ (pt_river_bet4==13) ? 1 :
+ (pt_river_bet4==14) ? 1 :
 
- (pt_icon4==1)  ? 0 :
- (pt_icon4==2)  ? 0 :
- (pt_icon4==3)  ? 0 :
- (pt_icon4==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet4==1)  ? 0 :
+ (pt_river_bet4==2)  ? 0 :
+ (pt_river_bet4==3)  ? 0 :
+ (pt_river_bet4==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==3) ? {
 
-((pt_icon4<=0)  ? 2 :
- (pt_icon4==5)  ? 2 :
- (pt_icon4==6)  ? 2 :
- (pt_icon4==7)  ? 2 :
- (pt_icon4==8)  ? 2 :
- (pt_icon4==9)  ? 2 :
+((pt_river_bet4<=0)  ? 2 :
+ (pt_river_bet4==5)  ? 2 :
+ (pt_river_bet4==6)  ? 2 :
+ (pt_river_bet4==7)  ? 2 :
+ (pt_river_bet4==8)  ? 2 :
+ (pt_river_bet4==9)  ? 2 :
 
- (pt_icon4==10) ? 1 :
- (pt_icon4==11) ? 1 :
- (pt_icon4==12) ? 1 :
- (pt_icon4==13) ? 1 :
- (pt_icon4==14) ? 1 :
+ (pt_river_bet4==10) ? 1 :
+ (pt_river_bet4==11) ? 1 :
+ (pt_river_bet4==12) ? 1 :
+ (pt_river_bet4==13) ? 1 :
+ (pt_river_bet4==14) ? 1 :
 
- (pt_icon4==1)  ? 0 :
- (pt_icon4==2)  ? 0 :
- (pt_icon4==3)  ? 0 :
- (pt_icon4==4)  ? 0 : 0) +
+ (pt_river_bet4==1)  ? 0 :
+ (pt_river_bet4==2)  ? 0 :
+ (pt_river_bet4==3)  ? 0 :
+ (pt_river_bet4==4)  ? 0 : 0) +
 
-((pt_icon5<=0)  ? 2 :
- (pt_icon5==5)  ? 2 :
- (pt_icon5==6)  ? 2 :
- (pt_icon5==7)  ? 2 :
- (pt_icon5==8)  ? 2 :
- (pt_icon5==9)  ? 2 :
+((pt_river_bet5<=0)  ? 2 :
+ (pt_river_bet5==5)  ? 2 :
+ (pt_river_bet5==6)  ? 2 :
+ (pt_river_bet5==7)  ? 2 :
+ (pt_river_bet5==8)  ? 2 :
+ (pt_river_bet5==9)  ? 2 :
 
- (pt_icon5==10) ? 1 :
- (pt_icon5==11) ? 1 :
- (pt_icon5==12) ? 1 :
- (pt_icon5==13) ? 1 :
- (pt_icon5==14) ? 1 :
+ (pt_river_bet5==10) ? 1 :
+ (pt_river_bet5==11) ? 1 :
+ (pt_river_bet5==12) ? 1 :
+ (pt_river_bet5==13) ? 1 :
+ (pt_river_bet5==14) ? 1 :
 
- (pt_icon5==1)  ? 0 :
- (pt_icon5==2)  ? 0 :
- (pt_icon5==3)  ? 0 :
- (pt_icon5==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet5==1)  ? 0 :
+ (pt_river_bet5==2)  ? 0 :
+ (pt_river_bet5==3)  ? 0 :
+ (pt_river_bet5==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==4) ? {
 
-((pt_icon5<=0)  ? 2 :
- (pt_icon5==5)  ? 2 :
- (pt_icon5==6)  ? 2 :
- (pt_icon5==7)  ? 2 :
- (pt_icon5==8)  ? 2 :
- (pt_icon5==9)  ? 2 :
+((pt_river_bet5<=0)  ? 2 :
+ (pt_river_bet5==5)  ? 2 :
+ (pt_river_bet5==6)  ? 2 :
+ (pt_river_bet5==7)  ? 2 :
+ (pt_river_bet5==8)  ? 2 :
+ (pt_river_bet5==9)  ? 2 :
 
- (pt_icon5==10) ? 1 :
- (pt_icon5==11) ? 1 :
- (pt_icon5==12) ? 1 :
- (pt_icon5==13) ? 1 :
- (pt_icon5==14) ? 1 :
+ (pt_river_bet5==10) ? 1 :
+ (pt_river_bet5==11) ? 1 :
+ (pt_river_bet5==12) ? 1 :
+ (pt_river_bet5==13) ? 1 :
+ (pt_river_bet5==14) ? 1 :
 
- (pt_icon5==1)  ? 0 :
- (pt_icon5==2)  ? 0 :
- (pt_icon5==3)  ? 0 :
- (pt_icon5==4)  ? 0 : 0)+
+ (pt_river_bet5==1)  ? 0 :
+ (pt_river_bet5==2)  ? 0 :
+ (pt_river_bet5==3)  ? 0 :
+ (pt_river_bet5==4)  ? 0 : 0)+
 
-((pt_icon0<=0)  ? 2 :
- (pt_icon0==5)  ? 2 :
- (pt_icon0==6)  ? 2 :
- (pt_icon0==7)  ? 2 :
- (pt_icon0==8)  ? 2 :
- (pt_icon0==9)  ? 2 :
+((pt_river_bet0<=0)  ? 2 :
+ (pt_river_bet0==5)  ? 2 :
+ (pt_river_bet0==6)  ? 2 :
+ (pt_river_bet0==7)  ? 2 :
+ (pt_river_bet0==8)  ? 2 :
+ (pt_river_bet0==9)  ? 2 :
 
- (pt_icon0==10) ? 1 :
- (pt_icon0==11) ? 1 :
- (pt_icon0==12) ? 1 :
- (pt_icon0==13) ? 1 :
- (pt_icon0==14) ? 1 :
+ (pt_river_bet0==10) ? 1 :
+ (pt_river_bet0==11) ? 1 :
+ (pt_river_bet0==12) ? 1 :
+ (pt_river_bet0==13) ? 1 :
+ (pt_river_bet0==14) ? 1 :
 
- (pt_icon0==1)  ? 0 :
- (pt_icon0==2)  ? 0 :
- (pt_icon0==3)  ? 0 :
- (pt_icon0==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet0==1)  ? 0 :
+ (pt_river_bet0==2)  ? 0 :
+ (pt_river_bet0==3)  ? 0 :
+ (pt_river_bet0==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==5) ? {
 
-((pt_icon0<=0)  ? 2 :
- (pt_icon0==5)  ? 2 :
- (pt_icon0==6)  ? 2 :
- (pt_icon0==7)  ? 2 :
- (pt_icon0==8)  ? 2 :
- (pt_icon0==9)  ? 2 :
+((pt_river_bet0<=0)  ? 2 :
+ (pt_river_bet0==5)  ? 2 :
+ (pt_river_bet0==6)  ? 2 :
+ (pt_river_bet0==7)  ? 2 :
+ (pt_river_bet0==8)  ? 2 :
+ (pt_river_bet0==9)  ? 2 :
 
- (pt_icon0==10) ? 1 :
- (pt_icon0==11) ? 1 :
- (pt_icon0==12) ? 1 :
- (pt_icon0==13) ? 1 :
- (pt_icon0==14) ? 1 :
+ (pt_river_bet0==10) ? 1 :
+ (pt_river_bet0==11) ? 1 :
+ (pt_river_bet0==12) ? 1 :
+ (pt_river_bet0==13) ? 1 :
+ (pt_river_bet0==14) ? 1 :
 
- (pt_icon0==1)  ? 0 :
- (pt_icon0==2)  ? 0 :
- (pt_icon0==3)  ? 0 :
- (pt_icon0==4)  ? 0 : 0)+
+ (pt_river_bet0==1)  ? 0 :
+ (pt_river_bet0==2)  ? 0 :
+ (pt_river_bet0==3)  ? 0 :
+ (pt_river_bet0==4)  ? 0 : 0)+
 
-((pt_icon1<=0)  ? 2 :
- (pt_icon1==5)  ? 2 :
- (pt_icon1==6)  ? 2 :
- (pt_icon1==7)  ? 2 :
- (pt_icon1==8)  ? 2 :
- (pt_icon1==9)  ? 2 :
+((pt_river_bet1<=0)  ? 2 :
+ (pt_river_bet1==5)  ? 2 :
+ (pt_river_bet1==6)  ? 2 :
+ (pt_river_bet1==7)  ? 2 :
+ (pt_river_bet1==8)  ? 2 :
+ (pt_river_bet1==9)  ? 2 :
 
- (pt_icon1==10) ? 1 :
- (pt_icon1==11) ? 1 :
- (pt_icon1==12) ? 1 :
- (pt_icon1==13) ? 1 :
- (pt_icon1==14) ? 1 :
+ (pt_river_bet1==10) ? 1 :
+ (pt_river_bet1==11) ? 1 :
+ (pt_river_bet1==12) ? 1 :
+ (pt_river_bet1==13) ? 1 :
+ (pt_river_bet1==14) ? 1 :
 
- (pt_icon1==1)  ? 0 :
- (pt_icon1==2)  ? 0 :
- (pt_icon1==3)  ? 0 :
- (pt_icon1==4)  ? 0 : 0) + 0 } :
+ (pt_river_bet1==1)  ? 0 :
+ (pt_river_bet1==2)  ? 0 :
+ (pt_river_bet1==3)  ? 0 :
+ (pt_river_bet1==4)  ? 0 : 0) + 0 } :
 
 0
 
 ##f$Punten_Preflop_Sblind##
 (userchair==0) ? {
 
-((pt_icon1<=0)  ? 2 :
- (pt_icon1==5)  ? 2 :
- (pt_icon1==6)  ? 2 :
- (pt_icon1==7)  ? 2 :
- (pt_icon1==8)  ? 2 :
- (pt_icon1==9)  ? 2 :
+((pt_river_bet1<=0)  ? 2 :
+ (pt_river_bet1==5)  ? 2 :
+ (pt_river_bet1==6)  ? 2 :
+ (pt_river_bet1==7)  ? 2 :
+ (pt_river_bet1==8)  ? 2 :
+ (pt_river_bet1==9)  ? 2 :
 
- (pt_icon1==10) ? 1 :
- (pt_icon1==11) ? 1 :
- (pt_icon1==12) ? 1 :
- (pt_icon1==13) ? 1 :
- (pt_icon1==14) ? 1 :
+ (pt_river_bet1==10) ? 1 :
+ (pt_river_bet1==11) ? 1 :
+ (pt_river_bet1==12) ? 1 :
+ (pt_river_bet1==13) ? 1 :
+ (pt_river_bet1==14) ? 1 :
 
- (pt_icon1==2 ) ? 0 :
- (pt_icon1==4 ) ? 0 :
- (pt_icon1==8 ) ? 0 :
- (pt_icon1==11) ? 0 :
- (pt_icon1==14) ? 0 : 0) + 0 } :
+ (pt_river_bet1==2 ) ? 0 :
+ (pt_river_bet1==4 ) ? 0 :
+ (pt_river_bet1==8 ) ? 0 :
+ (pt_river_bet1==11) ? 0 :
+ (pt_river_bet1==14) ? 0 : 0) + 0 } :
 
 (userchair==1) ? {
 
-((pt_icon2<=0)  ? 2 :
- (pt_icon2==5)  ? 2 :
- (pt_icon2==6)  ? 2 :
- (pt_icon2==7)  ? 2 :
- (pt_icon2==8)  ? 2 :
- (pt_icon2==9)  ? 2 :
+((pt_river_bet2<=0)  ? 2 :
+ (pt_river_bet2==5)  ? 2 :
+ (pt_river_bet2==6)  ? 2 :
+ (pt_river_bet2==7)  ? 2 :
+ (pt_river_bet2==8)  ? 2 :
+ (pt_river_bet2==9)  ? 2 :
 
- (pt_icon2==10) ? 1 :
- (pt_icon2==11) ? 1 :
- (pt_icon2==12) ? 1 :
- (pt_icon2==13) ? 1 :
- (pt_icon2==14) ? 1 :
+ (pt_river_bet2==10) ? 1 :
+ (pt_river_bet2==11) ? 1 :
+ (pt_river_bet2==12) ? 1 :
+ (pt_river_bet2==13) ? 1 :
+ (pt_river_bet2==14) ? 1 :
 
- (pt_icon2==2 ) ? 0 :
- (pt_icon2==4 ) ? 0 :
- (pt_icon2==8 ) ? 0 :
- (pt_icon2==11) ? 0 :
- (pt_icon2==14) ? 0 : 0) + 0 } :
+ (pt_river_bet2==2 ) ? 0 :
+ (pt_river_bet2==4 ) ? 0 :
+ (pt_river_bet2==8 ) ? 0 :
+ (pt_river_bet2==11) ? 0 :
+ (pt_river_bet2==14) ? 0 : 0) + 0 } :
 
 (userchair==2) ? {
 
-((pt_icon3<=0)  ? 2 :
- (pt_icon3==5)  ? 2 :
- (pt_icon3==6)  ? 2 :
- (pt_icon3==7)  ? 2 :
- (pt_icon3==8)  ? 2 :
- (pt_icon3==9)  ? 2 :
+((pt_river_bet3<=0)  ? 2 :
+ (pt_river_bet3==5)  ? 2 :
+ (pt_river_bet3==6)  ? 2 :
+ (pt_river_bet3==7)  ? 2 :
+ (pt_river_bet3==8)  ? 2 :
+ (pt_river_bet3==9)  ? 2 :
 
- (pt_icon3==10) ? 1 :
- (pt_icon3==11) ? 1 :
- (pt_icon3==12) ? 1 :
- (pt_icon3==13) ? 1 :
- (pt_icon3==14) ? 1 :
+ (pt_river_bet3==10) ? 1 :
+ (pt_river_bet3==11) ? 1 :
+ (pt_river_bet3==12) ? 1 :
+ (pt_river_bet3==13) ? 1 :
+ (pt_river_bet3==14) ? 1 :
 
- (pt_icon3==2 ) ? 0 :
- (pt_icon3==4 ) ? 0 :
- (pt_icon3==8 ) ? 0 :
- (pt_icon3==11) ? 0 :
- (pt_icon3==14) ? 0 : 0) + 0 } :
+ (pt_river_bet3==2 ) ? 0 :
+ (pt_river_bet3==4 ) ? 0 :
+ (pt_river_bet3==8 ) ? 0 :
+ (pt_river_bet3==11) ? 0 :
+ (pt_river_bet3==14) ? 0 : 0) + 0 } :
 
 (userchair==3) ? {
 
-((pt_icon4<=0)  ? 2 :
- (pt_icon4==5)  ? 2 :
- (pt_icon4==6)  ? 2 :
- (pt_icon4==7)  ? 2 :
- (pt_icon4==8)  ? 2 :
- (pt_icon4==9)  ? 2 :
+((pt_river_bet4<=0)  ? 2 :
+ (pt_river_bet4==5)  ? 2 :
+ (pt_river_bet4==6)  ? 2 :
+ (pt_river_bet4==7)  ? 2 :
+ (pt_river_bet4==8)  ? 2 :
+ (pt_river_bet4==9)  ? 2 :
 
- (pt_icon4==10) ? 1 :
- (pt_icon4==11) ? 1 :
- (pt_icon4==12) ? 1 :
- (pt_icon4==13) ? 1 :
- (pt_icon4==14) ? 1 :
+ (pt_river_bet4==10) ? 1 :
+ (pt_river_bet4==11) ? 1 :
+ (pt_river_bet4==12) ? 1 :
+ (pt_river_bet4==13) ? 1 :
+ (pt_river_bet4==14) ? 1 :
 
- (pt_icon4==2 ) ? 0 :
- (pt_icon4==4 ) ? 0 :
- (pt_icon4==8 ) ? 0 :
- (pt_icon4==11) ? 0 :
- (pt_icon4==14) ? 0 : 0) + 0 } :
+ (pt_river_bet4==2 ) ? 0 :
+ (pt_river_bet4==4 ) ? 0 :
+ (pt_river_bet4==8 ) ? 0 :
+ (pt_river_bet4==11) ? 0 :
+ (pt_river_bet4==14) ? 0 : 0) + 0 } :
 
 (userchair==4) ? {
 
-((pt_icon5<=0)  ? 2 :
- (pt_icon5==5)  ? 2 :
- (pt_icon5==6)  ? 2 :
- (pt_icon5==7)  ? 2 :
- (pt_icon5==8)  ? 2 :
- (pt_icon5==9)  ? 2 :
+((pt_river_bet5<=0)  ? 2 :
+ (pt_river_bet5==5)  ? 2 :
+ (pt_river_bet5==6)  ? 2 :
+ (pt_river_bet5==7)  ? 2 :
+ (pt_river_bet5==8)  ? 2 :
+ (pt_river_bet5==9)  ? 2 :
 
- (pt_icon5==10) ? 1 :
- (pt_icon5==11) ? 1 :
- (pt_icon5==12) ? 1 :
- (pt_icon5==13) ? 1 :
- (pt_icon5==14) ? 1 :
+ (pt_river_bet5==10) ? 1 :
+ (pt_river_bet5==11) ? 1 :
+ (pt_river_bet5==12) ? 1 :
+ (pt_river_bet5==13) ? 1 :
+ (pt_river_bet5==14) ? 1 :
 
- (pt_icon5==2 ) ? 0 :
- (pt_icon5==4 ) ? 0 :
- (pt_icon5==8 ) ? 0 :
- (pt_icon5==11) ? 0 :
- (pt_icon5==14) ? 0 : 0) + 0 } :
+ (pt_river_bet5==2 ) ? 0 :
+ (pt_river_bet5==4 ) ? 0 :
+ (pt_river_bet5==8 ) ? 0 :
+ (pt_river_bet5==11) ? 0 :
+ (pt_river_bet5==14) ? 0 : 0) + 0 } :
 
 (userchair==5) && (
 
- (pt_icon0==3  ? 2 : 0)+
- (pt_icon0==5  ? 2 : 0)+
- (pt_icon0==6  ? 2 : 0)+
- (pt_icon0==9  ? 2 : 0)+
- (pt_icon0==12 ? 2 : 0)+
+ (pt_river_bet0==3  ? 2 : 0)+
+ (pt_river_bet0==5  ? 2 : 0)+
+ (pt_river_bet0==6  ? 2 : 0)+
+ (pt_river_bet0==9  ? 2 : 0)+
+ (pt_river_bet0==12 ? 2 : 0)+
 
- (pt_icon0==1  ? 1 : 0)+
- (pt_icon0==7  ? 1 : 0)+
- (pt_icon0==10 ? 1 : 0)+
- (pt_icon0==13 ? 1 : 0)+
+ (pt_river_bet0==1  ? 1 : 0)+
+ (pt_river_bet0==7  ? 1 : 0)+
+ (pt_river_bet0==10 ? 1 : 0)+
+ (pt_river_bet0==13 ? 1 : 0)+
 
- (pt_icon0==2  ? 0 : 0)+
- (pt_icon0==4  ? 0 : 0)+
- (pt_icon0==8  ? 0 : 0)+
- (pt_icon0==11 ? 0 : 0)+
- (pt_icon0==14 ? 0 : 0)+0)
+ (pt_river_bet0==2  ? 0 : 0)+
+ (pt_river_bet0==4  ? 0 : 0)+
+ (pt_river_bet0==8  ? 0 : 0)+
+ (pt_river_bet0==11 ? 0 : 0)+
+ (pt_river_bet0==14 ? 0 : 0)+0)
 //----------------------------------------------------
 
 ##f$pt_vpip##
@@ -3211,10 +3215,10 @@ pt_vpip_headsup
 pt_pfr_headsup
 
 ##f$pt_fbbts##
-pt_fbbts_headsup
+pt_bb_fold_to_steal_headsup
 
 ##f$pt_fsbts##
-pt_fsbts_headsup
+pt_sb_fold_to_steal_headsup
 
 ##f$Chart_CallRaise##
    (f$Position_SmallBlind && list09)
@@ -3256,168 +3260,168 @@ f$dealpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 ##f$Punten_Limper_Smallblind##
 userchair==0 ? {
 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 0 } :
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 0 } :
 
 userchair==1 ? {
 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 0 } :
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 0 } :
 
 userchair==2 ? {
 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 0 } :
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 0 } :
 
 userchair==3 ? {
 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 0 } :
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 0 } :
 
 userchair==4 ? {
 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 0 } :
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 0 } :
 
 userchair==5 ? {
 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 0 } :
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 0 } :
 
 -1//sichtkontrolle i.o
 
 ##f$Punten_Limper_Button##
 userchair==0 ? {
 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 0 } :
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 0 } :
 
 userchair==1 ? {
 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 0 } :
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 0 } :
 
 userchair==2 ? {
 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 0 } :
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 0 } :
 
 userchair==3 ? {
 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 0 } :
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 0 } :
 
 userchair==4 ? {
 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 0 } :
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 0 } :
 
 userchair==5 ? {
 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 0 } :
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 0 } :
 
 -1
 
 ##f$Punten_Limper_Bigblind##
 userchair==0 ? {
 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 0 } :
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 0 } :
 
 userchair==1 ? {
 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 0 } :
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 0 } :
 
 userchair==2 ? {
 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 0 } :
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 0 } :
 
 userchair==3 ? {
 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 0 } :
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 0 } :
 
 userchair==4 ? {
 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 0 } :
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 0 } :
 
 userchair==5 ? {
 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 0 } :
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 0 } :
 
 -1
 
 ##f$Punten_Limper_Cutoff##
 userchair==0 ? {
 
-currentbet4==bblind  ? pt_icon4 : 
-currentbet5==bblind  ? pt_icon5 : 0 } :
+currentbet4==bblind  ? pt_river_bet4 : 
+currentbet5==bblind  ? pt_river_bet5 : 0 } :
 
 userchair==1 ? {
 
-currentbet5==bblind  ? pt_icon5 : 
-currentbet0==bblind  ? pt_icon0 : 0 } :
+currentbet5==bblind  ? pt_river_bet5 : 
+currentbet0==bblind  ? pt_river_bet0 : 0 } :
 
 userchair==2 ? {
 
-currentbet0==bblind  ? pt_icon0 : 
-currentbet1==bblind  ? pt_icon1 : 0 } :
+currentbet0==bblind  ? pt_river_bet0 : 
+currentbet1==bblind  ? pt_river_bet1 : 0 } :
 
 userchair==3 ? {
 
-currentbet1==bblind  ? pt_icon1 : 
-currentbet2==bblind  ? pt_icon2 : 0 } :
+currentbet1==bblind  ? pt_river_bet1 : 
+currentbet2==bblind  ? pt_river_bet2 : 0 } :
 
 userchair==4 ? {
 
-currentbet2==bblind  ? pt_icon2 : 
-currentbet3==bblind  ? pt_icon3 : 0 } :
+currentbet2==bblind  ? pt_river_bet2 : 
+currentbet3==bblind  ? pt_river_bet3 : 0 } :
 
 userchair==5 ? {
 
-currentbet3==bblind  ? pt_icon3 : 
-currentbet4==bblind  ? pt_icon4 : 0 } :
+currentbet3==bblind  ? pt_river_bet3 : 
+currentbet4==bblind  ? pt_river_bet4 : 0 } :
 
 -1
 
@@ -4186,43 +4190,44 @@ f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 :
 0
 
 ##f$pt_flop_af_raischair##
-(pt_raggf*(pt_rwtsd*4))
+// !!! name it "adjusted" !!!
+(pt_flop_af_raischair*(pt_wtsd_raischair*4))
 
 ##f$pt_turn_af_raischair##
-(pt_raggt*(pt_rwtsd*4))
+(pt_turn_af_raischair*(pt_wtsd_raischair*4))
 
 ##f$pt_river_af_raischair##
-(pt_raggr*(pt_rwtsd*4))
+(pt_river_af_raischair*(pt_wtsd_raischair*4))
 
 ##f$ptype_ubernit##
 // PT AUTORATE ICONS:
-(pt_icon_raischair==1)  ? 1 :
-(pt_icon_raischair==5)  ? 1 :
-(pt_icon_raischair==10) ? 1 : 0
+(pt_river_bet_raischair==1)  ? 1 :
+(pt_river_bet_raischair==5)  ? 1 :
+(pt_river_bet_raischair==10) ? 1 : 0
 
 ##f$ptype_nit##
 // PT AUTORATE ICONS:
-(pt_icon_raischair<=1)  ? 1 :
-(pt_icon_raischair==6)  ? 1 :
-(pt_icon_raischair==11) ? 1 : 0
+(pt_river_bet_raischair<=1)  ? 1 :
+(pt_river_bet_raischair==6)  ? 1 :
+(pt_river_bet_raischair==11) ? 1 : 0
 
 ##f$ptype_tag##
 // PT AUTORATE ICONS:
-(pt_icon_raischair==2)  ? 1 :
-(pt_icon_raischair==7)  ? 1 :
-(pt_icon_raischair==12) ? 1 : 0
+(pt_river_bet_raischair==2)  ? 1 :
+(pt_river_bet_raischair==7)  ? 1 :
+(pt_river_bet_raischair==12) ? 1 : 0
 
 ##f$ptype_semilag##
 // PT AUTORATE ICONS:
-(pt_icon_raischair==3)  ? 1 :
-(pt_icon_raischair8)  ? 1 :
-(pt_icon_raischair==13) ? 1 : 0
+(pt_river_bet_raischair==3)  ? 1 :
+(pt_river_bet_raischair==8)  ? 1 :
+(pt_river_bet_raischair==13) ? 1 : 0
 
 ##f$ptype_lag##
 // PT AUTORATE ICONS:
-(pt_icon_raischair==4)  ? 1 :
-(pt_icon_raischair==9)  ? 1 :
-(pt_icon_raischair==14) ? 1 : 0
+(pt_river_bet_raischair==4)  ? 1 :
+(pt_river_bet_raischair==9)  ? 1 :
+(pt_river_bet_raischair==14) ? 1 : 0
 
 ##f$prwin2##
 [prwin+(prtie/2)]**(1+f$threat2)
@@ -4244,27 +4249,27 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 
 ##f$fold2cbet_normal##
 // Fold normaal
-(f$pt_icon==10) ? 1 :
-(f$pt_icon==11) ? 1 :
-(f$pt_icon==12) ? 1 :
-(f$pt_icon==13) ? 1 :
-(f$pt_icon==14) ? 1 : 0
+(f$pt_river_bet==10) ? 1 :
+(f$pt_river_bet==11) ? 1 :
+(f$pt_river_bet==12) ? 1 :
+(f$pt_river_bet==13) ? 1 :
+(f$pt_river_bet==14) ? 1 : 0
 
 ##f$fold2cbet_veel##
 // Fold veel
-(f$pt_icon<=0) ? 1 :
-(f$pt_icon==1) ? 1 :
-(f$pt_icon==2) ? 1 :
-(f$pt_icon==3) ? 1 :
-(f$pt_icon==4) ? 1 : 0
+(f$pt_river_bet<=0) ? 1 :
+(f$pt_river_bet==1) ? 1 :
+(f$pt_river_bet==2) ? 1 :
+(f$pt_river_bet==3) ? 1 :
+(f$pt_river_bet==4) ? 1 : 0
 
 ##f$fold2cbet_weinig##
 // Fold weinig
-(f$pt_icon==5) ? 1 :
-(f$pt_icon==6) ? 1 :
-(f$pt_icon==7) ? 1 :
-(f$pt_icon==8) ? 1 :
-(f$pt_icon==9) ? 1 : 0
+(f$pt_river_bet==5) ? 1 :
+(f$pt_river_bet==6) ? 1 :
+(f$pt_river_bet==7) ? 1 :
+(f$pt_river_bet==8) ? 1 :
+(f$pt_river_bet==9) ? 1 : 0
 
 ##f$balance##
 (balance+bblind)
