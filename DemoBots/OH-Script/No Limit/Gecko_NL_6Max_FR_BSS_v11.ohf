@@ -26,7 +26,7 @@
 //     because headsup-stats are now availabele more easily
 //   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
 //   * Replaced br by betround by even more verbosity: IsFlop, ...
-//
+//   * Renamed handhand$AA, handhand$KK to more verbose handhandhand$AA, hsndhand$KK
 //
 //
 //
@@ -202,7 +202,7 @@ WHEN Others RETURN pt_aggr_headsup FORCE
 
 ((!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon==1) ||
 (!f$twopair && rankloplayer>rankhicommon && nstraightcommon<3 && nrankedcommon==1 && nsuited==4 && nsuitedcommon==2) ||
-(!f$twopair && $AA && nsuitedcommon==3 && nsuited==4 && nrankedcommon==1) ||
+(!f$twopair && handhand$AA && nsuitedcommon==3 && nsuited==4 && nrankedcommon==1) ||
 (!f$twopair && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ishipair && nsuitedcommon<3 && nrankedcommon==1 && (pokervalcommon < onepair)) ||
 (nsuited==4 && nsuited>nsuitedcommon && ishipair && nrankedcommon==1)) ? 3 :
 
@@ -2079,7 +2079,7 @@ f$oppchair==6 ? f$stats_pfr*2.0 : 0
 0
 
 ##f$preflop_call##
-[ $AA || $KK ] ? 1 : 
+[ handhand$AA || handhand$KK ] ? 1 : 
 
 [ !didbetsize ] ? {
 
