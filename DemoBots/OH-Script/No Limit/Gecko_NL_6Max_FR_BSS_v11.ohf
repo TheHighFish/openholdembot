@@ -22,12 +22,17 @@
 //   * Replaced "islist..." sy,bols by "list..."
 //   * Replaced didswag by didbetsize
 //   * Simplified the PokerTracker-functions
-//     f$pt_pfr, f$pt_vpip, f$pt_flopaf, f$pt_turnaf, f$pt_riveraf, f$pt_wsdp
+//     f$pt_pfr, f$pt_vpip, f$pt_flopaf, f$pt_turnaf, f$pt_riveraf, f$pt_wtsd
 //     f$pt_vpip, f$pt_pfr, pt_fbbts, pt_fsbts
 //     because headsup-stats are now availabele more easily
 //   * Uniform naming for f$pt_-functions, no longer f$pt_
+//   * Adapted names of Pokertracker symbols to new naming conventions
+//     - pt_flop_af   -> pr_flop_af          (same for turn and river)
+//     
+//     - pt_hands_raischair -> pt_hands_raischair  (same for all other ptr_symbols)
 //   * Removed duplicate f$pt_vpip and f$pt_vpip
 //   * Uniform naming for f$pt_-functions, no longer f$stats
+//     Renamed f$pt_raggf to f$pt_flop_af_raischair (same for turn and river) 
 //   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
 //   * Replaced br by betround by even more verbosity: IsFlop, ...
 //   * Renamed hand$AA, hand$KK to more verbose handhand$AA, hsndhand$KK
@@ -167,15 +172,15 @@ WHEN Others RETURN pt_vpip_headsup FORCE
 
 ##f$pt_flopaf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_aggf_headsup FORCE
+WHEN Others RETURN pt_flop_af_headsup FORCE
 
 ##f$pt_turnaf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_aggt_headsup FORCE
+WHEN Others RETURN pt_turn_af_headsup FORCE
 
 ##f$pt_riveraf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_aggr_headsup FORCE
+WHEN Others RETURN pt_river_af_headsup FORCE
 
 
 
@@ -542,9 +547,9 @@ IsRiver ? !didbetsizeround2 && didcallround3 && nbetsround3>0 : 0
 
         [ nplayersplaying==2 ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ? f$prwin>.70 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.30 ] ? f$prwin>.65 && f$prwin<.95 : // bluffraise his lead
-            [ f$pt_wsdp>0.30                       ] ? f$prwin>.70 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ? f$prwin>.70 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.30 ] ? f$prwin>.65 && f$prwin<.95 : // bluffraise his lead
+            [ f$pt_wtsd>0.30                       ] ? f$prwin>.70 : 0 } :
 
         [ nplayersplaying>=3 ] ? f$prwin>.78 : 0 } :
 
@@ -1172,7 +1177,7 @@ betposition==nplayersplaying
 
       [ nplayersplaying==2 ] ? {
 
-        [ f$draws>1 && nsuited==4 && f$pt_vpip>0.50 && f$pt_wsdp>0.30 && random>.50 ] ? 1 :
+        [ f$draws>1 && nsuited==4 && f$pt_vpip>0.50 && f$pt_wtsd>0.30 && random>.50 ] ? 1 :
         [ f$pt_riveraf<2  ] ? f$prwin>.78 :
         [ f$pt_riveraf>=2 ] ? f$prwin>.90 : 0 } :
 
@@ -1386,20 +1391,20 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
 ##f$AF_flop##
 [ call<=0 ] ? 0 :
 
-[ call>0 && pt_rhands>25 ] ? {
+[ call>0 && pt_hands_raischair>25 ] ? {
 
-    [                    f$pt_raggf<=0.00 ] ? 0.00 :
-    [ f$pt_raggf>0.00 && f$pt_raggf<=0.33 ] ? 0.40 :
-    [ f$pt_raggf>0.33 && f$pt_raggf<=0.66 ] ? 0.35 :
-    [ f$pt_raggf>0.66 && f$pt_raggf<=1.00 ] ? 0.25 :
-    [ f$pt_raggf>1.00 && f$pt_raggf<=1.33 ] ? 0.15 :
-    [ f$pt_raggf>1.33 && f$pt_raggf<=1.66 ] ? 0.05 :
-    [ f$pt_raggf>1.66 && f$pt_raggf<=2.00 ] ? 0.00 :
-    [ f$pt_raggf>2.00 && f$pt_raggf<=2.50 ] ? 0.00 :
-    [ f$pt_raggf>2.50 && f$pt_raggf<=3.00 ] ? 0.00 :
-    [ f$pt_raggf>3.00 && f$pt_raggf<=4.00 ] ? 0.00 :
-    [ f$pt_raggf>4.00 && f$pt_raggf<=5.00 ] ? 0.00 :
-    [ f$pt_raggf>5.00                     ] ? 0.00 : 0 } : 
+    [                    f$pt_flop_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>0.00 && f$pt_flop_af_raischair<=0.33 ] ? 0.40 :
+    [ f$pt_flop_af_raischair>0.33 && f$pt_flop_af_raischair<=0.66 ] ? 0.35 :
+    [ f$pt_flop_af_raischair>0.66 && f$pt_flop_af_raischair<=1.00 ] ? 0.25 :
+    [ f$pt_flop_af_raischair>1.00 && f$pt_flop_af_raischair<=1.33 ] ? 0.15 :
+    [ f$pt_flop_af_raischair>1.33 && f$pt_flop_af_raischair<=1.66 ] ? 0.05 :
+    [ f$pt_flop_af_raischair>1.66 && f$pt_flop_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>2.00 && f$pt_flop_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>2.50 && f$pt_flop_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>3.00 && f$pt_flop_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>4.00 && f$pt_flop_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>5.00                     ] ? 0.00 : 0 } : 
 
 0
 
@@ -1412,7 +1417,7 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
 
     [ f$Initiative_Villian && f$pt_hands>25 ] ? {
 
-                               f$pt_flopaf<=0.00 ? 0.00 :
+                            f$pt_flopaf<=0.00 ? 0.00 :
         f$pt_flopaf>0.00 && f$pt_flopaf<=0.33 ? 0.50 :
         f$pt_flopaf>0.33 && f$pt_flopaf<=0.66 ? 0.40 :
         f$pt_flopaf>0.66 && f$pt_flopaf<=1.00 ? 0.30 :
@@ -1425,43 +1430,43 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
         f$pt_flopaf>4.00 && f$pt_flopaf<=5.00 ? 0.00 :
         f$pt_flopaf>5.00                         ? 0.00 : 0 } : 0 } :
 
-[ call>0 && pt_rhands>25 ] ? {
+[ call>0 && pt_hands_raischair>25 ] ? {
 
   [ !didbetsize ] ? {
 
-    [                    f$pt_raggt<=0.00 ] ? 0.00 :
-    [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 0.50 :
-    [ f$pt_raggt>0.25 && f$pt_raggt<=0.50 ] ? 0.40 :
-    [ f$pt_raggt>0.50 && f$pt_raggt<=0.75 ] ? 0.30 :
-    [ f$pt_raggt>0.75 && f$pt_raggt<=1.00 ] ? 0.20 :
-    [ f$pt_raggt>1.00 && f$pt_raggt<=1.25 ] ? 0.10 :
-    [ f$pt_raggt>1.25 && f$pt_raggt<=1.50 ] ? 0.05 :
-    [ f$pt_raggt>1.50 && f$pt_raggt<=1.75 ] ? 0.00 :
-    [ f$pt_raggt>1.75 && f$pt_raggt<=2.00 ] ? 0.00 :
-    [ f$pt_raggt>2.00 && f$pt_raggt<=2.25 ] ? 0.00 :
-    [ f$pt_raggt>2.25 && f$pt_raggt<=2.50 ] ? 0.00 :
-    [ f$pt_raggt>2.50 && f$pt_raggt<=3.00 ] ? 0.00 :
-    [ f$pt_raggt>3.00 && f$pt_raggt<=4.00 ] ? 0.00 :
-    [ f$pt_raggt>4.00 && f$pt_raggt<=5.00 ] ? 0.00 :
-    [ f$pt_raggt>5.00                     ] ? 0.00 : 0 } : 
+    [                    f$pt_turn_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>0.00 && f$pt_turn_af_raischair<=0.25 ] ? 0.50 :
+    [ f$pt_turn_af_raischair>0.25 && f$pt_turn_af_raischair<=0.50 ] ? 0.40 :
+    [ f$pt_turn_af_raischair>0.50 && f$pt_turn_af_raischair<=0.75 ] ? 0.30 :
+    [ f$pt_turn_af_raischair>0.75 && f$pt_turn_af_raischair<=1.00 ] ? 0.20 :
+    [ f$pt_turn_af_raischair>1.00 && f$pt_turn_af_raischair<=1.25 ] ? 0.10 :
+    [ f$pt_turn_af_raischair>1.25 && f$pt_turn_af_raischair<=1.50 ] ? 0.05 :
+    [ f$pt_turn_af_raischair>1.50 && f$pt_turn_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>1.75 && f$pt_turn_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.00 && f$pt_turn_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.25 && f$pt_turn_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.50 && f$pt_turn_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>3.00 && f$pt_turn_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>4.00 && f$pt_turn_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>5.00                     ] ? 0.00 : 0 } : 
 
   [  didbetsize ] ? {
 
-    [                    f$pt_raggt<=0.00 ] ? 0.00 :
-    [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 1.00 :
-    [ f$pt_raggt>0.25 && f$pt_raggt<=0.50 ] ? 0.65 :
-    [ f$pt_raggt>0.50 && f$pt_raggt<=0.75 ] ? 0.50 :
-    [ f$pt_raggt>0.75 && f$pt_raggt<=1.00 ] ? 0.33 :
-    [ f$pt_raggt>1.00 && f$pt_raggt<=1.25 ] ? 0.16 :
-    [ f$pt_raggt>1.25 && f$pt_raggt<=1.50 ] ? 0.00 :
-    [ f$pt_raggt>1.50 && f$pt_raggt<=1.75 ] ? 0.00 :
-    [ f$pt_raggt>1.75 && f$pt_raggt<=2.00 ] ? 0.00 :
-    [ f$pt_raggt>2.00 && f$pt_raggt<=2.25 ] ? 0.00 :
-    [ f$pt_raggt>2.25 && f$pt_raggt<=2.50 ] ? 0.00 :
-    [ f$pt_raggt>2.50 && f$pt_raggt<=3.00 ] ? 0.00 :
-    [ f$pt_raggt>3.00 && f$pt_raggt<=4.00 ] ? 0.00 :
-    [ f$pt_raggt>4.00 && f$pt_raggt<=5.00 ] ? 0.00 :
-    [ f$pt_raggt>5.00                     ] ? 0.00 : 0 } : 0 } :
+    [                    f$pt_turn_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>0.00 && f$pt_turn_af_raischair<=0.25 ] ? 1.00 :
+    [ f$pt_turn_af_raischair>0.25 && f$pt_turn_af_raischair<=0.50 ] ? 0.65 :
+    [ f$pt_turn_af_raischair>0.50 && f$pt_turn_af_raischair<=0.75 ] ? 0.50 :
+    [ f$pt_turn_af_raischair>0.75 && f$pt_turn_af_raischair<=1.00 ] ? 0.33 :
+    [ f$pt_turn_af_raischair>1.00 && f$pt_turn_af_raischair<=1.25 ] ? 0.16 :
+    [ f$pt_turn_af_raischair>1.25 && f$pt_turn_af_raischair<=1.50 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>1.50 && f$pt_turn_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>1.75 && f$pt_turn_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.00 && f$pt_turn_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.25 && f$pt_turn_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.50 && f$pt_turn_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>3.00 && f$pt_turn_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>4.00 && f$pt_turn_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>5.00                     ] ? 0.00 : 0 } : 0 } :
 
 0
 
@@ -1490,43 +1495,43 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
         [ f$pt_turnaf>4.00 && f$pt_turnaf<=5.00 ] ? 0.00 :
         [ f$pt_turnaf>5.00                         ] ? 0.00 : 0 } : 0 } :
 
-[ call>0 && pt_rhands>25 ] ? {
+[ call>0 && pt_hands_raischair>25 ] ? {
 
   [ !didbetsize ] ? {
 
-    [                    f$pt_raggr<=0.00 ] ? 0.00 :
-    [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 0.50 :
-    [ f$pt_raggr>0.25 && f$pt_raggr<=0.50 ] ? 0.40 :
-    [ f$pt_raggr>0.50 && f$pt_raggr<=0.75 ] ? 0.30 :
-    [ f$pt_raggr>0.75 && f$pt_raggr<=1.00 ] ? 0.20 :
-    [ f$pt_raggr>1.00 && f$pt_raggr<=1.25 ] ? 0.10 :
-    [ f$pt_raggr>1.25 && f$pt_raggr<=1.50 ] ? 0.05 :
-    [ f$pt_raggr>1.50 && f$pt_raggr<=1.75 ] ? 0.00 :
-    [ f$pt_raggr>1.75 && f$pt_raggr<=2.00 ] ? 0.00 :
-    [ f$pt_raggr>2.00 && f$pt_raggr<=2.25 ] ? 0.00 :
-    [ f$pt_raggr>2.25 && f$pt_raggr<=2.50 ] ? 0.00 :
-    [ f$pt_raggr>2.50 && f$pt_raggr<=3.00 ] ? 0.00 :
-    [ f$pt_raggr>3.00 && f$pt_raggr<=4.00 ] ? 0.00 :
-    [ f$pt_raggr>4.00 && f$pt_raggr<=5.00 ] ? 0.00 :
-    [ f$pt_raggr>5.00                     ] ? 0.00 : 0 } : 
+    [                    f$pt_river_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>0.00 && f$pt_river_af_raischair<=0.25 ] ? 0.50 :
+    [ f$pt_river_af_raischair>0.25 && f$pt_river_af_raischair<=0.50 ] ? 0.40 :
+    [ f$pt_river_af_raischair>0.50 && f$pt_river_af_raischair<=0.75 ] ? 0.30 :
+    [ f$pt_river_af_raischair>0.75 && f$pt_river_af_raischair<=1.00 ] ? 0.20 :
+    [ f$pt_river_af_raischair>1.00 && f$pt_river_af_raischair<=1.25 ] ? 0.10 :
+    [ f$pt_river_af_raischair>1.25 && f$pt_river_af_raischair<=1.50 ] ? 0.05 :
+    [ f$pt_river_af_raischair>1.50 && f$pt_river_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_river_af_raischair>1.75 && f$pt_river_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.00 && f$pt_river_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.25 && f$pt_river_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.50 && f$pt_river_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>3.00 && f$pt_river_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>4.00 && f$pt_river_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>5.00                     ] ? 0.00 : 0 } : 
 
   [  didbetsize ] ? {
 
-    [                    f$pt_raggr<=0.00 ] ? 0.00 :
-    [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 1.00 :
-    [ f$pt_raggr>0.25 && f$pt_raggr<=0.50 ] ? 0.65 :
-    [ f$pt_raggr>0.50 && f$pt_raggr<=0.75 ] ? 0.50 :
-    [ f$pt_raggr>0.75 && f$pt_raggr<=1.00 ] ? 0.33 :
-    [ f$pt_raggr>1.00 && f$pt_raggr<=1.25 ] ? 0.16 :
-    [ f$pt_raggr>1.25 && f$pt_raggr<=1.50 ] ? 0.00 :
-    [ f$pt_raggr>1.50 && f$pt_raggr<=1.75 ] ? 0.00 :
-    [ f$pt_raggr>1.75 && f$pt_raggr<=2.00 ] ? 0.00 :
-    [ f$pt_raggr>2.00 && f$pt_raggr<=2.25 ] ? 0.00 :
-    [ f$pt_raggr>2.25 && f$pt_raggr<=2.50 ] ? 0.00 :
-    [ f$pt_raggr>2.50 && f$pt_raggr<=3.00 ] ? 0.00 :
-    [ f$pt_raggr>3.00 && f$pt_raggr<=4.00 ] ? 0.00 :
-    [ f$pt_raggr>4.00 && f$pt_raggr<=5.00 ] ? 0.00 :
-    [ f$pt_raggr>5.00                     ] ? 0.00 : 0 } : 0 } :
+    [                    f$pt_river_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>0.00 && f$pt_river_af_raischair<=0.25 ] ? 1.00 :
+    [ f$pt_river_af_raischair>0.25 && f$pt_river_af_raischair<=0.50 ] ? 0.65 :
+    [ f$pt_river_af_raischair>0.50 && f$pt_river_af_raischair<=0.75 ] ? 0.50 :
+    [ f$pt_river_af_raischair>0.75 && f$pt_river_af_raischair<=1.00 ] ? 0.33 :
+    [ f$pt_river_af_raischair>1.00 && f$pt_river_af_raischair<=1.25 ] ? 0.16 :
+    [ f$pt_river_af_raischair>1.25 && f$pt_river_af_raischair<=1.50 ] ? 0.00 :
+    [ f$pt_river_af_raischair>1.50 && f$pt_river_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_river_af_raischair>1.75 && f$pt_river_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.00 && f$pt_river_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.25 && f$pt_river_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.50 && f$pt_river_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>3.00 && f$pt_river_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>4.00 && f$pt_river_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>5.00                     ] ? 0.00 : 0 } : 0 } :
 
 0
 
@@ -2134,91 +2139,91 @@ f$oppchair==6 ? f$pt_pfr*2.0 : 0
 
         [ IsFlop && pot<6*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsTurn && pot<12*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
 
 
     [ f$Position_Late ] ? {
 
         [ IsFlop && pot<6*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsTurn && pot<12*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
 
 0 } :
 
 0
 
-##f$pt_wsdp##
-pt_wsdp_headsup
+##f$pt_wtsd##
+pt_wtsd_headsup
 
 ##f$Preflop_First_In##
 (f$BettingAction_First_In && f$Chart_OpenRaise) ? 1 : 0
@@ -3228,11 +3233,11 @@ pt_fsbts_headsup
 || (f$Position_BigBlind   && list09)
 
 ##f$real_pfr##
-f$dealpositionrais == 1 ? pt_rpfr * 0.50 :
-f$dealpositionrais == 3 ? pt_rpfr * 0.50 :
-f$dealpositionrais == 4 ? pt_rpfr * 0.50 :
-f$dealpositionrais == 5 ? pt_rpfr * 0.50 :
-f$dealpositionrais == 6 ? pt_rpfr * 0.50 : 0
+f$dealpositionrais == 1 ? pt_pfr_raischair * 0.50 :
+f$dealpositionrais == 3 ? pt_pfr_raischair* 0.50 :
+f$dealpositionrais == 4 ? pt_pfr_raischair * 0.50 :
+f$dealpositionrais == 5 ? pt_pfr_raischair * 0.50 :
+f$dealpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 
 ##f$real_pfr_range##
    f$real_pfr<=0.00                       && list99
@@ -3814,39 +3819,39 @@ IsRiver ? didbetsizeround3 && didcallround3 && nbetsround3>0 : 0
 ##f$villiantakeover##
 [ IsTurn && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 ] ? {
 
-    [ pt_raggf<=0.00 ] ?  0.50 :
+    [ f$pt_flop_af_raischair<=0.00 ] ?  0.50 :
 
-    [ pt_rhands>50 ] ? {
+    [ pt_hands_raischair>50 ] ? {
 
-    [ pt_raggf>0.00 && pt_raggf<=0.33 ] ? 1.00 :
-    [ pt_raggf>0.33 && pt_raggf<=0.66 ] ? 1.00 :
-    [ pt_raggf>0.66 && pt_raggf<=1.00 ] ? 0.90 :
-    [ pt_raggf>1.00 && pt_raggf<=1.33 ] ? 0.80 :
-    [ pt_raggf>1.33 && pt_raggf<=1.66 ] ? 0.70 :
-    [ pt_raggf>1.66 && pt_raggf<=2.00 ] ? 0.60 :
-    [ pt_raggf>2.00 && pt_raggf<=2.50 ] ? 0.50 :
-    [ pt_raggf>2.50 && pt_raggf<=3.00 ] ? 0.40 :
-    [ pt_raggf>3.00 && pt_raggf<=4.00 ] ? 0.30 :
-    [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
-    [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
+    [ f$pt_flop_af_raischair>0.00 && f$pt_flop_af_raischair<=0.33 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.33 && f$pt_flop_af_raischair<=0.66 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.66 && f$pt_flop_af_raischair<=1.00 ] ? 0.90 :
+    [ f$pt_flop_af_raischair>1.00 && f$pt_flop_af_raischair<=1.33 ] ? 0.80 :
+    [ f$pt_flop_af_raischair>1.33 && f$pt_flop_af_raischair<=1.66 ] ? 0.70 :
+    [ f$pt_flop_af_raischair>1.66 && f$pt_flop_af_raischair<=2.00 ] ? 0.60 :
+    [ f$pt_flop_af_raischair>2.00 && f$pt_flop_af_raischair<=2.50 ] ? 0.50 :
+    [ f$pt_flop_af_raischair>2.50 && f$pt_flop_af_raischair<=3.00 ] ? 0.40 :
+    [ f$pt_flop_af_raischair>3.00 && f$pt_flop_af_raischair<=4.00 ] ? 0.30 :
+    [ f$pt_flop_af_raischair>4.00 && f$pt_flop_af_raischair<=5.00 ] ? 0.20 :
+    [ f$pt_flop_af_raischair>5.00                   ] ? 0.10 : 0 } : 0 } :
 
 [ IsRiver && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 ] ? {
 
-    [ pt_raggf<=0.00 ] ? 0.50 :
+    [ f$pt_flop_af_raischair<=0.00 ] ? 0.50 :
 
-    [ pt_rhands>50 ] ? {
+    [ pt_hands_raischair>50 ] ? {
 
-    [ pt_raggf>0.00 && pt_raggf<=0.33 ] ? 1.00 :
-    [ pt_raggf>0.33 && pt_raggf<=0.66 ] ? 1.00 :
-    [ pt_raggf>0.66 && pt_raggf<=1.00 ] ? 0.90 :
-    [ pt_raggf>1.00 && pt_raggf<=1.33 ] ? 0.80 :
-    [ pt_raggf>1.33 && pt_raggf<=1.66 ] ? 0.70 :
-    [ pt_raggf>1.66 && pt_raggf<=2.00 ] ? 0.60 :
-    [ pt_raggf>2.00 && pt_raggf<=2.50 ] ? 0.50 :
-    [ pt_raggf>2.50 && pt_raggf<=3.00 ] ? 0.40 :
-    [ pt_raggf>3.00 && pt_raggf<=4.00 ] ? 0.30 :
-    [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
-    [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
+    [ f$pt_flop_af_raischair>0.00 && f$pt_flop_af_raischair<=0.33 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.33 && f$pt_flop_af_raischair<=0.66 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.66 && f$pt_flop_af_raischair<=1.00 ] ? 0.90 :
+    [ f$pt_flop_af_raischair>1.00 && f$pt_flop_af_raischair<=1.33 ] ? 0.80 :
+    [ f$pt_flop_af_raischair>1.33 && f$pt_flop_af_raischair<=1.66 ] ? 0.70 :
+    [ f$pt_flop_af_raischair>1.66 && f$pt_flop_af_raischair<=2.00 ] ? 0.60 :
+    [ f$pt_flop_af_raischair>2.00 && f$pt_flop_af_raischair<=2.50 ] ? 0.50 :
+    [ f$pt_flop_af_raischair>2.50 && f$pt_flop_af_raischair<=3.00 ] ? 0.40 :
+    [ f$pt_flop_af_raischair>3.00 && f$pt_flop_af_raischair<=4.00 ] ? 0.30 :
+    [ f$pt_flop_af_raischair>4.00 && f$pt_flop_af_raischair<=5.00 ] ? 0.20 :
+    [ f$pt_flop_af_raischair>5.00                   ] ? 0.10 : 0 } : 0 } :
 
 0
 
@@ -3869,20 +3874,20 @@ IsRiver ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_h
 ##f$AF_flop1##
 [ call<=0 ] ? 0 :
 
-[ call>0 && pt_rhands>25 ] ? {
+[ call>0 && pt_hands_raischair>25 ] ? {
 
-    [                    f$pt_raggf<=0.00 ] ? 0.00 :
-    [ f$pt_raggf>0.00 && f$pt_raggf<=0.33 ] ? 0.40 :
-    [ f$pt_raggf>0.33 && f$pt_raggf<=0.66 ] ? 0.35 :
-    [ f$pt_raggf>0.66 && f$pt_raggf<=1.00 ] ? 0.25 :
-    [ f$pt_raggf>1.00 && f$pt_raggf<=1.33 ] ? 0.15 :
-    [ f$pt_raggf>1.33 && f$pt_raggf<=1.66 ] ? 0.05 :
-    [ f$pt_raggf>1.66 && f$pt_raggf<=2.00 ] ? 0.00 :
-    [ f$pt_raggf>2.00 && f$pt_raggf<=2.50 ] ? 0.00 :
-    [ f$pt_raggf>2.50 && f$pt_raggf<=3.00 ] ? 0.00 :
-    [ f$pt_raggf>3.00 && f$pt_raggf<=4.00 ] ? 0.00 :
-    [ f$pt_raggf>4.00 && f$pt_raggf<=5.00 ] ? 0.00 :
-    [ f$pt_raggf>5.00                     ] ? 0.00 : 0 } : 
+    [                    f$pt_flop_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>0.00 && f$pt_flop_af_raischair<=0.33 ] ? 0.40 :
+    [ f$pt_flop_af_raischair>0.33 && f$pt_flop_af_raischair<=0.66 ] ? 0.35 :
+    [ f$pt_flop_af_raischair>0.66 && f$pt_flop_af_raischair<=1.00 ] ? 0.25 :
+    [ f$pt_flop_af_raischair>1.00 && f$pt_flop_af_raischair<=1.33 ] ? 0.15 :
+    [ f$pt_flop_af_raischair>1.33 && f$pt_flop_af_raischair<=1.66 ] ? 0.05 :
+    [ f$pt_flop_af_raischair>1.66 && f$pt_flop_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>2.00 && f$pt_flop_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>2.50 && f$pt_flop_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>3.00 && f$pt_flop_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>4.00 && f$pt_flop_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_flop_af_raischair>5.00                     ] ? 0.00 : 0 } : 
 
 0
 
@@ -3908,43 +3913,43 @@ IsRiver ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_h
         f$pt_flopaf>4.00 && f$pt_flopaf<=5.00 ? 0.00 :
         f$pt_flopaf>5.00                         ? 0.00 : 0 } : 0 } :
 
-[ call>0 && pt_rhands>25 ] ? {
+[ call>0 && pt_hands_raischair>25 ] ? {
 
   [ !didbetsize ] ? {
 
-    [                    f$pt_raggt<=0.00 ] ? 0.00 :
-    [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 0.50 :
-    [ f$pt_raggt>0.25 && f$pt_raggt<=0.50 ] ? 0.40 :
-    [ f$pt_raggt>0.50 && f$pt_raggt<=0.75 ] ? 0.30 :
-    [ f$pt_raggt>0.75 && f$pt_raggt<=1.00 ] ? 0.20 :
-    [ f$pt_raggt>1.00 && f$pt_raggt<=1.25 ] ? 0.10 :
-    [ f$pt_raggt>1.25 && f$pt_raggt<=1.50 ] ? 0.05 :
-    [ f$pt_raggt>1.50 && f$pt_raggt<=1.75 ] ? 0.00 :
-    [ f$pt_raggt>1.75 && f$pt_raggt<=2.00 ] ? 0.00 :
-    [ f$pt_raggt>2.00 && f$pt_raggt<=2.25 ] ? 0.00 :
-    [ f$pt_raggt>2.25 && f$pt_raggt<=2.50 ] ? 0.00 :
-    [ f$pt_raggt>2.50 && f$pt_raggt<=3.00 ] ? 0.00 :
-    [ f$pt_raggt>3.00 && f$pt_raggt<=4.00 ] ? 0.00 :
-    [ f$pt_raggt>4.00 && f$pt_raggt<=5.00 ] ? 0.00 :
-    [ f$pt_raggt>5.00                     ] ? 0.00 : 0 } : 
+    [                    f$pt_turn_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>0.00 && f$pt_turn_af_raischair<=0.25 ] ? 0.50 :
+    [ f$pt_turn_af_raischair>0.25 && f$pt_turn_af_raischair<=0.50 ] ? 0.40 :
+    [ f$pt_turn_af_raischair>0.50 && f$pt_turn_af_raischair<=0.75 ] ? 0.30 :
+    [ f$pt_turn_af_raischair>0.75 && f$pt_turn_af_raischair<=1.00 ] ? 0.20 :
+    [ f$pt_turn_af_raischair>1.00 && f$pt_turn_af_raischair<=1.25 ] ? 0.10 :
+    [ f$pt_turn_af_raischair>1.25 && f$pt_turn_af_raischair<=1.50 ] ? 0.05 :
+    [ f$pt_turn_af_raischair>1.50 && f$pt_turn_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>1.75 && f$pt_turn_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.00 && f$pt_turn_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.25 && f$pt_turn_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.50 && f$pt_turn_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>3.00 && f$pt_turn_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>4.00 && f$pt_turn_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>5.00                     ] ? 0.00 : 0 } : 
 
   [  didbetsize ] ? {
 
-    [                    f$pt_raggt<=0.00 ] ? 0.00 :
-    [ f$pt_raggt>0.00 && f$pt_raggt<=0.25 ] ? 1.00 :
-    [ f$pt_raggt>0.25 && f$pt_raggt<=0.50 ] ? 0.65 :
-    [ f$pt_raggt>0.50 && f$pt_raggt<=0.75 ] ? 0.50 :
-    [ f$pt_raggt>0.75 && f$pt_raggt<=1.00 ] ? 0.33 :
-    [ f$pt_raggt>1.00 && f$pt_raggt<=1.25 ] ? 0.16 :
-    [ f$pt_raggt>1.25 && f$pt_raggt<=1.50 ] ? 0.00 :
-    [ f$pt_raggt>1.50 && f$pt_raggt<=1.75 ] ? 0.00 :
-    [ f$pt_raggt>1.75 && f$pt_raggt<=2.00 ] ? 0.00 :
-    [ f$pt_raggt>2.00 && f$pt_raggt<=2.25 ] ? 0.00 :
-    [ f$pt_raggt>2.25 && f$pt_raggt<=2.50 ] ? 0.00 :
-    [ f$pt_raggt>2.50 && f$pt_raggt<=3.00 ] ? 0.00 :
-    [ f$pt_raggt>3.00 && f$pt_raggt<=4.00 ] ? 0.00 :
-    [ f$pt_raggt>4.00 && f$pt_raggt<=5.00 ] ? 0.00 :
-    [ f$pt_raggt>5.00                     ] ? 0.00 : 0 } : 0 } :
+    [                    f$pt_turn_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>0.00 && f$pt_turn_af_raischair<=0.25 ] ? 1.00 :
+    [ f$pt_turn_af_raischair>0.25 && f$pt_turn_af_raischair<=0.50 ] ? 0.65 :
+    [ f$pt_turn_af_raischair>0.50 && f$pt_turn_af_raischair<=0.75 ] ? 0.50 :
+    [ f$pt_turn_af_raischair>0.75 && f$pt_turn_af_raischair<=1.00 ] ? 0.33 :
+    [ f$pt_turn_af_raischair>1.00 && f$pt_turn_af_raischair<=1.25 ] ? 0.16 :
+    [ f$pt_turn_af_raischair>1.25 && f$pt_turn_af_raischair<=1.50 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>1.50 && f$pt_turn_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>1.75 && f$pt_turn_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.00 && f$pt_turn_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.25 && f$pt_turn_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>2.50 && f$pt_turn_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>3.00 && f$pt_turn_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>4.00 && f$pt_turn_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_turn_af_raischair>5.00                     ] ? 0.00 : 0 } : 0 } :
 
 0
 
@@ -3973,43 +3978,43 @@ IsRiver ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_h
         [ f$pt_turnaf>4.00 && f$pt_turnaf<=5.00 ] ? 0.00 :
         [ f$pt_turnaf>5.00                         ] ? 0.00 : 0 } : 0 } :
 
-[ call>0 && pt_rhands>25 ] ? {
+[ call>0 && pt_hands_raischair>25 ] ? {
 
   [ !didbetsize ] ? {
 
-    [                    f$pt_raggr<=0.00 ] ? 0.00 :
-    [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 0.50 :
-    [ f$pt_raggr>0.25 && f$pt_raggr<=0.50 ] ? 0.40 :
-    [ f$pt_raggr>0.50 && f$pt_raggr<=0.75 ] ? 0.30 :
-    [ f$pt_raggr>0.75 && f$pt_raggr<=1.00 ] ? 0.20 :
-    [ f$pt_raggr>1.00 && f$pt_raggr<=1.25 ] ? 0.10 :
-    [ f$pt_raggr>1.25 && f$pt_raggr<=1.50 ] ? 0.05 :
-    [ f$pt_raggr>1.50 && f$pt_raggr<=1.75 ] ? 0.00 :
-    [ f$pt_raggr>1.75 && f$pt_raggr<=2.00 ] ? 0.00 :
-    [ f$pt_raggr>2.00 && f$pt_raggr<=2.25 ] ? 0.00 :
-    [ f$pt_raggr>2.25 && f$pt_raggr<=2.50 ] ? 0.00 :
-    [ f$pt_raggr>2.50 && f$pt_raggr<=3.00 ] ? 0.00 :
-    [ f$pt_raggr>3.00 && f$pt_raggr<=4.00 ] ? 0.00 :
-    [ f$pt_raggr>4.00 && f$pt_raggr<=5.00 ] ? 0.00 :
-    [ f$pt_raggr>5.00                     ] ? 0.00 : 0 } : 
+    [                    f$pt_river_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>0.00 && f$pt_river_af_raischair<=0.25 ] ? 0.50 :
+    [ f$pt_river_af_raischair>0.25 && f$pt_river_af_raischair<=0.50 ] ? 0.40 :
+    [ f$pt_river_af_raischair>0.50 && f$pt_river_af_raischair<=0.75 ] ? 0.30 :
+    [ f$pt_river_af_raischair>0.75 && f$pt_river_af_raischair<=1.00 ] ? 0.20 :
+    [ f$pt_river_af_raischair>1.00 && f$pt_river_af_raischair<=1.25 ] ? 0.10 :
+    [ f$pt_river_af_raischair>1.25 && f$pt_river_af_raischair<=1.50 ] ? 0.05 :
+    [ f$pt_river_af_raischair>1.50 && f$pt_river_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_river_af_raischair>1.75 && f$pt_river_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.00 && f$pt_river_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.25 && f$pt_river_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.50 && f$pt_river_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>3.00 && f$pt_river_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>4.00 && f$pt_river_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>5.00                     ] ? 0.00 : 0 } : 
 
   [  didbetsize ] ? {
 
-    [                    f$pt_raggr<=0.00 ] ? 0.00 :
-    [ f$pt_raggr>0.00 && f$pt_raggr<=0.25 ] ? 1.00 :
-    [ f$pt_raggr>0.25 && f$pt_raggr<=0.50 ] ? 0.65 :
-    [ f$pt_raggr>0.50 && f$pt_raggr<=0.75 ] ? 0.50 :
-    [ f$pt_raggr>0.75 && f$pt_raggr<=1.00 ] ? 0.33 :
-    [ f$pt_raggr>1.00 && f$pt_raggr<=1.25 ] ? 0.16 :
-    [ f$pt_raggr>1.25 && f$pt_raggr<=1.50 ] ? 0.00 :
-    [ f$pt_raggr>1.50 && f$pt_raggr<=1.75 ] ? 0.00 :
-    [ f$pt_raggr>1.75 && f$pt_raggr<=2.00 ] ? 0.00 :
-    [ f$pt_raggr>2.00 && f$pt_raggr<=2.25 ] ? 0.00 :
-    [ f$pt_raggr>2.25 && f$pt_raggr<=2.50 ] ? 0.00 :
-    [ f$pt_raggr>2.50 && f$pt_raggr<=3.00 ] ? 0.00 :
-    [ f$pt_raggr>3.00 && f$pt_raggr<=4.00 ] ? 0.00 :
-    [ f$pt_raggr>4.00 && f$pt_raggr<=5.00 ] ? 0.00 :
-    [ f$pt_raggr>5.00                     ] ? 0.00 : 0 } : 0 } :
+    [                    f$pt_river_af_raischair<=0.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>0.00 && f$pt_river_af_raischair<=0.25 ] ? 1.00 :
+    [ f$pt_river_af_raischair>0.25 && f$pt_river_af_raischair<=0.50 ] ? 0.65 :
+    [ f$pt_river_af_raischair>0.50 && f$pt_river_af_raischair<=0.75 ] ? 0.50 :
+    [ f$pt_river_af_raischair>0.75 && f$pt_river_af_raischair<=1.00 ] ? 0.33 :
+    [ f$pt_river_af_raischair>1.00 && f$pt_river_af_raischair<=1.25 ] ? 0.16 :
+    [ f$pt_river_af_raischair>1.25 && f$pt_river_af_raischair<=1.50 ] ? 0.00 :
+    [ f$pt_river_af_raischair>1.50 && f$pt_river_af_raischair<=1.75 ] ? 0.00 :
+    [ f$pt_river_af_raischair>1.75 && f$pt_river_af_raischair<=2.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.00 && f$pt_river_af_raischair<=2.25 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.25 && f$pt_river_af_raischair<=2.50 ] ? 0.00 :
+    [ f$pt_river_af_raischair>2.50 && f$pt_river_af_raischair<=3.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>3.00 && f$pt_river_af_raischair<=4.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>4.00 && f$pt_river_af_raischair<=5.00 ] ? 0.00 :
+    [ f$pt_river_af_raischair>5.00                     ] ? 0.00 : 0 } : 0 } :
 
 0
 
@@ -4020,84 +4025,84 @@ IsRiver ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_h
 
         [ IsFlop && pot<6*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsTurn && pot<12*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
 
 
     [ f$Position_Late ] ? {
 
         [ IsFlop && pot<6*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsTurn && pot<12*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
         [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
 
-            [                      f$pt_wsdp<=0.00 ] ?  0.00 :
-            [ f$pt_wsdp>0.00 && f$pt_wsdp<=0.10 ] ? -0.50 :
-            [ f$pt_wsdp>0.10 && f$pt_wsdp<=0.15 ] ? -0.30 :
-            [ f$pt_wsdp>0.15 && f$pt_wsdp<=0.20 ] ? -0.20 :
-            [ f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ] ? -0.05 :
-            [ f$pt_wsdp>0.25 && f$pt_wsdp<=0.30 ] ?  0.05 :
-            [ f$pt_wsdp>0.30 && f$pt_wsdp<=0.40 ] ?  0.15 :
-            [ f$pt_wsdp>0.40 && f$pt_wsdp<=0.50 ] ?  0.30 :
-            [ f$pt_wsdp>0.50 && f$pt_wsdp<=0.70 ] ?  0.40 :
-            [ f$pt_wsdp>0.70                       ] ?  0.50 : 0 } : 0 } :
+            [                      f$pt_wtsd<=0.00 ] ?  0.00 :
+            [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
+            [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
+            [ f$pt_wtsd>0.15 && f$pt_wtsd<=0.20 ] ? -0.20 :
+            [ f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ] ? -0.05 :
+            [ f$pt_wtsd>0.25 && f$pt_wtsd<=0.30 ] ?  0.05 :
+            [ f$pt_wtsd>0.30 && f$pt_wtsd<=0.40 ] ?  0.15 :
+            [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
+            [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
+            [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
 
 0 } :
 
@@ -4106,39 +4111,39 @@ IsRiver ? (f$AF_river1+f$foldequity1+f$villiantakeover1+f$reducewinchance_when_h
 ##f$villiantakeover1##
 [ IsTurn && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 && f$Position_Late ] ? {
 
-    [ pt_raggf<=0.00 ] ?  0.50 :
+    [ f$pt_flop_af_raischair<=0.00 ] ?  0.50 :
 
-    [ pt_rhands>50 ] ? {
+    [ pt_hands_raischair>50 ] ? {
 
-    [ pt_raggf>0.00 && pt_raggf<=0.33 ] ? 1.00 :
-    [ pt_raggf>0.33 && pt_raggf<=0.66 ] ? 1.00 :
-    [ pt_raggf>0.66 && pt_raggf<=1.00 ] ? 0.90 :
-    [ pt_raggf>1.00 && pt_raggf<=1.33 ] ? 0.80 :
-    [ pt_raggf>1.33 && pt_raggf<=1.66 ] ? 0.70 :
-    [ pt_raggf>1.66 && pt_raggf<=2.00 ] ? 0.60 :
-    [ pt_raggf>2.00 && pt_raggf<=2.50 ] ? 0.50 :
-    [ pt_raggf>2.50 && pt_raggf<=3.00 ] ? 0.40 :
-    [ pt_raggf>3.00 && pt_raggf<=4.00 ] ? 0.30 :
-    [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
-    [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
+    [ f$pt_flop_af_raischair>0.00 && f$pt_flop_af_raischair<=0.33 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.33 && f$pt_flop_af_raischair<=0.66 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.66 && f$pt_flop_af_raischair<=1.00 ] ? 0.90 :
+    [ f$pt_flop_af_raischair>1.00 && f$pt_flop_af_raischair<=1.33 ] ? 0.80 :
+    [ f$pt_flop_af_raischair>1.33 && f$pt_flop_af_raischair<=1.66 ] ? 0.70 :
+    [ f$pt_flop_af_raischair>1.66 && f$pt_flop_af_raischair<=2.00 ] ? 0.60 :
+    [ f$pt_flop_af_raischair>2.00 && f$pt_flop_af_raischair<=2.50 ] ? 0.50 :
+    [ f$pt_flop_af_raischair>2.50 && f$pt_flop_af_raischair<=3.00 ] ? 0.40 :
+    [ f$pt_flop_af_raischair>3.00 && f$pt_flop_af_raischair<=4.00 ] ? 0.30 :
+    [ f$pt_flop_af_raischair>4.00 && f$pt_flop_af_raischair<=5.00 ] ? 0.20 :
+    [ f$pt_flop_af_raischair>5.00                   ] ? 0.10 : 0 } : 0 } :
 
 [ IsRiver && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 && nbetsround3>0 && f$Position_Late ] ? {
 
-    [ pt_raggf<=0.00 ] ? 0.50 :
+    [ f$pt_flop_af_raischair<=0.00 ] ? 0.50 :
 
-    [ pt_rhands>50 ] ? {
+    [ pt_hands_raischair>50 ] ? {
 
-    [ pt_raggf>0.00 && pt_raggf<=0.33 ] ? 1.00 :
-    [ pt_raggf>0.33 && pt_raggf<=0.66 ] ? 1.00 :
-    [ pt_raggf>0.66 && pt_raggf<=1.00 ] ? 0.90 :
-    [ pt_raggf>1.00 && pt_raggf<=1.33 ] ? 0.80 :
-    [ pt_raggf>1.33 && pt_raggf<=1.66 ] ? 0.70 :
-    [ pt_raggf>1.66 && pt_raggf<=2.00 ] ? 0.60 :
-    [ pt_raggf>2.00 && pt_raggf<=2.50 ] ? 0.50 :
-    [ pt_raggf>2.50 && pt_raggf<=3.00 ] ? 0.40 :
-    [ pt_raggf>3.00 && pt_raggf<=4.00 ] ? 0.30 :
-    [ pt_raggf>4.00 && pt_raggf<=5.00 ] ? 0.20 :
-    [ pt_raggf>5.00                   ] ? 0.10 : 0 } : 0 } :
+    [ f$pt_flop_af_raischair>0.00 && f$pt_flop_af_raischair<=0.33 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.33 && f$pt_flop_af_raischair<=0.66 ] ? 1.00 :
+    [ f$pt_flop_af_raischair>0.66 && f$pt_flop_af_raischair<=1.00 ] ? 0.90 :
+    [ f$pt_flop_af_raischair>1.00 && f$pt_flop_af_raischair<=1.33 ] ? 0.80 :
+    [ f$pt_flop_af_raischair>1.33 && f$pt_flop_af_raischair<=1.66 ] ? 0.70 :
+    [ f$pt_flop_af_raischair>1.66 && f$pt_flop_af_raischair<=2.00 ] ? 0.60 :
+    [ f$pt_flop_af_raischair>2.00 && f$pt_flop_af_raischair<=2.50 ] ? 0.50 :
+    [ f$pt_flop_af_raischair>2.50 && f$pt_flop_af_raischair<=3.00 ] ? 0.40 :
+    [ f$pt_flop_af_raischair>3.00 && f$pt_flop_af_raischair<=4.00 ] ? 0.30 :
+    [ f$pt_flop_af_raischair>4.00 && f$pt_flop_af_raischair<=5.00 ] ? 0.20 :
+    [ f$pt_flop_af_raischair>5.00                   ] ? 0.10 : 0 } : 0 } :
 
 0
 
@@ -4178,58 +4183,58 @@ nplayersplaying==2 && nplayersround2<4 && nbetsround2<12 && !didcallround2 ? {
 
 f$pt_vpip>0.12 && f$pt_vpip<=0.25 ? {
 
-    f$pt_wsdp>0.00 && f$pt_wsdp<=0.20 ? 3 :
-    f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ? 1 : 0 } :
+    f$pt_wtsd>0.00 && f$pt_wtsd<=0.20 ? 3 :
+    f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ? 1 : 0 } :
 
 f$pt_vpip>0.25 && f$pt_vpip<=0.50 ? {
 
-    f$pt_wsdp>0.00 && f$pt_wsdp<=0.20 ? 3 :
-    f$pt_wsdp>0.20 && f$pt_wsdp<=0.25 ? 2 : 0 } :
+    f$pt_wtsd>0.00 && f$pt_wtsd<=0.20 ? 3 :
+    f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ? 2 : 0 } :
 
-f$pt_vpip>0.50 && f$pt_wsdp>0 && f$pt_wsdp<0.25 ? 3 : 
+f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 : 
 
 0 } :
 
 0
 
-##f$pt_raggf##
-(pt_raggf*(pt_rwsdp*4))
+##f$pt_flop_af_raischair##
+(pt_raggf*(pt_rwtsd*4))
 
-##f$pt_raggt##
-(pt_raggt*(pt_rwsdp*4))
+##f$pt_turn_af_raischair##
+(pt_raggt*(pt_rwtsd*4))
 
-##f$pt_raggr##
-(pt_raggr*(pt_rwsdp*4))
+##f$pt_river_af_raischair##
+(pt_raggr*(pt_rwtsd*4))
 
 ##f$ptype_ubernit##
 // PT AUTORATE ICONS:
-(pt_ricon==1)  ? 1 :
-(pt_ricon==5)  ? 1 :
-(pt_ricon==10) ? 1 : 0
+(pt_icon_raischair==1)  ? 1 :
+(pt_icon_raischair==5)  ? 1 :
+(pt_icon_raischair==10) ? 1 : 0
 
 ##f$ptype_nit##
 // PT AUTORATE ICONS:
-(pt_ricon<=1)  ? 1 :
-(pt_ricon==6)  ? 1 :
-(pt_ricon==11) ? 1 : 0
+(pt_icon_raischair<=1)  ? 1 :
+(pt_icon_raischair==6)  ? 1 :
+(pt_icon_raischair==11) ? 1 : 0
 
 ##f$ptype_tag##
 // PT AUTORATE ICONS:
-(pt_ricon==2)  ? 1 :
-(pt_ricon==7)  ? 1 :
-(pt_ricon==12) ? 1 : 0
+(pt_icon_raischair==2)  ? 1 :
+(pt_icon_raischair==7)  ? 1 :
+(pt_icon_raischair==12) ? 1 : 0
 
 ##f$ptype_semilag##
 // PT AUTORATE ICONS:
-(pt_ricon==3)  ? 1 :
-(pt_ricon==8)  ? 1 :
-(pt_ricon==13) ? 1 : 0
+(pt_icon_raischair==3)  ? 1 :
+(pt_icon_raischair8)  ? 1 :
+(pt_icon_raischair==13) ? 1 : 0
 
 ##f$ptype_lag##
 // PT AUTORATE ICONS:
-(pt_ricon==4)  ? 1 :
-(pt_ricon==9)  ? 1 :
-(pt_ricon==14) ? 1 : 0
+(pt_icon_raischair==4)  ? 1 :
+(pt_icon_raischair==9)  ? 1 :
+(pt_icon_raischair==14) ? 1 : 0
 
 ##f$prwin2##
 [prwin+(prtie/2)]**(1+f$threat2)
@@ -4239,12 +4244,12 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 
 ##f$AF_turn2##
 [ 
-(opponentsplayingbits==1)  ? pt_aggt0*(pt_wsdp0*4) :
-(opponentsplayingbits==2)  ? pt_aggt1*(pt_wsdp1*4) :
-(opponentsplayingbits==4)  ? pt_aggt2*(pt_wsdp2*4) :
-(opponentsplayingbits==8)  ? pt_aggt3*(pt_wsdp3*4) :
-(opponentsplayingbits==16) ? pt_aggt4*(pt_wsdp4*4) :
-(opponentsplayingbits==32) ? pt_aggt5*(pt_wsdp5*4) : 0 ]
+(opponentsplayingbits==1)  ? pt_turn_af0*(pt_wtsd0*4) :
+(opponentsplayingbits==2)  ? pt_turn_af1*(pt_wtsd1*4) :
+(opponentsplayingbits==4)  ? pt_turn_af2*(pt_wtsd2*4) :
+(opponentsplayingbits==8)  ? pt_turn_af3*(pt_wtsd3*4) :
+(opponentsplayingbits==16) ? pt_turn_af4*(pt_wtsd4*4) :
+(opponentsplayingbits==32) ? pt_turn_af5*(pt_wtsd5*4) : 0 ]
 
 ##f$safeboard1##
 [ nrankedcommon==1 && nsuitedcommon<=2 && nstraightcommon<=2 ]
