@@ -1,5 +1,10 @@
 ##f$Gecko_notes##
 //
+//  ATTENTION!
+//
+//  WORK IN PROGRESS
+//  INCOMPLETE CONVERSION
+//
 //
 // TECHNICAL CHANGES:
 //   * OpenPPL-functions f$preflop..f$river added (all empty)
@@ -65,7 +70,7 @@
 // MANIAC : 4 - 9 - 14 
 
 ##f$preflop##
-WHEN f$preflop_raise RaiseTo f$best_betsize FORCE
+WHEN f$preflop_raise RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 // No WHEN f$call_potcommitted Call FORCE here.
@@ -75,23 +80,24 @@ WHEN f$call_minbets Call FORCE
 WHEN f$preflop_call Call FORCE
 
 ##f$flop##
-WHEN f$flop_raise RaiseTo f$best_betsize FORCE
-WHEN f$flop_turn_raise_strong_set RaiseTo f$best_betsize FORCE
+WHEN f$flop_raise RaiseBy f$best_betsize FORCE
+WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE 
 WHEN f$flop_call Call FORCE
 
 ##f$turn##
-WHEN f$turn_raise RaiseTo f$best_betsize FORCE
-WHEN f$flop_turn_raise_strong_set RaiseTo f$best_betsize FORCE
+WHEN f$turn_raise RaiseBy f$best_betsize FORCE
+WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$turn_call Call FORCE
 
 ##f$river##
-WHEN f$river_raise RaiseTo f$best_betsize FORCE
+WHEN f$river_raise RaiseBy f$best_betsize FORCE
+// No longer going automatically broke with string sets
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
@@ -127,7 +133,21 @@ WHEN IsTurn    AND f$flop_turn_raise_strong_set RETURN True FORCE
 WHEN IsRiver   AND f$river_raise   RETURN True FORCE
 
 ##f$best_betsize##
-// !!! needs + currentbet
+// OpenPPL uses big blinds everywhere,
+// but the Gecko-bot (originally written in OH-script)
+// uses dollars, so we have to convert
+WHEN (BigBlindSize > 0) RETURN (f$best_betsize_in_dollars / BigBlindSize) FORCE
+WHEN Others RETURN BigBlindSize FORCE
+
+##f$best_betsize_in_dollars##
+// Returning the betsize in dollars with raise-by-semantics.
+// Gecko hard-coded the betsize for a casino with
+// betsizeinterpretationmethod 1, not using any
+// "swagtextmethod" as it was called at that time
+// for adaptions (Granted, these adaptions were complicated and ugly).
+// Fortunately we don't have to change any code here,
+// as OpenHoldem supports RaiseBy as an action (main code sections)
+// and all further conversions happen automagically.
 WHEN NOT f$betsizing_strategy RETURN 0 FORCE
 WHEN AmountToCall <= 0
     WHEN (f$Betsize_Adjusted >= balance) RETURN f$balance FORCE // f$balance? NOTNOTNOT
@@ -138,7 +158,7 @@ WHEN Others
     //!!!!! "And not" logic here unclear
     WHEN (f$stackraiser > 0) AND NOT(f$stackraiser>=(f$currentbet_raischair-bblind) AND f$stackraiser<=f$currentbet_raischair) AND f$Betsize_Adjusted>=balance*0.75 RETURN f$balance FORCE
     WHEN (f$stackraiser > 0) AND NOT(f$stackraiser>=(f$currentbet_raischair-bblind) AND f$stackraiser<=f$currentbet_raischair) AND f$Betsize_Adjusted< balance*0.75 RETURN f$Betsize_Adjusted FORCE
-    // Above code does not consider the case of "noraiser" 
+    // Above code does not consider the case of "noraiser" or raiser being allin
     WHEN Others RETURN f$Betsize_Adjusted FORCE
 
 ##f$prwin_number_of_iterations##
@@ -2252,7 +2272,7 @@ pt_wtsd_headsup
 
 ##f$Preflop_Raiser_In_Front_Of_Me##
 (f$BettingAction_Single_Raiser_Before_Us && !didbetsize && call<7*bblind && f$Chart_ReRaise) ? 1 :
-($AA||$KK||$QQ) ? 1 : 0
+(hand$AA||hand$KK||hand$QQ) ? 1 : 0
 
 ##f$Position_Blinds##
 (f$Position_SmallBlind || f$Position_BigBlind)
