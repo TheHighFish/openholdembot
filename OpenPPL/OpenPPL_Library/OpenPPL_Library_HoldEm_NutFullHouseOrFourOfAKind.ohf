@@ -64,35 +64,24 @@
 
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard_WeHitThePairAndAnotherCard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20599
 // 1 for each overcard on board to RankOfTopPairOnBoard, which make better 3oaks possible = better FH
-  [[(rankbitscommon & 0x100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )] ? 1 : 0]
-+ [[(rankbitscommon & 0x001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )] ? 1 : 0]
+  [[(rankbitscommon & 0b100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )] ? 1 : 0]
++ [[(rankbitscommon & 0b010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )] ? 1 : 0]
++ [[(rankbitscommon & 0b001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)] ? 1 : 0]
++ [[(rankbitscommon & 0b000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )] ? 1 : 0]
++ [[(rankbitscommon & 0b000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )] ? 1 : 0]
++ [[(rankbitscommon & 0b000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)] ? 1 : 0]
++ [[(rankbitscommon & 0b000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)] ? 1 : 0]
++ [[(rankbitscommon & 0b000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )] ? 1 : 0]
 // 1 for each board-card that is not the pair on board and higher than the other pair (board-user),
-// as there ar higher FHs possible (same set, higher pair)
-+ [[(rankbitscommon & 0x100000000000000) AND (RankOfPairOfFullHouse < ConstCardAce  ) AND (RankOfSetOfFullHouse != ConstCardAce  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x010000000000000) AND (RankOfPairOfFullHouse < ConstCardKing ) AND (RankOfSetOfFullHouse != ConstCardKing )] ? 1 : 0]
-+ [[(rankbitscommon & 0x001000000000000) AND (RankOfPairOfFullHouse < ConstCardQueen) AND (RankOfSetOfFullHouse != ConstCardQueen)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000100000000000) AND (RankOfPairOfFullHouse < ConstCardJack ) AND (RankOfSetOfFullHouse != ConstCardJack )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000010000000000) AND (RankOfPairOfFullHouse < ConstCardTen  ) AND (RankOfSetOfFullHouse != ConstCardTen  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000001000000000) AND (RankOfPairOfFullHouse < ConstCardNine ) AND (RankOfSetOfFullHouse != ConstCardNine )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000100000000) AND (RankOfPairOfFullHouse < ConstCardEight) AND (RankOfSetOfFullHouse != ConstCardEight)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000010000000) AND (RankOfPairOfFullHouse < ConstCardSeven) AND (RankOfSetOfFullHouse != ConstCardSeven)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000001000000) AND (RankOfPairOfFullHouse < ConstCardSix  ) AND (RankOfSetOfFullHouse != ConstCardSix  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000100000) AND (RankOfPairOfFullHouse < ConstCardFive ) AND (RankOfSetOfFullHouse != ConstCardFive )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000010000) AND (RankOfPairOfFullHouse < ConstCardFour ) AND (RankOfSetOfFullHouse != ConstCardFour )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000001000) AND (RankOfPairOfFullHouse < ConstCardThree) AND (RankOfSetOfFullHouse != ConstCardThree)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000000100) AND (RankOfPairOfFullHouse < ConstCardTwo  ) AND (RankOfSetOfFullHouse != ConstCardTwo  )] ? 1 : 0]
+// as there are higher FHs possible (same set, higher pair)
+OvercardsOnBoardToRankOfSetOfFullHouse
 // + 1 for our hand
 + 1
 
@@ -243,7 +232,8 @@ IndividualOvercardsOnBoard
 [((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard > SecondBestBoardCard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairHighSetOnBoard :
 //
 // 3) we pair the SET on board, which is lower than the pair, so somebody could have better quads
-[((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard < SecondBestBoardCard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowSetOnBoard :
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20617
+[(rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowSetOnBoard :
 //
 // 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
 [(   (rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard > RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairHighPairOnBoard :
