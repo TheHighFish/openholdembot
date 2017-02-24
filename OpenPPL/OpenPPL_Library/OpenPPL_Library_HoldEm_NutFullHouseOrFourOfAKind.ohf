@@ -97,19 +97,20 @@
 + 1
 
 ##OvercardsOnBoardToRankOfSetOfFullHouse##
-  (rankbitscommon & 0x100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )
-+ (rankbitscommon & 0x010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )
-+ (rankbitscommon & 0x001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)
-+ (rankbitscommon & 0x000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )
-+ (rankbitscommon & 0x000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )
-+ (rankbitscommon & 0x000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )
-+ (rankbitscommon & 0x000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)
-+ (rankbitscommon & 0x000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)
-+ (rankbitscommon & 0x000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )
-+ (rankbitscommon & 0x000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )
-+ (rankbitscommon & 0x000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )
-+ (rankbitscommon & 0x000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)
-+ (rankbitscommon & 0x000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20600
+  [(rankbitscommon & 0b100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )]
++ [(rankbitscommon & 0b010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )]
++ [(rankbitscommon & 0b001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)]
++ [(rankbitscommon & 0b000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )]
++ [(rankbitscommon & 0b000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )]
++ [(rankbitscommon & 0b000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )]
++ [(rankbitscommon & 0b000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)]
++ [(rankbitscommon & 0b000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)]
++ [(rankbitscommon & 0b000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )]
++ [(rankbitscommon & 0b000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )]
++ [(rankbitscommon & 0b000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )]
++ [(rankbitscommon & 0b000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)]
++ [(rankbitscommon & 0b000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSet##
 // 3 is the lowest nut rank possible, because there's still a quad and a FH with the higher pair possible.
@@ -263,15 +264,8 @@ trankcommon
 
 
 ##RankOfSpareCardWhenTwoPairOnBoard##
-TwoPairOnBoard AND NOT FullHouseOnBoard ?
-[    
-			 ($$cr0!=RankOfTopPairOnBoard AND $$cr0!=RankOfBottomPairOnBoard ? $$cr0:0)
-			|($$cr1!=RankOfTopPairOnBoard AND $$cr1!=RankOfBottomPairOnBoard ? $$cr1:0)
-			|($$cr2!=RankOfTopPairOnBoard AND $$cr2!=RankOfBottomPairOnBoard ? $$cr2:0)
-			|($$cr3!=RankOfTopPairOnBoard AND $$cr3!=RankOfBottomPairOnBoard ? $$cr3:0)
-			|($$cr4!=RankOfTopPairOnBoard AND $$cr4!=RankOfBottomPairOnBoard ? $$cr4:0)
-]:
-0
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20602
+WHEN TwoPairOnBoard RETURN HighestUnpairedBoardCard FORCE
 
 ##NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
 // Case 1: we have the quads: the nuts
