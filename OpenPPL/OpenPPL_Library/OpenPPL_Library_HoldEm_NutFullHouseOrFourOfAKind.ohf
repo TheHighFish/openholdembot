@@ -290,7 +290,7 @@ ispair ?
 ]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard##
-// 5 basic cases
+// 8 basic cases
 //
 // 1) we complete the higher pair to quads
 [ispair AND rankhiplayer == RankOfTopPairOnBoard] ? NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitTopQuads :
@@ -309,6 +309,14 @@ ispair ?
 // 5) we pair the lower board card; probably several cases
 [(rankhiplayer == RankOfBottomPairOnBoard) OR (rankloplayer == RankOfBottomPairOnBoard)] ? NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSet :
 //
+// 6) we pair the not paired board card, between RankOfBottomPairOnBoard and RankOfTopPairOnBoard; e.g. TT on JJT55,
+[ispair AND (rankhiplayer > RankOfBottomPairOnBoard) AND (rankhiplayer < RankOfTopPairOnBoard)] ? (2 + NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair) :
+//
+// 7) we pair the not paired board card, below RankOfBottomPairOnBoard; dangerous FH e.g. 22 on AAKK2
+[ispair AND (rankhiplayer < RankOfBottomPairOnBoard)] ? (1 + NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair) :
+//
+// 8) we pair the not paired board card, above RankOfTopPairOnBoard e.g. JJ on J5544
+HaveTopSet ? 3 : 
 HINT_We_Dont_Have_A_FullHouse_At_All
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard##
