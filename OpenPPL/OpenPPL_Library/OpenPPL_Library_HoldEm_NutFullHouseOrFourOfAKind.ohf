@@ -290,6 +290,7 @@ ispair ?
 ]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20601
 // 8 basic cases
 //
 // 1) we complete the higher pair to quads
