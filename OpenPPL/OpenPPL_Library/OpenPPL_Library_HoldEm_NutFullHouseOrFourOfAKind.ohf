@@ -203,15 +203,16 @@ IndividualOvercardsOnBoard
 1
 
 ##NutFullHouseOrFourOfAKind_FourOfAKindOnBoard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20616
 // PreCondition: FourOfAKindOnBoard
 //
 // case 1: we play the board. e.g. 8888Q, we have J5
 [rankhiplayer < BoardKicker_FourOfAKindOnBoard] ?
 [
-	// case 1A: common kicker is higher then quads, e.g. 8888Q.
-   (BoardKicker_FourOfAKindOnBoard > trankcommon ) ? (ConstCardAce - rankhiplayer + 1) :
+   // case 1A: common kicker is higher then quads, e.g. 8888Q.
+   (BoardKicker_FourOfAKindOnBoard > trankcommon ) ? (ConstCardAce - BoardKicker_FourOfAKindOnBoard + 1) :
    // case 1B: common kicker is lower than quads
-   (ConstCardAce - rankhiplayer + 1)
+   (ConstCardAce - BoardKicker_FourOfAKindOnBoard)
 ] :
 // Otherwise: case 2: One of our cards is better then the non-paired board card, e.g. 88885, we have J2
 [
