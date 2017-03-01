@@ -105,6 +105,7 @@ OvercardsOnBoardToRankOfSetOfFullHouse
 // 3 is the lowest nut rank possible, because there's still a quad and a FH with the higher pair possible.
 // There's always a higher pair on board, so if there are two higher ranked cards in common cards,
 // there's also a higher SET possible with a pocket pair and the remaining single card on board.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20605
 3 
 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 2) ? 1 : 0]
 + (RankOfSpareCardWhenTwoPairOnBoard > RankOfBottomPairOnBoard)
@@ -114,7 +115,10 @@ OvercardsOnBoardToRankOfSetOfFullHouse
 // 2 is the lowest nut rank possible, because there's still a quad possible.
 // There's might be a higher card on board, so if there is a higher ranked card in common cards then our SET rank,
 // there's also a higher SET possible with a pocket pair and the remaining single card on board.
-2 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 1) ? 1 : 0]
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20604
+2 
++ [(OvercardsOnBoardToRankOfSetOfFullHouse >= 1) ? 1 : 0]
++ [IsUnusedSpareCard AND (RankOfSpareCardWhenTwoPairOnBoard > RankOfBottomPairOnBoard)]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomQuads##
 2
