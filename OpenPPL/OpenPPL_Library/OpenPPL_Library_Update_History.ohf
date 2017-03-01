@@ -188,7 +188,7 @@ WHEN (betround == ConstBetRoundTurn) SET me_st_MemRaisesOnTurn_Raises
 WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
 WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
-WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MaxOpponentStackSize
+WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MinOpponentStackSize
 WHEN (betround == ConstBetRoundPreflop) SET me_st_MemMissingSmallBlind_MissingSmallBlind
 // Finally remember a heartbeat ID so that be become able to detect
 // if a symbol gets used before the next scrape (e.g by the debug-tab).
