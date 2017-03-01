@@ -81,7 +81,7 @@
 + [[(rankbitscommon & 0b000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )] ? 1 : 0]
 // 1 for each board-card that is not the pair on board and higher than the other pair (board-user),
 // as there are higher FHs possible (same set, higher pair)
-OvercardsOnBoardToRankOfSetOfFullHouse
++ OvercardsOnBoardToRankOfSetOfFullHouse
 // + 1 for our hand
 + 1
 
@@ -109,7 +109,7 @@ OvercardsOnBoardToRankOfSetOfFullHouse
 3 
 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 2) ? 1 : 0]
 + (RankOfSpareCardWhenTwoPairOnBoard > RankOfBottomPairOnBoard)
-+ [IsNotUsedSpareCard AND (RankOfSpareCardWhenTwoPairOnBoard > RankOfTopPairOnBoard)]
++ [IsUnusedSpareCard AND (RankOfSpareCardWhenTwoPairOnBoard > RankOfTopPairOnBoard)]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitTopSet##
 // 2 is the lowest nut rank possible, because there's still a quad possible.
@@ -380,7 +380,7 @@ WHEN (RankOfFirstHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FOR
 WHEN (RankOfSecondHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FORCE 
 WHEN Others RETURN True FORCE
 
-[code]##OvercardsOnBoardToRankOfSetOnBoard##
+##OvercardsOnBoardToRankOfSetOnBoard##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606
 WHEN NOT TripsOnBoard RETURN 0 FORCE
 WHEN (SecondBestBoardCard > RankOfSetOnBoard) RETURN 2 FORCE
