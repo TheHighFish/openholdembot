@@ -266,6 +266,7 @@ trankcommon
 WHEN TwoPairOnBoard RETURN HighestUnpairedBoardCard FORCE
 
 ##NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606
 // Case 1: we have the quads: the nuts
 (rankhiplayer == RankOfSetOnBoard) OR (rankloplayer ==RankOfSetOnBoard) ? 1 :
 // Otherwise: we have a fullhouse with either a pocket-pair or pair a board-card.
@@ -276,7 +277,8 @@ ispair ?
     // or hits the SET will get a better hand
     (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer + 1) :
     // Otherwise: SET is lower, so there is 1 additional card, that loses for us
-    (ConstCardAce - rankhiplayer + 1)
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606&p=144395#p144190
+    [2 + (HaveSet ? OvercardsOnBoard : (ConstCardAce - rankhiplayer + OvercardsOnBoardToRankOfSetOnBoard))]
 ] :
 // Case 3: We pair the board
 [
@@ -284,15 +286,15 @@ ispair ?
     // Case 3A: Our higher card hits the board
     (rankhiplayer == BestBoardCard) OR (rankhiplayer == SecondBestBoardCard) OR (rankhiplayer == ThirdBestBoardCard) ?
     [
-        (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer) :
+        (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer + 1 + OvercardsOnBoardToRankOfSetOnBoard) :
         // Otherwise: SET is lower, so there is 1 additional card, that loses for us
-        (ConstCardAce - rankhiplayer + 1)
+        (ConstCardAce - rankhiplayer + 2 + OvercardsOnBoardToRankOfSetOnBoard)
     ] :
     [
         // Otherwise rankloplayer paired:
-        (RankOfSetOnBoard > rankloplayer) ? (ConstCardAce - rankloplayer) :
+        (RankOfSetOnBoard > rankloplayer) ? (ConstCardAce - rankhiplayer + 1 + OvercardsOnBoardToRankOfSetOnBoard) :
         // Otherwise: SET is lower, so there is 1 additional card, that loses for us
-        (ConstCardAce - rankloplayer + 1)
+        (ConstCardAce - rankhiplayer + 2 + OvercardsOnBoardToRankOfSetOnBoard)
     ]
 ]
 
@@ -377,3 +379,9 @@ WHEN (RankOfSpareCardWhenTwoPairOnBoard <= 0) RETURN False FORCE
 WHEN (RankOfFirstHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FORCE 
 WHEN (RankOfSecondHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FORCE 
 WHEN Others RETURN True FORCE
+
+[code]##OvercardsOnBoardToRankOfSetOnBoard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606
+WHEN NOT TripsOnBoard RETURN 0 FORCE
+WHEN (SecondBestBoardCard > RankOfSetOnBoard) RETURN 2 FORCE
+WHEN (BestBoardCard > RankOfSetOnBoard) RETURN 1 FORCE
