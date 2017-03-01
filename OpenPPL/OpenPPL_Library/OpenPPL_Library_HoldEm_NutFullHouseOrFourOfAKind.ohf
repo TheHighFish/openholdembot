@@ -360,3 +360,13 @@ HINT_We_Dont_Have_A_FullHouse_At_All
 // +1 if the pair is higher as the SET (higher SET possible)
 // -1 if the pair is higher as the SET (counted twice as OverPair / set)
 // but these cases neutralize each other
+
+##IsUnusedSpareCard##
+// For NutFullHouseOrFourOfAKind_TwoPairsOnBoard
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20605
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20604
+WHEN NOT TwoPairOnBoard RETURN False FORCE
+WHEN (RankOfSpareCardWhenTwoPairOnBoard <= 0) RETURN False FORCE
+WHEN (RankOfFirstHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FORCE 
+WHEN (RankOfSecondHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FORCE 
+WHEN Others RETURN True FORCE
