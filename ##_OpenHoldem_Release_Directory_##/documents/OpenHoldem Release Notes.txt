@@ -1,10 +1,11 @@
-v11.1.3 2017-03-xx
+﻿v11.1.3 2017-03-xx
 ==================
 BUG FIXES:
 - Fixed a bug in the initialization of MinOpponentStackSize.
   Thanks to Relhby for reporting.
   [THF]
-- Fixed unbelievable eight bugs and problems in NutFullHouseOrFourOfAKind.
+- Fixed unbelievable ten bugs and problems in NutFullHouseOrFourOfAKind.
+  Thanks to Stars83 and Smuroff for reporting several buggy cases.
   Special thanks to ChuckNeverMuck who did all the review, fixing, testing.
   [THF]
 
