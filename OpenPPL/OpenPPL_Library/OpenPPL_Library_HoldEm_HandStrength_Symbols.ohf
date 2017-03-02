@@ -580,94 +580,111 @@ rankbitscommon | 0b000000000001000
 rankbitscommon | 0b000000000000100
 
 ##BestPossibleStraightForVillainIfAceHitsTheBoard##
-`(RankBitsCommonWithAdditionalAce & 0b111110000000000) >= 3 ? ConstCardAce :
-// We can ignore all straights without an ace here
-`(RankBitsCommonWithAdditionalAce & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
+// First we check if a better straight is already possible
+// independent of all cards that might hit the board
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20666
+WHEN HighCardOfBestPossibleStraight >= ConstCardAce RETURN HighCardOfBestPossibleStraight FORCE
+// Then we check ace-high...
+WHEN BitCount(RankBitsCommonWithAdditionalAce BitAnd 0b111110000000000) >= 3 RETURN ConstCardAce FORCE
+// ...and the wheel with ace-low
+WHEN BitCount(RankBitsCommonWithAdditionalAce BitAnd 0b000000000111110) >= 3 RETURN ConstCardFive FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfKingHitsTheBoard##
-`(RankBitsCommonWithAdditionalKing & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalKing & 0b011111000000000) >= 3 ? ConstCardKing :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardAce RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalKing BitAnd 0b111110000000000) >= 3 RETURN ConstCardAce FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalKing BitAnd 0b011111000000000) >= 3 RETURN ConstCardKing FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfQueenHitsTheBoard##
-`(RankBitsCommonWithAdditionalQueen & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalQueen & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalQueen & 0b001111100000000) >= 3 ? ConstCardQueen :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardAce RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalQueen BitAnd 0b111110000000000) >= 3 RETURN ConstCardAce FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalQueen BitAnd 0b011111000000000) >= 3 RETURN ConstCardKing FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalQueen BitAnd 0b001111100000000) >= 3 RETURN ConstCardQueen FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfJackHitsTheBoard##
-`(RankBitsCommonWithAdditionalJack & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalJack & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalJack & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalJack & 0b000111110000000) >= 3 ? ConstCardJack :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardAce RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b111110000000000) >= 3 RETURN ConstCardAce FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b011111000000000) >= 3 RETURN ConstCardKing FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b001111100000000) >= 3 RETURN ConstCardQueen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b000111110000000) >= 3 RETURN ConstCardJack FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfTenHitsTheBoard##
-`(RankBitsCommonWithAdditionalTen & 0b111110000000000) >= 3 ? ConstCardAce :
-`(RankBitsCommonWithAdditionalTen & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalTen & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalTen & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalTen & 0b000011111000000) >= 3 ? ConstCardTen :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardAce RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b111110000000000) >= 3 RETURN ConstCardAce FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b011111000000000) >= 3 RETURN ConstCardKing FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b001111100000000) >= 3 RETURN ConstCardQueen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b000111110000000) >= 3 RETURN ConstCardJack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b000011111000000) >= 3 RETURN ConstCardTen FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfNineHitsTheBoard##
-`(RankBitsCommonWithAdditionalNine & 0b011111000000000) >= 3 ? ConstCardKing :
-`(RankBitsCommonWithAdditionalNine & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalNine & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalNine & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalNine & 0b000001111100000) >= 3 ? ConstCardNine :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardKing RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b011111000000000) >= 3 RETURN ConstCardKing FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b001111100000000) >= 3 RETURN ConstCardQueen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b000111110000000) >= 3 RETURN ConstCardJack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b000011111000000) >= 3 RETURN ConstCardTen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b000001111100000) >= 3 RETURN ConstCardNine FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfEightHitsTheBoard##
-`(RankBitsCommonWithAdditionalEight & 0b001111100000000) >= 3 ? ConstCardQueen :
-`(RankBitsCommonWithAdditionalEight & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalEight & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalEight & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalEight & 0b000000111110000) >= 3 ? ConstCardEight :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardQueen RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b001111100000000) >= 3 RETURN ConstCardQueen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000111110000000) >= 3 RETURN ConstCardJack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000011111000000) >= 3 RETURN ConstCardTen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000001111100000) >= 3 RETURN ConstCardNine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000000111110000) >= 3 RETURN ConstCardEight FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfSevenHitsTheBoard##
-`(RankBitsCommonWithAdditionalSeven & 0b000111110000000) >= 3 ? ConstCardJack :
-`(RankBitsCommonWithAdditionalSeven & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalSeven & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalSeven & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalSeven & 0b000000011111000) >= 3 ? ConstCardSeven :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardJack RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000111110000000) >= 3 RETURN ConstCardJack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000011111000000) >= 3 RETURN ConstCardTen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000001111100000) >= 3 RETURN ConstCardNine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000000111110000) >= 3 RETURN ConstCardEight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000000011111000) >= 3 RETURN ConstCardSeven FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfSixHitsTheBoard##
-`(RankBitsCommonWithAdditionalSix & 0b000011111000000) >= 3 ? ConstCardTen :
-`(RankBitsCommonWithAdditionalSix & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalSix & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalSix & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalSix & 0b000000001111100) >= 3 ? ConstCardSix :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardTen RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000011111000000) >= 3 RETURN ConstCardTen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000001111100000) >= 3 RETURN ConstCardNine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000000111110000) >= 3 RETURN ConstCardEight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000000011111000) >= 3 RETURN ConstCardSeven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000000001111100) >= 3 RETURN ConstCardSix FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfFiveHitsTheBoard##
-`(RankBitsCommonWithAdditionalFive & 0b000001111100000) >= 3 ? ConstCardNine :
-`(RankBitsCommonWithAdditionalFive & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalFive & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalFive & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalFive & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardNine RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000001111100000) >= 3 RETURN ConstCardNine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000111110000) >= 3 RETURN ConstCardEight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000011111000) >= 3 RETURN ConstCardSeven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000001111100) >= 3 RETURN ConstCardSix FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000000111110) >= 3 RETURN ConstCardFive FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfFourHitsTheBoard##
-`(RankBitsCommonWithAdditionalFour & 0b000000111110000) >= 3 ? ConstCardEight :
-`(RankBitsCommonWithAdditionalFour & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalFour & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalFour & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardEight RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000111110000) >= 3 RETURN ConstCardEight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000011111000) >= 3 RETURN ConstCardSeven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000001111100) >= 3 RETURN ConstCardSix FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000000111110) >= 3 RETURN ConstCardFive FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfThreeHitsTheBoard##
-`(RankBitsCommonWithAdditionalThree & 0b000000011111000) >= 3 ? ConstCardSeven :
-`(RankBitsCommonWithAdditionalThree & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalThree & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardSeven RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalThree BitAnd 0b000000011111000) >= 3 RETURN ConstCardSeven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalThree BitAnd 0b000000001111100) >= 3 RETURN ConstCardSix FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalThree BitAnd 0b000000000111110) >= 3 RETURN ConstCardFive FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##BestPossibleStraightForVillainIfTwoHitsTheBoard##
-`(RankBitsCommonWithAdditionalTwo & 0b000000001111100) >= 3 ? ConstCardSix :
-`(RankBitsCommonWithAdditionalTwo & 0b000000000111110) >= 3 ? ConstCardFive :
-HINT_Such_A_Straight_Does_Not_Exist
+WHEN HighCardOfBestPossibleStraight >= ConstCardSix RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTwo BitAnd 0b000000001111100) >= 3 RETURN ConstCardSix FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTwo BitAnd 0b000000000111110) >= 3 RETURN ConstCardFive FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
 ##RankBitsWithAdditionalAce##
 rankbits | 0b100000000000010
