@@ -246,8 +246,10 @@ IndividualOvercardsOnBoard
 // 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
 [(   (rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard > RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairHighPairOnBoard :
 //
-// 5) we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
-[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard :
+// 5) a. we pair the pair on board with pocket pair, which is lower than the set, so we have second best quads
+[ispair AND (rankhiplayer = RankOfPairOnBoardWithFullHouseOnBoard)] ? 2 :
+// 5) b. we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
+[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard//
 //
 // 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the SET or lower)
 [ispair AND (rankhiplayer != BestBoardCard) AND (rankhiplayer != SecondBestBoardCard) AND (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WeHaveOverPairToPair :
