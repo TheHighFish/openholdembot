@@ -8,6 +8,9 @@ BUG FIXES:
   Thanks to Stars83 and Smuroff for reporting several buggy cases.
   Special thanks to ChuckNeverMuck who did all the review, fixing, testing.
   [THF]
+- The keyboard-DLL executed one mouse-click too much.
+  Thanks to Gunfadoso for reporting and for suggesting the fix.
+  [THF]
 
 
 v11.1.2 2017-02-13
