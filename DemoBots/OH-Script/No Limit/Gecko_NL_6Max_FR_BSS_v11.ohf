@@ -41,8 +41,10 @@
 //   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
 //   * Replaced br by betround by even more verbosity: IsFlop, ...
 //   * Renamed hand$AA, hand$KK to more verbose handhand$AA, hsndhand$KK
-//   * Replaced nopponentsraising (unsupported) by a function f$nopponentsraising
-//     that counts the old WinHoldem way, including "blind raisers"
+//   * Replaced nopponentsraising by Raises.
+//     Thank god Gecko had already created more abstract functions
+//     f$Preflop_Multiple_Raisers and f$BettingAction_Single_Raiser_Before_Us
+//     that made the conversion eady (no "blind-raisers") 
 //   * Changed handlists from WinHoldem to OpenHoldem-style format, e.g.
 //       AK  ->  AKs
 //       KA  ->  AKo    
@@ -54,11 +56,11 @@
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
 //     Geckos code suggested that 0.67 would be right.
+//   * Added sanity-check that prevents Gecko playing Omaha.
 //
 // TO DO:
 //   * implement pt_river_bet (currently changed to river_bet to make it load!!!!)
 //   * extend code to FR
-//
 //
 // 
 // POKERTRACKER AUTORATE ICONS:
@@ -70,6 +72,7 @@
 // MANIAC : 4 - 9 - 14 
 
 ##f$preflop##
+WHEN isomaha Fold FORCE
 WHEN f$preflop_raise RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
@@ -80,6 +83,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$preflop_call Call FORCE
 
 ##f$flop##
+WHEN isomaha Fold FORCE
 WHEN f$flop_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
@@ -88,6 +92,7 @@ WHEN f$call_potcommitted Call FORCE
 WHEN f$flop_call Call FORCE
 
 ##f$turn##
+WHEN isomaha Fold FORCE
 WHEN f$turn_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
@@ -96,6 +101,7 @@ WHEN f$call_potcommitted Call FORCE
 WHEN f$turn_call Call FORCE
 
 ##f$river##
+WHEN isomaha Fold FORCE
 WHEN f$river_raise RaiseBy f$best_betsize FORCE
 // No longer going automatically broke with string sets
 WHEN f$call_nuts Call FORCE
@@ -2262,7 +2268,7 @@ pt_wtsd_headsup
 (f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us && list100) ? 1 : 0
 
 ##f$Preflop_Multiple_Raisers##
-(f$nopponentsraising>3 && list100) ? 1 : 0
+(Raises >= 2 && list100) ? 1 : 0
 
 ##f$Preflop_React_To_Reraise##
 (f$BettingAction_Raisers_Behind_Us && list100) ? 1 : 0
@@ -2370,7 +2376,7 @@ log$SERIOUS_ERROR
 (didrais || didcall || didchec || didbetsize)
 
 ##f$BettingAction_Single_Raiser_Before_Us##
-(f$BettingAction_Number_Of_Raisers_Preflop==1 && f$nopponentsraising<=3)
+(f$BettingAction_Number_Of_Raisers_Preflop==1 && Raises == 1)
 
 ##f$Chart_ReRaise##
 [ InSmallBlind ] ? { // sb
@@ -4303,16 +4309,6 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 
 ##f$balance##
 (balance+bblind)
-
-##f$nopponentsraising##
-// to do
-
-
-
-
-
-
-
 
 ##list01##
 66  77  88  99  TT  JJ  QQ  KK  AA  
