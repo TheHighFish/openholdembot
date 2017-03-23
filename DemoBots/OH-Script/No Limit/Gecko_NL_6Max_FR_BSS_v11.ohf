@@ -57,6 +57,8 @@
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
 //     Geckos code suggested that 0.67 would be right.
 //   * Added sanity-check that prevents Gecko playing Omaha.
+//   * Added f$pt_min_hands_for_opponent_modelling
+//     to require a minimal sample-size.
 //
 // TO DO:
 //   * implement pt_river_bet (currently changed to river_bet to make it load!!!!)
@@ -70,6 +72,28 @@
 // TOPPAIR: 2 - 7 - 12
 // MIDPAIR: 3 - 8 - 13
 // MANIAC : 4 - 9 - 14 
+
+
+
+
+/* So pt_nit would be icon 1,5,9 instead of 1,5,10, so you get to a total of 12 autorate rules instead of 14
+
+ptubernit1: raise flop <6% - fold to cbet <40%
+ptubernit5: raise flop <6% - fold to cbet >40% <60%
+ptubernit9: raise flop <6% - fold to cbet >60%
+
+ptnit2: raise flop >6% raiseflop <12% - fold to cbet <40%
+ptnit6: raise flop >6% raiseflop <12% - fold to cbet >40% <60%
+ptnit10: raise flop >6% raiseflop <12% - fold to cbet >60%
+
+pttag3: raise flop >12% raiseflop <18% - fold to cbet <40%
+pttag7: raise flop >12% raiseflop <18% - fold to cbet >40% <60%
+pttag11: raise flop >12% raiseflop <18% - fold to cbet >60%
+
+pttag4: raise flop >18% - fold to cbet <40%
+pttag8: raise flop >18% - fold to cbet >40% <60%
+pttag12: raise flop >18%- fold to cbet >60%
+*/
 
 ##f$preflop##
 WHEN isomaha Fold FORCE
@@ -4235,31 +4259,39 @@ f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 :
 ##f$pt_river_af_raischair##
 (pt_river_af_raischair*(pt_wtsd_raischair*4))
 
+##f$pt_min_hands_for_opponent_modelling##
+50
+
 ##f$ptype_ubernit##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==1)  ? 1 :
 (pt_river_bet_raischair==5)  ? 1 :
 (pt_river_bet_raischair==10) ? 1 : 0
 
 ##f$ptype_nit##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair<=1)  ? 1 :
 (pt_river_bet_raischair==6)  ? 1 :
 (pt_river_bet_raischair==11) ? 1 : 0
 
 ##f$ptype_tag##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==2)  ? 1 :
 (pt_river_bet_raischair==7)  ? 1 :
 (pt_river_bet_raischair==12) ? 1 : 0
 
 ##f$ptype_semilag##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==3)  ? 1 :
 (pt_river_bet_raischair==8)  ? 1 :
 (pt_river_bet_raischair==13) ? 1 : 0
 
 ##f$ptype_lag##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==4)  ? 1 :
 (pt_river_bet_raischair==9)  ? 1 :
