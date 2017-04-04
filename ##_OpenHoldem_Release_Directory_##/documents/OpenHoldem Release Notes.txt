@@ -11,10 +11,13 @@ BUG FIXES:
 - The keyboard-DLL executed one mouse-click too much.
   Thanks to Gunfadoso for reporting and for suggesting the fix.
   [THF]
-- The fix to clear all data of a player who left the table
+- The 11.1.2 fix to clear all data of a player who left the table
   broke scraping of the dealer-chair, as during a new scrape
   a player could get temporary marked as "not seated".
   Thanks to ChuckNeverMuck and Eden for reporting.
+  [THF]
+- betpositionrais didn't work as expected.
+  Thanks to Mike for reporting, debugging and providing the fix.
   [THF]
 
 

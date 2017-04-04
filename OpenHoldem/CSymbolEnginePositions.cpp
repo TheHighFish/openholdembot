@@ -106,14 +106,16 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
 		  i<=(DEALER_CHAIR+p_tablemap->nchairs());
 		  i++) {
 		int next_chair = i%p_tablemap->nchairs();
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)
-		  	&& IsBitSet(p_symbol_engine_active_dealt_playing->playersseatedbits(), next_chair)) {
+    // www!!!!!
+		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), next_chair)) {
 			_betpositionrais++;
 		}
     if (IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), next_chair)) {
 			_dealpositionrais++;
 		}
-		if (next_chair == p_symbol_engine_raisers->raischair()) break;	
+    if (next_chair == p_symbol_engine_raisers->raischair()) {
+      break;
+    }
 	}
 	AssertRange(_betpositionrais,  kUndefined, kMaxNumberOfPlayers);
 	AssertRange(_dealpositionrais, kUndefined, kMaxNumberOfPlayers);
