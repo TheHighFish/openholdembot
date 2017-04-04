@@ -76,41 +76,18 @@ BOOL CGameInfoDlg::OnInitDialog() {
 	m_Network.AddString("Microgaming");
   m_Network.AddString("Cake");
   m_Network.AddString("Bodog");
-	
+  m_Network.AddString("Betfair");
 	m_Network.AddString("Cryptologic");
-	
-	
-	
+  m_Network.AddString("Ultimate");
+  m_Network.AddString("Absolute");
+  m_Network.AddString("WPEX");
 	m_Network.AddString("Tribeca");
-	m_Network.AddString("Worldpex");
-	
-	m_Network.AddString("Tain");
-	
-	
-	
-	m_Network.AddString("Betfair");
-
- 
-
-  _pt4_siteid.insert(std::pair<CString, int>("b2b", 1000));
-  _pt4_siteid.insert(std::pair<CString, int>("microgaming", 1100));
-  _pt4_siteid.insert(std::pair<CString, int>("cake", 1200));
-  _pt4_siteid.insert(std::pair<CString, int>("bodog", 1300));
-  _pt4_siteid.insert(std::pair<CString, int>("betfair", 1400));
-  _pt4_siteid.insert(std::pair<CString, int>("cryptologic", 1500));
-  _pt4_siteid.insert(std::pair<CString, int>("ultimate", 1600));
-  _pt4_siteid.insert(std::pair<CString, int>("absolute", 1700));
-  _pt4_siteid.insert(std::pair<CString, int>("wpex", 1800));
-  _pt4_siteid.insert(std::pair<CString, int>("tribeca", 1900));
-  // 2000 not (yet) supported, whatever it is
-  _pt4_siteid.insert(std::pair<CString, int>("merge", 2100));
-  _pt4_siteid.insert(std::pair<CString, int>("winamax", 2200));
-  _pt4_siteid.insert(std::pair<CString, int>("everleaf", 2300));
-  _pt4_siteid.insert(std::pair<CString, int>("yatahay", 2400));
-  _pt4_siteid.insert(std::pair<CString, int>("enet", 2500));
-  _pt4_siteid.insert(std::pair<CString, int>("barriere", 2600));
-
-  // Yatahay???!!!!! www
+  m_Network.AddString("Merge");
+  m_Network.AddString("Winamax");
+  m_Network.AddString("Everleaf");
+  m_Network.AddString("Yatahay");
+  m_Network.AddString("Enet");
+  m_Network.AddString("Barriere");
 	m_Network.SelectString(0, m_network);
   if (m_gametype == LIMIT_NL) {
     m_GameType.SelectString(0, "No Limit");

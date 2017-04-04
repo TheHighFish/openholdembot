@@ -64,64 +64,61 @@
 
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard_WeHitThePairAndAnotherCard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20599
 // 1 for each overcard on board to RankOfTopPairOnBoard, which make better 3oaks possible = better FH
-  [[(rankbitscommon & 0x100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )] ? 1 : 0]
-+ [[(rankbitscommon & 0x001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )] ? 1 : 0]
+  [[(rankbitscommon & 0b100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )] ? 1 : 0]
++ [[(rankbitscommon & 0b010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )] ? 1 : 0]
++ [[(rankbitscommon & 0b001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)] ? 1 : 0]
++ [[(rankbitscommon & 0b000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )] ? 1 : 0]
++ [[(rankbitscommon & 0b000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )] ? 1 : 0]
++ [[(rankbitscommon & 0b000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)] ? 1 : 0]
++ [[(rankbitscommon & 0b000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)] ? 1 : 0]
++ [[(rankbitscommon & 0b000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)] ? 1 : 0]
++ [[(rankbitscommon & 0b000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )] ? 1 : 0]
 // 1 for each board-card that is not the pair on board and higher than the other pair (board-user),
-// as there ar higher FHs possible (same set, higher pair)
-+ [[(rankbitscommon & 0x100000000000000) AND (RankOfPairOfFullHouse < ConstCardAce  ) AND (RankOfSetOfFullHouse != ConstCardAce  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x010000000000000) AND (RankOfPairOfFullHouse < ConstCardKing ) AND (RankOfSetOfFullHouse != ConstCardKing )] ? 1 : 0]
-+ [[(rankbitscommon & 0x001000000000000) AND (RankOfPairOfFullHouse < ConstCardQueen) AND (RankOfSetOfFullHouse != ConstCardQueen)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000100000000000) AND (RankOfPairOfFullHouse < ConstCardJack ) AND (RankOfSetOfFullHouse != ConstCardJack )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000010000000000) AND (RankOfPairOfFullHouse < ConstCardTen  ) AND (RankOfSetOfFullHouse != ConstCardTen  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000001000000000) AND (RankOfPairOfFullHouse < ConstCardNine ) AND (RankOfSetOfFullHouse != ConstCardNine )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000100000000) AND (RankOfPairOfFullHouse < ConstCardEight) AND (RankOfSetOfFullHouse != ConstCardEight)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000010000000) AND (RankOfPairOfFullHouse < ConstCardSeven) AND (RankOfSetOfFullHouse != ConstCardSeven)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000001000000) AND (RankOfPairOfFullHouse < ConstCardSix  ) AND (RankOfSetOfFullHouse != ConstCardSix  )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000100000) AND (RankOfPairOfFullHouse < ConstCardFive ) AND (RankOfSetOfFullHouse != ConstCardFive )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000010000) AND (RankOfPairOfFullHouse < ConstCardFour ) AND (RankOfSetOfFullHouse != ConstCardFour )] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000001000) AND (RankOfPairOfFullHouse < ConstCardThree) AND (RankOfSetOfFullHouse != ConstCardThree)] ? 1 : 0]
-+ [[(rankbitscommon & 0x000000000000100) AND (RankOfPairOfFullHouse < ConstCardTwo  ) AND (RankOfSetOfFullHouse != ConstCardTwo  )] ? 1 : 0]
+// as there are higher FHs possible (same set, higher pair)
++ OvercardsOnBoardToRankOfSetOfFullHouse
 // + 1 for our hand
 + 1
 
 ##OvercardsOnBoardToRankOfSetOfFullHouse##
-  (rankbitscommon & 0x100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )
-+ (rankbitscommon & 0x010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )
-+ (rankbitscommon & 0x001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)
-+ (rankbitscommon & 0x000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )
-+ (rankbitscommon & 0x000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )
-+ (rankbitscommon & 0x000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )
-+ (rankbitscommon & 0x000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)
-+ (rankbitscommon & 0x000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)
-+ (rankbitscommon & 0x000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )
-+ (rankbitscommon & 0x000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )
-+ (rankbitscommon & 0x000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )
-+ (rankbitscommon & 0x000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)
-+ (rankbitscommon & 0x000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20600
+  [(rankbitscommon & 0b100000000000000) AND (RankOfSetOfFullHouse < ConstCardAce  )]
++ [(rankbitscommon & 0b010000000000000) AND (RankOfSetOfFullHouse < ConstCardKing )]
++ [(rankbitscommon & 0b001000000000000) AND (RankOfSetOfFullHouse < ConstCardQueen)]
++ [(rankbitscommon & 0b000100000000000) AND (RankOfSetOfFullHouse < ConstCardJack )]
++ [(rankbitscommon & 0b000010000000000) AND (RankOfSetOfFullHouse < ConstCardTen  )]
++ [(rankbitscommon & 0b000001000000000) AND (RankOfSetOfFullHouse < ConstCardNine )]
++ [(rankbitscommon & 0b000000100000000) AND (RankOfSetOfFullHouse < ConstCardEight)]
++ [(rankbitscommon & 0b000000010000000) AND (RankOfSetOfFullHouse < ConstCardSeven)]
++ [(rankbitscommon & 0b000000001000000) AND (RankOfSetOfFullHouse < ConstCardSix  )]
++ [(rankbitscommon & 0b000000000100000) AND (RankOfSetOfFullHouse < ConstCardFive )]
++ [(rankbitscommon & 0b000000000010000) AND (RankOfSetOfFullHouse < ConstCardFour )]
++ [(rankbitscommon & 0b000000000001000) AND (RankOfSetOfFullHouse < ConstCardThree)]
++ [(rankbitscommon & 0b000000000000100) AND (RankOfSetOfFullHouse < ConstCardTwo  )]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSet##
 // 3 is the lowest nut rank possible, because there's still a quad and a FH with the higher pair possible.
 // There's always a higher pair on board, so if there are two higher ranked cards in common cards,
 // there's also a higher SET possible with a pocket pair and the remaining single card on board.
-3 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 2) ? 1 : 0]
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20605
+3 
++ [(OvercardsOnBoardToRankOfSetOfFullHouse >= 2) ? 1 : 0]
++ (RankOfSpareCardWhenTwoPairOnBoard > RankOfBottomPairOnBoard)
++ [IsUnusedSpareCard AND (RankOfSpareCardWhenTwoPairOnBoard > RankOfTopPairOnBoard)]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitTopSet##
 // 2 is the lowest nut rank possible, because there's still a quad possible.
 // There's might be a higher card on board, so if there is a higher ranked card in common cards then our SET rank,
 // there's also a higher SET possible with a pocket pair and the remaining single card on board.
-2 + [(OvercardsOnBoardToRankOfSetOfFullHouse >= 1) ? 1 : 0]
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20604
+2 
++ [(OvercardsOnBoardToRankOfSetOfFullHouse >= 1) ? 1 : 0]
++ [IsUnusedSpareCard AND (RankOfSpareCardWhenTwoPairOnBoard > RankOfBottomPairOnBoard)]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomQuads##
 2
@@ -213,15 +210,16 @@ IndividualOvercardsOnBoard
 1
 
 ##NutFullHouseOrFourOfAKind_FourOfAKindOnBoard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20616
 // PreCondition: FourOfAKindOnBoard
 //
 // case 1: we play the board. e.g. 8888Q, we have J5
 [rankhiplayer < BoardKicker_FourOfAKindOnBoard] ?
 [
-	// case 1A: common kicker is higher then quads, e.g. 8888Q.
-   (BoardKicker_FourOfAKindOnBoard > trankcommon ) ? (ConstCardAce - rankhiplayer + 1) :
+   // case 1A: common kicker is higher then quads, e.g. 8888Q.
+   (BoardKicker_FourOfAKindOnBoard > trankcommon ) ? (ConstCardAce - BoardKicker_FourOfAKindOnBoard + 1) :
    // case 1B: common kicker is lower than quads
-   (ConstCardAce - rankhiplayer + 1)
+   (ConstCardAce - BoardKicker_FourOfAKindOnBoard)
 ] :
 // Otherwise: case 2: One of our cards is better then the non-paired board card, e.g. 88885, we have J2
 [
@@ -242,13 +240,16 @@ IndividualOvercardsOnBoard
 [((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard > SecondBestBoardCard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairHighSetOnBoard :
 //
 // 3) we pair the SET on board, which is lower than the pair, so somebody could have better quads
-[((rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)) AND (RankOfSetOnBoard < SecondBestBoardCard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowSetOnBoard :
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20617
+[(rankhiplayer == RankOfSetOnBoard) OR (rankloplayer == RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowSetOnBoard :
 //
 // 4) we pair the pair on board, which is higher than the set, so we get a better FH, but there are still quads possible
 [(   (rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard > RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairHighPairOnBoard :
 //
-// 5) we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
-[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard :
+// 5) a. we pair the pair on board with pocket pair, which is lower than the set, so we have second best quads
+[ispair AND (rankhiplayer = RankOfPairOnBoardWithFullHouseOnBoard)] ? 2 :
+// 5) b. we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
+[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard//
 //
 // 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the SET or lower)
 [ispair AND (rankhiplayer != BestBoardCard) AND (rankhiplayer != SecondBestBoardCard) AND (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WeHaveOverPairToPair :
@@ -263,17 +264,11 @@ trankcommon
 
 
 ##RankOfSpareCardWhenTwoPairOnBoard##
-TwoPairOnBoard AND NOT FullHouseOnBoard ?
-[    
-			 ($$cr0!=RankOfTopPairOnBoard AND $$cr0!=RankOfBottomPairOnBoard ? $$cr0:0)
-			|($$cr1!=RankOfTopPairOnBoard AND $$cr1!=RankOfBottomPairOnBoard ? $$cr1:0)
-			|($$cr2!=RankOfTopPairOnBoard AND $$cr2!=RankOfBottomPairOnBoard ? $$cr2:0)
-			|($$cr3!=RankOfTopPairOnBoard AND $$cr3!=RankOfBottomPairOnBoard ? $$cr3:0)
-			|($$cr4!=RankOfTopPairOnBoard AND $$cr4!=RankOfBottomPairOnBoard ? $$cr4:0)
-]:
-0
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20602
+WHEN TwoPairOnBoard RETURN HighestUnpairedBoardCard FORCE
 
 ##NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606
 // Case 1: we have the quads: the nuts
 (rankhiplayer == RankOfSetOnBoard) OR (rankloplayer ==RankOfSetOnBoard) ? 1 :
 // Otherwise: we have a fullhouse with either a pocket-pair or pair a board-card.
@@ -284,7 +279,8 @@ ispair ?
     // or hits the SET will get a better hand
     (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer + 1) :
     // Otherwise: SET is lower, so there is 1 additional card, that loses for us
-    (ConstCardAce - rankhiplayer + 1)
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606&p=144395#p144190
+    [2 + (HaveSet ? OvercardsOnBoard : (ConstCardAce - rankhiplayer + OvercardsOnBoardToRankOfSetOnBoard))]
 ] :
 // Case 3: We pair the board
 [
@@ -292,20 +288,21 @@ ispair ?
     // Case 3A: Our higher card hits the board
     (rankhiplayer == BestBoardCard) OR (rankhiplayer == SecondBestBoardCard) OR (rankhiplayer == ThirdBestBoardCard) ?
     [
-        (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer) :
+        (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer + 1 + OvercardsOnBoardToRankOfSetOnBoard) :
         // Otherwise: SET is lower, so there is 1 additional card, that loses for us
-        (ConstCardAce - rankhiplayer + 1)
+        (ConstCardAce - rankhiplayer + 2 + OvercardsOnBoardToRankOfSetOnBoard)
     ] :
     [
         // Otherwise rankloplayer paired:
-        (RankOfSetOnBoard > rankloplayer) ? (ConstCardAce - rankloplayer) :
+        (RankOfSetOnBoard > rankloplayer) ? (ConstCardAce - rankhiplayer + 1 + OvercardsOnBoardToRankOfSetOnBoard) :
         // Otherwise: SET is lower, so there is 1 additional card, that loses for us
-        (ConstCardAce - rankloplayer + 1)
+        (ConstCardAce - rankhiplayer + 2 + OvercardsOnBoardToRankOfSetOnBoard)
     ]
 ]
 
 ##NutFullHouseOrFourOfAKind_TwoPairsOnBoard##
-// 5 basic cases
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20601
+// 8 basic cases
 //
 // 1) we complete the higher pair to quads
 [ispair AND rankhiplayer == RankOfTopPairOnBoard] ? NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitTopQuads :
@@ -324,6 +321,14 @@ ispair ?
 // 5) we pair the lower board card; probably several cases
 [(rankhiplayer == RankOfBottomPairOnBoard) OR (rankloplayer == RankOfBottomPairOnBoard)] ? NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSet :
 //
+// 6) we pair the not paired board card, between RankOfBottomPairOnBoard and RankOfTopPairOnBoard; e.g. TT on JJT55,
+[ispair AND (rankhiplayer > RankOfBottomPairOnBoard) AND (rankhiplayer < RankOfTopPairOnBoard)] ? (2 + NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair) :
+//
+// 7) we pair the not paired board card, below RankOfBottomPairOnBoard; dangerous FH e.g. 22 on AAKK2
+[ispair AND (rankhiplayer < RankOfBottomPairOnBoard)] ? (1 + NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair) :
+//
+// 8) we pair the not paired board card, above RankOfTopPairOnBoard e.g. JJ on J5544
+HaveTopSet ? 3 : 
 HINT_We_Dont_Have_A_FullHouse_At_All
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard##
@@ -361,8 +366,23 @@ HINT_We_Dont_Have_A_FullHouse_At_All
 ##NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePlayTheBoard##
 // 3 is the best strength possible, because two quads are always possible
 3
-// 1 OverPair for each overcard = 1 higher full house
-+ (ConstCardAce - rankhiplayer)
-// +1 if the pair is higher as the SET (higher SET possible)
-// -1 if the pair is higher as the SET (counted twice as OverPair / set)
-// but these cases neutralize each other
+// 1 higher full house for each overpair to pair on board
++ (ConstCardAce - RankOfPairOnBoardWithFullHouseOnBoard)
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20596
++ [(RankOfSetOfFullHouse > RankOfPairOnBoardWithFullHouseOnBoard) ? -1 : 1 ]
+
+##IsUnusedSpareCard##
+// For NutFullHouseOrFourOfAKind_TwoPairsOnBoard
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20605
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20604
+WHEN NOT TwoPairOnBoard RETURN False FORCE
+WHEN (RankOfSpareCardWhenTwoPairOnBoard <= 0) RETURN False FORCE
+WHEN (RankOfFirstHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FORCE 
+WHEN (RankOfSecondHoleCard == RankOfSpareCardWhenTwoPairOnBoard) RETURN False FORCE 
+WHEN Others RETURN True FORCE
+
+##OvercardsOnBoardToRankOfSetOnBoard##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606
+WHEN NOT TripsOnBoard RETURN 0 FORCE
+WHEN (SecondBestBoardCard > RankOfSetOnBoard) RETURN 2 FORCE
+WHEN (BestBoardCard > RankOfSetOnBoard) RETURN 1 FORCE

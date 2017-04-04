@@ -80,11 +80,7 @@ BettingAction Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
-<<<<<<< HEAD
-<lyxtabular version="3" rows="44" columns="2">
-=======
 <lyxtabular version="3" rows="46" columns="2">
->>>>>>> 3b15dfd8ab3c40939d7b29584afe75813f40453d
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="40text%">

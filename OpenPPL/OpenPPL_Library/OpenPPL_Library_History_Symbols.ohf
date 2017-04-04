@@ -148,11 +148,11 @@ WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN (me_re_MemChecks + Chec
 WHEN Others RETURN me_re_MemChecks FORCE
 
 ##MaxOpponentStackSize##
-WHEN (me_re_MaxOpponentStackSize > 0) RETURN me_re_MaxOpponentStackSize FORCE
+WHEN (me_re_MemMaxOpponentStackSize > 0) RETURN me_re_MemMaxOpponentStackSize FORCE
 WHEN Others RETURN CalculateMaxOpponentStackSize FORCE
 
 ##MinOpponentStackSize##
-WHEN (me_re_MinOpponentStackSize > 0) RETURN me_re_MinOpponentStackSize FORCE
+WHEN (me_re_MemMinOpponentStackSize > 0) RETURN me_re_MemMinOpponentStackSize FORCE
 WHEN Others RETURN CalculateMinOpponentStackSize FORCE
 
 ##MissingSmallBlind##
