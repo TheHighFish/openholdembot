@@ -149,6 +149,15 @@ void CSymbolEnginePositions::CalculatePositionsForTheUserchair() {
 			_callposition++;
 		}
 	}
+
+  // calculate _callposition; _betpositionrais must have been calculated at this point
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20746
+  int nplayers = p_symbol_engine_active_dealt_playing->nplayersplaying();
+  int offset = (_betposition + nplayers - _betpositionrais);
+  if (nplayers > 0) {
+    _callposition = offset % nplayers;
+  }
+
 	AssertRange(_betposition,  kUndefined, kMaxNumberOfPlayers);
 	AssertRange(_dealposition, kUndefined, kMaxNumberOfPlayers);
 	AssertRange(_callposition, kUndefined, kMaxNumberOfPlayers);
