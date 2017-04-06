@@ -40,6 +40,11 @@ CWatchdog::~CWatchdog() {
 }
 
 void CWatchdog::HandleCrashedAndFrozenProcesses() {
+  assert(p_sharedmem != NULL);
+  if (p_sharedmem->OpenHoldemProcessID() == 0) {
+    write_log(k_always_log_errors, "WARNING! Watch-dog turned off, unavailable process ID\n");
+    return;
+  }
   MarkThisInstanceAsAlive();
   WatchForCrashedProcesses();
   WatchForFrozenProcesses();
@@ -126,6 +131,7 @@ void CWatchdog::WatchForFrozenProcesses() {
         continue;
       }
 #ifndef _DEBUG
+      //!!!!!
       write_log(preferences.debug_watchdog(), "[CWatchdog] Killing frozen process %i, PID: %i\n",
         i, p_sharedmem->OpenHoldemProcessID(i));
       KillProcess(p_sharedmem->OpenHoldemProcessID(i));
