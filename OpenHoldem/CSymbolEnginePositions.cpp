@@ -106,7 +106,7 @@ void CSymbolEnginePositions::CalculatePositionForTheRaiser() {
 		  i<=(DEALER_CHAIR+p_tablemap->nchairs());
 		  i++) {
 		int next_chair = i%p_tablemap->nchairs();
-    // www!!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20746
 		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), next_chair)) {
 			_betpositionrais++;
 		}

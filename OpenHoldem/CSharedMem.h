@@ -60,7 +60,7 @@ class CSharedMem {
  public:
   // Public, as this might fail on some systems, on startup or in geberal,
   // so the watchdog might try to re-aquire while heartbeating.
-  // www !!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20520
   void AquireOwnProcessID();
  public:
   int OpenHoldemProcessID();

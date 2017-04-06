@@ -131,7 +131,6 @@ void CWatchdog::WatchForFrozenProcesses() {
         continue;
       }
 #ifndef _DEBUG
-      //!!!!!
       write_log(preferences.debug_watchdog(), "[CWatchdog] Killing frozen process %i, PID: %i\n",
         i, p_sharedmem->OpenHoldemProcessID(i));
       KillProcess(p_sharedmem->OpenHoldemProcessID(i));

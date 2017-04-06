@@ -79,7 +79,7 @@ void CSharedMem::AquireOwnProcessID() {
   if (my_PID == 0) {
     // GetCurrentProcessId() can fail on some systems,
     // on startup or in general.
-    // www!!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20520
     write_log(k_always_log_errors, "ERROR getting my own process ID.\n");
     write_log(k_always_log_errors, "This might be caused by Windows XP security settings.\n");
     write_log(k_always_log_errors, "Features like the auto-starter will be temporary disabled\n");

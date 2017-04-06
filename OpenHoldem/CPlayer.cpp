@@ -148,7 +148,7 @@ void CPlayer::set_seated(bool is_seated) {
     // Change from seated to non-seated
     // We should clear all player data in this case
     // as the lazy-scraper stops on empty seats
-    // www !!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
     Reset();
   }
   _seated = is_seated; 

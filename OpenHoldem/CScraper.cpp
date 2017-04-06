@@ -211,7 +211,7 @@ void CScraper::ScrapeSeatedActive() {
     p_table_state->Player(i)->set_active(false);
     // Me must NOT set_seated(false) here,
     // as that would reset all player data.
-    // www!!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
 		ScrapeSeated(i);
 		if (p_table_state->Player(i)->seated()) {
 			ScrapeActive(i);
@@ -244,7 +244,7 @@ void CScraper::ScrapeSeated(int chair) {
 	CString result;
   // Me must NOT set_seated(false) here,
   // as that would reset all player data.
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20567
 	seated.Format("p%dseated", chair);
 	if (EvaluateRegion(seated, &result)) {
 		if (result != "")	{
