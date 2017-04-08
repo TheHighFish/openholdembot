@@ -40,6 +40,7 @@ public:
 	double handrank1000()     { return _handrank1000; }
 	double handrankp()        { return _handrankp; }
 private:
+  void CalculateHandrank();
 	void GetCardstring(char *c, unsigned int c0, unsigned int c1);
 private:
 	double _handrank169;

@@ -17,6 +17,7 @@
 #include <assert.h>
 #include "COpenHoldemStatusbar.h"
 #include "CScraper.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
@@ -100,21 +101,22 @@ void CSymbolEngineHandrank::CalculateHandrank() {
   GetCardstring(cardstr,
     p_table_state->User()->hole_cards(0)->GetValue(),
     p_table_state->User()->hole_cards(1)->GetValue());
-  // if nopponents<1 or >9 then default to a sane value
-  int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+  // !!!! looks wrong
+  // !!!! int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+  int nopponents = p_symbol_engine_active_dealt_playing->nopponentsdealt();
   for (int i = 0; i<kNumberOfStartingHands; i++)
   {
-    if (strcmp(cardstr, handrank_table_169[_nopponents - 1][i]) == 0)
+    if (strcmp(cardstr, handrank_table_169[nopponents - 1][i]) == 0)
     {
       _handrank169 = i + 1;
-      _handrank2652 = handrank_table_2652[_nopponents - 1][i];
+      _handrank2652 = handrank_table_2652[nopponents - 1][i];
       break;
     }
   }
   p_openholdem_statusbar->SetHandrank(_handrank169);
   _handrank1326 = _handrank2652 / 2;
   _handrank1000 = 1000 * _handrank2652 / 2652;
-  _handrankp = 2652.0 / (1.0 + (double)_nopponents);
+  _handrankp = 2652.0 / (1.0 + (double)nopponents);
 }
 
 void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int c1)

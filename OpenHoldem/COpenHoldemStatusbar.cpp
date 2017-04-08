@@ -71,6 +71,8 @@ void COpenHoldemStatusbar::OnUpdateStatusbar() {
       100 * _prwin, 100 * _prtie, 100 * _prlos);
   } else if (p_symbol_engine_time->elapsedauto() > 5) {
     // Reset display 5 seconds after last action
+    SetPrWin(0, 0, 0);
+    SetHandrank(0);
     _status_handrank = "";
     _status_prwin = "";
     _last_action = "";
