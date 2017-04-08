@@ -25,7 +25,6 @@ class COpenHoldemStatusbar {
    void SetLastAction(CString action) { _last_action = action; }
    void SetHandrank(int handrank)     { _handrank = handrank; }
    void SetPrWin(double prwin, double prtie, double prlos);
-   void SetIterations(int calculated, int total);
  private:
 	void InitStatusbar();
   CString LastAction();
@@ -37,15 +36,12 @@ class COpenHoldemStatusbar {
   double _prwin;
   double _prtie;
   double _prlos;
-  double _iterations_calculated;
-  double _iterations_total;
  private:
   // Info to be displayed
   CString _last_action;
   // to do!!! last line
   CString	_status_handrank;
   CString	_status_prwin;
-  CString _status_nit;
 };
 
 extern COpenHoldemStatusbar *p_openholdem_statusbar;

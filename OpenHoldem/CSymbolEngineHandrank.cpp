@@ -79,38 +79,43 @@ void CSymbolEngineHandrank::UpdateOnHandreset()
 	_handrankp    = 0;
 }
 
-void CSymbolEngineHandrank::UpdateOnNewRound()
-{}
+void CSymbolEngineHandrank::UpdateOnNewRound() {
+  CalculateHandrank();
+}
 
 void CSymbolEngineHandrank::UpdateOnMyTurn() {
-	char		cardstr[10] = {0};
-
-	// Get name string containing the players' current cards
-	GetCardstring(cardstr, 
-    p_table_state->User()->hole_cards(0)->GetValue(),
-		p_table_state->User()->hole_cards(1)->GetValue());
-
-	// if nopponents<1 or >9 then default to a sane value
-	int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
-		
-	for (int i=0; i<kNumberOfStartingHands; i++)
-	{
-		if (strcmp(cardstr, handrank_table_169[_nopponents-1][i])==0)
-		{
-			_handrank169  = i + 1;													
-			_handrank2652 = handrank_table_2652[_nopponents-1][i];								
-			break;
-		}
-	}
-  p_openholdem_statusbar->SetHandrank(_handrank169);
-
-	_handrank1326 = _handrank2652 / 2;											
-	_handrank1000 = 1000 * _handrank2652 / 2652;									
-	_handrankp    = 2652.0 / (1.0 + (double)_nopponents);	
+  CalculateHandrank();
 }
 
 void CSymbolEngineHandrank::UpdateOnHeartbeat()
-{}
+{  
+  if (_handrank169 <= 0) {
+    CalculateHandrank();
+  }
+}
+
+void CSymbolEngineHandrank::CalculateHandrank() {
+  char		cardstr[10] = { 0 };
+  // Get name string containing the players' current cards
+  GetCardstring(cardstr,
+    p_table_state->User()->hole_cards(0)->GetValue(),
+    p_table_state->User()->hole_cards(1)->GetValue());
+  // if nopponents<1 or >9 then default to a sane value
+  int _nopponents = p_symbol_engine_prwin->nopponents_for_prwin();
+  for (int i = 0; i<kNumberOfStartingHands; i++)
+  {
+    if (strcmp(cardstr, handrank_table_169[_nopponents - 1][i]) == 0)
+    {
+      _handrank169 = i + 1;
+      _handrank2652 = handrank_table_2652[_nopponents - 1][i];
+      break;
+    }
+  }
+  p_openholdem_statusbar->SetHandrank(_handrank169);
+  _handrank1326 = _handrank2652 / 2;
+  _handrank1000 = 1000 * _handrank2652 / 2652;
+  _handrankp = 2652.0 / (1.0 + (double)_nopponents);
+}
 
 void CSymbolEngineHandrank::GetCardstring(char *c, unsigned int c0, unsigned int c1)
 {
