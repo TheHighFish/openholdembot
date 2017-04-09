@@ -9,13 +9,11 @@
 #define IDCLEAR5                        7
 #define IDD_ABOUTBOX                    100
 #define IDR_MAINFRAME                   128
-#define ID_INDICATOR_STATUS_COMCARDS    129
 #define IDI_ICON1                       130
-#define ID_INDICATOR_STATUS_PRWIN       130
-#define ID_INDICATOR_STATUS_NOPP        131
-#define ID_INDICATOR_STATUS_ACTION      132
-#define ID_INDICATOR_STATUS_NIT         133
-#define ID_INDICATOR_STATUS_POKERHAND   134
+#define ID_INDICATOR_STATUS_PRWIN       131
+#define ID_INDICATOR_STATUS_DUMMY       132
+#define ID_INDICATOR_STATUS_ACTION      133
+#define ID_INDICATOR_STATUS_NIT         134
 #define ID_INDICATOR_STATUS_HANDRANK    135
 #define IDD_DIALOG1                     136
 #define IDD_RENAME                      136
@@ -549,7 +547,6 @@
 #define ID_EDIT_VIEWLOG                 32997
 #define ID_EDIT_TAGLOG                  32998
 #define ID_EDIT_CLEARLOG                32999
-#define ID_INDICATOR_STATUS_PLCARDS     61191
 
 // Next default values for new objects
 // 
