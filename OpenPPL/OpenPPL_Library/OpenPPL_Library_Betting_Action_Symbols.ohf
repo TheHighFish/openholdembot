@@ -237,6 +237,7 @@ AND ((didraisround2 + didbetsizeround2) == 1)
 AND NOT didchecround2
 AND NOT didcallround2
 AND NoVillainBetOrRaisedOnFlop
+
 ##OpponentCalledOnTurn##
     (betround > ConstBetRoundTurn)
 AND ((didraisround3 + didbetsizeround3) == 1)
