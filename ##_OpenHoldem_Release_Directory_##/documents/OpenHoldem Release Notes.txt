@@ -1,4 +1,4 @@
-﻿﻿v11.1.3 2017-04-xx
+﻿﻿v11.1.3 2017-04-13
 ==================
 BUG FIXES:
 - Fixed a bug in the initialization of MinOpponentStackSize.
@@ -16,8 +16,15 @@ BUG FIXES:
   a player could get temporary marked as "not seated".
   Thanks to ChuckNeverMuck and Eden for reporting.
   [THF]
-- betpositionrais didn't work as expected.
+- betpositionrais and callposition didn't work as expected.
   Thanks to Mike for reporting, debugging and providing the fix.
+  [THF]
+- The MicroSoft function GetCurrentprocessID did at some
+  Windows XP system not work early on startup, 
+  thus causing the new auto-starter to go crazy.
+  We now try to get the process ID later 
+  and turn the auto-starter off if the process ID fails completely.
+  Thanks to Mike for reporting and providing log-files.
   [THF]
 
 
