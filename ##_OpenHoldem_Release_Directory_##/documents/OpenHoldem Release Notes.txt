@@ -1,4 +1,4 @@
-﻿﻿v11.1.3 2017-04-13
+﻿﻿v11.1.3 2017-04-12
 ==================
 BUG FIXES:
 - Fixed a bug in the initialization of MinOpponentStackSize.
