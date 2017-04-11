@@ -197,7 +197,7 @@ WHEN Others RETURN HINT_There_Is_No_Set_On_The_Board FORCE
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19522
-RankOfSetOfFullHouse < RankOfTopPairOnBoard ? (1 + IndividualOvercardsOnBoard * 2) :
+RankOfSetOfFullHouse < RankOfTopPairOnBoard ? ((IndividualOvercardsOnBoard + ((betround + 1) - 2)  + 1)) :
 // 2 is the lowest rank possible, because quads are still possible
 2+
 // For each rank in the common cards above the rank in the pocket cards, theres a higher FH possible.
@@ -249,7 +249,7 @@ IndividualOvercardsOnBoard
 // 5) a. we pair the pair on board with pocket pair, which is lower than the set, so we have second best quads
 [ispair AND (rankhiplayer = RankOfPairOnBoardWithFullHouseOnBoard)] ? 2 :
 // 5) b. we pair the pair on board, which is lower than the set, so we play the board, but one kind of quads is no longer possible
-[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard//
+[((rankhiplayer == RankOfPairOnBoardWithFullHouseOnBoard) OR (rankloplayer == RankOfPairOnBoardWithFullHouseOnBoard)) AND (RankOfPairOnBoardWithFullHouseOnBoard < RankOfSetOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WePairLowPairOnBoard :
 //
 // 6) we don't pair anything, but have an OverPair to the pair on board (we probably have to distinguish, if it is higher than the SET or lower)
 [ispair AND (rankhiplayer != BestBoardCard) AND (rankhiplayer != SecondBestBoardCard) AND (rankhiplayer > RankOfPairOnBoardWithFullHouseOnBoard)] ? NutFullHouseOrFourOfAKind_FullHouseOnBoard_WeHaveOverPairToPair :
@@ -267,6 +267,7 @@ trankcommon
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20602
 WHEN TwoPairOnBoard RETURN HighestUnpairedBoardCard FORCE
 
+
 ##NutFullHouseOrFourOfAKind_ThreeOfAKindOnBoard##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606
 // Case 1: we have the quads: the nuts
@@ -277,7 +278,7 @@ ispair ?
 [
     // Everybody who has a higher pocket pair or hits a higher board-card
     // or hits the SET will get a better hand
-    (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer + 1) :
+    (RankOfSetOnBoard > rankhiplayer) ? (ConstCardAce - rankhiplayer + 1 + OvercardsOnBoardToRankOfSetOnBoard) :
     // Otherwise: SET is lower, so there is 1 additional card, that loses for us
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20606&p=144395#p144190
     [2 + (HaveSet ? OvercardsOnBoard : (ConstCardAce - rankhiplayer + OvercardsOnBoardToRankOfSetOnBoard))]
@@ -322,14 +323,31 @@ ispair ?
 [(rankhiplayer == RankOfBottomPairOnBoard) OR (rankloplayer == RankOfBottomPairOnBoard)] ? NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSet :
 //
 // 6) we pair the not paired board card, between RankOfBottomPairOnBoard and RankOfTopPairOnBoard; e.g. TT on JJT55,
-[ispair AND (rankhiplayer > RankOfBottomPairOnBoard) AND (rankhiplayer < RankOfTopPairOnBoard)] ? (2 + NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair) :
+[ispair AND (rankhiplayer > RankOfBottomPairOnBoard) AND (rankhiplayer < RankOfTopPairOnBoard)] ? (NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitMiddleSetWithPocketPair) :
 //
 // 7) we pair the not paired board card, below RankOfBottomPairOnBoard; dangerous FH e.g. 22 on AAKK2
-[ispair AND (rankhiplayer < RankOfBottomPairOnBoard)] ? (1 + NutFullHouseOrFourOfAKind_PairOnBoard_WeHitASetWithPocketPair) :
+[ispair AND (rankhiplayer < RankOfBottomPairOnBoard)] ? (NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSetWithPocketPair) :
 //
 // 8) we pair the not paired board card, above RankOfTopPairOnBoard e.g. JJ on J5544
 HaveTopSet ? 3 : 
 HINT_We_Dont_Have_A_FullHouse_At_All
+
+##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitMiddleSetWithPocketPair##
+// 2 Quads still possible
+2 
+// 1 for each FH with RankOfTopPairOnBoard + individual lower cards on the board than RankOfTopPairOnBoard.
+// In this case it is always 2.
++ 2
+// 1 for us
++ 1
+
+##NutFullHouseOrFourOfAKind_TwoPairsOnBoard_WeHitBottomSetWithPocketPair##
+// 2 Quads still possible
+2
+// 2 FHs (1 with the top, and 1 with the bottom pair on the board)
++ 2
+// 1 for us
++ 1
 
 ##NutFullHouseOrFourOfAKind_PairOnBoard##
 // Precondition: we have FH or quads, there is a pair on board.
