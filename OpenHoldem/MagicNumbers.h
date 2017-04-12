@@ -235,7 +235,6 @@ enum StandardFunctionConstants {
   k_standard_function_chat,
 	k_standard_function_delay,
   k_standard_function_allin_on_betsize_balance_ratio,
-  k_standard_function_betsize_enable_rounding,
   k_standard_function_shoot_replay_frame,
 	// Ini-functions	
 	k_init_on_startup,
@@ -308,7 +307,6 @@ const char k_standard_function_names[k_number_of_standard_functions][k_max_lengt
   "f$chat",
 	"f$delay",
   "f$allin_on_betsize_balance_ratio",
-  "f$betsize_enable_rounding",
   "f$shoot_replay_frame",
 	// Ini-functions	
 	"f$ini_function_on_startup",

@@ -11,9 +11,9 @@ BUG FIXES:
 - The keyboard-DLL executed one mouse-click too much.
   Thanks to Gunfadoso for reporting and for suggesting the fix.
   [THF]
-- The 11.1.2 fix to clear all data of a player who left the table
-  broke scraping of the dealer-chair, as during a new scrape
-  a player could get temporary marked as "not seated".
+- The fix in the redacted version 11.1.2 to clear all data 
+  of a player who left the table broke scraping of the dealer-chair, 
+  as during a new scrape a player could get temporary marked as "not seated".
   Thanks to ChuckNeverMuck and Eden for reporting.
   [THF]
 - betpositionrais and callposition didn't work as expected.
@@ -26,6 +26,18 @@ BUG FIXES:
   and turn the auto-starter off if the process ID fails completely.
   Thanks to Mike for reporting and providing log-files.
   [THF]
+- The statusbar got completely re-implemented, as there was a deadlock
+  that could freeze OpenHoldem if debugging for the GUI and the formula
+  was enabled. The displayed information in the statusbar got reduced, 
+  as most info is visible in the table display.
+  [THF]
+
+MAINTENANCE:
+- The function f$betsize_enable_rounding got removed,
+  because the people who demanded to "control everything to the penny"
+  proved unable to handle the full power of WinHoldem-style misconfigurability.
+  [THF]
+
 
 
 v11.1.2 2017-02-13

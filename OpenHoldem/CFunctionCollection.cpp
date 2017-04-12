@@ -376,15 +376,6 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "//  0.00 =  0% = disabled\n"
       "//  0.50 = 50%\n"
       "0.00\n";
-  } else if (function_name == k_standard_function_names[k_standard_function_betsize_enable_rounding]) {
-    function_text = 
-      "// Rounding betsizes to multiples of\n"
-      "//   * small blinds\n"
-      "//   * big blinds\n"
-      "//   * full dollars\n"
-      "//   * 10 / 100 / 1000 dollars\n"
-      "// Enabled per default\n"
-      "1\n";
   } else if (function_name == k_standard_function_names[k_init_on_startup]) {
     function_text = 
       "// Ini-functions are meant for\n"    
