@@ -49,11 +49,11 @@ void COpenHoldemStatusbar::InitStatusbar() {
   int position = 0;
   _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_ACTION, NULL, 100);
   ++position;
-  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_DUMMY, NULL, 140);
-  ++position;
   _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_HANDRANK, NULL, 100);
   ++position;
-  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_PRWIN, SBPS_STRETCH, 100);
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_PRWIN, NULL, 100);
+  ++position;
+  _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_DUMMY, SBPS_STRETCH, 280);
   ++position;
 }
 

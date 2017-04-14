@@ -13,7 +13,6 @@
 #define ID_INDICATOR_STATUS_PRWIN       131
 #define ID_INDICATOR_STATUS_DUMMY       132
 #define ID_INDICATOR_STATUS_ACTION      133
-#define ID_INDICATOR_STATUS_NIT         134
 #define ID_INDICATOR_STATUS_HANDRANK    135
 #define IDD_DIALOG1                     136
 #define IDD_RENAME                      136
