@@ -212,7 +212,12 @@ void CDlgEditSymbols::SetDefaultValues()
 		m_Value.AddString("Click Bet");
 		m_Value.AddString("Nothing");
 	}
-	
+	else if (name.MakeLower() == "betpotmethod")
+	{
+		m_Value.AddString("Enter");
+		m_Value.AddString("Click Bet");
+		m_Value.AddString("Nothing");
+	}
 	else if (name.MakeLower() == "buttonclickmethod")
 	{
 		m_Value.AddString("Single");
