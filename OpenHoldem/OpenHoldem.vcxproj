@@ -224,7 +224,7 @@
     <ClCompile Include="CParseTreeOperatorNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
-	<ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeNumber.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp" />
@@ -243,6 +243,7 @@
     <ClCompile Include="CSymbolEngineICM.cpp" />
     <ClCompile Include="CSymbolengineIsRush.cpp" />
     <ClCompile Include="CSymbolEngineMTTInfo.cpp" />
+    <ClCompile Include="CSymbolengineNutFullHouseOrFourOfAKind.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolEngineRaisers.cpp" />
@@ -250,7 +251,7 @@
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CTableTitle.cpp" />
-	<ClCompile Include="CTitleEvaluator.cpp" />
+    <ClCompile Include="CTitleEvaluator.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="CWhiteInfoBox.cpp" />
     <ClCompile Include="debug.cpp" />
@@ -265,7 +266,7 @@
     <ClCompile Include="CWatchdog.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
-	<ClCompile Include="stdafx.cpp">
+    <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -507,7 +508,7 @@
     <ClInclude Include="CParseTreeOperatorNode.h" />
     <ClInclude Include="CParseTreeTerminalNode.h" />
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
-	<ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
+    <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
     <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
     <ClInclude Include="CParseTreeTerminalNodeNumber.h" />
     <ClInclude Include="CParseTreeTerminalNodeuserVariable.h" />
@@ -526,6 +527,7 @@
     <ClInclude Include="CSymbolEngineICM.h" />
     <ClInclude Include="CSymbolEngineIsRush.h" />
     <ClInclude Include="CSymbolengineMTTInfo.h" />
+    <ClInclude Include="CSymbolengineNutFullhouseOrFourOfAKind.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
     <ClInclude Include="CSymbolEngineRaisers.h" />
@@ -533,7 +535,7 @@
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CTableTitle.h" />
-	<ClInclude Include="CTitleEvaluator.h" />
+    <ClInclude Include="CTitleEvaluator.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="CWhiteInfoBox.h" />
     <ClInclude Include="debug.h" />

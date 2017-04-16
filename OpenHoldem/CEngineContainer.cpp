@@ -52,6 +52,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineMTTInfo.h"
+#include "CSymbolEngineNutFullhouseOrFourOfAKind.h"
 #include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -190,6 +191,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCards
   p_symbol_engine_cards = new CSymbolEngineCards();
   AddSymbolEngine(p_symbol_engine_cards);
+  // CSymbolengineNutFullhouseOrFourOfAKind
+  p_symbol_engine_nutfullhouse_or_four_of_a_kind = new CSymbolEngineNutFullhouseOrFourOfAKind();
+  AddSymbolEngine(p_symbol_engine_nutfullhouse_or_four_of_a_kind);
   // CSymbolEnginePokerval
   p_symbol_engine_pokerval = new CSymbolEnginePokerval();
   AddSymbolEngine(p_symbol_engine_pokerval);
