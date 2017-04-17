@@ -21,7 +21,7 @@ const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Bets_Pots_And_Stacks.ohf",
   "OpenPPL_Library_Betting_Action_Symbols.ohf",
   "OpenPPL_Library_Board_Symbols.ohf",
-  "OpenPPL_Library_ChipAmounrs.ohf",
+  "OpenPPL_Library_ChipAmounts.ohf",
   "OpenPPL_Library_Constants.ohf",
   "OpenPPL_Library_Deprecated.ohf",
   "OpenPPL_Library_HandStrength_Symbols.ohf",

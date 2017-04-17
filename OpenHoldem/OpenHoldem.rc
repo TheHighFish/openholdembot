@@ -1274,8 +1274,8 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_HELP    "Help\nHelp"
     ID_EDIT_VIEWLOG         "View the log-file of the current OpenHoldem-instance\nView log file"
-    ID_EDIT_TAGLOG          "Leave a stamp in the log-file for more easy review\nTag log file"
-    ID_EDIT_CLEARLOG        "Empties the log-file  of the current OpenHoldem-instance\nClear log file"
+    ID_EDIT_TAGLOG          "Leave a stamp in the log-file for more easy review\nTag log-file"
+    ID_EDIT_CLEARLOG        "Empties the log-file  of the current OpenHoldem-instance\nClear log-file"
 END
 
 STRINGTABLE

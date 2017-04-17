@@ -290,7 +290,7 @@ class CPreferences {
 	const bool validator_shoot_replayframe_on_error() { return prefs_numerical_values[k_prefs_validator_shoot_replayframe_on_error]; }
   // Auto-starter
   const bool use_auto_starter() { return prefs_numerical_values[k_prefs_use_auto_starter]; }
-  const bool use_auto_shutdown() { return prefs_numerical_values[k_prefs_use_auto_starter]; }
+  const bool use_auto_shutdown() { return prefs_numerical_values[k_prefs_use_auto_shutdown]; }
 	// Auto-connector
 	const int autoconnector_when_to_connect() { return prefs_numerical_values[k_prefs_autoconnector_when_to_connect]; }
 	// GUI
