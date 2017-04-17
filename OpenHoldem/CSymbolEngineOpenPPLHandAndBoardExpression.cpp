@@ -232,9 +232,13 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name
 
 			// Check if card is on the board or in the hand
 			if (is_hand_expression) {
+        // Code below works for both HoldEm and Omaha
+        // Undefined cards are OK
 				if (!IsCardInCollection(icard_with_specific_suit,
 					  p_table_state->User()->hole_cards(0)->GetValue(),
-            p_table_state->User()->hole_cards(1)->GetValue())) {
+            p_table_state->User()->hole_cards(1)->GetValue(),
+            p_table_state->User()->hole_cards(2)->GetValue(),
+            p_table_state->User()->hole_cards(3)->GetValue())) {
 					write_log(preferences.debug_hand_and_baord_expressions(),
 						"[CSymbolEngineOpenPPLHandAndBoardExpression] No match, concrete hole cards do not fit\n");
 					*result = false;

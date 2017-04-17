@@ -5,6 +5,10 @@ MAINTENANCE:
   by iterating all possible cases, as the functions in the OpenbPPL-library
   became way too complex and proved to be error-prone.
   [THF]
+- Hand-expressions with specifix suits worked only for HoldEm 
+  and 2 out of 4 cards in Omaha-games.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
 
 
 v11.1.3 2017-04-12
