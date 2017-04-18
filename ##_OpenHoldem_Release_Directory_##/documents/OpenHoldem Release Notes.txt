@@ -1,13 +1,31 @@
-﻿v﻿11.1.4 2017-04-xx
+﻿v﻿11.2.0 2017-04-xx
 ==================
-MAINTENANCE:
-- Calculating the OpenPPL-symbol ButFullHouseOrFourOfAkind now internally
-  by iterating all possible cases, as the functions in the OpenbPPL-library
-  became way too complex and proved to be error-prone.
+NEW STUFF:
+- New OpenHoldem symbols suitbitsplayerN and suitbitscommonN
+  that provide the rankbits of all 4 suits (N = 0..3)
+  Especially meant to support Omaha better.
+  The symbols can of course also be addressed by more logical names
+  like suitbitsplayer_diamonds that get supported by the new multiplexer-engine.
   [THF]
+
+BUG FIXES:
 - Hand-expressions with specifix suits worked only for HoldEm 
   and 2 out of 4 cards in Omaha-games.
   Thanks to ChuckNeverMuck for reporting.
+  [THF]
+
+MAINTENANCE:
+- Now detecting and warning if logical operators get fed with numerical values.
+  Way too many people don't understand the precedence of operators
+  and write bad code like "AND NOT betround > 1..."
+  which really means "AND ((NOT betround) > 1)..."
+  where betround is treated as a true/false value.
+  [THF]
+- Calculating the OpenPPL-symbol NutFullHouseOrFourOfAkind now internally
+  by iterating all possible cases, as the functions in the OpenbPPL-library
+  became way too complex and proved to be error-prone.
+  Also introducing nutfullhouseorfourofakind_ntotal.
+  Thanks to ChuckNeverMuck for testing.
   [THF]
 
 

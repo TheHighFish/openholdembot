@@ -107,6 +107,7 @@ void CSymbolEnginePokerval::CalculateCardMasks() {
       CardMask_SET(_player_cards, p_table_state->User()->hole_cards(i)->GetValue());
     }
   }
+  CardMask_RESET(_board_cards);
   for (int i = 0; i<kNumberOfCommunityCards; i++) {
     // common cards
     Card *card = p_table_state->CommonCards(i);
@@ -166,6 +167,8 @@ int CSymbolEnginePokerval::SuitBits(CardMask c, int suit) {
   case Suit_CLUBS:
     CardMask_AND(suited_cards, c, _clubsCards);
     break;
+  // Otherwise: 
+  // Keep suited cards empty
   }
   return CardMaskToRankBits(suited_cards);
 }
@@ -973,6 +976,25 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 		// Valid symbol
 		return true;
 	}
+  else if (memcmp(name, "suitbits", 8) == 0)
+  {
+    int right_most_digit = RightDigitCharacterToNumber(name);
+    if (memcmp(name, "suitbitsplayer", 14) == 0 && strlen(name) == 15)
+    {
+      *result = suitbitsplayer(right_most_digit);
+    }
+    else if (memcmp(name, "suitbitscommon", 14) == 0 && strlen(name) == 15)
+    {
+      *result = suitbitscommon(right_most_digit);
+    }
+    else
+    {
+      // Invalid symbol
+      return false;
+    }
+    // Valid symbol
+    return true;
+  }
 	else if (memcmp(name, "rankbits", 8)==0)
 	{
 		if (memcmp(name, "rankbits", 8)==0 && strlen(name)==8)
@@ -1162,7 +1184,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const char *name, double *result, boo
 }
 
 CString CSymbolEnginePokerval::SymbolsProvided() {
-  return "rankhi rankhicommon rankhiplayer rankhipoker "
+  CString list_of_symbols = "rankhi rankhicommon rankhiplayer rankhipoker "
     "srankhi srankhicommon srankhiplayer srankhipoker "
     "ranklo ranklocommon rankloplayer ranklopoker "
     "sranklo sranklocommon srankloplayer sranklopoker "
@@ -1177,4 +1199,8 @@ CString CSymbolEnginePokerval::SymbolsProvided() {
     "pcbits npcbits "
     "hicard onepair twopair threeofakind straight "
     "flush fullhouse fourofakind straightflush royalflush ";
+  // More verbose naming available via the multiplexer engine
+  list_of_symbols += RangeOfSymbols("suitbitsplayer%d", StdDeck_Suit_FIRST, StdDeck_Suit_LAST);
+  list_of_symbols += RangeOfSymbols("suitbitscommon%d", StdDeck_Suit_FIRST, StdDeck_Suit_LAST);
+  return list_of_symbols;
 }
