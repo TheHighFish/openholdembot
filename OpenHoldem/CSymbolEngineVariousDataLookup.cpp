@@ -72,7 +72,7 @@ void CSymbolEngineVariousDataLookup::UpdateOnMyTurn() {
 void CSymbolEngineVariousDataLookup::UpdateOnHeartbeat() {
 }
 
-bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   // DLL
   if (memcmp(name, "dll$", 4) == 0) {

@@ -31,7 +31,7 @@ class CSymbolEngineChairs: public CVirtualSymbolEngine {
 	void UpdateOnHeartbeat();
  public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();
  public:
   int opponent_headsup_chair() { return _opponent_headsup_chair; }

@@ -648,7 +648,7 @@ void CFunctionCollection::UpdateOnHeartbeat() {
   ClearCache();
 }
 
-bool CFunctionCollection::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CFunctionCollection::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   CSLock lock(m_critsec);
   if (COHScriptObject::IsFunction(name)
       || COHScriptObject::IsList(name)

@@ -319,7 +319,7 @@ int CSymbolEngineRaisers::LastRaised(const int round) {
   return _lastraised[round];
 }
 
-bool CSymbolEngineRaisers::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineRaisers::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponents", 10)==0) {
 		if (memcmp(name, "nopponentstruelyraising", 23)==0 && strlen(name)==23) {

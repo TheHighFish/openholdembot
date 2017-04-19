@@ -108,7 +108,7 @@ int CSymbolEngineChairs::GetChairByDealposition(int dealposition) {
   return kUndefined;
 }
 
-bool CSymbolEngineChairs::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineChairs::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   if (memcmp(name, "opponent_chair_headsup", 22)==0) {
 		*result = _opponent_headsup_chair;  
 		return true;

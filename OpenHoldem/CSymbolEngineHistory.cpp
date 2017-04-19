@@ -213,7 +213,7 @@ void CSymbolEngineHistory::CalculateHistory() {
 	}
 }
 
-double CSymbolEngineHistory::HistorySymbol(const char *sym, const int round) {
+double CSymbolEngineHistory::HistorySymbol(const CString sym, const int round) {
 	for (int i=0; i<k_hist_sym_count; i++)	{
 		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{
 			return _hist_sym[i][round-1];
@@ -222,7 +222,7 @@ double CSymbolEngineHistory::HistorySymbol(const char *sym, const int round) {
 	return kUndefinedZero;
 }
 
-bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineHistory::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "did", 3) == 0)	{
 		if (memcmp(name, "didchec", 7)==0 && strlen(name)==7)	{
@@ -276,12 +276,9 @@ bool CSymbolEngineHistory::EvaluateSymbol(const char *name, double *result, bool
 	}  else if (memcmp(name, "hi_", 3)==0) {
     // History symbols
     int	round = RightDigitCharacterToNumber(name, 1);
-    char *pure_name = (char*)name + 3;
-    char pure_name_without_betround[256];
-    int length = strlen(pure_name);
-    assert(length < 256);
-    memcpy(pure_name_without_betround, pure_name, length); 
-    pure_name_without_betround[length - 1] = '\0';
+    CString pure_name_without_betround = name.Mid(3);
+    int length = pure_name_without_betround.GetLength();
+    pure_name_without_betround.Truncate(length - 1);
     *result = HistorySymbol(pure_name_without_betround, round);
     return true;
   }	else {

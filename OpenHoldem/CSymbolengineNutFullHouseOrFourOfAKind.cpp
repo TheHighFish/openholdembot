@@ -241,7 +241,7 @@ void CSymbolEngineNutFullhouseOrFourOfAKind::CalculateNutFullhouseOrFourOfAKind(
     _nutfullhouseorfourofakind_total_count);
 }
 
-bool CSymbolEngineNutFullhouseOrFourOfAKind::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineNutFullhouseOrFourOfAKind::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nutfullhouseorfourofakind", 25)==0 && strlen(name)==25)	{
 		*result = _nutfullhouseorfourofakind;

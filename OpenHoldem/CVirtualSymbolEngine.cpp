@@ -45,7 +45,7 @@ void CVirtualSymbolEngine::UpdateOnHeartbeat()
 void CVirtualSymbolEngine::UpdateAfterAutoplayerAction(int autoplayer_action_code)
 {}
 
-bool CVirtualSymbolEngine::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
 	// We don't provide any symbols
 	return false;

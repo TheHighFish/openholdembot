@@ -133,7 +133,7 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::CheckForProbablyMistakenSpadesI
   CParseErrors::Error(message);
 }
 
-bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
 	// First check, if hand$ or board$ and/or Suited
 	// At the same time remove the unnecessary parts of the expression
 	if (memcmp(name, "hand$", 5) == 0) {
