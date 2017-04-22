@@ -39,6 +39,7 @@
 #include "CSymbolEngineChecksBetsFolds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineColourCodes.h"
+#include "CSymbolEngineConstants.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineDebug.h"
 #include "CSymbolEngineEventLogging.h"
@@ -122,6 +123,9 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineEventLogging
   p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
   AddSymbolEngine(p_symbol_engine_event_logging);
+  // CSymbolEngineConstants
+  p_symbol_engine_constants = new CSymbolEngineConstants();
+  AddSymbolEngine(p_symbol_engine_constants);
   // CSymbolEngineColourCodes
   p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
   AddSymbolEngine(p_symbol_engine_colourcodes);

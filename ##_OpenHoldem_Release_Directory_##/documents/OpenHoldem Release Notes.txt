@@ -7,6 +7,15 @@ NEW STUFF:
   The symbols can of course also be addressed by more logical names
   like suitbitsplayer_diamonds that get supported by the new multiplexer-engine.
   [THF]
+- Introducing new constanmt symbols more more verbosity and for use with the multiplexer:
+  ace, king, queen, jack, ten, preflop, flop, turn, river, clubs, diamonds, hearts, spades.
+  [THF]
+- Introducing a multiplexer engine, that supports poker-logical indexing  
+  for numbered symbols, e.g.
+  balance_raischair, suitbitcommon_diamonds, nbetsround_preflop.
+  The multiplexer also works with OpenPPl and user-defined functions.
+  For more details please refer to the updated manual.
+  [THF]
 
 BUG FIXES:
 - Hand-expressions with specifix suits worked only for HoldEm 

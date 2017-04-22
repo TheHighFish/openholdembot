@@ -239,6 +239,7 @@
     <ClCompile Include="CSymbolEngineChairs.cpp" />
     <ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
+    <ClCompile Include="CSymbolengineConstants.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
     <ClCompile Include="CSymbolengineIsRush.cpp" />
@@ -524,6 +525,7 @@
     <ClInclude Include="CSymbolengineChairs.h" />
     <ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
     <ClInclude Include="CSymbolengineColourCodes.h" />
+    <ClInclude Include="CSymbolengineConstants.h" />
     <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
     <ClInclude Include="CSymbolEngineIsRush.h" />
