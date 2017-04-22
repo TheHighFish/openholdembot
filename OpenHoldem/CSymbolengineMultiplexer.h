@@ -41,8 +41,9 @@ class CSymbolEngineMultiplexer: public CVirtualSymbolEngine {
   // and at least FastExitOnLastCharacter(( gets called very often
   // so we make them inline.
   inline bool FastExitOnLastCharacter(int last_character_of_symbol);
-  inline bool Multiplex(const char* complete_name, int multiplex_index, double* result);
-  inline int  MultiplexerChair(int multiplex_index);
+ private:
+  // Not inline, because it is recursive
+  CString MultiplexedSymbolName(CString name);
 };
 
 extern CSymbolEngineMultiplexer *p_symbol_engine_multiplexer;

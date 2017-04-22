@@ -98,60 +98,38 @@ inline bool CSymbolEngineMultiplexer::FastExitOnLastCharacter(int last_character
   }
 }
 
-inline int CSymbolEngineMultiplexer::MultiplexerChair(int multiplex_index) {
-  // !!! TODO: possible optimization: calculate only once per heartbeat
-  assert(multiplex_index >= 0);
-  assert(multiplex_index < kNumberOfSupportedPostfixes);
-  const char* multiplexer_chair_symbol = kSupportedPostFixes[multiplex_index];
-  double result = kUndefined;
-  // Return value (success) does not matter here
-  // We know that all chair-symbols are supported.
-  p_engine_container->EvaluateSymbol(
-    multiplexer_chair_symbol, &result, true);
-  int chair = int(result);
-  write_log(true, "[CSymbolEngineMultiplexer] Chair(%s( = %i\n",
-    multiplexer_chair_symbol, chair);
-  return chair;
-}
-
-inline bool CSymbolEngineMultiplexer::Multiplex(const char* complete_name, int multiplex_index, double* result) {
-  // Multiplexing symbols like "currentbet_dealer"
-  // that consist of a general symbol prefix and a chair postfix,
-  // finallz evaluationg something like "currentbetX", 
-  // where X is the chair-number.
-  write_log(true, "[CSymbolEngineMultiplexer] Multiplex(%s)\n", complete_name);
-  assert(strlen(complete_name) >= (strlen(kSupportedPostFixes[multiplex_index] + 2)));
-  assert(StringAIsPostfixOfStringB(kSupportedPostFixes[multiplex_index], complete_name));
-  assert(RightCharacter(complete_name, strlen(kSupportedPostFixes[multiplex_index])) == '_');
-  CString complete_symbol = complete_name;
-  int complete_length = strlen(complete_name);
-  int multiplexer_length = strlen(kSupportedPostFixes[multiplex_index]);
-  int symbol_prefix_length = complete_length - multiplexer_length - 1;
-  assert(complete_length > 0);
-  assert(multiplexer_length > 0);
-  assert(symbol_prefix_length > 0);
-  CString symbol_prefix = complete_symbol.Left(symbol_prefix_length);
-  assert(symbol_prefix != "");
-  int chair = MultiplexerChair(multiplex_index);
-  if ((chair < 0) || (chair > kLastChair)) {
-    write_log(k_always_log_errors, "[CSymbolEngineMultiplexer] WARNING! Chair out of range\n");
-    *result = kUndefined;
-    // Still successful evaluation.
-    // It's just a chair out of range,
-    // maybe because such a chair (e.g. "lastraiser")
-    // does at the moment not exist.
-    return true;
+CString CSymbolEngineMultiplexer::MultiplexedSymbolName(CString name) {
+  int underscore_position = 0;
+  // Searching from the end, because a symbol might contain
+  // multiple multiplexer postfixes at the end.
+  underscore_position = name.ReverseFind('_');
+  if (underscore_position < 0) {
+    // No postfix found
+    return name;
   }
-  CString multiplexed_symbol_with_chair_number;
-  multiplexed_symbol_with_chair_number.Format("%s%i",
-    symbol_prefix, chair);
-  bool success = p_engine_container->EvaluateSymbol(
-    multiplexed_symbol_with_chair_number, result, true);
-  write_log(true, "[CSymbolEngineMultiplexer] Evaluated multiplexed symbol %s -> %.3f\n",
-    multiplexed_symbol_with_chair_number, *result);
-  write_log(true, "[CSymbolEngineMultiplexer] Success: %s\n",
-    Bool2CString(success));
-  return success;
+  CString postfix = name.Mid(underscore_position + 1);
+  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Postfix %s\n", postfix);
+  double evaluated_postfix = kUndefined;
+  for (int i = 0; i < kNumberOfSupportedPostfixes; ++i) {
+    if (postfix == kSupportedPostFixes[i]) {
+      p_engine_container->EvaluateSymbol(postfix, &evaluated_postfix, false);
+      break;
+    }
+  }
+  if (evaluated_postfix == kUndefined) {
+    // Not a valid postfix
+    return name;
+  }
+  CString pure_name = name.Left(underscore_position);
+  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Pure name %s\n", pure_name);
+  // Recurse, to resolve multiple postfixes
+  CString multiplexed_name = MultiplexedSymbolName(pure_name);
+  // Append multiplexed postfix by its evaluation,
+  // e.g. balance_user -> balance3 if the user sits in chair 3.
+  multiplexed_name += Number2CString(evaluated_postfix, 0);
+  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Multiplexed name %s\n",
+    multiplexed_name);
+  return multiplexed_name;
 }
 
 bool CSymbolEngineMultiplexer::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
@@ -161,43 +139,20 @@ bool CSymbolEngineMultiplexer::EvaluateSymbol(const CString name, double *result
   // But no FAST_EXIT_ON_OPENPPL_SYMBOLS(name),
   // because we also want to multiplex OpenPPL-symbols.
   //
-  // Fast exit on f$-functions.
-  // They should already be handled, but just in case.
-	if (memcmp(name, "f$", 2) == 0)	{
-		return false;
-	} 
   // Fast exit on last character
   char last_character = RightCharacter(name);
   if (FastExitOnLastCharacter(last_character)) {
     return false;
   }
-  int length_of_symbol = strlen(name);
-  // Checking all postfixes...
-  for (int i=0; i<kNumberOfSupportedPostfixes; ++i) {
-    int length_of_postfix = strlen(kSupportedPostFixes[i]);
-    // Skip postfixes that are too long for the symbol
-    // We need at least 2 dditional characters>
-    // one for the basic symbol and one for the underscore inbetween.
-    if (length_of_symbol < (length_of_postfix + 2)) continue;
-    // If there is no underscore at the expected position
-    // (before postfix) then continue
-    if (RightCharacter(name, length_of_postfix) != '_') continue;
-    if (StringAIsPostfixOfStringB(kSupportedPostFixes[i], name)) {
-      // We found a symbol with a supported multiplexer-postfix
-      bool success = Multiplex(name, i, result);
-      if (success == false) {
-        CString message;
-        message.Format("Unable to multiplex symbol\n"
-          "%s\n"
-          "Probably invalid prefix or no postfix allowed\n.",
-          name);
-        OH_MessageBox_Error_Warning(message);
-      }
-      return success; // !!!!! Might lead to too many error-messages
-    }
+  CString multiplexed_symbol_name = MultiplexedSymbolName(name);
+  if (multiplexed_symbol_name == name) {
+    // Not a multiplexer-symbol
+    return false;
   }
-  // Symbol of a different symbol-engine
-	return false;
+  p_engine_container->EvaluateSymbol(multiplexed_symbol_name, result, log);
+  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] %s -> %s -> %.2f\n",
+    name, multiplexed_symbol_name, *result);
+  return true;
 }
 
 CString CSymbolEngineMultiplexer::SymbolsProvided() {
@@ -208,43 +163,4 @@ CString CSymbolEngineMultiplexer::SymbolsProvided() {
   return "";
 }
 
-/*
-if (s.Right(10) == "_raischair") {
-		chair = p_symbol_engine_raisers->raischair();
-	}
-	// PokerTracker symbols for the opponent headsup chair
-	else if (s.Right(8) == "_headsup") {
-    chair = p_symbol_engine_chairs->opponent_headsup_chair();
-	}
-  // PokerTracker symbols for the smallblind chair
-	else if (s.Right(11) == "_smallblind") {
-    chair = p_symbol_engine_chairs->smallblind_chair();
-	}
-  // PokerTracker symbols for the bigblind chair
-	else if (s.Right(9) == "_bigblind") {
-    chair = p_symbol_engine_chairs->bigblind_chair();
-	}
-  // PokerTracker symbols for the cutoff chair
-	else if (s.Right(7) == "_cutoff") {
-    chair = p_symbol_engine_chairs->cutoff_chair();
-	}
-  // PokerTracker symbols for the firstcaller chair
-	else if (s.Right(12) == "_firstcaller") {
-    chair = p_symbol_engine_callers->firstcaller_chair();
-	}
-  // PokerTracker symbols for the lastcaller chair
-	else if (s.Right(11) == "_lastcaller") {
-    chair = p_symbol_engine_callers->lastcaller_chair();
-	}
-  // PokerTracker symbols for the firstraiser chair
-	else if (s.Right(12) == "_firstraiser") {
-		chair = p_symbol_engine_raisers->firstraiser_chair();
-	}
-  // PokerTracker symbols for the dealerchair chair
-	else if (s.Right(7) == "_dealer") {
-    chair = p_symbol_engine_dealerchair->dealerchair();
-	}
-  // PokerTracker symbols for the  chair
-	else if (s.Right(5) == "_user") {
-    chair = p_symbol_engine_userchair->userchair();
-	}*/
+

@@ -52,6 +52,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineMTTInfo.h"
+#include "CSymbolEngineMultiplexer.h"
 #include "CSymbolEngineNutFullhouseOrFourOfAKind.h"
 #include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
@@ -101,12 +102,14 @@ void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) 
 void CEngineContainer::CreateSymbolEngines() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
   CreateSpecialSymbolEngines();
-
   _number_of_symbol_engines_loaded = 0;
   // Some symbols to be calculated depend on symbols of other engines.
   // The engines inserted first will be called first later.
   // But we assure correct ordering by assertions in the constructors of the engines.
   //
+  // CSymbolengineMultiplexer.h
+  p_symbol_engine_multiplexer = new CSymbolEngineMultiplexer();
+  AddSymbolEngine(p_symbol_engine_multiplexer);
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
   AddSymbolEngine(p_function_collection);

@@ -92,6 +92,7 @@ void CDlgSAPrefs20::AlignbuttonsInAlphabeticalOrder() {
   AlignButton(IDC_DEBUG_LAZY_SCRAPER);
   AlignButton(IDC_DEBUG_MEMORY_SYMBOLS);
   AlignButton(IDC_DEBUG_MEMORY_USAGE);
+  AlignButton(IDC_DEBUG_MULTIPLEXER);
   AlignButton(IDC_DEBUG_NUTFULLHOUSE);
   AlignButton(IDC_DEBUG_OCCLUSSION);
   AlignButton(IDC_DEBUG_OPENHOLDEM);
@@ -180,6 +181,7 @@ BOOL CDlgSAPrefs20::OnInitDialog()
   CheckDlgButton(IDC_DEBUG_WATCHDOG, preferences.debug_watchdog() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_TIMERS, preferences.debug_timers() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_NUTFULLHOUSE, preferences.debug_nutfullhouse() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_MULTIPLEXER, preferences.debug_multiplexer() ? MF_CHECKED : MF_UNCHECKED);
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -237,6 +239,7 @@ void CDlgSAPrefs20::OnOK()
   preferences.SetValue(k_prefs_debug_watchdog, IsDlgButtonChecked(IDC_DEBUG_WATCHDOG));
   preferences.SetValue(k_prefs_debug_timers, IsDlgButtonChecked(IDC_DEBUG_TIMERS));
   preferences.SetValue(k_prefs_debug_nutfullhouse, IsDlgButtonChecked(IDC_DEBUG_NUTFULLHOUSE));
+  preferences.SetValue(k_prefs_debug_multiplexer, IsDlgButtonChecked(IDC_DEBUG_MULTIPLEXER));
 	CSAPrefsSubDlg::OnOK();
 }
 
