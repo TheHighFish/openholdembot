@@ -83,7 +83,7 @@ enum {
   k_prefs_debug_auto_trace,
   k_prefs_debug_ast_priority_ordering,
   k_prefs_debug_filenames,
-  k_prefs_debug_hand_and_baord_expressions,
+  k_prefs_debug_hand_and_board_expressions,
   k_prefs_debug_tokenizer,
   k_prefs_debug_tablepoints,
   k_prefs_debug_sharedmem,
@@ -266,7 +266,7 @@ class CPreferences {
   const bool  debug_auto_trace() { return prefs_numerical_values[k_prefs_debug_auto_trace]; }
   const bool  debug_ast_priority_ordering() { return prefs_numerical_values[k_prefs_debug_ast_priority_ordering]; }
   const bool  debug_filenames() { return prefs_numerical_values[k_prefs_debug_filenames]; }
-  const bool  debug_hand_and_baord_expressions() { return prefs_numerical_values[k_prefs_debug_hand_and_baord_expressions]; }
+  const bool  debug_hand_and_board_expressions() { return prefs_numerical_values[k_prefs_debug_hand_and_board_expressions]; }
   const bool  debug_tokenizer() { return prefs_numerical_values[k_prefs_debug_tokenizer]; }
   const bool  debug_tablepoints() { return prefs_numerical_values[k_prefs_debug_tablepoints]; }
   const bool  debug_sharedmem() { return prefs_numerical_values[k_prefs_debug_sharedmem]; }
