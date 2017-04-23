@@ -21,6 +21,9 @@ NEW STUFF:
   as Pokertracker gets now also served by the multiplexer.
   For more details please refer to the updated manual.
   [THF]
+- A button "toggle all" for the countless debug-options.
+  Thanks to ChuckneverMuck for the suggestion.
+  [THF]
 
 BUG FIXES:
 - Hand-expressions with specifix suits worked only for HoldEm 

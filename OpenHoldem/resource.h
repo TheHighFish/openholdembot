@@ -438,6 +438,7 @@
 #define IDC_USE_AUTO_SHUTDOWN           1419
 #define IDC_DEBUG_NUTFULLHOUSE          1420
 #define IDC_DEBUG_MULTIPLEXER           1421
+#define IDC_TOGGLE_ALL_DEBUG            1422
 #define IDC_ICM_1                       1121
 #define IDC_ICM_2                       1122
 #define IDC_ICM_3                       1123
@@ -555,7 +556,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         33000
-#define _APS_NEXT_CONTROL_VALUE         1422
+#define _APS_NEXT_CONTROL_VALUE         1423
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
