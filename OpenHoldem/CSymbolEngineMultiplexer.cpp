@@ -25,29 +25,38 @@
 
 CSymbolEngineMultiplexer *p_symbol_engine_multiplexer = NULL;
 
-const int kNumberOfSupportedPostfixes = 21;
+const int kNumberOfSupportedPostfixes = 28;
 // If you extend the list below please don't forget to update FastExitOnLastCharacter()
 const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {
-  // Chairs
-  "user",
-  "headsup",
-  "smallblind",
-  "bigblind",
-  "dealer",
-  "cutoff",
-  "firstcaller",
-  "lastcaller",
-  "firstraiser",
-  "lastraiser",
-  // lastraiser and raischair are synonyms
+  // Chairs, special ones
+  "userchair",
+  "headsupchair",
+  // Chairs, by position
+  "smallblindchair",
+  "bigblindchair",
+  "dealerchair",
+  "cutoffchair",
+  "mp3chair",
+  "mp2chair",
+  "mp1chair",
+  "ep3chair",
+  "ep2chair",
+  "ep1chair",
+  "utgchair",
+  // Chairs, raisers and callers
+  "firstcallerchair",
+  "lastcallerchair",
+  "firstraiserchair",
+  "lastraiserchair",
+  // lastraiserchair and raischair are synonyms
   "raischair",
   // Betrounds
   "preflop",
   "flop",
   "turn",
   "river",
-  "previousround",
-  "currentround",
+  "previousround", 
+  "currentround", 
   // Suits
   "clubs",
   "diamonds",
@@ -89,7 +98,6 @@ inline bool CSymbolEngineMultiplexer::FastExitOnLastCharacter(int last_character
   switch (last_character_of_symbol) {
     // Last characters of multiplexed postfixes
     case 'd':
-    case 'f':
     case 'n':
     case 'p':
     case 'r': 
@@ -162,5 +170,7 @@ CString CSymbolEngineMultiplexer::SymbolsProvided() {
   // losing syntax-highlighting for multiplexed symbols.
   return "";
 }
+
+
 
 

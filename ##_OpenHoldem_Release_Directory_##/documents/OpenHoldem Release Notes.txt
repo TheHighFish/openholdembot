@@ -10,10 +10,15 @@ NEW STUFF:
 - Introducing new constanmt symbols more more verbosity and for use with the multiplexer:
   ace, king, queen, jack, ten, preflop, flop, turn, river, clubs, diamonds, hearts, spades.
   [THF]
+- New symbols previousround and currentround (same es betround),
+  especially meant for the multiplexer.
+  [THF]
 - Introducing a multiplexer engine, that supports poker-logical indexing  
   for numbered symbols, e.g.
   balance_raischair, suitbitcommon_diamonds, nbetsround_preflop.
   The multiplexer also works with OpenPPl and user-defined functions.
+  Some PokerTracker symbols got renamed slightly, 
+  as Pokertracker gets now also served by the multiplexer.
   For more details please refer to the updated manual.
   [THF]
 

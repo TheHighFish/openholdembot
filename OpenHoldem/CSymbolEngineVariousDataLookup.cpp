@@ -85,8 +85,10 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   }
   // Various symbols below
   // without any optimized lookup.
-  //ROUND&POSITIONS
+  // Betting rounds
   else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
+  else if (name == "currentround") *result = p_betround_calculator->betround();
+  else if (name == "previousround") *result = p_betround_calculator->PreviousRound();
   //FLAGS
   else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)			*result = p_flags_toolbar->GetFlagMax();
   // flags f0..f9
@@ -112,8 +114,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
 	    OH_MessageBox_OH_Script_Messages(name);
 	    *result = 0;
     }
-  }
-  else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
+  } else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
     if (!p_formula_parser->IsParsing()) {
       write_log(preferences.debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
@@ -149,7 +150,8 @@ CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
   // e.g. "dll$, pl_ chair$, ....
   CString list = "dll$ pl_ vs$ msgbox$ log$ "
-    "betround fmax f flagbits "
+    "betround currentround previousround "
+    "fmax f flagbits "
     "session version islobby ispopup"
     "handsplayed handsplayed_headsup ";
   list += RangeOfSymbols("f%i", 0, 19);

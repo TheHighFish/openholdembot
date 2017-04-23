@@ -89,6 +89,7 @@ bool CSymbolEngineConstants::EvaluateSymbol(const CString name, double *result, 
     *result = kBetroundRiver;
     return true;
   }
+  // Card suits
   if (name == "clubs") {
     *result = Suit_CLUBS;
     return true;
