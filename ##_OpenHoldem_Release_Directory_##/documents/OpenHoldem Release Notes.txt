@@ -30,6 +30,11 @@ BUG FIXES:
   and 2 out of 4 cards in Omaha-games.
   Thanks to ChuckNeverMuck for reporting.
   [THF]
+- If a tablemap supported multiple buttons of the same type at different locations
+  then it could be that OpenHoldem stopped when it found the first (non-clickable) one
+  and missed the clickable button.
+  Thanks to !!!!
+  [THF]
 
 MAINTENANCE:
 - Now detecting and warning if logical operators get fed with numerical values.
