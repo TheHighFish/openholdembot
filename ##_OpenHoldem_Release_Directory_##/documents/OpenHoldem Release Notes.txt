@@ -36,6 +36,9 @@ BUG FIXES:
   Thanks to Brass Knuckles for reporting, Darkmund, Relhby and ChuckNeverMuck for helping, 
   Likeheadsup for providing replay-frames and to AlexTheKing88 for providing the fix.
   [THF]
+- Improved blind-guessing headsup.
+  Thanks to Relhby for the patch.
+  [THF]
 
 MAINTENANCE:
 - Now detecting and warning if logical operators get fed with numerical values.
@@ -84,11 +87,6 @@ BUG FIXES:
   that could freeze OpenHoldem if debugging for the GUI and the formula
   was enabled. The displayed information in the statusbar got reduced, 
   as most info is visible in the table display.
-  [THF]
-
-MAINTENANCE:
-- Improved blind-guessing headsup.
-  Thanks to Relhby for the patch.
   [THF]
 
 
