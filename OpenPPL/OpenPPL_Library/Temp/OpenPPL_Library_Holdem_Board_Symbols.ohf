@@ -112,7 +112,7 @@ OR (FirstFlopSuit  == ThirdFlopSuit  AND FirstFlopSuit  == TurnSuit)
 OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit) ]
 
 ##FourCardsToWheelOnBoard##
-`(rankbitscommon & 0b0000000000111110) >= 4
+BitCountrankbitscommon & 0b0000000000111110) >= 4
 
 ##FourOfOneSuitOnTurn##
 ((FirstFlopSuit == SecondFlopSuit) AND (ThirdFlopSuit == TurnSuit) AND (FirstFlopSuit == TurnSuit))
@@ -132,7 +132,7 @@ OR (SecondFlopCard == king)
 OR (ThirdFlopCard == king)
 
 ##LowCardsOnBoard##
-`RankBitsCommonLowCardsOnly
+BitCount(RankBitsCommonLowCardsOnly)
 
 ##MoreThanOneStraightPossibleOnFlop##
 StraightPossibleOnFlop AND NOT ExactlyOneStraightPossibleOnFlop
@@ -144,31 +144,31 @@ StraightPossibleOnFlop AND NOT ExactlyOneStraightPossibleOnFlop
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommonTurn >> 10) & 0x1f) >= 3 AND (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  9) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  8) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  7) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  6) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  5) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  4) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  3) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  2) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
-+ (`((RankBitsCommonTurn >>  1) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
+  (BitCount(RankBitsCommonTurn >> 10) & 0x1f) >= 3 AND (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  9) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  8) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  7) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  6) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  5) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  4) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  3) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  2) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
++ (BitCount(RankBitsCommonTurn >>  1) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
 
 ##NumberOfStraightsPossibleOnRiver##
 // First part checks if there is a straight possible (max 2 cards missing)
 // Second part checks that there is no higher "6-card" straight possible
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
-  (`((RankBitsCommonRiver >> 10) & 0x1f) >= 3 AND (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  9) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  8) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  7) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  6) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  5) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  4) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  3) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  2) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
-+ (`((RankBitsCommonRiver >>  1) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
+  (BitCount(RankBitsCommonRiver >> 10) & 0x1f) >= 3 AND (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  9) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  8) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  7) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  6) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  5) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  4) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  3) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  2) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount(RankBitsCommonRiver >>  1) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
 
 ##MoreThanOneOneCardStraightPossible##
 DoubleGutShotOnBoard OR OpenEndedStraightDrawOnBoard
@@ -207,7 +207,7 @@ DoubleGutShotOnBoard OR OpenEndedStraightDrawOnBoard
 OneCardStraightPossible AND NOT MoreThanOneOneCardStraightPossible
 
 ##OpenEndedStraightDrawOnBoard##
-(nstraightcommon == 4 AND (`((rankbitscommon >> 10) & 0x1f) < 4) AND (`((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
+(nstraightcommon == 4 AND (BitCount(rankbitscommon >> 10) & 0x1f) < 4) AND (BitCount(rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
 
 ##OpenEndedStraightDrawPossibleOnFlop##
 [(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard - SecondTopFlopCard > 0) AND (TopFlopCard != ace)]
@@ -215,7 +215,7 @@ OR [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard - LowestFlo
 
 ##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
-`[rankbitscommon >> (rankhiplayer + 1)]
+BitCount[rankbitscommon >> (rankhiplayer + 1)]
 
 ##OvercardsOnBoard##
   ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
@@ -302,16 +302,16 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
   + (((TurnSuit != FirstFlopSuit) AND (TurnSuit != SecondFlopSuit) AND (TurnSuit != ThirdFlopSuit)) ? 1 : 0)]
   
 ##StraightFlushPossible##
-`((srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 9) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 8) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 7) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 6) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 5) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 4) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 3) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 2) & 0x1f) >= 3 ? 1 :
-`((srankbitscommon >> 1) & 0x1f) >= 3 ? 1 : 0
+BitCount(srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 9) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 8) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 7) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 6) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 5) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 4) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 3) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 2) & 0x1f) >= 3 ? 1 :
+BitCount(srankbitscommon >> 1) & 0x1f) >= 3 ? 1 : 0
 
 ##StraightOnBoard##
 (nstraightcommon >= 5)
@@ -340,28 +340,28 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 -1
 
 ##StraightPossibleOnFlop##
-(`((RankBitsCommonFlop >> 10) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  9) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  8) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  7) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  6) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  5) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  4) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  3) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  2) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonFlop >>  1) & 0x1f) >= 3) ? 1 : 0
+(BitCount(RankBitsCommonFlop >> 10) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  9) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  8) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  7) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  6) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  5) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  4) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  3) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  2) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonFlop >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##StraightPossibleOnTurn##
-(`((RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
-(`((RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
+(BitCount(RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
+(BitCount(RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
 
 ##ThreeCardStraightOnBoard##
 nstraightcommon >= 3
@@ -415,4 +415,4 @@ AND NOT StraightPossibleOnFlop
 AND NOT OpenEndedStraightDrawPossibleOnFlop
 
 ##WheelPossible##
-(`(rankbitscommon & 0b111110) >= 3)
+(BitCountrankbitscommon & 0b111110) >= 3)

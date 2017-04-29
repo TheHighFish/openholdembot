@@ -135,34 +135,34 @@
 
 ##OneCardStraightPossibleOnTurn_AceHigh##
 //........................AKQJT98765432a-
-(`(RankBitsCommonTurn & 0b111110000000000) >= 4)   
+(BitCountRankBitsCommonTurn & 0b111110000000000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_KingHigh##
-(`(RankBitsCommonTurn & 0b011111000000000) >= 4)  
+(BitCountRankBitsCommonTurn & 0b011111000000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_QueenHigh##
-(`(RankBitsCommonTurn & 0b001111100000000) >= 4)  
+(BitCountRankBitsCommonTurn & 0b001111100000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_JackHigh##
-(`(RankBitsCommonTurn & 0b000111110000000) >= 4)  
+(BitCountRankBitsCommonTurn & 0b000111110000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_TenHigh##
-(`(RankBitsCommonTurn & 0b000011111000000) >= 4)  
+(BitCountRankBitsCommonTurn & 0b000011111000000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_NineHigh##
-(`(RankBitsCommonTurn & 0b000001111100000) >= 4)  
+(BitCountRankBitsCommonTurn & 0b000001111100000) >= 4)  
 
 ##OneCardStraightPossibleOnTurn_EightHigh##
-(`(RankBitsCommonTurn & 0b000000111110000) >= 4)   
+(BitCountRankBitsCommonTurn & 0b000000111110000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_SevenHigh##
-(`(RankBitsCommonTurn & 0b000000011111000) >= 4)   
+(BitCountRankBitsCommonTurn & 0b000000011111000) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_SixHigh##
-(`(RankBitsCommonTurn & 0b000000001111100) >= 4)   
+(BitCountRankBitsCommonTurn & 0b000000001111100) >= 4)   
 
 ##OneCardStraightPossibleOnTurn_FiveHigh##
-(`(RankBitsCommonTurn & 0b000000000111110) >= 4)
+(BitCountRankBitsCommonTurn & 0b000000000111110) >= 4)
 
 ##RankBitsAce##
 // Including ace low
