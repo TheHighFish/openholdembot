@@ -69,7 +69,7 @@
 (AggressorChair == 7) ? ac_dealpos7 :
 (AggressorChair == 8) ? ac_dealpos8 :
 (AggressorChair == 9) ? ac_dealpos9 :
-HINT_There_Are_No_True_Raisers
+HINT_There_Are_No_true_Raisers
 
 ##EarlyPosition1Calling##
 (callbits1 >> ep1chair) & 1 == 1

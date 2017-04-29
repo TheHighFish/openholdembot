@@ -75,8 +75,8 @@
 // The most easy solution was this code-clone.
 //
 // We removed the first lines of BotsLastAction
-// WHEN [(betround == ConstBetRoundPreflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
-// WHEN (betround != ConstBetRoundPreflop) RETURN BotsLastPreflopAction FORCE
+// WHEN [(betround == preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+// WHEN (betround != preflop) RETURN BotsLastPreflopAction FORCE
 // because BotsActionsOnThisRoundIncludingChecks and BotsLastPreflopAction
 // could be [cached] after the first action and we could get wrong results.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20395
@@ -152,26 +152,26 @@ WHEN Others SET me_st_MemBets_0
 // This function is the preferred place to store and update memory symbola
 // as it is our turn and we see stable frames, i.e. absence of casino animations
 //
-// At first we set the flag me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_True
+// At first we set the flag me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_true
 // as during the update we have partially inconsistent information,
 // as the OpenHoldem-symbols are already updated (e.g. didrais, ...).
 // This could cause some OpenPPl-symbols like BotsActionsOnThisRoundIncludingChecks
 // to be off by one, so we have to adapt.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=20275&p=142396#p142396
-WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_True
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_true
 WHEN Others SET me_st_MemRaises_Raises
 WHEN Others SET me_st_MemChecks_Checks
 WHEN Others SET me_st_MemCalls_Calls
 WHEN Others SET me_st_MemBets_Bets
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemRaisesBeforeFlop_Raises
-WHEN (betround == ConstBetRoundFlop) SET me_st_MemRaisesOnFlop_Raises
-WHEN (betround == ConstBetRoundTurn) SET me_st_MemRaisesOnTurn_Raises
+WHEN (betround == preflop) SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN (betround == preflop) SET me_st_MemRaisesBeforeFlop_Raises
+WHEN (betround == flop) SET me_st_MemRaisesOnFlop_Raises
+WHEN (betround == turn) SET me_st_MemRaisesOnTurn_Raises
 WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
 WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
 WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MinOpponentStackSize
-WHEN (betround == ConstBetRoundPreflop) SET me_st_MemMissingSmallBlind_MissingSmallBlind
+WHEN (betround == preflop) SET me_st_MemMissingSmallBlind_MissingSmallBlind
 // Finally remember a heartbeat ID so that be become able to detect
 // if a symbol gets used before the next scrape (e.g by the debug-tab).
 // In this case we have to return the new value (e.g. of "Raises")
@@ -186,7 +186,7 @@ WHEN RememberCurrentGameStateAfterAutoplayeraction
 // Terminating the open-ended when-condition above
 // to execute the next one for sure.
 WHEN Others
-WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_False
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_false
 
 //*****************************************************************************
 //
@@ -198,7 +198,7 @@ WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_False
 // with the info of the current orbit).
 // This however does no longer work if we store a new "old" value
 // at the end of my turn after an autoplayer action.
-// True, all critical work is done, but code in other threads
+// true, all critical work is done, but code in other threads
 // (especially the debug-tab) might request these symbols.
 // Then Openholdem would temporarily display invalid info
 // and people would be confused.
@@ -219,7 +219,7 @@ WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_False
 me_st_heartbeatID_randomheartbeat
 
 ##OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction##
-WHEN (me_re_heartbeatID == randomheartbeat) RETURN True FORCE
+WHEN (me_re_heartbeatID == randomheartbeat) RETURN true FORCE
 
 //*****************************************************************************
 //

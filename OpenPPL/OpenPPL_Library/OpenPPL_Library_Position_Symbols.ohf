@@ -70,19 +70,19 @@
 
 ##SmallBlind##
 // Small blind missing, therefore we can't be small blind
-WHEN MissingSmallBlind RETURN False FORCE
+WHEN MissingSmallBlind RETURN false FORCE
 // 3 or more handed, normal blinds
-WHEN ((NOT TableIsHeadsup) AND (dealposition == 1)) RETURN True FORCE
+WHEN ((NOT TableIsHeadsup) AND (dealposition == 1)) RETURN true FORCE
 // Headsup, reversed blinds
-WHEN  (TableIsHeadsup AND (dealposition == 2)) RETURN True FORCE
+WHEN  (TableIsHeadsup AND (dealposition == 2)) RETURN true FORCE
 
 ##BigBlind##
 // Missing small blind, big blind is the first dealt player
-WHEN (MissingSmallBlind AND (dealposition == 1)) RETURN True FORCE
+WHEN (MissingSmallBlind AND (dealposition == 1)) RETURN true FORCE
 // 3 or more handed, normal blinds
-WHEN ((NOT TableIsHeadsup) AND (dealposition == 2)) RETURN True FORCE
+WHEN ((NOT TableIsHeadsup) AND (dealposition == 2)) RETURN true FORCE
 // Headsup, reversed blinds
-WHEN (TableIsHeadsup AND (dealposition == 1)) RETURN True FORCE
+WHEN (TableIsHeadsup AND (dealposition == 1)) RETURN true FORCE
 
 ##Button##
 // If the game in not 10-handed, some positions would be both "normal" and in the blinds.
@@ -237,7 +237,7 @@ HINT_No_LastCaller
 
 ##LastRaiserPosition##
 // Handling the case of blind-raisers only first
-[(betround == ConstBetRoundPreflop) AND (ncallbets <= 1)] ? HINT_There_Are_No_True_Raisers :
+[(betround == preflop) AND (ncallbets <= 1)] ? HINT_There_Are_No_true_Raisers :
 // Big blind = 0
 BigBlindRaising ? 0 :
 // Small blind = 1

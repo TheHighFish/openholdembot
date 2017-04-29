@@ -194,36 +194,6 @@ RaiseMax
 
 //*****************************************************************************
 //
-// OpenPPL - Betting Round Constants
-//
-//*****************************************************************************
-
-##ConstBetRoundPreflop##
-1
-
-##ConstBetRoundFlop##
-2
-
-##ConstBetRoundTurn##
-3
-
-##ConstBetRoundRiver##
-4
-
-//*****************************************************************************
-//
-// OpenPPL - Other Constants
-//
-//*****************************************************************************
-
-##True##
-1
-
-##False##
-0
-
-//*****************************************************************************
-//
 // OpenPPL - verbose errors and warning
 //
 // Instead of returning just -1 we define constants like
@@ -317,7 +287,7 @@ RaiseMax
 ##HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function##
 -1
 
-##HINT_There_Are_No_True_Raisers##
+##HINT_There_Are_No_true_Raisers##
 -1
 
 ##HINT_Such_A_Straight_Does_Not_Exist##
@@ -363,7 +333,7 @@ RaiseMax
 -1
 
 ##HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw##
-False
+false
 
 ##HINT_SuitsOnBoard_Undefined_For_This_Betting_Round##
 0
@@ -397,7 +367,7 @@ False
 -1
 
 ##HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out##
-False
+false
 
 ##HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions##
-False
+false

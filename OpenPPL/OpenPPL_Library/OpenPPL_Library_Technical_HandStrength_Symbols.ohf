@@ -148,61 +148,61 @@ WHEN Others RETURN NumberOfPossibleStraightsSixHighOrBetter FORCE
 
 ##StraightPossibleAceHigh##
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b111110000000000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b111110000000000) >= 3) RETURN true FORCE
 
 ##StraightPossibleKingHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$A RETURN False FORCE
+WHEN board$A RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b011111000000000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b011111000000000) >= 3) RETURN true FORCE
 
 ##StraightPossibleQueenHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$K RETURN False FORCE
+WHEN board$K RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b001111100000000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b001111100000000) >= 3) RETURN true FORCE
 
 ##StraightPossibleJackHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$Q RETURN False FORCE
+WHEN board$Q RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b000111110000000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b000111110000000) >= 3) RETURN true FORCE
 
 ##StraightPossibleTenHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$J RETURN False FORCE
+WHEN board$J RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b000011111000000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b000011111000000) >= 3) RETURN true FORCE
 
 ##StraightPossibleNineHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$T RETURN False FORCE
+WHEN board$T RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b000001111100000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b000001111100000) >= 3) RETURN true FORCE
 
 ##StraightPossibleEightHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$9 RETURN False FORCE
+WHEN board$9 RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b000000111110000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b000000111110000) >= 3) RETURN true FORCE
 
 ##StraightPossibleSevenHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$8 RETURN False FORCE
+WHEN board$8 RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b000000011111000) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b000000011111000) >= 3) RETURN true FORCE
 
 ##StraightPossibleSixHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$7 RETURN False FORCE
+WHEN board$7 RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b000000001111100) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b000000001111100) >= 3) RETURN true FORCE
 
 ##StraightPossibleFiveHigh##
 // Checking if such a straight would lead to a HighOrBetter straight
-WHEN board$6 RETURN False FORCE
+WHEN board$6 RETURN false FORCE
 //.....................................AKQJT98765432a-
-WHEN (BitCount(rankbitscommon BitAnd 0b000000000111110) >= 3) RETURN True FORCE
+WHEN (BitCount(rankbitscommon BitAnd 0b000000000111110) >= 3) RETURN true FORCE
 
 ##TopBitOfRankBitsCommon##
 (1 << rankhicommon)

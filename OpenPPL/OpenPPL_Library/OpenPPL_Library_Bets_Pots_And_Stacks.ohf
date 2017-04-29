@@ -122,11 +122,11 @@ HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 StackSize + TotalInvestedThisRound
 
 ##TotalInvested##
-WHEN (betround == ConstBetRoundPreflop) RETURN (Ante + ncurrentbets) FORCE
-WHEN (betround == ConstBetRoundFlop)    RETURN (Ante + nbetsround1 + ncurrentbets) FORCE
-WHEN (betround == ConstBetRoundTurn)    RETURN (Ante + nbetsround1 + nbetsround2 + ncurrentbets) FORCE
-WHEN (betround == ConstBetRoundRiver)   RETURN (Ante + nbetsround1 + nbetsround2 + nbetsround3 + ncurrentbets) FORCE 
+WHEN (betround == preflop) RETURN (Ante + ncurrentbets) FORCE
+WHEN (betround == flop)    RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE
+WHEN (betround == turn)    RETURN (Ante + nbetsround_preflop + nbetsround_flop + ncurrentbets) FORCE
+WHEN (betround == river)   RETURN (Ante + nbetsround_preflop + nbetsround_flop + nbetsround_turn + ncurrentbets) FORCE 
 WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
 
 ##TotalInvestedThisRound##
-(betround == ConstBetRoundPreflop) ? (ncurrentbets + Ante) : ncurrentbets
+(betround == preflop) ? (ncurrentbets + Ante) : ncurrentbets

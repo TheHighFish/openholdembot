@@ -85,17 +85,17 @@ HadSecondOverPairOnFlop AND (($$cr3==TopFlopCard)OR ($$cr3<TopFlopCard))
 
 ##HoldEm_HadPairOnFlop##
 // Pair in the hand
-WHEN ispair RETURN True FORCE
+WHEN ispair RETURN true FORCE
 // Pairing the board
-WHEN FirstHoleCardPairsTheFlop  RETURN True FORCE
-WHEN SecondHoleCardPairsTheFlop RETURN True FORCE 
+WHEN FirstHoleCardPairsTheFlop  RETURN true FORCE
+WHEN SecondHoleCardPairsTheFlop RETURN true FORCE 
 
 ##HoldEm_HadPairOnTurn##
 // We already had a pair at the flop...
-WHEN HadPairOnFlop RETURN True FORCE
+WHEN HadPairOnFlop RETURN true FORCE
 // ...or got a new one at the turn
-WHEN (RankOfFirstHoleCard == TurnCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard == TurnCard) RETURN True FORCE
+WHEN (RankOfFirstHoleCard == TurnCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == TurnCard) RETURN true FORCE
 // But we ignore FlopCardPairedOnTurn
 // because we only want to consider pairs
 // where we contribute at least one hole-card.
@@ -119,111 +119,111 @@ HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3)
 [ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
 
 ##FirstHoleCardPairsTheFlop##
-WHEN (RankOfFirstHoleCard  == FirstFlopCard)  RETURN True FORCE
-WHEN (RankOfFirstHoleCard  == SecondFlopCard) RETURN True FORCE
-WHEN (RankOfFirstHoleCard  == ThirdFlopCard)  RETURN True FORCE
-WHEN Others RETURN False FORCE
+WHEN (RankOfFirstHoleCard  == FirstFlopCard)  RETURN true FORCE
+WHEN (RankOfFirstHoleCard  == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfFirstHoleCard  == ThirdFlopCard)  RETURN true FORCE
+WHEN Others RETURN false FORCE
 
 ##SecondHoleCardPairsTheFlop##
-WHEN (RankOfSecondHoleCard  == FirstFlopCard)  RETURN True FORCE
-WHEN (RankOfSecondHoleCard  == SecondFlopCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard  == ThirdFlopCard)  RETURN True FORCE
-WHEN Others RETURN False FORCE
+WHEN (RankOfSecondHoleCard  == FirstFlopCard)  RETURN true FORCE
+WHEN (RankOfSecondHoleCard  == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard  == ThirdFlopCard)  RETURN true FORCE
+WHEN Others RETURN false FORCE
 
 ##HoldEm_HadTwoPairOnFlop##
-WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN True FORCE
-WHEN Others RETURN False FORCE
+WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN true FORCE
+WHEN Others RETURN false FORCE
 
 ##HaveGoodBackdoorStraightDrawAKQJT##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // Idiot-end does not matter here, we draw to the nuts
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b111110000000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b111110000000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawKQJT9##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b011111000000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b011111000000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawQJT98##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b001111100000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b001111100000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawJT987##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000111110000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b000111110000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawT9876##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000011111000000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b000011111000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw98765##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000001111100000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b000001111100000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw87654##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000111110000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000111110000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw76543##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000011111000) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000011111000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw65432##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000001111100) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000001111100) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw54321##
-WHEN betround != ConstBetRoundFlop RETURN False FORCE
+WHEN betround != flop RETURN false FORCE
 // We have to contribute both hole-cards.
 // contrary to the other functions we allow the idiot-end.
 // for a backdoor-wheeldraw to an A2345-straight
@@ -231,11 +231,11 @@ WHEN betround != ConstBetRoundFlop RETURN False FORCE
 // b) because an opponent only dominates us 
 //    if he holds 6X (X = 2..5) and hits (quite unlikely).
 // ....................................AKQJT98765432a-
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000000111110) != 2) RETURN False FORCE
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000000111110) != 2) RETURN false FORCE
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
-WHEN (BitCount(rankbits BitAnd 0b000000000111110) != 3) RETURN False FORCE
-WHEN Others RETURN True FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000000111110) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HoldEm_HaveBackdoorStraightDraw##
 // This code only consider backdoor-straightdraws,
@@ -362,25 +362,25 @@ ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard 
 AND NOT HaveStraight 
 
 ##HoldEm_HaveBackdoorFlushDrawContributingTwoCards##
-    (betround == ConstBetRoundFlop)
+    (betround == flop)
 AND (nsuited >= 3)
 AND ($$ps0 == tsuit)
 AND ($$ps1 == tsuit)
 
 ##HoldEm_HaveBackdoorNutFlushDraw##
-    (betround == ConstBetRoundFlop)
+    (betround == flop)
 AND (nsuited >= 3)
 AND (nsuited > nsuitedcommon) 
 AND (NumberOfUnknownSuitedOvercards == 0)
 
 ##HoldEm_HaveBackdoorSecondNutFlushDraw##
-    (betround == ConstBetRoundFlop)
+    (betround == flop)
 AND (nsuited >= 3)
 AND (nsuited > nsuitedcommon) 
 AND (NumberOfUnknownSuitedOvercards == 1)
 
 ##HoldEm_HaveBackdoorThirdNutFlushDraw##
-    (betround == ConstBetRoundFlop)
+    (betround == flop)
 AND (nsuited >= 3)
 AND (nsuited > nsuitedcommon) 
 AND (NumberOfUnknownSuitedOvercards == 2)
@@ -435,22 +435,22 @@ ranklocommon
 -1
 
 ##HoldEm_HaveBottomPair##
-WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN true FORCE
 
 ##HoldEm_HaveSecondBottomPair##
-WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN True FORCE
-WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN True FORCE
+WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN true FORCE
 
 ##HoldEm_HaveBottomSet##
-WHEN ispair AND HaveBottomPair RETURN True FORCE
+WHEN ispair AND HaveBottomPair RETURN true FORCE
 
 ##HoldEm_HaveBottomTrips##
-WHEN RankOfFirstHoleCard  == RankOfBottomPairOnBoard RETURN True FORCE
-WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN True FORCE
+WHEN RankOfFirstHoleCard  == RankOfBottomPairOnBoard RETURN true FORCE
+WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN true FORCE
 
 ##HoldEm_HaveBottomTwoPair##
-WHEN HaveBottomPair AND HaveSecondBottomPair RETURN True FORCE
+WHEN HaveBottomPair AND HaveSecondBottomPair RETURN true FORCE
 
 ##HoldEm_HaveDoubleGutshotDraw##
    `((rankbits >> 1) & 0b1011101) == 5  // A_345_7
@@ -477,30 +477,30 @@ OR `((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
 // 
 // Good one, contributing 2 cards
-WHEN HaveFlushDrawContributingTwoCards RETURN True FORCE		
+WHEN HaveFlushDrawContributingTwoCards RETURN true FORCE		
 // Best one
-WHEN HaveNutFlushDraw RETURN True FORCE	
+WHEN HaveNutFlushDraw RETURN true FORCE	
 // Contributing only single card:
-WHEN HaveGoodFlushDrawContributingOnlyOneCard RETURN True FORCE	
+WHEN HaveGoodFlushDrawContributingOnlyOneCard RETURN true FORCE	
 
 ##HoldEm_HaveFlushDrawContributingTwoCards##
-WHEN ((nsuited == 4) AND (nsuitedcommon == 2)) RETURN True FORCE
+WHEN ((nsuited == 4) AND (nsuitedcommon == 2)) RETURN true FORCE
 
 ##HoldEm_HaveGoodFlushDrawContributingOnlyOneCard##
 // The quality of flush-draws with just one card in hand
 // depends on the probability of an opponent holding a better card
 // depends on the number of opponents.
 // http://www.maxinmontreal.com/forums/viewforum.php?f=156
-WHEN (NOT HaveAnyFlushDrawContributingOnlyOneCard) RETURN False FORCE
+WHEN (NOT HaveAnyFlushDrawContributingOnlyOneCard) RETURN false FORCE
 // Headsup: at least fifth-best
-WHEN ((nopponentsplaying = 1) AND (NumberOfUnknownSuitedOvercards <= 4)) RETURN True FORCE
+WHEN ((nopponentsplaying = 1) AND (NumberOfUnknownSuitedOvercards <= 4)) RETURN true FORCE
 // 3-handed: at least third-best
-WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN True FORCE
+WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN true FORCE
 // 4-handed: at least second-best
-WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN True FORCE
+WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN true FORCE
 
 ##HoldEm_HaveAnyFlushDrawContributingOnlyOneCard##
-WHEN ((nsuited >= 4) AND (nsuitedcommon > 2)) RETURN True FORCE
+WHEN ((nsuited >= 4) AND (nsuitedcommon > 2)) RETURN true FORCE
 
 ##HoldEm_HaveFullHouse##
 isfullhouse OR HaveQuads
@@ -882,8 +882,8 @@ AND (BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightForVillai
 
 ##HoldEm_HaveNutStraightDraw##
 WHEN FlushDrawPossible RETURN HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw FORCE
-WHEN HaveNutStraight RETURN True FORCE
-WHEN HaveUnDiscountedNutStraightDraw RETURN True FORCE
+WHEN HaveNutStraight RETURN true FORCE
+WHEN HaveUnDiscountedNutStraightDraw RETURN true FORCE
 
 ##HoldEm_HaveUnDiscountedNutStraightDraw##
 (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) 
@@ -906,7 +906,7 @@ HaveAnyKindOfInsideStraightDraw
 // (at my higher end and at his bottom end.
 // Therefore a SF must be possible with the 5 cards above my flush-card
 // and at least 3 of these 5 cards must be at the board.
-isroyalflush ? False :
+isroyalflush ? false :
 NOT isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
 (`((srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
 
@@ -956,7 +956,7 @@ ispair
 ##HoldEm_HaveRunnerRunnerFlushAtRiver##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=20307&p=143536#p143536
     HaveFlush
-AND (betround == ConstBetRoundRiver)
+AND (betround == river)
 AND (nsuited == 5)
 AND (SuitsOnFlop >= 2)
 AND (TurnSuit==RiverSuit) 
@@ -1049,8 +1049,8 @@ rankbitscommon & (~RankBitsCommonBoardPairs)
 (RankBitsCommonWithoutPairs >> Two)   & 1 ? Two   : 0
 
 ##HoldEm_HaveTopNonBoardPairedPair##
-   [(betround >= ConstBetRoundFlop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
-OR [(betround >= ConstBetRoundFlop) AND (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
+   [(betround >= flop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
+OR [(betround >= flop) AND (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
 
 ##HoldEm_HaveTopPair##
 [ RankOfFirstHoleCard==rankhicommon OR RankOfSecondHoleCard==rankhicommon ]
@@ -1104,12 +1104,12 @@ OR (HigherHoleCardInPokerVal == RiverCard)
 
 ##HoldEm_HaveUnderStraight##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19504
-WHEN NOT HaveStraight RETURN False FORCE
-WHEN HaveNutStraight  RETURN False FORCE
-WHEN StraightOnBoard  RETURN False FORCE
-WHEN (pcbits == 0b00011) RETURN True FORCE
-WHEN (pcbits == 0b00001) RETURN True FORCE
-WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN True FORCE
+WHEN NOT HaveStraight RETURN false FORCE
+WHEN HaveNutStraight  RETURN false FORCE
+WHEN StraightOnBoard  RETURN false FORCE
+WHEN (pcbits == 0b00011) RETURN true FORCE
+WHEN (pcbits == 0b00001) RETURN true FORCE
+WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN true FORCE
 
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
@@ -1137,7 +1137,7 @@ WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RET
 ispair
 
 ##HoldEm_RunnerRunnerFlushPossibleAtRiver##
-(betround == ConstBetRoundRiver AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+(betround == river AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
 
 ##HoldEm_SuitsInHand##
 ($$ps0 == $$ps1) ? 1 :

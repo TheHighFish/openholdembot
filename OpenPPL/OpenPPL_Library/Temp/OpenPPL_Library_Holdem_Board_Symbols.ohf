@@ -63,13 +63,13 @@
 //*****************************************************************************
 
 ##AcePresentOnFlop##
-WHEN (FirstFlopCard == ace)  RETURN True FORCE
-WHEN (SecondFlopCard == ace) RETURN True FORCE
-WHEN (ThirdFlopCard == ace)  RETURN True FORCE
+WHEN (FirstFlopCard == ace)  RETURN true FORCE
+WHEN (SecondFlopCard == ace) RETURN true FORCE
+WHEN (ThirdFlopCard == ace)  RETURN true FORCE
 
 ##AcePresentOnTurn##
-WHEN AcePresentOnFlop RETURN True FORCE
-WHEN (TurnCard == ace) RETURN True FORCE
+WHEN AcePresentOnFlop RETURN true FORCE
+WHEN (TurnCard == ace) RETURN true FORCE
 
 ##BestBoardCard##
 rankhicommon
@@ -138,7 +138,7 @@ OR (ThirdFlopCard == king)
 StraightPossibleOnFlop AND NOT ExactlyOneStraightPossibleOnFlop
 
 ##MoreThanOneStraightPossibleOnRiver##
-(betround == ConstBetRoundRiver AND (NumberOfStraightsPossibleOnRiver > 1))
+(betround == river AND (NumberOfStraightsPossibleOnRiver > 1))
 
 ##NumberOfStraightsPossibleOnTurn##
 // First part checks if there is a straight possible (max 2 cards missing)
@@ -280,24 +280,24 @@ NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 (nstraightflushfillcommon <= 2)
 
 ##SuitsOnBoard##
-(betround == ConstBetRoundFlop)  ? SuitsOnFlop :
-(betround == ConstBetRoundTurn)  ? SuitsOnTurn :
-(betround == ConstBetRoundRiver) ? SuitsOnRiver :
+(betround == flop)  ? SuitsOnFlop :
+(betround == turn)  ? SuitsOnTurn :
+(betround == river) ? SuitsOnRiver :
 HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 
 ##SuitsOnFlop##
-(betround < ConstBetRoundFlop) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+(betround < flop) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ (FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit) ? 1 :
  ((FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit != SecondFlopSuit) OR (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit)) ? 2 :
   (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit AND FirstFlopSuit != ThirdFlopSuit) ? 3 : ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
 
 ##SuitsOnRiver##
-(betround < ConstBetRoundRiver) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+(betround < river) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnTurn
   + (((RiverSuit != FirstFlopSuit) AND (RiverSuit != SecondFlopSuit) AND (RiverSuit != ThirdFlopSuit) AND (RiverSuit != TurnSuit)) ? 1 : 0)]
   
 ##SuitsOnTurn##
-(betround < ConstBetRoundTurn) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+(betround < turn) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
 [ SuitsOnFlop 
   + (((TurnSuit != FirstFlopSuit) AND (TurnSuit != SecondFlopSuit) AND (TurnSuit != ThirdFlopSuit)) ? 1 : 0)]
   
@@ -402,9 +402,9 @@ AND TurnCard > ThirdFlopCard ]
 (pokervalcommon & twopair) OR (pokervalcommon & fullhouse)
 
 ##TwoPairOnBoardOnTurn##
-   (betround>ConstBetRoundFlop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)
-OR (betround>ConstBetRoundFlop AND $$cr0==$$cr2 AND $$cr1==$$cr3 AND $$cr0!=$$cr1)
-OR (betround>ConstBetRoundFlop AND $$cr0==$$cr3 AND $$cr1==$$cr2 AND $$cr0!=$$cr1)
+   (betround>flop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)
+OR (betround>flop AND $$cr0==$$cr2 AND $$cr1==$$cr3 AND $$cr0!=$$cr1)
+OR (betround>flop AND $$cr0==$$cr3 AND $$cr1==$$cr2 AND $$cr0!=$$cr1)
 
 ##UncoordinatedFlop##
 NOT PairOnFlop
