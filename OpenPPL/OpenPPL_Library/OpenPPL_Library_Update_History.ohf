@@ -117,24 +117,6 @@ WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manua
 WHEN (prevaction == -1) RETURN None FORCE
 WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 
-##CalculateMissingSmallBlind##
-// True, if SB is missing, false otherwise
-// Should be called at our first action preflop only.
-WHEN [nopponentsdealt <= 0] RETURN False FORCE
-WHEN [CurrentbetOfDealPosition1Chair == sblind] RETURN False FORCE
-// If we are NOT the Second player to be dealt and see a bet 
-// of 1 big blind left to the dealer, then it is the big blind (SB missing)
-WHEN [(dealposition != 2) AND (CurrentbetOfDealPosition1Chair == bblind)] RETURN True FORCE
-// Problematic is only the case when I am in "big blind" (Second player to be dealt)
-// * if bet of DealPosition1Chair > 1 bblind then SB raised and is present
-// * if bet = 1 big blind and players "behind me" did act, then SB is present and limped
-// * if bet = 1 big blind and players behind me still to act, then SB is missing
-WHEN [(dealposition == 2) AND (CurrentbetOfDealPosition1Chair > bblind)] RETURN False FORCE
-// Case 2 and 3: precondition: bet = 1 big blind
-WHEN [(dealposition == 2) AND PlayersBehindDealPosition2ChairDidAct] RETURN False FORCE
-WHEN [(dealposition == 2) AND NOT PlayersBehindDealPosition2ChairDidAct] RETURN True FORCE
-WHEN Others RETURN ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY FORCE
-
 ##CalculateStartingChips##
 // Precondition: first hand, preflop
 (currentbet + balance + ante)

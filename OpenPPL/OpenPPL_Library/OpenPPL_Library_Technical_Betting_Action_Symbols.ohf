@@ -62,17 +62,17 @@ OR (prevaction == 5) // Jamming the slider
 
 ##PlayersRaisingOrColdCallingTheLastRaise##
 // Counting the last raiser + all cold callers
-(LastRaiserCurrentBet <= 0) ? 0 :
-  (currentbet0 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet1 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet2 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet3 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet4 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet5 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet6 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet7 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet8 == LastRaiserCurrentBet ? 1 : 0)
-+ (currentbet9 == LastRaiserCurrentBet ? 1 : 0)
+(currentbet_lastraiserchair <= 0) ? 0 :
+  (currentbet0 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet1 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet2 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet3 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet4 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet5 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet6 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet7 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet8 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet9 == currentbet_lastraiserchair ? 1 : 0)
 
 ##ChecksAfterHero##
 // No checks preflop. Not even big blind can check (game over).
