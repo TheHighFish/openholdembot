@@ -50,11 +50,12 @@ CSymbolEngineChairs::CSymbolEngineChairs() {
 	// we assure correct ordering by checking if they are initialized.
   assert(p_symbol_engine_active_dealt_playing != NULL);
   assert(p_symbol_engine_checks_bets_folds != NULL);
-  assert(p_symbol_engine_history != NULL);
   assert(p_symbol_engine_poker_action != NULL);
   assert(p_symbol_engine_positions != NULL);
   assert(p_symbol_engine_userchair != NULL);
   assert(p_symbol_engine_tablelimits != NULL);
+  // Also using p_symbol_engine_history->DidAct()
+  // but that's no real dependency, as it is from the past
 }
 
 CSymbolEngineChairs::~CSymbolEngineChairs() {

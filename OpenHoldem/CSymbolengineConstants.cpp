@@ -50,6 +50,11 @@ void CSymbolEngineConstants::UpdateOnHeartbeat() {
 
 bool CSymbolEngineConstants::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
+  if (name.GetLength() > 8) {
+    // Another fast exit
+    // Symbol of a different symbol-engine
+    return false;
+  }
   // Card ranks 
   // (OpenHoldem, not StdDeck. OH counts 2..14, StdDeck counts 0..12)
 	if (name == "ace") {
@@ -106,6 +111,14 @@ bool CSymbolEngineConstants::EvaluateSymbol(const CString name, double *result, 
     *result = Suit_SPADES;
     return true;
   }
+  if (name == "true") {
+    *result = true;
+    return true;
+  }
+  if (name == "false") {
+    *result = false;
+    return true;
+  }
 	// Symbol of a different symbol-engine
 	return false;
 }
@@ -113,5 +126,6 @@ bool CSymbolEngineConstants::EvaluateSymbol(const CString name, double *result, 
 CString CSymbolEngineConstants::SymbolsProvided() {
   return "ace king queen jack ten "
     "preflop flop turn river " 
-    "clubs diamonds hearts spades ";
+    "clubs diamonds hearts spades "
+    "true false ";
 }

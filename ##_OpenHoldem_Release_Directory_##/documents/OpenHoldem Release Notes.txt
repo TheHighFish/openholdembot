@@ -7,8 +7,9 @@ NEW STUFF:
   The symbols can of course also be addressed by more logical names
   like suitbitsplayer_diamonds that get supported by the new multiplexer-engine.
   [THF]
-- Introducing new constanmt symbols more more verbosity and for use with the multiplexer:
-  ace, king, queen, jack, ten, preflop, flop, turn, river, clubs, diamonds, hearts, spades.
+- Introducing new constanmt symbols for more verbosity and for use with the multiplexer:
+  ace, king, queen, jack, ten, preflop, flop, turn, river, clubs, diamonds, hearts, spades,
+  true, false.
   [THF]
 - New symbols previousround and currentround (same es betround),
   especially meant for the multiplexer.
