@@ -82,11 +82,7 @@ WHEN (not istournament) RETURN false FORCE
 WHEN (nplayersseated = 2) RETURN true FORCE
 
 ##PlayersAtStartOfThisRound##
-(betround == preflop) ? nplayersround_preflop :
-(betround == flop)    ? nplayersround_flop :
-(betround == turn)    ? nplayersround_turn :
-(betround == river)   ? nplayersround_river :
-ERROR_Betround_Out_Of_Range
+nplayersround_currentround
 
 ##Opponents##
 OpponentsLeft
@@ -110,7 +106,7 @@ sitename$ongame
 NumberOfOpponentsAllin > 0
 
 ##Opponents_SumAllinBits##
-`Opponents_AllinBits
+BitCount(Opponents_AllinBits)
 
 ##Opponents_AllinBits##
 [(betround == preflop) AND NOT Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?

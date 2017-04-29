@@ -65,32 +65,14 @@
 ##BigBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
 (bet <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
-(bigblindchair == 0) ? (currentbet0 / bet) :
-(bigblindchair == 1) ? (currentbet1 / bet) :
-(bigblindchair == 2) ? (currentbet2 / bet) :
-(bigblindchair == 3) ? (currentbet3 / bet) :
-(bigblindchair == 4) ? (currentbet4 / bet) :
-(bigblindchair == 5) ? (currentbet5 / bet) :
-(bigblindchair == 6) ? (currentbet6 / bet) :
-(bigblindchair == 7) ? (currentbet7 / bet) :
-(bigblindchair == 8) ? (currentbet8 / bet) :
-(bigblindchair == 9) ? (currentbet9 / bet) :
-ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+(currentbet_bigblindchair  / bet)
 
 ##SmallBlindCurrentBet##
 // Amount in bets (big blinds for preflop)
 (bet <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
-(smallblindchair == 0) ? (currentbet0 / bet) :
-(smallblindchair == 1) ? (currentbet1 / bet) :
-(smallblindchair == 2) ? (currentbet2 / bet) :
-(smallblindchair == 3) ? (currentbet3 / bet) :
-(smallblindchair == 4) ? (currentbet4 / bet) :
-(smallblindchair == 5) ? (currentbet5 / bet) :
-(smallblindchair == 6) ? (currentbet6 / bet) :
-(smallblindchair == 7) ? (currentbet7 / bet) :
-(smallblindchair == 8) ? (currentbet8 / bet) :
-(smallblindchair == 9) ? (currentbet9 / bet) :
-ERROR_smallblindchair_Not_Recognized__Check_Your_TableMap
+(smallblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+(currentbet_smallblindchair  / bet)
 
 ##DollarsToCallForMisScrapedEverything##
 // My balance and opponents bet miss-scraped
