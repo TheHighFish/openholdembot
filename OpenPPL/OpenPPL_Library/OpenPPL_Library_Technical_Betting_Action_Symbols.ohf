@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -145,16 +145,16 @@ OR [(currentbet9 > 0) AND (currentbet9 < sblind) AND (balance9 > 0)]
 // First orbit preflop only
 // Does not count the user
 // Does not count the big-blind, who can't limp
-  [(currentbet0 == bblind) AND (userchair != 0) AND (BigBlindChair != 0) ? 1 : 0]
-+ [(currentbet1 == bblind) AND (userchair != 1) AND (BigBlindChair != 1) ? 1 : 0]
-+ [(currentbet2 == bblind) AND (userchair != 2) AND (BigBlindChair != 2) ? 1 : 0]
-+ [(currentbet3 == bblind) AND (userchair != 3) AND (BigBlindChair != 3) ? 1 : 0]
-+ [(currentbet4 == bblind) AND (userchair != 4) AND (BigBlindChair != 4) ? 1 : 0]
-+ [(currentbet5 == bblind) AND (userchair != 5) AND (BigBlindChair != 5) ? 1 : 0]
-+ [(currentbet6 == bblind) AND (userchair != 6) AND (BigBlindChair != 6) ? 1 : 0]
-+ [(currentbet7 == bblind) AND (userchair != 7) AND (BigBlindChair != 7) ? 1 : 0]
-+ [(currentbet8 == bblind) AND (userchair != 8) AND (BigBlindChair != 8) ? 1 : 0]
-+ [(currentbet9 == bblind) AND (userchair != 9) AND (BigBlindChair != 9) ? 1 : 0]
+  [(currentbet0 == bblind) AND (userchair != 0) AND (bigblindchair != 0) ? 1 : 0]
++ [(currentbet1 == bblind) AND (userchair != 1) AND (bigblindchair != 1) ? 1 : 0]
++ [(currentbet2 == bblind) AND (userchair != 2) AND (bigblindchair != 2) ? 1 : 0]
++ [(currentbet3 == bblind) AND (userchair != 3) AND (bigblindchair != 3) ? 1 : 0]
++ [(currentbet4 == bblind) AND (userchair != 4) AND (bigblindchair != 4) ? 1 : 0]
++ [(currentbet5 == bblind) AND (userchair != 5) AND (bigblindchair != 5) ? 1 : 0]
++ [(currentbet6 == bblind) AND (userchair != 6) AND (bigblindchair != 6) ? 1 : 0]
++ [(currentbet7 == bblind) AND (userchair != 7) AND (bigblindchair != 7) ? 1 : 0]
++ [(currentbet8 == bblind) AND (userchair != 8) AND (bigblindchair != 8) ? 1 : 0]
++ [(currentbet9 == bblind) AND (userchair != 9) AND (bigblindchair != 9) ? 1 : 0]
 
 ##RaisesBeforeOurFirstAction##
 (BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :

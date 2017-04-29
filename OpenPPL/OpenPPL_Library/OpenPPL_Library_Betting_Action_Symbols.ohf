@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -72,12 +72,12 @@
 raischair
 
 ##BigBlindSittingOut##
-(BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
-((playersactivebits >> BigBlindChair & 1) == 0)
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+((playersactivebits >> bigblindchair & 1) == 0)
 
 ##SmallBlindSittingOut##
-(BigBlindChair < 0) ? ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap :
-((playersactivebits >> SmallBlindChair & 1) == 0)
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+((playersactivebits >> smallblindchair & 1) == 0)
 
 ##OpponentsLeftSittingOut##
 (opponentsactivebits & opponentsplayingbits) == 0

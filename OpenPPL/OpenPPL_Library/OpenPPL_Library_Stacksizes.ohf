@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -66,140 +66,140 @@
 
 ##ButtonStartingStackSize##
 // Amount in bets (big blinds for preflop)
-ButtonChair == 0 ? Chair0StartingStackSize :
-ButtonChair == 1 ? Chair1StartingStackSize :
-ButtonChair == 2 ? Chair2StartingStackSize :
-ButtonChair == 3 ? Chair3StartingStackSize :
-ButtonChair == 4 ? Chair4StartingStackSize :
-ButtonChair == 5 ? Chair5StartingStackSize :
-ButtonChair == 6 ? Chair6StartingStackSize :
-ButtonChair == 7 ? Chair7StartingStackSize :
-ButtonChair == 8 ? Chair8StartingStackSize :
-ButtonChair == 9 ? Chair9StartingStackSize :
-ERROR_ButtonChair_Not_Recognized__Check_Your_TableMap
+buttonchair == 0 ? Chair0StartingStackSize :
+buttonchair == 1 ? Chair1StartingStackSize :
+buttonchair == 2 ? Chair2StartingStackSize :
+buttonchair == 3 ? Chair3StartingStackSize :
+buttonchair == 4 ? Chair4StartingStackSize :
+buttonchair == 5 ? Chair5StartingStackSize :
+buttonchair == 6 ? Chair6StartingStackSize :
+buttonchair == 7 ? Chair7StartingStackSize :
+buttonchair == 8 ? Chair8StartingStackSize :
+buttonchair == 9 ? Chair9StartingStackSize :
+ERROR_buttonchair_Not_Recognized__Check_Your_TableMap
 
 ##CutOffStartingStackSize##
 // Amount in bets (big blinds for preflop)
-CutOffChair == 0 ? Chair0StartingStackSize :
-CutOffChair == 1 ? Chair1StartingStackSize :
-CutOffChair == 2 ? Chair2StartingStackSize :
-CutOffChair == 3 ? Chair3StartingStackSize :
-CutOffChair == 4 ? Chair4StartingStackSize :
-CutOffChair == 5 ? Chair5StartingStackSize :
-CutOffChair == 6 ? Chair6StartingStackSize :
-CutOffChair == 7 ? Chair7StartingStackSize :
-CutOffChair == 8 ? Chair8StartingStackSize :
-CutOffChair == 9 ? Chair9StartingStackSize :
-ERROR_CutOffChair_Not_Recognized__Check_Your_TableMap
+cutoffchair == 0 ? Chair0StartingStackSize :
+cutoffchair == 1 ? Chair1StartingStackSize :
+cutoffchair == 2 ? Chair2StartingStackSize :
+cutoffchair == 3 ? Chair3StartingStackSize :
+cutoffchair == 4 ? Chair4StartingStackSize :
+cutoffchair == 5 ? Chair5StartingStackSize :
+cutoffchair == 6 ? Chair6StartingStackSize :
+cutoffchair == 7 ? Chair7StartingStackSize :
+cutoffchair == 8 ? Chair8StartingStackSize :
+cutoffchair == 9 ? Chair9StartingStackSize :
+ERROR_cutoffchair_Not_Recognized__Check_Your_TableMap
 
 ##MiddlePosition3StartingStackSize##
 // Amount in bets (big blinds for preflop)
-MiddlePosition3Chair == 0 ? Chair0StartingStackSize :
-MiddlePosition3Chair == 1 ? Chair1StartingStackSize :
-MiddlePosition3Chair == 2 ? Chair2StartingStackSize :
-MiddlePosition3Chair == 3 ? Chair3StartingStackSize :
-MiddlePosition3Chair == 4 ? Chair4StartingStackSize :
-MiddlePosition3Chair == 5 ? Chair5StartingStackSize :
-MiddlePosition3Chair == 6 ? Chair6StartingStackSize :
-MiddlePosition3Chair == 7 ? Chair7StartingStackSize :
-MiddlePosition3Chair == 8 ? Chair8StartingStackSize :
-MiddlePosition3Chair == 9 ? Chair9StartingStackSize :
-ERROR_MiddlePosition3Chair_Not_Recognized__Check_Your_TableMap
+mp3chair == 0 ? Chair0StartingStackSize :
+mp3chair == 1 ? Chair1StartingStackSize :
+mp3chair == 2 ? Chair2StartingStackSize :
+mp3chair == 3 ? Chair3StartingStackSize :
+mp3chair == 4 ? Chair4StartingStackSize :
+mp3chair == 5 ? Chair5StartingStackSize :
+mp3chair == 6 ? Chair6StartingStackSize :
+mp3chair == 7 ? Chair7StartingStackSize :
+mp3chair == 8 ? Chair8StartingStackSize :
+mp3chair == 9 ? Chair9StartingStackSize :
+ERROR_mp3chair_Not_Recognized__Check_Your_TableMap
 
 ##MiddlePosition2StartingStackSize##
 // Amount in bets (big blinds for preflop)
-MiddlePosition2Chair == 0 ? Chair0StartingStackSize :
-MiddlePosition2Chair == 1 ? Chair1StartingStackSize :
-MiddlePosition2Chair == 2 ? Chair2StartingStackSize :
-MiddlePosition2Chair == 3 ? Chair3StartingStackSize :
-MiddlePosition2Chair == 4 ? Chair4StartingStackSize :
-MiddlePosition2Chair == 5 ? Chair5StartingStackSize :
-MiddlePosition2Chair == 6 ? Chair6StartingStackSize :
-MiddlePosition2Chair == 7 ? Chair7StartingStackSize :
-MiddlePosition2Chair == 8 ? Chair8StartingStackSize :
-MiddlePosition2Chair == 9 ? Chair9StartingStackSize :
-ERROR_MiddlePosition2Chair_Not_Recognized__Check_Your_TableMap
+mp2chair == 0 ? Chair0StartingStackSize :
+mp2chair == 1 ? Chair1StartingStackSize :
+mp2chair == 2 ? Chair2StartingStackSize :
+mp2chair == 3 ? Chair3StartingStackSize :
+mp2chair == 4 ? Chair4StartingStackSize :
+mp2chair == 5 ? Chair5StartingStackSize :
+mp2chair == 6 ? Chair6StartingStackSize :
+mp2chair == 7 ? Chair7StartingStackSize :
+mp2chair == 8 ? Chair8StartingStackSize :
+mp2chair == 9 ? Chair9StartingStackSize :
+ERROR_mp2chair_Not_Recognized__Check_Your_TableMap
 
 ##MiddlePosition1StartingStackSize##
 // Amount in bets (big blinds for preflop)
-MiddlePosition1Chair == 0 ? Chair0StartingStackSize :
-MiddlePosition1Chair == 1 ? Chair1StartingStackSize :
-MiddlePosition1Chair == 2 ? Chair2StartingStackSize :
-MiddlePosition1Chair == 3 ? Chair3StartingStackSize :
-MiddlePosition1Chair == 4 ? Chair4StartingStackSize :
-MiddlePosition1Chair == 5 ? Chair5StartingStackSize :
-MiddlePosition1Chair == 6 ? Chair6StartingStackSize :
-MiddlePosition1Chair == 7 ? Chair7StartingStackSize :
-MiddlePosition1Chair == 8 ? Chair8StartingStackSize :
-MiddlePosition1Chair == 9 ? Chair9StartingStackSize :
-ERROR_MiddlePosition1Chair_Not_Recognized__Check_Your_TableMap
+mp1chair == 0 ? Chair0StartingStackSize :
+mp1chair == 1 ? Chair1StartingStackSize :
+mp1chair == 2 ? Chair2StartingStackSize :
+mp1chair == 3 ? Chair3StartingStackSize :
+mp1chair == 4 ? Chair4StartingStackSize :
+mp1chair == 5 ? Chair5StartingStackSize :
+mp1chair == 6 ? Chair6StartingStackSize :
+mp1chair == 7 ? Chair7StartingStackSize :
+mp1chair == 8 ? Chair8StartingStackSize :
+mp1chair == 9 ? Chair9StartingStackSize :
+ERROR_mp1chair_Not_Recognized__Check_Your_TableMap
 
 ##EarlyPosition3StartingStackSize##
 // Amount in bets (big blinds for preflop)
-EarlyPosition3Chair == 0 ? Chair0StartingStackSize :
-EarlyPosition3Chair == 1 ? Chair1StartingStackSize :
-EarlyPosition3Chair == 2 ? Chair2StartingStackSize :
-EarlyPosition3Chair == 3 ? Chair3StartingStackSize :
-EarlyPosition3Chair == 4 ? Chair4StartingStackSize :
-EarlyPosition3Chair == 5 ? Chair5StartingStackSize :
-EarlyPosition3Chair == 6 ? Chair6StartingStackSize :
-EarlyPosition3Chair == 7 ? Chair7StartingStackSize :
-EarlyPosition3Chair == 8 ? Chair8StartingStackSize :
-EarlyPosition3Chair == 9 ? Chair9StartingStackSize :
-ERROR_EarlyPosition3Chair_Not_Recognized__Check_Your_TableMap
+ep3chair == 0 ? Chair0StartingStackSize :
+ep3chair == 1 ? Chair1StartingStackSize :
+ep3chair == 2 ? Chair2StartingStackSize :
+ep3chair == 3 ? Chair3StartingStackSize :
+ep3chair == 4 ? Chair4StartingStackSize :
+ep3chair == 5 ? Chair5StartingStackSize :
+ep3chair == 6 ? Chair6StartingStackSize :
+ep3chair == 7 ? Chair7StartingStackSize :
+ep3chair == 8 ? Chair8StartingStackSize :
+ep3chair == 9 ? Chair9StartingStackSize :
+ERROR_ep3chair_Not_Recognized__Check_Your_TableMap
 
 ##EarlyPosition2StartingStackSize##
 // Amount in bets (big blinds for preflop)
-EarlyPosition2Chair == 0 ? Chair0StartingStackSize :
-EarlyPosition2Chair == 1 ? Chair1StartingStackSize :
-EarlyPosition2Chair == 2 ? Chair2StartingStackSize :
-EarlyPosition2Chair == 3 ? Chair3StartingStackSize :
-EarlyPosition2Chair == 4 ? Chair4StartingStackSize :
-EarlyPosition2Chair == 5 ? Chair5StartingStackSize :
-EarlyPosition2Chair == 6 ? Chair6StartingStackSize :
-EarlyPosition2Chair == 7 ? Chair7StartingStackSize :
-EarlyPosition2Chair == 8 ? Chair8StartingStackSize :
-EarlyPosition2Chair == 9 ? Chair9StartingStackSize :
-ERROR_EarlyPosition2Chair_Not_Recognized__Check_Your_TableMap
+ep2chair == 0 ? Chair0StartingStackSize :
+ep2chair == 1 ? Chair1StartingStackSize :
+ep2chair == 2 ? Chair2StartingStackSize :
+ep2chair == 3 ? Chair3StartingStackSize :
+ep2chair == 4 ? Chair4StartingStackSize :
+ep2chair == 5 ? Chair5StartingStackSize :
+ep2chair == 6 ? Chair6StartingStackSize :
+ep2chair == 7 ? Chair7StartingStackSize :
+ep2chair == 8 ? Chair8StartingStackSize :
+ep2chair == 9 ? Chair9StartingStackSize :
+ERROR_ep2chair_Not_Recognized__Check_Your_TableMap
 
 ##EarlyPosition1StartingStackSize##
 // Amount in bets (big blinds for preflop)
-EarlyPosition1Chair == 0 ? Chair0StartingStackSize :
-EarlyPosition1Chair == 1 ? Chair1StartingStackSize :
-EarlyPosition1Chair == 2 ? Chair2StartingStackSize :
-EarlyPosition1Chair == 3 ? Chair3StartingStackSize :
-EarlyPosition1Chair == 4 ? Chair4StartingStackSize :
-EarlyPosition1Chair == 5 ? Chair5StartingStackSize :
-EarlyPosition1Chair == 6 ? Chair6StartingStackSize :
-EarlyPosition1Chair == 7 ? Chair7StartingStackSize :
-EarlyPosition1Chair == 8 ? Chair8StartingStackSize :
-EarlyPosition1Chair == 9 ? Chair9StartingStackSize :
-ERROR_EarlyPosition1Chair_Not_Recognized__Check_Your_TableMap
+ep1chair == 0 ? Chair0StartingStackSize :
+ep1chair == 1 ? Chair1StartingStackSize :
+ep1chair == 2 ? Chair2StartingStackSize :
+ep1chair == 3 ? Chair3StartingStackSize :
+ep1chair == 4 ? Chair4StartingStackSize :
+ep1chair == 5 ? Chair5StartingStackSize :
+ep1chair == 6 ? Chair6StartingStackSize :
+ep1chair == 7 ? Chair7StartingStackSize :
+ep1chair == 8 ? Chair8StartingStackSize :
+ep1chair == 9 ? Chair9StartingStackSize :
+ERROR_ep1chair_Not_Recognized__Check_Your_TableMap
 
 ##BigBlindStartingStackSize##
 // Amount in bets (big blinds for preflop)
-BigBlindChair == 0 ? Chair0StartingStackSize :
-BigBlindChair == 1 ? Chair1StartingStackSize :
-BigBlindChair == 2 ? Chair2StartingStackSize :
-BigBlindChair == 3 ? Chair3StartingStackSize :
-BigBlindChair == 4 ? Chair4StartingStackSize :
-BigBlindChair == 5 ? Chair5StartingStackSize :
-BigBlindChair == 6 ? Chair6StartingStackSize :
-BigBlindChair == 7 ? Chair7StartingStackSize :
-BigBlindChair == 8 ? Chair8StartingStackSize :
-BigBlindChair == 9 ? Chair9StartingStackSize :
-ERROR_BigBlindChair_Not_Recognized__Check_Your_TableMap
+bigblindchair == 0 ? Chair0StartingStackSize :
+bigblindchair == 1 ? Chair1StartingStackSize :
+bigblindchair == 2 ? Chair2StartingStackSize :
+bigblindchair == 3 ? Chair3StartingStackSize :
+bigblindchair == 4 ? Chair4StartingStackSize :
+bigblindchair == 5 ? Chair5StartingStackSize :
+bigblindchair == 6 ? Chair6StartingStackSize :
+bigblindchair == 7 ? Chair7StartingStackSize :
+bigblindchair == 8 ? Chair8StartingStackSize :
+bigblindchair == 9 ? Chair9StartingStackSize :
+ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap
 
 ##SmallBlindStartingStackSize##
 // Amount in bets (big blinds for preflop)
-SmallBlindChair == 0 ? Chair0StartingStackSize :
-SmallBlindChair == 1 ? Chair1StartingStackSize :
-SmallBlindChair == 2 ? Chair2StartingStackSize :
-SmallBlindChair == 3 ? Chair3StartingStackSize :
-SmallBlindChair == 4 ? Chair4StartingStackSize :
-SmallBlindChair == 5 ? Chair5StartingStackSize :
-SmallBlindChair == 6 ? Chair6StartingStackSize :
-SmallBlindChair == 7 ? Chair7StartingStackSize :
-SmallBlindChair == 8 ? Chair8StartingStackSize :
-SmallBlindChair == 9 ? Chair9StartingStackSize :
-ERROR_SmallBlindChair_Not_Recognized__Check_Your_TableMap
+smallblindchair == 0 ? Chair0StartingStackSize :
+smallblindchair == 1 ? Chair1StartingStackSize :
+smallblindchair == 2 ? Chair2StartingStackSize :
+smallblindchair == 3 ? Chair3StartingStackSize :
+smallblindchair == 4 ? Chair4StartingStackSize :
+smallblindchair == 5 ? Chair5StartingStackSize :
+smallblindchair == 6 ? Chair6StartingStackSize :
+smallblindchair == 7 ? Chair7StartingStackSize :
+smallblindchair == 8 ? Chair8StartingStackSize :
+smallblindchair == 9 ? Chair9StartingStackSize :
+ERROR_smallblindchair_Not_Recognized__Check_Your_TableMap

@@ -17,7 +17,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -75,7 +75,7 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 11.0.0 or later
+// Required OpenHoldem version: 11.2.0 or later
 //
 // Contributors:
 //   Bob3456
@@ -174,13 +174,13 @@
 (rankbitscommon & 0b111111110)
 
 ##RankBitsCommonFlop##
-  (FirstFlopCard != ConstCardAce ? 2**FirstFlopCard : RankBitsAce)
-| (SecondFlopCard != ConstCardAce ? 2**SecondFlopCard : RankBitsAce)
-| (ThirdFlopCard != ConstCardAce ? 2**ThirdFlopCard : RankBitsAce)
+  (FirstFlopCard != ace ? 2**FirstFlopCard : RankBitsAce)
+| (SecondFlopCard != ace ? 2**SecondFlopCard : RankBitsAce)
+| (ThirdFlopCard != ace ? 2**ThirdFlopCard : RankBitsAce)
 
 ##RankBitsCommonTurn##
   RankBitsCommonFlop
-| (TurnCard != ConstCardAce ? 2**TurnCard : RankBitsAce)
+| (TurnCard != ace ? 2**TurnCard : RankBitsAce)
 
 ##RankBitsCommonRiver##
 // As this can only be called at the river it is identical to rankbiscommon
@@ -205,8 +205,8 @@ NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= Second
 -1
 
 ##Srankbitshero##
- (($$ps0==tsuit ? (RankOfFirstHoleCard!=ConstCardAce ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
-| ($$ps1==tsuit ? (RankOfSecondHoleCard!=ConstCardAce ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
+ (($$ps0==tsuit ? (RankOfFirstHoleCard!=ace ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
+| ($$ps1==tsuit ? (RankOfSecondHoleCard!=ace ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
 
 ##Srankbitsavailable##
 // Available suited cards for other players,
