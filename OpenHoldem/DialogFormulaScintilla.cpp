@@ -2045,7 +2045,6 @@ void CDlgFormulaScintilla::PopulateSymbols()
   AddSymbol(parent, "lastraiserchair", "last raiser chair number (0-9)");
   // lastraiserchair and raischair are synonyms
 	AddSymbol(parent, "raischair", "synonym for lastraiserchair (0-9)");
-	AddSymbol(parent, "oppchair", "raising chair number (0-9)");
 	AddSymbol(parent, "chair$abc", "player abc chair number (0-9); -1 if not found");
 	AddSymbol(parent, "chairbit$abc", "player abc chairbit (1 << chai_r$abc); 0 if not found");
 

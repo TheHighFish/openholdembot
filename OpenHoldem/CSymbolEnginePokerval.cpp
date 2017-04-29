@@ -866,6 +866,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 		}
 		else if (memcmp(name, "rankhipoker", 11)==0 && strlen(name)==11)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = rankhipoker();
 		}
 		else
@@ -892,6 +893,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 		}
 		else if (memcmp(name, "srankhipoker", 12)==0 && strlen(name)==12)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = srankhipoker();
 		}
 		else
@@ -918,6 +920,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 		}
 		else if (memcmp(name, "ranklopoker", 11)==0 && strlen(name)==11)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ranklopoker();
 		}
 		else
@@ -944,6 +947,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 		}
 		else if (memcmp(name, "sranklopoker", 12)==0 && strlen(name)==12)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = sranklopoker();
 		}
 		else 
@@ -958,14 +962,17 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 	{
 		if (memcmp(name, "pokerval", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = pokerval();
 		}
 		else if (memcmp(name, "pokervalplayer", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = pokervalplayer();
 		}
 		else if (memcmp(name, "pokervalcommon", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = pokervalcommon();
 		}
 		else 
@@ -1011,6 +1018,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 		}
 		else if (memcmp(name, "rankbitspoker", 13)==0 && strlen(name)==13)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = rankbitspoker();
 		}
 		else 
@@ -1037,6 +1045,7 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 		}
 		else if (memcmp(name, "srankbitspoker", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = srankbitspoker();
 		}
 		else 
@@ -1051,70 +1060,87 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 	{
 		if (memcmp(name, "ishandup", 8)==0 && strlen(name)==8)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishandup(); 
 		}
 		else if (memcmp(name, "ishandupcommon", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishandupcommon();
 		}
 		else if (memcmp(name, "ishicard", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishicard();
 		}
 		else if (memcmp(name, "isonepair", 9)==0 && strlen(name)==9)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isonepair();
 		}
 		else if (memcmp(name, "istwopair", 9)==0 && strlen(name)==9)		
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = istwopair();
 		}
 		else if (memcmp(name, "isthreeofakind", 14)==0 && strlen(name)==14)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isthreeofakind();
 		}
 		else if (memcmp(name, "isstraight", 10)==0 && strlen(name)==10)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isstraight();
 		}
 		else if (memcmp(name, "isflush", 7)==0 && strlen(name)==7)			
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isflush();
 		}
 		else if (memcmp(name, "isfullhouse", 11)==0 && strlen(name)==11)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isfullhouse();
 		}
 		else if (memcmp(name, "isfourofakind", 13)==0 && strlen(name)==13)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isfourofakind();
 		}
 		else if (memcmp(name, "isstraightflush", 15)==0 && strlen(name)==15)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isstraightflush();
 		}
 		else if (memcmp(name, "isroyalflush", 12)==0 && strlen(name)==12)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = isroyalflush();
 		}
 		else if (memcmp(name, "ishipair", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishipair();
 		}
 		else if (memcmp(name, "islopair", 8)==0 && strlen(name)==8)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = islopair();
 		}
 		else if (memcmp(name, "ismidpair", 9)==0 && strlen(name)==9)		
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ismidpair();
 		}
 		else if (memcmp(name, "ishistraight", 12)==0 && strlen(name)==12)
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishistraight();
 		}
 		else if (memcmp(name, "ishiflush", 9)==0 && strlen(name)==9)	
 		{
+      WarnIfSymbolIsHoldemOnly(name);
 			*result = ishiflush();
 		}
 		else 
@@ -1128,10 +1154,12 @@ bool CSymbolEnginePokerval::EvaluateSymbol(const CString name, double *result, b
 	// Various symbols without grouping
 	else if (memcmp(name, "pcbits", 6)==0 && strlen(name)==6)	
 	{
+    WarnIfSymbolIsHoldemOnly(name);
 		*result = pcbits();
 	}
 	else if (memcmp(name, "npcbits", 7)==0 && strlen(name)==7)		
 	{
+    WarnIfSymbolIsHoldemOnly(name);
 		*result = npcbits();
 	}
 	else if (memcmp(name, "hicard", 6)==0 && strlen(name)==6)		

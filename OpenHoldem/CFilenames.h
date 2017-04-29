@@ -33,7 +33,7 @@ const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Omaha_NutFullHouseOrFourOfAKind.ohf",
   "OpenPPL_Library_Players_and_Opponents.ohf",
   "OpenPPL_Library_Position_Symbols.ohf",
-  "OpenPPL_Library_Stacksizes.ohf",
+  "OpenPPL_Library_Stacksizes.ohf", //!!!!!
   "OpenPPL_Library_Technical_Betting_Action_Symbols.ohf",
   "OpenPPL_Library_Technical_Card_Symbols.ohf",
   "OpenPPL_Library_Technical_HandStrength_Symbols.ohf",

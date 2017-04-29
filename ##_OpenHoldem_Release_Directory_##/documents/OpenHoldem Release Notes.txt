@@ -54,6 +54,11 @@ MAINTENANCE:
   Also introducing nutfullhouseorfourofakind_ntotal.
   Thanks to ChuckNeverMuck for testing.
   [THF]
+- Removed the following OpenPPL-symbols due to the introduction of the multiplexer-engine:
+  * ButtonStartingStackSize, CutOffStartingStackSize,...
+    which are now available as StartingStackSize_buttonchair, ...
+- Warning if a built-in HoldEm-symbol gets used in Omaha-logic.
+  [THF]
 
 
 v11.1.3 2017-04-12
