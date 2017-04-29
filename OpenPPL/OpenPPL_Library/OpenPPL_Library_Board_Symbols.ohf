@@ -179,7 +179,7 @@ OR (SecondFlopCard == king)
 OR (ThirdFlopCard == king)
 
 ##LowCardsOnBoard##
-`RankBitsCommonLowCardsOnly
+BitCount(RankBitsCommonLowCardsOnly)
 
 ##LowestBitOfRankBitsCommon##
 (1<<ranklocommon)
@@ -279,7 +279,7 @@ WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != Lowest
 
 ##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once
-`[rankbitscommon >> (rankhiplayer + 1)]
+BitCount[rankbitscommon >> (rankhiplayer + 1)]
 
 ##OvercardsOnBoard##
   ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
