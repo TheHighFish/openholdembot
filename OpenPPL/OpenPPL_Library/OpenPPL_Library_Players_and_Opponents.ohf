@@ -169,11 +169,11 @@ nopponentsplaying
 
 ##StillToActPreflop##
 // Precondition: first action, but this gets checked in StillToAct
-InBigBlind ? 0 :
-InSmallBlind ? 1 :
+WHEN InBigBlind RETURN 0 FORCE
+WHEN InSmallBlind RETURN 1 FORCE
 // Not in the blinds
-(MissingSmallBlind > 0) ? (nchairsdealtleft + 1) :
-(nchairsdealtleft + 2)
+WHEN (MissingSmallBlind > 0) RETURN (nchairsdealtleft + 1) FORCE
+WHEN Others RETURN (nchairsdealtleft + 2) FORCE
 
 ##StillToActPostflop##
 // Precondition: first action, but this gets checked in StillToAct

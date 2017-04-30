@@ -156,11 +156,8 @@ WHEN (me_re_MemMinOpponentStackSize > 0) RETURN me_re_MemMinOpponentStackSize FO
 WHEN Others RETURN CalculateMinOpponentStackSize FORCE
 
 ##MissingSmallBlind##
-// Gets initialized after our first action preflop
-WHEN (nplayersseated < 2) RETURN false FORCE
-WHEN (betround > preflop) RETURN me_re_MemMissingSmallBlind FORCE
-WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN me_re_MemMissingSmallBlind FORCE
-WHEN Others RETURN CalculateMissingSmallBlind FORCE
+// Gets now calculated by OpenHoldem
+missingsmallblind
 
 ##NumberOfRaisesBeforeFlop##
 WHEN (betround == preflop) RETURN Raises FORCE

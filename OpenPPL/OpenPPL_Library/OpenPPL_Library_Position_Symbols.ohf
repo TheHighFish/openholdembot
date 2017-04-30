@@ -69,20 +69,12 @@
 // we decided to provide both forms of naming in the library.
 
 ##SmallBlind##
-// Small blind missing, therefore we can't be small blind
-WHEN MissingSmallBlind RETURN false FORCE
-// 3 or more handed, normal blinds
-WHEN ((NOT TableIsHeadsup) AND (dealposition == 1)) RETURN true FORCE
-// Headsup, reversed blinds
-WHEN  (TableIsHeadsup AND (dealposition == 2)) RETURN true FORCE
+WHEN (userchair < 0) RETURN false FORCE
+WHEN (userchair == bigblindchair) RETURN true FORCE
 
 ##BigBlind##
-// Missing small blind, big blind is the first dealt player
-WHEN (MissingSmallBlind AND (dealposition == 1)) RETURN true FORCE
-// 3 or more handed, normal blinds
-WHEN ((NOT TableIsHeadsup) AND (dealposition == 2)) RETURN true FORCE
-// Headsup, reversed blinds
-WHEN (TableIsHeadsup AND (dealposition == 1)) RETURN true FORCE
+WHEN (userchair < 0) RETURN false FORCE
+WHEN (userchair == bigblindchair) RETURN true FORCE
 
 ##Button##
 // If the game in not 10-handed, some positions would be both "normal" and in the blinds.
@@ -117,8 +109,8 @@ WHEN (TableIsHeadsup AND (dealposition == 1)) RETURN true FORCE
 // independent of the players at the table (at least 3).
 // This symbols is especially useful to sitout 
 // after the last hand of a session (before the next blind).
-MissingSmallBlind ? (dealposition == 2) :
-(dealposition == 3)
+WHEN (userchair < 0) RETURN false FORCE
+WHEN (userchair == utgchair) RETURN true FORCE
 
 ##InSmallBlind##
 SmallBlind

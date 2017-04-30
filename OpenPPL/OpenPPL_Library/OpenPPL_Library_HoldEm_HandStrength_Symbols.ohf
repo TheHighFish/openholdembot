@@ -453,21 +453,21 @@ WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN true FORCE
 WHEN HaveBottomPair AND HaveSecondBottomPair RETURN true FORCE
 
 ##HoldEm_HaveDoubleGutshotDraw##
-   BitCount(rankbits >> 1) & 0b1011101) == 5  // A_345_7
-OR BitCount(rankbits >> 2) & 0b1011101) == 5  // 2_456_8
-OR BitCount(rankbits >> 3) & 0b1011101) == 5  // 3_567_9
-OR BitCount(rankbits >> 4) & 0b1011101) == 5  // 4_678_T
-OR BitCount(rankbits >> 5) & 0b1011101) == 5  // 5_789_J
-OR BitCount(rankbits >> 6) & 0b1011101) == 5  // 6_89T_Q
-OR BitCount(rankbits >> 7) & 0b1011101) == 5  // 8_9TJ_K
-OR BitCount(rankbits >> 8) & 0b1011101) == 5  // 9_TJQ_A
-OR BitCount(rankbits >> 1) & 0b11011011) == 6 // A2_45_78
-OR BitCount(rankbits >> 2) & 0b11011011) == 6 // 23_56_89
-OR BitCount(rankbits >> 3) & 0b11011011) == 6 // 34_67_9T
-OR BitCount(rankbits >> 4) & 0b11011011) == 6 // 45_78_TJ
-OR BitCount(rankbits >> 5) & 0b11011011) == 6 // 56_89_JQ
-OR BitCount(rankbits >> 6) & 0b11011011) == 6 // 67_9T_QK
-OR BitCount(rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
+   BitCount((rankbits >> 1) & 0b1011101) == 5  // A_345_7
+OR BitCount((rankbits >> 2) & 0b1011101) == 5  // 2_456_8
+OR BitCount((rankbits >> 3) & 0b1011101) == 5  // 3_567_9
+OR BitCount((rankbits >> 4) & 0b1011101) == 5  // 4_678_T
+OR BitCount((rankbits >> 5) & 0b1011101) == 5  // 5_789_J
+OR BitCount((rankbits >> 6) & 0b1011101) == 5  // 6_89T_Q
+OR BitCount((rankbits >> 7) & 0b1011101) == 5  // 8_9TJ_K
+OR BitCount((rankbits >> 8) & 0b1011101) == 5  // 9_TJQ_A
+OR BitCount((rankbits >> 1) & 0b11011011) == 6 // A2_45_78
+OR BitCount((rankbits >> 2) & 0b11011011) == 6 // 23_56_89
+OR BitCount((rankbits >> 3) & 0b11011011) == 6 // 34_67_9T
+OR BitCount((rankbits >> 4) & 0b11011011) == 6 // 45_78_TJ
+OR BitCount((rankbits >> 5) & 0b11011011) == 6 // 56_89_JQ
+OR BitCount((rankbits >> 6) & 0b11011011) == 6 // 67_9T_QK
+OR BitCount((rankbits >> 7) & 0b11011011) == 6 // 78_TJ_KA
 
 ##HoldEm_HaveFlush##
 (nsuited >= 5)
@@ -536,7 +536,7 @@ WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
 // ...minus the cards in my 5-card-hand which are better than my kicker
 // (We have to shift the kicker out of rankbitspoker, therefore +1)
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
-- (BitCountrankbitspoker >> (MyKicker + 1)))]
+- (BitCount(rankbitspoker >> (MyKicker + 1)))]
 
 ##RankBitsCommonWithAdditionalAce##
 rankbitscommon | 0b100000000000010
@@ -724,93 +724,93 @@ rankbits | 0b000000000001000
 rankbits | 0b000000000000100
 
 ##BestPossibleStraightForUsIfAceHitsTheBoard##
-BitCountRankBitsWithAdditionalAce & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalAce & 0b111110000000000) >= 5 ? ace :
 // We can ignore all straights without an ace here
-BitCountRankBitsWithAdditionalAce & 0b000000000111110) >= 5 ? Five :
+BitCount(RankBitsWithAdditionalAce & 0b000000000111110) >= 5 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfKingHitsTheBoard##
-BitCountRankBitsWithAdditionalKing & 0b111110000000000) >= 5 ? ace :
-BitCountRankBitsWithAdditionalKing & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalKing & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalKing & 0b011111000000000) >= 5 ? king :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfQueenHitsTheBoard##
-BitCountRankBitsWithAdditionalQueen & 0b111110000000000) >= 5 ? ace :
-BitCountRankBitsWithAdditionalQueen & 0b011111000000000) >= 5 ? king :
-BitCountRankBitsWithAdditionalQueen & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalQueen & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalQueen & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalQueen & 0b001111100000000) >= 5 ? queen :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfJackHitsTheBoard##
-BitCountRankBitsWithAdditionalJack & 0b111110000000000) >= 5 ? ace :
-BitCountRankBitsWithAdditionalJack & 0b011111000000000) >= 5 ? king :
-BitCountRankBitsWithAdditionalJack & 0b001111100000000) >= 5 ? queen :
-BitCountRankBitsWithAdditionalJack & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalJack & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalJack & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalJack & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalJack & 0b000111110000000) >= 5 ? jack :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfTenHitsTheBoard##
-BitCountRankBitsWithAdditionalTen & 0b111110000000000) >= 5 ? ace :
-BitCountRankBitsWithAdditionalTen & 0b011111000000000) >= 5 ? king :
-BitCountRankBitsWithAdditionalTen & 0b001111100000000) >= 5 ? queen :
-BitCountRankBitsWithAdditionalTen & 0b000111110000000) >= 5 ? jack :
-BitCountRankBitsWithAdditionalTen & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalTen & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalTen & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalTen & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalTen & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalTen & 0b000011111000000) >= 5 ? ten :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfNineHitsTheBoard##
-BitCountRankBitsWithAdditionalNine & 0b011111000000000) >= 5 ? king :
-BitCountRankBitsWithAdditionalNine & 0b001111100000000) >= 5 ? queen :
-BitCountRankBitsWithAdditionalNine & 0b000111110000000) >= 5 ? jack :
-BitCountRankBitsWithAdditionalNine & 0b000011111000000) >= 5 ? ten :
-BitCountRankBitsWithAdditionalNine & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalNine & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalNine & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalNine & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalNine & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalNine & 0b000001111100000) >= 5 ? Nine :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfEightHitsTheBoard##
-BitCountRankBitsWithAdditionalEight & 0b001111100000000) >= 5 ? queen :
-BitCountRankBitsWithAdditionalEight & 0b000111110000000) >= 5 ? jack :
-BitCountRankBitsWithAdditionalEight & 0b000011111000000) >= 5 ? ten :
-BitCountRankBitsWithAdditionalEight & 0b000001111100000) >= 5 ? Nine :
-BitCountRankBitsWithAdditionalEight & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalEight & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalEight & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalEight & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalEight & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalEight & 0b000000111110000) >= 5 ? Eight :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfSevenHitsTheBoard##
-BitCountRankBitsWithAdditionalSeven & 0b000111110000000) >= 5 ? jack :
-BitCountRankBitsWithAdditionalSeven & 0b000011111000000) >= 5 ? ten :
-BitCountRankBitsWithAdditionalSeven & 0b000001111100000) >= 5 ? Nine :
-BitCountRankBitsWithAdditionalSeven & 0b000000111110000) >= 5 ? Eight :
-BitCountRankBitsWithAdditionalSeven & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalSeven & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalSeven & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalSeven & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalSeven & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalSeven & 0b000000011111000) >= 5 ? Seven :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfSixHitsTheBoard##
-BitCountRankBitsWithAdditionalSix & 0b000011111000000) >= 5 ? ten :
-BitCountRankBitsWithAdditionalSix & 0b000001111100000) >= 5 ? Nine :
-BitCountRankBitsWithAdditionalSix & 0b000000111110000) >= 5 ? Eight :
-BitCountRankBitsWithAdditionalSix & 0b000000011111000) >= 5 ? Seven :
-BitCountRankBitsWithAdditionalSix & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalSix & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalSix & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalSix & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalSix & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalSix & 0b000000001111100) >= 5 ? Six :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfFiveHitsTheBoard##
-BitCountRankBitsWithAdditionalFive & 0b000001111100000) >= 5 ? Nine :
-BitCountRankBitsWithAdditionalFive & 0b000000111110000) >= 5 ? Eight :
-BitCountRankBitsWithAdditionalFive & 0b000000011111000) >= 5 ? Seven :
-BitCountRankBitsWithAdditionalFive & 0b000000001111100) >= 5 ? Six :
-BitCountRankBitsWithAdditionalFive & 0b000000000111110) >= 5 ? Five :
+BitCount(RankBitsWithAdditionalFive & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalFive & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalFive & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalFive & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalFive & 0b000000000111110) >= 5 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfFourHitsTheBoard##
-BitCountRankBitsWithAdditionalFour & 0b000000111110000) >= 5 ? Eight :
-BitCountRankBitsWithAdditionalFour & 0b000000011111000) >= 5 ? Seven :
-BitCountRankBitsWithAdditionalFour & 0b000000001111100) >= 5 ? Six :
-BitCountRankBitsWithAdditionalFour & 0b000000000111110) >= 5 ? Five :
+BitCount(RankBitsWithAdditionalFour & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalFour & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalFour & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalFour & 0b000000000111110) >= 5 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfThreeHitsTheBoard##
-BitCountRankBitsWithAdditionalThree & 0b000000011111000) >= 5 ? Seven :
-BitCountRankBitsWithAdditionalThree & 0b000000001111100) >= 5 ? Six :
-BitCountRankBitsWithAdditionalThree & 0b000000000111110) >= 5 ? Five :
+BitCount(RankBitsWithAdditionalThree & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalThree & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalThree & 0b000000000111110) >= 5 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##BestPossibleStraightForUsIfTwoHitsTheBoard##
-BitCountRankBitsWithAdditionalTwo & 0b000000001111100) >= 5 ? Six :
-BitCountRankBitsWithAdditionalTwo & 0b000000000111110) >= 5 ? Five :
+BitCount(RankBitsWithAdditionalTwo & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalTwo & 0b000000000111110) >= 5 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##GetBestPossibleStraightIfAceHitsTheBoard##
@@ -908,7 +908,7 @@ HaveAnyKindOfInsideStraightDraw
 // and at least 3 of these 5 cards must be at the board.
 isroyalflush ? false :
 NOT isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
-(BitCount(srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
+(BitCount((srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
 
 ##HoldEm_HaveNutStraightFlush##
 // nhandshi seems to be wrong for bottom straightflushes without an easy fix:
@@ -973,7 +973,7 @@ AND (  FirstHoleCardPairsTheFlop
 ##HoldEm_HaveTrips##
 NOT ispair
 AND   [(pokerval & threeofakind) AND NOT (pokervalcommon & threeofakind)
-   OR ((pokerval & fullhouse)    AND BitCountpcbits & 0b11100) == 1)
+   OR ((pokerval & fullhouse)    AND BitCount(pcbits & 0b11100) == 1)
    OR  (pokerval & fourofakind)  AND NOT (pokervalcommon & fourofakind)]
 
 ##TripsRank##
@@ -1083,7 +1083,7 @@ HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecond
 rankbitscommon & ConstAllRanksWithoutAceLow
 
 ##HoldEm_HaveTwoPair##
-BitCountrankbitsplayer & RankbitsCommonWithoutAceLow) == 2
+BitCount(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2
 
 ##HoldEm_HaveUnderPair##
 [ ispair AND rankhiplayer<ranklocommon ]
@@ -1114,7 +1114,7 @@ WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RET
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
 // e.g. on Board Ah Th, in Hand Jh 9h => 2 suited overcards: Kh Qh.
-BitCountSrankbitsavailable >> srankhiplayer)
+BitCount(Srankbitsavailable >> srankhiplayer)
 
 ##RankOfPairOfFullHouse##
 // The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)

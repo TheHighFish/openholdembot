@@ -89,88 +89,88 @@
 ERROR_Game_Is_Not_HeadsUp
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
-BitCountrankbitscommon & 0b011111000000000) >= 3 ? king  :
-BitCountrankbitscommon & 0b001111100000000) >= 3 ? queen :
-BitCountrankbitscommon & 0b000111110000000) >= 3 ? jack  :
-BitCountrankbitscommon & 0b000011111000000) >= 3 ? ten   :
-BitCountrankbitscommon & 0b000001111100000) >= 3 ? Nine  :
-BitCountrankbitscommon & 0b000000111110000) >= 3 ? Eight :
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh##
-BitCountrankbitscommon & 0b001111100000000) >= 3 ? queen :
-BitCountrankbitscommon & 0b000111110000000) >= 3 ? jack  :
-BitCountrankbitscommon & 0b000011111000000) >= 3 ? ten   :
-BitCountrankbitscommon & 0b000001111100000) >= 3 ? Nine  :
-BitCountrankbitscommon & 0b000000111110000) >= 3 ? Eight :
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh##
-BitCountrankbitscommon & 0b000111110000000) >= 3 ? jack  :
-BitCountrankbitscommon & 0b000011111000000) >= 3 ? ten   :
-BitCountrankbitscommon & 0b000001111100000) >= 3 ? Nine  :
-BitCountrankbitscommon & 0b000000111110000) >= 3 ? Eight :
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh##
-BitCountrankbitscommon & 0b000011111000000) >= 3 ? ten   :
-BitCountrankbitscommon & 0b000001111100000) >= 3 ? Nine  :
-BitCountrankbitscommon & 0b000000111110000) >= 3 ? Eight :
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh##
-BitCountrankbitscommon & 0b000001111100000) >= 3 ? Nine  :
-BitCountrankbitscommon & 0b000000111110000) >= 3 ? Eight :
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh##
-BitCountrankbitscommon & 0b000000111110000) >= 3 ? Eight :
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh##
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh##
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six  :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six  :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh##
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
 HINT_Such_A_Straight_Does_Not_Exist
 
 ##HighCardOfBestPossibleStraight##
-BitCountrankbitscommon & 0b111110000000000) >= 3 ? ace   :
-BitCountrankbitscommon & 0b011111000000000) >= 3 ? king  :
-BitCountrankbitscommon & 0b001111100000000) >= 3 ? queen :
-BitCountrankbitscommon & 0b000111110000000) >= 3 ? jack  :
-BitCountrankbitscommon & 0b000011111000000) >= 3 ? ten   :
-BitCountrankbitscommon & 0b000001111100000) >= 3 ? Nine  :
-BitCountrankbitscommon & 0b000000111110000) >= 3 ? Eight :
-BitCountrankbitscommon & 0b000000011111000) >= 3 ? Seven :
-BitCountrankbitscommon & 0b000000001111100) >= 3 ? Six   :
-BitCountrankbitscommon & 0b000000000111110) >= 3 ? Five  :
+BitCount(rankbitscommon & 0b111110000000000) >= 3 ? ace   :
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 -1
 
 ##HighCardOfSecondBestPossibleStraight##
