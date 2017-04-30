@@ -25,7 +25,7 @@
 
 CSymbolEngineMultiplexer *p_symbol_engine_multiplexer = NULL;
 
-const int kNumberOfSupportedPostfixes = 28;
+const int kNumberOfSupportedPostfixes = 29;
 // If you extend the list below please don't forget to update FastExitOnLastCharacter()
 const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {
   // Chairs, special ones
@@ -35,6 +35,7 @@ const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {
   "smallblindchair",
   "bigblindchair",
   "dealerchair",
+  "buttonchair",
   "cutoffchair",
   "mp3chair",
   "mp2chair",

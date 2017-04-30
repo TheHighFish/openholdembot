@@ -2030,6 +2030,7 @@ void CDlgFormulaScintilla::PopulateSymbols()
   AddSymbol(parent, "bigblindchair", "big blind chair number(0 - 9)");
   AddSymbol(parent, "smallblindchair", "small blind chair number (0-9)");
   AddSymbol(parent, "dealerchair", "dealer chair number (0-9)");
+  AddSymbol(parent, "buttonchair", "synonym for dealerchair (0-9)");
   AddSymbol(parent, "cutoffchair", "cut off chair number (0-9)");
   AddSymbol(parent, "mp3chair", "middle position 3 chair number (0-9)");
   AddSymbol(parent, "mp2chair", "middle position  2 chair number (0-9)");
