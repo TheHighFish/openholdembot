@@ -25,6 +25,13 @@ NEW STUFF:
 - A button "toggle all" for the countless debug-options.
   Thanks to ChuckneverMuck for the suggestion.
   [THF]
+- New built-in chair symbols for the multiplexer-engine 
+  (most of them have been formerly implemented in OpenPPL)
+  bigblindchair, smallblindchair, cutoffchair,
+  mp3chair, mp2chair, mp1chair, ep3chair, ep2chair, ep1chair, 
+  utgchair, headsupchair and buttonchair (synonym for dealerchair).
+  Also "new" is missingsmallblind that is necessary e.g. for StillToAct.
+  [THF]
 
 BUG FIXES:
 - Hand-expressions with specifix suits worked only for HoldEm 

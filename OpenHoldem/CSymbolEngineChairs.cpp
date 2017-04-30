@@ -283,14 +283,22 @@ bool CSymbolEngineChairs::EvaluateSymbol(const CString name, double *result, boo
     *result = BigBlindChair();
     return true;
   }
+  if (name == "missingsmallblind") {
+    *result = MissingSmallBlind();
+    return true;
+  }
   // Symbol of a different symbol-engine
 	return false;
 }
 
 CString CSymbolEngineChairs::SymbolsProvided() {
   //!!!!!
-  return "opponent_chair_headsup smallblind_chair bigblind_chair "
-    "cutoff_chair ";
+  return "headsupchair "
+    "smallblindchair bigblindchair "
+	"cutoffchair "
+	"ep3chair ep2chair ep1chair "
+	"mp3chair mp2chair mp1chair "
+    "missingsmallblind ";
 }
 
 
