@@ -110,9 +110,9 @@ bool CParseTreeTerminalNodeIdentifier::IsBinaryIdentifier() {
     "rankbitscommon",      "rankbitsplayer",     "rankbitspoker",
     "srankbits",           "srankbitscommon",    "srankbitsplayer",
     "srankbitspoker",      "myturnbits",         "pcbits"};
-  const int kNumberOfParameterizedBinaryIdentifiers = 4;
+  const int kNumberOfParameterizedBinaryIdentifiers = 5;
   static const char* kParameterizedBinaryIdentifiers[kNumberOfParameterizedBinaryIdentifiers] = {
-    "chairbit$", "raisbits", "callbits", "foldbits"};
+    "chairbit$", "raisbits", "callbits", "foldbits", "suitbits"};
 
   if (_node_type != kTokenIdentifier) return false;
   assert(_terminal_name != "");
