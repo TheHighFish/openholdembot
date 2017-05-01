@@ -275,6 +275,9 @@ double CParseTreeOperatorNode::EvaluateSibbling(
   // We allow NULL-nodes here, because that can happen 
   // after the end of a sequence of when-conditions
   if (first_second_or_third_sibbling == NULL) {
+    // !!! This code must no longer be called,
+    // as we have a new node type CParseTreeTerminalNodeEndOfFunction
+    assert(kThisMustNotHappen);
     // When evaluating an empty tree we evaluate a special symbol
     // kEmptyxpression_False_Zero_WhenOthersFoldForce
     // for better readability of the log-file.

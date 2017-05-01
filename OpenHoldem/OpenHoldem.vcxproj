@@ -223,6 +223,7 @@
     <ClCompile Include="COcclusionCheck.cpp" />
     <ClCompile Include="CParseTreeOperatorNode.cpp" />
     <ClCompile Include="CParseTreeTerminalNode.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeEndOfFunction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
     <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
@@ -509,6 +510,7 @@
     <ClInclude Include="COcclusionCheck.h" />
     <ClInclude Include="CParseTreeOperatorNode.h" />
     <ClInclude Include="CParseTreeTerminalNode.h" />
+    <ClInclude Include="CParseTreeTerminalNodeEndOfFunction.h" />
     <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
     <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
     <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />

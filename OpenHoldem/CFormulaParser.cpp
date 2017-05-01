@@ -29,6 +29,7 @@
 #include "CParseTreeRotator.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeBetsizeAction.h"
+#include "CParseTreeTerminalNodeEndOfFunction.h"
 #include "CParseTreeTerminalNodeFixedAction.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
 #include "CParseTreeTerminalNodeNumber.h"
@@ -146,7 +147,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
     if (!VerifyFunctionHeader(function_header)) {
       // Skip this function
       write_log(preferences.debug_parser(),
-        "[FormulaParser] Skipping bad function {%s]\n", function_header);
+        "[FormulaParser] Skipping bad function [%s]\n", function_header);
       continue;
     }
     ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
@@ -348,7 +349,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     // ##f$functionXYZ##
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 
-      "[FormulaParser] Parsing f$function\n");
+      "[FormulaParser] Parsing f$function %s\n", _function_name);
     function_body =	ParseFunctionBody();
     CheckForExtraTokensAfterEndOfFunction();
   } else if (_function_name.Left(4) == "list") {
@@ -424,23 +425,22 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody(){
   int token_ID = _tokenizer.LookAhead();
   if ((token_ID == kTokenEndOfFile) 
       || (token_ID == kTokenEndOfFunction)) {
-    // Empty function; evaluating to zero
-    TPParseTreeTerminalNodeNumber terminal_node = new CParseTreeTerminalNodeNumber(_tokenizer.LineRelative());
+    TPParseTreeTerminalNodeEndOfFunction terminal_node = new CParseTreeTerminalNodeEndOfFunction(_tokenizer.LineRelative());
+    // Either default bot-logic or
     // empty_expression__false__zero__when_others_fold_force
-    terminal_node->MakeConstant(0); 
     write_log(preferences.debug_parser(), 
-	    "[FormulaParser] Terminal node %i\n", terminal_node);
+	    "[FormulaParser] End_of_function node %i\n", terminal_node);
     return terminal_node;
   }
   if (token_ID == kTokenOperatorConditionalWhen) {
-  // OpenPPL-function
+    // OpenPPL-function
     TPParseTreeNode open_ended_when_condition = ParseOpenEndedWhenConditionSequence();
     write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Open ended when condition sequence %i\n", open_ended_when_condition);
     BackPatchOpenEndedWhenConditionSequence(open_ended_when_condition);
     return open_ended_when_condition;
   } else {	
-  // OH-script-function, single expression
+    // OH-script-function, single expression
     TPParseTreeNode expression = ParseExpression();
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Expression %i\n", expression);
@@ -654,6 +654,8 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
       continue;
     } else if ((token_ID == kTokenEndOfFile) 
         || (token_ID == kTokenEndOfFunction)) {
+      assert(when_condition != NULL);
+	    assert(last_when_condition != NULL);
       // Parsing successfully finished
       break;
     } else {
@@ -676,12 +678,12 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
 	if ((identifier.Left(4).MakeLower() != "user") 
       && (identifier.Left(3) != "me_")) { 
 		CParseErrors::Error("Unexpected identifier.\n"
-      "Valid options:\n"
-      "   * user-variable (user_utg_limp_raised)\n"
-      "   * memory-store-command (me_st_pi_3_141592653)\n"
-      "   * memory-increment-command (me_inc_flopsseen)\n"
-      "   * memory-add-command (me_add_outs_4)\n"
-      "   * memory-sub-command (me_sub_outs_1_5)\n");
+		  "Valid options:\n"
+		  "   * user-variable (user_utg_limp_raised)\n"
+		  "   * memory-store-command (me_st_pi_3_141592653)\n"
+		  "   * memory-increment-command (me_inc_flopsseen)\n"
+		  "   * memory-add-command (me_add_outs_4)\n"
+		  "   * memory-sub-command (me_sub_outs_1_5)\n");
 		return NULL;
 	}
 	TPParseTreeTerminalNodeIdentifier user_variable 
@@ -774,8 +776,8 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpressi
       "Expecting the betsize in big blinds.\n");
     return NULL;
   }
-	action->MakeRaiseToAction(expression);
-	return action;
+  action->MakeRaiseToAction(expression);
+  return action;
 }
 
 TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpression() {
@@ -811,11 +813,15 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpressi
 }
 
 void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
-    TPParseTreeNode first_when_condition_of_a_function) {
+  TPParseTreeNode first_when_condition_of_a_function) {
   // Backpatching everything after a complete functiuon got parsed
   TPParseTreeNode last_open_ended_when_condition = NULL;
   TPParseTreeNode current_when_condition = first_when_condition_of_a_function;
+  // Always holding the last good value, even if the current one is NULL.
+  // For handling the end-of-function-node.
+  TPParseTreeNode last_when_condition = current_when_condition;
   while (current_when_condition != NULL) {
+    last_when_condition = current_when_condition;
     if (current_when_condition->IsOpenEndedWhenCondition()) {
       // Setting the "Else"-part of the last open-ended when-condition
       // to the next open ended when condition
@@ -848,6 +854,19 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
       assert(!current_when_condition->IsAnyKindOfWhenCondition());
       break;
     }   
+  }
+  // End of when-condition sequence reached
+  assert(last_when_condition != NULL);
+  assert(last_when_condition->IsAnyKindOfWhenCondition());
+  // Insert special node for end of function
+  // Either default bot-logic or
+  // empty_expression__false__zero__when_others_fold_force
+  TPParseTreeTerminalNodeEndOfFunction end_of_function_node = new CParseTreeTerminalNodeEndOfFunction(_tokenizer.LineRelative());
+  last_when_condition->_third_sibbling = end_of_function_node;
+  if (last_open_ended_when_condition != NULL) {
+    if (last_open_ended_when_condition->IsOpenEndedWhenCondition()) {
+      last_open_ended_when_condition->_third_sibbling = end_of_function_node;
+    }
   }
 }
 
