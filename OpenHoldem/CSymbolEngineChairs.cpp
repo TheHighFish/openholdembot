@@ -207,6 +207,10 @@ int CSymbolEngineChairs::CalculateMissingSmallBlind() {
     // person with 1 bb must be the big-blind, small blind is missing
     return true;
   }
+  if (currentbet_of_dealposition1_chair <= 0) {
+    // Bad input, assume the normal case
+    return false;
+  }
   // All cases should be handled
   assert(false);
   return false;
