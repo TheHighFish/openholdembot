@@ -238,6 +238,10 @@ bool CSymbolEngineChairs::PlayersBehindDealPosition2ChairDidAct() {
 }
 
 bool CSymbolEngineChairs::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
+  if (name == "missingsmallblind") {
+    *result = MissingSmallBlind();
+    return true;
+  }
   if (RightCharacter(name) != 'r') {
     // Not a chair symbol
     return false;
@@ -287,21 +291,16 @@ bool CSymbolEngineChairs::EvaluateSymbol(const CString name, double *result, boo
     *result = BigBlindChair();
     return true;
   }
-  if (name == "missingsmallblind") {
-    *result = MissingSmallBlind();
-    return true;
-  }
   // Symbol of a different symbol-engine
 	return false;
 }
 
 CString CSymbolEngineChairs::SymbolsProvided() {
-  //!!!!!
   return "headsupchair "
     "smallblindchair bigblindchair "
-	"cutoffchair "
-	"ep3chair ep2chair ep1chair "
-	"mp3chair mp2chair mp1chair "
+  	"cutoffchair "
+	  "ep3chair ep2chair ep1chair "
+	  "mp3chair mp2chair mp1chair "
     "missingsmallblind ";
 }
 

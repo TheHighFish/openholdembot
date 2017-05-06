@@ -375,7 +375,7 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
 #ifdef OPENHOLDEM_PROGRAM
   // Perfect match found.
   // Write temporary results back.
-  // Only if the lnown value is "undefined",
+  // Only if the known value is "undefined",
   // without any worries about the new value
   if (p_table_state->_s_limit_info.handnumber() == "") {
     p_table_state->_s_limit_info._handnumber = new_handnumber;

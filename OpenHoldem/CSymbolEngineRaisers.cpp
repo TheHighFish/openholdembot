@@ -330,10 +330,12 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const CString name, double *result, bo
 		}
 		// Valid symbol
 		return true;
-	} else if (memcmp(name, "raischair", 9) == 0 && strlen(name) == 9) {
+	} else if (name == "raischair") {
 		*result = raischair();
-	} else if (memcmp(name, "firstraiser_chair", 17) == 0) {
+	} else if (name == "firstraiserchair") {
 		*result = firstraiser_chair();
+  } else if (name == "lastraiserchair") {
+    *result = raischair();
 	}	else if (memcmp(name, "raisbits", 8)==0 && strlen(name)==9) {
 		*result = raisbits(name[8]-'0');
 	} else if (memcmp(name, "lastraised", 10)==0 && strlen(name)==11) { 
@@ -347,7 +349,8 @@ bool CSymbolEngineRaisers::EvaluateSymbol(const CString name, double *result, bo
 }
 
 CString CSymbolEngineRaisers::SymbolsProvided() {
-  CString list = "nopponentstruelyraising raischair firstraiser_chair  ";
+  CString list = "nopponentstruelyraising ";
+  list += "raischair firstraiserchair lastraiserchair ";
   list += RangeOfSymbols("raisbits%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("lastraised%i", kBetroundPreflop, kBetroundRiver);
   return list;
