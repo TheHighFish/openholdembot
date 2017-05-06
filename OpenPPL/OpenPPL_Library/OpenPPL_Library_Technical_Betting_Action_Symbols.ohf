@@ -106,17 +106,17 @@ WHEN (AmountToCall > 0) RETURN (BetPositionFirstRaiser - 1) FORCE
 WHEN Others RETURN [betposition - 1] FORCE
 
 ##BetPositionFirstRaiser##
-WHEN (firstraiser_chair < 0) RETURN HINT_No_FirstRaiser FORCE
-WHEN (firstraiser_chair == 0) RETURN ac_betpos0 FORCE
-WHEN (firstraiser_chair == 1) RETURN ac_betpos1 FORCE
-WHEN (firstraiser_chair == 2) RETURN ac_betpos2 FORCE
-WHEN (firstraiser_chair == 3) RETURN ac_betpos3 FORCE
-WHEN (firstraiser_chair == 4) RETURN ac_betpos4 FORCE
-WHEN (firstraiser_chair == 5) RETURN ac_betpos5 FORCE
-WHEN (firstraiser_chair == 6) RETURN ac_betpos6 FORCE
-WHEN (firstraiser_chair == 7) RETURN ac_betpos7 FORCE
-WHEN (firstraiser_chair == 8) RETURN ac_betpos8 FORCE
-WHEN (firstraiser_chair == 9) RETURN ac_betpos9 FORCE
+WHEN (firstraiserchair < 0) RETURN HINT_No_FirstRaiser FORCE
+WHEN (firstraiserchair == 0) RETURN ac_betpos0 FORCE
+WHEN (firstraiserchair == 1) RETURN ac_betpos1 FORCE
+WHEN (firstraiserchair == 2) RETURN ac_betpos2 FORCE
+WHEN (firstraiserchair == 3) RETURN ac_betpos3 FORCE
+WHEN (firstraiserchair == 4) RETURN ac_betpos4 FORCE
+WHEN (firstraiserchair == 5) RETURN ac_betpos5 FORCE
+WHEN (firstraiserchair == 6) RETURN ac_betpos6 FORCE
+WHEN (firstraiserchair == 7) RETURN ac_betpos7 FORCE
+WHEN (firstraiserchair == 8) RETURN ac_betpos8 FORCE
+WHEN (firstraiserchair == 9) RETURN ac_betpos9 FORCE
 
 ##NoVillainBetOrRaisedOnFlop##
 ((raisbits2 & ~(1<<userchair)) == 0)

@@ -67,7 +67,7 @@
 
 ##StartingStackSize0##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance0 + currentbet0 + ante) / bet) :
@@ -75,7 +75,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize1##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance1 + currentbet1 + ante) / bet) :
@@ -83,7 +83,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize2##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance2 + currentbet2 + ante) / bet) :
@@ -91,7 +91,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize3##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance3 + currentbet3 + ante) / bet) :
@@ -99,7 +99,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize4##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance4 + currentbet4 + ante) / bet) :
@@ -107,7 +107,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize5##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance5 + currentbet5 + ante) / bet) :
@@ -115,7 +115,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize6##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance6 + currentbet6 + ante) / bet) :
@@ -123,7 +123,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize7##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance7 + currentbet7 + ante) / bet) :
@@ -131,7 +131,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize8##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance8 + currentbet8 + ante) / bet) :
@@ -139,7 +139,7 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 
 ##StartingStackSize9##
 // StartingStackSize of chair X,
-// to be used by the multiplexer e.g as "StartingStackSize_dealer_chair"
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
 // Amount in bets (big blinds for preflop).
 // Works preflop only.
 (bet > 0) ? ((balance9 + currentbet9 + ante) / bet) :
