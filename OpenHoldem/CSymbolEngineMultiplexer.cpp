@@ -19,6 +19,7 @@
 #include "CSymbolEngineMultiplexer.h"
 
 #include "CEngineContainer.h"
+#include "CFormulaParser.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 #include "..\StringFunctionsDLL\string_functions.h"
@@ -77,7 +78,7 @@ CSymbolEngineMultiplexer::~CSymbolEngineMultiplexer() {
 }
 
 void CSymbolEngineMultiplexer::InitOnStartup() {
-	ResetOnConnection();
+  ResetOnConnection();
 }
 
 void CSymbolEngineMultiplexer::ResetOnConnection() {
@@ -118,16 +119,30 @@ CString CSymbolEngineMultiplexer::MultiplexedSymbolName(CString name) {
   }
   CString postfix = name.Mid(underscore_position + 1);
   write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Postfix %s\n", postfix);
-  double evaluated_postfix = kUndefined;
+  bool valid_postfix = false;
   for (int i = 0; i < kNumberOfSupportedPostfixes; ++i) {
     if (postfix == kSupportedPostFixes[i]) {
-      p_engine_container->EvaluateSymbol(postfix, &evaluated_postfix, false);
+      valid_postfix = true;
       break;
     }
   }
-  if (evaluated_postfix == kUndefined) {
-    // Not a valid postfix
+  if (!valid_postfix) {
     return name;
+  }
+  double evaluated_postfix = kUndefined;
+  p_engine_container->EvaluateSymbol(postfix, &evaluated_postfix, false);
+  if (evaluated_postfix == kUndefined) {
+    // Valid postfix, but invalid (negative) value
+	  if (p_formula_parser->IsParsing()) {
+      // Some (chair) values are not available,
+      // but we want to continue to verify the entire multiplexer-symbol.
+      // Continue with chair 0
+      evaluated_postfix = 0;
+    } else {
+      // Playing, but this chair does not exist,
+      // e.g. ep1chair in a short-handed game.
+      return kEmptyExpression_False_Zero_WhenOthersFoldForce;
+    }
   }
   CString pure_name = name.Left(underscore_position);
   write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Pure name %s\n", pure_name);

@@ -1,4 +1,4 @@
-﻿v﻿11.2.0 2017-04-28
+﻿v﻿11.2.0 2017-05-xx
 ==================
 NEW STUFF:
 - New OpenHoldem symbols suitbitsplayerN and suitbitscommonN
@@ -46,6 +46,9 @@ BUG FIXES:
   [THF]
 - Improved blind-guessing headsup.
   Thanks to Relhby for the patch.
+  [THF]
+- Added 2 more blind-levels to the list of known blinds of the blind-guessing-module.
+  Thanks to Bitsy and Wetophelia for reporting.
   [THF]
 
 MAINTENANCE:

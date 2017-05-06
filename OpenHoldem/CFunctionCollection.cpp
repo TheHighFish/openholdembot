@@ -16,6 +16,7 @@
 
 #include "CAutoplayerTrace.h"
 #include "CDebugTab.h"
+#include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CFunction.h"
 #include "CParseErrors.h"
@@ -170,8 +171,18 @@ void CFunctionCollection::VerifyExistence(CString name) {
   // but as a built-in symbol to prevent symbol-caching.
   // Therefore we don't want to check if it is "missing" in the library.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19611
-  if (name == "Random") return;
-  if (Exists(name)) return;
+  if (name == "Random") {
+    return;
+  }
+  // First (and most common) case: simple symbol
+  if (Exists(name)) {
+    return;
+  }
+  // Second case: multiplexed function or OpenPPL-symbol
+  double dummy_result;
+  if (p_engine_container->EvaluateSymbol(name, &dummy_result)) {
+    return;
+  }
   // Error: function does not exist
   CString message;
   message.Format("Function used but never defined: %s\n\n", name);
