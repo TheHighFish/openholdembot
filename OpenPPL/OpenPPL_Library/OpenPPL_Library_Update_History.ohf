@@ -247,10 +247,13 @@ OR (betround    != me_re_MemOldGameStateBetround)
 // We can't use AND and OR here because of short circuiting.
 // We must use an operator that evaluates both sites.
 // The final result is meaningless.
-    me_st_MemOldGameStateDealerChair_dealerchair
-XOR me_st_MemOldGameStateCurrentBet_currentbet
+    me_st_MemOldGameStateCurrentBet_currentbet
 XOR me_st_MemOldGameStatePotSize_pot
 XOR me_st_MemOldGameStateBetround_betround
+// _dealerchair is a multiplexer-postfix nowadays
+// that gets textually replaced by its current value.
+// So we need an additional underscore here for a correct me_st_x_y-command.
+XOR me_st_MemOldGameStateDealerChair__dealerchair
 
 ##ResetOldGameStateAtHandReset##
 // We have to explicitly reset the old game-state at hand-reset,
