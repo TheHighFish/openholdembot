@@ -81,6 +81,7 @@ private:
 	int _autoplayer_actions[kNumberOfBetrounds + 1][k_autoplayer_function_fold];
  private:
   // Remebering symbol values of former streets
+  // Index 0 is unused
 	double _hist_sym[k_hist_sym_count][kNumberOfBetrounds+1];
 };
 

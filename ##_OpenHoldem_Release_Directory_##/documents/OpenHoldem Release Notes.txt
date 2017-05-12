@@ -50,6 +50,9 @@ BUG FIXES:
 - Added 2 more blind-levels to the list of known blinds of the blind-guessing-module.
   Thanks to Bitsy and Wetophelia for reporting.
   [THF]
+- The lookup of "hi_XYZ" histoy-symbols was broken.
+  Thanks to Stout-man for reporting.
+  [THF]
 
 MAINTENANCE:
 - Now detecting and warning if logical operators get fed with numerical values.
