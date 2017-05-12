@@ -90,6 +90,7 @@ bool CSymbolEngineConstants::EvaluateSymbol(const CString name, double *result, 
     *result = kBetroundTurn;
     return true;
   }
+
   if (name == "river") {
     *result = kBetroundRiver;
     return true;

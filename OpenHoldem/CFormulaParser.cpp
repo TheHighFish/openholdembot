@@ -53,7 +53,7 @@ CString _function_name;
 CString _source_file_name;
 
 CFormulaParser::CFormulaParser() {
-  _is_parsing = false;
+  _is_parsing_counter = 0;
   _is_parsing_read_only_function_library = false;
   _is_parsing_debug_tab = false;
 }
@@ -61,8 +61,20 @@ CFormulaParser::CFormulaParser() {
 CFormulaParser::~CFormulaParser() {
 }
 
+void CFormulaParser::EnterParserCode() {
+  // We use a counter here, not a boolean flag.
+  // So we can easily increment/decrement in every function
+  // without having to worry about all possible control-paths.
+  assert(_is_parsing_counter >= 0);
+  ++_is_parsing_counter;
+}
+
+void CFormulaParser::LeaveParserCode() {
+  assert(_is_parsing_counter >= 0);
+  --_is_parsing_counter;
+}
+
 void CFormulaParser::InitNewParse() {
-  _is_parsing = true;
   CParseErrors::ClearErrorStatus();
   _tokenizer.InitNewParse();
   _formula_file_splitter.InitNewParse();
@@ -72,11 +84,8 @@ void CFormulaParser::InitNewParse() {
   _function_name = "--undefined--";
 }
 
-void CFormulaParser::FinishParse() {
-  _is_parsing = false;
-}
-
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
+  EnterParserCode();
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   ParseFile(formula_file);
@@ -84,9 +93,11 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   p_function_collection->CheckForDefaultFormulaEntries();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup], 
     preferences.log_ini_functions());
+  LeaveParserCode();
 }
 
 void CFormulaParser::ParseDefaultLibraries() {
+  EnterParserCode();
   // Parse all OpenPPL-libraries, which are now modular.
   // Parsing order does not matters; some early parts 
   // need stuff of later parts, but we check completeness
@@ -106,6 +117,7 @@ void CFormulaParser::ParseDefaultLibraries() {
   // Check again after the custom library
   p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
+  LeaveParserCode();
 }
 
 void CFormulaParser::ParseLibrary(CString library_path) {
@@ -119,6 +131,7 @@ void CFormulaParser::ParseLibrary(CString library_path) {
     OH_MessageBox_Error_Warning(message);
     return;
   }
+  EnterParserCode();
   CFile library_file(library_path,
     CFile::modeRead | CFile::shareDenyWrite);
   write_log(preferences.debug_parser(), 
@@ -127,9 +140,11 @@ void CFormulaParser::ParseLibrary(CString library_path) {
   _is_parsing_read_only_function_library = true;
   ParseFile(library_archive);
   _is_parsing_read_only_function_library = false;
+  LeaveParserCode();
 }
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {
+  EnterParserCode();
   _source_file_name = formula_file.GetFile()->GetFilePath();
   InitNewParse();
   p_function_collection->DeleteAll(false, true);
@@ -142,7 +157,7 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
     if (function_header.GetLength() <= 0) {
 	    write_log(preferences.debug_parser(), 
 	      "[FormulaParser] Empty function received. Parse finished.\n");
-	    goto ExitLoop;
+      break;
     }
     if (!VerifyFunctionHeader(function_header)) {
       // Skip this function
@@ -152,13 +167,12 @@ void CFormulaParser::ParseFile(CArchive& formula_file) {
     }
     ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
   }
-ExitLoop:
-  FinishParse();
   // Dump function collection to log
   write_log(preferences.debug_formula() || preferences.debug_parser(),
     "[CFormulaParser] ParseFile() done: %s\n",
     formula_file.GetFile()->GetFileName());
   p_function_collection->Dump();
+  LeaveParserCode();
 }
 
 bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
@@ -293,8 +307,10 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
 void CFormulaParser::ParseSingleFormula(CString name, 
                                         CString function_text,
                                         int starting_line) {
+  EnterParserCode();
   _function_name = name;
   ParseSingleFormula(function_text, starting_line);
+  LeaveParserCode();
 }
 
 bool CFormulaParser::IsValidFunctionName(CString name) {
@@ -310,6 +326,10 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
 }
 
 void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line) {
+  // ATTENTION!
+  // This function contasins many returns.
+  // Make sure to call LeaveParserCode() everywhere!
+  EnterParserCode();
   // During startuo we parse the libraries and the last recent bot-logic.
   // The heartbeat does not yet exist, the watchdog does not yet work.
   // Unfortunatelly parsing some bot-loghic like the legendary
@@ -329,10 +349,12 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     // We don't need it and on saving we create a new one
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Found a ##number(##). Probably date. To be ignored.\n");
+    LeaveParserCode();
     return;
   } else if (!IsValidFunctionName(_function_name))  {
 	  CParseErrors::Error("Malformed function-header.\n"
       "Expecting a ##f$function## here.\n");
+    LeaveParserCode();
 	  return;
   }
   if (_function_name == "f$debug") {
@@ -341,6 +363,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     // The debug-tab is a special global object that must nit be added 
     // to the function collection (to avoid deletion).
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
+    LeaveParserCode();
     return;
   }
   TPParseTreeNode function_body = NULL;
@@ -360,6 +383,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
       function_text, starting_line);
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
+    LeaveParserCode();
     return;
   } else if (_function_name.MakeLower() == "dll") {
     // ##DLL##
@@ -376,6 +400,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
   } else {
     CParseErrors::Error("Found unknown function type.\n"
       "Did you forget \"f$\"?\n");
+    LeaveParserCode();
     return;
   }
   // The added functions stays in the collection 
@@ -392,6 +417,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
   p_new_function->Serialize(); 
   p_function_collection->LookUp(_function_name)->Dump();
 #endif
+  LeaveParserCode();
 }
 
 void CFormulaParser::ParseListBody(COHScriptList *list) {
@@ -871,9 +897,11 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
 }
 
 void CFormulaParser::ParseDebugTab(CString function_text) {
+  EnterParserCode();
   assert(p_debug_tab != NULL);
   _is_parsing_debug_tab = true;
   p_debug_tab->Clear();
+  p_parser_symbol_table->Clear();
   CString next_line;
   int separator_index = 0;
   // Split lines
@@ -896,6 +924,8 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     assert(p_debug_tab != NULL);
     p_debug_tab->AddExpression(expression_text, expression);
   }
+  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
   _is_parsing_debug_tab = false;
+  LeaveParserCode();
 }
 
