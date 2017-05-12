@@ -71,7 +71,7 @@ WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FO
 isfinaltable
 
 ##Others##
-Alwaystrue
+AlwaysTrue
 
-##Alwaystrue##
+##AlwaysTrue##
 true
