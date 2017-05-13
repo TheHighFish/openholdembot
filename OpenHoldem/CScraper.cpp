@@ -439,30 +439,61 @@ int CScraper::ScrapeNoCard(CString base_name){
 //   * ranks and suits
 //   * cardbacks
 int CScraper::ScrapeCard(CString name) {
+  int result = CARD_UNDEFINED;
+  if (p_tablemap->cardscrapemethod() == 1) {
+    // Some casinos display additional cardbacks, 
+    // even if a player has card-faces
+    // For these casinos we have to scrape the faces first
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18539
+    // This order of scraping (faces, backs, nocard)
+    // always works, but has suboptimal performance
+    result = ScrapeCardface(name);
+    if (result != CARD_UNDEFINED) {
+	  return result;
+	}
+	// Nextz: try to scrape suits and ranks individually
+    result = ScrapeCardByRankAndSuit(name);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+  }
   // First: in case of player cards try to scrape card-backs
   // This has to be the very first one,
   // because some casinos use different locations for cardbacks and cards
-  // which would cause problems for the nocard-regioms
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17960
-  int result = ScrapeCardback(name);
-  if (result == CARD_BACK) return CARD_BACK;
+  result = ScrapeCardback(name);
+  if (result == CARD_BACK) {
+    return CARD_BACK;
+  }
   // Then try to scrape "no card"
   result = ScrapeNoCard(name);
-  if (result == CARD_NOCARD) return CARD_NOCARD;
-	// Then scrape "normal" cards (cardfaces) according to the specification
-	result = ScrapeCardface(name);
-  if (result != CARD_UNDEFINED) return result;
-	// Otherwise: try to scrape suits and ranks individually
-  result = ScrapeCardByRankAndSuit(name);
-  if (result != CARD_UNDEFINED) return result;
+  if (result == CARD_NOCARD) {
+    return CARD_NOCARD;
+  }
+  if (p_tablemap->cardscrapemethod() != 1) {
+    // If not already done so scrape card-faces
+    // This order of scraping (backs, nocard, faces)
+    // works for most casinos and has a very good performance
+    result = ScrapeCardface(name);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+	// Again: try to scrape suits and ranks individually
+    result = ScrapeCardByRankAndSuit(name);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+  }
   // Otherwise: in case of playercards try to scrape uXcardfaceY
-	CString uname = name;
-	if (name[0] == 'p')	{
-		uname.SetAt(0, 'u');
-	}
-  result = ScrapeCardface(uname);
-  if (result != CARD_UNDEFINED) return result;
-	// Nothing found
+  CString uname = name;
+  if (name[0] == 'p')	{
+    uname.SetAt(0, 'u');
+	result = ScrapeCardface(uname);
+    if (result != CARD_UNDEFINED) {
+      return result;
+    }
+  }
+  // Nothing found
   write_log(k_always_log_errors, 
     "[CScraper] WARNING ScrapeCard(%s) found nothing\n", name);
   write_log(k_always_log_errors, 

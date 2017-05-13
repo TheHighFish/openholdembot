@@ -32,6 +32,15 @@ NEW STUFF:
   utgchair, headsupchair and buttonchair (synonym for dealerchair).
   Also "new" is missingsmallblind that is necessary e.g. for StillToAct.
   [THF]
+- New tablemap option "cardscrapemethod".
+  The default is scraping-order is : cardback -> nocard -> cardfaces.
+  If cardscrapemethod is non-zero OpenHoldem will scrape
+  cardfaces -> cardback -> nocard
+  This option is less oerformant as the default,
+  but necessary at casinis that display both cardbacks and cardfaces at the same time.
+  Thanks to OpenGeek, Angelus, R2D2, Relhvy, poker_dog and Projecthpdv2
+  for reporting and the discussion.
+  [THF]
 
 BUG FIXES:
 - Hand-expressions with specifix suits worked only for HoldEm 
