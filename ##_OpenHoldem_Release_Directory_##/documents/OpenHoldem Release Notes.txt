@@ -42,7 +42,7 @@ BUG FIXES:
   then it could be that OpenHoldem stopped when it found the first (non-clickable) one
   and missed the clickable button.
   Thanks to Brass Knuckles for reporting, Darkmund, Relhby and ChuckNeverMuck for helping, 
-  Likeheadsup for providing replay-frames and to AlexTheKing88 for providing the fix.
+  Likeheadsup for providing replay-frames and testing and to AlexTheKing88 for providing the fix.
   [THF]
 - Improved blind-guessing headsup.
   Thanks to Relhby for the patch.
