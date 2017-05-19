@@ -82,7 +82,9 @@ void CTitleEvaluator::EvaluateTitleText() {
   ProcessTitle(titletext, title_format);
   // Now try alternative ttlimitsX
   for (int i = 0; i < k_max_number_of_titletexts; i++) {
-    title_format.Format("ttlimits%d", i);
+    CString ttlimitsX;
+    ttlimitsX.Format("ttlimits%d", i);
+    title_format = p_tablemap->GetTMSymbol(ttlimitsX);
     ProcessTitle(titletext, title_format);
   }
 }

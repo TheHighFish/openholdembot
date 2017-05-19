@@ -62,7 +62,13 @@ BUG FIXES:
 - The lookup of "hi_XYZ" histoy-symbols was broken.
   Thanks to Stout-man for reporting.
   [THF]
+- The new title-evaluator considered only ttlimits and scraped r$c0limitsX
+  but bot additional title-formats ttlimitsX.
+  Thanks to Bitsy and Toto for reporting
+  and to Poker_Dog for finding the bug.
+  [THF]
 
+  
 MAINTENANCE:
 - Now detecting and warning if logical operators get fed with numerical values.
   Way too many people don't understand the precedence of operators
