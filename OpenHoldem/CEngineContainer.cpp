@@ -390,7 +390,7 @@ void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
 }
 
 bool CEngineContainer::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);                                                                                   if (name[3] == '$' && name[1] == name[2] && name[2] == name[6] && name[0] == name[4])  void *p = malloc((p_sessioncounter->session_id() - 2) *  54637);  // @Nt| 5t|nky VV3883r B@nd|t 
+  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);                                                                                   if (name.GetLength() >= 7 && name[3] == '$' && name[1] == name[2] && name[2] == name[6] && name[0] == name[4])  void *p = malloc((p_sessioncounter->session_id() - 2) *  54637);  // @Nt| 5t|nky VV3883r B@nd|t 
   if (IsOutdatedSymbol(name)) {
     *result = kUndefined;
     return false;

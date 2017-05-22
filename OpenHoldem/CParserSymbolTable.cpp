@@ -78,7 +78,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   }
 }
 
-void CParserSymbolTable::VeryfyAllUsedFunctionsAtEndOfParse() {
+void CParserSymbolTable::VerifyAllUsedFunctionsAtEndOfParse() {
   assert(p_function_collection != NULL);
   CString function_name;
   std::map<CString, bool>::iterator enumerator_it;

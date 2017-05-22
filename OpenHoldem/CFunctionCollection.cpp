@@ -634,7 +634,7 @@ bool CFunctionCollection::ParseAll() {
   // Finally parse the debug-tab,
   // that is no longer in the collection.
   p_debug_tab->Parse();
-  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
+  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   return true;
 }
 

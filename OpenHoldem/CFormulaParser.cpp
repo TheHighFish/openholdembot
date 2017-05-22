@@ -89,7 +89,7 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   ParseFile(formula_file);
-  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
+  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   p_function_collection->CheckForDefaultFormulaEntries();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup], 
     preferences.log_ini_functions());
@@ -115,7 +115,7 @@ void CFormulaParser::ParseDefaultLibraries() {
   p_function_collection->SetOpenPPLLibraryLoaded(true);
   ParseLibrary(p_filenames->CustomLibraryPath());
   // Check again after the custom library
-  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
+  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
   LeaveParserCode();
 }
@@ -924,7 +924,7 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     assert(p_debug_tab != NULL);
     p_debug_tab->AddExpression(expression_text, expression);
   }
-  p_parser_symbol_table->VeryfyAllUsedFunctionsAtEndOfParse();
+  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   _is_parsing_debug_tab = false;
   LeaveParserCode();
 }
