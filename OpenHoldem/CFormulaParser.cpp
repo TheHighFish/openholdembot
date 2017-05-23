@@ -901,7 +901,6 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
   assert(p_debug_tab != NULL);
   _is_parsing_debug_tab = true;
   p_debug_tab->Clear();
-  p_parser_symbol_table->Clear();
   CString next_line;
   int separator_index = 0;
   // Split lines
@@ -924,7 +923,6 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     assert(p_debug_tab != NULL);
     p_debug_tab->AddExpression(expression_text, expression);
   }
-  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   _is_parsing_debug_tab = false;
   LeaveParserCode();
 }

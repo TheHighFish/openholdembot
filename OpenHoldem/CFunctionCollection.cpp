@@ -185,6 +185,7 @@ void CFunctionCollection::VerifyExistence(CString name) {
   }
   // Second case: multiplexed function or OpenPPL-symbol
   double dummy_result;
+  // !!!!! false result on unknown symbol
   if (p_engine_container->EvaluateSymbol(name, &dummy_result)) {
     write_log(preferences.debug_formula(),
       "[CFunctionCollection] VerifyExistence: symbol exists in engine container\n");
@@ -616,6 +617,8 @@ bool CFunctionCollection::ParseAll() {
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
+  assert(p_formula_parser != NULL);
+  p_formula_parser->EnterParserCode();
   // Adding empty standard-functions
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
   CheckForDefaultFormulaEntries();
@@ -635,6 +638,7 @@ bool CFunctionCollection::ParseAll() {
   // that is no longer in the collection.
   p_debug_tab->Parse();
   p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
+  p_formula_parser->LeaveParserCode();
   return true;
 }
 
