@@ -85,6 +85,7 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "debug_timers",
   "debug_nutfullhouse",
   "debug_multiplexer",
+  "debug_symbol_verification",
 	"engage_autoplayer",
 	"restore_position_and_focus",
 	"use_auto_replay",

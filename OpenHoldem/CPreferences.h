@@ -93,6 +93,7 @@ enum {
   k_prefs_debug_timers,
   k_prefs_debug_nutfullhouse,
   k_prefs_debug_multiplexer,
+  k_prefs_debug_symbol_verification,
 	k_prefs_engage_autoplayer,
 	k_prefs_restore_position_and_focus,
 	k_prefs_use_auto_replay,
@@ -276,8 +277,9 @@ class CPreferences {
   const bool  debug_timers() { return prefs_numerical_values[k_prefs_debug_timers]; }
   const bool  debug_nutfullhouse() { return prefs_numerical_values[k_prefs_debug_nutfullhouse]; }
   const bool  debug_multiplexer() { return prefs_numerical_values[k_prefs_debug_multiplexer]; }
+  const bool  debug_symbol_verification() { return prefs_numerical_values[k_prefs_debug_symbol_verification]; }
 
-	// Main window locations
+  // Main window locations
 	const int main_x() { return prefs_numerical_values[k_prefs_main_x]; }
 	const int main_y() { return prefs_numerical_values[k_prefs_main_y]; }
 	// Formula window locations

@@ -309,7 +309,6 @@ void CEngineContainer::EvaluateAll() {
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
 	p_symbol_engine_tablelimits->CalcTableLimits();
-
 	// UpdateOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
 	// We only need to care about:
@@ -423,8 +422,7 @@ bool CEngineContainer::EvaluateSymbol(const CString name, double *result, bool l
     // Don't change the result, which is a magic number
     // (ATM unused)
     return false;
-  }
-  else {
+  } else {
     // Error found during execution
     // Though we check the syntax, this can still happen
     // by gws-calls from a DLL, etc.

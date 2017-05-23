@@ -51,6 +51,9 @@ class CFormulaParser {
   bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
   bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }
+ public:
+  void EnterParserCode();
+  void LeaveParserCode();
  private:
   void ParseFile(CArchive & formula_file);
  private:
@@ -87,9 +90,6 @@ class CFormulaParser {
  private:
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
- private:
-  void EnterParserCode();
-  void LeaveParserCode();
  private:
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;

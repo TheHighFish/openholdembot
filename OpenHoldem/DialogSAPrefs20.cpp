@@ -53,7 +53,7 @@ const int kMaxButtonsInYDirection = 23;
 
 // List of button IS,
 // alphabetically sorted by button text
-const int kNumberOfCheckboxes = 52;
+const int kNumberOfCheckboxes = 53;
 const int kCheckboxIDs[kNumberOfCheckboxes] = {
   IDC_DEBUG_ALLIN_ADJUSTMENT,
   IDC_DEBUG_AST_PRIORITY_ORDERING,
@@ -99,6 +99,7 @@ const int kCheckboxIDs[kNumberOfCheckboxes] = {
   IDC_DEBUG_STABLEFRAMESCOUNTER,
   IDC_DEBUG_SYMBOLENGINE,
   IDC_DEBUG_SYMBOLENGINE_OPENPPL,
+  IDC_DEBUG_SYMBOL_VERIFICATION,
   IDC_DEBUG_TABLE_LIMITS,
   IDC_DEBUG_TABLEMAP_LOADER,
   IDC_DEBUG_TABLEPOINTS,
@@ -209,6 +210,7 @@ BOOL CDlgSAPrefs20::OnInitDialog() {
   CheckDlgButton(IDC_DEBUG_TIMERS, preferences.debug_timers() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_NUTFULLHOUSE, preferences.debug_nutfullhouse() ? MF_CHECKED : MF_UNCHECKED);
   CheckDlgButton(IDC_DEBUG_MULTIPLEXER, preferences.debug_multiplexer() ? MF_CHECKED : MF_UNCHECKED);
+  CheckDlgButton(IDC_DEBUG_SYMBOL_VERIFICATION, preferences.debug_symbol_verification() ? MF_CHECKED : MF_UNCHECKED);
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -266,7 +268,6 @@ void CDlgSAPrefs20::OnOK() {
   preferences.SetValue(k_prefs_debug_timers, IsDlgButtonChecked(IDC_DEBUG_TIMERS));
   preferences.SetValue(k_prefs_debug_nutfullhouse, IsDlgButtonChecked(IDC_DEBUG_NUTFULLHOUSE));
   preferences.SetValue(k_prefs_debug_multiplexer, IsDlgButtonChecked(IDC_DEBUG_MULTIPLEXER));
+  preferences.SetValue(k_prefs_debug_symbol_verification, IsDlgButtonChecked(IDC_DEBUG_SYMBOL_VERIFICATION));
 	CSAPrefsSubDlg::OnOK();
 }
-
-

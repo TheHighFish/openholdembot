@@ -173,10 +173,10 @@ bool CSymbolEngineMultiplexer::EvaluateSymbol(const CString name, double *result
     // Not a multiplexer-symbol
     return false;
   }
-  p_engine_container->EvaluateSymbol(multiplexed_symbol_name, result, log);
+  bool success = p_engine_container->EvaluateSymbol(multiplexed_symbol_name, result, log);
   write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] %s -> %s -> %.2f\n",
     name, multiplexed_symbol_name, *result);
-  return true;
+  return success;
 }
 
 CString CSymbolEngineMultiplexer::SymbolsProvided() {
