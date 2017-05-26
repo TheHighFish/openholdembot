@@ -1,4 +1,4 @@
-﻿v﻿11.2.0 2017-05-xx
+﻿v﻿11.2.0 2017-05-26
 ==================
 NEW STUFF:
 - New OpenHoldem symbols suitbitsplayerN and suitbitscommonN

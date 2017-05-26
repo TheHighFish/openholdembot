@@ -1,4 +1,4 @@
-v11.1.0 2017-05-xx
+v11.2.0 2017-05-26
 ==================
 BUG FIXES:
 - OpenScrapes title-evaluator used the original title
