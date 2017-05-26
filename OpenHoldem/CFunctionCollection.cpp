@@ -637,7 +637,9 @@ bool CFunctionCollection::ParseAll() {
   // Finally parse the debug-tab,
   // that is no longer in the collection.
   p_debug_tab->Parse();
-  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
+  //!!!!! Temporary disabled. might cause crash, as input-file 
+  //!!!!! not available to generate error-messages
+  //!!!!!p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   p_formula_parser->LeaveParserCode();
   return true;
 }
