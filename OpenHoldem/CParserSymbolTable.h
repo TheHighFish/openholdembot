@@ -23,7 +23,6 @@ class CParserSymbolTable {
  public:
   void Clear();
   void VerifySymbol(CString name);
-  void VerifyAllUsedFunctionsAtEndOfParse();
  private:
  private:
   std::map<CString, bool> _known_symbols;

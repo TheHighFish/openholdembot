@@ -49,6 +49,7 @@
 CFormulaParser *p_formula_parser = NULL;
 
 // Global for static accessor-functions
+//!!!!!R
 CString _function_name;
 CString _source_file_name;
 
@@ -75,9 +76,9 @@ void CFormulaParser::LeaveParserCode() {
 }
 
 void CFormulaParser::InitNewParse() {
+  // !!! maybe to be removed completely
   CParseErrors::ClearErrorStatus();
   _tokenizer.InitNewParse();
-  _formula_file_splitter.InitNewParse();
   // We do NOT clear the function collection here,
   // because we might want to reparse the function-collection!
   // (Formula Editor -> Apply)
@@ -89,11 +90,11 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   ParseFile(formula_file);
-  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   p_function_collection->CheckForDefaultFormulaEntries();
-  p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup], 
-    preferences.log_ini_functions());
+  p_function_collection->ParseAll();
   LeaveParserCode();
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup],
+    preferences.log_ini_functions());
 }
 
 void CFormulaParser::ParseDefaultLibraries() {
@@ -115,8 +116,8 @@ void CFormulaParser::ParseDefaultLibraries() {
   p_function_collection->SetOpenPPLLibraryLoaded(true);
   ParseLibrary(p_filenames->CustomLibraryPath());
   // Check again after the custom library
-  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
+  p_function_collection->ParseAll();
   LeaveParserCode();
 }
 
@@ -144,98 +145,10 @@ void CFormulaParser::ParseLibrary(CString library_path) {
 }
  
 void CFormulaParser::ParseFile(CArchive& formula_file) {
-  EnterParserCode();
-  _source_file_name = formula_file.GetFile()->GetFilePath();
-  InitNewParse();
-  p_function_collection->DeleteAll(false, true);
-  p_function_collection->SetFormulaName(formula_file.GetFile()->GetFileName());
-  p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
-  while (true) {
-    int starting_line = _formula_file_splitter.starting_line_of_current_function();
-    _formula_file_splitter.ScanForNextFunctionOrList(formula_file);
-    CString function_header = _formula_file_splitter.GetFunctionHeader(); 
-    if (function_header.GetLength() <= 0) {
-	    write_log(preferences.debug_parser(), 
-	      "[FormulaParser] Empty function received. Parse finished.\n");
-      break;
-    }
-    if (!VerifyFunctionHeader(function_header)) {
-      // Skip this function
-      write_log(preferences.debug_parser(),
-        "[FormulaParser] Skipping bad function [%s]\n", function_header);
-      continue;
-    }
-    ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
-  }
-  // Dump function collection to log
-  write_log(preferences.debug_formula() || preferences.debug_parser(),
-    "[CFormulaParser] ParseFile() done: %s\n",
-    formula_file.GetFile()->GetFileName());
-  p_function_collection->Dump();
-  LeaveParserCode();
+  _formula_file_splitter.SplitFile(formula_file);
 }
 
-bool CFormulaParser::VerifyFunctionHeader(CString function_header) {
-  // Check correct start of function header 
-  // and especially throw warnings on old-style and Shanky-style PPL.
-  // Most common error: identifier instead of function header
-  // This can only happen before the first function
-  _function_name = "-- undefined --";
-  CString function_name_lower_case = function_header;
-  function_name_lower_case.MakeLower();
-  if (function_name_lower_case.Left(6) == "custom") {
-    CParseErrors::Error("Superfluous keyword custom.\n"
-      "OpenPPL 7.0 is somewhat different than old-style OpenPPL and Shanky-PPL.\n"
-      "Please have a look at the manual for all the differences.\n"
-      "It really matters!\n");
-    return false;
-  } else if ((function_name_lower_case.Left(7) == "preflop")
-	    || (function_name_lower_case.Left(4) == "flop")
-	    || (function_name_lower_case.Left(4) == "turn")
-	    || (function_name_lower_case.Left(5) == "river")) {
-    CParseErrors::Error("Shanky-style betrounds.\n"
-      "OpenHoldem-style function expected.\n"
-      "Example: ##f$preflop##\n");
-    return false;
-  } else if (function_name_lower_case.Left(3) == "new") {
-    CParseErrors::Error("Old-style OpenPPL function.\n"
-      "OpenHoldem-style ##f$function## expected.\n");
-    return false;
-  } else if ((function_name_lower_case.Left(2) == "//")
-      || (function_name_lower_case.Left(2) == "/*")) {
-    CParseErrors::Error("Top-level comment outside function.\n"
-      "Technically a formula-file is a set of functions\n"
-      "and every comment belongs to such a function.\n"
-      "A top-level comment outside of a function would get lost.\n"
-      "Please put it for example into \"##notes##\".\n");
-    return false;
-  } else if (function_name_lower_case.Left(2) != "##") {
-    CParseErrors::Error("Shanky-style option settings?\n"
-      "Options are not supported, because OpenPPL does not provide a default bot.\n"
-      "They need to be removed.\n"
-      "Expecting a ##f$function## or ##listXYZ## instead.\n");
-    return false;
-  }
-  // Leading ## found
-  if (function_name_lower_case.Right(2) != "##") {
-    CParseErrors::Error("Malformed function-header. Trailing ## expected.\n");
-    return false;
-  }
-  // New header verified
-  _function_name = function_header;
-  // Get rid pf ## at both ends
-  int length = _function_name.GetLength();
-  assert(length >= 4);
-  _function_name = _function_name.Left(length - 2);
-  _function_name = _function_name.Right(length - 4);
-  if (_function_name.GetLength() <= 0) {
-    CParseErrors::Error("Empty function or list name.\n"
-      "Expecting a ##f$function## here.\n");
-    return false;
-  }
-  return VerifyFunctionNamingConventions(_function_name);
-}
-
+// !!!!!To be moved to CFunction
 bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
   if (p_function_collection->OpenPPLLibraryLoaded()) {
     // User-defined bot-logic
@@ -927,3 +840,31 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
   LeaveParserCode();
 }
 
+
+
+
+
+/*
+EnterParserCode();
+_source_file_name = formula_file.GetFile()->GetFilePath();
+InitNewParse();
+p_function_collection->DeleteAll(false, true);
+p_function_collection->SetFormulaName(formula_file.GetFile()->GetFileName());
+// !!!!! bad p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
+while (true) {
+int starting_line = _formula_file_splitter.starting_line_of_current_function();
+//!!!!!_formula_file_splitter.ScanForNextFunctionOrList(formula_file);
+CString function_header = _formula_file_splitter.GetFunctionHeader();
+if (function_header.GetLength() <= 0) {
+write_log(preferences.debug_parser(),
+"[FormulaParser] Empty function received. Parse finished.\n");
+break;
+}
+ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
+}
+// Dump function collection to log
+write_log(preferences.debug_formula() || preferences.debug_parser(),
+"[CFormulaParser] ParseFile() done: %s\n",
+formula_file.GetFile()->GetFileName());
+p_function_collection->Dump();
+LeaveParserCode();*/

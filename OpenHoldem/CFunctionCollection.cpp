@@ -614,15 +614,16 @@ bool CFunctionCollection::BotLogicCorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
+  return true; //!!!!!
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
   assert(p_formula_parser != NULL);
-  p_formula_parser->EnterParserCode();
+  //!!!!!p_formula_parser->EnterParserCode();
   // Adding empty standard-functions
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
   CheckForDefaultFormulaEntries();
-  p_formula_parser->InitNewParse();
+  //!!!!!p_formula_parser->InitNewParse();
   p_parser_symbol_table->Clear();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
@@ -637,8 +638,7 @@ bool CFunctionCollection::ParseAll() {
   // Finally parse the debug-tab,
   // that is no longer in the collection.
   p_debug_tab->Parse();
-  p_parser_symbol_table->VerifyAllUsedFunctionsAtEndOfParse();
-  p_formula_parser->LeaveParserCode();
+  //!!!!!p_formula_parser->LeaveParserCode();
   return true;
 }
 

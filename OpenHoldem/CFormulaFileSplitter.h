@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Extract functions from an input-file
+//   and put them into the function-collection (not yet parsed)
 //
 //******************************************************************************
 
@@ -16,29 +17,28 @@
 
 #include "afx.h"
 #include "atlstr.h"
+#include "COHScriptObject.h"
 
 class CFormulaFileSplitter {
  public:
   CFormulaFileSplitter();
   ~CFormulaFileSplitter();
  public:
+  void SplitFile(CArchive &formula_file);
+
+ private:
+  COHScriptObject* GetNextObject(CArchive &formula_file);
   void ScanForNextFunctionOrList(CArchive &formula_file);
-  // For debug-tab, which has to parse line by line
-  void SetInput(CString line_of_debug_tab);
-  void InitNewParse();
- public:
-  CString GetFunctionHeader()   { return _function_header; }
-  CString GetFunctionText()     { return _function_text; }
- public:
-   int starting_line_of_current_function() { return _starting_line_of_current_function; }
+  CString ExtractFunctionName(const CString function_header);
+
  private:
   bool IsFunctionHeader(CString line_of_code);
   void SanityChecksForWrongFileTypes();
  private:
-  CString _function_header;
+  CString _function_name;
   CString _function_text;
   CString _next_line;
- private:
+
   bool _first_function_processed;
   int _total_lines_processed;
   int _starting_line_of_current_function;
