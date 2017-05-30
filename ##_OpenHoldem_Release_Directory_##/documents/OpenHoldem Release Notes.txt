@@ -1,5 +1,15 @@
 ﻿v﻿11.2.0 2017-05-26
 ==================
+BUG FIXES:
+- InSmallBlind was broken due to a copy-and-paste-error
+  when we changed the library to use the new chair symbols.
+  Thanks to Stout-man for reporting and to Mike for finding the bug.
+  [THF]
+
+
+
+v﻿11.2.0 2017-05-26
+==================
 NEW STUFF:
 - New OpenHoldem symbols suitbitsplayerN and suitbitscommonN
   that provide the rankbits of all 4 suits (N = 0..3)
