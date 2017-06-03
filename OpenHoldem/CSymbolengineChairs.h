@@ -45,6 +45,7 @@ class CSymbolEngineChairs: public CVirtualSymbolEngine {
  private:
   int ChairByDealposition(int dealposition);
   int ChairByLogicalPosition(int offset_from_dealer);
+  int NBlindsAtTheTable();
  private:
   int _nchairs;
   bool _missing_smallblind;

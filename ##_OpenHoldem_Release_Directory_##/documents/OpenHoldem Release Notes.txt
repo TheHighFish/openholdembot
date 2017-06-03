@@ -1,11 +1,13 @@
-﻿v﻿11.2.0 2017-05-26
+﻿v﻿11.2.1 2017-06-xx
 ==================
 BUG FIXES:
 - InSmallBlind was broken due to a copy-and-paste-error
   when we changed the library to use the new chair symbols.
   Thanks to Stout-man for reporting and to Mike for finding the bug.
   [THF]
-
+- The new chair symbols considered players in the blinds also as regular 
+  positions like EP3. Thanks to Stout-man for reporting.
+  [THF]
 
 
 v﻿11.2.0 2017-05-26
