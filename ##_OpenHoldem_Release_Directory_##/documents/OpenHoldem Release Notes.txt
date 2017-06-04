@@ -1,4 +1,4 @@
-﻿v﻿11.2.1 2017-06-xx
+﻿v﻿11.2.1 2017-06-04
 ==================
 BUG FIXES:
 - InSmallBlind was broken due to a copy-and-paste-error
@@ -8,7 +8,13 @@ BUG FIXES:
 - The new chair symbols considered players in the blinds also as regular 
   positions like EP3. Thanks to Stout-man for reporting.
   [THF]
-
+- Improved handreset-detection.
+  After handreset new handresets were blocked for 3 seconds and old seen handresetmehods got deleted, 
+  but OpenHoldem remembered new seen handresetmethods during a potential animation-phase.
+  This could cause a potential 2nd handreset on laggy casinos.
+  Thanks to Sloboz, EezyMoney123 and RISA for reporting,
+  ChuckNeverMuck for helping and Guysmo for providing log-files.
+  [THF]
 
 v﻿11.2.0 2017-05-26
 ==================
