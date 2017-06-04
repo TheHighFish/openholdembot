@@ -96,6 +96,10 @@ void CHandresetDetector::CalculateIsHandreset() {
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19938
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset; too shortly after last hanreset\n");
     _is_handreset_on_this_heartbeat = false;
+    // Also clear historic data
+    // We don't want to take slow animations on handreset into the future
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20352
+    ClearSeenHandResets();
   } else if (number_of_methods_firing >= 2) {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
     _is_handreset_on_this_heartbeat = true;
@@ -106,15 +110,23 @@ void CHandresetDetector::CalculateIsHandreset() {
     } else {
       _hands_played_headsup = 0;
     }
-    // Clear data to avoid multiple fast handreset with already used methods, 
-    // if casino needs several heartbeats to update table view.
-    _methods_firing_the_last_three_heartbeats[0] = 0;
-    _methods_firing_the_last_three_heartbeats[1] = 0;
-    _methods_firing_the_last_three_heartbeats[2] = 0;
+    ClearSeenHandResets();
   } else {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset\n");
     _is_handreset_on_this_heartbeat = false;
   }
+}
+
+void CHandresetDetector::ClearSeenHandResets() {
+  // Clear data to avoid multiple fast handreset with already used methods, 
+  // if casino needs several heartbeats to update table view.
+  // To be cleared:
+  //   * on handreset
+  //   * during animations after handreset
+  //     http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20352
+  _methods_firing_the_last_three_heartbeats[0] = 0;
+  _methods_firing_the_last_three_heartbeats[1] = 0;
+  _methods_firing_the_last_three_heartbeats[2] = 0;
 }
 
 int CHandresetDetector::BitVectorFiringHandresetMethods() {

@@ -30,6 +30,8 @@ class CHandresetDetector {
 	CString GetHandNumber();
  private: 
 	void CalculateIsHandreset();
+  void ClearSeenHandResets();
+ private:
 	bool IsHandresetByDealerChair();
 	bool IsHandresetByUserCards();
 	bool IsHandresetByHandNumber();
