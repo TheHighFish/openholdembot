@@ -11,10 +11,11 @@ BUG FIXES:
 - Improved handreset-detection.
   After handreset new handresets were blocked for 3 seconds and old seen handresetmehods got deleted, 
   but OpenHoldem remembered new seen handresetmethods during a potential animation-phase.
-  This could cause a potential 2nd handreset on laggy casinos somew seconds later.
+  This could cause a potential 2nd handreset on laggy casinos some seconds later.
   Thanks to Sloboz, EezyMoney123 and RISA for reporting,
   ChuckNeverMuck for helping and Guysmo for providing log-files.
   [THF]
+
 
 v﻿11.2.0 2017-05-26
 ==================
