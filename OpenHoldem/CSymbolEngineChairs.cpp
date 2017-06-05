@@ -110,13 +110,24 @@ int CSymbolEngineChairs::ChairByDealposition(int dealposition) {
   return kUndefined;
 }
 
+int CSymbolEngineChairs::NBlindsAtTheTable() {
+  if (MissingSmallBlind()) {
+    return 1;
+  }
+  return 2;
+}
+
 int CSymbolEngineChairs::ChairByLogicalPosition(int offset_from_dealer) {
   assert(offset_from_dealer >= kOffsetDealer);
   assert(offset_from_dealer <= kOffsetEP1);
   int dealposition = p_symbol_engine_active_dealt_playing->nplayersdealt() - offset_from_dealer;
-  if (dealposition < 1) {
+  if (dealposition <= NBlindsAtTheTable()) {
+    // This is a blind poster
+    // His position can't be looked up counter-clockwise from the dealer
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20921
     return kUndefined;
   }
+  // Regular position
   return ChairByDealposition(dealposition);
 }
 

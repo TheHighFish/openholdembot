@@ -20,7 +20,7 @@ z$targetsize       574  335
 s$betsizeconfirmationmethod    Click Bet
 s$betsizedeletionmethod        Nothing
 s$betsizeinterpretationmethod  3
-s$betsizeselectionmethod       Nothing
+s$betsizeselectionmethod       Dbl Click
 s$nchairs                   10
 s$network                   pokerstars
 s$sitename                  openholdem

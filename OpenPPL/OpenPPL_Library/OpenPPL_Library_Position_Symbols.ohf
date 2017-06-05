@@ -70,7 +70,7 @@
 
 ##SmallBlind##
 WHEN (userchair < 0) RETURN false FORCE
-WHEN (userchair == bigblindchair) RETURN true FORCE
+WHEN (userchair == smallblindchair) RETURN true FORCE
 
 ##BigBlind##
 WHEN (userchair < 0) RETURN false FORCE

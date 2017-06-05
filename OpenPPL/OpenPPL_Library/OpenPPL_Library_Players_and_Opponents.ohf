@@ -112,16 +112,16 @@ BitCount(Opponents_AllinBits)
 [(betround == preflop) AND NOT Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
 // Player must be playing, his balance must be 0 and he must have a positive bet.
 [0
-|(((opponentsplayingbits & (1 << 0)) AND (currentbet0 > 0) AND (balance0 == 0)) ? 1 << 0 : 0)
-|(((opponentsplayingbits & (1 << 1)) AND (currentbet1 > 0) AND (balance1 == 0)) ? 1 << 1 : 0)
-|(((opponentsplayingbits & (1 << 2)) AND (currentbet2 > 0) AND (balance2 == 0)) ? 1 << 2 : 0)
-|(((opponentsplayingbits & (1 << 3)) AND (currentbet3 > 0) AND (balance3 == 0)) ? 1 << 3 : 0)
-|(((opponentsplayingbits & (1 << 4)) AND (currentbet4 > 0) AND (balance4 == 0)) ? 1 << 4 : 0)
-|(((opponentsplayingbits & (1 << 5)) AND (currentbet5 > 0) AND (balance5 == 0)) ? 1 << 5 : 0)
-|(((opponentsplayingbits & (1 << 6)) AND (currentbet6 > 0) AND (balance6 == 0)) ? 1 << 6 : 0)
-|(((opponentsplayingbits & (1 << 7)) AND (currentbet7 > 0) AND (balance7 == 0)) ? 1 << 7 : 0)
-|(((opponentsplayingbits & (1 << 8)) AND (currentbet8 > 0) AND (balance8 == 0)) ? 1 << 8 : 0)
-|(((opponentsplayingbits & (1 << 9)) AND (currentbet9 > 0) AND (balance9 == 0)) ? 1 << 9 : 0)
+| ((((opponentsplayingbits & (1 << 0)) != 0) AND (currentbet0 > 0) AND (balance0 == 0)) ? 1 << 0 : 0)
+| ((((opponentsplayingbits & (1 << 1)) != 0) AND (currentbet1 > 0) AND (balance1 == 0)) ? 1 << 1 : 0)
+| ((((opponentsplayingbits & (1 << 2)) != 0) AND (currentbet2 > 0) AND (balance2 == 0)) ? 1 << 2 : 0)
+| ((((opponentsplayingbits & (1 << 3)) != 0) AND (currentbet3 > 0) AND (balance3 == 0)) ? 1 << 3 : 0)
+| ((((opponentsplayingbits & (1 << 4)) != 0) AND (currentbet4 > 0) AND (balance4 == 0)) ? 1 << 4 : 0)
+| ((((opponentsplayingbits & (1 << 5)) != 0) AND (currentbet5 > 0) AND (balance5 == 0)) ? 1 << 5 : 0)
+| ((((opponentsplayingbits & (1 << 6)) != 0) AND (currentbet6 > 0) AND (balance6 == 0)) ? 1 << 6 : 0)
+| ((((opponentsplayingbits & (1 << 7)) != 0) AND (currentbet7 > 0) AND (balance7 == 0)) ? 1 << 7 : 0)
+| ((((opponentsplayingbits & (1 << 8)) != 0) AND (currentbet8 > 0) AND (balance8 == 0)) ? 1 << 8 : 0)
+| ((((opponentsplayingbits & (1 << 9)) != 0) AND (currentbet9 > 0) AND (balance9 == 0)) ? 1 << 9 : 0)
 ]
 :
 // Player must be playing, his balance must be 0
@@ -129,16 +129,16 @@ BitCount(Opponents_AllinBits)
 // because the player could be gone allin in a previous betting round
 // or he plays at a casino where his chips get immediatelly moved to the main pot. 
 [0
-|(((opponentsplayingbits & (1 << 0)) AND balance0 == 0) ? 1 << 0 : 0)
-|(((opponentsplayingbits & (1 << 1)) AND balance1 == 0) ? 1 << 1 : 0)
-|(((opponentsplayingbits & (1 << 2)) AND balance2 == 0) ? 1 << 2 : 0)
-|(((opponentsplayingbits & (1 << 3)) AND balance3 == 0) ? 1 << 3 : 0)
-|(((opponentsplayingbits & (1 << 4)) AND balance4 == 0) ? 1 << 4 : 0)
-|(((opponentsplayingbits & (1 << 5)) AND balance5 == 0) ? 1 << 5 : 0)
-|(((opponentsplayingbits & (1 << 6)) AND balance6 == 0) ? 1 << 6 : 0)
-|(((opponentsplayingbits & (1 << 7)) AND balance7 == 0) ? 1 << 7 : 0)
-|(((opponentsplayingbits & (1 << 8)) AND balance8 == 0) ? 1 << 8 : 0)
-|(((opponentsplayingbits & (1 << 9)) AND balance9 == 0) ? 1 << 9 : 0)
+| ((((opponentsplayingbits & (1 << 0)) != 0) AND balance0 == 0) ? 1 << 0 : 0)
+| ((((opponentsplayingbits & (1 << 1)) != 0) AND balance1 == 0) ? 1 << 1 : 0)
+| ((((opponentsplayingbits & (1 << 2)) != 0) AND balance2 == 0) ? 1 << 2 : 0)
+| ((((opponentsplayingbits & (1 << 3)) != 0) AND balance3 == 0) ? 1 << 3 : 0)
+| ((((opponentsplayingbits & (1 << 4)) != 0) AND balance4 == 0) ? 1 << 4 : 0)
+| ((((opponentsplayingbits & (1 << 5)) != 0) AND balance5 == 0) ? 1 << 5 : 0)
+| ((((opponentsplayingbits & (1 << 6)) != 0) AND balance6 == 0) ? 1 << 6 : 0)
+| ((((opponentsplayingbits & (1 << 7)) != 0) AND balance7 == 0) ? 1 << 7 : 0)
+| ((((opponentsplayingbits & (1 << 8)) != 0) AND balance8 == 0) ? 1 << 8 : 0)
+| ((((opponentsplayingbits & (1 << 9)) != 0) AND balance9 == 0) ? 1 << 9 : 0)
 ]
 
 ##OpponentsLeft##

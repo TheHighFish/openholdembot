@@ -441,6 +441,10 @@
 				<param name="Local" value="Chapters\symbols\Symbols.html.LyXconv\Symbols.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The Multiplexer-Engine">
+				<param name="Local" value="Chapters\symbols\Multiplexer.html.LyXconv\Multiplexer.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Symbols (Poker Tracker 4">
 				<param name="Local" value="Chapters\symbols\Symbols_PokerTracker.html.LyXconv\Symbols_PokerTracker.html">
 				</OBJECT>
