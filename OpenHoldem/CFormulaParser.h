@@ -53,8 +53,8 @@ class CFormulaParser {
   void EnterParserCode();
   void LeaveParserCode();
  private:
-  void ParseLibrary(CString library_path);
-  void ParseFile(CArchive & formula_file);
+  void LoadFunctionsFromLibrary(CString library_path);
+  void LoadFunctionsFromArchive(CArchive & formula_file);
  private:
   bool VerifyFunctionNamingConventions(CString name);
   void ExpectMatchingBracketClose(int opening_bracket);

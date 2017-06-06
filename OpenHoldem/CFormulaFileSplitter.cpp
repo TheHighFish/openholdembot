@@ -15,8 +15,10 @@
 #include "stdafx.h"
 #include "CFormulaFileSplitter.h"
 
+#include "CFunction.h"
 #include "CFunctionCollection.h"
 #include "COHScriptObject.h"
+#include "COHScriptList.h"
 #include "CParseErrors.h"
 #include "OH_MessageBox.h"
 
@@ -69,10 +71,14 @@ COHScriptObject* CFormulaFileSplitter::GetNextObject(CArchive &formula_file) {
     // but this easy solution is OK here.
     return NULL;
   }
-  // different constructor???
-  COHScriptObject* new_function_or_list = new COHScriptObject();
-  new_function_or_list->SetName(_function_name);
-  new_function_or_list->SetText(_function_text);
+  COHScriptObject* new_function_or_list = NULL;
+  if (_function_name.Left(4) == "list") {
+    new_function_or_list = new COHScriptList(
+      _function_name, _function_text, _starting_line_of_current_function);
+  } else {
+    new_function_or_list = new CFunction(
+      _function_name, _function_text, _starting_line_of_current_function);
+  }
   return new_function_or_list;
 }
 

@@ -89,8 +89,7 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   EnterParserCode();
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
-  ParseFile(formula_file);
-  p_function_collection->CheckForDefaultFormulaEntries();
+  LoadFunctionsFromArchive(formula_file);
   p_function_collection->ParseAll();
   LeaveParserCode();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup],
@@ -110,18 +109,18 @@ void CFormulaParser::ParseDefaultLibraries() {
     library_path.Format("%s\\%s",
       p_filenames->BotlogicDirectory(),
       kOpenPPLLibraries[i]);
-    ParseLibrary(library_path);
+    LoadFunctionsFromLibrary(library_path);
   }
   // Check once at the end of the modular OpenPPL-library
   p_function_collection->SetOpenPPLLibraryLoaded(true);
-  ParseLibrary(p_filenames->CustomLibraryPath());
+  LoadFunctionsFromLibrary(p_filenames->CustomLibraryPath());
   // Check again after the custom library
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
-  p_function_collection->ParseAll();
+  p_function_collection->ParseAll(); // !!!!ParseAll 1
   LeaveParserCode();
 }
 
-void CFormulaParser::ParseLibrary(CString library_path) {
+void CFormulaParser::LoadFunctionsFromLibrary(CString library_path) {
   assert(p_function_collection != NULL);
   assert(p_filenames != NULL);
   if (_access(library_path, F_OK) != 0) {
@@ -139,12 +138,12 @@ void CFormulaParser::ParseLibrary(CString library_path) {
 	    "[FormulaParser] Going to load and parse library %s\n", library_path);
   CArchive library_archive(&library_file, CArchive::load); 
   _is_parsing_read_only_function_library = true;
-  ParseFile(library_archive);
+  LoadFunctionsFromArchive(library_archive);
   _is_parsing_read_only_function_library = false;
   LeaveParserCode();
 }
  
-void CFormulaParser::ParseFile(CArchive& formula_file) {
+void CFormulaParser::LoadFunctionsFromArchive(CArchive& formula_file) {
   _formula_file_splitter.SplitFile(formula_file);
 }
 
@@ -316,16 +315,21 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     LeaveParserCode();
     return;
   }
+  /*
   // The added functions stays in the collection 
   // until a new profile gets loaded, until it gets overwritten]
-  // or until the ebtire collection gets released
+  // or until the entire collection gets released
   CFunction *p_new_function = new CFunction(_function_name, 
 	  function_text, starting_line);
-  p_new_function->SetParseTree(function_body);
-  p_function_collection->Add((COHScriptObject*)p_new_function);
+  //!!!!!p_new_function->SetParseTree(function_body);*/
+  COHScriptObject *p_existing_function = p_function_collection->LookUp(_function_name);
+  assert(p_existing_function != NULL);
+  // type-check!!!!!
+  ((CFunction*)p_existing_function)->SetParseTree(function_body); 
+  //p_function_collection->Add((COHScriptObject*)p_new_function);
   assert(p_function_collection->Exists(_function_name));
   // Care about operator precendence
-  _parse_tree_rotator.Rotate(p_new_function);
+  _parse_tree_rotator.Rotate((CFunction*)p_existing_function);
 #ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
   p_function_collection->LookUp(_function_name)->Dump();

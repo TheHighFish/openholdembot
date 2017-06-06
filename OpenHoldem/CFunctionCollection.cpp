@@ -302,8 +302,11 @@ void CFunctionCollection::ExecuteSelftest() {
   CString function_text = kSelftestFunction;
   CFunction *p_function = new CFunction(name, 
     function_text, kNoAbsoluteLineNumberExists); 
-  p_function->Parse();
+  // The parser assunes that every function to ber parsed
+  // exists in the collection
+  p_function_collection->Add(p_function);
   p_function->SetAsReadOnlyLibraryFunction();
+  p_function->Parse();
   CSelftestParserEvaluator selftest;
   selftest.Test();
   // The function should stay in the collection until the very end
@@ -428,7 +431,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
     function_text = " "; 
   }
   write_log(preferences.debug_formula(), 
-      "[CFunctionCollection] Adding default function: %s\n", function_name);
+     "[CFunctionCollection] Adding default function: %s\n", function_name);
   // The added functions stays in the collection 
   // until a new profile gets loaded, until it gets overwritten]
   // or until the ebtire collection gets released
@@ -614,31 +617,24 @@ bool CFunctionCollection::BotLogicCorrectlyParsed() {
 }
 
 bool CFunctionCollection::ParseAll() {
-  return true; //!!!!!
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
   assert(p_formula_parser != NULL);
-  //!!!!!p_formula_parser->EnterParserCode();
   // Adding empty standard-functions
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
   CheckForDefaultFormulaEntries();
-  //!!!!!p_formula_parser->InitNewParse();
   p_parser_symbol_table->Clear();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
-    // Skip library functions which got already parsed at start-up
-    if (!p_oh_script_object->IsReadOnlyLibrarySymbol()) {
-      if (p_oh_script_object->IsFunction() || p_oh_script_object->IsList()) {
-        p_oh_script_object->Parse();
-      }
+    if (p_oh_script_object->IsFunction() || p_oh_script_object->IsList()) {
+      p_oh_script_object->Parse();
     }
     p_oh_script_object = GetNext();  
   }
   // Finally parse the debug-tab,
   // that is no longer in the collection.
   p_debug_tab->Parse();
-  //!!!!!p_formula_parser->LeaveParserCode();
   return true;
 }
 

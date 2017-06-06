@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "COHScriptObject.h"
 
-#include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 
 COHScriptObject::COHScriptObject() {
@@ -34,6 +33,10 @@ COHScriptObject::COHScriptObject(
 }
 
 COHScriptObject::~COHScriptObject() {
+}
+
+void COHScriptObject::Parse() {
+  // virtual
 }
 
 double COHScriptObject::Evaluate(bool log /* = false */) {
@@ -153,11 +156,6 @@ int COHScriptObject::EditorGroupingCategory() {
   // Treat undefined as user-defined;
   return 7;
 }
-
-void COHScriptObject::Parse() {
-  p_formula_parser->ParseSingleFormula(_name, 
-    function_text(), _starting_line_of_function);
-};
 
 CString COHScriptObject::Serialize() {
   CString result = "##" + _name + "##\r\n" + _function_text;

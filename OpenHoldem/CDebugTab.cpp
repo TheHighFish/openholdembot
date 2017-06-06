@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CDebugTab.h"
 
+#include "CFormulaParser.h"
 #include "CPreferences.h"
 
 CDebugTab *p_debug_tab = NULL; 
@@ -39,6 +40,11 @@ CDebugTab::CDebugTab() {
 
 CDebugTab::~CDebugTab() {
   Clear();
+}
+
+void CDebugTab::Parse() {
+  // Gets called by ParseAll();
+  //!!!!!p_formula_parser->IsParsingDebugTab();
 }
 
 CString CDebugTab::EvaluateAll() {
