@@ -148,12 +148,12 @@ int CSymbolEngineChairs::SmallBlindChair() {
   if (p_symbol_engine_active_dealt_playing->nplayersdealt() < 2) {
     return kUndefined;
   }
-  if (MissingSmallBlind()) {
-    return kUndefined;
-  }
   // Headsup
   if (p_symbol_engine_active_dealt_playing->nplayersdealt() == 2) {
     return ChairByDealposition(2);
+  }
+  if (MissingSmallBlind()) {
+    return kUndefined;
   }
   return ChairByDealposition(1);
 }
@@ -162,11 +162,11 @@ int CSymbolEngineChairs::BigBlindChair() {
   if (p_symbol_engine_active_dealt_playing->nplayersdealt() < 2) {
     return kUndefined;
   }
-  if (MissingSmallBlind()) {
-    return ChairByDealposition(1);
-  }
   // Headsup
   if (p_symbol_engine_active_dealt_playing->nplayersdealt() == 2) {
+    return ChairByDealposition(1);
+  }
+  if (MissingSmallBlind()) {
     return ChairByDealposition(1);
   }
   return ChairByDealposition(2);
