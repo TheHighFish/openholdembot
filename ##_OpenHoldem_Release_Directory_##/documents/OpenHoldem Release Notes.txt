@@ -1,4 +1,17 @@
-﻿v﻿11.2.1 2017-06-04
+﻿v﻿11.2.2 2017-06-xx
+==================
+BUG FIXES:
+- The now built-in symbols smallblindchair and bigblindchair were missing the code
+  for reversed blinds headsup. Thanks to Relhby for reporting
+  and to poker_dog for the dix.
+  [THF]
+- The random number generator got initialized in the heartbeat-thread
+  and in the PrWin-thread. This caused random number to look "reproducible"
+  when only using the debug-tab without being connected to the table.
+  Thanks to Wetophelia for reporting and to poker_Dog for providing a patch.
+  [THF]
+
+v﻿11.2.1 2017-06-04
 ==================
 BUG FIXES:
 - InSmallBlind was broken due to a copy-and-paste-error

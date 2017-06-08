@@ -25,6 +25,9 @@ CSymbolEngineRandom::CSymbolEngineRandom() {
 	// we assure correct ordering by checking if they are initialized.
 	//
 	// This engine does not use any other engines.
+  //
+  // initialize random seed
+  srand(time(NULL));
 }
 
 CSymbolEngineRandom::~CSymbolEngineRandom() {
