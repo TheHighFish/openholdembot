@@ -43,8 +43,7 @@ CDebugTab::~CDebugTab() {
 }
 
 void CDebugTab::Parse() {
-  // Gets called by ParseAll();
-  //!!!!!p_formula_parser->IsParsingDebugTab();
+  p_formula_parser->ParseDebugTab(_function_text);
 }
 
 CString CDebugTab::EvaluateAll() {

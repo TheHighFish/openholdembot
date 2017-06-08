@@ -26,6 +26,7 @@
 #include "CTokenizer.h"
 
 class CFormulaParser {
+  friend class CDebugTab;
  public:
   CFormulaParser();
   ~CFormulaParser();
@@ -49,6 +50,8 @@ class CFormulaParser {
   bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
   bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }
+ protected:
+  void ParseDebugTab(CString function_text);
  private:
   void EnterParserCode();
   void LeaveParserCode();
@@ -65,7 +68,6 @@ class CFormulaParser {
   // OH-script and OpenPPL
   void ParseListBody(COHScriptList *list);
   TPParseTreeNode ParseFunctionBody();
-  void ParseDebugTab(CString function_text);
  private:
   // OH-script
   TPParseTreeNode ParseExpression(); 
