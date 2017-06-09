@@ -31,6 +31,8 @@ class CDebugTab: public COHScriptObject{
   // To be used by the formula-editor
   CString EvaluateAll(); 
   CString function_text();
+ public:
+  virtual void Parse();
  protected:
   void Clear();
   void AddExpression(CString expression_text, TPParseTreeNode expression);

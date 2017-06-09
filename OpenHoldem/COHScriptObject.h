@@ -66,7 +66,7 @@ class COHScriptObject {
   // For debugging
   virtual void Dump();
  public:
-  void Parse();
+  virtual void Parse();
  public:
   // For the function collection
   // Read-only library functions 

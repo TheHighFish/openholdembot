@@ -101,7 +101,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
     // EvaluateSymbol() will show a popup on error
   }
 }
-
+/*
 void CParserSymbolTable::VerifyAllUsedFunctionsAtEndOfParse() {
   write_log(preferences.debug_symbol_verification(),
     "[CParserSymbolTable] VerifyAllUsedFunctionsAtEndOfParse()\n");
@@ -122,4 +122,4 @@ void CParserSymbolTable::VerifyAllUsedFunctionsAtEndOfParse() {
   // That's why Clear() is now private for this module only.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20137
   Clear();
-}
+}*/

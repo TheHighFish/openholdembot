@@ -26,16 +26,17 @@
 #include "CTokenizer.h"
 
 class CFormulaParser {
+  friend class CDebugTab;
  public:
   CFormulaParser();
   ~CFormulaParser();
- public:
-  void InitNewParse();
  public:
   // This function will
   // * load the OpenPPL-library, if needed and posisble
   // * then load the formula file with user-defined bot-logic
   void ParseFormulaFileWithUserDefinedBotLogic(CArchive & formula_file);
+ public:
+  void ParseDefaultLibraries();
  public:
   // it is important to get the line-number first and pass it to the functions below.
   // First splitting the function-text would read up to the next function-header
@@ -43,21 +44,21 @@ class CFormulaParser {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
   void ParseSingleFormula(CString name, CString function_text, int starting_line);
   void ParseSingleFormula(CString function_text, int starting_line);
-  void ParseDefaultLibraries();
-  void ParseLibrary(CString library_path);
  public:
   static CString CurrentFunctionName();
   static CString CurrentFile();
   bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
   bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }
- public:
+ protected:
+  void ParseDebugTab(CString function_text);
+ private:
   void EnterParserCode();
   void LeaveParserCode();
  private:
-  void ParseFile(CArchive & formula_file);
+  void LoadFunctionsFromLibrary(CString library_path);
+  void LoadFunctionsFromArchive(CArchive & formula_file);
  private:
-  bool VerifyFunctionHeader(CString function_header);
   bool VerifyFunctionNamingConventions(CString name);
   void ExpectMatchingBracketClose(int opening_bracket);
   bool ExpectConditionalThen();
@@ -67,7 +68,6 @@ class CFormulaParser {
   // OH-script and OpenPPL
   void ParseListBody(COHScriptList *list);
   TPParseTreeNode ParseFunctionBody();
-  void ParseDebugTab(CString function_text);
  private:
   // OH-script
   TPParseTreeNode ParseExpression(); 
@@ -90,6 +90,8 @@ class CFormulaParser {
  private:
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
+ private:
+  void InitNewParse();
  private:
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;

@@ -27,11 +27,13 @@ class CFunction: public COHScriptObject{
       int absolute_line);
   ~CFunction();
  public:
-  void SetParseTree(TPParseTreeNode _new_parse_tree);
-  void ClearCache();
- public:
   double Evaluate(bool log = false);
   bool EvaluatesToBinaryNumber();
+  void ClearCache();
+ public:
+  virtual void Parse();
+  void SetParseTree(TPParseTreeNode _new_parse_tree);
+ public:
   // For debugging output
   CString Serialize();
   void Dump();

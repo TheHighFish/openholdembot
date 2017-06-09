@@ -155,6 +155,10 @@ int CSymbolEngineChairs::SmallBlindChair() {
   if (MissingSmallBlind()) {
     return kUndefined;
   }
+  // Headsup
+  if (p_symbol_engine_active_dealt_playing->nplayersdealt() == 2) {
+    return ChairByDealposition(2);
+  }
   return ChairByDealposition(1);
 }
 
@@ -167,6 +171,10 @@ int CSymbolEngineChairs::BigBlindChair() {
     return ChairByDealposition(1);
   }
   if (MissingSmallBlind()) {
+    return ChairByDealposition(1);
+  }
+  // Headsup
+  if (p_symbol_engine_active_dealt_playing->nplayersdealt() == 2) {
     return ChairByDealposition(1);
   }
   return ChairByDealposition(2);

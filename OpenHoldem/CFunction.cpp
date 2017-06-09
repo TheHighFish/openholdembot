@@ -16,6 +16,7 @@
 
 #include "CAutoplayer.h"
 #include "CAutoplayerTrace.h"
+#include "CFormulaParser.h"
 #include "CParseTreeNode.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
@@ -53,8 +54,20 @@ CFunction::~CFunction() {
 }
 
 void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree) {
+  if (_parse_tree_node != NULL) {
+    delete _parse_tree_node;
+  }
 	_parse_tree_node = _new_parse_tree;
 }
+
+void CFunction::Parse() {
+  if ((_parse_tree_node == NULL) || IsFunction()) { 
+    write_log(preferences.debug_formula() || preferences.debug_parser(),
+      "[CFunction] Parsing %s\n", _name);
+    p_formula_parser->ParseSingleFormula(_name,
+      function_text(), _starting_line_of_function);
+  }
+};
 
 double CFunction::Evaluate(bool log /* = false */) {
   write_log(preferences.debug_formula(), 
@@ -142,7 +155,7 @@ void CFunction::Dump() {
     (_is_result_cached ? "[cached]" : "[not chached]"),
     _cached_result,
     _parse_tree_node);
-  write_log(preferences.debug_auto_trace(), (char*)(LPCTSTR)data);
+  write_log(preferences.debug_auto_trace()/*!!!!!???*/, (char*)(LPCTSTR)data);
 }
 
 void CFunction::SetValue(double value) {
