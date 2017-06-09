@@ -49,7 +49,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   // To be called by
   //   * UpdateOnHeartbeat() 
-  //   * the formula editor for the working copy (f$debug and f$test)
+  //   * the formula editor (f$debug and f$test)
   void ClearCache();
  public:
   // Deletes all user-defined functions

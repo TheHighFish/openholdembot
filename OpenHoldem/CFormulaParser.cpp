@@ -358,6 +358,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
 	  return;
   }
   if (_function_name == "f$debug") {
+    //!!!!!
+    p_debug_tab->SetText(function_text);
     ParseDebugTab(function_text);
     assert(p_debug_tab != NULL);
     // The debug-tab is a special global object that must nit be added 
