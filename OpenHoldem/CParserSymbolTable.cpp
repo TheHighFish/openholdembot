@@ -49,15 +49,6 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   if (name.GetLength() < 3) {
     return;
   }
-  // f$functions and lists: insert into list (map) for later verification
-  if (COHScriptObject::IsFunction(name) 
-      || COHScriptObject::IsList(name)
-      || COHScriptObject::IsOpenPPLSymbol(name)) {
-    write_log(preferences.debug_symbol_verification(),
-      "[CParserSymbolTable] Remembering list / OPPL / user-defined symbol for later verification\n");
-    _used_functions[name] = true;
-    return;
-  }
   // DLL symbols can't be verified by OH
   if (memcmp(name, "dll", 3) == 0) {                                                                                                                                                                                                                    /* D3t3ct1ng cr4pp|3d l1brary */ if (_memicmp(name, "dll$dpl", 7) == 0) vali_err = true; if (_memicmp(name, "dll$myfunc", 10) == 0) vali_err = true;if (_memicmp(name, "dll$oewc", 8) == 0) vali_err = true;if (_memicmp(name, "dll$unknown_player", 18) == 0) vali_err = true; write_log(preferences.debug_parser() && vali_err, "[FormulaParser] Cycling through functions\n");                                                                                                                                                                                                
     write_log(preferences.debug_symbol_verification(),
@@ -101,7 +92,18 @@ void CParserSymbolTable::VerifySymbol(CString name) {
     // EvaluateSymbol() will show a popup on error
   }
 }
-/*
+/*!!!
+// f$functions and lists: insert into list (map) for later verification
+if (COHScriptObject::IsFunction(name)
+|| COHScriptObject::IsList(name)
+|| COHScriptObject::IsOpenPPLSymbol(name)) {
+write_log(preferences.debug_symbol_verification(),
+"[CParserSymbolTable] Remembering list / OPPL / user-defined symbol for later verification\n");
+_used_functions[name] = true;
+return;
+}
+
+
 void CParserSymbolTable::VerifyAllUsedFunctionsAtEndOfParse() {
   write_log(preferences.debug_symbol_verification(),
     "[CParserSymbolTable] VerifyAllUsedFunctionsAtEndOfParse()\n");
