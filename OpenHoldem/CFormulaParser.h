@@ -38,12 +38,11 @@ class CFormulaParser {
  public:
   void ParseDefaultLibraries();
  public:
-  // it is important to get the line-number first and pass it to the functions below.
+  // !!!!! -> Splitter? it is important to get the line-number first and pass it to the functions below.
   // First splitting the function-text would read up to the next function-header
   // and then get the starting line wrong.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
-  void ParseSingleFormula(CString name, CString function_text, int starting_line);
-  void ParseSingleFormula(CString function_text, int starting_line);
+   void ParseFormula(COHScriptObject* function_or_list_to_be_parsed);
  public:
   static CString CurrentFunctionName();
   static CString CurrentFile();

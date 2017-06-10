@@ -175,6 +175,18 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
   return false;
 }
 
+bool CFormulaParser::IsValidFunctionName(CString name) {
+  int length = name.GetLength();
+  for (int i = 0; i<length; ++i) {
+    char next_character = name[i];
+    if (isalnum(next_character)) continue;
+    else if (next_character == '_') continue;
+    else if (next_character == '$') continue;
+    else return false;
+  }
+  return true;
+}
+
 bool CFormulaParser::ExpectConditionalThen() {
 	int token_ID = _tokenizer.GetToken();
 	if (token_ID != kTokenOperatorConditionalElse)	{
@@ -216,28 +228,7 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
     "(or bracket of another type).\n"); 
 }
 
-void CFormulaParser::ParseSingleFormula(CString name, 
-                                        CString function_text,
-                                        int starting_line) {
-  EnterParserCode();
-  _function_name = name;
-  ParseSingleFormula(function_text, starting_line);
-  LeaveParserCode();
-}
-
-bool CFormulaParser::IsValidFunctionName(CString name) {
-  int length = name.GetLength();
-  for (int i=0; i<length; ++i) {
-    char next_character = name[i];
-    if (isalnum(next_character)) continue;
-    else if (next_character == '_') continue;
-    else if (next_character == '$') continue;
-    else return false;
-  }
-  return true; 
-}
-
-void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line) {
+void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed) {
   // ATTENTION!
   // This function contasins many returns.
   // Make sure to call LeaveParserCode() everywhere!
@@ -249,7 +240,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
   // watchdog expects, that's why the parser regularly has to shout "ALIVE!"
   assert(p_watchdog != NULL);
   p_watchdog->MarkThisInstanceAsAlive();
-  _tokenizer.SetInput(function_text);
+  _function_name = function_or_list_to_be_parsed->name();
+  _tokenizer.SetInput(function_or_list_to_be_parsed);
   // No longer any check for end of file or end of function here.
   // This prevents the parsing of empty functions,
   // which is especially necessary for OpenPPL-Omaha
@@ -269,6 +261,8 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     LeaveParserCode();
 	  return;
   }
+  assert(_function_name != "f$debug");
+  /*
   if (_function_name == "f$debug") {
     //!!!!!
     p_debug_tab->SetText(function_text);
@@ -279,24 +273,21 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
     LeaveParserCode();
     return;
-  } 
+  } */
   TPParseTreeNode function_body = NULL;
-  if (COHScriptObject::IsFunction(_function_name) 
-      || COHScriptObject::IsOpenPPLSymbol(_function_name)) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; write_log(preferences.debug_parser() && vali_err, "[FormulaParser] Cycling through functions\n");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+  if (function_or_list_to_be_parsed->IsFunction() 
+      || function_or_list_to_be_parsed->IsOpenPPLSymbol()) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; write_log(preferences.debug_parser() && vali_err, "[FormulaParser] Cycling through functions\n");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
     // ##f$functionXYZ##
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Parsing f$function %s\n", _function_name);
     function_body =	ParseFunctionBody();
     CheckForExtraTokensAfterEndOfFunction();
-  } else if (_function_name.Left(4) == "list") {
+  } else if (function_or_list_to_be_parsed->IsList()) {
     // ##listXYZ##
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
-    COHScriptList *new_list = new COHScriptList(_function_name, 
-      function_text/*!!!!!, starting_line*/);
-    ParseListBody(new_list);
-    p_function_collection->Add((COHScriptObject*)new_list); 
+    ParseListBody((COHScriptList*)function_or_list_to_be_parsed);
     LeaveParserCode();
     return;
   } else if (_function_name.MakeLower() == "dll") {
@@ -838,32 +829,3 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
   _is_parsing_debug_tab = false;
   LeaveParserCode();
 }
-
-
-
-
-
-/*
-EnterParserCode();
-_source_file_name = formula_file.GetFile()->GetFilePath();
-InitNewParse();
-p_function_collection->DeleteAll(false, true);
-p_function_collection->SetFormulaName(formula_file.GetFile()->GetFileName());
-// !!!!! bad p_function_collection->SetPath(formula_file.GetFile()->GetFilePath());
-while (true) {
-int starting_line = _formula_file_splitter.starting_line_of_current_function();
-//!!!!!_formula_file_splitter.ScanForNextFunctionOrList(formula_file);
-CString function_header = _formula_file_splitter.GetFunctionHeader();
-if (function_header.GetLength() <= 0) {
-write_log(preferences.debug_parser(),
-"[FormulaParser] Empty function received. Parse finished.\n");
-break;
-}
-ParseSingleFormula(_formula_file_splitter.GetFunctionText(), starting_line);
-}
-// Dump function collection to log
-write_log(preferences.debug_formula() || preferences.debug_parser(),
-"[CFormulaParser] ParseFile() done: %s\n",
-formula_file.GetFile()->GetFileName());
-p_function_collection->Dump();
-LeaveParserCode();*/

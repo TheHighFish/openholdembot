@@ -70,8 +70,7 @@ void CFunction::Parse() {
   if ((_parse_tree_node == NULL) || IsFunction()) { 
     write_log(preferences.debug_formula() || preferences.debug_parser(),
       "[CFunction] Parsing %s\n", _name);
-    p_formula_parser->ParseSingleFormula(_name,
-      function_text(), _starting_line_of_function);
+    p_formula_parser->ParseFormula(this);
   }
 };
 

@@ -15,6 +15,7 @@
 #define INC_CTOKENIZER_H
 
 #include "atlstr.h"
+#include "COHScriptObject.h"
 
 class CTokenizer {	
   friend class CFormulaParser;
@@ -22,7 +23,11 @@ class CTokenizer {
 	CTokenizer();
 	~CTokenizer();
  public:
-	void SetInput(const char* next_formula_to_be_parsed);
+  // For parsing functions and lists of CFunctionCollection
+  void SetInput(COHScriptObject* function_or_list_to_be_parsed);
+  // For parsing expressions of the debug-tab
+	void SetInput(const char* expression_to_be_parsed);
+ public:
 	int GetToken();
 	int LookAhead(bool expect_action = false);
 	char* GetTokenString();

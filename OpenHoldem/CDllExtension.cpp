@@ -20,6 +20,7 @@
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
+#include "COHScriptList.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEnginePrWin.h"
@@ -160,12 +161,9 @@ void __stdcall WriteLog(char* fmt, ...) {
 }
 
 /*EXE_IMPLEMENTS*/ void __stdcall ParseHandList(const char* name_of_list, const char* list_body) {
-  CString function_header;
-  function_header.Format("%s%s%s", "##", name_of_list, "##");
-  CString handlist;
-  handlist.Format("%s\n%s", function_header, list_body);
-  // "Formula" includes lists, too.
-  p_formula_parser->ParseSingleFormula(handlist, kUndefinedZero);
+  COHScriptList* p_new_list = new COHScriptList(name_of_list, list_body);
+  p_formula_parser->ParseFormula(p_new_list);
+  p_function_collection->Add(p_new_list);
 }
 
 /*EXE_IMPLEMENTS*/ char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {

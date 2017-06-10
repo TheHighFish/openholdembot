@@ -49,6 +49,15 @@ void CTokenizer::InitNewParse() {
 	InitVars();
 }
 
+void CTokenizer::SetInput(COHScriptObject* function_or_list_to_be_parsed) {
+  SetInput(function_or_list_to_be_parsed->function_text());
+}
+
+void CTokenizer::SetInput(const char* next_formula_to_be_parsed) {
+  input_buffer = (char*)next_formula_to_be_parsed;
+  InitVars();
+}
+
 void CTokenizer::InitVars() {
   // Gets called once for every function
   // Therefore we don't reset line_absolute here
@@ -76,14 +85,7 @@ char CTokenizer::CURRENT_CHARACTER() {
   return next_char;
 }
 
-void CTokenizer::SetInput(const char* next_formula_to_be_parsed)
-{
-	input_buffer = (char*) next_formula_to_be_parsed;
-	InitVars();
-}
-
-int CTokenizer::GetToken()
-{
+int CTokenizer::GetToken() {
 	// Like lookahead, but accepting the token
 	int next_token = LookAhead();
   if (_additional_percentage_operator_pushed_back) {
@@ -112,10 +114,8 @@ int CTokenizer::LookAhead(bool expect_action /*= false */) {
 	return _last_token;
 }
 
-inline bool IsOperatorCharacter(char c)
-{
-	switch (c)
-	{
+inline bool IsOperatorCharacter(char c) {
+	switch (c) {
 	case '+':
 	case '-':
 	case '*':
@@ -136,10 +136,8 @@ inline bool IsOperatorCharacter(char c)
 	}
 }
 
-inline bool IsBracket(char c)
-{
-	switch (c)
-	{
+inline bool IsBracket(char c) {
+	switch (c) {
 	case '(':
 	case '[':
 	case '{':
@@ -150,8 +148,7 @@ inline bool IsBracket(char c)
 	}
 }
 
-bool CTokenizer::IsBinaryMinus()
-{
+bool CTokenizer::IsBinaryMinus() {
 	// We need to distinguishing binary and unary minusses (negative numbers)
 	// Binary ones can only happen in certain circumstances
 	return ((_last_token == kTokenIdentifier)
@@ -175,8 +172,7 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
   // as actions can also appear as part of expressions like
   //   WHEN BotsLastAction = Raise...
   // and some others like Bet and Call are also OH-script symbols (bet, call)
-	switch (SIZE_OF_TOKEN)
-	{
+	switch (SIZE_OF_TOKEN) {
 	case 2:
 		if (_memicmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr;  return true; }
 		break;
@@ -484,8 +480,7 @@ void CTokenizer::SkipToEndOfLine() {
   line_relative++;
 }
 
-void CTokenizer::SkipToEndOfMultiLineComment()
-{
+void CTokenizer::SkipToEndOfMultiLineComment() {
 	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
 		  && (CURRENT_CHARACTER() != '\0'))	{
     if (CURRENT_CHARACTER() == '\n') {
@@ -508,13 +503,11 @@ void CTokenizer::SkipToEndOfMultiLineComment()
 	}
 }
 
-int CTokenizer::LineAbsolute()
-{
+int CTokenizer::LineAbsolute() {
 	return line_absolute;
 }
 
-int CTokenizer::LineRelative()
-{
+int CTokenizer::LineRelative() {
 	return line_relative;
 }
 
