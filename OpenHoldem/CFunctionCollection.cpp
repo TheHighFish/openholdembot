@@ -631,7 +631,9 @@ bool CFunctionCollection::ParseAll() {
   p_parser_symbol_table->Clear();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {
-    if (p_oh_script_object->IsFunction() || p_oh_script_object->IsList()) {
+    if (p_oh_script_object->IsFunction() 
+      || p_oh_script_object->IsList()
+      || p_oh_script_object->EmptyParseTree()) {
       p_oh_script_object->Parse();
     }
     p_oh_script_object = GetNext();  

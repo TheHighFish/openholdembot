@@ -15,6 +15,7 @@
 #define INC_COHSCRIPTOBJECT_H
 
 class COHScriptObject {
+  friend class CFunctionCollection;
  public:
   COHScriptObject(); 
   COHScriptObject(
@@ -74,6 +75,9 @@ class COHScriptObject {
   // * won't be shown in the editor
   // * won't be saved
   void SetAsReadOnlyLibraryFunction() { _is_read_only = true; }
+ protected:
+  // To be used by CFunctionCollection::parseAll()
+  virtual bool EmptyParseTree() { return false; }
  protected:
   CString _name;
   CString _function_text;

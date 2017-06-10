@@ -3,12 +3,15 @@
 BUG FIXES:
 - The now built-in symbols smallblindchair and bigblindchair were missing the code
   for reversed blinds headsup. Thanks to Relhby for reporting
-  and to poker_dog for the dix.
+  and to poker_dog for the fix.
   [THF]
 - The random number generator got initialized in the heartbeat-thread
   and in the PrWin-thread. This caused random number to look "reproducible"
   when only using the debug-tab without being connected to the table.
   Thanks to Wetophelia for reporting and to poker_Dog for providing a patch.
+  [THF]
+- The error-message for endless recursions showed only the first character
+  of the name of the last evaluated function. Thanks to Guysmo for reporting.
   [THF]
 
 MAINTENANCE:

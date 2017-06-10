@@ -45,6 +45,11 @@ class CFunction: public COHScriptObject{
   // instead of f$beep, f$alli, ...
   void SetValue(double value);
  protected:
+  // To be used by CFunctionCollection::parseAll()
+   virtual bool EmptyParseTree() {
+     return _parse_tree_node == NULL;
+   }
+ protected:
   // Used by the parse-tree-rotator
   TPParseTreeNode _parse_tree_node;
  private:
