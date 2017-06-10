@@ -11,6 +11,17 @@ BUG FIXES:
   Thanks to Wetophelia for reporting and to poker_Dog for providing a patch.
   [THF]
 
+MAINTENANCE:
+- Restructured some parts of the parser. 
+  It does no longer work on files, but on function-collections.
+  Benefits:
+    * some error-messages previously required an input-file.
+      They now also work when modifiying a formula with the editor
+    * loads now also the debug-tab
+    * more speed (as some inefficiencies got removed along the way)
+  [THF]
+
+
 v﻿11.2.1 2017-06-04
 ==================
 BUG FIXES:
@@ -100,7 +111,6 @@ BUG FIXES:
   and to Poker_Dog for finding the bug.
   [THF]
 
-  
 MAINTENANCE:
 - Now detecting and warning if logical operators get fed with numerical values.
   Way too many people don't understand the precedence of operators
