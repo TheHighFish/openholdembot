@@ -119,11 +119,16 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   CSLock lock(m_critsec);
   assert(new_function != NULL);
   CString name = new_function->name();
-  // f$debug is a global object 
-  // and must not be added to the collection
-  // (to avoid deletion)
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
-  assert(name != "f$debug");
+  if (name == "f$debug") {
+    // f$debug is a special global object 
+    // and must not be added to the collection
+    // (to avoid deletion)
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
+    assert(p_debug_tab != NULL);
+    p_debug_tab->SetText(new_function->function_text());
+    delete new_function;
+    return;
+  }
   if (name == "") {
     write_log(preferences.debug_formula(), 
 	    "[CFunctionCollection] Invalid empty name\n");
@@ -438,7 +443,6 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   CFunction *p_function = new CFunction(function_name, 
     function_text, kNoAbsoluteLineNumberExists); 
   Add((COHScriptObject *)p_function);
-  p_function->Parse();
 }
 
 COHScriptObject *CFunctionCollection::GetFirst() {

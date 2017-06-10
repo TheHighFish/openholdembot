@@ -119,6 +119,11 @@ CString CFormulaFileSplitter::ExtractFunctionName(const CString function_header)
       "Please put it for example into \"##notes##\".\n");
     return kErroneousFunctionName;
   }
+  else if (function_name_lower_case == "") {
+    // End of file reached;
+    // no more functions found
+    return kErroneousFunctionName;
+  }
   else if (function_name_lower_case.Left(2) != "##") {
     CParseErrors::Error("Shanky-style option settings?\n"
       "Options are not supported, because OpenPPL does not provide a default bot.\n"

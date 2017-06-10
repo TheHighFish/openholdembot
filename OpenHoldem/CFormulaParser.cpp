@@ -317,13 +317,6 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     LeaveParserCode();
     return;
   }
-  /*
-  // The added functions stays in the collection 
-  // until a new profile gets loaded, until it gets overwritten]
-  // or until the entire collection gets released
-  CFunction *p_new_function = new CFunction(_function_name, 
-	  function_text, starting_line);
-  //!!!!!p_new_function->SetParseTree(function_body);*/
   COHScriptObject *p_existing_function = p_function_collection->LookUp(_function_name);
   assert(p_existing_function != NULL);
   // type-check!!!!!

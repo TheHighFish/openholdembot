@@ -323,10 +323,3 @@ CString CSymbolEngineChairs::SymbolsProvided() {
     "missingsmallblind ";
 }
 
-
-// DOCU changed naming!!!!!
-// opponent_chair_headsup
-// smallblind_chair
-// bigblind_chair
-//
-// docu multiplexer and PT
