@@ -31,6 +31,9 @@ class COHScriptObject {
  public:
   CString name()			      { return _name; }
   virtual CString function_text() { return _function_text; }
+  CString GetPath() { return _file_path; }
+  int StartingLine() { return _starting_line_of_function; }
+ public:
   void SetName(CString name)      { _name = name; }
   void SetText(CString text)      { _function_text = text; }
  public:

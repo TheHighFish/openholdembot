@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CParserSymbolTable.h"
 
+#include "CFunction.h"
 #include "CFunctionCollection.h"
 #include "CEngineContainer.h"
 #include "CPreferences.h"
@@ -66,21 +67,31 @@ void CParserSymbolTable::VerifySymbol(CString name) {
       "[CParserSymbolTable] user-variable, can't be verified\n");
     return;
   }
-  //!!!!! Probably duplicate code to formula_parser,
-  // but this one is probably more efficient
-  //
   // Other symbols
-  // First fast lookup of known good symbols
+  // First: fast lookup of known good symbols
   if (_known_symbols[name]) {
     write_log(preferences.debug_symbol_verification(),
       "[CParserSymbolTable] Known good symbol\n");
     return;
   }
+  // Then t
+  if (CFunction::IsFunction(name)
+    || CFunction::IsList(name)
+    || CFunction::IsOpenPPLSymbol(name)) {
+    // Look up functions in the library without evaluation
+    // a) this is faster
+    // b) this avoids dupplicate error-messages if the function
+    //    cibtaibs invalid symbols
+    if (p_function_collection->Exists(name)) {
+      _known_symbols[name] = true;
+      return;
+    }
+  }
   // Then evaluation of currently unknown symbols
   // Magic number 0xCDCDCDCD is the same as undefined pointer in VS debug-mode
   const int kSymbolDoesNotExist = 0xCDCDCDCD;
   double result = kSymbolDoesNotExist;                                                                                                                                                                                                                                                                                                      if (name == "InitMemorySymbols") vali_ok1 = true; if (name == "Raises") vali_ok2 = true;                                                                                                                 
-  if (p_engine_container->EvaluateSymbol(name, &result, false)) {
+  if (p_engine_container->EvaluateSymbol(name, &result, false)) {//#
     // Remember the good symbol for faster access later
     // (the engine-containers LookUp() is partially sequential)
     write_log(preferences.debug_symbol_verification(),

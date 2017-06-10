@@ -16,20 +16,22 @@
 
 #include "assert.h"
 #include "CardFunctions.h"
+#include "CDebugTab.h"
 #include "CFormulaparser.h"
+#include "COHScriptObject.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
 
 // Global vars to be used by static accessors
-int line_absolute = 1;
 int line_relative = 1;
 const int kMaxSizeOfToken = 1024;
 char last_token_string[kMaxSizeOfToken];
-char* input_buffer;
+char* input_buffer = NULL;
 int  _token_start_pointer = kUndefined;
 const char kEmptyBuffer[2] = "\n";
+COHScriptObject* _currently_tokenized_function_or_list = NULL;
 
 #define NEXT_CHARACTER        input_buffer[_token_end_pointer+1]
 #define SECOND_NEXT_CHARACTER input_buffer[_token_end_pointer+2]
@@ -44,16 +46,27 @@ CTokenizer::~CTokenizer() {
 }
 
 void CTokenizer::InitNewParse() {
-  line_absolute = 1;
-  SetInput(kEmptyBuffer);
+  _currently_tokenized_function_or_list = NULL;
+  SetInputBuffer(kEmptyBuffer);
 	InitVars();
 }
 
-void CTokenizer::SetInput(COHScriptObject* function_or_list_to_be_parsed) {
-  SetInput(function_or_list_to_be_parsed->function_text());
+void CTokenizer::SetInputFunction(COHScriptObject* function_or_list_to_be_parsed) {
+  _currently_tokenized_function_or_list = function_or_list_to_be_parsed;
+  if (function_or_list_to_be_parsed != NULL) {
+    SetInputBuffer(function_or_list_to_be_parsed->function_text());
+  } else {
+    SetInputBuffer(kEmptyBuffer);
+  }
 }
 
-void CTokenizer::SetInput(const char* next_formula_to_be_parsed) {
+void CTokenizer::SetInputBufferByDebugTab(const char* expression_to_be_parsed, int line) {
+  _currently_tokenized_function_or_list = p_debug_tab;
+  line_relative = line;
+  SetInputBuffer(expression_to_be_parsed);
+}
+
+void CTokenizer::SetInputBuffer(const char* next_formula_to_be_parsed) {
   input_buffer = (char*)next_formula_to_be_parsed;
   InitVars();
 }
@@ -250,7 +263,6 @@ StartOfScanForNextToken:
     // [\r][\n]Line break
     if ((CURRENT_CHARACTER() == '\n')
 	      || (CURRENT_CHARACTER() == '\r')) {
-      line_absolute++;
       line_relative++;
     }
     SkipNextCharacter();
@@ -420,7 +432,6 @@ NegativeNumber:
 	}
 	// [\0] End of string = end of function
 	else if (CURRENT_CHARACTER() == '\0') {
-		line_absolute++; 
 		return kTokenEndOfFunction;
 	}
   // Do not advance the input pointer,
@@ -441,10 +452,6 @@ char* CTokenizer::GetTokenString() {
 	memcpy(last_token_string, TOKEN_ADDRESS, SIZE_OF_TOKEN);
 	last_token_string[SIZE_OF_TOKEN] = '\0';
 	return last_token_string;
-}
-
-char* CTokenizer::RemainingInput() {
-	return TOKEN_ADDRESS;
 }
 
 void CTokenizer::ErrorInvalidCharacter(char invalid_char) {
@@ -476,7 +483,6 @@ void CTokenizer::SkipToEndOfLine() {
 	}
 	// And skip the end of line too
 	SkipNextCharacter();
-  line_absolute++;
   line_relative++;
 }
 
@@ -484,7 +490,6 @@ void CTokenizer::SkipToEndOfMultiLineComment() {
 	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
 		  && (CURRENT_CHARACTER() != '\0'))	{
     if (CURRENT_CHARACTER() == '\n') {
-      line_absolute++;
       line_relative++;
     }
 		SkipNextCharacter();
@@ -501,14 +506,6 @@ void CTokenizer::SkipToEndOfMultiLineComment() {
 		SkipNextCharacter();
 		SkipNextCharacter();
 	}
-}
-
-int CTokenizer::LineAbsolute() {
-	return line_absolute;
-}
-
-int CTokenizer::LineRelative() {
-	return line_relative;
 }
 
 void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
@@ -535,4 +532,22 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
       return;
     }
   }
+}
+
+int CTokenizer::LineAbsolute() {
+  assert(_currently_tokenized_function_or_list != NULL);
+  return (_currently_tokenized_function_or_list->StartingLine() + LineRelative());
+}
+
+int CTokenizer::LineRelative() {
+  return line_relative;
+}
+
+char* CTokenizer::RemainingInput() {
+  return TOKEN_ADDRESS;
+}
+
+CString CTokenizer::InputFile() {
+  assert(_currently_tokenized_function_or_list != NULL);
+  return _currently_tokenized_function_or_list->GetPath();
 }

@@ -24,9 +24,9 @@ class CTokenizer {
 	~CTokenizer();
  public:
   // For parsing functions and lists of CFunctionCollection
-  void SetInput(COHScriptObject* function_or_list_to_be_parsed);
+  void SetInputFunction(COHScriptObject* function_or_list_to_be_parsed);
   // For parsing expressions of the debug-tab
-	void SetInput(const char* expression_to_be_parsed);
+	void SetInputBufferByDebugTab(const char* expression_to_be_parsed, int line);
  public:
 	int GetToken();
 	int LookAhead(bool expect_action = false);
@@ -46,8 +46,10 @@ class CTokenizer {
 	static int LineAbsolute();
 	static int LineRelative();
 	static char* RemainingInput();
+  static CString InputFile();
  public:
   void InitNewParse();
+  void SetInputBuffer(const char* expression_to_be_parsed);
  private:
 	int  ScanForNextToken();
   void SkipNextCharacter();

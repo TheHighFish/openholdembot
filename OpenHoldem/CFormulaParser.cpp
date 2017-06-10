@@ -49,9 +49,7 @@
 CFormulaParser *p_formula_parser = NULL;
 
 // Global for static accessor-functions
-//!!!!!R
 CString _function_name;
-CString _source_file_name;
 
 CFormulaParser::CFormulaParser() {
   _is_parsing_counter = 0;
@@ -116,7 +114,7 @@ void CFormulaParser::ParseDefaultLibraries() {
   LoadFunctionsFromLibrary(p_filenames->CustomLibraryPath());
   // Check again after the custom library
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
-  p_function_collection->ParseAll(); // !!!!ParseAll 1
+  p_function_collection->ParseAll(); 
   LeaveParserCode();
 }
 
@@ -241,7 +239,7 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   assert(p_watchdog != NULL);
   p_watchdog->MarkThisInstanceAsAlive();
   _function_name = function_or_list_to_be_parsed->name();
-  _tokenizer.SetInput(function_or_list_to_be_parsed);
+  _tokenizer.SetInputFunction(function_or_list_to_be_parsed);
   // No longer any check for end of file or end of function here.
   // This prevents the parsing of empty functions,
   // which is especially necessary for OpenPPL-Omaha
@@ -511,10 +509,6 @@ void CFormulaParser::ParseConditionalPartialThenElseExpressions(
 
 CString CFormulaParser::CurrentFunctionName() {
 	return _function_name;
-}
-
-CString CFormulaParser::CurrentFile() {
-  return _source_file_name;
 }
 
 void CFormulaParser::ErrorMissingAction(int token_ID) {
@@ -805,10 +799,10 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
   _is_parsing_debug_tab = true;
   p_debug_tab->Clear();
   CString next_line;
-  int separator_index = 0;
   // Split lines
-  while (AfxExtractSubString(next_line, function_text, separator_index, '\n')) {
-    ++separator_index;
+  int line_number = 0;
+  while (AfxExtractSubString(next_line, function_text, line_number, '\n')) {
+    ++line_number;
     int pos = next_line.Find('=');
     if (pos < 0) {
       // No equality-sign found. Empty line or not valid
@@ -818,7 +812,7 @@ void CFormulaParser::ParseDebugTab(CString function_text) {
     int expresion_length = next_line.GetLength() - pos - 1;
     CString expression_text = next_line.Right(expresion_length);
     // Parse this line
-    _tokenizer.SetInput(expression_text);
+    _tokenizer.SetInputBufferByDebugTab(expression_text, line_number);
     TPParseTreeNode expression = ParseExpression();
     // Care about operator precendence
     _parse_tree_rotator.Rotate(expression, &expression);
