@@ -77,12 +77,12 @@ double CFunction::Evaluate(bool log /* = false */) {
   // Decrease recursion_depth on every function exit!
   recursion_depth++;
   if (recursion_depth > kMaxRecursionDepth) {
-    CString error_message = CString(
-      "Recursion to deep.\n"
+    CString error_message; 
+    error_message.Format("Recursion to deep.\n"
       "Probably endless.\n"
       "Stopping autoplayer.\n"
       "\n"
-      "Last function: ") + *_name;
+      "Last function: %s", _name);
 	  OH_MessageBox_Error_Warning(error_message);
 	  p_autoplayer->EngageAutoplayer(false);
 	  ++recursion_depth;
