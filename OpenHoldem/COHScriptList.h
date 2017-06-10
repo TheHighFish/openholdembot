@@ -35,9 +35,13 @@ typedef bool THandListMatrix[k_number_of_ranks_per_deck][k_number_of_ranks_per_d
 class COHScriptList: public COHScriptObject {
   friend class DialogHandList;
  public:
+  COHScriptList(
+    CString new_name,
+    CString new_function_text);
   COHScriptList( 
     CString new_name, 
     CString new_function_text,
+    CString file_path,
     int absolute_line);
   virtual ~COHScriptList();
  public:

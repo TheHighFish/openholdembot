@@ -14,14 +14,19 @@
 #ifndef INC_COHSCRIPTOBJECT_H
 #define INC_COHSCRIPTOBJECT_H
 
+// Either auto-generated for completion
+// or created with the editor
+const CString kNoSourceFileForThisCode = "no source file";
+
 class COHScriptObject {
   friend class CFunctionCollection;
  public:
   COHScriptObject(); 
   COHScriptObject(
-      CString new_name, 
-      CString new_function_text,
-      int starting_line_of_function);
+    CString new_name, 
+    CString new_function_text,
+    CString file_path,
+    int starting_line_of_function);
   virtual ~COHScriptObject();
  public:
   CString name()			      { return _name; }
@@ -81,6 +86,7 @@ class COHScriptObject {
  protected:
   CString _name;
   CString _function_text;
+  CString _file_path;
   int _starting_line_of_function;
  private:
   bool _is_read_only;

@@ -17,6 +17,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerTrace.h"
 #include "CFormulaParser.h"
+#include "COHScriptObject.h"
 #include "CParseTreeNode.h"
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
@@ -25,16 +26,21 @@
 int recursion_depth = 0;
 const int kMaxRecursionDepth = 100;
 
-CFunction dummy_function("undefined (probably debug-tab)", "", kUndefined);
+CFunction dummy_function("undefined (probably debug-tab)", "", 
+  kNoSourceFileForThisCode, kUndefinedZero);
 CFunction* CFunction::_currently_evaluated_function = &dummy_function;
+
+CFunction::CFunction(
+    CString new_name,
+    CString new_function_text) {
+  CFunction(new_name, new_function_text, kNoSourceFileForThisCode, kUndefinedZero);
+}
 
 CFunction::CFunction(
     CString new_name, 
     CString new_function_text,
-    int absolute_line) {
-  _name = new_name;
-  _function_text = new_function_text;
-  _starting_line_of_function = absolute_line;
+    CString file_path,
+    int absolute_line) : COHScriptObject(new_name, new_function_text, file_path, absolute_line) {
   _is_result_cached = false;
   _cached_result = kUndefinedZero;
   _parse_tree_node = NULL;

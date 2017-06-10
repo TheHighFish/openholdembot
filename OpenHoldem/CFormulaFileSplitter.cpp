@@ -74,10 +74,16 @@ COHScriptObject* CFormulaFileSplitter::GetNextObject(CArchive &formula_file) {
   COHScriptObject* new_function_or_list = NULL;
   if (_function_name.Left(4) == "list") {
     new_function_or_list = new COHScriptList(
-      _function_name, _function_text, _starting_line_of_current_function);
+      _function_name, 
+      _function_text, 
+      formula_file.GetFile()->GetFilePath(),
+      _starting_line_of_current_function);
   } else {
     new_function_or_list = new CFunction(
-      _function_name, _function_text, _starting_line_of_current_function);
+      _function_name,
+      _function_text,
+      formula_file.GetFile()->GetFilePath(),
+      _starting_line_of_current_function);
   }
   return new_function_or_list;
 }

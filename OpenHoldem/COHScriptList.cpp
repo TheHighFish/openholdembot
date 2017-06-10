@@ -10,12 +10,16 @@
 #include "NumericalFunctions.h"
 
 COHScriptList::COHScriptList(
+  CString new_name,
+  CString new_function_text) {
+  COHScriptList(new_name, new_function_text, kNoSourceFileForThisCode, kUndefinedZero);
+}
+
+COHScriptList::COHScriptList(
     CString new_name, 
     CString new_function_text,
-    int absolute_line) {
-  _name = new_name;
-  _function_text = new_function_text;
-  _starting_line_of_function = absolute_line;
+    CString file_path,
+    int absolute_line) : COHScriptObject(new_name, new_function_text, file_path, absolute_line) {
   Clear();
 }
 

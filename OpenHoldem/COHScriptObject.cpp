@@ -19,16 +19,19 @@
 COHScriptObject::COHScriptObject() {
 	_name = "";
 	_function_text = "";
-  _starting_line_of_function = 0;
+  _file_path = kNoSourceFileForThisCode;
+  _starting_line_of_function = kUndefinedZero;
   _is_read_only = false;
 }
 
 COHScriptObject::COHScriptObject(
     CString new_name, 
     CString new_function_text,
+    CString file_path,
     int starting_line_of_function) {
   _name = new_name;
   _function_text = new_function_text;
+  _file_path = file_path;
   _starting_line_of_function = starting_line_of_function;
 }
 

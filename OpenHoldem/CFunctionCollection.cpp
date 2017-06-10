@@ -305,8 +305,7 @@ void CFunctionCollection::ExecuteSelftest() {
     "[CFunctionCollection] Executing self-test\n");
   CString name = kSelftestName;
   CString function_text = kSelftestFunction;
-  CFunction *p_function = new CFunction(name, 
-    function_text, kNoAbsoluteLineNumberExists); 
+  CFunction *p_function = new CFunction(name, function_text); 
   // The parser assunes that every function to ber parsed
   // exists in the collection
   p_function_collection->Add(p_function);
@@ -440,8 +439,7 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
   // The added functions stays in the collection 
   // until a new profile gets loaded, until it gets overwritten]
   // or until the ebtire collection gets released
-  CFunction *p_function = new CFunction(function_name, 
-    function_text, kNoAbsoluteLineNumberExists); 
+  CFunction *p_function = new CFunction(function_name, function_text); 
   Add((COHScriptObject *)p_function);
 }
 
@@ -607,7 +605,7 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     // The added functions stays in the collection 
     // until a new profile gets loaded, until it gets overwritten]
     // or until the ebtire collection gets released
-    function = new CFunction(my_name, my_text, kUndefinedZero);
+    function = new CFunction(my_name, my_text);
     Add(function);
   } else {
     write_log(preferences.debug_formula(), 

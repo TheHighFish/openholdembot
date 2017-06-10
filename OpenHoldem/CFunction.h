@@ -22,9 +22,13 @@ class CFunction: public COHScriptObject{
   friend class CFunctionCollection;
  public:
   CFunction(
-      CString new_name, 
-      CString new_function_text,
-      int absolute_line);
+    CString new_name,
+    CString new_function_text);
+  CFunction(
+    CString new_name, 
+    CString new_function_text,
+    CString file_path,
+    int absolute_line);
   ~CFunction();
  public:
   double Evaluate(bool log = false);

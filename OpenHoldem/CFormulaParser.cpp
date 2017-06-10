@@ -294,7 +294,7 @@ void CFormulaParser::ParseSingleFormula(CString function_text, int starting_line
     write_log(preferences.debug_parser(), 
 	  "[FormulaParser] Parsing list\n");
     COHScriptList *new_list = new COHScriptList(_function_name, 
-      function_text, starting_line);
+      function_text/*!!!!!, starting_line*/);
     ParseListBody(new_list);
     p_function_collection->Add((COHScriptObject*)new_list); 
     LeaveParserCode();
