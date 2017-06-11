@@ -53,7 +53,7 @@ CFormulaFileSplitter::~CFormulaFileSplitter() {
 void CFormulaFileSplitter::SplitFile(CArchive &formula_file) {
   _first_function_processed = false;
   _total_lines_processed = 0;
-  _starting_line_of_current_function = 0;
+  _starting_line_of_next_function = 0;
   COHScriptObject* next_function_or_list = GetNextObject(formula_file);
   while (next_function_or_list != NULL) {
     p_function_collection->Add(next_function_or_list);
@@ -62,6 +62,10 @@ void CFormulaFileSplitter::SplitFile(CArchive &formula_file) {
 }
 
 COHScriptObject* CFormulaFileSplitter::GetNextObject(CArchive &formula_file) {
+  // We have to get the starting line of the current-function
+  // (= end of last found function) before we scan for its content,
+  // which already modifies the line-info of the next one.
+  int starting_line_of_current_function = _starting_line_of_next_function;
   ScanForNextFunctionOrList(formula_file);
   if (_function_name == kErroneousFunctionName) {
     // Input really mal-formed.
@@ -77,13 +81,13 @@ COHScriptObject* CFormulaFileSplitter::GetNextObject(CArchive &formula_file) {
       _function_name, 
       _function_text, 
       formula_file.GetFile()->GetFilePath(),
-      _starting_line_of_current_function);
+      starting_line_of_current_function);
   } else {
     new_function_or_list = new CFunction(
       _function_name,
       _function_text,
       formula_file.GetFile()->GetFilePath(),
-      _starting_line_of_current_function);
+      starting_line_of_current_function);
   }
   return new_function_or_list;
 }
@@ -188,7 +192,7 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
       // Only continue, if we found the first one
       //
       // In case of break: keep that function-header for the next query
-      _starting_line_of_current_function = _total_lines_processed;
+      _starting_line_of_next_function = _total_lines_processed;
       break;
 	  }
     if (function_header.IsEmpty() || (function_header.Find('#') < 0)) {

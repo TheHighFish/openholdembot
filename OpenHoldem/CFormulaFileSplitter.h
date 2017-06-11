@@ -41,7 +41,7 @@ class CFormulaFileSplitter {
 
   bool _first_function_processed;
   int _total_lines_processed;
-  int _starting_line_of_current_function;
+  int _starting_line_of_next_function;
 };
 
 #endif INC_CFORMULAFILESPLITTER_H
