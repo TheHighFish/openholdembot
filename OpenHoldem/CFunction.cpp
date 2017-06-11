@@ -32,8 +32,10 @@ CFunction* CFunction::_currently_evaluated_function = &dummy_function;
 
 CFunction::CFunction(
     CString new_name,
-    CString new_function_text) {
-  CFunction(new_name, new_function_text, kNoSourceFileForThisCode, kUndefinedZero);
+    CString new_function_text) : COHScriptObject(new_name, new_function_text, kNoSourceFileForThisCode, kUndefinedZero) {
+  _is_result_cached = false;
+  _cached_result = kUndefinedZero;
+  _parse_tree_node = NULL;
 }
 
 CFunction::CFunction(

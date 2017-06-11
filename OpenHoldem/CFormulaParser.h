@@ -44,7 +44,6 @@ class CFormulaParser {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
    void ParseFormula(COHScriptObject* function_or_list_to_be_parsed);
  public:
-  static CString CurrentFunctionName();
   bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
   bool IsParsingDebugTab()                { return _is_parsing_debug_tab; }

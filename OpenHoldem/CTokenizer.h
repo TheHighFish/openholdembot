@@ -43,10 +43,11 @@ class CTokenizer {
   // Cross your fingers that it works. ;-)
   void PushBackAdditionalPercentageOperator() { _additional_percentage_operator_pushed_back = true; }
  public:
+  static CString InputFile();
+  static CString CurrentFunctionName();
 	static int LineAbsolute();
 	static int LineRelative();
 	static char* RemainingInput();
-  static CString InputFile();
  public:
   void InitNewParse();
   void SetInputBuffer(const char* expression_to_be_parsed);

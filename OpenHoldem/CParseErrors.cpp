@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "CParseErrors.h"
 
-#include "CFormulaParser.h"
 #include "CTokenizer.h"
 #include "OH_MessageBox.h"
 
@@ -29,7 +28,7 @@ void CParseErrors::Error(CString short_message) {
 	message.Format("%s%s%s%s%s%i%s%s%i%s%s%s%s%s%s%s%s",
 		"Error: ", short_message, 
 		"==============================================\n"
-		"Function: ", CFormulaParser::CurrentFunctionName(), "\n"
+		"Function: ", CTokenizer::CurrentFunctionName(), "\n"
 		"Line absolute: ", CTokenizer::LineAbsolute(), "\n",
 		"Line relative: ", CTokenizer::LineRelative(), "\n",
     "File: ", CTokenizer::InputFile(), "\n",

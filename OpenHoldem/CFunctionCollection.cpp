@@ -303,20 +303,23 @@ void CFunctionCollection::SetEmptyDefaultBot() {
 void CFunctionCollection::ExecuteSelftest() {
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] Executing self-test\n");
-  CString name = kSelftestName;
-  CString function_text = kSelftestFunction;
-  CFunction *p_function = new CFunction(name, function_text); 
+  /*!!!!!if (p_function_collection->Exists(kSelftestName)) {
+    //
+    return;
+  }*/
+  CFunction *p_function = new CFunction(kSelftestName, kSelftestFunction);
   // The parser assunes that every function to ber parsed
   // exists in the collection
   p_function_collection->Add(p_function);
+  assert(p_function_collection->Exists(kSelftestName));
   p_function->SetAsReadOnlyLibraryFunction();
   p_function->Parse();
   CSelftestParserEvaluator selftest;
   selftest.Test();
-  // The function should stay in the collection until the very end
+  /*!!!!!// The function should stay in the collection until the very end
   // and then should get released together with the OpenPPL-symbols.
   // As VLD indicates that this DONOWORKS we delete it here.
-  p_function_collection->Delete(name);
+  p_function_collection->Delete(name);*/
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {

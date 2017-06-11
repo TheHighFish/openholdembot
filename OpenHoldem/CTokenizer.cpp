@@ -61,9 +61,11 @@ void CTokenizer::SetInputFunction(COHScriptObject* function_or_list_to_be_parsed
 }
 
 void CTokenizer::SetInputBufferByDebugTab(const char* expression_to_be_parsed, int line) {
-  _currently_tokenized_function_or_list = p_debug_tab;
-  line_relative = line;
   SetInputBuffer(expression_to_be_parsed);
+  // line_relative must be assigned after SetInputBuffer()
+  // because SetInputBuffer() sets it also!
+  line_relative = line;
+  _currently_tokenized_function_or_list = p_debug_tab;
 }
 
 void CTokenizer::SetInputBuffer(const char* next_formula_to_be_parsed) {
@@ -534,6 +536,15 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
   }
 }
 
+CString CTokenizer::InputFile() {
+  assert(_currently_tokenized_function_or_list != NULL);
+  return _currently_tokenized_function_or_list->GetPath();
+}
+
+CString CTokenizer::CurrentFunctionName() {
+  return _currently_tokenized_function_or_list->name();
+}
+
 int CTokenizer::LineAbsolute() {
   assert(_currently_tokenized_function_or_list != NULL);
   return (_currently_tokenized_function_or_list->StartingLine() + LineRelative());
@@ -545,9 +556,4 @@ int CTokenizer::LineRelative() {
 
 char* CTokenizer::RemainingInput() {
   return TOKEN_ADDRESS;
-}
-
-CString CTokenizer::InputFile() {
-  assert(_currently_tokenized_function_or_list != NULL);
-  return _currently_tokenized_function_or_list->GetPath();
 }

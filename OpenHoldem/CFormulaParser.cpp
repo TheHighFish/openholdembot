@@ -507,10 +507,6 @@ void CFormulaParser::ParseConditionalPartialThenElseExpressions(
 	// We have to put everything together on the call-site.
 }
 
-CString CFormulaParser::CurrentFunctionName() {
-	return _function_name;
-}
-
 void CFormulaParser::ErrorMissingAction(int token_ID) {
   CString error_message = "Missing action after when-condition\n";
   if (token_ID == kTokenNumber) {

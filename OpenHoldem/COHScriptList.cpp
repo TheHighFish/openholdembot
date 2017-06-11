@@ -10,8 +10,8 @@
 #include "NumericalFunctions.h"
 
 COHScriptList::COHScriptList(
-  CString new_name,
-  CString new_function_text) {
+    CString new_name,
+    CString new_function_text) : COHScriptObject(new_name, new_function_text, kNoSourceFileForThisCode, kUndefinedZero) {
   COHScriptList(new_name, new_function_text, kNoSourceFileForThisCode, kUndefinedZero);
 }
 

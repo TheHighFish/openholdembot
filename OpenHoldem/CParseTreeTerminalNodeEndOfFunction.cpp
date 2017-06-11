@@ -14,18 +14,17 @@
 #include "stdafx.h" 
 #include "CParseTreeTerminalNodeEndOfFunction.h"
 
-#include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "COHScriptObject.h"
 #include "CPreferences.h"
+#include "CTokenizer.h"
 
 CParseTreeTerminalNodeEndOfFunction::CParseTreeTerminalNodeEndOfFunction(int relative_line_number) : 
   // Increment line number by 1 
   // to point to the first empty line after the function code
   // to avoid confusion and emphasize that we reached the end.
   CParseTreeTerminalNodeIdentifier((relative_line_number + 1), "") {
-  assert(p_formula_parser != NULL);
-  CString currenttly_parsed_function = p_formula_parser->CurrentFunctionName();
+  CString currenttly_parsed_function = CTokenizer::CurrentFunctionName();
   write_log(preferences.debug_parser(), "[CParseTreeTerminalNodeEndOfFunction] %s\n",
     currenttly_parsed_function);
   if (COHScriptObject::IsMainOpenPPLFunction(currenttly_parsed_function)) {
