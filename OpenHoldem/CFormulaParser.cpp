@@ -463,7 +463,8 @@ TPParseTreeOperatorNode CFormulaParser::ParseUnaryExpression()
 }
 
 TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {                                                                                                                                                                                                                                                                                                                                                                                                                                   
-  // Numbers, identifiers
+  // 1) Numbers, identifiers
+  // 2) Shanky-style hand and board-expressions
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
 	TPParseTreeTerminalNode terminal_node = NULL;
@@ -481,7 +482,10 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
       = new CParseTreeTerminalNodeNumber(_tokenizer.LineRelative());
 		terminal_node_number->MakeConstant(value);
     terminal_node = terminal_node_number;
-	}	else {
+  } else if ((terminal == kTokenShankyStykeHandExpression) || (terminal == kTokenShankyStykeBoardExpression)) {
+    // Not really a simple expression, but ir gets converted to an identifier
+    terminal_node = ParseShankyStyleHandAndBoardExpression();
+  } else {
 		assert(kThisMustNotHappen);
 		terminal_node = NULL;	
 	}
@@ -489,6 +493,29 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	write_log(preferences.debug_parser(), 
 		"[FormulaParser] Terminal node %i\n", terminal_node);
 	return terminal_node;
+}
+
+TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardExpression() {
+  CString identifier;
+  int terminal = _tokenizer.GetToken();
+  if (terminal == kTokenShankyStykeHandExpression) {
+    identifier = "hand$";
+  }  else if (terminal == kTokenShankyStykeBoardExpression) {
+    identifier = "board$";
+  } else {
+    assert(k_ThisMustNotHappen);
+  }
+  terminal = _tokenizer.GetToken();
+  while ((terminal == kTokenIdentifier) || (terminal == kTokenIdentifier)) {
+    //!!!!! Check that it fits to the expression
+    identifier += _tokenizer.GetTokenString();
+  }
+  _tokenizer.PushBack();
+  TPParseTreeTerminalNodeIdentifier terminal_node_identifer
+    = new CParseTreeTerminalNodeIdentifier(
+      _tokenizer.LineRelative(),
+      identifier);
+  return terminal_node_identifer;
 }
 
 void CFormulaParser::ParseConditionalPartialThenElseExpressions(

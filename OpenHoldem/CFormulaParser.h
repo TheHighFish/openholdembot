@@ -23,6 +23,7 @@
 #include "CParseTreeRotator.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeBetsizeAction.h"
+#include "CParseTreeTerminalNodeIdentifier.h"
 #include "CTokenizer.h"
 
 class CFormulaParser {
@@ -84,6 +85,9 @@ class CFormulaParser {
  private:
   void BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function);
+ private:
+  // shanky PPL
+  TPParseTreeTerminalNodeIdentifier ParseShankyStyleHandAndBoardExpression();
  private:
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);

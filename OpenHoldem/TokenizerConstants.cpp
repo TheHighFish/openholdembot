@@ -265,6 +265,8 @@ CString TokenString(int token) {
   case kTokenActionUserVariableToBeSet: return "Set";
   case kTokenKeywordForce: return "Force";
   case kTokenUnsupportedDelay: return "Delay";
+  case kTokenShankyStykeHandExpression: return "hand";
+  case kTokenShankyStykeBoardExpression: return "board";
   case kTokenActionRaiseByBigBlinds: return "RaiseByBigBlinds";
   case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
   case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";

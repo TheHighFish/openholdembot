@@ -83,6 +83,12 @@ enum {
   kTokenKeywordForce,
   // Shanky-style delay (unsupported)
   kTokenUnsupportedDelay,
+  // Shankly style hand- and board expressions.
+  // Token gets only used for importing Shanky-PPL;
+  // the parse represents these expressions as identifiers
+  // (hand$XYZ, board$XYZ)
+  kTokenShankyStykeHandExpression,
+  kTokenShankyStykeBoardExpression,
   // Special action-constants for node-types
   // Not really tokens, but handled here for consistency
   kTokenActionRaiseByBigBlinds,

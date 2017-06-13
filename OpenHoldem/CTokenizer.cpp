@@ -205,11 +205,13 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 			_OpenPPL_token_ID = kTokenOperatorConditionalWhen; 
 			return true; 
 		}
+    if (_memicmp(TOKEN_ADDRESS, "HAND", 4) == 0)    { _OpenPPL_token_ID = kTokenShankyStykeHandExpression; return true; }
 		break;
 	case 5:
 		if (_memicmp(TOKEN_ADDRESS, "BITOR", 5) == 0)   { _OpenPPL_token_ID = kTokenOperatorBinaryOr; return true; }
 		if (_memicmp(TOKEN_ADDRESS, "DELAY", 5) == 0)   { _OpenPPL_token_ID = kTokenUnsupportedDelay; return true; }
     if (_memicmp(TOKEN_ADDRESS, "FORCE", 5) == 0)   { _OpenPPL_token_ID = kTokenKeywordForce;     return true; }
+    if (_memicmp(TOKEN_ADDRESS, "BOARD", 5) == 0)   { _OpenPPL_token_ID = kTokenShankyStykeBoardExpression; return true; }
 		break;
 	case 6:
 		if (_memicmp(TOKEN_ADDRESS, "RETURN", 6) == 0)  { _OpenPPL_token_ID = kTokenActionReturn;      return true; }
