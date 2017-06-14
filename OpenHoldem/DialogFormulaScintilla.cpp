@@ -1463,6 +1463,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
 
   ClearCalcResult();
   OnBnClickedApply();
+  p_function_collection->ClearCache();
   
   if (!p_function_collection->BotLogicCorrectlyParsed()) {
     s.Format("There are syntax errors in one or more formulas that are\n");

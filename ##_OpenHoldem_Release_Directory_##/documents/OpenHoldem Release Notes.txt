@@ -13,6 +13,11 @@ BUG FIXES:
 - The error-message for endless recursions showed only the first character
   of the name of the last evaluated function. Thanks to Guysmo for reporting.
   [THF]
+- When using the Calc-button of the formula-editor multiple times
+  on a modified formula while not being connected to a table
+  then previous results didn't get cleared from the cache.
+  This has now been fixed.
+  [THF]
 
 MAINTENANCE:
 - Restructured some parts of the parser. 

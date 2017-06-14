@@ -533,11 +533,19 @@ void CFunctionCollection::SaveObject(
     CArchive &ar, 
     COHScriptObject *function_or_list) {
   CSLock lock(m_critsec);
-  if (function_or_list == NULL) return;
+  if (function_or_list == NULL) {
+    write_log(preferences.debug_formula(),
+      "[CFunctionCollection] Not saving NULL-function %s\n", FormulaName());
+    return;
+  }
   // Don't save OpenPPL-symbols from the OpenPPL-library
   // or other read-only library functions
   // to user-defined bot-logic files
-  if (function_or_list->IsReadOnlyLibrarySymbol()) return;
+  if (function_or_list->IsReadOnlyLibrarySymbol()) {
+    write_log(preferences.debug_formula(),
+      "[CFunctionCollection] Not saving read-only %s\n", FormulaName());
+    return;
+  }
   ar.WriteString(function_or_list->Serialize());
 }
 

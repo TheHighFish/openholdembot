@@ -73,6 +73,9 @@ void CFunction::Parse() {
     write_log(preferences.debug_formula() || preferences.debug_parser(),
       "[CFunction] Parsing %s\n", _name);
     p_formula_parser->ParseFormula(this);
+  } else {
+    write_log(preferences.debug_formula() || preferences.debug_parser(),
+      "[CFunction] No need to parse %s\n", _name);
   }
 };
 
