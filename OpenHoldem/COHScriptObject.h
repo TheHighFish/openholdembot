@@ -29,13 +29,13 @@ class COHScriptObject {
     int starting_line_of_function);
   virtual ~COHScriptObject();
  public:
-  CString name()			      { return _name; }
+  CString name()			            { return _name; }
   virtual CString function_text() { return _function_text; }
-  CString GetPath() { return _file_path; }
-  int StartingLine() { return _starting_line_of_function; }
+  CString GetPath()               { return _file_path; }
+  int StartingLine()              { return _starting_line_of_function; }
  public:
   void SetName(CString name)      { _name = name; }
-  void SetText(CString text)      { _function_text = text; }
+  void SetText(CString text, bool is_read_only_library_symbol = true);
  public:
   virtual double Evaluate(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
@@ -62,7 +62,7 @@ class COHScriptObject {
   bool IsDebugFunction();
   bool IsNotesOrDLL();
   bool IsICMConfigurationFunction();
-  bool IsUserDefinedFunction()  { return (IsFunction() 
+  bool IsUserDefinedFunction()  { return (IsFunction()
                                     && !IsStandardFunction()
                                     && !IsDebugFunction())
                                     && !IsNotesOrDLL()

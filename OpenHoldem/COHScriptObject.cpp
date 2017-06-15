@@ -48,6 +48,21 @@ double COHScriptObject::Evaluate(bool log /* = false */) {
 	return 0.0;
 }
 
+void COHScriptObject::SetText(CString text, bool is_read_only_library_symbol /* = true */) { 
+  _function_text = text; 
+  if (is_read_only_library_symbol == false) {
+    // Functions and lists that get modified with the editor
+    // need to get marked as not read-only.
+    // This is especially necessary for new user-defined functions 
+    // that didn't get loaded from a formula-file
+    // and default autoplayer-functions which got modified.
+    //
+    // We don't want to set this flag here,
+    // only remove it on users modification
+    _is_read_only = false;
+  }
+}
+
 // virtual
 bool COHScriptObject::EvaluatesToBinaryNumber() {
   return false;

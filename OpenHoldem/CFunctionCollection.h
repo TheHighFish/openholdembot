@@ -61,7 +61,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   COHScriptObject *LookUp(CString name);
   bool Rename(CString from_name, CString to_name);
   void Delete(CString name);
-  void SetFunctionText(CString name, CString content);
+  void SetFunctionText(CString name, CString content, bool read_only_library_symbol = false);
  public:
   bool Exists(CString name);
   // Generates smart error-messages on failure

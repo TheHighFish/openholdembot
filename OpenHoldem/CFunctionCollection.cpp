@@ -459,7 +459,7 @@ COHScriptObject *CFunctionCollection::GetNext() {
     return NULL;
   }
   COHScriptObject *result = enumerator_it->second;
- write_log(preferences.debug_formula(),
+  write_log(preferences.debug_formula(),
     "[CFunctionCollection] GetNext() %s -> %i\n",
     enumerator_it->first, enumerator_it->second);
   enumerator_it++;
@@ -538,7 +538,7 @@ void CFunctionCollection::SaveObject(
       "[CFunctionCollection] Not saving NULL-function %s\n", FormulaName());
     return;
   }
-  // Don't save OpenPPL-symbols from the OpenPPL-library
+  // Don't save OpenPPL-symbols from the OpenPPL(-library
   // or other read-only library functions
   // to user-defined bot-logic files
   if (function_or_list->IsReadOnlyLibrarySymbol()) {
@@ -605,8 +605,9 @@ void CFunctionCollection::Delete(CString name) {
   }
 }
 
-void CFunctionCollection::SetFunctionText(CString name, CString content) {
+void CFunctionCollection::SetFunctionText(CString name, CString content, bool read_only_library_symbol /*= false */) {
   CSLock lock(m_critsec);
+  // Works for both functions and lists
   COHScriptObject *function = LookUp(name);
   if (function == NULL) {
     // Function does not yet exist; new one
@@ -617,11 +618,11 @@ void CFunctionCollection::SetFunctionText(CString name, CString content) {
     // until a new profile gets loaded, until it gets overwritten]
     // or until the ebtire collection gets released
     function = new CFunction(my_name, my_text);
-    Add(function);
+    Add(function); //!!!!! read_only_library_symbol
   } else {
     write_log(preferences.debug_formula(), 
       "[CFunctionCollection] Setting function text for %s\n", name);
-    function->SetText(content);
+    function->SetText(content, read_only_library_symbol);
   }
 }
 

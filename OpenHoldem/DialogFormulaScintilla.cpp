@@ -1221,7 +1221,7 @@ void CDlgFormulaScintilla::OnHandList()  {
     CString old_comment = ExtractCommentFromHandList(p_handlist->function_text());
     CString new_handlist_without_comment = p_handlist->function_text();
     CString new_handlist_with_comment = old_comment + new_handlist_without_comment;
-    p_handlist->SetText(new_handlist_with_comment); 
+    p_handlist->SetText(new_handlist_with_comment, false); 
     p_handlist->Parse();
 
     // update scintilla window
@@ -1559,7 +1559,8 @@ void CDlgFormulaScintilla::CopyTabContentsToFormulaSet() {
       continue;
     }
     p_function_collection->SetFunctionText(name, 
-      m_ScinArray.GetAt(i)._pWnd->GetText());  
+      m_ScinArray.GetAt(i)._pWnd->GetText(),
+      false);  
   }
 }
 
