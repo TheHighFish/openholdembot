@@ -36,6 +36,7 @@ CFunction::CFunction(
   _is_result_cached = false;
   _cached_result = kUndefinedZero;
   _parse_tree_node = NULL;
+  _imported_from_shanky_ppl = false;
 }
 
 CFunction::CFunction(
@@ -46,6 +47,7 @@ CFunction::CFunction(
   _is_result_cached = false;
   _cached_result = kUndefinedZero;
   _parse_tree_node = NULL;
+  _imported_from_shanky_ppl = false;
 }
 
 CFunction::~CFunction() {

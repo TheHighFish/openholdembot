@@ -356,9 +356,18 @@ NegativeNumber:
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorGreater)
 		case '`':
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorBitCount)
-		case '=': // Equality, either = or ==
-			IF_NEXT_CHARACTER_RETURN_OPERATOR('=', kTokenOperatorEquality)
-			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorEquality)
+		case '=': 
+      // Equality, either = or ==
+      // If a function got imported from Shanky PPL
+      // then we have to do rounding, as Shanky PPL works with integers only
+      int equality_operator;
+      equality_operator = kTokenOperatorEquality;
+      assert(_currently_tokenized_function_or_list != NULL);
+      if (_currently_tokenized_function_or_list->ImportedFromShankyPPL()) {
+        equality_operator = kTokenOperatorApproximatellyEqual;
+      }
+      IF_NEXT_CHARACTER_RETURN_OPERATOR('=', equality_operator)
+			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(equality_operator)
 		case '!': 
 			IF_NEXT_CHARACTER_RETURN_OPERATOR('=', kTokenOperatorNotEqual)
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorLogicalNot)

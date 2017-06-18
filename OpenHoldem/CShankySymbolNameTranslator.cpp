@@ -26,7 +26,7 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table.clear();
   _shanky_symbol_table["acepresentonflop"] = "AcePresentOnFlop";
   _shanky_symbol_table["botcalledbeforeflop"] = "BotCalledBeforeFlop";
-  /*_shanky_symbol_table[""] = "";
+  /*!!!!!_shanky_symbol_table[""] = "";
   _shanky_symbol_table[""] = "";
   _shanky_symbol_table[""] = "";
   _shanky_symbol_table[""] = "";
