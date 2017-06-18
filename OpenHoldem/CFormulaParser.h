@@ -24,6 +24,7 @@
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeBetsizeAction.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
+#include "CShankySymbolNameTranslator.h"
 #include "CTokenizer.h"
 
 class CFormulaParser {
@@ -97,6 +98,7 @@ class CFormulaParser {
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;
   CParseTreeRotator _parse_tree_rotator;
+  CShankySymbolNameTranslator _shanky_symbol_name_translator;
  private:
   CString _token;
   int _is_parsing_counter;

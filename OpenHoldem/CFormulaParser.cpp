@@ -386,7 +386,12 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 	}	else if ((token_ID == kTokenIdentifier)
 		  || (token_ID == kTokenNumber)) {
 		expression = ParseSimpleExpression();
+  } else if ((token_ID == kTokenShankyStykeHandExpression) || (token_ID == kTokenShankyStykeBoardExpression)) {
+    expression = ParseShankyStyleHandAndBoardExpression();
 	}	else {
+    // We don't mention Shanky hand- and board-expressions here;
+    // they are ugly to parse and only provided for an easy start.
+    // We prefer users who write OpenPPL ;-)
 		CParseErrors::Error("Unexpected token inside expression.\n" 
       "Expecting: opening bracket, unary operator, identifier or number.\n");
 		return NULL;
@@ -458,21 +463,23 @@ TPParseTreeOperatorNode CFormulaParser::ParseUnaryExpression()
 	TPParseTreeOperatorNode unary_node = new CParseTreeOperatorNode(_tokenizer.LineRelative());
 	unary_node->MakeUnaryOperator(unary_operator, expression);
 	write_log(preferences.debug_parser(), 
-			"[FormulaParser] Unary node %i\n", unary_node);
+		"[FormulaParser] Unary node %i\n", unary_node);
 	return unary_node;
 }
 
 TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {                                                                                                                                                                                                                                                                                                                                                                                                                                   
-  // 1) Numbers, identifiers
-  // 2) Shanky-style hand and board-expressions
+  // Numbers, identifiers
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
 	TPParseTreeTerminalNode terminal_node = NULL;
 	if (terminal == kTokenIdentifier) {
+    // !!!!! Make lookup dependent on file-type
+    CString identifier = _shanky_symbol_name_translator.Translate(
+      _tokenizer.GetTokenString());
     TPParseTreeTerminalNodeIdentifier terminal_node_identifer 
       = new CParseTreeTerminalNodeIdentifier(
         _tokenizer.LineRelative(),
-        _tokenizer.GetTokenString());
+        identifier);
     terminal_node = terminal_node_identifer;
 	}	else if (terminal == kTokenNumber) {
 		CString number = _tokenizer.GetTokenString();
@@ -482,9 +489,6 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
       = new CParseTreeTerminalNodeNumber(_tokenizer.LineRelative());
 		terminal_node_number->MakeConstant(value);
     terminal_node = terminal_node_number;
-  } else if ((terminal == kTokenShankyStykeHandExpression) || (terminal == kTokenShankyStykeBoardExpression)) {
-    // Not really a simple expression, but ir gets converted to an identifier
-    terminal_node = ParseShankyStyleHandAndBoardExpression();
   } else {
 		assert(kThisMustNotHappen);
 		terminal_node = NULL;	
@@ -497,18 +501,25 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 
 TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardExpression() {
   CString identifier;
-  int terminal = _tokenizer.GetToken();
-  if (terminal == kTokenShankyStykeHandExpression) {
+  int token_ID = _tokenizer.GetToken();
+  if (token_ID == kTokenShankyStykeHandExpression) {
     identifier = "hand$";
-  }  else if (terminal == kTokenShankyStykeBoardExpression) {
+  }  else if (token_ID == kTokenShankyStykeBoardExpression) {
     identifier = "board$";
   } else {
     assert(k_ThisMustNotHappen);
   }
-  terminal = _tokenizer.GetToken();
-  while ((terminal == kTokenIdentifier) || (terminal == kTokenIdentifier)) {
+  token_ID = _tokenizer.GetToken();
+  if (token_ID != kTokenOperatorEquality) {
+    CParseErrors::Error("Unexpected token inside Shanky-style hand- or board-expression.\n"
+      "Expecting: equality sign.\n");
+    return NULL;
+  }
+  token_ID = _tokenizer.GetToken();
+  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenIdentifier)) {
     //!!!!! Check that it fits to the expression
     identifier += _tokenizer.GetTokenString();
+    token_ID = _tokenizer.GetToken();
   }
   _tokenizer.PushBack();
   TPParseTreeTerminalNodeIdentifier terminal_node_identifer

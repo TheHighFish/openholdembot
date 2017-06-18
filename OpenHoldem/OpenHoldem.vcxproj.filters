@@ -798,6 +798,9 @@
     <ClCompile Include="CParseTreeTerminalNodeEndOfFunction.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="CShankySymbolNameTranslator.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1691,6 +1694,9 @@
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
     <ClInclude Include="CParseTreeTerminalNodeEndOfFunction.h">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CShankySymbolNameTranslator.h">
       <Filter>Header Files\Parser</Filter>
     </ClInclude>
   </ItemGroup>
