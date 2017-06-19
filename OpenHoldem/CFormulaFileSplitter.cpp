@@ -138,6 +138,9 @@ COHScriptObject* CFormulaFileSplitter::GetNextObject(CArchive &formula_file) {
       _function_text,
       formula_file.GetFile()->GetFilePath(),
       starting_line_of_current_function);
+    if (_splitting_shanky_ppl) {
+      new_function_or_list->MarkAsImportedFromShankyPPL();
+    }
   }
   return new_function_or_list;
 }
@@ -149,33 +152,17 @@ CString CFormulaFileSplitter::ExtractFunctionName(const CString function_header)
   // This can only happen before the first function
   CString function_name_lower_case = function_header;
   function_name_lower_case.MakeLower();
-  if (function_name_lower_case.Left(6) == "custom") {
-    if (_first_function_processed = false) {
-      _splitting_shanky_ppl = true;
-      //!!!!! continue in any way
-    } else {
-      CParseErrors::Error("Unexpected keyword custom in non-Shanky-PPL.\n"
-        "OpenPPL 12.x is somewhat different than old-style OpenPPL and Shanky-PPL.\n"
-        "Please have a look at the manual for all the differences.\n"
-        "It really matters!\n");
-      return kErroneousFunctionName;
-    }
-  } 
-  else if ((function_name_lower_case.Left(7) == "preflop")
+  if ((function_name_lower_case.Left(7) == "preflop")
     || (function_name_lower_case.Left(4) == "flop")
     || (function_name_lower_case.Left(4) == "turn")
     || (function_name_lower_case.Left(5) == "river")) {
-    CParseErrors::Error("Shanky-style betrounds.\n"
-      "OpenHoldem-style function expected.\n"
-      "Example: ##f$preflop##\n");
-    return kErroneousFunctionName;
-  }
-  else if (function_name_lower_case.Left(3) == "new") {
+    CString correct_name = "f$" + function_name_lower_case;
+    return correct_name;
+  } else if (function_name_lower_case.Left(3) == "new") {
     CParseErrors::Error("Old-style OpenPPL function.\n"
       "OpenHoldem-style ##f$function## expected.\n");
     return kErroneousFunctionName;
-  }
-  else if ((function_name_lower_case.Left(2) == "//")
+  } else if ((function_name_lower_case.Left(2) == "//")
     || (function_name_lower_case.Left(2) == "/*")) {
     CParseErrors::Error("Top-level comment outside function.\n"
       "Technically a formula-file is a set of functions\n"
@@ -183,13 +170,11 @@ CString CFormulaFileSplitter::ExtractFunctionName(const CString function_header)
       "A top-level comment outside of a function would get lost.\n"
       "Please put it for example into \"##notes##\".\n");
     return kErroneousFunctionName;
-  }
-  else if (function_name_lower_case == "") {
+  } else if (function_name_lower_case == "") {
     // End of file reached;
     // no more functions found
     return kErroneousFunctionName;
-  }
-  else if (function_name_lower_case.Left(2) != "##") {
+  } else if (function_name_lower_case.Left(2) != "##") {
     CParseErrors::Error("Shanky-style option settings?\n"
       "Options are not supported, because OpenPPL does not provide a default bot.\n"
       "They need to be removed.\n"
@@ -216,9 +201,6 @@ CString CFormulaFileSplitter::ExtractFunctionName(const CString function_header)
   return function_name;
 }
 
-
-
-
 // Returns the next function (including header),
 // i.e. everything up to the second-next-function or end of file.
 void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
@@ -240,18 +222,16 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
 #endif
     if (IsFunctionHeader(_next_line)
         && _first_function_processed) {
-      // Next function found
+      // Next OH-script function found
       // Only continue, if we found the first one
       //
       // In case of break: keep that function-header for the next query
       _starting_line_of_next_function = _total_lines_processed;
       break;
 	  }
-    if (function_header.IsEmpty() || (function_header.Find('#') < 0)) {
+    if (!IsFunctionHeader(function_header)) {
       // Escpecially meant to catch OpenGeeks newlines 
       // (which are not empty) at the beginning of the file.
-      // Other cases can't happen, as we search for ## 
-      // when looking for the next function-header. 
       function_header = _next_line;
     } else {
       _first_function_processed = true;
@@ -276,8 +256,17 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
 // A function header (or list header) starts with ##
 bool CFormulaFileSplitter::IsFunctionHeader(CString line_of_code)
 {
-	return ((line_of_code.GetAt(0) == '#')
-		&& (line_of_code.GetAt(1) == '#'));
+  if ((line_of_code.GetAt(0) == '#') && (line_of_code.GetAt(1) == '#')) {
+    return true;
+  }
+  if (_splitting_shanky_ppl) {
+    line_of_code.MakeLower();
+    if (line_of_code == "preflop") return true;
+    if (line_of_code == "flop")    return true;
+    if (line_of_code == "turn")    return true;
+    if (line_of_code == "river")   return true;
+  }
+  return false;
 }
 
 void CFormulaFileSplitter::SanityChecksForWrongFileTypes() {
