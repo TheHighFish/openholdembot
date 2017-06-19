@@ -54,12 +54,62 @@ void CFormulaFileSplitter::SplitFile(CArchive &formula_file) {
   _first_function_processed = false;
   _total_lines_processed = 0;
   _starting_line_of_next_function = 0;
+  _splitting_shanky_ppl = false;
+  SkipShankyOptionSettings(formula_file);
   COHScriptObject* next_function_or_list = GetNextObject(formula_file);
   while (next_function_or_list != NULL) {
     p_function_collection->Add(next_function_or_list);
     next_function_or_list = GetNextObject(formula_file);
   }
 }
+
+bool CFormulaFileSplitter::IsShankyFunction(CString line_of_code) {
+  // Input is expected to be lowercase without extra spaces
+  if (line_of_code == "preflop") return true;
+  if (line_of_code == "flop")    return true;
+  if (line_of_code == "turn")    return true;
+  if (line_of_code == "river")   return true;
+  return false;
+}
+
+void CFormulaFileSplitter::SkipShankyOptionSettings(CArchive &formula_file) {
+  while (true) {
+    if (!formula_file.ReadString(_next_line)) {
+      break;
+    }
+    ++_total_lines_processed;
+    if (_total_lines_processed == 1) {
+      SanityChecksForWrongFileTypes();
+    }
+    if (IsFunctionHeader(_next_line)) {
+      // OH-style function found
+      // No longer any Shanky option settings expected
+      break;
+    }
+    if (_next_line.Find('=') > 0) {
+      // Probably Shanky-style option setting, e.g.
+      // MaxSessionHands = 10000
+      // MaxSessionTime = 720
+      continue;
+    }
+    // Avoid problems with extra spaces
+    _next_line.TrimLeft();
+    _next_line.TrimRight();
+    _next_line.MakeLower();
+    if (_next_line == "custom") {
+      // Shanky keyword custom found
+      // end of option settings
+      _splitting_shanky_ppl = true;
+      continue;
+    }
+    if (IsShankyFunction(_next_line)) {
+      // preflop, flop, turn or river
+      break;
+    }
+    // Any other kind of input like empty lines.
+    // continue
+  }
+};
 
 COHScriptObject* CFormulaFileSplitter::GetNextObject(CArchive &formula_file) {
   // We have to get the starting line of the current-function
@@ -100,11 +150,16 @@ CString CFormulaFileSplitter::ExtractFunctionName(const CString function_header)
   CString function_name_lower_case = function_header;
   function_name_lower_case.MakeLower();
   if (function_name_lower_case.Left(6) == "custom") {
-    CParseErrors::Error("Superfluous keyword custom.\n"
-      "OpenPPL 7.0 is somewhat different than old-style OpenPPL and Shanky-PPL.\n"
-      "Please have a look at the manual for all the differences.\n"
-      "It really matters!\n");
-    return kErroneousFunctionName;
+    if (_first_function_processed = false) {
+      _splitting_shanky_ppl = true;
+      //!!!!! continue in any way
+    } else {
+      CParseErrors::Error("Unexpected keyword custom in non-Shanky-PPL.\n"
+        "OpenPPL 12.x is somewhat different than old-style OpenPPL and Shanky-PPL.\n"
+        "Please have a look at the manual for all the differences.\n"
+        "It really matters!\n");
+      return kErroneousFunctionName;
+    }
   } 
   else if ((function_name_lower_case.Left(7) == "preflop")
     || (function_name_lower_case.Left(4) == "flop")
@@ -177,9 +232,6 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
 	    break;
     }
     ++_total_lines_processed;
-    if (_total_lines_processed == 1) {
-      SanityChecksForWrongFileTypes();
-    }
     // Avoid problems with "empty" lines before first function header
     // that  contain spaces.
     _next_line.TrimRight();
@@ -220,8 +272,6 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
   OH_MessageBox_Interactive(_function_text, "Function", 0);
 #endif
 }
-
-
 
 // A function header (or list header) starts with ##
 bool CFormulaFileSplitter::IsFunctionHeader(CString line_of_code)
