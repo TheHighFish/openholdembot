@@ -47,8 +47,11 @@ CParseTreeNode::~CParseTreeNode() {
   write_log(preferences.debug_formula(),
     "[CParseTreeNode] Deleting parse tree node %i\n", this);
   if (_node_type == kTokenOperatorConditionalWhen) {
-    write_log(preferences.debug_formula(),
-      "[CParseTreeNode] WHEN condition: %s\n", _first_sibbling->Serialize());
+    if (_first_sibbling != NULL) {
+      // Can be NULL on invalid input
+      write_log(preferences.debug_formula(),
+        "[CParseTreeNode] WHEN condition: %s\n", _first_sibbling->Serialize());
+    }
     write_log(preferences.debug_formula(),
       "[CParseTreeNode] Open ended: %s\n", Bool2CString(IsOpenEndedWhenCondition()));
   }

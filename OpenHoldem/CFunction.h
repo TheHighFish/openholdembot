@@ -38,6 +38,7 @@ class CFunction: public COHScriptObject{
   virtual void Parse();
   void SetParseTree(TPParseTreeNode _new_parse_tree);
   virtual void MarkAsImportedFromShankyPPL() { _imported_from_shanky_ppl = true; }
+  virtual bool ImportedFromShankyPPL() { return _imported_from_shanky_ppl; }
  public:
   // For debugging output
   CString Serialize();
