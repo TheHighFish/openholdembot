@@ -87,8 +87,12 @@ enum {
   // Token gets only used for importing Shanky-PPL;
   // the parse represents these expressions as identifiers
   // (hand$XYZ, board$XYZ)
-  kTokenShankyStykeHandExpression,
-  kTokenShankyStykeBoardExpression,
+  kTokenShankyKeywordHand,
+  kTokenShankyKeywordBoard,
+  // Shanky-style "In BigBlind" instead of "InBigBlind".
+  // Valid code, as Shanky analyses a character-stream,
+  // spaces stripped away ;-)
+  kTokenShankyKeywordIn,
   // Special action-constants for node-types
   // Not really tokens, but handled here for consistency
   kTokenActionRaiseByBigBlinds,

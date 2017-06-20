@@ -386,8 +386,10 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 	}	else if ((token_ID == kTokenIdentifier)
 		  || (token_ID == kTokenNumber)) {
 		expression = ParseSimpleExpression();
-  } else if ((token_ID == kTokenShankyStykeHandExpression) || (token_ID == kTokenShankyStykeBoardExpression)) {
+  } else if ((token_ID == kTokenShankyKeywordHand) || (token_ID == kTokenShankyKeywordBoard)) {
     expression = ParseShankyStyleHandAndBoardExpression();
+  } else if (token_ID == kTokenShankyKeywordIn) {
+    expression = ParseShankyStyleInPositionExpression();
 	}	else {
     // We don't mention Shanky hand- and board-expressions here;
     // they are ugly to parse and only provided for an easy start.
@@ -536,9 +538,9 @@ bool SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol) {
 TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardExpression() {
   CString identifier;
   int token_ID = _tokenizer.GetToken();
-  if (token_ID == kTokenShankyStykeHandExpression) {
+  if (token_ID == kTokenShankyKeywordHand) {
     identifier = "hand$";
-  }  else if (token_ID == kTokenShankyStykeBoardExpression) {
+  }  else if (token_ID == kTokenShankyKeywordBoard) {
     identifier = "board$";
   } else {
     assert(k_ThisMustNotHappen);
@@ -568,6 +570,28 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
     = new CParseTreeTerminalNodeIdentifier(
       _tokenizer.LineRelative(),
       identifier);
+  return terminal_node_identifer;
+}
+
+TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleInPositionExpression() {
+  // Turning valid Shanky-PPL to proper OpenPPL:
+  // "In Bigblind" -> InBigBlind".
+  // Shanky doesn't care about spaces in the input-stream.
+  // We don't handle other valid code like "In Bigbli n d" ;-)
+  CString position_symbol = "In";
+  int token_ID = _tokenizer.GetToken();
+  assert(token_ID = kTokenShankyKeywordIn);
+  token_ID = _tokenizer.GetToken();
+  if (token_ID != kTokenIdentifier) {
+    CParseErrors::Error("Unexpected token after keyword \"In\".\n"
+      "Expecting: Shanky-style position like \"In Bigblind\".\n");
+    return NULL;
+  }
+  position_symbol += _tokenizer.GetTokenString();
+  TPParseTreeTerminalNodeIdentifier terminal_node_identifer
+    = new CParseTreeTerminalNodeIdentifier(
+      _tokenizer.LineRelative(),
+      position_symbol);
   return terminal_node_identifer;
 }
 

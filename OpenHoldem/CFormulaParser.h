@@ -87,8 +87,9 @@ class CFormulaParser {
   void BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function);
  private:
-  // shanky PPL
+  // Shanky PPL
   TPParseTreeTerminalNodeIdentifier ParseShankyStyleHandAndBoardExpression();
+  TPParseTreeTerminalNodeIdentifier ParseShankyStyleInPositionExpression();
  private:
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
