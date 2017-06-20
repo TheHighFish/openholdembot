@@ -3,7 +3,7 @@
 BUG FIXES:
 - The now built-in symbols smallblindchair and bigblindchair were missing the code
   for reversed blinds headsup. Thanks to Relhby for reporting
-  and to poker_dog for the fix.
+  and to Poker_dog for the fix.
   [THF]
 - The random number generator got initialized in the heartbeat-thread
   and in the PrWin-thread. This caused random number to look "reproducible"
