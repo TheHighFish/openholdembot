@@ -1,4 +1,4 @@
-﻿v﻿11.2.2 2017-06-xx
+﻿v﻿11.2.2 2017-06-20
 ==================
 BUG FIXES:
 - The now built-in symbols smallblindchair and bigblindchair were missing the code
