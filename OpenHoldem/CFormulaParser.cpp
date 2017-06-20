@@ -499,6 +499,40 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	return terminal_node;
 }
 
+//!!!!!
+bool SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol) {
+  int length = symbol.GetLength();
+  for (int i = 0; i < length; ++i) {
+    switch (toupper(symbol[i])) {
+    // Ranks
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case 'T':
+    case 'J':
+    case 'Q':
+    case 'K':
+    case 'A':
+    // Suited
+    case 'S':
+    case 'U':
+    case 'I':
+    case 'E':
+    case 'D':
+    // Specific suits
+    case 'C':
+    case 'H': continue;
+    default: return false;
+    }
+  }
+  return true;
+}
+
 TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardExpression() {
   CString identifier;
   int token_ID = _tokenizer.GetToken();
@@ -510,15 +544,23 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
     assert(k_ThisMustNotHappen);
   }
   token_ID = _tokenizer.GetToken();
-  if (token_ID != kTokenOperatorEquality) {
+  if ((token_ID != kTokenOperatorApproximatellyEqual) 
+    && (token_ID != kTokenOperatorEquality)) {
+    // Actually we expect an equality sign here,
+    // but when dealing with Shanky-PPL we replace them
+    // by approximately-equal-operators
+    // to handle Shankys implicit rounding (integers only)
     CParseErrors::Error("Unexpected token inside Shanky-style hand- or board-expression.\n"
       "Expecting: equality sign.\n");
     return NULL;
   }
   token_ID = _tokenizer.GetToken();
   while ((token_ID == kTokenIdentifier) || (token_ID == kTokenIdentifier)) {
-    //!!!!! Check that it fits to the expression
-    identifier += _tokenizer.GetTokenString();
+    CString next_symbol = _tokenizer.GetTokenString();
+    if (!SymbolLooksLikePartOfShankyHandOrBoardExpression(next_symbol)) {
+      break;
+    }
+    identifier += next_symbol;
     token_ID = _tokenizer.GetToken();
   }
   _tokenizer.PushBack();
