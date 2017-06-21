@@ -129,6 +129,14 @@ WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
 WHEN (betround == preflop) RETURN BotsLastAction FORCE
 WHEN Others RETURN me_re_MemBotsLastPreflopAction FORCE
 
+##BotsLastFlopAction##
+WHEN (betround == flop) RETURN BotsLastAction FORCE
+WHEN Others RETURN me_re_MemBotsLastFlopAction FORCE
+
+##BotsLastTurnAction##
+WHEN (betround == turn) RETURN BotsLastAction FORCE
+WHEN Others RETURN me_re_MemBotsLastTurnAction FORCE
+
 ##Calls##
 WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemCalls FORCE
 WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemCalls FORCE

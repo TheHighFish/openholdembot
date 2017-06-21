@@ -80,7 +80,7 @@ BettingAction Symbols
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="44" columns="2">
+<lyxtabular version="3" rows="46" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top" width="30text%">
 <column alignment="left" valignment="top" width="60text%">
@@ -525,6 +525,48 @@ BotsLastPreflopAction
 
 \begin_layout Plain Layout
 Bot’s last preflop action, can be one of the following: None, Beep, Raise,
+ Bet, Call, or Check 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BotsLastFlopAction 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bot’s last flop action, can be one of the following: None, Beep, Raise,
+ Bet, Call, or Check 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BotsLastTurnAction 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bot’s last turn action, can be one of the following: None, Beep, Raise,
  Bet, Call, or Check 
 \end_layout
 

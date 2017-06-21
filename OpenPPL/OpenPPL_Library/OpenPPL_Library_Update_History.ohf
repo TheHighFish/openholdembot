@@ -136,6 +136,8 @@ WHEN Others SET me_st_MemRaisesOnTurn_0
 WHEN Others SET me_st_MemMaxOpponentStackSize_0
 WHEN Others SET me_st_MemMinOpponentStackSize_0
 WHEN Others SET me_st_MemBotsLastPreflopAction_None
+WHEN Others SET me_st_MemBotsLastFlopAction_None
+WHEN Others SET me_st_MemBotsLastTurnAction_None
 // Reset starting chips and stacksize once at the beginning of the session
 WHEN (handsplayed <= 1) SET me_st_MemStartingChips_0
 WHEN (handsplayed <= 1) SET me_st_MemStartingChips_0
@@ -164,6 +166,11 @@ WHEN Others SET me_st_MemChecks_Checks
 WHEN Others SET me_st_MemCalls_Calls
 WHEN Others SET me_st_MemBets_Bets
 WHEN (betround == preflop) SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+// CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+// can also be used on other betting-rounds, as it is not specific to preflop.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20960
+WHEN (betround == flop)    SET me_st_MemBotsLastFlopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN (betround == turn)    SET me_st_MemBotsLastTurnAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
 WHEN (betround == preflop) SET me_st_MemRaisesBeforeFlop_Raises
 WHEN (betround == flop) SET me_st_MemRaisesOnFlop_Raises
 WHEN (betround == turn) SET me_st_MemRaisesOnTurn_Raises
