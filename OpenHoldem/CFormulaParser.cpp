@@ -540,7 +540,7 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
   int token_ID = _tokenizer.GetToken();
   if (token_ID == kTokenShankyKeywordHand) {
     identifier = "hand$";
-  }  else if (token_ID == kTokenShankyKeywordBoard) {
+  } else if (token_ID == kTokenShankyKeywordBoard) {
     identifier = "board$";
   } else {
     assert(k_ThisMustNotHappen);
@@ -739,6 +739,11 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
 		action = ParseOpenPPLRaiseByExpression(); 
     ExpectKeywordForce(token_ID);
     return action;
+  } else if (token_ID == kTokenActionRaise) {
+    // Can be MinRaise or Shanky-style raiseby (raiseto).
+    action = ParseOpenPPLRaiseExpression();
+    ExpectKeywordForce(token_ID);
+    return action;
 	} else if (token_ID == kTokenActionUserVariableToBeSet) { 
     TPParseTreeTerminalNode user_variable = ParseOpenPPLUserVar();
     // Not expecting keyword Force here
@@ -753,35 +758,47 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
 	}
 }
 
+void CFormulaParser::SkipUnsupportedShankyStyleDelay() {
+  int _token_ID = _tokenizer.GetToken();
+  assert(_token_ID == kTokenUnsupportedDelay);
+  if (1) { //!!!!!
+    // Not acceptable for OpenPPL
+    CParseErrors::Error("Unsupported Shanky-style delay.\n"
+      "OpenHoldem provides a far more simple\n"
+      "and far more powerful f$delay-function for that.\n");
+  }
+  _token_ID = _tokenizer.GetToken();
+  if (_token_ID != kTokenNumber) {
+    CParseErrors::Error("Unexpected token after keyword \"delay\".\n"
+      "Expecting a number.\n"
+      "But don't worry: Shanky-style delays are not supported anyway."
+    );
+  }
+}
+
 bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 	int _token_ID = _tokenizer.GetToken();
-	if (_token_ID == kTokenKeywordForce) {
-		// Check for unsupported Shanky-style delay
-		// which can only happen after actions 
-		// WHEN ... RAISEMAX FORCE DELAY 42
-		_token_ID = _tokenizer.LookAhead();
-		if (_token_ID == kTokenUnsupportedDelay) {
-			CParseErrors::Error("Unsupported Shanky-style delay.\n"
-        "OpenHoldem provides a far more simple\n"
-        "and far more powerful f$delay-function for that.\n");
-			// And consume 2 tokens to avoid further messages;
-			_token_ID = _tokenizer.GetToken();
-			_token_ID = _tokenizer.GetToken();
-		}
-		// Both cases, with and without delay, are considered "good".
-		return true;
-	} else if (last_important_roken_ID == kTokenActionRaise) {
-    // Last thing we saw was a Raise
-    // Probably Shanky-style betsizing
-    CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
-      "Did you attempt to specify a betsize the old Shanky way?\n"
-      "Then either use RaiseTo or RaiseBy.\n");
+  if (_token_ID != kTokenKeywordForce) {
+    // General error message on missing keyword force
+    CParseErrors::Error("Missing keyword FORCE after action.\n");
     return false;
-
   }
-  // General error message on missing keyword force
-	CParseErrors::Error("Missing keyword FORCE after action.\n");
-	return false;
+	// Check for unsupported Shanky-style delay
+	// which can only happen after actions 
+	// WHEN ... RAISEMAX FORCE DELAY 42
+	_token_ID = _tokenizer.LookAhead();
+  if (_token_ID == kTokenUnsupportedDelay) {
+    SkipUnsupportedShankyStyleDelay();
+  }
+	// Both cases, with and without delay, are considered "good".
+	return true;
+  /*!!!!!else if (last_important_roken_ID == kTokenActionRaise) {
+  // Last thing we saw was a Raise
+  // Probably Shanky-style betsizing
+  CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
+  "Did you attempt to specify a betsize the old Shanky way?\n"
+  "Then either use RaiseTo or RaiseBy.\n");
+  return false; */
 }
 
 TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpression() {
@@ -833,6 +850,20 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpressi
 		action->MakeRaiseByAction(expression);
 		return action;
 	}
+}
+
+TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression() {
+  if (_tokenizer.LookAhead() == kTokenKeywordForce) {
+    // Predefined action, here Raise
+    TPParseTreeTerminalNodeFixedAction fixed_action
+      = new CParseTreeTerminalNodeFixedAction(_tokenizer.LineRelative(),
+        TokenString(kTokenActionRaise));
+    return fixed_action;
+  }
+  // Shanky style betsizing, mostly raiseby,
+  // might be raiseto preflop (casino-specific)
+  //!!!!! warning in OPPL
+  return ParseOpenPPLRaiseByExpression();
 }
 
 void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(

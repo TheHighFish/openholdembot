@@ -80,6 +80,7 @@ class CFormulaParser {
   TPParseTreeOperatorNode ParseOpenEndedWhenConditionSequence();
   TPParseTreeTerminalNodeBetsizeAction ParseOpenPPLRaiseToExpression();
   TPParseTreeTerminalNodeBetsizeAction ParseOpenPPLRaiseByExpression();
+  TPParseTreeNode ParseOpenPPLRaiseExpression();
   TPParseTreeNode ParseOpenPPLAction();
  private:
   TPParseTreeTerminalNode ParseOpenPPLUserVar(); 
@@ -90,6 +91,7 @@ class CFormulaParser {
   // Shanky PPL
   TPParseTreeTerminalNodeIdentifier ParseShankyStyleHandAndBoardExpression();
   TPParseTreeTerminalNodeIdentifier ParseShankyStyleInPositionExpression();
+  void SkipUnsupportedShankyStyleDelay();
  private:
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
