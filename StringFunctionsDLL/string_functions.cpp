@@ -417,7 +417,15 @@ bool StringAIsPrefixOfStringB(const char *string_a, const char *string_b) {
 }
 
 bool StringAIsPostfixOfStringB(const char *string_a, const char *string_b) {
-  //!!!!!
+  int length_a = strlen(string_a);
+  int length_b = strlen(string_b);
+  if (length_a > length_b) {
+    return false;
+  }
+  int start_position = length_b - length_a;
+  if (memcmp(string_a, (string_b + start_position), length_a) == 0) {
+    return true;
+  }
   return false;
 }
 
