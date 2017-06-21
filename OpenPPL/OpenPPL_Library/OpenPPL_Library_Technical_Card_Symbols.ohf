@@ -250,3 +250,7 @@ board$QQ ? queen :
 board$KK ? king :
 board$AA ? ace :
 HINT_There_Is_No_Pair_On_The_Board
+
+##RankOfSetOnBoard##
+// Precondition: set on board
+trankcommon

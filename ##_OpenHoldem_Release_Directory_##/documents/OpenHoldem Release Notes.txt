@@ -4,6 +4,11 @@ NEW STUFF:
 - New symbols BotsLastFlopAction and BotsLastTurnAction.
   [Mike]
 
+MAINTENANCE:
+- The technic TankOfSetOnBoard (paret of the removed NutFullHouse-code)
+  has been added again. Thanks to JohnNash for asking.
+  [THF]
+
 
 v﻿11.2.2 2017-06-20
 ==================
