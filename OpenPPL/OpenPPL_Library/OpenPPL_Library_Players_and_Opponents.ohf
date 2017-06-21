@@ -156,16 +156,16 @@ nopponentsplaying
 (nplayersround_river - 1)
 
 ##OpponentsWithLowerStack##
-  (((balance0 + currentbet0) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0001) ? 1:0)
-+ (((balance1 + currentbet1) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0002) ? 1:0)
-+ (((balance2 + currentbet2) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0004) ? 1:0)
-+ (((balance3 + currentbet3) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0008) ? 1:0)
-+ (((balance4 + currentbet4) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0010) ? 1:0)
-+ (((balance5 + currentbet5) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0020) ? 1:0)
-+ (((balance6 + currentbet6) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0040) ? 1:0)
-+ (((balance7 + currentbet7) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0080) ? 1:0)
-+ (((balance8 + currentbet8) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0100) ? 1:0)
-+ (((balance9 + currentbet9) < MaximumPossibleBetsizeInDollars) AND (playersseatedbits & 0x0200) ? 1:0)
+  (((balance0 + currentbet0) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0001) > 0) ? 1:0)
++ (((balance1 + currentbet1) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0002) > 0) ? 1:0)
++ (((balance2 + currentbet2) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0004) > 0) ? 1:0)
++ (((balance3 + currentbet3) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0008) > 0) ? 1:0)
++ (((balance4 + currentbet4) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0010) > 0) ? 1:0)
++ (((balance5 + currentbet5) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0020) > 0) ? 1:0)
++ (((balance6 + currentbet6) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0040) > 0) ? 1:0)
++ (((balance7 + currentbet7) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0080) > 0) ? 1:0)
++ (((balance8 + currentbet8) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0100) > 0) ? 1:0)
++ (((balance9 + currentbet9) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0200) > 0) ? 1:0)
 
 ##StillToActPreflop##
 // Precondition: first action, but this gets checked in StillToAct

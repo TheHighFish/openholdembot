@@ -487,7 +487,8 @@ AND TurnCard > ThirdFlopCard ]
 ((FirstFlopSuit == SecondFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit) OR (SecondFlopSuit == ThirdFlopSuit))
 
 ##TwoPairOnBoard##
-(pokervalcommon & twopair) OR (pokervalcommon & fullhouse)
+   ((pokervalcommon & twopair) > 0)
+OR ((pokervalcommon & fullhouse) > 0)
 
 ##TwoPairOnBoardOnTurn##
    (betround>flop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)

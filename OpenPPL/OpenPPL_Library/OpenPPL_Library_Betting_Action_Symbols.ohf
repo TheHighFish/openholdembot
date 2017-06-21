@@ -92,7 +92,7 @@ OR didcallround_flop
 
 ##BotCalledOnTurn##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
-OR didcallround_turn
+OR (didcallround_turn > 0)
 
 ##BotCalledOnRiver##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
@@ -119,13 +119,13 @@ OR didchecround_river
 
 ##BotRaisedBeforeFlop##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
-OR didraisround_preflop 
-OR didbetsizeround_preflop
+OR (didraisround_preflop > 0)
+OR (didbetsizeround_preflop > 0)
 
 ##BotRaisedOnFlop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
-OR didraisround_flop 
-OR didbetsizeround_flop
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions( : false)
+OR (didraisround_flop > 0)
+OR (didbetsizeround_flop > 0)
 
 ##BotRaisedOnTurn##
    (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
