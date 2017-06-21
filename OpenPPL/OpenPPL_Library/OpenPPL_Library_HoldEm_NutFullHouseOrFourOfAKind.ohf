@@ -77,6 +77,6 @@ WHEN Others RETURN (1 - (nutfullhouseorfourofakind / (nutfullhouseorfourofakind_
 ##NutFullHouseOrFourOfAKind_ShankyCompatible##
 // Returning 0 instead of a large number (999)
 // when we don't have a full house at all
-WHEN (NutFullHouseOrFourOfAKind >= HINT_We_Dont_Have_A_FullHouse_At_All) RETURN 0 FORECE
+WHEN (NutFullHouseOrFourOfAKind >= HINT_We_Dont_Have_A_FullHouse_At_All) RETURN 0 FORCE
 WHEN Others RETURN NutFullHouseOrFourOfAKind FORCE
 
