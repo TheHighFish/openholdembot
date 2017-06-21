@@ -1,4 +1,11 @@
-﻿v﻿11.2.2 2017-06-20
+﻿v﻿11.2.3 2017-06-xx
+==================
+NEW STUFF:
+- New symbols BotsLastFlopAction and BotsLastTurnAction.
+  [Mike]
+
+
+v﻿11.2.2 2017-06-20
 ==================
 BUG FIXES:
 - The now built-in symbols smallblindchair and bigblindchair were missing the code
