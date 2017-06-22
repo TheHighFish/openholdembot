@@ -164,7 +164,7 @@ void CFunction::Dump() {
     (_is_result_cached ? "[cached]" : "[not chached]"),
     _cached_result,
     _parse_tree_node);
-  write_log(preferences.debug_auto_trace()/*!!!!!???*/, (char*)(LPCTSTR)data);
+  write_log(preferences.debug_formula() , (char*)(LPCTSTR)data);
 }
 
 void CFunction::SetValue(double value) {

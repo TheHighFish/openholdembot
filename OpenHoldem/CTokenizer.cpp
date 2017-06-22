@@ -227,8 +227,7 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 	return false;
 }
 
-//!!!!!
-int ProperEqualityOperatorForOpenPPLOrShankyPPL() {
+int CTokenizer::ProperEqualityOperatorForOpenPPLOrShankyPPL() {
   // Equality, either = or ==
   // If a function got imported from Shanky PPL
   // then we have to do rounding, as Shanky PPL works with integers only

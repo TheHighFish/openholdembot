@@ -114,7 +114,9 @@ void CFormulaFileSplitter::SkipShankyOptionSettings(CArchive &formula_file) {
 COHScriptObject* CFormulaFileSplitter::GetNextObject(CArchive &formula_file) {
   // We have to get the starting line of the current-function
   // (= end of last found function) before we scan for its content,
-  // which already modifies the line-info of the next one.
+  // First splitting the function-text would read up to the next function-header
+  // and then get the starting line wrong.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
   int starting_line_of_current_function = _starting_line_of_next_function;
   ScanForNextFunctionOrList(formula_file);
   if (_function_name == kErroneousFunctionName) {

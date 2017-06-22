@@ -1570,8 +1570,6 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   if (p_autoplayer->autoplayer_engaged()) {
 	  WarnAboutAutoplayerWhenApplyingFormula();
   }
-  // Save settings to registry
-  SaveSettingsToRegistry(); //!!!!! not necessary
   CopyTabContentsToFormulaSet();
   p_function_collection->ParseAll();
   if (!p_function_collection->BotLogicCorrectlyParsed()) {
@@ -1588,7 +1586,7 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   }
   pDoc->SetModifiedFlag(true);
   // Re-calc symbols
-  p_engine_container->EvaluateAll(); // !!!!! disabled while parsing
+  p_engine_container->EvaluateAll(); // ??? disabled while parsing
   m_dirty = false;
   HandleEnables(true);
 }

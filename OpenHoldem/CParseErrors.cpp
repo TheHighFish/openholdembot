@@ -48,7 +48,7 @@ void CParseErrors::Error(CString short_message) {
 
 void CParseErrors::ErrorUnknownIdentifier(CString name) {
   CString message;
-  //!!!!!message.Format("Unknown identifier: %s", name);
+  message.Format("Unknown identifier: %s", name);
   Error(message);
 }
 

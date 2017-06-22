@@ -220,7 +220,7 @@ CAutoplayerButton* CCasinoInterface::LogicalAutoplayerButton(int autoplayer_func
     // Search clickable buttons first.
     // The old code could return a non-clickable button
     // if multiple buttons of the same type were present.
-    // www!!!!!
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=18915
     for (int i = 0; i < k_max_number_of_buttons; ++i) {
       if (_technical_autoplayer_buttons[i].IsButtonType(autoplayer_function_code)
         && _technical_autoplayer_buttons[i].IsClickable()) {

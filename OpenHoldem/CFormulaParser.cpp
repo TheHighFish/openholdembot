@@ -55,6 +55,7 @@ CFormulaParser::CFormulaParser() {
   _is_parsing_counter = 0;
   _is_parsing_read_only_function_library = false;
   _is_parsing_debug_tab = false;
+  _currently_parsed_function_or_list = NULL;
 }
 
 CFormulaParser::~CFormulaParser() {
@@ -81,6 +82,7 @@ void CFormulaParser::InitNewParse() {
   // because we might want to reparse the function-collection!
   // (Formula Editor -> Apply)
   _function_name = "--undefined--";
+  COHScriptObject* _currently_parsed_function_or_list = NULL;
 }
 
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
@@ -231,6 +233,7 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   // This function contasins many returns.
   // Make sure to call LeaveParserCode() everywhere!
   EnterParserCode();
+  COHScriptObject* _currently_parsed_function_or_list = function_or_list_to_be_parsed;
   // During startuo we parse the libraries and the last recent bot-logic.
   // The heartbeat does not yet exist, the watchdog does not yet work.
   // Unfortunatelly parsing some bot-loghic like the legendary
@@ -260,18 +263,9 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
 	  return;
   }
   assert(_function_name != "f$debug");
-  /*
-  if (_function_name == "f$debug") {
-    //!!!!!
-    p_debug_tab->SetText(function_text);
-    ParseDebugTab(function_text);
-    assert(p_debug_tab != NULL);
-    // The debug-tab is a special global object that must nit be added 
-    // to the function collection (to avoid deletion).
-    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
-    LeaveParserCode();
-    return;
-  } */
+  // The debug-tab is a special global object that must npt be added 
+  // to the function collection (to avoid deletion).
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
   TPParseTreeNode function_body = NULL;
   if (function_or_list_to_be_parsed->IsFunction() 
       || function_or_list_to_be_parsed->IsOpenPPLSymbol()) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; write_log(preferences.debug_parser() && vali_err, "[FormulaParser] Cycling through functions\n");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
@@ -308,7 +302,7 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   }
   COHScriptObject *p_existing_function = p_function_collection->LookUp(_function_name);
   assert(p_existing_function != NULL);
-  // type-check!!!!!
+  assert(p_existing_function->IsFunction());
   ((CFunction*)p_existing_function)->SetParseTree(function_body); 
   //p_function_collection->Add((COHScriptObject*)p_new_function);
   assert(p_function_collection->Exists(_function_name));
@@ -475,9 +469,13 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
 	TPParseTreeTerminalNode terminal_node = NULL;
 	if (terminal == kTokenIdentifier) {
-    // !!!!! Make lookup dependent on file-type
-    CString identifier = _shanky_symbol_name_translator.Translate(
-      _tokenizer.GetTokenString());
+    CString identifier = _tokenizer.GetTokenString();
+    if (_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
+      // Special handling for Shanky-style ode:
+      // proper cases, some symbols named slightly differently
+      identifier = _shanky_symbol_name_translator.Translate(
+        _tokenizer.GetTokenString());
+    }
     TPParseTreeTerminalNodeIdentifier terminal_node_identifer 
       = new CParseTreeTerminalNodeIdentifier(
         _tokenizer.LineRelative(),
@@ -501,8 +499,7 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	return terminal_node;
 }
 
-//!!!!!
-bool SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol) {
+bool CFormulaParser::SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol) {
   int length = symbol.GetLength();
   for (int i = 0; i < length; ++i) {
     switch (toupper(symbol[i])) {
@@ -761,7 +758,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
 void CFormulaParser::SkipUnsupportedShankyStyleDelay() {
   int _token_ID = _tokenizer.GetToken();
   assert(_token_ID == kTokenUnsupportedDelay);
-  if (1) { //!!!!!
+  if (!_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
     // Not acceptable for OpenPPL
     CParseErrors::Error("Unsupported Shanky-style delay.\n"
       "OpenHoldem provides a far more simple\n"
@@ -792,13 +789,6 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
   }
 	// Both cases, with and without delay, are considered "good".
 	return true;
-  /*!!!!!else if (last_important_roken_ID == kTokenActionRaise) {
-  // Last thing we saw was a Raise
-  // Probably Shanky-style betsizing
-  CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
-  "Did you attempt to specify a betsize the old Shanky way?\n"
-  "Then either use RaiseTo or RaiseBy.\n");
-  return false; */
 }
 
 TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpression() {
@@ -860,9 +850,15 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression() {
         TokenString(kTokenActionRaise));
     return fixed_action;
   }
+  assert(_currently_parsed_function_or_list != NULL);
+  if (!_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
+    // Not <cceptable for OpenPPL
+    CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
+    "Did you attempt to specify a betsize the old Shanky way?\n"
+    "Then either use RaiseTo or RaiseBy.\n");
+  }
   // Shanky style betsizing, mostly raiseby,
   // might be raiseto preflop (casino-specific)
-  //!!!!! warning in OPPL
   return ParseOpenPPLRaiseByExpression();
 }
 

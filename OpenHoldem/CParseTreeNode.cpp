@@ -156,7 +156,7 @@ void  CParseTreeNode::VerifyBooleanOperand(double value) {
   // People doing logical operations on umbers
   // as they don't understand the precedence of operators well emough.
   // Example: .., AND NOT betrund > 1 ...
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20703
   if (value == double(true)) {
     return;
   }

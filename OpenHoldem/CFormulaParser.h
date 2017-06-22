@@ -40,11 +40,7 @@ class CFormulaParser {
  public:
   void ParseDefaultLibraries();
  public:
-  // !!!!! -> Splitter? it is important to get the line-number first and pass it to the functions below.
-  // First splitting the function-text would read up to the next function-header
-  // and then get the starting line wrong.
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
-   void ParseFormula(COHScriptObject* function_or_list_to_be_parsed);
+  void ParseFormula(COHScriptObject* function_or_list_to_be_parsed);
  public:
   bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
@@ -92,6 +88,7 @@ class CFormulaParser {
   TPParseTreeTerminalNodeIdentifier ParseShankyStyleHandAndBoardExpression();
   TPParseTreeTerminalNodeIdentifier ParseShankyStyleInPositionExpression();
   void SkipUnsupportedShankyStyleDelay();
+  bool SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol);
  private:
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
@@ -111,6 +108,7 @@ class CFormulaParser {
   // But we can't do so in the debug-tab, so we want to throw a warning.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19973&p=140389#p140389
   bool _is_parsing_debug_tab;
+  COHScriptObject* _currently_parsed_function_or_list;
 };
 
 extern CFormulaParser *p_formula_parser;

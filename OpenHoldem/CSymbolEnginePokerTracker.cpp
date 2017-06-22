@@ -143,22 +143,21 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
 	{
 		CString error_message;
 		error_message.Format(
-      //!!!!!
 			"Old style PokerTracker symbol detected: %s.\n"
 			"\n"
 			"PokerTracker symbol start with \"pt_\".\n"
       "Possible postfixes:\n"
       "  * chair number (0..9)\n"
       "  * _raischair\n"
-      "  * _headsup\n"
-      "  * _smallblind\n"
-      "  * _bigblind\n"
-      "  * _dealer\n"
-      "  * _cutoff\n"
-      "  * _user\n"
-      "  * _firstraiser\n"
-      "  * _firstcaller\n"
-      "  * _lastcaller\n", s);
+      "  * _headsupchair\n"
+      "  * _smallblindchair\n"
+      "  * _bigblindchair\n"
+      "  * _dealerchair\n"
+      "  * _cutoffchair\n"
+      "  * _userchair\n"
+      "  * _firstraiserchair\n"
+      "  * _firstcallerchair\n"
+      "  * _lastcallerchair\n", s);
 		OH_MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
