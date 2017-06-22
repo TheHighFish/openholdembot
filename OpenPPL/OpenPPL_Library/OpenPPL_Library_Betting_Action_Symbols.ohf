@@ -123,7 +123,7 @@ OR (didraisround_preflop > 0)
 OR (didbetsizeround_preflop > 0)
 
 ##BotRaisedOnFlop##
-   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions( : false)
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
 OR (didraisround_flop > 0)
 OR (didbetsizeround_flop > 0)
 
