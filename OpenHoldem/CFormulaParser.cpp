@@ -233,7 +233,8 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   // This function contasins many returns.
   // Make sure to call LeaveParserCode() everywhere!
   EnterParserCode();
-  COHScriptObject* _currently_parsed_function_or_list = function_or_list_to_be_parsed;
+  assert(function_or_list_to_be_parsed != NULL);
+  _currently_parsed_function_or_list = function_or_list_to_be_parsed;
   // During startuo we parse the libraries and the last recent bot-logic.
   // The heartbeat does not yet exist, the watchdog does not yet work.
   // Unfortunatelly parsing some bot-loghic like the legendary
@@ -300,14 +301,13 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
     LeaveParserCode();
     return;
   }
-  COHScriptObject *p_existing_function = p_function_collection->LookUp(_function_name);
-  assert(p_existing_function != NULL);
-  assert(p_existing_function->IsFunction());
-  ((CFunction*)p_existing_function)->SetParseTree(function_body); 
+  assert(function_or_list_to_be_parsed != NULL);
+  //!!!!!assert(function_or_list_to_be_parsed->IsFunction());
+  ((CFunction*)function_or_list_to_be_parsed)->SetParseTree(function_body);
   //p_function_collection->Add((COHScriptObject*)p_new_function);
   assert(p_function_collection->Exists(_function_name));
   // Care about operator precendence
-  _parse_tree_rotator.Rotate((CFunction*)p_existing_function);
+  _parse_tree_rotator.Rotate((CFunction*)function_or_list_to_be_parsed);
 #ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
   p_function_collection->LookUp(_function_name)->Dump();
@@ -470,6 +470,7 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	TPParseTreeTerminalNode terminal_node = NULL;
 	if (terminal == kTokenIdentifier) {
     CString identifier = _tokenizer.GetTokenString();
+    assert(_currently_parsed_function_or_list != NULL);
     if (_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
       // Special handling for Shanky-style ode:
       // proper cases, some symbols named slightly differently
@@ -628,6 +629,7 @@ void CFormulaParser::ErrorMissingAction(int token_ID) {
 }
 
 TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
+  assert(_currently_parsed_function_or_list != NULL);
   TPParseTreeOperatorNode last_when_condition = NULL;
   bool last_when_condition_was_open_ended = false;
   TPParseTreeOperatorNode first_when_condition_of_sequence = NULL;
@@ -678,6 +680,19 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
 	    assert(last_when_condition != NULL);
       // Parsing successfully finished
       break;
+    } else if ((_currently_parsed_function_or_list->ImportedFromShankyPPL())
+      && (token_ID == kTokenIdentifier)
+      && (CString(_tokenizer.GetTokenString()).Left(4).MakeLower() == "user")) {
+      CString name = _tokenizer.GetTokenString();
+      // Shanky-style user-variable to be set
+      TPParseTreeTerminalNodeIdentifier user_variable
+        = new CParseTreeTerminalNodeUserVariable(
+          _tokenizer.LineRelative(), name);
+      // Not expecting any Force here
+      when_condition->_second_sibbling = user_variable;
+      // For future backpatching
+      last_when_condition_was_open_ended = false;
+      token_ID = _tokenizer.LookAhead();
     } else {
       ErrorMissingAction(token_ID);
       break;
@@ -758,6 +773,7 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
 void CFormulaParser::SkipUnsupportedShankyStyleDelay() {
   int _token_ID = _tokenizer.GetToken();
   assert(_token_ID == kTokenUnsupportedDelay);
+  assert(_currently_parsed_function_or_list != NULL);
   if (!_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
     // Not acceptable for OpenPPL
     CParseErrors::Error("Unsupported Shanky-style delay.\n"
