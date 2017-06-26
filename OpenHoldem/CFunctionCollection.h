@@ -80,6 +80,7 @@ class CFunctionCollection: public CVirtualSymbolEngine {
   bool BotLogicCorrectlyParsed();
   bool OpenPPLLibraryLoaded()            { return _openPPL_library_loaded; }
   bool IsOpenPPLProfile();
+  bool IsOHScriptProfile();
  public:
   // Simply call GetFirst() first, then GetNext()
   // Once you receive NULL the end has been reached
