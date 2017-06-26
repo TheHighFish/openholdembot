@@ -692,6 +692,9 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
       when_condition->_second_sibbling = user_variable;
       // For future backpatching
       last_when_condition_was_open_ended = false;
+      // We have to consume the current token that we got by lookahead...
+      token_ID = _tokenizer.GetToken();
+      // ... and lookahead again
       token_ID = _tokenizer.LookAhead();
     } else {
       ErrorMissingAction(token_ID);
