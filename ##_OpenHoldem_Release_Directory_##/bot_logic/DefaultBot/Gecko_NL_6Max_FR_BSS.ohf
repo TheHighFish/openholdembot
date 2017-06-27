@@ -230,17 +230,19 @@ nplayersplaying==5 && nplayersround2>=6 ? 3.33 :
 nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
 
 ##f$delay##
-// To do !!!
+// Rendom delay of 0..2000 milli-seconds
+Random * 20
 
 ##f$prefold##
-// !!!! To be extended to FR
-// replace f$dealposition
-InSmallBlind && !list900          ? 1 :
-InBigBlind && !list07 && call>0 ? 1 :
-InMiddlePosition2 && !list01           ? 1 :
-InMiddlePosition3 && !list02           ? 1 :
-InCutOff && !list05           ? 1 :
-InButton && !list900          ? 1 : 0
+WHEN (InBigBlind        AND !list07  && (call>0)) RETURN true FORCE
+WHEN (InSmallBlind      AND !list900) RETURN true FORCE
+WHEN (InButton          AND !list900) RETURN true FORCE               
+WHEN (InCutOff          AND !list05)  RETURN true FORCE
+WHEN (InMiddlePosition3 AND !list02)  RETURN true FORCE
+WHEN (InMiddlePosition2 AND !list01)  RETURN true FORCE
+// Extended to full-ring
+// Simply assuming we can fold in early position as much as in MP2
+WHEN (Others            AND !list01)  RETURN true FORCE
 
 ##f$preflop_raise##
 ( f$Preflop_First_In
