@@ -30,7 +30,7 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   //
   // First: numerical functions
   _shanky_symbol_table["amounttocall"] = "AmountToCall";
-  _shanky_symbol_table["bets "] = "Bets";
+  _shanky_symbol_table["bets"] = "Bets";
   _shanky_symbol_table["betsize"] = "BetSize";
   _shanky_symbol_table["bigblindsize"] = "BigBlindSize";
   _shanky_symbol_table["botsactionsonthisround"] = "BotsActionsOnThisRound";
@@ -233,9 +233,27 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["twopaironboard"] = "TwoPairOnBoard";
   _shanky_symbol_table["uncoordinatedflop"] = "UncoordinatedFlop";
   _shanky_symbol_table["wheelpossible"] = "WheelPossible";
-
-  // !!!!!Actions, bets, last
-  //sitout, board = 88 / 99
+  // Action constants
+  _shanky_symbol_table["betmax"] = "BetMax";
+  _shanky_symbol_table["betpot"] = "BetPot";
+  _shanky_symbol_table["bethalfpot"] = "BetHalfPot";
+  _shanky_symbol_table["betmin"] = "BetMin";
+  _shanky_symbol_table["bet"] = "Bet";
+  _shanky_symbol_table["raisemax"] = "RaiseMax";
+  _shanky_symbol_table["raisepot"] = "RaisePot";
+  _shanky_symbol_table["raisehalfpot"] = "RaiseHalfPot";
+  _shanky_symbol_table["raisemin"] = "RaiseMin";
+  _shanky_symbol_table["raise"] = "Raise";
+  _shanky_symbol_table["call"] = "Call";
+  _shanky_symbol_table["check"] = "Check";
+  _shanky_symbol_table["fold"] = "Fold";
+  // Shankys command "SitOut" means: first fold, then sitout.
+  // We don#t support this behavious, that's why we fold
+  _shanky_symbol_table["sitout"] = "Fold";
+  // Position constants
+  _shanky_symbol_table["first"] = "First";
+  _shanky_symbol_table["middle"] = "Middle";
+  _shanky_symbol_table["last"] = "Last";
 }
 
 CString CShankySymbolNameTranslator::Translate(CString symbol) {
