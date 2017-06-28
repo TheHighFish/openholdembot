@@ -262,6 +262,7 @@ CString TokenString(int token) {
   case kTokenActionRaisePot: return "RaisePot";
   case kTokenActionRaiseMax: return "RaiseMax";
   case kTokenActionReturn: return "Return";
+  case kTokenShankyKeywordSitOut: return "SitOut";
   case kTokenActionUserVariableToBeSet: return "Set";
   case kTokenKeywordForce: return "Force";
   case kTokenUnsupportedDelay: return "Delay";

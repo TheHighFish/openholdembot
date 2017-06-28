@@ -534,7 +534,10 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
       // Action expected and something action-like found
       // Now check for exact match, because especially
       // "bet" and "call" mean something different for OH-script
-      if (token_string != kOpenPPLActionStrings[i]) {
+      // Only warn if parsing openPPL, not Shanky-PPL,
+      // because we auto-correct cases for Shanly-PPL.
+      if (!_currently_tokenized_function_or_list->ImportedFromShankyPPL() 
+        && (token_string != kOpenPPLActionStrings[i])) {
         CString error_message;
         error_message.Format(
           "Found identifier \"%s\"\n"

@@ -103,7 +103,7 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["hadtoppaironflop"] = "HadTopPairOnFlop";
   _shanky_symbol_table["hadtoppaironturn"] = "HadTopPairOnTurn";
   _shanky_symbol_table["hadtwopaironflop"] = "HadTwoPairOnFlop";
-  _shanky_symbol_table["hadoverpaironflop"] = "HadOverpairOnFlop";
+  _shanky_symbol_table["hadoverpaironflop"] = "HadOverPairOnFlop";
   _shanky_symbol_table["have10outstraightdraw"] = "Have10OutStraightDraw";
   _shanky_symbol_table["have12outstraightdraw"] = "Have12OutStraightDraw";
   _shanky_symbol_table["have16outstraightdraw"] = "Have16OutStraightDraw";
@@ -182,6 +182,9 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["havetwopair"] = "HaveTwoPair";
   _shanky_symbol_table["haveunderpair"] = "HaveUnderPair";
   _shanky_symbol_table["haveunderstraight"] = "HaveUnderStraight";
+  _shanky_symbol_table["inbigblind"] = "InBigBlind";
+  _shanky_symbol_table["inbutton"] = "InButton";
+  _shanky_symbol_table["insmallblind"] = "InSmallBlind";
   _shanky_symbol_table["isfinaltable"] = "IsFinalTable";
   _shanky_symbol_table["kingpresentonflop"] = "KingPresentOnFlop";
   _shanky_symbol_table["lowpossible"] = "LowPossible";
@@ -247,6 +250,7 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["call"] = "Call";
   _shanky_symbol_table["check"] = "Check";
   _shanky_symbol_table["fold"] = "Fold";
+  _shanky_symbol_table["none"] = "None";
   // Shankys command "SitOut" means: first fold, then sitout.
   // We don#t support this behavious, that's why we fold
   _shanky_symbol_table["sitout"] = "Fold";

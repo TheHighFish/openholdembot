@@ -149,8 +149,13 @@ RaiseMax
 ##Raise##
 -1000012
 
-// Sitout and close no longer supported by OpenPPL 7.x
+##SitOut##
+// SitOut and Close no longer supported by OpenPPL 7.x
 // Because we have separate functions for that.
+//
+// This symbol however provides Partial support for Shanky-style sitout,
+// i.e. folding, but without sitting out thereafter
+Fold
 
 //*****************************************************************************
 //

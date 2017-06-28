@@ -472,7 +472,7 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
     CString identifier = _tokenizer.GetTokenString();
     assert(_currently_parsed_function_or_list != NULL);
     if (_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
-      // Special handling for Shanky-style ode:
+      // Special handling for Shanky-style code:
       // proper cases, some symbols named slightly differently
       identifier = _shanky_symbol_name_translator.Translate(
         _tokenizer.GetTokenString());
@@ -555,7 +555,7 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
     return NULL;
   }
   token_ID = _tokenizer.GetToken();
-  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenIdentifier)) {
+  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenNumber)) {
     CString next_symbol = _tokenizer.GetTokenString();
     if (!SymbolLooksLikePartOfShankyHandOrBoardExpression(next_symbol)) {
       break;
@@ -564,6 +564,11 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
     token_ID = _tokenizer.GetToken();
   }
   _tokenizer.PushBack();
+  if (_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
+    // Special handling for Shanky-style code:
+    // proper cases, some symbols named slightly differently
+    identifier = _shanky_symbol_name_translator.Translate(identifier);
+  }
   TPParseTreeTerminalNodeIdentifier terminal_node_identifer
     = new CParseTreeTerminalNodeIdentifier(
       _tokenizer.LineRelative(),
@@ -586,6 +591,8 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleInPositionExpr
     return NULL;
   }
   position_symbol += _tokenizer.GetTokenString();
+  position_symbol = _shanky_symbol_name_translator.Translate(
+    position_symbol);
   TPParseTreeTerminalNodeIdentifier terminal_node_identifer
     = new CParseTreeTerminalNodeIdentifier(
       _tokenizer.LineRelative(),

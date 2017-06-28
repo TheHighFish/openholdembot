@@ -78,6 +78,9 @@ enum {
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
   kTokenActionReturn,
+  // Shanky command "Sitout", meaning first fold, then sitout
+  // Not really supported, we just fold
+  kTokenShankyKeywordSitOut,
   kTokenActionUserVariableToBeSet,
   // OpenPPL keyword FORCE
   kTokenKeywordForce,
@@ -102,11 +105,10 @@ enum {
   kNumberOfTokens,
 };
 
-const int kNumberOfOpenPPLActions = 27;
+const int kNumberOfOpenPPLActions = 28;
 
 const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
-  // No longer considering
-  // * SitOut
+  // No longer considering about (OpenPPL 1.x)
   // * Leave
   // * Close
   // Because they will be handled by secondary OH-functions
@@ -136,6 +138,7 @@ const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   "RaiseThreeFourthPot",
   "RaisePot",
   "RaiseMax",
+  "SitOut",
   "Set",
 };
 
@@ -168,6 +171,7 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
   kTokenActionRaiseThreeFourthPot,
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
+  kTokenShankyKeywordSitOut,
   kTokenActionUserVariableToBeSet,
 };
 
@@ -192,9 +196,7 @@ inline bool TokenIsElementaryAction(int token) {
 }
 
 inline bool TokenIsOpenPPLAction(int token) {
-  // !! Looks like a duplicate, 
-  // but there might be a difference
-  return TokenIsElementaryAction(token);
+  return (TokenIsElementaryAction(token));
 }
 
 inline bool TokenIsBracketClose(int token) {

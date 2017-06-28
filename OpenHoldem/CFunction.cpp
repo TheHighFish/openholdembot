@@ -53,12 +53,6 @@ CFunction::CFunction(
 CFunction::~CFunction() {
   // Parse-tree-nodes may be NULL in case of an empty function
   if (_parse_tree_node != NULL) {
-#ifdef _DEBUG
-    write_log(preferences.debug_formula(),
-      "[CFunction] Deleting %s\n", _name);
-    write_log(preferences.debug_formula(),
-      "[CFunction] Parse-tree: %s\n", _parse_tree_node->Serialize());
-#endif
     delete _parse_tree_node;
   }
 }
