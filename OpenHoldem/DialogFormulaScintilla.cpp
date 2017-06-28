@@ -929,7 +929,8 @@ void CDlgFormulaScintilla::OnNew() {
     return;
   }
   if (p_function_collection->Exists(newdlg.CSnewname)) {
-    OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);    return;
+    OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
+    return;
   }
   if (newdlg.is_function == false) {
     // Create new list

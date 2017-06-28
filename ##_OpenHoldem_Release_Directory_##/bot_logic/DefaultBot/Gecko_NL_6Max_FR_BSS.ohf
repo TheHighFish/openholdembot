@@ -76,6 +76,8 @@
 //   * Added sanity-check that prevents Gecko playing Omaha.
 //   * Added f$pt_min_hands_for_opponent_modelling
 //     to require a minimal sample-size.
+//   * Extended f$prefold to full-ring
+//   * introducing f$delay
 //
 // TO DO:
 //   * implement pt_river_bet (currently changed to river_bet to make it load!!!!)
