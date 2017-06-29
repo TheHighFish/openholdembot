@@ -49,8 +49,10 @@ class CFilenames {
  public:
   // Directories
   CString BotlogicDirectory();
+  CString DefaultLogicDirectory();
   CString LogsDirectory();
   CString OpenHoldemDirectory();
+  CString OpenPPLLibraryDirectory();
   CString PathOfExecutable();
   CString ReplaySessionDirectory();
   CString ScraperDirectory();

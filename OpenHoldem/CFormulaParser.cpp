@@ -85,6 +85,12 @@ void CFormulaParser::InitNewParse() {
   COHScriptObject* _currently_parsed_function_or_list = NULL;
 }
 
+
+void CFormulaParser::LoadDefaultBot() {
+  LoadFunctionsFromLibrary(p_filenames->DefaultLogicDirectory() + "DefaultBot.ohf");
+  LoadFunctionsFromLibrary(p_filenames->DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");
+}
+
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
   EnterParserCode();
   write_log(preferences.debug_parser(),
@@ -106,14 +112,15 @@ void CFormulaParser::ParseDefaultLibraries() {
   for (int i = 0; i < kNumberOfOpenPPLLibraries; ++i) {
     CString library_path;
     assert(kOpenPPLLibraries[i] != "");
-    library_path.Format("%s\\%s",
-      p_filenames->BotlogicDirectory(),
+    library_path.Format("%s%s",
+      p_filenames->OpenPPLLibraryDirectory(),
       kOpenPPLLibraries[i]);
     LoadFunctionsFromLibrary(library_path);
   }
   // Check once at the end of the modular OpenPPL-library
   p_function_collection->SetOpenPPLLibraryLoaded(true);
   LoadFunctionsFromLibrary(p_filenames->CustomLibraryPath());
+  LoadDefaultBot();
   // Check again after the custom library
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
   p_function_collection->ParseAll(); 

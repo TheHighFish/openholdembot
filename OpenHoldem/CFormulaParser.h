@@ -51,6 +51,7 @@ class CFormulaParser {
   void EnterParserCode();
   void LeaveParserCode();
  private:
+  void LoadDefaultBot();
   void LoadFunctionsFromLibrary(CString library_path);
   void LoadFunctionsFromArchive(CArchive & formula_file);
  private:
