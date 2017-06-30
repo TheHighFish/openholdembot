@@ -4286,6 +4286,7 @@ f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 :
 50
 
 ##f$ptype_ubernit##
+<<<<<<< HEAD
 //!!!!!
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
@@ -4320,6 +4321,41 @@ WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FOR
 WHEN (pt_river_bet_raischair==4)  RETURN true FORCE
 WHEN (pt_river_bet_raischair==9)  RETURN true FORCE
 WHEN (pt_river_bet_raischair==14) RETURN true FORCE
+=======
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
+// PT AUTORATE ICONS:
+(pt_river_bet_raischair==1)  ? 1 :
+(pt_river_bet_raischair==5)  ? 1 :
+(pt_river_bet_raischair==10) ? 1 : 0
+
+##f$ptype_nit##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
+// PT AUTORATE ICONS:
+(pt_river_bet_raischair<=1)  ? 1 :
+(pt_river_bet_raischair==6)  ? 1 :
+(pt_river_bet_raischair==11) ? 1 : 0
+
+##f$ptype_tag##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
+// PT AUTORATE ICONS:
+(pt_river_bet_raischair==2)  ? 1 :
+(pt_river_bet_raischair==7)  ? 1 :
+(pt_river_bet_raischair==12) ? 1 : 0
+
+##f$ptype_semilag##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
+// PT AUTORATE ICONS:
+(pt_river_bet_raischair==3)  ? 1 :
+(pt_river_bet_raischair==8)  ? 1 :
+(pt_river_bet_raischair==13) ? 1 : 0
+
+##f$ptype_lag##
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
+// PT AUTORATE ICONS:
+(pt_river_bet_raischair==4)  ? 1 :
+(pt_river_bet_raischair==9)  ? 1 :
+(pt_river_bet_raischair==14) ? 1 : 0
+>>>>>>> 68ad90ed120fd79c0a83cc8b4adfc35398fcd778
 
 ##f$prwin2##
 [prwin+(prtie/2)]**(1+f$threat2)
