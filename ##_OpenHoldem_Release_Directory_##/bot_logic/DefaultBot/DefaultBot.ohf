@@ -17,18 +17,18 @@
 //
 //*****************************************************************************
 
-##f$Default_preflop##
+##Default_preflop##
 WHEN isomaha Fold FORCE
 WHEN Others RETURN f$Gecko_6Max_FR_NL_BSS_preflop FORCE
 
-##f$Default_flop##
+##Default_flop##
 WHEN isomaha Fold FORCE
 WHEN Others RETURN f$Gecko_6Max_FR_NL_BSS_flop FORCE
 
-##f$Default_turn##
+##Default_turn##
 WHEN isomaha Fold FORCE
 WHEN Others RETURN f$Gecko_6Max_FR_NL_BSS_turn FORCE
 
-##f$Default_river##
+##Default_river##
 WHEN isomaha Fold FORCE
 WHEN Others RETURN f$Gecko_6Max_FR_NL_BSS_river FORCE

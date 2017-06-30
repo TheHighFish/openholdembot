@@ -41,7 +41,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   if (name == "") {
     // Can happen for end-of-function-nodes, 
     // which are derived from identifier nodes.
-    // Some of them get set to "DefaultPreflp" or similar, but not all.
+    // Some of them get set to "Default_preflp" or similar, but not all.
     return;
   }
   write_log(preferences.debug_symbol_verification(),
