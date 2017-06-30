@@ -26,6 +26,8 @@
 // TECHNICAL CHANGES:
 //   * OpenPPL-functions f$preflop..f$river added (all empty)
 //     to make Gecko OpenPPL-compatible
+//   * Renaming f$preflop,... by f$Gecko_6Max_FR_NL_BSS_preflop,
+//     because that's how the defauöt-bot will address Gecko-logic.
 //   * Splitting call formula
 //     - introducing f$call_nuts, f$call_minbets, call_potcommitted
 //     - removed superfluous backup action for betsizing (now built-in)
@@ -114,7 +116,7 @@ pttag8: raise flop >18% - fold to cbet >40% <60%
 pttag12: raise flop >18%- fold to cbet >60%
 */
 
-##f$preflop##
+##f$Gecko_6Max_FR_NL_BSS_preflop##
 WHEN isomaha Fold FORCE
 WHEN f$preflop_raise RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
@@ -125,7 +127,7 @@ WHEN f$call_minbets Call FORCE
 // or have enough chips left that we are not committed
 WHEN f$preflop_call Call FORCE
 
-##f$flop##
+##f$Gecko_6Max_FR_NL_BSS_flop##
 WHEN isomaha Fold FORCE
 WHEN f$flop_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
@@ -134,7 +136,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE 
 WHEN f$flop_call Call FORCE
 
-##f$turn##
+##f$Gecko_6Max_FR_NL_BSS_turn##
 WHEN isomaha Fold FORCE
 WHEN f$turn_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
@@ -143,7 +145,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$turn_call Call FORCE
 
-##f$river##
+##f$Gecko_6Max_FR_NL_BSS_river##
 WHEN isomaha Fold FORCE
 WHEN f$river_raise RaiseBy f$best_betsize FORCE
 // No longer going automatically broke with string sets
@@ -174,12 +176,12 @@ WHEN f$river_call Call FORCE
 [ IsPostflop && NOT IsRiver && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 : 0
 
 ##f$betsizing_strategy##
-WHEN IsPreflop AND f$preflop_raise RETURN True FORCE
-WHEN IsFlop    AND f$flop_raise    RETURN True FORCE
-WHEN IsFlop    AND f$flop_turn_raise_strong_set RETURN True FORCE
-WHEN IsTurn    AND f$turn_raise    RETURN True FORCE
-WHEN IsTurn    AND f$flop_turn_raise_strong_set RETURN True FORCE
-WHEN IsRiver   AND f$river_raise   RETURN True FORCE
+WHEN IsPreflop AND f$preflop_raise RETURN true FORCE
+WHEN IsFlop    AND f$flop_raise    RETURN true FORCE
+WHEN IsFlop    AND f$flop_turn_raise_strong_set RETURN true FORCE
+WHEN IsTurn    AND f$turn_raise    RETURN true FORCE
+WHEN IsTurn    AND f$flop_turn_raise_strong_set RETURN true FORCE
+WHEN IsRiver   AND f$river_raise   RETURN true FORCE
 
 ##f$best_betsize##
 // OpenPPL uses big blinds everywhere,
@@ -4284,35 +4286,35 @@ f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 :
 50
 
 ##f$ptype_ubernit##
-WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==1)  ? 1 :
 (pt_river_bet_raischair==5)  ? 1 :
 (pt_river_bet_raischair==10) ? 1 : 0
 
 ##f$ptype_nit##
-WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair<=1)  ? 1 :
 (pt_river_bet_raischair==6)  ? 1 :
 (pt_river_bet_raischair==11) ? 1 : 0
 
 ##f$ptype_tag##
-WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==2)  ? 1 :
 (pt_river_bet_raischair==7)  ? 1 :
 (pt_river_bet_raischair==12) ? 1 : 0
 
 ##f$ptype_semilag##
-WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==3)  ? 1 :
 (pt_river_bet_raischair==8)  ? 1 :
 (pt_river_bet_raischair==13) ? 1 : 0
 
 ##f$ptype_lag##
-WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN False FORCE
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS:
 (pt_river_bet_raischair==4)  ? 1 :
 (pt_river_bet_raischair==9)  ? 1 :
