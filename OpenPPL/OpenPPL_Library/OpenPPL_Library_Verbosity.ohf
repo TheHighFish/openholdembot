@@ -67,6 +67,21 @@
 //
 //*****************************************************************************
 
+##IsPreflop##
+(betround == preflop)
+
+##IsFlop##
+(betround == flop)
+
+##IsTurn##
+(betround == turn)
+
+##IsRiver##
+(betround == river)
+
+##IsPostflop##
+NOT IsPreflop
+
 ##RankOfFirstHoleCard##
 $$pr0
 

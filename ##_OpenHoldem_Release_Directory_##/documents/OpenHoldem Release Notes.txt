@@ -1,4 +1,7 @@
-﻿v﻿11.2.2 2017-06-xx
+﻿
+- Verbose functions IsPreflop, IsFlop, IsTurn, IsRiver, isPostflop
+
+v﻿11.2.2 2017-06-xx
 ==================
 BUG FIXES:
 - The now built-in symbols smallblindchair and bigblindchair were missing the code
