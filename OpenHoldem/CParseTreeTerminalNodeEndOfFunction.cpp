@@ -29,10 +29,10 @@ CParseTreeTerminalNodeEndOfFunction::CParseTreeTerminalNodeEndOfFunction(int rel
     currenttly_parsed_function);
   if (COHScriptObject::IsMainOpenPPLFunction(currenttly_parsed_function)) {
     assert(currenttly_parsed_function.Left(2) == "f$");
-    // Build new Name: "Default_" + old name without "f$" 
+    // Build new Name: "Default" + old name without "f$" 
     // plus uppercase for the first character of the 2nd part,
     // e.g. f$preflop -> DefaultPreflop
-    CString default_function = "Default_" + currenttly_parsed_function.Mid(2);
+    CString default_function = "Default" + currenttly_parsed_function.Mid(2);
     default_function.SetAt(7, toupper(default_function.GetAt(7)));
     write_log(preferences.debug_parser(), "[CParseTreeTerminalNodeEndOfFunction] %s\n",
       default_function);

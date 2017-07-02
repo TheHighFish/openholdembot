@@ -26,7 +26,7 @@
 // TECHNICAL CHANGES:
 //   * OpenPPL-functions f$preflop..f$river added (all empty)
 //     to make Gecko OpenPPL-compatible
-//   * Renaming f$preflop,... by f$Gecko_6Max_FR_NL_BSS_preflop,
+//   * Renaming f$preflop,... by f$Gecko_6Max_FR_NL_BSS_Preflop,
 //     because that's how the default-bot will address Gecko-logic.
 //   * Splitting call formula
 //     - introducing f$call_nuts, f$call_minbets, call_potcommitted
@@ -94,9 +94,6 @@
 // MIDPAIR: 3 - 8 - 13
 // MANIAC : 4 - 9 - 14 
 
-
-
-
 /* So pt_nit would be icon 1,5,9 instead of 1,5,10, so you get to a total of 12 autorate rules instead of 14
 
 ptubernit1: raise flop <6% - fold to cbet <40%
@@ -116,7 +113,7 @@ pttag8: raise flop >18% - fold to cbet >40% <60%
 pttag12: raise flop >18%- fold to cbet >60%
 */
 
-##f$Gecko_6Max_FR_NL_BSS_preflop##
+##f$Gecko_6Max_FR_NL_BSS_Preflop##
 WHEN isomaha Fold FORCE
 WHEN f$preflop_raise RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
@@ -127,7 +124,7 @@ WHEN f$call_minbets Call FORCE
 // or have enough chips left that we are not committed
 WHEN f$preflop_call Call FORCE
 
-##f$Gecko_6Max_FR_NL_BSS_flop##
+##f$Gecko_6Max_FR_NL_BSS_Flop##
 WHEN isomaha Fold FORCE
 WHEN f$flop_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
@@ -136,7 +133,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE 
 WHEN f$flop_call Call FORCE
 
-##f$Gecko_6Max_FR_NL_BSS_turn##
+##f$Gecko_6Max_FR_NL_BSS_Turn##
 WHEN isomaha Fold FORCE
 WHEN f$turn_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
@@ -145,7 +142,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$turn_call Call FORCE
 
-##f$Gecko_6Max_FR_NL_BSS_river##
+##f$Gecko_6Max_FR_NL_BSS_River##
 WHEN isomaha Fold FORCE
 WHEN f$river_raise RaiseBy f$best_betsize FORCE
 // No longer going automatically broke with string sets
