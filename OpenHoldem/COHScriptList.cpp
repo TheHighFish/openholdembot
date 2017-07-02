@@ -2,6 +2,7 @@
 #include "COHScriptList.h"
 
 #include "CardFunctions.h"
+#include "CFormulaParser.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
@@ -173,6 +174,12 @@ double COHScriptList::Evaluate(bool log /* = false */) {
   return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
     p_symbol_engine_pokerval->rankloplayer(),
     p_symbol_engine_cards->issuited());
+}
+
+void COHScriptList::Parse() {
+  write_log(preferences.debug_formula() || preferences.debug_parser(),
+    "[CFunction] Parsing %s\n", _name);
+  p_formula_parser->ParseFormula(this);
 }
 
 CString COHScriptList::function_text() {

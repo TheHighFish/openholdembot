@@ -57,6 +57,8 @@ class COHScriptList: public COHScriptObject {
   // but the function is inheritzed from the base-class.
   double Evaluate(bool log = false);
  public:
+  virtual void Parse();
+ public:
   void Set(int first_rank, int second_rank, bool suited);
   // For Hand list editor: higher card first: suited, otherwise offsuited
   void Set(int first_rank, int second_rank);

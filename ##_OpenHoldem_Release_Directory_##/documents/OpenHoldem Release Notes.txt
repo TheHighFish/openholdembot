@@ -1,11 +1,20 @@
-﻿v﻿11.2.3 2017-06-xx
+﻿v﻿11.2.4 2017-07-03
+==================
+BUG FIXES:
+- Editing lists did not work in all cases 
+  after restructuring the parser in 11.2.2.
+  Thanks to Nik0 for reporting.
+  [THF]
+
+
+v﻿11.2.3 2017-06-22
 ==================
 NEW STUFF:
 - New symbols BotsLastFlopAction and BotsLastTurnAction.
   [Mike]
 
 MAINTENANCE:
-- The technic TankOfSetOnBoard (paret of the removed NutFullHouse-code)
+- The technic RankOfSetOnBoard (part of the removed NutFullHouse-code)
   has been added again. Thanks to JohnNash for asking.
   [THF]
 
