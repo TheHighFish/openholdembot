@@ -655,12 +655,20 @@ bool CFunctionCollection::ParseAll() {
 }
 
 bool CFunctionCollection::IsOpenPPLProfile() {
-  // A profile is OpenPPL if at least f$preflop exists
-  // and f$preflop is not empty
-  if (!Exists(k_OpenPPL_function_names[kBetroundPreflop])) return false;
-  COHScriptObject *p_preflop = LookUp(k_OpenPPL_function_names[kBetroundPreflop]);
-  assert(p_preflop != NULL);
-  CString function_text = p_preflop->function_text();
+  // Since OpenHoldem version 12 OpenPPL is the default mode
+  return (IsOHScriptProfile() == false);
+}
+
+bool CFunctionCollection::IsOHScriptProfile() {
+  // A profile is OH-script if at least f$call exists
+  // and f$call is not empty.
+  // We chose f$call, because
+  //   * "every" profile needs a call function, even push-fold-bots
+  //   * f$call is empty per default
+  if (!Exists(k_standard_function_names[k_autoplayer_function_call])) return false;
+  COHScriptObject *p_call_function = LookUp(k_standard_function_names[k_autoplayer_function_call]);
+  assert(p_call_function != NULL);
+  CString function_text = p_call_function->function_text();
   // Counting nearly empty functions as empty (default: 1 space)
   return (function_text.GetLength() > 1);
 }

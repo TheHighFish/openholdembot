@@ -190,6 +190,7 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 	switch (SIZE_OF_TOKEN) {
 	case 2:
 		if (_memicmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr;  return true; }
+    if (_memicmp(TOKEN_ADDRESS, "IN", 2) == 0)     { _OpenPPL_token_ID = kTokenShankyKeywordIn;  return true; }
 		break;
 	case 3:
 		if (_memicmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }
@@ -205,11 +206,13 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 			_OpenPPL_token_ID = kTokenOperatorConditionalWhen; 
 			return true; 
 		}
+    if (_memicmp(TOKEN_ADDRESS, "HAND", 4) == 0)    { _OpenPPL_token_ID = kTokenShankyKeywordHand; return true; }
 		break;
 	case 5:
 		if (_memicmp(TOKEN_ADDRESS, "BITOR", 5) == 0)   { _OpenPPL_token_ID = kTokenOperatorBinaryOr; return true; }
 		if (_memicmp(TOKEN_ADDRESS, "DELAY", 5) == 0)   { _OpenPPL_token_ID = kTokenUnsupportedDelay; return true; }
     if (_memicmp(TOKEN_ADDRESS, "FORCE", 5) == 0)   { _OpenPPL_token_ID = kTokenKeywordForce;     return true; }
+    if (_memicmp(TOKEN_ADDRESS, "BOARD", 5) == 0)   { _OpenPPL_token_ID = kTokenShankyKeywordBoard; return true; }
 		break;
 	case 6:
 		if (_memicmp(TOKEN_ADDRESS, "RETURN", 6) == 0)  { _OpenPPL_token_ID = kTokenActionReturn;      return true; }
@@ -222,6 +225,17 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 	default: return false;
 	}
 	return false;
+}
+
+int CTokenizer::ProperEqualityOperatorForOpenPPLOrShankyPPL() {
+  // Equality, either = or ==
+  // If a function got imported from Shanky PPL
+  // then we have to do rounding, as Shanky PPL works with integers only
+  assert(_currently_tokenized_function_or_list != NULL);
+  if (_currently_tokenized_function_or_list->ImportedFromShankyPPL()) {
+    return kTokenOperatorApproximatellyEqual;
+  }
+  return kTokenOperatorEquality;;
 }
 
 // Some macros for tokenizing operators
@@ -354,9 +368,9 @@ NegativeNumber:
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorGreater)
 		case '`':
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorBitCount)
-		case '=': // Equality, either = or ==
-			IF_NEXT_CHARACTER_RETURN_OPERATOR('=', kTokenOperatorEquality)
-			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorEquality)
+		case '=': 
+      IF_NEXT_CHARACTER_RETURN_OPERATOR('=', ProperEqualityOperatorForOpenPPLOrShankyPPL())
+			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(ProperEqualityOperatorForOpenPPLOrShankyPPL())
 		case '!': 
 			IF_NEXT_CHARACTER_RETURN_OPERATOR('=', kTokenOperatorNotEqual)
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorLogicalNot)
@@ -520,7 +534,10 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
       // Action expected and something action-like found
       // Now check for exact match, because especially
       // "bet" and "call" mean something different for OH-script
-      if (token_string != kOpenPPLActionStrings[i]) {
+      // Only warn if parsing openPPL, not Shanky-PPL,
+      // because we auto-correct cases for Shanly-PPL.
+      if (!_currently_tokenized_function_or_list->ImportedFromShankyPPL() 
+        && (token_string != kOpenPPLActionStrings[i])) {
         CString error_message;
         error_message.Format(
           "Found identifier \"%s\"\n"

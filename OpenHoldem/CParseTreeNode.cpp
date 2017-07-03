@@ -47,8 +47,11 @@ CParseTreeNode::~CParseTreeNode() {
   write_log(preferences.debug_formula(),
     "[CParseTreeNode] Deleting parse tree node %i\n", this);
   if (_node_type == kTokenOperatorConditionalWhen) {
-    write_log(preferences.debug_formula(),
-      "[CParseTreeNode] WHEN condition: %s\n", _first_sibbling->Serialize());
+    if (_first_sibbling != NULL) {
+      // Can be NULL on invalid input
+      write_log(preferences.debug_formula(),
+        "[CParseTreeNode] WHEN condition: %s\n", _first_sibbling->Serialize());
+    }
     write_log(preferences.debug_formula(),
       "[CParseTreeNode] Open ended: %s\n", Bool2CString(IsOpenEndedWhenCondition()));
   }
@@ -153,7 +156,7 @@ void  CParseTreeNode::VerifyBooleanOperand(double value) {
   // People doing logical operations on umbers
   // as they don't understand the precedence of operators well emough.
   // Example: .., AND NOT betrund > 1 ...
-  // www!!!!!
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20703
   if (value == double(true)) {
     return;
   }

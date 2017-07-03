@@ -123,12 +123,12 @@ CDlgFormulaScintilla::CDlgFormulaScintilla(CWnd* pParent /*=NULL*/) :
 {
 	in_startup = true;
   
-  if (!p_function_collection->IsOpenPPLProfile()) {
+  if (p_function_collection->IsOpenPPLProfile()) {
     // Either use autoplayer-functions (default) or OpenPPL
     // but not both, because they are incompatible
-	  m_standard_headings.Add("Autoplayer Functions");
-  } else {
     m_standard_headings.Add("OpenPPL Functions");
+  } else {
+    m_standard_headings.Add("Autoplayer Functions");
   }
 	m_standard_headings.Add("Secondary Functions");
   m_standard_headings.Add("Hopper Functions");
@@ -500,6 +500,15 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
   // Setup the tree
   HTREEITEM	parent = NULL, hItem;
   COHScriptObject *p_OH_script_object = NULL;
+
+  assert(m_standard_headings.GetSize() > 0);
+  if (p_function_collection->IsOpenPPLProfile()) {
+    // Either use autoplayer-functions (default) or OpenPPL
+    // but not both, because they are incompatible
+    m_standard_headings.SetAt(0, "OpenPPL Functions");
+  } else {
+    m_standard_headings.SetAt(0, "Autoplayer Functions");
+  }
 
   for (int j=0; j<m_standard_headings.GetSize(); j++) {
     if (m_standard_headings[j].IsEmpty()) {
@@ -911,11 +920,18 @@ void CDlgFormulaScintilla::OnNew() {
     newdlg.is_function = true;
   }
   if (newdlg.DoModal() != IDOK) return;
-  if (p_function_collection->Exists(newdlg.CSnewname)) {
-	OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
-	return;
+  if (newdlg.CSnewname == "f$call") {
+    // Set a non-empty-function -text
+    // Must contain at least two spaces, as "empty" functions contain 1 space
+    // as the editor does not work with completely function-texts.
+    p_function_collection->LookUp("f$call")->SetText("  ");
+    PopulateFormulaTree();
+    return;
   }
-
+  if (p_function_collection->Exists(newdlg.CSnewname)) {
+    OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
+    return;
+  }
   if (newdlg.is_function == false) {
     // Create new list
     // It will be released later by the function collection
@@ -939,7 +955,6 @@ void CDlgFormulaScintilla::OnNew() {
     p_function_collection->Add((COHScriptObject*)p_new_function);
     // Add to tree
     HTREEITEM hNewParent = hUDFItem;
-
     // !! Candidate for refactoring, probably duplicate functionality
     // !! Formula grouping
     CString tempString;
@@ -949,10 +964,9 @@ void CDlgFormulaScintilla::OnNew() {
     {
 	    // Does a group already exist?
 	    HTREEITEM hExistingGroup = FindUDFGroupItem(groupName);
-	    if (hExistingGroup) 
-		    hNewParent = hExistingGroup;
-	    else 
-	    {
+      if (hExistingGroup) {
+        hNewParent = hExistingGroup;
+      } else {
 		    // If a group does not exist, is there another UDF to group together?
 		    HTREEITEM matchingItem = FindUDFStartingItem(groupName);
 		    if (matchingItem) 
@@ -1572,8 +1586,6 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   if (p_autoplayer->autoplayer_engaged()) {
 	  WarnAboutAutoplayerWhenApplyingFormula();
   }
-  // Save settings to registry
-  SaveSettingsToRegistry(); //!!!!! not necessary
   CopyTabContentsToFormulaSet();
   p_function_collection->ParseAll();
   if (!p_function_collection->BotLogicCorrectlyParsed()) {
@@ -1590,7 +1602,7 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   }
   pDoc->SetModifiedFlag(true);
   // Re-calc symbols
-  p_engine_container->EvaluateAll(); // !!!!! disabled while parsing
+  p_engine_container->EvaluateAll(); // ??? disabled while parsing
   m_dirty = false;
   HandleEnables(true);
 }

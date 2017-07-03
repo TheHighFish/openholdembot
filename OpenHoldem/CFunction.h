@@ -37,6 +37,8 @@ class CFunction: public COHScriptObject{
  public:
   virtual void Parse();
   void SetParseTree(TPParseTreeNode _new_parse_tree);
+  virtual void MarkAsImportedFromShankyPPL() { _imported_from_shanky_ppl = true; }
+  virtual bool ImportedFromShankyPPL() { return _imported_from_shanky_ppl; }
  public:
   // For debugging output
   CString Serialize();
@@ -59,6 +61,7 @@ class CFunction: public COHScriptObject{
  private:
   double _cached_result;
   bool _is_result_cached;
+  bool _imported_from_shanky_ppl;
  private:
   static CFunction* _currently_evaluated_function;
   CFunction* _previously_evaluated_function;

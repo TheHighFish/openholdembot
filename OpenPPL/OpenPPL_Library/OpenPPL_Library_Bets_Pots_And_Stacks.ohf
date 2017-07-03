@@ -121,6 +121,11 @@ HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
 ##StackSizeAtBeginningOfCurrentRound##
 StackSize + TotalInvestedThisRound
 
+##StackUnknown##
+// Only for Shanky-compatibility needed
+WHEN ismyturn AND (StackSize <= 0) RETURN true FORCE
+WHEN Others RETURN false FORCE
+
 ##TotalInvested##
 WHEN (betround == preflop) RETURN (Ante + ncurrentbets) FORCE
 WHEN (betround == flop)    RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE

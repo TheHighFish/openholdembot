@@ -36,6 +36,7 @@ CFunction::CFunction(
   _is_result_cached = false;
   _cached_result = kUndefinedZero;
   _parse_tree_node = NULL;
+  _imported_from_shanky_ppl = false;
 }
 
 CFunction::CFunction(
@@ -46,17 +47,12 @@ CFunction::CFunction(
   _is_result_cached = false;
   _cached_result = kUndefinedZero;
   _parse_tree_node = NULL;
+  _imported_from_shanky_ppl = false;
 }
 
 CFunction::~CFunction() {
   // Parse-tree-nodes may be NULL in case of an empty function
   if (_parse_tree_node != NULL) {
-#ifdef _DEBUG
-    write_log(preferences.debug_formula(),
-      "[CFunction] Deleting %s\n", _name);
-    write_log(preferences.debug_formula(),
-      "[CFunction] Parse-tree: %s\n", _parse_tree_node->Serialize());
-#endif
     delete _parse_tree_node;
   }
 }
@@ -165,7 +161,7 @@ void CFunction::Dump() {
     (_is_result_cached ? "[cached]" : "[not chached]"),
     _cached_result,
     _parse_tree_node);
-  write_log(preferences.debug_auto_trace()/*!!!!!???*/, (char*)(LPCTSTR)data);
+  write_log(preferences.debug_formula() , (char*)(LPCTSTR)data);
 }
 
 void CFunction::SetValue(double value) {

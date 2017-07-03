@@ -1,4 +1,30 @@
-﻿v﻿11.2.4 2017-07-03
+﻿﻿v﻿12.0.0 2017-06-20
+==================
+﻿NEW STUFF:
+- OpenHoldeme contains now a built-in default bot,
+  that sits in the background and cares about undefined situations.
+  It can be used as a starting-point or as a fall-back-logic for tweaking.
+  Special thanks to Gecko who contributed his legendary bot-logic
+  that made him a fortune in the past.
+  For the full story about the Gecko-bot please see the sticky post
+  in the OpenPPL-forum.
+  [THF]
+- OpenHoldem is now able to import Shanky-PPL directly
+  (plain-text only, no encrypted PPL of course).
+  Special thanks to Salem who contributed an important part
+  of the on-the-fly-converter.
+  [THF]
+- Verbose OpenPPL functions IsPreflop, IsFlop, IsTurn, IsRiver, isPostflop
+  [THF]
+
+MAINTENANCE:
+- Due to its popularity OpenPPL is now the new default-mode
+  when starting a new empty formula with the editor.
+  OpenHoldem will switch to OH-script-mode if the formula-set
+  cintains a non-empty f$call-function.
+  [THF]
+
+v﻿11.2.4 2017-07-03
 ==================
 BUG FIXES:
 - Editing lists did not work in all cases 
@@ -19,7 +45,7 @@ MAINTENANCE:
   [THF]
 
 
-v﻿11.2.2 2017-06-20
+v﻿11.2.2 2017-06-xx
 ==================
 BUG FIXES:
 - The now built-in symbols smallblindchair and bigblindchair were missing the code

@@ -55,6 +55,7 @@ CFormulaParser::CFormulaParser() {
   _is_parsing_counter = 0;
   _is_parsing_read_only_function_library = false;
   _is_parsing_debug_tab = false;
+  _currently_parsed_function_or_list = NULL;
 }
 
 CFormulaParser::~CFormulaParser() {
@@ -81,6 +82,13 @@ void CFormulaParser::InitNewParse() {
   // because we might want to reparse the function-collection!
   // (Formula Editor -> Apply)
   _function_name = "--undefined--";
+  COHScriptObject* _currently_parsed_function_or_list = NULL;
+}
+
+
+void CFormulaParser::LoadDefaultBot() {
+  LoadFunctionsFromLibrary(p_filenames->DefaultLogicDirectory() + "DefaultBot.ohf");
+  LoadFunctionsFromLibrary(p_filenames->DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");
 }
 
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
@@ -104,14 +112,15 @@ void CFormulaParser::ParseDefaultLibraries() {
   for (int i = 0; i < kNumberOfOpenPPLLibraries; ++i) {
     CString library_path;
     assert(kOpenPPLLibraries[i] != "");
-    library_path.Format("%s\\%s",
-      p_filenames->BotlogicDirectory(),
+    library_path.Format("%s%s",
+      p_filenames->OpenPPLLibraryDirectory(),
       kOpenPPLLibraries[i]);
     LoadFunctionsFromLibrary(library_path);
   }
   // Check once at the end of the modular OpenPPL-library
   p_function_collection->SetOpenPPLLibraryLoaded(true);
   LoadFunctionsFromLibrary(p_filenames->CustomLibraryPath());
+  LoadDefaultBot();
   // Check again after the custom library
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
   p_function_collection->ParseAll(); 
@@ -231,6 +240,8 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   // This function contasins many returns.
   // Make sure to call LeaveParserCode() everywhere!
   EnterParserCode();
+  assert(function_or_list_to_be_parsed != NULL);
+  _currently_parsed_function_or_list = function_or_list_to_be_parsed;
   // During startuo we parse the libraries and the last recent bot-logic.
   // The heartbeat does not yet exist, the watchdog does not yet work.
   // Unfortunatelly parsing some bot-loghic like the legendary
@@ -260,18 +271,9 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
 	  return;
   }
   assert(_function_name != "f$debug");
-  /*
-  if (_function_name == "f$debug") {
-    //!!!!!
-    p_debug_tab->SetText(function_text);
-    ParseDebugTab(function_text);
-    assert(p_debug_tab != NULL);
-    // The debug-tab is a special global object that must nit be added 
-    // to the function collection (to avoid deletion).
-    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
-    LeaveParserCode();
-    return;
-  } */
+  // The debug-tab is a special global object that must npt be added 
+  // to the function collection (to avoid deletion).
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
   TPParseTreeNode function_body = NULL;
   if (function_or_list_to_be_parsed->IsFunction() 
       || function_or_list_to_be_parsed->IsOpenPPLSymbol()) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; write_log(preferences.debug_parser() && vali_err, "[FormulaParser] Cycling through functions\n");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
@@ -306,14 +308,13 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
     LeaveParserCode();
     return;
   }
-  COHScriptObject *p_existing_function = p_function_collection->LookUp(_function_name);
-  assert(p_existing_function != NULL);
-  // type-check!!!!!
-  ((CFunction*)p_existing_function)->SetParseTree(function_body); 
+  assert(function_or_list_to_be_parsed != NULL);
+  //!!!!!assert(function_or_list_to_be_parsed->IsFunction());
+  ((CFunction*)function_or_list_to_be_parsed)->SetParseTree(function_body);
   //p_function_collection->Add((COHScriptObject*)p_new_function);
   assert(p_function_collection->Exists(_function_name));
   // Care about operator precendence
-  _parse_tree_rotator.Rotate((CFunction*)p_existing_function);
+  _parse_tree_rotator.Rotate((CFunction*)function_or_list_to_be_parsed);
 #ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
   p_function_collection->LookUp(_function_name)->Dump();
@@ -386,7 +387,14 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 	}	else if ((token_ID == kTokenIdentifier)
 		  || (token_ID == kTokenNumber)) {
 		expression = ParseSimpleExpression();
+  } else if ((token_ID == kTokenShankyKeywordHand) || (token_ID == kTokenShankyKeywordBoard)) {
+    expression = ParseShankyStyleHandAndBoardExpression();
+  } else if (token_ID == kTokenShankyKeywordIn) {
+    expression = ParseShankyStyleInPositionExpression();
 	}	else {
+    // We don't mention Shanky hand- and board-expressions here;
+    // they are ugly to parse and only provided for an easy start.
+    // We prefer users who write OpenPPL ;-)
 		CParseErrors::Error("Unexpected token inside expression.\n" 
       "Expecting: opening bracket, unary operator, identifier or number.\n");
 		return NULL;
@@ -458,7 +466,7 @@ TPParseTreeOperatorNode CFormulaParser::ParseUnaryExpression()
 	TPParseTreeOperatorNode unary_node = new CParseTreeOperatorNode(_tokenizer.LineRelative());
 	unary_node->MakeUnaryOperator(unary_operator, expression);
 	write_log(preferences.debug_parser(), 
-			"[FormulaParser] Unary node %i\n", unary_node);
+		"[FormulaParser] Unary node %i\n", unary_node);
 	return unary_node;
 }
 
@@ -468,10 +476,18 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
 	TPParseTreeTerminalNode terminal_node = NULL;
 	if (terminal == kTokenIdentifier) {
+    CString identifier = _tokenizer.GetTokenString();
+    assert(_currently_parsed_function_or_list != NULL);
+    if (_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
+      // Special handling for Shanky-style code:
+      // proper cases, some symbols named slightly differently
+      identifier = _shanky_symbol_name_translator.Translate(
+        _tokenizer.GetTokenString());
+    }
     TPParseTreeTerminalNodeIdentifier terminal_node_identifer 
       = new CParseTreeTerminalNodeIdentifier(
         _tokenizer.LineRelative(),
-        _tokenizer.GetTokenString());
+        identifier);
     terminal_node = terminal_node_identifer;
 	}	else if (terminal == kTokenNumber) {
 		CString number = _tokenizer.GetTokenString();
@@ -481,7 +497,7 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
       = new CParseTreeTerminalNodeNumber(_tokenizer.LineRelative());
 		terminal_node_number->MakeConstant(value);
     terminal_node = terminal_node_number;
-	}	else {
+  } else {
 		assert(kThisMustNotHappen);
 		terminal_node = NULL;	
 	}
@@ -489,6 +505,106 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 	write_log(preferences.debug_parser(), 
 		"[FormulaParser] Terminal node %i\n", terminal_node);
 	return terminal_node;
+}
+
+bool CFormulaParser::SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol) {
+  int length = symbol.GetLength();
+  for (int i = 0; i < length; ++i) {
+    switch (toupper(symbol[i])) {
+    // Ranks
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case 'T':
+    case 'J':
+    case 'Q':
+    case 'K':
+    case 'A':
+    // Suited
+    case 'S':
+    case 'U':
+    case 'I':
+    case 'E':
+    case 'D':
+    // Specific suits
+    case 'C':
+    case 'H': continue;
+    default: return false;
+    }
+  }
+  return true;
+}
+
+TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardExpression() {
+  CString identifier;
+  int token_ID = _tokenizer.GetToken();
+  if (token_ID == kTokenShankyKeywordHand) {
+    identifier = "hand$";
+  } else if (token_ID == kTokenShankyKeywordBoard) {
+    identifier = "board$";
+  } else {
+    assert(k_ThisMustNotHappen);
+  }
+  token_ID = _tokenizer.GetToken();
+  if ((token_ID != kTokenOperatorApproximatellyEqual) 
+    && (token_ID != kTokenOperatorEquality)) {
+    // Actually we expect an equality sign here,
+    // but when dealing with Shanky-PPL we replace them
+    // by approximately-equal-operators
+    // to handle Shankys implicit rounding (integers only)
+    CParseErrors::Error("Unexpected token inside Shanky-style hand- or board-expression.\n"
+      "Expecting: equality sign.\n");
+    return NULL;
+  }
+  token_ID = _tokenizer.GetToken();
+  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenNumber)) {
+    CString next_symbol = _tokenizer.GetTokenString();
+    if (!SymbolLooksLikePartOfShankyHandOrBoardExpression(next_symbol)) {
+      break;
+    }
+    identifier += next_symbol;
+    token_ID = _tokenizer.GetToken();
+  }
+  _tokenizer.PushBack();
+  if (_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
+    // Special handling for Shanky-style code:
+    // proper cases, some symbols named slightly differently
+    identifier = _shanky_symbol_name_translator.Translate(identifier);
+  }
+  TPParseTreeTerminalNodeIdentifier terminal_node_identifer
+    = new CParseTreeTerminalNodeIdentifier(
+      _tokenizer.LineRelative(),
+      identifier);
+  return terminal_node_identifer;
+}
+
+TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleInPositionExpression() {
+  // Turning valid Shanky-PPL to proper OpenPPL:
+  // "In Bigblind" -> InBigBlind".
+  // Shanky doesn't care about spaces in the input-stream.
+  // We don't handle other valid code like "In Bigbli n d" ;-)
+  CString position_symbol = "In";
+  int token_ID = _tokenizer.GetToken();
+  assert(token_ID = kTokenShankyKeywordIn);
+  token_ID = _tokenizer.GetToken();
+  if (token_ID != kTokenIdentifier) {
+    CParseErrors::Error("Unexpected token after keyword \"In\".\n"
+      "Expecting: Shanky-style position like \"In Bigblind\".\n");
+    return NULL;
+  }
+  position_symbol += _tokenizer.GetTokenString();
+  position_symbol = _shanky_symbol_name_translator.Translate(
+    position_symbol);
+  TPParseTreeTerminalNodeIdentifier terminal_node_identifer
+    = new CParseTreeTerminalNodeIdentifier(
+      _tokenizer.LineRelative(),
+      position_symbol);
+  return terminal_node_identifer;
 }
 
 void CFormulaParser::ParseConditionalPartialThenElseExpressions(
@@ -527,6 +643,7 @@ void CFormulaParser::ErrorMissingAction(int token_ID) {
 }
 
 TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
+  assert(_currently_parsed_function_or_list != NULL);
   TPParseTreeOperatorNode last_when_condition = NULL;
   bool last_when_condition_was_open_ended = false;
   TPParseTreeOperatorNode first_when_condition_of_sequence = NULL;
@@ -577,6 +694,22 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
 	    assert(last_when_condition != NULL);
       // Parsing successfully finished
       break;
+    } else if ((_currently_parsed_function_or_list->ImportedFromShankyPPL())
+      && (token_ID == kTokenIdentifier)
+      && (CString(_tokenizer.GetTokenString()).Left(4).MakeLower() == "user")) {
+      CString name = _tokenizer.GetTokenString();
+      // Shanky-style user-variable to be set
+      TPParseTreeTerminalNodeIdentifier user_variable
+        = new CParseTreeTerminalNodeUserVariable(
+          _tokenizer.LineRelative(), name);
+      // Not expecting any Force here
+      when_condition->_second_sibbling = user_variable;
+      // For future backpatching
+      last_when_condition_was_open_ended = false;
+      // We have to consume the current token that we got by lookahead...
+      token_ID = _tokenizer.GetToken();
+      // ... and lookahead again
+      token_ID = _tokenizer.LookAhead();
     } else {
       ErrorMissingAction(token_ID);
       break;
@@ -635,6 +768,11 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
 		action = ParseOpenPPLRaiseByExpression(); 
     ExpectKeywordForce(token_ID);
     return action;
+  } else if (token_ID == kTokenActionRaise) {
+    // Can be MinRaise or Shanky-style raiseby (raiseto).
+    action = ParseOpenPPLRaiseExpression();
+    ExpectKeywordForce(token_ID);
+    return action;
 	} else if (token_ID == kTokenActionUserVariableToBeSet) { 
     TPParseTreeTerminalNode user_variable = ParseOpenPPLUserVar();
     // Not expecting keyword Force here
@@ -649,35 +787,41 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
 	}
 }
 
+void CFormulaParser::SkipUnsupportedShankyStyleDelay() {
+  int _token_ID = _tokenizer.GetToken();
+  assert(_token_ID == kTokenUnsupportedDelay);
+  assert(_currently_parsed_function_or_list != NULL);
+  if (!_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
+    // Not acceptable for OpenPPL
+    CParseErrors::Error("Unsupported Shanky-style delay.\n"
+      "OpenHoldem provides a far more simple\n"
+      "and far more powerful f$delay-function for that.\n");
+  }
+  _token_ID = _tokenizer.GetToken();
+  if (_token_ID != kTokenNumber) {
+    CParseErrors::Error("Unexpected token after keyword \"delay\".\n"
+      "Expecting a number.\n"
+      "But don't worry: Shanky-style delays are not supported anyway."
+    );
+  }
+}
+
 bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 	int _token_ID = _tokenizer.GetToken();
-	if (_token_ID == kTokenKeywordForce) {
-		// Check for unsupported Shanky-style delay
-		// which can only happen after actions 
-		// WHEN ... RAISEMAX FORCE DELAY 42
-		_token_ID = _tokenizer.LookAhead();
-		if (_token_ID == kTokenUnsupportedDelay) {
-			CParseErrors::Error("Unsupported Shanky-style delay.\n"
-        "OpenHoldem provides a far more simple\n"
-        "and far more powerful f$delay-function for that.\n");
-			// And consume 2 tokens to avoid further messages;
-			_token_ID = _tokenizer.GetToken();
-			_token_ID = _tokenizer.GetToken();
-		}
-		// Both cases, with and without delay, are considered "good".
-		return true;
-	} else if (last_important_roken_ID == kTokenActionRaise) {
-    // Last thing we saw was a Raise
-    // Probably Shanky-style betsizing
-    CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
-      "Did you attempt to specify a betsize the old Shanky way?\n"
-      "Then either use RaiseTo or RaiseBy.\n");
+  if (_token_ID != kTokenKeywordForce) {
+    // General error message on missing keyword force
+    CParseErrors::Error("Missing keyword FORCE after action.\n");
     return false;
-
   }
-  // General error message on missing keyword force
-	CParseErrors::Error("Missing keyword FORCE after action.\n");
-	return false;
+	// Check for unsupported Shanky-style delay
+	// which can only happen after actions 
+	// WHEN ... RAISEMAX FORCE DELAY 42
+	_token_ID = _tokenizer.LookAhead();
+  if (_token_ID == kTokenUnsupportedDelay) {
+    SkipUnsupportedShankyStyleDelay();
+  }
+	// Both cases, with and without delay, are considered "good".
+	return true;
 }
 
 TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpression() {
@@ -729,6 +873,26 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpressi
 		action->MakeRaiseByAction(expression);
 		return action;
 	}
+}
+
+TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression() {
+  if (_tokenizer.LookAhead() == kTokenKeywordForce) {
+    // Predefined action, here Raise
+    TPParseTreeTerminalNodeFixedAction fixed_action
+      = new CParseTreeTerminalNodeFixedAction(_tokenizer.LineRelative(),
+        TokenString(kTokenActionRaise));
+    return fixed_action;
+  }
+  assert(_currently_parsed_function_or_list != NULL);
+  if (!_currently_parsed_function_or_list->ImportedFromShankyPPL()) {
+    // Not <cceptable for OpenPPL
+    CParseErrors::Error("Missing keyword FORCE after action Raise.\n"
+    "Did you attempt to specify a betsize the old Shanky way?\n"
+    "Then either use RaiseTo or RaiseBy.\n");
+  }
+  // Shanky style betsizing, mostly raiseby,
+  // might be raiseto preflop (casino-specific)
+  return ParseOpenPPLRaiseByExpression();
 }
 
 void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(

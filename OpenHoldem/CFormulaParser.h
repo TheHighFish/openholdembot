@@ -23,6 +23,8 @@
 #include "CParseTreeRotator.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeBetsizeAction.h"
+#include "CParseTreeTerminalNodeIdentifier.h"
+#include "CShankySymbolNameTranslator.h"
 #include "CTokenizer.h"
 
 class CFormulaParser {
@@ -38,11 +40,7 @@ class CFormulaParser {
  public:
   void ParseDefaultLibraries();
  public:
-  // !!!!! -> Splitter? it is important to get the line-number first and pass it to the functions below.
-  // First splitting the function-text would read up to the next function-header
-  // and then get the starting line wrong.
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=18337
-   void ParseFormula(COHScriptObject* function_or_list_to_be_parsed);
+  void ParseFormula(COHScriptObject* function_or_list_to_be_parsed);
  public:
   bool IsParsing()	                      { return (_is_parsing_counter > 0); }
   bool IsParsingReadOnlyFunctionLibrary() { return _is_parsing_read_only_function_library; }
@@ -53,6 +51,7 @@ class CFormulaParser {
   void EnterParserCode();
   void LeaveParserCode();
  private:
+  void LoadDefaultBot();
   void LoadFunctionsFromLibrary(CString library_path);
   void LoadFunctionsFromArchive(CArchive & formula_file);
  private:
@@ -78,12 +77,19 @@ class CFormulaParser {
   TPParseTreeOperatorNode ParseOpenEndedWhenConditionSequence();
   TPParseTreeTerminalNodeBetsizeAction ParseOpenPPLRaiseToExpression();
   TPParseTreeTerminalNodeBetsizeAction ParseOpenPPLRaiseByExpression();
+  TPParseTreeNode ParseOpenPPLRaiseExpression();
   TPParseTreeNode ParseOpenPPLAction();
  private:
   TPParseTreeTerminalNode ParseOpenPPLUserVar(); 
  private:
   void BackPatchOpenEndedWhenConditionSequence(
     TPParseTreeNode first_when_condition_of_a_function);
+ private:
+  // Shanky PPL
+  TPParseTreeTerminalNodeIdentifier ParseShankyStyleHandAndBoardExpression();
+  TPParseTreeTerminalNodeIdentifier ParseShankyStyleInPositionExpression();
+  void SkipUnsupportedShankyStyleDelay();
+  bool SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol);
  private:
   bool IsValidFunctionName(CString name);
   void ErrorMissingAction(int token_ID);
@@ -93,6 +99,7 @@ class CFormulaParser {
   CFormulaFileSplitter _formula_file_splitter;
   CTokenizer _tokenizer;
   CParseTreeRotator _parse_tree_rotator;
+  CShankySymbolNameTranslator _shanky_symbol_name_translator;
  private:
   CString _token;
   int _is_parsing_counter;
@@ -102,6 +109,7 @@ class CFormulaParser {
   // But we can't do so in the debug-tab, so we want to throw a warning.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19973&p=140389#p140389
   bool _is_parsing_debug_tab;
+  COHScriptObject* _currently_parsed_function_or_list;
 };
 
 extern CFormulaParser *p_formula_parser;

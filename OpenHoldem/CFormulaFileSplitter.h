@@ -25,23 +25,25 @@ class CFormulaFileSplitter {
   ~CFormulaFileSplitter();
  public:
   void SplitFile(CArchive &formula_file);
-
+ private:
+  void SkipShankyOptionSettings(CArchive &formula_file);
  private:
   COHScriptObject* GetNextObject(CArchive &formula_file);
   void ScanForNextFunctionOrList(CArchive &formula_file);
   CString ExtractFunctionName(const CString function_header);
-
  private:
-  bool IsFunctionHeader(CString line_of_code);
+  inline bool IsFunctionHeader(CString line_of_code);
+  inline bool IsShankyFunction(CString line_of_code);
   void SanityChecksForWrongFileTypes();
  private:
   CString _function_name;
   CString _function_text;
   CString _next_line;
-
+ private:
   bool _first_function_processed;
   int _total_lines_processed;
   int _starting_line_of_next_function;
+  bool _splitting_shanky_ppl;
 };
 
 #endif INC_CFORMULAFILESPLITTER_H

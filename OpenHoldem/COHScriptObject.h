@@ -40,6 +40,9 @@ class COHScriptObject {
   virtual double Evaluate(bool log = false);
   virtual bool EvaluatesToBinaryNumber();
  public:
+  virtual bool ImportedFromShankyPPL() { return false; }
+  virtual void MarkAsImportedFromShankyPPL() { /* Nothing to be done for lists and denug-tab */ }
+ public:
   static bool IsFunction(CString name)      { return name.Left(2) ==  "f$"; }
   static bool IsList(CString name)          { return name.Left(4) ==  "list"; }
   static bool IsOpenPPLSymbol(CString name);

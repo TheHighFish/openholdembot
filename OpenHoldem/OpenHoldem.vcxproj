@@ -235,6 +235,7 @@
     <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CScrapedMoney.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
+    <ClCompile Include="CShankySymbolNameTranslator.cpp" />
     <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />
@@ -522,6 +523,7 @@
     <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CScrapedMoney.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
+    <ClInclude Include="CShankySymbolNameTranslator.h" />
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />

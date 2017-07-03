@@ -60,8 +60,8 @@
 //
 // OpenPPL - StackSizes - supporting technical functions
 //
-// Once the general multiplexer is implemented Chair0StartingStackSize
-// should be renamed to StartingStackSizeX.
+// The stacksize-symbols are accessible by the multiplexer-engine
+// e.g. as StartingStackSize_dealerchair or Stack_raischair.
 //
 //*****************************************************************************
 

@@ -63,6 +63,7 @@ class CTokenizer {
 	bool IsTokenOpenPPLKeyword();
  private:
   void CheckTokenForOpenPPLAction(int *token);
+  int  ProperEqualityOperatorForOpenPPLOrShankyPPL();
  private:
 	void InitVars();
 	char CURRENT_CHARACTER();

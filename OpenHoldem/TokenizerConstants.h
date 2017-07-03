@@ -78,11 +78,24 @@ enum {
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
   kTokenActionReturn,
+  // Shanky command "Sitout", meaning first fold, then sitout
+  // Not really supported, we just fold
+  kTokenShankyKeywordSitOut,
   kTokenActionUserVariableToBeSet,
   // OpenPPL keyword FORCE
   kTokenKeywordForce,
   // Shanky-style delay (unsupported)
   kTokenUnsupportedDelay,
+  // Shankly style hand- and board expressions.
+  // Token gets only used for importing Shanky-PPL;
+  // the parse represents these expressions as identifiers
+  // (hand$XYZ, board$XYZ)
+  kTokenShankyKeywordHand,
+  kTokenShankyKeywordBoard,
+  // Shanky-style "In BigBlind" instead of "InBigBlind".
+  // Valid code, as Shanky analyses a character-stream,
+  // spaces stripped away ;-)
+  kTokenShankyKeywordIn,
   // Special action-constants for node-types
   // Not really tokens, but handled here for consistency
   kTokenActionRaiseByBigBlinds,
@@ -92,11 +105,10 @@ enum {
   kNumberOfTokens,
 };
 
-const int kNumberOfOpenPPLActions = 27;
+const int kNumberOfOpenPPLActions = 28;
 
 const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
-  // No longer considering
-  // * SitOut
+  // No longer considering about (OpenPPL 1.x)
   // * Leave
   // * Close
   // Because they will be handled by secondary OH-functions
@@ -126,6 +138,7 @@ const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   "RaiseThreeFourthPot",
   "RaisePot",
   "RaiseMax",
+  "SitOut",
   "Set",
 };
 
@@ -158,6 +171,7 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
   kTokenActionRaiseThreeFourthPot,
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
+  kTokenShankyKeywordSitOut,
   kTokenActionUserVariableToBeSet,
 };
 
@@ -182,9 +196,7 @@ inline bool TokenIsElementaryAction(int token) {
 }
 
 inline bool TokenIsOpenPPLAction(int token) {
-  // !! Looks like a duplicate, 
-  // but there might be a difference
-  return TokenIsElementaryAction(token);
+  return (TokenIsElementaryAction(token));
 }
 
 inline bool TokenIsBracketClose(int token) {
