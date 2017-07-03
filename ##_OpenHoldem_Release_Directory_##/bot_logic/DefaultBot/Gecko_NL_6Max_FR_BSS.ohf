@@ -26,7 +26,7 @@
 // TECHNICAL CHANGES:
 //   * OpenPPL-functions f$preflop..f$river added (all empty)
 //     to make Gecko OpenPPL-compatible
-//   * Renaming f$preflop,... by f$Gecko_6Max_FR_NL_BSS_Preflop,
+//   * Renaming f$preflop,... by Gecko_6Max_FR_NL_BSS_Preflop,
 //     because that's how the default-bot will address Gecko-logic.
 //   * Splitting call formula
 //     - introducing f$call_nuts, f$call_minbets, call_potcommitted
@@ -113,7 +113,7 @@ pttag8: raise flop >18% - fold to cbet >40% <60%
 pttag12: raise flop >18%- fold to cbet >60%
 */
 
-##f$Gecko_6Max_FR_NL_BSS_Preflop##
+##Gecko_6Max_FR_NL_BSS_Preflop##
 WHEN isomaha Fold FORCE
 WHEN f$preflop_raise RaiseBy f$best_betsize FORCE
 WHEN f$call_nuts Call FORCE
@@ -124,7 +124,7 @@ WHEN f$call_minbets Call FORCE
 // or have enough chips left that we are not committed
 WHEN f$preflop_call Call FORCE
 
-##f$Gecko_6Max_FR_NL_BSS_Flop##
+##Gecko_6Max_FR_NL_BSS_Flop##
 WHEN isomaha Fold FORCE
 WHEN f$flop_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
@@ -133,7 +133,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE 
 WHEN f$flop_call Call FORCE
 
-##f$Gecko_6Max_FR_NL_BSS_Turn##
+##Gecko_6Max_FR_NL_BSS_Turn##
 WHEN isomaha Fold FORCE
 WHEN f$turn_raise RaiseBy f$best_betsize FORCE
 WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
@@ -142,7 +142,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$turn_call Call FORCE
 
-##f$Gecko_6Max_FR_NL_BSS_River##
+##Gecko_6Max_FR_NL_BSS_River##
 WHEN isomaha Fold FORCE
 WHEN f$river_raise RaiseBy f$best_betsize FORCE
 // No longer going automatically broke with string sets
@@ -151,7 +151,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$river_call Call FORCE
 
-##f$allin_on_betsize_balance_ration##
+##allin_on_betsize_balance_ration##
 // Not present in Geckos original bot for OpenHoldem 2.x,
 // But his code suggests that he wants it this way.
 0.67
@@ -235,15 +235,15 @@ nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
 Random * 20
 
 ##f$prefold##
-WHEN (InBigBlind        AND !list07  && (call>0)) RETURN true FORCE
-WHEN (InSmallBlind      AND !list900) RETURN true FORCE
-WHEN (InButton          AND !list900) RETURN true FORCE               
-WHEN (InCutOff          AND !list05)  RETURN true FORCE
-WHEN (InMiddlePosition3 AND !list02)  RETURN true FORCE
-WHEN (InMiddlePosition2 AND !list01)  RETURN true FORCE
+WHEN (InBigBlind        AND !listGecko07  && (call>0)) RETURN true FORCE
+WHEN (InSmallBlind      AND !listGecko900) RETURN true FORCE
+WHEN (InButton          AND !listGecko900) RETURN true FORCE               
+WHEN (InCutOff          AND !listGecko05)  RETURN true FORCE
+WHEN (InMiddlePosition3 AND !listGecko02)  RETURN true FORCE
+WHEN (InMiddlePosition2 AND !listGecko01)  RETURN true FORCE
 // Extended to full-ring
 // Simply assuming we can fold in early position as much as in MP2
-WHEN (Others            AND !list01)  RETURN true FORCE
+WHEN (Others            AND !listGecko01)  RETURN true FORCE
 
 ##f$preflop_raise##
 ( f$Preflop_First_In
@@ -2168,15 +2168,15 @@ f$oppchair==6 ? f$pt_pfr*2.0 : 0
     [ ncallbets<=1 ] ? {
 
         [ nopponentscalling==0 && (ispair   ||dealposition==1 && handrank169<50) ] ? 1 :
-        [ nopponentscalling==1 && (list301||dealposition==1 && handrank169<50) ] ? 1 :
-        [ nopponentscalling>=2 && (list300||dealposition==1 && handrank169<50) ] ? 1 : 0 } :
+        [ nopponentscalling==1 && (listGecko301||dealposition==1 && handrank169<50) ] ? 1 :
+        [ nopponentscalling>=2 && (listGecko300||dealposition==1 && handrank169<50) ] ? 1 : 0 } :
 
-    [ ncallbets>1 && (call*8)<balance && (call*2)<pot && list17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
+    [ ncallbets>1 && (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
 
 [ didbetsize ] ? {
 
     [ call*4<pot                                                             ] ? 1 :
-    [ (call*8)<balance && (call*2)<pot && list17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
+    [ (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
 
 0
 
@@ -2309,13 +2309,13 @@ pt_wtsd_headsup
 (f$BettingAction_Two_Limpers && f$Chart_TwoLimpers) ? 1 : 0
 
 ##f$Preflop_Raiser_And_Callers_In_Front_Of_Me##
-(f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us && list100) ? 1 : 0
+(f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us && listGecko100) ? 1 : 0
 
 ##f$Preflop_Multiple_Raisers##
-(Raises >= 2 && list100) ? 1 : 0
+(Raises >= 2 && listGecko100) ? 1 : 0
 
 ##f$Preflop_React_To_Reraise##
-(f$BettingAction_Raisers_Behind_Us && list100) ? 1 : 0
+(f$BettingAction_Raisers_Behind_Us && listGecko100) ? 1 : 0
 
 ##f$Preflop_Raise_After_One_Limper##
 (f$BettingAction_One_Limper && f$Chart_OneLimper) ? 1 : 0
@@ -2384,25 +2384,25 @@ log$SERIOUS_ERROR
 (f$BettingAction_Unraised_Pot && nopponentscalling<=0)
 
 ##f$Chart_OpenRaise##
-   [ InSmallBlind && list900 ] // 50%
-|| [ InMiddlePosition2 && list01  ] // 10%
-|| [ InMiddlePosition3 && list02  ] // 15%
-|| [ InCutOff && list05  ] // 27%
-|| [ InButton && list900 ] // 40%
+   [ InSmallBlind && listGecko900 ] // 50%
+|| [ InMiddlePosition2 && listGecko01  ] // 10%
+|| [ InMiddlePosition3 && listGecko02  ] // 15%
+|| [ InCutOff && listGecko05  ] // 27%
+|| [ InButton && listGecko900 ] // 40%
 
 
-//|| [ f$Position_CutOff     && (    f$Punten_Preflop_Cutoff<=2 && list05   // 27%
-//                                || f$Punten_Preflop_Cutoff==3 && list04   // 23%
-//                                || f$Punten_Preflop_Cutoff>=4 && list03)] // 16%
+//|| [ f$Position_CutOff     && (    f$Punten_Preflop_Cutoff<=2 && listGecko05   // 27%
+//                                || f$Punten_Preflop_Cutoff==3 && listGecko04   // 23%
+//                                || f$Punten_Preflop_Cutoff>=4 && listGecko03)] // 16%
 //
 
-//|| [ f$Position_Button     && (    f$Punten_Preflop_Button<=0 && list08   // 50%
-//                                || f$Punten_Preflop_Button==1 && list07   // 40%
-//                                || f$Punten_Preflop_Button>=2 && list06)] // 30%
+//|| [ f$Position_Button     && (    f$Punten_Preflop_Button<=0 && listGecko08   // 50%
+//                                || f$Punten_Preflop_Button==1 && listGecko07   // 40%
+//                                || f$Punten_Preflop_Button>=2 && listGecko06)] // 30%
 
-//|| [ f$Position_SmallBlind && (    f$Punten_Preflop_Sblind<=0 && list07   // 40%
-//                                || f$Punten_Preflop_Sblind==1 && list05   // 27%
-//                                || f$Punten_Preflop_Sblind>=2 && list04)] // 23%
+//|| [ f$Position_SmallBlind && (    f$Punten_Preflop_Sblind<=0 && listGecko07   // 40%
+//                                || f$Punten_Preflop_Sblind==1 && listGecko05   // 27%
+//                                || f$Punten_Preflop_Sblind>=2 && listGecko04)] // 23%
 
 ##f$Position_CutOff##
 (nchairsdealtleft == 1)
@@ -2425,33 +2425,33 @@ log$SERIOUS_ERROR
 ##f$Chart_ReRaise##
 [ InSmallBlind ] ? { // sb
 
-    [ f$dealpositionrais==3 ] ? list13 : // 04%
-    [ f$dealpositionrais==4 ] ? list14 : // 08%
-    [ f$dealpositionrais==5 ] ? list15 : // 12%
-    [ f$dealpositionrais==6 ] ? list02 : 0 } :
+    [ f$dealpositionrais==3 ] ? listGecko13 : // 04%
+    [ f$dealpositionrais==4 ] ? listGecko14 : // 08%
+    [ f$dealpositionrais==5 ] ? listGecko15 : // 12%
+    [ f$dealpositionrais==6 ] ? listGecko02 : 0 } :
 
 [ InBigBlind ] ? { // bb
 
-    [ f$dealpositionrais==1 ] ? list03 : // 04%
-    [ f$dealpositionrais==3 ] ? list13 : // 04%
-    [ f$dealpositionrais==4 ] ? list14 : // 08%
-    [ f$dealpositionrais==5 ] ? list15 : // 12%
-    [ f$dealpositionrais==6 ] ? list02 : 0 } :
+    [ f$dealpositionrais==1 ] ? listGecko03 : // 04%
+    [ f$dealpositionrais==3 ] ? listGecko13 : // 04%
+    [ f$dealpositionrais==4 ] ? listGecko14 : // 08%
+    [ f$dealpositionrais==5 ] ? listGecko15 : // 12%
+    [ f$dealpositionrais==6 ] ? listGecko02 : 0 } :
 
 [ InMiddlePosition3 ] ? { // utg+1
 
-    [ f$dealpositionrais==3 ] ? list13 : 0 } : // 04%
+    [ f$dealpositionrais==3 ] ? listGecko13 : 0 } : // 04%
 
 [ InCutOff ] ? { // co
 
-    [ f$dealpositionrais==3 ] ? list13 :       // 04%
-    [ f$dealpositionrais==4 ] ? list14 : 0 } : // 08%
+    [ f$dealpositionrais==3 ] ? listGecko13 :       // 04%
+    [ f$dealpositionrais==4 ] ? listGecko14 : 0 } : // 08%
 
 [ InButton ] ? { // button
 
-    [ f$dealpositionrais==3 ] ? list13 :       // 04%
-    [ f$dealpositionrais==4 ] ? list14 :       // 08%
-    [ f$dealpositionrais==5 ] ? list15 : 0 } : // 12%
+    [ f$dealpositionrais==3 ] ? listGecko13 :       // 04%
+    [ f$dealpositionrais==4 ] ? listGecko14 :       // 08%
+    [ f$dealpositionrais==5 ] ? listGecko15 : 0 } : // 12%
 
 0
 
@@ -2468,44 +2468,44 @@ log$SERIOUS_ERROR
 (nopponentscalling >= 3 && ncallbets<=1)
 
 ##f$Chart_MultiLimpers##
-   (f$Position_UTG1       && list01)
-|| (f$Position_UTG2       && list01)
-|| (f$Position_CutOff     && list01)
-|| (f$Position_Button     && list01)
-|| (f$Position_SmallBlind && list01)
-|| (f$Position_BigBlind   && list01)
+   (f$Position_UTG1       && listGecko01)
+|| (f$Position_UTG2       && listGecko01)
+|| (f$Position_CutOff     && listGecko01)
+|| (f$Position_Button     && listGecko01)
+|| (f$Position_SmallBlind && listGecko01)
+|| (f$Position_BigBlind   && listGecko01)
 
 ##f$Chart_OneLimper##
-   [ InSmallBlind && list06 ]  // 30%
-|| [ InBigBlind && list01 ]  // 13%
-|| [ InMiddlePosition2 && list01 ]  // 13%
-|| [ InMiddlePosition3 && list03 ]  // 16%
-|| [ InCutOff && list04 ]  // 23%
-|| [ InButton && list06 ]  // 30%
+   [ InSmallBlind && listGecko06 ]  // 30%
+|| [ InBigBlind && listGecko01 ]  // 13%
+|| [ InMiddlePosition2 && listGecko01 ]  // 13%
+|| [ InMiddlePosition3 && listGecko03 ]  // 16%
+|| [ InCutOff && listGecko04 ]  // 23%
+|| [ InButton && listGecko06 ]  // 30%
 
-//|| [ InCutOff     && (                                           f$Punten_Limper_Cutoff1     < 1.00 && list04   // 23%
-  //                              || f$Punten_Limper_Cutoff1     >= 1.00 && f$Punten_Limper_Cutoff1     < 2.00 && list03   // 16%
-    //                            || f$Punten_Limper_Cutoff1     >= 2.00                                       && list02)] // 15%
+//|| [ InCutOff     && (                                           f$Punten_Limper_Cutoff1     < 1.00 && listGecko04   // 23%
+  //                              || f$Punten_Limper_Cutoff1     >= 1.00 && f$Punten_Limper_Cutoff1     < 2.00 && listGecko03   // 16%
+    //                            || f$Punten_Limper_Cutoff1     >= 2.00                                       && listGecko02)] // 15%
 
-//|| [ InButton     && (                                           f$Punten_Limper_Button1     < 1.00 && list07   // 40%
-  //                              || f$Punten_Limper_Button1     >= 1.00 && f$Punten_Limper_Button1     < 2.00 && list06   // 30%
-    //                            || f$Punten_Limper_Button1     >= 2.00                                       && list05)] // 27%
+//|| [ InButton     && (                                           f$Punten_Limper_Button1     < 1.00 && listGecko07   // 40%
+  //                              || f$Punten_Limper_Button1     >= 1.00 && f$Punten_Limper_Button1     < 2.00 && listGecko06   // 30%
+    //                            || f$Punten_Limper_Button1     >= 2.00                                       && listGecko05)] // 27%
 
-//|| [ InSmallBlind     && (                                           f$Punten_Limper_Smallblind1 < 1.00 && list04   // 23%
-  //                              || f$Punten_Limper_Smallblind1 >= 1.00 && f$Punten_Limper_Smallblind1 < 2.00 && list03   // 16%
-    //                            || f$Punten_Limper_Smallblind1 >= 2.00                                       && list01)] // 13%
+//|| [ InSmallBlind     && (                                           f$Punten_Limper_Smallblind1 < 1.00 && listGecko04   // 23%
+  //                              || f$Punten_Limper_Smallblind1 >= 1.00 && f$Punten_Limper_Smallblind1 < 2.00 && listGecko03   // 16%
+    //                            || f$Punten_Limper_Smallblind1 >= 2.00                                       && listGecko01)] // 13%
 
-//|| [ InBigBlind     && (                                           f$Punten_Limper_Bigblind1   < 1.00 && list04   // 23%
-  //                              || f$Punten_Limper_Bigblind1   >= 1.00 && f$Punten_Limper_Bigblind1   < 2.00 && list03   // 16%
-    //                            || f$Punten_Limper_Bigblind1   >= 2.00                                       && list01)] // 13%
+//|| [ InBigBlind     && (                                           f$Punten_Limper_Bigblind1   < 1.00 && listGecko04   // 23%
+  //                              || f$Punten_Limper_Bigblind1   >= 1.00 && f$Punten_Limper_Bigblind1   < 2.00 && listGecko03   // 16%
+    //                            || f$Punten_Limper_Bigblind1   >= 2.00                                       && listGecko01)] // 13%
 
 ##f$Chart_TwoLimpers##
-   (f$Position_UTG1       && list01)
-|| (f$Position_UTG2       && list01)
-|| (f$Position_CutOff     && list01)
-|| (f$Position_Button     && list02)
-|| (f$Position_SmallBlind && list01)
-|| (f$Position_BigBlind   && list01)
+   (f$Position_UTG1       && listGecko01)
+|| (f$Position_UTG2       && listGecko01)
+|| (f$Position_CutOff     && listGecko01)
+|| (f$Position_Button     && listGecko02)
+|| (f$Position_SmallBlind && listGecko01)
+|| (f$Position_BigBlind   && listGecko01)
 
 ##f$BettingAction_Raisers_Behind_Us##
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
@@ -3300,8 +3300,8 @@ pt_bb_fold_to_steal_headsup
 pt_sb_fold_to_steal_headsup
 
 ##f$Chart_CallRaise##
-   (f$Position_SmallBlind && list09)
-|| (f$Position_BigBlind   && list09)
+   (f$Position_SmallBlind && listGecko09)
+|| (f$Position_BigBlind   && listGecko09)
 
 ##f$real_pfr##
 f$dealpositionrais == 1 ? pt_pfr_raischair * 0.50 :
@@ -3311,30 +3311,30 @@ f$dealpositionrais == 5 ? pt_pfr_raischair * 0.50 :
 f$dealpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 
 ##f$real_pfr_range##
-   f$real_pfr<=0.00                       && list99
-|| f$real_pfr> 0.00 && f$real_pfr <= 0.02 && list10
-|| f$real_pfr> 0.02 && f$real_pfr <= 0.04 && list11 
-|| f$real_pfr> 0.04 && f$real_pfr <= 0.07 && list12 
-|| f$real_pfr> 0.07 && f$real_pfr <= 0.10 && list13 
-|| f$real_pfr> 0.10 && f$real_pfr <= 0.14 && list13 
-|| f$real_pfr> 0.14 && f$real_pfr <= 0.18 && list13 
-|| f$real_pfr> 0.18 && f$real_pfr <= 0.22 && list13 
-|| f$real_pfr> 0.22 && f$real_pfr <= 0.26 && list13 
-|| f$real_pfr> 0.26 && f$real_pfr <= 0.30 && list13 
-|| f$real_pfr> 0.30                       && list13 
+   f$real_pfr<=0.00                       && listGecko99
+|| f$real_pfr> 0.00 && f$real_pfr <= 0.02 && listGecko10
+|| f$real_pfr> 0.02 && f$real_pfr <= 0.04 && listGecko11 
+|| f$real_pfr> 0.04 && f$real_pfr <= 0.07 && listGecko12 
+|| f$real_pfr> 0.07 && f$real_pfr <= 0.10 && listGecko13 
+|| f$real_pfr> 0.10 && f$real_pfr <= 0.14 && listGecko13 
+|| f$real_pfr> 0.14 && f$real_pfr <= 0.18 && listGecko13 
+|| f$real_pfr> 0.18 && f$real_pfr <= 0.22 && listGecko13 
+|| f$real_pfr> 0.22 && f$real_pfr <= 0.26 && listGecko13 
+|| f$real_pfr> 0.26 && f$real_pfr <= 0.30 && listGecko13 
+|| f$real_pfr> 0.30                       && listGecko13 
 
 ##f$Chart_Squeeze##
-   [ f$Position_BigBlind   && list100 ]
-|| [ f$Position_SmallBlind && list100 ]
-|| [ f$Position_UTG2       && list100 ]
+   [ f$Position_BigBlind   && listGecko100 ]
+|| [ f$Position_SmallBlind && listGecko100 ]
+|| [ f$Position_UTG2       && listGecko100 ]
 
-|| [ f$Position_Button && (      dealpositionrais==3 && list100
-                              || dealpositionrais==4 && list100  
-                              || dealpositionrais==5 && list100 )] 
+|| [ f$Position_Button && (      dealpositionrais==3 && listGecko100
+                              || dealpositionrais==4 && listGecko100  
+                              || dealpositionrais==5 && listGecko100 )] 
 
 
-|| [ f$Position_CutOff && (      dealpositionrais==3 && list100
-                              || dealpositionrais==4 && list100 )] 
+|| [ f$Position_CutOff && (      dealpositionrais==3 && listGecko100
+                              || dealpositionrais==4 && listGecko100 )] 
 
 ##f$Punten_Limper_Smallblind##
 userchair==0 ? {
@@ -4363,12 +4363,12 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 ##f$balance##
 (balance+bblind)
 
-##list01##
+##listGecko01##
 66  77  88  99  TT  JJ  QQ  KK  AA  
 ATS AJS AQS AKS KQS QJS JTS  
 AJo  AQo AKo
 
-##list02##
+##listGecko02##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A9S ATS AJS AQS AKS  
 KTS KJS KQS  
@@ -4379,7 +4379,7 @@ T9S
 ATo  AJo AQo AKo 
 KJo  KQo  
 
-##list03##
+##listGecko03##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 KJS KQS  
@@ -4390,7 +4390,7 @@ T9S
 ATo  AJo AQo AKo 
 KQo 
 
-##list04##
+##listGecko04##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 K9S KTS KJS KQS  
@@ -4406,7 +4406,7 @@ KTo  KJo  KQo
 QTo  QJo  
 JTo 
 
-##list05##
+##listGecko05##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 K8S K9S KTS KJS KQS  
@@ -4423,40 +4423,40 @@ K9o  KTo  KJo  KQo
 QTo  QJo  
 JTo 
 
-##list100##
+##listGecko100##
 AA  KK  QQ  
 
-##list11##
+##listGecko11##
 KK  AA  QQ  
 
-##list12##
+##listGecko12##
 KK  AA  QQ  
 AKS  
 AKo
 
-##list13##
+##listGecko13##
 KK  AA  QQ  JJ  TT  
 AKS  
 AKo
 
-##list14##
+##listGecko14##
 KK  AA  QQ  JJ  TT  99  88  
 AKS AQS  
 AKo
 
-##list15##
+##listGecko15##
 KK  AA  QQ  JJ  TT  99  88  77  
 AKS AQS AJS ATS  
 AKo AQo AJo 
 KQS  
 
-##list16##
+##listGecko16##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  
 AKS AQS AJS ATS  
 AKo AQo AJo 
 KQS  
 
-##list06##
+##listGecko06##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 K7S K8S K9S KTS KJS KQS  
@@ -4473,7 +4473,7 @@ K8o  K9o  KTo  KJo  KQo
 QTo  QJo  
 JTo 
 
-##list07##
+##listGecko07##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 K7S K8S K9S KTS KJS KQS  
@@ -4491,7 +4491,7 @@ Q9o  QTo  QJo
 J9o  JTo  
 T9o  
 
-##list08##
+##listGecko08##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
@@ -4510,7 +4510,7 @@ J8o  J9o  JTo
 T9o  JTo  
 98o  
 
-##list00##
+##listGecko00##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
@@ -4537,77 +4537,77 @@ T2o T3o T4o T5o T6o T7o T8o JTo
 42o  43o  
 32o 
 
-##list10##
+##listGecko10##
 KK  AA  
 
-##list17##
+##listGecko17##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQS AKS  
 AKo  
 KQS
 
-##list18##
+##listGecko18##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQS AKS  
 AKo  KQo  
 KQS QJS JTS
 
-##list19##
+##listGecko19##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQS AKS  
 AKo  KQo  
 KQS QJS JTS T9S 98S
 
-##list99##
+##listGecko99##
 QQ  KK  AA  
 AKS  
 AKo
 
-##list09##
+##listGecko09##
 88  99  TT  JJ  QQ  KK  AA  
 AJS AQS AKS  
 KQS  
 AKo AQo 
 
-##list101##
+##listGecko101##
 AA  KK  QQ  
 
-##list102##
+##listGecko102##
 AA  KK  QQ  JJ  
 
-##list103##
+##listGecko103##
 AA  KK  QQ  JJ  TT  
 
-##list106##
+##listGecko106##
 AA  KK  QQ  JJ  TT  99  
 AKS AQS  
 AKo  
 
-##list107##
+##listGecko107##
 AA  KK  QQ  JJ  TT  99  
 AKS AQS AJS  
 AKo  AQo
 
-##list108##
+##listGecko108##
 AA  KK  QQ  JJ  TT  99  88  
 AKS AQS AJS ATS  
 AKo AQo AJo 
 KQS 
 
-##list109##
+##listGecko109##
 AA  KK  QQ  JJ  TT  99  88  77  66  
 AKS AQS AJS ATS  
 AKo AQo AJo 
 KQS 
 
-##list110##
+##listGecko110##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKS AQS AJS ATS A9S A8S  
 AKo AQo AJo ATo A9o 
 KQS  
 KQo
 
-##list111##
+##listGecko111##
 AA  KK  QQ  JJ  TT  99  88  77  66  
 AKS AQS AJS ATS A9S A8S  
 AKo AQo AJo ATo A9o 
@@ -4615,7 +4615,7 @@ KQS KJS
 QJS   
 KQo
 
-##list112##
+##listGecko112##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  
 AKS AQS AJS ATS A9S A8S  
 AKo AQo AJo ATo A9o 
@@ -4625,7 +4625,7 @@ JTS
 T9S  
 KQo
 
-##list113##
+##listGecko113##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  
 AKS AQS AJS ATS A9S A8S A7S   
 AKo AQo AJo ATo A9o A8o 
@@ -4635,7 +4635,7 @@ JTS
 T9S  
 KQo
 
-##list114##
+##listGecko114##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S   
 AKo AQo AJo ATo A9o A8o 
@@ -4646,7 +4646,7 @@ T9S
 98S  
 KQo
 
-##list115##
+##listGecko115##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S   
 AKo AQo AJo ATo A9o A8o 
@@ -4657,7 +4657,7 @@ T9S
 98S  
 KQo KJo  
 
-##list116##
+##listGecko116##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S  
 AKo AQo AJo ATo A9o A8o A7o 
@@ -4670,7 +4670,7 @@ T9S
 KQo  KJo  
 QJo  
 
-##list117##
+##listGecko117##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S  
 AKo AQo AJo ATo A9o A8o A7o A6o 
@@ -4684,7 +4684,7 @@ KQo  KJo  KTo
 QJo  QTo  
 JTo  
 
-##list118##
+##listGecko118##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o 
@@ -4700,7 +4700,7 @@ QJo  QTo
 JTo  
 T9o 
 
-##list119##
+##listGecko119##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -4720,7 +4720,7 @@ QJo  QTo
 JTo  
 T9o 
 
-##list120##
+##listGecko120##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -4740,7 +4740,7 @@ QJo  QTo  Q9o
 JTo  J9o  
 T9o 
 
-##list121##
+##listGecko121##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -4760,7 +4760,7 @@ QJo  QTo  Q9o
 JTo  J9o  J8o  
 T9o 
 
-##list122##
+##listGecko122##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -4782,7 +4782,7 @@ T9o
 98o  
 87o 
 
-##list123##
+##listGecko123##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -4804,7 +4804,7 @@ T9o
 98o
 87o 
 
-##list124##
+##listGecko124##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
@@ -4830,7 +4830,7 @@ T9o T8o T7o T6o T5o T4o T3o T2o
 54o 53o 52o 
 43o  42o
 
-##list125##
+##listGecko125##
 TT  99  88  77  
 AQS AJS ATS 
 AKo AQo 
@@ -4838,7 +4838,7 @@ KQS
 QJS  
 JTS  
 
-##list126##
+##listGecko126##
 TT  99  88  77  66  55  
 AQS AJS ATS 
 AKo AQo AJo 
@@ -4846,7 +4846,7 @@ KQS
 QJS  
 JTS  
 
-##list127##
+##listGecko127##
 TT  99  88  77  66  55  
 AQS AJS ATS A9S 
 AKo AQo AJo ATo 
@@ -4854,7 +4854,7 @@ KQS KJS
 QJS   
 JTS  
 
-##list128##
+##listGecko128##
 TT  99  88  77  66  55  44  
 AQS AJS ATS A9S A8S  
 AKo AQo AJo ATo 
@@ -4863,7 +4863,7 @@ QJS
 JTS  
 KQo
 
-##list129##
+##listGecko129##
 TT  99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S  
 AKo AQo AJo ATo A9o 
@@ -4872,7 +4872,7 @@ QJS
 JTS  
 KQo
 
-##list130##
+##listGecko130##
 TT  99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S  
 AKo AQo AJo ATo A9o A8o 
@@ -4882,7 +4882,7 @@ JTS
 T9S  
 KQo
 
-##list131##
+##listGecko131##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S 
 AQo  AJo ATo A9o A8o A7o 
@@ -4896,7 +4896,7 @@ T9S
 KQo  KJo  KTo  
 QJo  QTo  
 
-##list132##
+##listGecko132##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S 
 AQo  AJo ATo A9o A8o A7o A6o A5o 
@@ -4911,7 +4911,7 @@ KQo  KJo  KTo
 QJo  QTo  
 JTo  
 
-##list133##
+##listGecko133##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AQo  AJo ATo A9o A8o A7o A6o A5o 
@@ -4926,7 +4926,7 @@ KQo  KJo  KTo
 QJo  QTo  
 JTo  
 
-##list134##
+##listGecko134##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o 
@@ -4943,7 +4943,7 @@ KQo  KJo  KTo
 QJo  QTo  
 JTo  
 
-##list135##
+##listGecko135##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -4963,7 +4963,7 @@ QJo  QTo  Q9o
 JTo  J9o  
 T9o 
 
-##list136##
+##listGecko136##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -4985,7 +4985,7 @@ T9o
 98o  
 87o  
 
-##list137##
+##listGecko137##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -5007,7 +5007,7 @@ T9o
 98o
 98o 
 
-##list138##
+##listGecko138##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -5029,7 +5029,7 @@ T9o
 98o 
 87o 
 
-##list139##
+##listGecko139##
 99  88  77  66  55  44  33  22  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
@@ -5054,19 +5054,19 @@ T9o T8o T7o T6o T5o T4o T3o
 65o  46o  63o  
 54o  53o  
 
-##list140##
+##listGecko140##
 99  88  77  66  55  44  33  22  
 AJS KQS QJS JTS T9S  
 AQo  
 KQo
 
-##list141##
+##listGecko141##
 99  88  77  66  55  44  33  22  
 AJS ATS KQS QJS JTS T9S  
 AQo  AJo KQo  
 KQS
 
-##list142##
+##listGecko142##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
 AQo  AJo ATo 
@@ -5075,7 +5075,7 @@ QJS
 JTS  
 T9S
 
-##list143##
+##listGecko143##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
 AQo  AJo ATo A9o 
@@ -5086,7 +5086,7 @@ T9S
 98S  
 KQo
 
-##list144##
+##listGecko144##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
 AQo  AJo ATo A9o A8o 
@@ -5096,7 +5096,7 @@ JTS
 T9S  
 KQo
 
-##list145##
+##listGecko145##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S   
 AQo  AJo ATo A9o A8o 
@@ -5106,7 +5106,7 @@ JTS
 T9S  
 KQo  KJo  
 
-##list146##
+##listGecko146##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S  
 AQo  AJo ATo A9o A8o A7o 
@@ -5119,7 +5119,7 @@ T9S
 KQo  KJo  
 QJo  
 
-##list147##
+##listGecko147##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S  
 AQo  AJo ATo A9o A8o A7o A6o A5o 
@@ -5135,7 +5135,7 @@ QJo  QTo
 JTo  
 T9o 
 
-##list148##
+##listGecko148##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
@@ -5155,7 +5155,7 @@ QJo  QTo
 JTo  
 T9o 
 
-##list149##
+##listGecko149##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 KQS KJS KTS K9S K8S K7S     
@@ -5175,7 +5175,7 @@ QJo  QTo  Q9o
 JTo  J9o  
 T9o 
 
-##list150##
+##listGecko150##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
@@ -5195,7 +5195,7 @@ QJo  QTo  Q9o
 JTo  J9o  
 T9o 
 
-##list151##
+##listGecko151##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
@@ -5217,7 +5217,7 @@ T9o
 98o  
 87o 
 
-##list152##
+##listGecko152##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
@@ -5239,7 +5239,7 @@ T9o
 98o  
 87o 
 
-##list153##
+##listGecko153##
 99  88  77  66  55  44  33  22  
 AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
 KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
@@ -5265,7 +5265,7 @@ T9o T8o T7o T6o T5o T4o T3o T2o
 54o  53o  52o  
 43o  42o  
 
-##list154##
+##listGecko154##
 88  77  66  55  44  33  22  
 AJS ATS A9S A8S  
 AJo  
@@ -5276,7 +5276,7 @@ T9S
 98S  
 87S  
 
-##list155##
+##listGecko155##
 88  77  66  55  44  33  22  
 ATS A9S A8S A7S A6S   
 AJo  ATo 
@@ -5287,7 +5287,7 @@ T9S
 98S  
 87S  
 
-##list156##
+##listGecko156##
 88  77  66  55  44  33  22  
 ATS A9S A8S A7S A6S   
 AJo  ATo A9o 
@@ -5296,7 +5296,7 @@ QJS
 JTS T9S  
 KQo
 
-##list157##
+##listGecko157##
 88  77  66  55  44  33  22  
 ATS A9S A8S A7S A6S   
 AJo  ATo A9o A8o 
@@ -5307,25 +5307,25 @@ T9S
 98S  
 KQo
 
-##list300##
+##listGecko300##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS KQS QJS JTS T9S 98S 87S 76S 65S  
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS J9S 
 AKo AQo AJo ATo 
 
-##list301##
+##listGecko301##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKS KQS QJS JTS T9S 98S 
 AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS 
 AKo AQo AJo ATo 
 
-##list302##
+##listGecko302##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKS KQS QJS JTS T9S 
 AQS AJS ATS A9S KJS KTS QTS 
 AKo AQo AJo ATo 
 
-##list900##
+##listGecko900##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
 K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
