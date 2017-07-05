@@ -1,13 +1,15 @@
-﻿﻿v﻿12.0.0 2017-06-20
+﻿﻿v﻿12.0.0 2017-07-04
 ==================
 ﻿NEW STUFF:
 - OpenHoldeme contains now a built-in default bot,
   that sits in the background and cares about undefined situations.
-  It can be used as a starting-point or as a fall-back-logic for tweaking.
+  It can be used as a starting-point for tweaking or as a fall-back-logic.
   Special thanks to Gecko who contributed his legendary bot-logic
   that made him a fortune in the past.
   For the full story about the Gecko-bot please see the sticky post
-  in the OpenPPL-forum.
+  in the OpenPPL-forum (soon).
+  If your bot doesn't need any default-logic the files in the folder
+  "bot_logic\DefaultBot" can safely be removed.
   [THF]
 - OpenHoldem is now able to import Shanky-PPL directly
   (plain-text only, no encrypted PPL of course).
@@ -23,6 +25,7 @@ MAINTENANCE:
   OpenHoldem will switch to OH-script-mode if the formula-set
   cintains a non-empty f$call-function.
   [THF]
+
 
 v﻿11.2.4 2017-07-03
 ==================

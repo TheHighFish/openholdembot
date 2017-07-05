@@ -87,15 +87,15 @@ void CFormulaParser::InitNewParse() {
 
 
 void CFormulaParser::LoadDefaultBot() {
-  LoadFunctionsFromLibrary(p_filenames->DefaultLogicDirectory() + "DefaultBot.ohf");
-  LoadFunctionsFromLibrary(p_filenames->DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");
+  LoadOptionalFunctionLibrary(p_filenames->DefaultLogicDirectory() + "DefaultBot.ohf");
+  LoadOptionalFunctionLibrary(p_filenames->DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");
 }
 
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
   EnterParserCode();
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
-  LoadFunctionsFromArchive(formula_file);
+  LoadArchive(formula_file);
   p_function_collection->ParseAll();
   LeaveParserCode();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup],
@@ -115,11 +115,11 @@ void CFormulaParser::ParseDefaultLibraries() {
     library_path.Format("%s%s",
       p_filenames->OpenPPLLibraryDirectory(),
       kOpenPPLLibraries[i]);
-    LoadFunctionsFromLibrary(library_path);
+    LoadOptionalFunctionLibrary(library_path);
   }
   // Check once at the end of the modular OpenPPL-library
   p_function_collection->SetOpenPPLLibraryLoaded(true);
-  LoadFunctionsFromLibrary(p_filenames->CustomLibraryPath());
+  LoadOptionalFunctionLibrary(p_filenames->CustomLibraryPath());
   LoadDefaultBot();
   // Check again after the custom library
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
@@ -127,7 +127,14 @@ void CFormulaParser::ParseDefaultLibraries() {
   LeaveParserCode();
 }
 
-void CFormulaParser::LoadFunctionsFromLibrary(CString library_path) {
+void CFormulaParser::LoadOptionalFunctionLibrary(CString library_path) {
+  if (_access(library_path, F_OK) != 0) {
+    return;
+  }
+  LoadFunctionLibrary(library_path);
+}
+
+void CFormulaParser::LoadFunctionLibrary(CString library_path) {
   assert(p_function_collection != NULL);
   assert(p_filenames != NULL);
   if (_access(library_path, F_OK) != 0) {
@@ -145,12 +152,12 @@ void CFormulaParser::LoadFunctionsFromLibrary(CString library_path) {
 	    "[FormulaParser] Going to load and parse library %s\n", library_path);
   CArchive library_archive(&library_file, CArchive::load); 
   _is_parsing_read_only_function_library = true;
-  LoadFunctionsFromArchive(library_archive);
+  LoadArchive(library_archive);
   _is_parsing_read_only_function_library = false;
   LeaveParserCode();
 }
  
-void CFormulaParser::LoadFunctionsFromArchive(CArchive& formula_file) {
+void CFormulaParser::LoadArchive(CArchive& formula_file) {
   _formula_file_splitter.SplitFile(formula_file);
 }
 
