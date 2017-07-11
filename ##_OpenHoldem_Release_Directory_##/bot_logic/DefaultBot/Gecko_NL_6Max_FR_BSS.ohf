@@ -1,7 +1,4 @@
 ##f$Gecko_notes##
-/*
-f$oppchair
-*/
 //*****************************************************************************
 //
 // OpenPPL default bot
@@ -71,7 +68,10 @@ f$oppchair
 //   * Removed unused function f$Player_category
 //   * Removed unused f$Player1..f$Player14 functions
 //     (opponent modelling from a different Gecko-bot)
-//   * Simplified f$dealpositionrais and extended it to FR-games
+//   * Simplified f$dealpositionrais, extended it to FR-games
+//     and renamed it to f$logicalpositionrais
+//   * Removed unudef f$pt_pfrr and f$pt_pfrrr
+//   * Removed f$oppchair (only used in f$pt_pfrr and f$pt_pfrrr)
 //   * Introduced f$pt_icon_headsupchair and f$pt_icon_raisupchair
 //     for opponent-modelling as PokerTracker does no longer support
 //     the auto-rate-icon.
@@ -393,7 +393,7 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 ##f$actionpreflop_8##
 [ (didbetsize || didrais || didcall) && call>=20*bblind ]
 
-##f$dealpositionrais##
+##f$logicalpositionrais##
 // Return values
 //   1 = SB
 //   2 = BB
@@ -1580,26 +1580,6 @@ IsFlop ? (f$AF_flop+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_t
 IsTurn ? (f$AF_turn+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair)  :
 IsRiver ? (f$AF_river+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair) : 0
 
-##f$pt_pfrr##
-f$oppchair<=0 ? f$pt_pfr     :
-f$oppchair==1 ? f$pt_pfr*1.5 :
-f$oppchair==2 ? f$pt_pfr*0.6 :
-f$oppchair==3 ? f$pt_pfr*0.7 :
-f$oppchair==4 ? f$pt_pfr*1.0 :
-f$oppchair==5 ? f$pt_pfr*1.5 :
-f$oppchair==6 ? f$pt_pfr*2.0 : 0
-
-##f$pt_pfrrr##
-[ f$pt_pfr*0.50 ] 
-
-##f$oppchair##
-(opponentsplayingbits==1)  ? ac_dealpos0 :
-(opponentsplayingbits==2)  ? ac_dealpos1 :
-(opponentsplayingbits==4)  ? ac_dealpos2 :
-(opponentsplayingbits==8)  ? ac_dealpos3 :
-(opponentsplayingbits==16) ? ac_dealpos4 :
-(opponentsplayingbits==32) ? ac_dealpos5 : 0
-
 ##f$TightFactor##
 [ nbetsround1<=1 ] ? 1 :
 
@@ -2394,33 +2374,33 @@ log$SERIOUS_ERROR
 ##f$Chart_ReRaise##
 [ InSmallBlind ] ? { // sb
 
-    [ f$dealpositionrais==3 ] ? listGecko13 : // 04%
-    [ f$dealpositionrais==4 ] ? listGecko14 : // 08%
-    [ f$dealpositionrais==5 ] ? listGecko15 : // 12%
-    [ f$dealpositionrais==6 ] ? listGecko02 : 0 } :
+    [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
+    [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
+    [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
+    [ f$logicalpositionrais==6 ] ? listGecko02 : 0 } :
 
 [ InBigBlind ] ? { // bb
 
-    [ f$dealpositionrais==1 ] ? listGecko03 : // 04%
-    [ f$dealpositionrais==3 ] ? listGecko13 : // 04%
-    [ f$dealpositionrais==4 ] ? listGecko14 : // 08%
-    [ f$dealpositionrais==5 ] ? listGecko15 : // 12%
-    [ f$dealpositionrais==6 ] ? listGecko02 : 0 } :
+    [ f$logicalpositionrais==1 ] ? listGecko03 : // 04%
+    [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
+    [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
+    [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
+    [ f$logicalpositionrais==6 ] ? listGecko02 : 0 } :
 
 [ InMiddlePosition3 ] ? { // utg+1
 
-    [ f$dealpositionrais==3 ] ? listGecko13 : 0 } : // 04%
+    [ f$logicalpositionrais==3 ] ? listGecko13 : 0 } : // 04%
 
 [ InCutOff ] ? { // co
 
-    [ f$dealpositionrais==3 ] ? listGecko13 :       // 04%
-    [ f$dealpositionrais==4 ] ? listGecko14 : 0 } : // 08%
+    [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
+    [ f$logicalpositionrais==4 ] ? listGecko14 : 0 } : // 08%
 
 [ InButton ] ? { // button
 
-    [ f$dealpositionrais==3 ] ? listGecko13 :       // 04%
-    [ f$dealpositionrais==4 ] ? listGecko14 :       // 08%
-    [ f$dealpositionrais==5 ] ? listGecko15 : 0 } : // 12%
+    [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
+    [ f$logicalpositionrais==4 ] ? listGecko14 :       // 08%
+    [ f$logicalpositionrais==5 ] ? listGecko15 : 0 } : // 12%
 
 0
 
@@ -3259,11 +3239,11 @@ pt_sb_fold_to_steal_headsup
 || (f$Position_BigBlind   && listGecko09)
 
 ##f$real_pfr##
-f$dealpositionrais == 1 ? pt_pfr_raischair * 0.50 :
-f$dealpositionrais == 3 ? pt_pfr_raischair* 0.50 :
-f$dealpositionrais == 4 ? pt_pfr_raischair * 0.50 :
-f$dealpositionrais == 5 ? pt_pfr_raischair * 0.50 :
-f$dealpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
+f$logicalpositionrais == 1 ? pt_pfr_raischair * 0.50 :
+f$logicalpositionrais == 3 ? pt_pfr_raischair* 0.50 :
+f$logicalpositionrais == 4 ? pt_pfr_raischair * 0.50 :
+f$logicalpositionrais == 5 ? pt_pfr_raischair * 0.50 :
+f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 
 ##f$real_pfr_range##
    f$real_pfr<=0.00                       && listGecko99
