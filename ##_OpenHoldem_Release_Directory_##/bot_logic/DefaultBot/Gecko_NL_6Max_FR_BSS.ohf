@@ -87,26 +87,6 @@
 //   * introducing f$delay
 //
 //*****************************************************************************
-// 
-// POKERTRACKER AUTORATE ICONS:
-//
-// ptubernit1: raise flop <6% - fold to cbet <40%
-// ptubernit5: raise flop <6% - fold to cbet >40% <60%
-// ptubernit9: raise flop <6% - fold to cbet >60%
-// 
-// ptnit2: raise flop >6% raiseflop <12% - fold to cbet <40%
-// ptnit6: raise flop >6% raiseflop <12% - fold to cbet >40% <60%
-// ptnit10: raise flop >6% raiseflop <12% - fold to cbet >60%
-// 
-// pttag3: raise flop >12% raiseflop <18% - fold to cbet <40%
-// pttag7: raise flop >12% raiseflop <18% - fold to cbet >40% <60%
-// pttag11: raise flop >12% raiseflop <18% - fold to cbet >60%
-// 
-// pttag4: raise flop >18% - fold to cbet <40%
-// pttag8: raise flop >18% - fold to cbet >40% <60%
-// pttag12: raise flop >18%- fold to cbet >60%
-//
-//*****************************************************************************
 
 ##Gecko_6Max_FR_NL_BSS_Preflop##
 WHEN isomaha Fold FORCE
@@ -2459,767 +2439,714 @@ log$SERIOUS_ERROR
 ##f$BettingAction_Raisers_Behind_Us##
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
 
-##f$pt_icon_headsupchair##
-// Sanity checks
-WHEN nopponentsplaying != 1	RETURN 0 FORCE
-WHEN headsupchair < 0 RETURN 0 FORCE
-WHEN pt_flop_raise_cbet_headsupchair < 0 RETURN 0 FORCE
-WHEN pt_flop_fold_to_cbet_headsupchair < 0 RETURN 0 FORCE
-//
-WHEN pt_flop_raise_cbet_headsupchair > 0.18
-   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 1 FORCE
-   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 9 FORCE
-   WHEN Others RETURN 5 FORCE
-//
-WHEN pt_flop_raise_cbet_headsupchair > 0.12
-   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 2 FORCE
-   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 10 FORCE
-   WHEN Others RETURN 6 FORCE
-//
-WHEN pt_flop_raise_cbet_headsupchair > 0.06
-   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 3 FORCE
-   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 11 FORCE
-   WHEN Others RETURN 7 FORCE
-//
-WHEN Others
-   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 4 FORCE
-   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 12 FORCE
-   WHEN Others RETURN 8 FORCE
-   
-##f$pt_icon_raischair##
-// Sanity checks
-WHEN raischair < 0 RETURN 0 FORCE
-WHEN pt_flop_raise_cbet_raischair < 0 RETURN 0 FORCE
-WHEN pt_flop_fold_to_cbet_raischair < 0 RETURN 0 FORCE
-//
-WHEN pt_flop_raise_cbet_raischair > 0.18
-   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 1 FORCE
-   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 9 FORCE
-   WHEN Others RETURN 5 FORCE
-//
-WHEN pt_flop_raise_cbet_raischair > 0.12
-   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 2 FORCE
-   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 10 FORCE
-   WHEN Others RETURN 6 FORCE
-//
-WHEN pt_flop_raise_cbet_raischair > 0.06
-   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 3 FORCE
-   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 11 FORCE
-   WHEN Others RETURN 7 FORCE
-//
-WHEN Others
-   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 4 FORCE
-   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 12 FORCE
-   WHEN Others RETURN 8 FORCE
-
 ##f$Punten_Preflop_Cutoff##
 (userchair==0) ? {
 
-((pt_river_bet1<=0)  ? 2 :
- (pt_river_bet1==5)  ? 2 :
- (pt_river_bet1==6)  ? 2 :
- (pt_river_bet1==7)  ? 2 :
- (pt_river_bet1==8)  ? 2 :
- (pt_river_bet1==9)  ? 2 :
+((f$pt_icon1<=0)  ? 2 :
+ (f$pt_icon1==5)  ? 2 :
+ (f$pt_icon1==6)  ? 2 :
+ (f$pt_icon1==7)  ? 2 :
+ (f$pt_icon1==8)  ? 2 :
+ (f$pt_icon1==9)  ? 2 :
 
- (pt_river_bet1==10) ? 1 :
- (pt_river_bet1==11) ? 1 :
- (pt_river_bet1==12) ? 1 :
- (pt_river_bet1==13) ? 1 :
- (pt_river_bet1==14) ? 1 :
+ (f$pt_icon1==10) ? 1 :
+ (f$pt_icon1==11) ? 1 :
+ (f$pt_icon1==12) ? 1 :
+ (f$pt_icon1==13) ? 1 :
+ (f$pt_icon1==14) ? 1 :
 
- (pt_river_bet1==1)  ? 0 :
- (pt_river_bet1==2)  ? 0 :
- (pt_river_bet1==3)  ? 0 :
- (pt_river_bet1==4)  ? 0 : 0)+
+ (f$pt_icon1==1)  ? 0 :
+ (f$pt_icon1==2)  ? 0 :
+ (f$pt_icon1==3)  ? 0 :
+ (f$pt_icon1==4)  ? 0 : 0)+
 
-((pt_river_bet2<=0)  ? 2 :
- (pt_river_bet2==5)  ? 2 :
- (pt_river_bet2==6)  ? 2 :
- (pt_river_bet2==7)  ? 2 :
- (pt_river_bet2==8)  ? 2 :
- (pt_river_bet2==9)  ? 2 :
+((f$pt_icon2<=0)  ? 2 :
+ (f$pt_icon2==5)  ? 2 :
+ (f$pt_icon2==6)  ? 2 :
+ (f$pt_icon2==7)  ? 2 :
+ (f$pt_icon2==8)  ? 2 :
+ (f$pt_icon2==9)  ? 2 :
 
- (pt_river_bet2==10) ? 1 :
- (pt_river_bet2==11) ? 1 :
- (pt_river_bet2==12) ? 1 :
- (pt_river_bet2==13) ? 1 :
- (pt_river_bet2==14) ? 1 :
+ (f$pt_icon2==10) ? 1 :
+ (f$pt_icon2==11) ? 1 :
+ (f$pt_icon2==12) ? 1 :
+ (f$pt_icon2==13) ? 1 :
+ (f$pt_icon2==14) ? 1 :
 
- (pt_river_bet2==1)  ? 0 :
- (pt_river_bet2==2)  ? 0 :
- (pt_river_bet2==3)  ? 0 :
- (pt_river_bet2==4)  ? 0 : 0)+
+ (f$pt_icon2==1)  ? 0 :
+ (f$pt_icon2==2)  ? 0 :
+ (f$pt_icon2==3)  ? 0 :
+ (f$pt_icon2==4)  ? 0 : 0)+
 
-((pt_river_bet3<=0)  ? 2 :
- (pt_river_bet3==5)  ? 2 :
- (pt_river_bet3==6)  ? 2 :
- (pt_river_bet3==7)  ? 2 :
- (pt_river_bet3==8)  ? 2 :
- (pt_river_bet3==9)  ? 2 :
+((f$pt_icon3<=0)  ? 2 :
+ (f$pt_icon3==5)  ? 2 :
+ (f$pt_icon3==6)  ? 2 :
+ (f$pt_icon3==7)  ? 2 :
+ (f$pt_icon3==8)  ? 2 :
+ (f$pt_icon3==9)  ? 2 :
 
- (pt_river_bet3==10) ? 1 :
- (pt_river_bet3==11) ? 1 :
- (pt_river_bet3==12) ? 1 :
- (pt_river_bet3==13) ? 1 :
- (pt_river_bet3==14) ? 1 :
+ (f$pt_icon3==10) ? 1 :
+ (f$pt_icon3==11) ? 1 :
+ (f$pt_icon3==12) ? 1 :
+ (f$pt_icon3==13) ? 1 :
+ (f$pt_icon3==14) ? 1 :
 
- (pt_river_bet3==1)  ? 0 :
- (pt_river_bet3==2)  ? 0 :
- (pt_river_bet3==3)  ? 0 :
- (pt_river_bet3==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon3==1)  ? 0 :
+ (f$pt_icon3==2)  ? 0 :
+ (f$pt_icon3==3)  ? 0 :
+ (f$pt_icon3==4)  ? 0 : 0) + 0 } :
 
 // -------------------------------
 
 (userchair==1) ? {
 
-((pt_river_bet2<=0)  ? 2 :
- (pt_river_bet2==5)  ? 2 :
- (pt_river_bet2==6)  ? 2 :
- (pt_river_bet2==7)  ? 2 :
- (pt_river_bet2==8)  ? 2 :
- (pt_river_bet2==9)  ? 2 :
+((f$pt_icon2<=0)  ? 2 :
+ (f$pt_icon2==5)  ? 2 :
+ (f$pt_icon2==6)  ? 2 :
+ (f$pt_icon2==7)  ? 2 :
+ (f$pt_icon2==8)  ? 2 :
+ (f$pt_icon2==9)  ? 2 :
 
- (pt_river_bet2==10) ? 1 :
- (pt_river_bet2==11) ? 1 :
- (pt_river_bet2==12) ? 1 :
- (pt_river_bet2==13) ? 1 :
- (pt_river_bet2==14) ? 1 :
+ (f$pt_icon2==10) ? 1 :
+ (f$pt_icon2==11) ? 1 :
+ (f$pt_icon2==12) ? 1 :
+ (f$pt_icon2==13) ? 1 :
+ (f$pt_icon2==14) ? 1 :
 
- (pt_river_bet2==1)  ? 0 :
- (pt_river_bet2==2)  ? 0 :
- (pt_river_bet2==3)  ? 0 :
- (pt_river_bet2==4)  ? 0 : 0)+
+ (f$pt_icon2==1)  ? 0 :
+ (f$pt_icon2==2)  ? 0 :
+ (f$pt_icon2==3)  ? 0 :
+ (f$pt_icon2==4)  ? 0 : 0)+
 
-((pt_river_bet3<=0)  ? 2 :
- (pt_river_bet3==5)  ? 2 :
- (pt_river_bet3==6)  ? 2 :
- (pt_river_bet3==7)  ? 2 :
- (pt_river_bet3==8)  ? 2 :
- (pt_river_bet3==9)  ? 2 :
+((f$pt_icon3<=0)  ? 2 :
+ (f$pt_icon3==5)  ? 2 :
+ (f$pt_icon3==6)  ? 2 :
+ (f$pt_icon3==7)  ? 2 :
+ (f$pt_icon3==8)  ? 2 :
+ (f$pt_icon3==9)  ? 2 :
 
- (pt_river_bet3==10) ? 1 :
- (pt_river_bet3==11) ? 1 :
- (pt_river_bet3==12) ? 1 :
- (pt_river_bet3==13) ? 1 :
- (pt_river_bet3==14) ? 1 :
+ (f$pt_icon3==10) ? 1 :
+ (f$pt_icon3==11) ? 1 :
+ (f$pt_icon3==12) ? 1 :
+ (f$pt_icon3==13) ? 1 :
+ (f$pt_icon3==14) ? 1 :
 
- (pt_river_bet3==1)  ? 0 :
- (pt_river_bet3==2)  ? 0 :
- (pt_river_bet3==3)  ? 0 :
- (pt_river_bet3==4)  ? 0 : 0)+
+ (f$pt_icon3==1)  ? 0 :
+ (f$pt_icon3==2)  ? 0 :
+ (f$pt_icon3==3)  ? 0 :
+ (f$pt_icon3==4)  ? 0 : 0)+
 
-((pt_river_bet4<=0)  ? 2 :
- (pt_river_bet4==5)  ? 2 :
- (pt_river_bet4==6)  ? 2 :
- (pt_river_bet4==7)  ? 2 :
- (pt_river_bet4==8)  ? 2 :
- (pt_river_bet4==9)  ? 2 :
+((f$pt_icon4<=0)  ? 2 :
+ (f$pt_icon4==5)  ? 2 :
+ (f$pt_icon4==6)  ? 2 :
+ (f$pt_icon4==7)  ? 2 :
+ (f$pt_icon4==8)  ? 2 :
+ (f$pt_icon4==9)  ? 2 :
 
- (pt_river_bet4==10) ? 1 :
- (pt_river_bet4==11) ? 1 :
- (pt_river_bet4==12) ? 1 :
- (pt_river_bet4==13) ? 1 :
- (pt_river_bet4==14) ? 1 :
+ (f$pt_icon4==10) ? 1 :
+ (f$pt_icon4==11) ? 1 :
+ (f$pt_icon4==12) ? 1 :
+ (f$pt_icon4==13) ? 1 :
+ (f$pt_icon4==14) ? 1 :
 
- (pt_river_bet4==1)  ? 0 :
- (pt_river_bet4==2)  ? 0 :
- (pt_river_bet4==3)  ? 0 :
- (pt_river_bet4==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon4==1)  ? 0 :
+ (f$pt_icon4==2)  ? 0 :
+ (f$pt_icon4==3)  ? 0 :
+ (f$pt_icon4==4)  ? 0 : 0) + 0 } :
 
 // -----------------------------
 
 (userchair==2) ? {
 
-((pt_river_bet3<=0)  ? 2 :
- (pt_river_bet3==5)  ? 2 :
- (pt_river_bet3==6)  ? 2 :
- (pt_river_bet3==7)  ? 2 :
- (pt_river_bet3==8)  ? 2 :
- (pt_river_bet3==9)  ? 2 :
+((f$pt_icon3<=0)  ? 2 :
+ (f$pt_icon3==5)  ? 2 :
+ (f$pt_icon3==6)  ? 2 :
+ (f$pt_icon3==7)  ? 2 :
+ (f$pt_icon3==8)  ? 2 :
+ (f$pt_icon3==9)  ? 2 :
 
- (pt_river_bet3==10) ? 1 :
- (pt_river_bet3==11) ? 1 :
- (pt_river_bet3==12) ? 1 :
- (pt_river_bet3==13) ? 1 :
- (pt_river_bet3==14) ? 1 :
+ (f$pt_icon3==10) ? 1 :
+ (f$pt_icon3==11) ? 1 :
+ (f$pt_icon3==12) ? 1 :
+ (f$pt_icon3==13) ? 1 :
+ (f$pt_icon3==14) ? 1 :
 
- (pt_river_bet3==1)  ? 0 :
- (pt_river_bet3==2)  ? 0 :
- (pt_river_bet3==3)  ? 0 :
- (pt_river_bet3==4)  ? 0 : 0)+
+ (f$pt_icon3==1)  ? 0 :
+ (f$pt_icon3==2)  ? 0 :
+ (f$pt_icon3==3)  ? 0 :
+ (f$pt_icon3==4)  ? 0 : 0)+
 
-((pt_river_bet4<=0)  ? 2 :
- (pt_river_bet4==5)  ? 2 :
- (pt_river_bet4==6)  ? 2 :
- (pt_river_bet4==7)  ? 2 :
- (pt_river_bet4==8)  ? 2 :
- (pt_river_bet4==9)  ? 2 :
+((f$pt_icon4<=0)  ? 2 :
+ (f$pt_icon4==5)  ? 2 :
+ (f$pt_icon4==6)  ? 2 :
+ (f$pt_icon4==7)  ? 2 :
+ (f$pt_icon4==8)  ? 2 :
+ (f$pt_icon4==9)  ? 2 :
 
- (pt_river_bet4==10) ? 1 :
- (pt_river_bet4==11) ? 1 :
- (pt_river_bet4==12) ? 1 :
- (pt_river_bet4==13) ? 1 :
- (pt_river_bet4==14) ? 1 :
+ (f$pt_icon4==10) ? 1 :
+ (f$pt_icon4==11) ? 1 :
+ (f$pt_icon4==12) ? 1 :
+ (f$pt_icon4==13) ? 1 :
+ (f$pt_icon4==14) ? 1 :
 
- (pt_river_bet4==1)  ? 0 :
- (pt_river_bet4==2)  ? 0 :
- (pt_river_bet4==3)  ? 0 :
- (pt_river_bet4==4)  ? 0 : 0)+
+ (f$pt_icon4==1)  ? 0 :
+ (f$pt_icon4==2)  ? 0 :
+ (f$pt_icon4==3)  ? 0 :
+ (f$pt_icon4==4)  ? 0 : 0)+
 
-((pt_river_bet5<=0)  ? 2 :
- (pt_river_bet5==5)  ? 2 :
- (pt_river_bet5==6)  ? 2 :
- (pt_river_bet5==7)  ? 2 :
- (pt_river_bet5==8)  ? 2 :
- (pt_river_bet5==9)  ? 2 :
+((f$pt_icon5<=0)  ? 2 :
+ (f$pt_icon5==5)  ? 2 :
+ (f$pt_icon5==6)  ? 2 :
+ (f$pt_icon5==7)  ? 2 :
+ (f$pt_icon5==8)  ? 2 :
+ (f$pt_icon5==9)  ? 2 :
 
- (pt_river_bet5==10) ? 1 :
- (pt_river_bet5==11) ? 1 :
- (pt_river_bet5==12) ? 1 :
- (pt_river_bet5==13) ? 1 :
- (pt_river_bet5==14) ? 1 :
+ (f$pt_icon5==10) ? 1 :
+ (f$pt_icon5==11) ? 1 :
+ (f$pt_icon5==12) ? 1 :
+ (f$pt_icon5==13) ? 1 :
+ (f$pt_icon5==14) ? 1 :
 
- (pt_river_bet5==1)  ? 0 :
- (pt_river_bet5==2)  ? 0 :
- (pt_river_bet5==3)  ? 0 :
- (pt_river_bet5==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon5==1)  ? 0 :
+ (f$pt_icon5==2)  ? 0 :
+ (f$pt_icon5==3)  ? 0 :
+ (f$pt_icon5==4)  ? 0 : 0) + 0 } :
 
 (userchair==3) ? {
 
-((pt_river_bet4<=0)  ? 2 :
- (pt_river_bet4==5)  ? 2 :
- (pt_river_bet4==6)  ? 2 :
- (pt_river_bet4==7)  ? 2 :
- (pt_river_bet4==8)  ? 2 :
- (pt_river_bet4==9)  ? 2 :
+((f$pt_icon4<=0)  ? 2 :
+ (f$pt_icon4==5)  ? 2 :
+ (f$pt_icon4==6)  ? 2 :
+ (f$pt_icon4==7)  ? 2 :
+ (f$pt_icon4==8)  ? 2 :
+ (f$pt_icon4==9)  ? 2 :
 
- (pt_river_bet4==10) ? 1 :
- (pt_river_bet4==11) ? 1 :
- (pt_river_bet4==12) ? 1 :
- (pt_river_bet4==13) ? 1 :
- (pt_river_bet4==14) ? 1 :
+ (f$pt_icon4==10) ? 1 :
+ (f$pt_icon4==11) ? 1 :
+ (f$pt_icon4==12) ? 1 :
+ (f$pt_icon4==13) ? 1 :
+ (f$pt_icon4==14) ? 1 :
 
- (pt_river_bet4==1)  ? 0 :
- (pt_river_bet4==2)  ? 0 :
- (pt_river_bet4==3)  ? 0 :
- (pt_river_bet4==4)  ? 0 : 0)+
+ (f$pt_icon4==1)  ? 0 :
+ (f$pt_icon4==2)  ? 0 :
+ (f$pt_icon4==3)  ? 0 :
+ (f$pt_icon4==4)  ? 0 : 0)+
 
-((pt_river_bet5<=0)  ? 2 :
- (pt_river_bet5==5)  ? 2 :
- (pt_river_bet5==6)  ? 2 :
- (pt_river_bet5==7)  ? 2 :
- (pt_river_bet5==8)  ? 2 :
- (pt_river_bet5==9)  ? 2 :
+((f$pt_icon5<=0)  ? 2 :
+ (f$pt_icon5==5)  ? 2 :
+ (f$pt_icon5==6)  ? 2 :
+ (f$pt_icon5==7)  ? 2 :
+ (f$pt_icon5==8)  ? 2 :
+ (f$pt_icon5==9)  ? 2 :
 
- (pt_river_bet5==10) ? 1 :
- (pt_river_bet5==11) ? 1 :
- (pt_river_bet5==12) ? 1 :
- (pt_river_bet5==13) ? 1 :
- (pt_river_bet5==14) ? 1 :
+ (f$pt_icon5==10) ? 1 :
+ (f$pt_icon5==11) ? 1 :
+ (f$pt_icon5==12) ? 1 :
+ (f$pt_icon5==13) ? 1 :
+ (f$pt_icon5==14) ? 1 :
 
- (pt_river_bet5==1)  ? 0 :
- (pt_river_bet5==2)  ? 0 :
- (pt_river_bet5==3)  ? 0 :
- (pt_river_bet5==4)  ? 0 : 0)+
+ (f$pt_icon5==1)  ? 0 :
+ (f$pt_icon5==2)  ? 0 :
+ (f$pt_icon5==3)  ? 0 :
+ (f$pt_icon5==4)  ? 0 : 0)+
 
-((pt_river_bet0<=0)  ? 2 :
- (pt_river_bet0==5)  ? 2 :
- (pt_river_bet0==6)  ? 2 :
- (pt_river_bet0==7)  ? 2 :
- (pt_river_bet0==8)  ? 2 :
- (pt_river_bet0==9)  ? 2 :
+((f$pt_icon0<=0)  ? 2 :
+ (f$pt_icon0==5)  ? 2 :
+ (f$pt_icon0==6)  ? 2 :
+ (f$pt_icon0==7)  ? 2 :
+ (f$pt_icon0==8)  ? 2 :
+ (f$pt_icon0==9)  ? 2 :
 
- (pt_river_bet0==10) ? 1 :
- (pt_river_bet0==11) ? 1 :
- (pt_river_bet0==12) ? 1 :
- (pt_river_bet0==13) ? 1 :
- (pt_river_bet0==14) ? 1 :
+ (f$pt_icon0==10) ? 1 :
+ (f$pt_icon0==11) ? 1 :
+ (f$pt_icon0==12) ? 1 :
+ (f$pt_icon0==13) ? 1 :
+ (f$pt_icon0==14) ? 1 :
 
- (pt_river_bet0==1)  ? 0 :
- (pt_river_bet0==2)  ? 0 :
- (pt_river_bet0==3)  ? 0 :
- (pt_river_bet0==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon0==1)  ? 0 :
+ (f$pt_icon0==2)  ? 0 :
+ (f$pt_icon0==3)  ? 0 :
+ (f$pt_icon0==4)  ? 0 : 0) + 0 } :
 
 (userchair==4) ? {
 
-((pt_river_bet5<=0)  ? 2 :
- (pt_river_bet5==5)  ? 2 :
- (pt_river_bet5==6)  ? 2 :
- (pt_river_bet5==7)  ? 2 :
- (pt_river_bet5==8)  ? 2 :
- (pt_river_bet5==9)  ? 2 :
+((f$pt_icon5<=0)  ? 2 :
+ (f$pt_icon5==5)  ? 2 :
+ (f$pt_icon5==6)  ? 2 :
+ (f$pt_icon5==7)  ? 2 :
+ (f$pt_icon5==8)  ? 2 :
+ (f$pt_icon5==9)  ? 2 :
 
- (pt_river_bet5==10) ? 1 :
- (pt_river_bet5==11) ? 1 :
- (pt_river_bet5==12) ? 1 :
- (pt_river_bet5==13) ? 1 :
- (pt_river_bet5==14) ? 1 :
+ (f$pt_icon5==10) ? 1 :
+ (f$pt_icon5==11) ? 1 :
+ (f$pt_icon5==12) ? 1 :
+ (f$pt_icon5==13) ? 1 :
+ (f$pt_icon5==14) ? 1 :
 
- (pt_river_bet5==1)  ? 0 :
- (pt_river_bet5==2)  ? 0 :
- (pt_river_bet5==3)  ? 0 :
- (pt_river_bet5==4)  ? 0 : 0)+
+ (f$pt_icon5==1)  ? 0 :
+ (f$pt_icon5==2)  ? 0 :
+ (f$pt_icon5==3)  ? 0 :
+ (f$pt_icon5==4)  ? 0 : 0)+
 
-((pt_river_bet0<=0)  ? 2 :
- (pt_river_bet0==5)  ? 2 :
- (pt_river_bet0==6)  ? 2 :
- (pt_river_bet0==7)  ? 2 :
- (pt_river_bet0==8)  ? 2 :
- (pt_river_bet0==9)  ? 2 :
+((f$pt_icon0<=0)  ? 2 :
+ (f$pt_icon0==5)  ? 2 :
+ (f$pt_icon0==6)  ? 2 :
+ (f$pt_icon0==7)  ? 2 :
+ (f$pt_icon0==8)  ? 2 :
+ (f$pt_icon0==9)  ? 2 :
 
- (pt_river_bet0==10) ? 1 :
- (pt_river_bet0==11) ? 1 :
- (pt_river_bet0==12) ? 1 :
- (pt_river_bet0==13) ? 1 :
- (pt_river_bet0==14) ? 1 :
+ (f$pt_icon0==10) ? 1 :
+ (f$pt_icon0==11) ? 1 :
+ (f$pt_icon0==12) ? 1 :
+ (f$pt_icon0==13) ? 1 :
+ (f$pt_icon0==14) ? 1 :
 
- (pt_river_bet0==1)  ? 0 :
- (pt_river_bet0==2)  ? 0 :
- (pt_river_bet0==3)  ? 0 :
- (pt_river_bet0==4)  ? 0 : 0)+
+ (f$pt_icon0==1)  ? 0 :
+ (f$pt_icon0==2)  ? 0 :
+ (f$pt_icon0==3)  ? 0 :
+ (f$pt_icon0==4)  ? 0 : 0)+
 
-((pt_river_bet1<=0)  ? 2 :
- (pt_river_bet1==5)  ? 2 :
- (pt_river_bet1==6)  ? 2 :
- (pt_river_bet1==7)  ? 2 :
- (pt_river_bet1==8)  ? 2 :
- (pt_river_bet1==9)  ? 2 :
+((f$pt_icon1<=0)  ? 2 :
+ (f$pt_icon1==5)  ? 2 :
+ (f$pt_icon1==6)  ? 2 :
+ (f$pt_icon1==7)  ? 2 :
+ (f$pt_icon1==8)  ? 2 :
+ (f$pt_icon1==9)  ? 2 :
 
- (pt_river_bet1==10) ? 1 :
- (pt_river_bet1==11) ? 1 :
- (pt_river_bet1==12) ? 1 :
- (pt_river_bet1==13) ? 1 :
- (pt_river_bet1==14) ? 1 :
+ (f$pt_icon1==10) ? 1 :
+ (f$pt_icon1==11) ? 1 :
+ (f$pt_icon1==12) ? 1 :
+ (f$pt_icon1==13) ? 1 :
+ (f$pt_icon1==14) ? 1 :
 
- (pt_river_bet1==1)  ? 0 :
- (pt_river_bet1==2)  ? 0 :
- (pt_river_bet1==3)  ? 0 :
- (pt_river_bet1==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon1==1)  ? 0 :
+ (f$pt_icon1==2)  ? 0 :
+ (f$pt_icon1==3)  ? 0 :
+ (f$pt_icon1==4)  ? 0 : 0) + 0 } :
 
 (userchair==5) ? {
 
-((pt_river_bet0<=0)  ? 2 :
- (pt_river_bet0==5)  ? 2 :
- (pt_river_bet0==6)  ? 2 :
- (pt_river_bet0==7)  ? 2 :
- (pt_river_bet0==8)  ? 2 :
- (pt_river_bet0==9)  ? 2 :
+((f$pt_icon0<=0)  ? 2 :
+ (f$pt_icon0==5)  ? 2 :
+ (f$pt_icon0==6)  ? 2 :
+ (f$pt_icon0==7)  ? 2 :
+ (f$pt_icon0==8)  ? 2 :
+ (f$pt_icon0==9)  ? 2 :
 
- (pt_river_bet0==10) ? 1 :
- (pt_river_bet0==11) ? 1 :
- (pt_river_bet0==12) ? 1 :
- (pt_river_bet0==13) ? 1 :
- (pt_river_bet0==14) ? 1 :
+ (f$pt_icon0==10) ? 1 :
+ (f$pt_icon0==11) ? 1 :
+ (f$pt_icon0==12) ? 1 :
+ (f$pt_icon0==13) ? 1 :
+ (f$pt_icon0==14) ? 1 :
 
- (pt_river_bet0==1)  ? 0 :
- (pt_river_bet0==2)  ? 0 :
- (pt_river_bet0==3)  ? 0 :
- (pt_river_bet0==4)  ? 0 : 0)+
+ (f$pt_icon0==1)  ? 0 :
+ (f$pt_icon0==2)  ? 0 :
+ (f$pt_icon0==3)  ? 0 :
+ (f$pt_icon0==4)  ? 0 : 0)+
 
-((pt_river_bet1<=0)  ? 2 :
- (pt_river_bet1==5)  ? 2 :
- (pt_river_bet1==6)  ? 2 :
- (pt_river_bet1==7)  ? 2 :
- (pt_river_bet1==8)  ? 2 :
- (pt_river_bet1==9)  ? 2 :
+((f$pt_icon1<=0)  ? 2 :
+ (f$pt_icon1==5)  ? 2 :
+ (f$pt_icon1==6)  ? 2 :
+ (f$pt_icon1==7)  ? 2 :
+ (f$pt_icon1==8)  ? 2 :
+ (f$pt_icon1==9)  ? 2 :
 
- (pt_river_bet1==10) ? 1 :
- (pt_river_bet1==11) ? 1 :
- (pt_river_bet1==12) ? 1 :
- (pt_river_bet1==13) ? 1 :
- (pt_river_bet1==14) ? 1 :
+ (f$pt_icon1==10) ? 1 :
+ (f$pt_icon1==11) ? 1 :
+ (f$pt_icon1==12) ? 1 :
+ (f$pt_icon1==13) ? 1 :
+ (f$pt_icon1==14) ? 1 :
 
- (pt_river_bet1==1)  ? 0 :
- (pt_river_bet1==2)  ? 0 :
- (pt_river_bet1==3)  ? 0 :
- (pt_river_bet1==4)  ? 0 : 0)+
+ (f$pt_icon1==1)  ? 0 :
+ (f$pt_icon1==2)  ? 0 :
+ (f$pt_icon1==3)  ? 0 :
+ (f$pt_icon1==4)  ? 0 : 0)+
 
-((pt_river_bet2<=0)  ? 2 :
- (pt_river_bet2==5)  ? 2 :
- (pt_river_bet2==6)  ? 2 :
- (pt_river_bet2==7)  ? 2 :
- (pt_river_bet2==8)  ? 2 :
- (pt_river_bet2==9)  ? 2 :
+((f$pt_icon2<=0)  ? 2 :
+ (f$pt_icon2==5)  ? 2 :
+ (f$pt_icon2==6)  ? 2 :
+ (f$pt_icon2==7)  ? 2 :
+ (f$pt_icon2==8)  ? 2 :
+ (f$pt_icon2==9)  ? 2 :
 
- (pt_river_bet2==10) ? 1 :
- (pt_river_bet2==11) ? 1 :
- (pt_river_bet2==12) ? 1 :
- (pt_river_bet2==13) ? 1 :
- (pt_river_bet2==14) ? 1 :
+ (f$pt_icon2==10) ? 1 :
+ (f$pt_icon2==11) ? 1 :
+ (f$pt_icon2==12) ? 1 :
+ (f$pt_icon2==13) ? 1 :
+ (f$pt_icon2==14) ? 1 :
 
- (pt_river_bet2==1)  ? 0 :
- (pt_river_bet2==2)  ? 0 :
- (pt_river_bet2==3)  ? 0 :
- (pt_river_bet2==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon2==1)  ? 0 :
+ (f$pt_icon2==2)  ? 0 :
+ (f$pt_icon2==3)  ? 0 :
+ (f$pt_icon2==4)  ? 0 : 0) + 0 } :
 
 0
 
 ##f$Punten_Preflop_Button##
 (userchair==0) ? {
 
-((pt_river_bet1<=0)  ? 2 :
- (pt_river_bet1==5)  ? 2 :
- (pt_river_bet1==6)  ? 2 :
- (pt_river_bet1==7)  ? 2 :
- (pt_river_bet1==8)  ? 2 :
- (pt_river_bet1==9)  ? 2 :
+((f$pt_icon1<=0)  ? 2 :
+ (f$pt_icon1==5)  ? 2 :
+ (f$pt_icon1==6)  ? 2 :
+ (f$pt_icon1==7)  ? 2 :
+ (f$pt_icon1==8)  ? 2 :
+ (f$pt_icon1==9)  ? 2 :
 
- (pt_river_bet1==10) ? 1 :
- (pt_river_bet1==11) ? 1 :
- (pt_river_bet1==12) ? 1 :
- (pt_river_bet1==13) ? 1 :
- (pt_river_bet1==14) ? 1 :
+ (f$pt_icon1==10) ? 1 :
+ (f$pt_icon1==11) ? 1 :
+ (f$pt_icon1==12) ? 1 :
+ (f$pt_icon1==13) ? 1 :
+ (f$pt_icon1==14) ? 1 :
 
- (pt_river_bet1==1)  ? 0 :
- (pt_river_bet1==2)  ? 0 :
- (pt_river_bet1==3)  ? 0 :
- (pt_river_bet1==4)  ? 0 : 0) +
+ (f$pt_icon1==1)  ? 0 :
+ (f$pt_icon1==2)  ? 0 :
+ (f$pt_icon1==3)  ? 0 :
+ (f$pt_icon1==4)  ? 0 : 0) +
 
-((pt_river_bet2<=0)  ? 2 :
- (pt_river_bet2==5)  ? 2 :
- (pt_river_bet2==6)  ? 2 :
- (pt_river_bet2==7)  ? 2 :
- (pt_river_bet2==8)  ? 2 :
- (pt_river_bet2==9)  ? 2 :
+((f$pt_icon2<=0)  ? 2 :
+ (f$pt_icon2==5)  ? 2 :
+ (f$pt_icon2==6)  ? 2 :
+ (f$pt_icon2==7)  ? 2 :
+ (f$pt_icon2==8)  ? 2 :
+ (f$pt_icon2==9)  ? 2 :
 
- (pt_river_bet2==10) ? 1 :
- (pt_river_bet2==11) ? 1 :
- (pt_river_bet2==12) ? 1 :
- (pt_river_bet2==13) ? 1 :
- (pt_river_bet2==14) ? 1 :
+ (f$pt_icon2==10) ? 1 :
+ (f$pt_icon2==11) ? 1 :
+ (f$pt_icon2==12) ? 1 :
+ (f$pt_icon2==13) ? 1 :
+ (f$pt_icon2==14) ? 1 :
 
- (pt_river_bet2==1)  ? 0 :
- (pt_river_bet2==2)  ? 0 :
- (pt_river_bet2==3)  ? 0 :
- (pt_river_bet2==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon2==1)  ? 0 :
+ (f$pt_icon2==2)  ? 0 :
+ (f$pt_icon2==3)  ? 0 :
+ (f$pt_icon2==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==1) ? {
 
-((pt_river_bet2<=0)  ? 2 :
- (pt_river_bet2==5)  ? 2 :
- (pt_river_bet2==6)  ? 2 :
- (pt_river_bet2==7)  ? 2 :
- (pt_river_bet2==8)  ? 2 :
- (pt_river_bet2==9)  ? 2 :
+((f$pt_icon2<=0)  ? 2 :
+ (f$pt_icon2==5)  ? 2 :
+ (f$pt_icon2==6)  ? 2 :
+ (f$pt_icon2==7)  ? 2 :
+ (f$pt_icon2==8)  ? 2 :
+ (f$pt_icon2==9)  ? 2 :
 
- (pt_river_bet2==10) ? 1 :
- (pt_river_bet2==11) ? 1 :
- (pt_river_bet2==12) ? 1 :
- (pt_river_bet2==13) ? 1 :
- (pt_river_bet2==14) ? 1 :
+ (f$pt_icon2==10) ? 1 :
+ (f$pt_icon2==11) ? 1 :
+ (f$pt_icon2==12) ? 1 :
+ (f$pt_icon2==13) ? 1 :
+ (f$pt_icon2==14) ? 1 :
 
- (pt_river_bet2==1)  ? 0 :
- (pt_river_bet2==2)  ? 0 :
- (pt_river_bet2==3)  ? 0 :
- (pt_river_bet2==4)  ? 0 : 0) +
+ (f$pt_icon2==1)  ? 0 :
+ (f$pt_icon2==2)  ? 0 :
+ (f$pt_icon2==3)  ? 0 :
+ (f$pt_icon2==4)  ? 0 : 0) +
 
-((pt_river_bet3<=0)  ? 2 :
- (pt_river_bet3==5)  ? 2 :
- (pt_river_bet3==6)  ? 2 :
- (pt_river_bet3==7)  ? 2 :
- (pt_river_bet3==8)  ? 2 :
- (pt_river_bet3==9)  ? 2 :
+((f$pt_icon3<=0)  ? 2 :
+ (f$pt_icon3==5)  ? 2 :
+ (f$pt_icon3==6)  ? 2 :
+ (f$pt_icon3==7)  ? 2 :
+ (f$pt_icon3==8)  ? 2 :
+ (f$pt_icon3==9)  ? 2 :
 
- (pt_river_bet3==10) ? 1 :
- (pt_river_bet3==11) ? 1 :
- (pt_river_bet3==12) ? 1 :
- (pt_river_bet3==13) ? 1 :
- (pt_river_bet3==14) ? 1 :
+ (f$pt_icon3==10) ? 1 :
+ (f$pt_icon3==11) ? 1 :
+ (f$pt_icon3==12) ? 1 :
+ (f$pt_icon3==13) ? 1 :
+ (f$pt_icon3==14) ? 1 :
 
- (pt_river_bet3==1)  ? 0 :
- (pt_river_bet3==2)  ? 0 :
- (pt_river_bet3==3)  ? 0 :
- (pt_river_bet3==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon3==1)  ? 0 :
+ (f$pt_icon3==2)  ? 0 :
+ (f$pt_icon3==3)  ? 0 :
+ (f$pt_icon3==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==2) ? {
 
-((pt_river_bet3<=0)  ? 2 :
- (pt_river_bet3==5)  ? 2 :
- (pt_river_bet3==6)  ? 2 :
- (pt_river_bet3==7)  ? 2 :
- (pt_river_bet3==8)  ? 2 :
- (pt_river_bet3==9)  ? 2 :
+((f$pt_icon3<=0)  ? 2 :
+ (f$pt_icon3==5)  ? 2 :
+ (f$pt_icon3==6)  ? 2 :
+ (f$pt_icon3==7)  ? 2 :
+ (f$pt_icon3==8)  ? 2 :
+ (f$pt_icon3==9)  ? 2 :
 
- (pt_river_bet3==10) ? 1 :
- (pt_river_bet3==11) ? 1 :
- (pt_river_bet3==12) ? 1 :
- (pt_river_bet3==13) ? 1 :
- (pt_river_bet3==14) ? 1 :
+ (f$pt_icon3==10) ? 1 :
+ (f$pt_icon3==11) ? 1 :
+ (f$pt_icon3==12) ? 1 :
+ (f$pt_icon3==13) ? 1 :
+ (f$pt_icon3==14) ? 1 :
 
- (pt_river_bet3==1)  ? 0 :
- (pt_river_bet3==2)  ? 0 :
- (pt_river_bet3==3)  ? 0 :
- (pt_river_bet3==4)  ? 0 : 0) +
+ (f$pt_icon3==1)  ? 0 :
+ (f$pt_icon3==2)  ? 0 :
+ (f$pt_icon3==3)  ? 0 :
+ (f$pt_icon3==4)  ? 0 : 0) +
 
-((pt_river_bet4<=0)  ? 2 :
- (pt_river_bet4==5)  ? 2 :
- (pt_river_bet4==6)  ? 2 :
- (pt_river_bet4==7)  ? 2 :
- (pt_river_bet4==8)  ? 2 :
- (pt_river_bet4==9)  ? 2 :
+((f$pt_icon4<=0)  ? 2 :
+ (f$pt_icon4==5)  ? 2 :
+ (f$pt_icon4==6)  ? 2 :
+ (f$pt_icon4==7)  ? 2 :
+ (f$pt_icon4==8)  ? 2 :
+ (f$pt_icon4==9)  ? 2 :
 
- (pt_river_bet4==10) ? 1 :
- (pt_river_bet4==11) ? 1 :
- (pt_river_bet4==12) ? 1 :
- (pt_river_bet4==13) ? 1 :
- (pt_river_bet4==14) ? 1 :
+ (f$pt_icon4==10) ? 1 :
+ (f$pt_icon4==11) ? 1 :
+ (f$pt_icon4==12) ? 1 :
+ (f$pt_icon4==13) ? 1 :
+ (f$pt_icon4==14) ? 1 :
 
- (pt_river_bet4==1)  ? 0 :
- (pt_river_bet4==2)  ? 0 :
- (pt_river_bet4==3)  ? 0 :
- (pt_river_bet4==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon4==1)  ? 0 :
+ (f$pt_icon4==2)  ? 0 :
+ (f$pt_icon4==3)  ? 0 :
+ (f$pt_icon4==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==3) ? {
 
-((pt_river_bet4<=0)  ? 2 :
- (pt_river_bet4==5)  ? 2 :
- (pt_river_bet4==6)  ? 2 :
- (pt_river_bet4==7)  ? 2 :
- (pt_river_bet4==8)  ? 2 :
- (pt_river_bet4==9)  ? 2 :
+((f$pt_icon4<=0)  ? 2 :
+ (f$pt_icon4==5)  ? 2 :
+ (f$pt_icon4==6)  ? 2 :
+ (f$pt_icon4==7)  ? 2 :
+ (f$pt_icon4==8)  ? 2 :
+ (f$pt_icon4==9)  ? 2 :
 
- (pt_river_bet4==10) ? 1 :
- (pt_river_bet4==11) ? 1 :
- (pt_river_bet4==12) ? 1 :
- (pt_river_bet4==13) ? 1 :
- (pt_river_bet4==14) ? 1 :
+ (f$pt_icon4==10) ? 1 :
+ (f$pt_icon4==11) ? 1 :
+ (f$pt_icon4==12) ? 1 :
+ (f$pt_icon4==13) ? 1 :
+ (f$pt_icon4==14) ? 1 :
 
- (pt_river_bet4==1)  ? 0 :
- (pt_river_bet4==2)  ? 0 :
- (pt_river_bet4==3)  ? 0 :
- (pt_river_bet4==4)  ? 0 : 0) +
+ (f$pt_icon4==1)  ? 0 :
+ (f$pt_icon4==2)  ? 0 :
+ (f$pt_icon4==3)  ? 0 :
+ (f$pt_icon4==4)  ? 0 : 0) +
 
-((pt_river_bet5<=0)  ? 2 :
- (pt_river_bet5==5)  ? 2 :
- (pt_river_bet5==6)  ? 2 :
- (pt_river_bet5==7)  ? 2 :
- (pt_river_bet5==8)  ? 2 :
- (pt_river_bet5==9)  ? 2 :
+((f$pt_icon5<=0)  ? 2 :
+ (f$pt_icon5==5)  ? 2 :
+ (f$pt_icon5==6)  ? 2 :
+ (f$pt_icon5==7)  ? 2 :
+ (f$pt_icon5==8)  ? 2 :
+ (f$pt_icon5==9)  ? 2 :
 
- (pt_river_bet5==10) ? 1 :
- (pt_river_bet5==11) ? 1 :
- (pt_river_bet5==12) ? 1 :
- (pt_river_bet5==13) ? 1 :
- (pt_river_bet5==14) ? 1 :
+ (f$pt_icon5==10) ? 1 :
+ (f$pt_icon5==11) ? 1 :
+ (f$pt_icon5==12) ? 1 :
+ (f$pt_icon5==13) ? 1 :
+ (f$pt_icon5==14) ? 1 :
 
- (pt_river_bet5==1)  ? 0 :
- (pt_river_bet5==2)  ? 0 :
- (pt_river_bet5==3)  ? 0 :
- (pt_river_bet5==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon5==1)  ? 0 :
+ (f$pt_icon5==2)  ? 0 :
+ (f$pt_icon5==3)  ? 0 :
+ (f$pt_icon5==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==4) ? {
 
-((pt_river_bet5<=0)  ? 2 :
- (pt_river_bet5==5)  ? 2 :
- (pt_river_bet5==6)  ? 2 :
- (pt_river_bet5==7)  ? 2 :
- (pt_river_bet5==8)  ? 2 :
- (pt_river_bet5==9)  ? 2 :
+((f$pt_icon5<=0)  ? 2 :
+ (f$pt_icon5==5)  ? 2 :
+ (f$pt_icon5==6)  ? 2 :
+ (f$pt_icon5==7)  ? 2 :
+ (f$pt_icon5==8)  ? 2 :
+ (f$pt_icon5==9)  ? 2 :
 
- (pt_river_bet5==10) ? 1 :
- (pt_river_bet5==11) ? 1 :
- (pt_river_bet5==12) ? 1 :
- (pt_river_bet5==13) ? 1 :
- (pt_river_bet5==14) ? 1 :
+ (f$pt_icon5==10) ? 1 :
+ (f$pt_icon5==11) ? 1 :
+ (f$pt_icon5==12) ? 1 :
+ (f$pt_icon5==13) ? 1 :
+ (f$pt_icon5==14) ? 1 :
 
- (pt_river_bet5==1)  ? 0 :
- (pt_river_bet5==2)  ? 0 :
- (pt_river_bet5==3)  ? 0 :
- (pt_river_bet5==4)  ? 0 : 0)+
+ (f$pt_icon5==1)  ? 0 :
+ (f$pt_icon5==2)  ? 0 :
+ (f$pt_icon5==3)  ? 0 :
+ (f$pt_icon5==4)  ? 0 : 0)+
 
-((pt_river_bet0<=0)  ? 2 :
- (pt_river_bet0==5)  ? 2 :
- (pt_river_bet0==6)  ? 2 :
- (pt_river_bet0==7)  ? 2 :
- (pt_river_bet0==8)  ? 2 :
- (pt_river_bet0==9)  ? 2 :
+((f$pt_icon0<=0)  ? 2 :
+ (f$pt_icon0==5)  ? 2 :
+ (f$pt_icon0==6)  ? 2 :
+ (f$pt_icon0==7)  ? 2 :
+ (f$pt_icon0==8)  ? 2 :
+ (f$pt_icon0==9)  ? 2 :
 
- (pt_river_bet0==10) ? 1 :
- (pt_river_bet0==11) ? 1 :
- (pt_river_bet0==12) ? 1 :
- (pt_river_bet0==13) ? 1 :
- (pt_river_bet0==14) ? 1 :
+ (f$pt_icon0==10) ? 1 :
+ (f$pt_icon0==11) ? 1 :
+ (f$pt_icon0==12) ? 1 :
+ (f$pt_icon0==13) ? 1 :
+ (f$pt_icon0==14) ? 1 :
 
- (pt_river_bet0==1)  ? 0 :
- (pt_river_bet0==2)  ? 0 :
- (pt_river_bet0==3)  ? 0 :
- (pt_river_bet0==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon0==1)  ? 0 :
+ (f$pt_icon0==2)  ? 0 :
+ (f$pt_icon0==3)  ? 0 :
+ (f$pt_icon0==4)  ? 0 : 0) + 0 } :
 
 // ------------------------------------------------
 
 (userchair==5) ? {
 
-((pt_river_bet0<=0)  ? 2 :
- (pt_river_bet0==5)  ? 2 :
- (pt_river_bet0==6)  ? 2 :
- (pt_river_bet0==7)  ? 2 :
- (pt_river_bet0==8)  ? 2 :
- (pt_river_bet0==9)  ? 2 :
+((f$pt_icon0<=0)  ? 2 :
+ (f$pt_icon0==5)  ? 2 :
+ (f$pt_icon0==6)  ? 2 :
+ (f$pt_icon0==7)  ? 2 :
+ (f$pt_icon0==8)  ? 2 :
+ (f$pt_icon0==9)  ? 2 :
 
- (pt_river_bet0==10) ? 1 :
- (pt_river_bet0==11) ? 1 :
- (pt_river_bet0==12) ? 1 :
- (pt_river_bet0==13) ? 1 :
- (pt_river_bet0==14) ? 1 :
+ (f$pt_icon0==10) ? 1 :
+ (f$pt_icon0==11) ? 1 :
+ (f$pt_icon0==12) ? 1 :
+ (f$pt_icon0==13) ? 1 :
+ (f$pt_icon0==14) ? 1 :
 
- (pt_river_bet0==1)  ? 0 :
- (pt_river_bet0==2)  ? 0 :
- (pt_river_bet0==3)  ? 0 :
- (pt_river_bet0==4)  ? 0 : 0)+
+ (f$pt_icon0==1)  ? 0 :
+ (f$pt_icon0==2)  ? 0 :
+ (f$pt_icon0==3)  ? 0 :
+ (f$pt_icon0==4)  ? 0 : 0)+
 
-((pt_river_bet1<=0)  ? 2 :
- (pt_river_bet1==5)  ? 2 :
- (pt_river_bet1==6)  ? 2 :
- (pt_river_bet1==7)  ? 2 :
- (pt_river_bet1==8)  ? 2 :
- (pt_river_bet1==9)  ? 2 :
+((f$pt_icon1<=0)  ? 2 :
+ (f$pt_icon1==5)  ? 2 :
+ (f$pt_icon1==6)  ? 2 :
+ (f$pt_icon1==7)  ? 2 :
+ (f$pt_icon1==8)  ? 2 :
+ (f$pt_icon1==9)  ? 2 :
 
- (pt_river_bet1==10) ? 1 :
- (pt_river_bet1==11) ? 1 :
- (pt_river_bet1==12) ? 1 :
- (pt_river_bet1==13) ? 1 :
- (pt_river_bet1==14) ? 1 :
+ (f$pt_icon1==10) ? 1 :
+ (f$pt_icon1==11) ? 1 :
+ (f$pt_icon1==12) ? 1 :
+ (f$pt_icon1==13) ? 1 :
+ (f$pt_icon1==14) ? 1 :
 
- (pt_river_bet1==1)  ? 0 :
- (pt_river_bet1==2)  ? 0 :
- (pt_river_bet1==3)  ? 0 :
- (pt_river_bet1==4)  ? 0 : 0) + 0 } :
+ (f$pt_icon1==1)  ? 0 :
+ (f$pt_icon1==2)  ? 0 :
+ (f$pt_icon1==3)  ? 0 :
+ (f$pt_icon1==4)  ? 0 : 0) + 0 } :
 
 0
 
 ##f$Punten_Preflop_Sblind##
 (userchair==0) ? {
 
-((pt_river_bet1<=0)  ? 2 :
- (pt_river_bet1==5)  ? 2 :
- (pt_river_bet1==6)  ? 2 :
- (pt_river_bet1==7)  ? 2 :
- (pt_river_bet1==8)  ? 2 :
- (pt_river_bet1==9)  ? 2 :
+((f$pt_icon1<=0)  ? 2 :
+ (f$pt_icon1==5)  ? 2 :
+ (f$pt_icon1==6)  ? 2 :
+ (f$pt_icon1==7)  ? 2 :
+ (f$pt_icon1==8)  ? 2 :
+ (f$pt_icon1==9)  ? 2 :
 
- (pt_river_bet1==10) ? 1 :
- (pt_river_bet1==11) ? 1 :
- (pt_river_bet1==12) ? 1 :
- (pt_river_bet1==13) ? 1 :
- (pt_river_bet1==14) ? 1 :
+ (f$pt_icon1==10) ? 1 :
+ (f$pt_icon1==11) ? 1 :
+ (f$pt_icon1==12) ? 1 :
+ (f$pt_icon1==13) ? 1 :
+ (f$pt_icon1==14) ? 1 :
 
- (pt_river_bet1==2 ) ? 0 :
- (pt_river_bet1==4 ) ? 0 :
- (pt_river_bet1==8 ) ? 0 :
- (pt_river_bet1==11) ? 0 :
- (pt_river_bet1==14) ? 0 : 0) + 0 } :
+ (f$pt_icon1==2 ) ? 0 :
+ (f$pt_icon1==4 ) ? 0 :
+ (f$pt_icon1==8 ) ? 0 :
+ (f$pt_icon1==11) ? 0 :
+ (f$pt_icon1==14) ? 0 : 0) + 0 } :
 
 (userchair==1) ? {
 
-((pt_river_bet2<=0)  ? 2 :
- (pt_river_bet2==5)  ? 2 :
- (pt_river_bet2==6)  ? 2 :
- (pt_river_bet2==7)  ? 2 :
- (pt_river_bet2==8)  ? 2 :
- (pt_river_bet2==9)  ? 2 :
+((f$pt_icon2<=0)  ? 2 :
+ (f$pt_icon2==5)  ? 2 :
+ (f$pt_icon2==6)  ? 2 :
+ (f$pt_icon2==7)  ? 2 :
+ (f$pt_icon2==8)  ? 2 :
+ (f$pt_icon2==9)  ? 2 :
 
- (pt_river_bet2==10) ? 1 :
- (pt_river_bet2==11) ? 1 :
- (pt_river_bet2==12) ? 1 :
- (pt_river_bet2==13) ? 1 :
- (pt_river_bet2==14) ? 1 :
+ (f$pt_icon2==10) ? 1 :
+ (f$pt_icon2==11) ? 1 :
+ (f$pt_icon2==12) ? 1 :
+ (f$pt_icon2==13) ? 1 :
+ (f$pt_icon2==14) ? 1 :
 
- (pt_river_bet2==2 ) ? 0 :
- (pt_river_bet2==4 ) ? 0 :
- (pt_river_bet2==8 ) ? 0 :
- (pt_river_bet2==11) ? 0 :
- (pt_river_bet2==14) ? 0 : 0) + 0 } :
+ (f$pt_icon2==2 ) ? 0 :
+ (f$pt_icon2==4 ) ? 0 :
+ (f$pt_icon2==8 ) ? 0 :
+ (f$pt_icon2==11) ? 0 :
+ (f$pt_icon2==14) ? 0 : 0) + 0 } :
 
 (userchair==2) ? {
 
-((pt_river_bet3<=0)  ? 2 :
- (pt_river_bet3==5)  ? 2 :
- (pt_river_bet3==6)  ? 2 :
- (pt_river_bet3==7)  ? 2 :
- (pt_river_bet3==8)  ? 2 :
- (pt_river_bet3==9)  ? 2 :
+((f$pt_icon3<=0)  ? 2 :
+ (f$pt_icon3==5)  ? 2 :
+ (f$pt_icon3==6)  ? 2 :
+ (f$pt_icon3==7)  ? 2 :
+ (f$pt_icon3==8)  ? 2 :
+ (f$pt_icon3==9)  ? 2 :
 
- (pt_river_bet3==10) ? 1 :
- (pt_river_bet3==11) ? 1 :
- (pt_river_bet3==12) ? 1 :
- (pt_river_bet3==13) ? 1 :
- (pt_river_bet3==14) ? 1 :
+ (f$pt_icon3==10) ? 1 :
+ (f$pt_icon3==11) ? 1 :
+ (f$pt_icon3==12) ? 1 :
+ (f$pt_icon3==13) ? 1 :
+ (f$pt_icon3==14) ? 1 :
 
- (pt_river_bet3==2 ) ? 0 :
- (pt_river_bet3==4 ) ? 0 :
- (pt_river_bet3==8 ) ? 0 :
- (pt_river_bet3==11) ? 0 :
- (pt_river_bet3==14) ? 0 : 0) + 0 } :
+ (f$pt_icon3==2 ) ? 0 :
+ (f$pt_icon3==4 ) ? 0 :
+ (f$pt_icon3==8 ) ? 0 :
+ (f$pt_icon3==11) ? 0 :
+ (f$pt_icon3==14) ? 0 : 0) + 0 } :
 
 (userchair==3) ? {
 
-((pt_river_bet4<=0)  ? 2 :
- (pt_river_bet4==5)  ? 2 :
- (pt_river_bet4==6)  ? 2 :
- (pt_river_bet4==7)  ? 2 :
- (pt_river_bet4==8)  ? 2 :
- (pt_river_bet4==9)  ? 2 :
+((f$pt_icon4<=0)  ? 2 :
+ (f$pt_icon4==5)  ? 2 :
+ (f$pt_icon4==6)  ? 2 :
+ (f$pt_icon4==7)  ? 2 :
+ (f$pt_icon4==8)  ? 2 :
+ (f$pt_icon4==9)  ? 2 :
 
- (pt_river_bet4==10) ? 1 :
- (pt_river_bet4==11) ? 1 :
- (pt_river_bet4==12) ? 1 :
- (pt_river_bet4==13) ? 1 :
- (pt_river_bet4==14) ? 1 :
+ (f$pt_icon4==10) ? 1 :
+ (f$pt_icon4==11) ? 1 :
+ (f$pt_icon4==12) ? 1 :
+ (f$pt_icon4==13) ? 1 :
+ (f$pt_icon4==14) ? 1 :
 
- (pt_river_bet4==2 ) ? 0 :
- (pt_river_bet4==4 ) ? 0 :
- (pt_river_bet4==8 ) ? 0 :
- (pt_river_bet4==11) ? 0 :
- (pt_river_bet4==14) ? 0 : 0) + 0 } :
+ (f$pt_icon4==2 ) ? 0 :
+ (f$pt_icon4==4 ) ? 0 :
+ (f$pt_icon4==8 ) ? 0 :
+ (f$pt_icon4==11) ? 0 :
+ (f$pt_icon4==14) ? 0 : 0) + 0 } :
 
 (userchair==4) ? {
 
-((pt_river_bet5<=0)  ? 2 :
- (pt_river_bet5==5)  ? 2 :
- (pt_river_bet5==6)  ? 2 :
- (pt_river_bet5==7)  ? 2 :
- (pt_river_bet5==8)  ? 2 :
- (pt_river_bet5==9)  ? 2 :
+((f$pt_icon5<=0)  ? 2 :
+ (f$pt_icon5==5)  ? 2 :
+ (f$pt_icon5==6)  ? 2 :
+ (f$pt_icon5==7)  ? 2 :
+ (f$pt_icon5==8)  ? 2 :
+ (f$pt_icon5==9)  ? 2 :
 
- (pt_river_bet5==10) ? 1 :
- (pt_river_bet5==11) ? 1 :
- (pt_river_bet5==12) ? 1 :
- (pt_river_bet5==13) ? 1 :
- (pt_river_bet5==14) ? 1 :
+ (f$pt_icon5==10) ? 1 :
+ (f$pt_icon5==11) ? 1 :
+ (f$pt_icon5==12) ? 1 :
+ (f$pt_icon5==13) ? 1 :
+ (f$pt_icon5==14) ? 1 :
 
- (pt_river_bet5==2 ) ? 0 :
- (pt_river_bet5==4 ) ? 0 :
- (pt_river_bet5==8 ) ? 0 :
- (pt_river_bet5==11) ? 0 :
- (pt_river_bet5==14) ? 0 : 0) + 0 } :
+ (f$pt_icon5==2 ) ? 0 :
+ (f$pt_icon5==4 ) ? 0 :
+ (f$pt_icon5==8 ) ? 0 :
+ (f$pt_icon5==11) ? 0 :
+ (f$pt_icon5==14) ? 0 : 0) + 0 } :
 
 (userchair==5) && (
 
- (pt_river_bet0==3  ? 2 : 0)+
- (pt_river_bet0==5  ? 2 : 0)+
- (pt_river_bet0==6  ? 2 : 0)+
- (pt_river_bet0==9  ? 2 : 0)+
- (pt_river_bet0==12 ? 2 : 0)+
+ (f$pt_icon0==3  ? 2 : 0)+
+ (f$pt_icon0==5  ? 2 : 0)+
+ (f$pt_icon0==6  ? 2 : 0)+
+ (f$pt_icon0==9  ? 2 : 0)+
+ (f$pt_icon0==12 ? 2 : 0)+
 
- (pt_river_bet0==1  ? 1 : 0)+
- (pt_river_bet0==7  ? 1 : 0)+
- (pt_river_bet0==10 ? 1 : 0)+
- (pt_river_bet0==13 ? 1 : 0)+
+ (f$pt_icon0==1  ? 1 : 0)+
+ (f$pt_icon0==7  ? 1 : 0)+
+ (f$pt_icon0==10 ? 1 : 0)+
+ (f$pt_icon0==13 ? 1 : 0)+
 
- (pt_river_bet0==2  ? 0 : 0)+
- (pt_river_bet0==4  ? 0 : 0)+
- (pt_river_bet0==8  ? 0 : 0)+
- (pt_river_bet0==11 ? 0 : 0)+
- (pt_river_bet0==14 ? 0 : 0)+0)
+ (f$pt_icon0==2  ? 0 : 0)+
+ (f$pt_icon0==4  ? 0 : 0)+
+ (f$pt_icon0==8  ? 0 : 0)+
+ (f$pt_icon0==11 ? 0 : 0)+
+ (f$pt_icon0==14 ? 0 : 0)+0)
 //----------------------------------------------------
 
 ##f$pt_vpip##
@@ -3274,168 +3201,168 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 ##f$Punten_Limper_Smallblind##
 userchair==0 ? {
 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 0 } :
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 0 } :
 
 userchair==1 ? {
 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 0 } :
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 0 } :
 
 userchair==2 ? {
 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 0 } :
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 0 } :
 
 userchair==3 ? {
 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 0 } :
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 0 } :
 
 userchair==4 ? {
 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 0 } :
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 0 } :
 
 userchair==5 ? {
 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 0 } :
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 0 } :
 
 -1//sichtkontrolle i.o
 
 ##f$Punten_Limper_Button##
 userchair==0 ? {
 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 0 } :
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 0 } :
 
 userchair==1 ? {
 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 0 } :
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 0 } :
 
 userchair==2 ? {
 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 0 } :
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 0 } :
 
 userchair==3 ? {
 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 0 } :
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 0 } :
 
 userchair==4 ? {
 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 0 } :
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 0 } :
 
 userchair==5 ? {
 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 0 } :
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 0 } :
 
 -1
 
 ##f$Punten_Limper_Bigblind##
 userchair==0 ? {
 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 0 } :
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 0 } :
 
 userchair==1 ? {
 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 0 } :
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 0 } :
 
 userchair==2 ? {
 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 0 } :
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 0 } :
 
 userchair==3 ? {
 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 0 } :
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 0 } :
 
 userchair==4 ? {
 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 0 } :
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 0 } :
 
 userchair==5 ? {
 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 0 } :
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 0 } :
 
 -1
 
 ##f$Punten_Limper_Cutoff##
 userchair==0 ? {
 
-currentbet4==bblind  ? pt_river_bet4 : 
-currentbet5==bblind  ? pt_river_bet5 : 0 } :
+currentbet4==bblind  ? f$pt_icon4 : 
+currentbet5==bblind  ? f$pt_icon5 : 0 } :
 
 userchair==1 ? {
 
-currentbet5==bblind  ? pt_river_bet5 : 
-currentbet0==bblind  ? pt_river_bet0 : 0 } :
+currentbet5==bblind  ? f$pt_icon5 : 
+currentbet0==bblind  ? f$pt_icon0 : 0 } :
 
 userchair==2 ? {
 
-currentbet0==bblind  ? pt_river_bet0 : 
-currentbet1==bblind  ? pt_river_bet1 : 0 } :
+currentbet0==bblind  ? f$pt_icon0 : 
+currentbet1==bblind  ? f$pt_icon1 : 0 } :
 
 userchair==3 ? {
 
-currentbet1==bblind  ? pt_river_bet1 : 
-currentbet2==bblind  ? pt_river_bet2 : 0 } :
+currentbet1==bblind  ? f$pt_icon1 : 
+currentbet2==bblind  ? f$pt_icon2 : 0 } :
 
 userchair==4 ? {
 
-currentbet2==bblind  ? pt_river_bet2 : 
-currentbet3==bblind  ? pt_river_bet3 : 0 } :
+currentbet2==bblind  ? f$pt_icon2 : 
+currentbet3==bblind  ? f$pt_icon3 : 0 } :
 
 userchair==5 ? {
 
-currentbet3==bblind  ? pt_river_bet3 : 
-currentbet4==bblind  ? pt_river_bet4 : 0 } :
+currentbet3==bblind  ? f$pt_icon3 : 
+currentbet4==bblind  ? f$pt_icon4 : 0 } :
 
 -1
 
@@ -4221,37 +4148,37 @@ f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 :
 //!!!!!
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN (pt_river_bet_raischair==1)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==5)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==10) RETURN true FORCE
+WHEN (f$pt_icon_raischair==1)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==5)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==10) RETURN true FORCE
 
 ##f$ptype_nit##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN (pt_river_bet_raischair<=1)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==6)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==11) RETURN true FORCE
+WHEN (f$pt_icon_raischair<=1)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==6)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==11) RETURN true FORCE
 
 ##f$ptype_tag##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN (pt_river_bet_raischair==2)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==7)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==12) RETURN true FORCE
+WHEN (f$pt_icon_raischair==2)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==7)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==12) RETURN true FORCE
 
 ##f$ptype_semilag##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN (pt_river_bet_raischair==3)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==8)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==13) RETURN true FORCE
+WHEN (f$pt_icon_raischair==3)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==8)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==13) RETURN true FORCE
 
 ##f$ptype_lag##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN (pt_river_bet_raischair==4)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==9)  RETURN true FORCE
-WHEN (pt_river_bet_raischair==14) RETURN true FORCE
+WHEN (f$pt_icon_raischair==4)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==9)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==14) RETURN true FORCE
 
 ##f$prwin2##
 [prwin+(prtie/2)]**(1+f$threat2)
@@ -4291,12 +4218,227 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 // Fold weinig
 (f$pt_icon_headsupchair==5) ? 1 :
 (f$pt_icon_headsupchair==6) ? 1 :
-(f$pt_ico_headsupchairn==7) ? 1 :
+(f$pt_icon_headsupchair==7) ? 1 :
 (f$pt_icon_headsupchair==8) ? 1 :
 (f$pt_icon_headsupchair==9) ? 1 : 0
 
 ##f$balance##
 (balance+bblind)
+
+//*****************************************************************************
+//
+// PokerTracker-auto-rate-icon
+//
+// (pt_icon rebuild with functions for all chairs, 
+//  no longer directly supported by PT)
+//
+//*****************************************************************************
+// 
+// POKERTRACKER AUTORATE ICONS:
+//
+// ptubernit1: raise flop <6% - fold to cbet <40%
+// ptubernit5: raise flop <6% - fold to cbet >40% <60%
+// ptubernit9: raise flop <6% - fold to cbet >60%
+// 
+// ptnit2: raise flop >6% raiseflop <12% - fold to cbet <40%
+// ptnit6: raise flop >6% raiseflop <12% - fold to cbet >40% <60%
+// ptnit10: raise flop >6% raiseflop <12% - fold to cbet >60%
+// 
+// pttag3: raise flop >12% raiseflop <18% - fold to cbet <40%
+// pttag7: raise flop >12% raiseflop <18% - fold to cbet >40% <60%
+// pttag11: raise flop >12% raiseflop <18% - fold to cbet >60%
+// 
+// pttag4: raise flop >18% - fold to cbet <40%
+// pttag8: raise flop >18% - fold to cbet >40% <60%
+// pttag12: raise flop >18%- fold to cbet >60%
+//
+//*****************************************************************************
+
+##f$pt_icon0##
+WHEN pt_flop_raise_cbet0 > 0.18
+   WHEN pt_flop_fold_to_cbet0 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet0 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet0 > 0.12
+   WHEN pt_flop_fold_to_cbet0 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet0 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet0 > 0.06
+   WHEN pt_flop_fold_to_cbet0 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet0 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet0 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet0 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+
+##f$pt_icon1##
+WHEN pt_flop_raise_cbet1 > 0.18
+   WHEN pt_flop_fold_to_cbet1 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet1 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet1 > 0.12
+   WHEN pt_flop_fold_to_cbet1 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet1 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet1 > 0.06
+   WHEN pt_flop_fold_to_cbet1 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet1 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet1 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet1 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon2##
+WHEN pt_flop_raise_cbet2 > 0.18
+   WHEN pt_flop_fold_to_cbet2 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet2 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet2 > 0.12
+   WHEN pt_flop_fold_to_cbet2 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet2 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet2 > 0.06
+   WHEN pt_flop_fold_to_cbet2 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet2 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet2 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet2 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon3##
+WHEN pt_flop_raise_cbet3 > 0.18
+   WHEN pt_flop_fold_to_cbet3 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet3 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet3 > 0.12
+   WHEN pt_flop_fold_to_cbet3 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet3 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet3 > 0.06
+   WHEN pt_flop_fold_to_cbet3 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet3 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet3 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet3 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon4##
+WHEN pt_flop_raise_cbet4 > 0.18
+   WHEN pt_flop_fold_to_cbet4 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet4 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet4 > 0.12
+   WHEN pt_flop_fold_to_cbet4 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet4 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet4 > 0.06
+   WHEN pt_flop_fold_to_cbet4 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet4 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet4 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet4 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon5##
+WHEN pt_flop_raise_cbet5 > 0.18
+   WHEN pt_flop_fold_to_cbet5 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet5 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet5 > 0.12
+   WHEN pt_flop_fold_to_cbet5 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet5 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet5 > 0.06
+   WHEN pt_flop_fold_to_cbet5 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet5 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet5 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet5 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon0##
+WHEN pt_flop_raise_cbet6 > 0.18
+   WHEN pt_flop_fold_to_cbet6 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet6 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet6 > 0.12
+   WHEN pt_flop_fold_to_cbet6 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet6 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet6 > 0.06
+   WHEN pt_flop_fold_to_cbet6 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet6 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet6 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet6 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon7##
+WHEN pt_flop_raise_cbet7 > 0.18
+   WHEN pt_flop_fold_to_cbet7 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet7 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet7 > 0.12
+   WHEN pt_flop_fold_to_cbet7 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet7 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet7 > 0.06
+   WHEN pt_flop_fold_to_cbet7 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet7 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet7 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet7 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon8##
+WHEN pt_flop_raise_cbet8 > 0.18
+   WHEN pt_flop_fold_to_cbet8 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet8 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet8 > 0.12
+   WHEN pt_flop_fold_to_cbet8 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet8 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet8 > 0.06
+   WHEN pt_flop_fold_to_cbet8 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet8 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet8 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet8 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+##f$pt_icon9##
+WHEN pt_flop_raise_cbet9 > 0.18
+   WHEN pt_flop_fold_to_cbet9 < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet9 > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet9 > 0.12
+   WHEN pt_flop_fold_to_cbet9 < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet9 > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet9 > 0.06
+   WHEN pt_flop_fold_to_cbet9 < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet9 > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+WHEN Others
+   WHEN pt_flop_fold_to_cbet9 < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet9 > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
+   
+//*****************************************************************************
+//
+// Hand-lusts for the Fecko-bot
+//
+//*****************************************************************************
 
 ##listGecko01##
 66  77  88  99  TT  JJ  QQ  KK  AA  
