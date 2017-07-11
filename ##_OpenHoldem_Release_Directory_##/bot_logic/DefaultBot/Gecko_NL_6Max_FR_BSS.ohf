@@ -1,4 +1,10 @@
 ##f$Gecko_notes##
+/*
+f$pt_type
+pt_riverbet
+f$oppchair
+f$player_
+*/
 //*****************************************************************************
 //
 // OpenPPL default bot
@@ -65,6 +71,7 @@
 //     OpenHoldem reported an undefined list40 there
 //     and it turned out the complete function 
 //     was not in use.
+//   * Removed unused function f$Player_category
 //   * Simplified f$dealpositionrais and extended it to FR-games
 //
 // LOGICAL CHANGES:
@@ -2476,22 +2483,6 @@ log$SERIOUS_ERROR
 
 ##f$BettingAction_Raisers_Behind_Us##
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
-
-##f$Player_Category##
-f$pt_icon==1  ? 1 :  // regular in balans			
-f$pt_icon==2  ? 2 :  // regular uit balans 3bet te weinig en fold te veel			
-f$pt_icon==3  ? 3 :  // regular uit balans 3bet te weinig en fold te weinig			
-f$pt_icon==4  ? 4 :  // regular uit balans 3bet te veel en fold te veel			
-f$pt_icon==5  ? 5 :  // regular uit balans 3bet te veel en fold te weinig			
-f$pt_icon==6  ? 6 :  // laffe nit fold te weinig			
-f$pt_icon==7  ? 7 :  // laffe nit fold te veel			
-f$pt_icon==8  ? 8 : // laffe nit fold normaal	
-f$pt_icon==9  ? 9 : // passieve donk fold te veel	
-f$pt_icon==10 ? 10 : // passieve donk fold te weinig	
-f$pt_icon==11 ? 11 : // passieve donk fold normaal	
-f$pt_icon==12 ? 12 : // agresieve donk fold te veel	
-f$pt_icon==13 ? 13 : // agresieve donk fold te weinig	
-f$pt_icon==14 ? 14 : 0// agresieve donk fold normaal	
 
 ##f$Player_1##
 f$pt_icon==1
