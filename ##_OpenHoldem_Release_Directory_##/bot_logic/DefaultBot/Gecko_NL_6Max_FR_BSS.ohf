@@ -2511,71 +2511,88 @@ log$SERIOUS_ERROR
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
 
 ##f$Player_Category##
-f$pt_river_bet==1  ? 1 :  // regular in balans			
-f$pt_river_bet==2  ? 2 :  // regular uit balans 3bet te weinig en fold te veel			
-f$pt_river_bet==3  ? 3 :  // regular uit balans 3bet te weinig en fold te weinig			
-f$pt_river_bet==4  ? 4 :  // regular uit balans 3bet te veel en fold te veel			
-f$pt_river_bet==5  ? 5 :  // regular uit balans 3bet te veel en fold te weinig			
-f$pt_river_bet==6  ? 6 :  // laffe nit fold te weinig			
-f$pt_river_bet==7  ? 7 :  // laffe nit fold te veel			
-f$pt_river_bet==8  ? 8 : // laffe nit fold normaal	
-f$pt_river_bet==9  ? 9 : // passieve donk fold te veel	
-f$pt_river_bet==10 ? 10 : // passieve donk fold te weinig	
-f$pt_river_bet==11 ? 11 : // passieve donk fold normaal	
-f$pt_river_bet==12 ? 12 : // agresieve donk fold te veel	
-f$pt_river_bet==13 ? 13 : // agresieve donk fold te weinig	
-f$pt_river_bet==14 ? 14 : 0// agresieve donk fold normaal	
+f$pt_icon==1  ? 1 :  // regular in balans			
+f$pt_icon==2  ? 2 :  // regular uit balans 3bet te weinig en fold te veel			
+f$pt_icon==3  ? 3 :  // regular uit balans 3bet te weinig en fold te weinig			
+f$pt_icon==4  ? 4 :  // regular uit balans 3bet te veel en fold te veel			
+f$pt_icon==5  ? 5 :  // regular uit balans 3bet te veel en fold te weinig			
+f$pt_icon==6  ? 6 :  // laffe nit fold te weinig			
+f$pt_icon==7  ? 7 :  // laffe nit fold te veel			
+f$pt_icon==8  ? 8 : // laffe nit fold normaal	
+f$pt_icon==9  ? 9 : // passieve donk fold te veel	
+f$pt_icon==10 ? 10 : // passieve donk fold te weinig	
+f$pt_icon==11 ? 11 : // passieve donk fold normaal	
+f$pt_icon==12 ? 12 : // agresieve donk fold te veel	
+f$pt_icon==13 ? 13 : // agresieve donk fold te weinig	
+f$pt_icon==14 ? 14 : 0// agresieve donk fold normaal	
 
 ##f$Player_1##
-f$pt_river_bet==1
+f$pt_icon==1
 
 ##f$Player_2##
-f$pt_river_bet==2
+f$pt_icon==2
 
 ##f$Player_3##
-f$pt_river_bet==3
+f$pt_icon==3
 
 ##f$Player_4##
-f$pt_river_bet==4
+f$pt_icon==4
 
 ##f$Player_5##
-f$pt_river_bet==5
+f$pt_icon==5
 
 ##f$Player_6##
-f$pt_river_bet==6
+f$pt_icon==6
 
 ##f$Player_7##
-f$pt_river_bet==7
+f$pt_icon==7
 
 ##f$Player_8##
-f$pt_river_bet==8
+f$pt_icon==8
 
 ##f$Player_9##
-f$pt_river_bet==9
+f$pt_icon==9
 
-##f$pt_river_bet##
-[ 
-(opponentsplayingbits==1)  ? pt_river_bet0 : 
-(opponentsplayingbits==2)  ? pt_river_bet1 : 
-(opponentsplayingbits==4)  ? pt_river_bet2 : 
-(opponentsplayingbits==8)  ? pt_river_bet3 : 
-(opponentsplayingbits==16) ? pt_river_bet4 : 
-(opponentsplayingbits==32) ? pt_river_bet5 : 0 ]
+##f$pt_icon##
+// Sanity checks
+WHEN nopponentsplaying != 1	RETURN 0FORCE
+WHEN pt_raiseflop_headsupchair < 0 RETURN 0FORCE
+WHEN pt_foldtocbet < 0 RETURN 0FORCE
+//
+WHEN pt_raiseflop_headsupchair > 0.18
+    WHEN pt_foldtocbet < 0.40 RETURN 1 FORCE
+	WHEN pt_foldtocbet > 0.60 RETURN 9 FORCE
+	WHEN Others RETURN 5 FORCE
+//
+WHEN pt_raiseflop_headsupchair > 0.12
+    WHEN pt_foldtocbet < 0.40 RETURN 2 FORCE
+	WHEN pt_foldtocbet > 0.60 RETURN 10 FORCE
+	WHEN Others RETURN 6 FORCE
+//
+WHEN pt_raiseflop_headsupchair > 0.06
+    WHEN pt_foldtocbet < 0.40 RETURN 3 FORCE
+	WHEN pt_foldtocbet > 0.60 RETURN 11 FORCE
+	WHEN Others RETURN 7 FORCE
+//
+WHEN Others
+    WHEN pt_foldtocbet < 0.40 RETURN 4 FORCE
+	WHEN pt_foldtocbet > 0.60 RETURN 12 FORCE
+	WHEN Others RETURN 8 FORCE
 
 ##f$Player_10##
-f$pt_river_bet==10
+f$pt_icon==10
 
 ##f$Player_11##
-f$pt_river_bet==11
+f$pt_icon==11
 
 ##f$Player_12##
-f$pt_river_bet==12
+f$pt_icon==12
 
 ##f$Player_13##
-f$pt_river_bet==13
+f$pt_icon==13
 
 ##f$Player_14##
-f$pt_river_bet==14
+f$pt_icon==14
 
 ##f$Punten_Preflop_Cutoff##
 (userchair==0) ? {
@@ -4338,27 +4355,27 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 
 ##f$fold2cbet_normal##
 // Fold normaal
-(f$pt_river_bet==10) ? 1 :
-(f$pt_river_bet==11) ? 1 :
-(f$pt_river_bet==12) ? 1 :
-(f$pt_river_bet==13) ? 1 :
-(f$pt_river_bet==14) ? 1 : 0
+(f$pt_icon==10) ? 1 :
+(f$pt_icon==11) ? 1 :
+(f$pt_icon==12) ? 1 :
+(f$pt_icon==13) ? 1 :
+(f$pt_icon==14) ? 1 : 0
 
 ##f$fold2cbet_veel##
 // Fold veel
-(f$pt_river_bet<=0) ? 1 :
-(f$pt_river_bet==1) ? 1 :
-(f$pt_river_bet==2) ? 1 :
-(f$pt_river_bet==3) ? 1 :
-(f$pt_river_bet==4) ? 1 : 0
+(f$pt_icon<=0) ? 1 :
+(f$pt_icon==1) ? 1 :
+(f$pt_icon==2) ? 1 :
+(f$pt_icon==3) ? 1 :
+(f$pt_icon==4) ? 1 : 0
 
 ##f$fold2cbet_weinig##
 // Fold weinig
-(f$pt_river_bet==5) ? 1 :
-(f$pt_river_bet==6) ? 1 :
-(f$pt_river_bet==7) ? 1 :
-(f$pt_river_bet==8) ? 1 :
-(f$pt_river_bet==9) ? 1 : 0
+(f$pt_icon==5) ? 1 :
+(f$pt_icon==6) ? 1 :
+(f$pt_icon==7) ? 1 :
+(f$pt_icon==8) ? 1 :
+(f$pt_icon==9) ? 1 : 0
 
 ##f$balance##
 (balance+bblind)
