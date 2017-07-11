@@ -2123,7 +2123,7 @@ balance_headsupchair
 WHEN (raischair >= 0) RETURN balance_raischair FORCE
 // Supporting WinHoldem-style blind-"raisers"
 // which seem to be used by Gecko
-WHEN UsPreFlop RETURN balance_bigblindchair FORCE
+WHEN IsPreflop RETURN balance_bigblindchair FORCE
 
 ##f$preflop_aggressor##
 [ nplayersround2>=3 && nplayersplaying==2 ]
@@ -2488,7 +2488,7 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 pt_hands_headsupchair
 
 ##f$mycurrentbet##
-currentbet_userchair
+currentbet
 
 ##f$currentbet_raischair##
 currentbet_raischair
