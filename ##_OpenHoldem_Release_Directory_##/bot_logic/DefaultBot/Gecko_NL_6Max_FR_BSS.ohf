@@ -1,7 +1,5 @@
 ##f$Gecko_notes##
 /*
-f$ptype
-pt_riverbet
 f$oppchair
 */
 //*****************************************************************************
@@ -74,6 +72,10 @@ f$oppchair
 //   * Removed unused f$Player1..f$Player14 functions
 //     (opponent modelling from a different Gecko-bot)
 //   * Simplified f$dealpositionrais and extended it to FR-games
+//   * Introduced f$pt_icon_headsupchair and f$pt_icon_raisupchair
+//     for opponent-modelling as PokerTracker does no longer support
+//     the auto-rate-icon.
+//     Geckos auto-rate-rules are documented below.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -88,14 +90,6 @@ f$oppchair
 // 
 // POKERTRACKER AUTORATE ICONS:
 //
-// UBERNIT: 1 - 5 - 10
-// NITTY  : 1 - 6 - 11
-// TOPPAIR: 2 - 7 - 12
-// MIDPAIR: 3 - 8 - 13
-// MANIAC : 4 - 9 - 14 
-//
-// So pt_nit would be icon 1,5,9 instead of 1,5,10, so you get to a total of 12 autorate rules instead of 14
-// 
 // ptubernit1: raise flop <6% - fold to cbet <40%
 // ptubernit5: raise flop <6% - fold to cbet >40% <60%
 // ptubernit9: raise flop <6% - fold to cbet >60%
@@ -4299,27 +4293,27 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 
 ##f$fold2cbet_normal##
 // Fold normaal
-(f$pt_icon==10) ? 1 :
-(f$pt_icon==11) ? 1 :
-(f$pt_icon==12) ? 1 :
-(f$pt_icon==13) ? 1 :
-(f$pt_icon==14) ? 1 : 0
+(f$pt_icon_headsupchair==10) ? 1 :
+(f$pt_icon_headsupchair==11) ? 1 :
+(f$pt_icon_headsupchair==12) ? 1 :
+(f$pt_icon_headsupchair==13) ? 1 :
+(f$pt_icon_headsupchair==14) ? 1 : 0
 
 ##f$fold2cbet_veel##
 // Fold veel
-(f$pt_icon<=0) ? 1 :
-(f$pt_icon==1) ? 1 :
-(f$pt_icon==2) ? 1 :
-(f$pt_icon==3) ? 1 :
-(f$pt_icon==4) ? 1 : 0
+(f$pt_icon_headsupchair<=0) ? 1 :
+(f$pt_icon_headsupchair==1) ? 1 :
+(f$pt_icon_headsupchair==2) ? 1 :
+(f$pt_icon_headsupchair==3) ? 1 :
+(f$pt_icon_headsupchair==4) ? 1 : 0
 
 ##f$fold2cbet_weinig##
 // Fold weinig
-(f$pt_icon==5) ? 1 :
-(f$pt_icon==6) ? 1 :
-(f$pt_icon==7) ? 1 :
-(f$pt_icon==8) ? 1 :
-(f$pt_icon==9) ? 1 : 0
+(f$pt_icon_headsupchair==5) ? 1 :
+(f$pt_icon_headsupchair==6) ? 1 :
+(f$pt_ico_headsupchairn==7) ? 1 :
+(f$pt_icon_headsupchair==8) ? 1 :
+(f$pt_icon_headsupchair==9) ? 1 : 0
 
 ##f$balance##
 (balance+bblind)
