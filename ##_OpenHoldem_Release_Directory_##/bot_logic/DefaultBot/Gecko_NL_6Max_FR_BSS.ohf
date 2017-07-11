@@ -13,15 +13,9 @@
 // The original PPL (Poker Programming Language) got invented by
 //   Shanky Bonusbots:      http://bonusbots.com/support/index.php
 //
-// Required OpenHoldem version: 12.2.0 or later
+// Required OpenHoldem version: 12.0.0 or later
 //
 //*****************************************************************************
-//
-//  ATTENTION!
-//
-//  WORK IN PROGRESS
-//  INCOMPLETE CONVERSION
-//
 //
 // TECHNICAL CHANGES:
 //   * OpenPPL-functions f$preflop..f$river added (all empty)
@@ -71,6 +65,7 @@
 //     OpenHoldem reported an undefined list40 there
 //     and it turned out the complete function 
 //     was not in use.
+//   * Simplified f$dealpositionrais and extended it to FR-games
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -81,10 +76,7 @@
 //   * Extended f$prefold to full-ring
 //   * introducing f$delay
 //
-// TO DO:
-//   * implement pt_river_bet (currently changed to river_bet to make it load!!!!)
-//   * extend code to FR
-//
+//*****************************************************************************
 // 
 // POKERTRACKER AUTORATE ICONS:
 //
@@ -93,25 +85,26 @@
 // TOPPAIR: 2 - 7 - 12
 // MIDPAIR: 3 - 8 - 13
 // MANIAC : 4 - 9 - 14 
-
-/* So pt_nit would be icon 1,5,9 instead of 1,5,10, so you get to a total of 12 autorate rules instead of 14
-
-ptubernit1: raise flop <6% - fold to cbet <40%
-ptubernit5: raise flop <6% - fold to cbet >40% <60%
-ptubernit9: raise flop <6% - fold to cbet >60%
-
-ptnit2: raise flop >6% raiseflop <12% - fold to cbet <40%
-ptnit6: raise flop >6% raiseflop <12% - fold to cbet >40% <60%
-ptnit10: raise flop >6% raiseflop <12% - fold to cbet >60%
-
-pttag3: raise flop >12% raiseflop <18% - fold to cbet <40%
-pttag7: raise flop >12% raiseflop <18% - fold to cbet >40% <60%
-pttag11: raise flop >12% raiseflop <18% - fold to cbet >60%
-
-pttag4: raise flop >18% - fold to cbet <40%
-pttag8: raise flop >18% - fold to cbet >40% <60%
-pttag12: raise flop >18%- fold to cbet >60%
-*/
+//
+// So pt_nit would be icon 1,5,9 instead of 1,5,10, so you get to a total of 12 autorate rules instead of 14
+// 
+// ptubernit1: raise flop <6% - fold to cbet <40%
+// ptubernit5: raise flop <6% - fold to cbet >40% <60%
+// ptubernit9: raise flop <6% - fold to cbet >60%
+// 
+// ptnit2: raise flop >6% raiseflop <12% - fold to cbet <40%
+// ptnit6: raise flop >6% raiseflop <12% - fold to cbet >40% <60%
+// ptnit10: raise flop >6% raiseflop <12% - fold to cbet >60%
+// 
+// pttag3: raise flop >12% raiseflop <18% - fold to cbet <40%
+// pttag7: raise flop >12% raiseflop <18% - fold to cbet >40% <60%
+// pttag11: raise flop >12% raiseflop <18% - fold to cbet >60%
+// 
+// pttag4: raise flop >18% - fold to cbet <40%
+// pttag8: raise flop >18% - fold to cbet >40% <60%
+// pttag12: raise flop >18%- fold to cbet >60%
+//
+//*****************************************************************************
 
 ##Gecko_6Max_FR_NL_BSS_Preflop##
 WHEN isomaha Fold FORCE
@@ -246,14 +239,14 @@ WHEN (InMiddlePosition2 AND !listGecko01)  RETURN true FORCE
 WHEN (Others            AND !listGecko01)  RETURN true FORCE
 
 ##f$preflop_raise##
-( f$Preflop_First_In
-| f$Preflop_Raise_After_One_Limper
-| f$Preflop_Raise_After_Two_Limpers
-| f$Preflop_Raise_After_Three_Limpers
-| f$Preflop_Raiser_In_Front_Of_Me
-| f$Preflop_Raiser_And_Callers_In_Front_Of_Me
-| f$Preflop_Multiple_Raisers
-| f$Preflop_React_To_Reraise)
+   f$Preflop_First_In
+OR f$Preflop_Raise_After_One_Limper
+OR f$Preflop_Raise_After_Two_Limpers
+OR f$Preflop_Raise_After_Three_Limpers
+OR f$Preflop_Raiser_In_Front_Of_Me
+OR f$Preflop_Raiser_And_Callers_In_Front_Of_Me
+OR f$Preflop_Multiple_Raisers
+OR f$Preflop_React_To_Reraise
 
 ##f$pt_pfr##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
@@ -281,13 +274,11 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 (IsFlop && !f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && !f$wheeldraw && nstraightcommon<3 && nrankedcommon==2) ||
 (IsFlop && !f$twopair && nsuited==4 && nsuitedcommon==3 && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && nstraightcommon<3 && nrankedcommon==2) ? 4 :
 
-
 ((!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon==1) ||
 (!f$twopair && rankloplayer>rankhicommon && nstraightcommon<3 && nrankedcommon==1 && nsuited==4 && nsuitedcommon==2) ||
 (!f$twopair && hand$AA && nsuitedcommon==3 && nsuited==4 && nrankedcommon==1) ||
 (!f$twopair && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ishipair && nsuitedcommon<3 && nrankedcommon==1 && (pokervalcommon < onepair)) ||
 (nsuited==4 && nsuited>nsuitedcommon && ishipair && nrankedcommon==1)) ? 3 :
-
 
 ((!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon==1) || 
 (!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon<3) ||
@@ -309,7 +300,6 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 (!f$twopair && IsFlop && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && nsuitedcommon<3 && nrankedcommon<3 && rankhiplayer>rankhicommon) ||
 (!f$twopair && nstraight==4 && nstraightcommon<=2 && nsuitedcommon<3 && nrankedcommon<3 && !f$wheeldraw && nrankedcommon<3) ||
 (!f$twopair && NOT IsRiver && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && rankloplayer>ranklocommon && rankhiplayer>rankhicommon && nrankedcommon<3)) ? 2 :
-
 
 ((!f$twopair && (nstraight==2 && nstraightfillcommon==1 && nsuitedcommon<3 && nrankedcommon==1)||(nstraight==3 && nstraightfillcommon==1 && nsuitedcommon<3 && nrankedcommon==1)) ||
 (nstraightfill==1 && nsuitedcommon<3) ||
@@ -346,11 +336,9 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 
 ##f$actionpreflop_5##
 [ !(didbetsize || didrais || didcall) ] ? {
-
     [ InSmallBlind ] ? call>sblind && call<6*bblind :
     [ InBigBlind ] ? call>0      && call<6*bblind :
     [ NOT InTheBlinds ] ? call>bblind && call<7*bblind : 0 } :
-
 0
 
 ##f$actionpreflop_6##
@@ -359,24 +347,19 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 ##f$actionpreflop_7##
 [ (didbetsize || didrais || didcall) && call<20*bblind ]
 
-
 ##f$flop_call##
 [ f$Odds_and_Outs          ] ? 1 :
-
 [ f$Initiative_Hero        ] ? f$flop_call_initiative   :
 [ f$Initiative_Villian     ] ? f$flop_call_noinitiative :
 [ f$Initiative_Nobody      ] ? f$flop_call_noaction     :
-
 0
 
 ##f$turn_call##
 [ f$Odds_and_Outs          ] ? 1 :
-
 [ f$Initiative_Hero        ] ? f$turn_call_initiative   :
 [ f$Initiative_Villian     ] ? f$turn_call_noinitiative :
 [ f$Initiative_Nobody      ] ? f$turn_call_noaction     : 
 [ f$Initiative_GotRaised   ] ? f$turn_call_wegotraised  :
-
 0
 
 ##f$river_call##
@@ -384,7 +367,6 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 [ f$Initiative_Villian    ] ? f$river_call_noinitiative :
 [ f$Initiative_Nobody     ] ? f$river_call_noaction     : 
 [ f$Initiative_GotRaised  ] ? f$river_call_wegotraised  :
-
 0
 
 ##f$flop_raise##
@@ -397,7 +379,6 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 [ f$Initiative_Villian   ] ? f$turn_raise_noinitiative :
 [ f$Initiative_Nobody    ] ? f$turn_raise_noaction     : 
 [ f$Initiative_GotRaised ] ? f$turn_raise_wegotraised  :
-
 0
 
 ##f$river_raise##
@@ -405,39 +386,25 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 [ f$Initiative_Villian   ] ? f$river_raise_noinitiative :
 [ f$Initiative_Nobody    ] ? f$river_raise_noaction     : 
 [ f$Initiative_GotRaised ] ? f$river_raise_wegotraised  :
-
 0
 
 ##f$actionpreflop_8##
 [ (didbetsize || didrais || didcall) && call>=20*bblind ]
 
 ##f$dealpositionrais##
-[
-dealpositionrais==1 ? 1:
-dealpositionrais==2 ? 2:
-
-nopponentsseated==6 ? (dealpositionrais==3 ? 3 :
-                       dealpositionrais==4 ? 4 :
-                       dealpositionrais==5 ? 5 :
-                       dealpositionrais==6 ? 5 :
-                       dealpositionrais==7 ? 6 : 0):
-
-nopponentsseated==5 ? (dealpositionrais==3 ? 3 :
-                       dealpositionrais==4 ? 4 :
-                       dealpositionrais==5 ? 5 :
-                       dealpositionrais==6 ? 6 : 0):
-
-nopponentsseated==4 ? (dealpositionrais==3 ? 4 :
-                       dealpositionrais==4 ? 5 :
-                       dealpositionrais==5 ? 6 : 0):
-
-nopponentsseated==3 ? (dealpositionrais==3 ? 5 :
-                       dealpositionrais==4 ? 6 : 0):
-
-nopponentsseated==2 ? (dealpositionrais==3 ? 6 : 0):
-0]
-
-
+// Return values
+//   1 = SB
+//   2 = BB
+//   6 = BU
+//   5 = CO
+//   4 = MP3
+//   2 = MP2 (or more early on FR-games)
+WHEN (dealpositionrais == 1) RETURN 1 FORCE
+WHEN (dealpositionrais == 2) RETURN 2 FORCE
+WHEN (dealpositionrais == (nplayersplaying - 0)) RETURN 6 FORCE
+WHEN (dealpositionrais == (nplayersplaying - 1)) RETURN 5 FORCE
+WHEN (dealpositionrais == (nplayersplaying - 2)) RETURN 4 FORCE
+WHEN Others RETURN 3 FORCE
 
 ##f$Initiative_Hero##
 IsPreflop && nbetsround1>1 && !didcallround1 ? 1 :
