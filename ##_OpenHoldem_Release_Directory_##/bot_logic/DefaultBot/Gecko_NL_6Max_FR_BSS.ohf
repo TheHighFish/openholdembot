@@ -1,9 +1,8 @@
 ##f$Gecko_notes##
 /*
-f$pt_type
+f$ptype
 pt_riverbet
 f$oppchair
-f$player_
 */
 //*****************************************************************************
 //
@@ -72,6 +71,8 @@ f$player_
 //     and it turned out the complete function 
 //     was not in use.
 //   * Removed unused function f$Player_category
+//   * Removed unused f$Player1..f$Player14 functions
+//     (opponent modelling from a different Gecko-bot)
 //   * Simplified f$dealpositionrais and extended it to FR-games
 //
 // LOGICAL CHANGES:
@@ -2484,34 +2485,7 @@ log$SERIOUS_ERROR
 ##f$BettingAction_Raisers_Behind_Us##
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
 
-##f$Player_1##
-f$pt_icon==1
-
-##f$Player_2##
-f$pt_icon==2
-
-##f$Player_3##
-f$pt_icon==3
-
-##f$Player_4##
-f$pt_icon==4
-
-##f$Player_5##
-f$pt_icon==5
-
-##f$Player_6##
-f$pt_icon==6
-
-##f$Player_7##
-f$pt_icon==7
-
-##f$Player_8##
-f$pt_icon==8
-
-##f$Player_9##
-f$pt_icon==9
-
-##f$pt_icon##
+##f$pt_icon_headsupchair##
 // Sanity checks
 WHEN nopponentsplaying != 1	RETURN 0 FORCE
 WHEN headsupchair < 0 RETURN 0 FORCE
@@ -2537,21 +2511,32 @@ WHEN Others
    WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 4 FORCE
    WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 12 FORCE
    WHEN Others RETURN 8 FORCE
-
-##f$Player_10##
-f$pt_icon==10
-
-##f$Player_11##
-f$pt_icon==11
-
-##f$Player_12##
-f$pt_icon==12
-
-##f$Player_13##
-f$pt_icon==13
-
-##f$Player_14##
-f$pt_icon==14
+   
+##f$pt_icon_raischair##
+// Sanity checks
+WHEN raischair < 0 RETURN 0 FORCE
+WHEN pt_flop_raise_cbet_raischair < 0 RETURN 0 FORCE
+WHEN pt_flop_fold_to_cbet_raischair < 0 RETURN 0 FORCE
+//
+WHEN pt_flop_raise_cbet_raischair > 0.18
+   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
+//
+WHEN pt_flop_raise_cbet_raischair > 0.12
+   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
+//
+WHEN pt_flop_raise_cbet_raischair > 0.06
+   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
+//
+WHEN Others
+   WHEN pt_flop_fold_to_cbet_raischair < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet_raischair > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
 
 ##f$Punten_Preflop_Cutoff##
 (userchair==0) ? {
