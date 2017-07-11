@@ -80,6 +80,9 @@
 //     (f$Punten_Limper_Smallblind1, f$Punten_Preflop_Cutoff, ...
 //     that created a combined score for multiple players
 //     based on different auto-rate-rules)
+//   * Simplified f$stackopponent, f$stackraiser, f$pt_hands,
+//     f$mycurrentbet, f$currentbet_raischair which now use the
+//     multiplexer-engine instead of considering all possible chairs.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -2114,27 +2117,13 @@ IsRiver ? (f$AF_river+f$foldequity+f$villiantakeover+f$reducewinchance_when_have
 0
 
 ##f$stackopponent##
-// To be simplified by the multiplexer !!!
-[ 
-(opponentsplayingbits==1)  ? balance0 :
-(opponentsplayingbits==2)  ? balance1 :
-(opponentsplayingbits==4)  ? balance2 :
-(opponentsplayingbits==8)  ? balance3 :
-(opponentsplayingbits==16) ? balance4 :
-(opponentsplayingbits==32) ? balance5 : 0 ]
+balance_headsupchair
 
 ##f$stackraiser##
-// To be simplified by the multiplexer !!!
-[
-(raischair==0) ? balance0 : 
-(raischair==1) ? balance1 : 
-(raischair==2) ? balance2 : 
-(raischair==3) ? balance3 : 
-(raischair==4) ? balance4 :
-(raischair==5) ? balance5 : 
-f$balance //!!!! To be extended for preflop,
-// as there is no longer any blind-raiser
-]
+WHEN (raischair >= 0) RETURN balance_raischair FORCE
+// Supporting WinHoldem-style blind-"raisers"
+// which seem to be used by Gecko
+WHEN UsPreFlop RETURN balance_bigblindchair FORCE
 
 ##f$preflop_aggressor##
 [ nplayersround2>=3 && nplayersplaying==2 ]
@@ -2496,29 +2485,13 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 0
 
 ##f$pt_hands##
-[ 
-(opponentsplayingbits==1)  ? pt_hands0 :
-(opponentsplayingbits==2)  ? pt_hands1 :
-(opponentsplayingbits==4)  ? pt_hands2 :
-(opponentsplayingbits==8)  ? pt_hands3 :
-(opponentsplayingbits==16) ? pt_hands4 :
-(opponentsplayingbits==32) ? pt_hands5 : 0 ]
+pt_hands_headsupchair
 
 ##f$mycurrentbet##
-[userchair==0 ? currentbet0 :
- userchair==1 ? currentbet1 :
- userchair==2 ? currentbet2 :
- userchair==3 ? currentbet3 :
- userchair==4 ? currentbet4 :
- userchair==5 ? currentbet5 : 0 ]
+currentbet_userchair
 
 ##f$currentbet_raischair##
-[raischair==0 ? currentbet0 :
- raischair==1 ? currentbet1 :
- raischair==2 ? currentbet2 :
- raischair==3 ? currentbet3 :
- raischair==4 ? currentbet4 :
- raischair==5 ? currentbet5 : 0]
+currentbet_raischair
 
 ##f$actionpostflop_1##
 [ call<=0 ]
@@ -3165,7 +3138,6 @@ f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 :
 50
 
 ##f$ptype_ubernit##
-//!!!!!
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
 WHEN (f$pt_icon_raischair==1)  RETURN true FORCE
@@ -3207,13 +3179,7 @@ WHEN (f$pt_icon_raischair==14) RETURN true FORCE
 IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 
 ##f$AF_turn2##
-[ 
-(opponentsplayingbits==1)  ? pt_turn_af0*(pt_wtsd0*4) :
-(opponentsplayingbits==2)  ? pt_turn_af1*(pt_wtsd1*4) :
-(opponentsplayingbits==4)  ? pt_turn_af2*(pt_wtsd2*4) :
-(opponentsplayingbits==8)  ? pt_turn_af3*(pt_wtsd3*4) :
-(opponentsplayingbits==16) ? pt_turn_af4*(pt_wtsd4*4) :
-(opponentsplayingbits==32) ? pt_turn_af5*(pt_wtsd5*4) : 0 ]
+pt_turn_af_headsupchair * pt_wtsd_headsupchair * 4
 
 ##f$safeboard1##
 [ nrankedcommon==1 && nsuitedcommon<=2 && nstraightcommon<=2 ]
