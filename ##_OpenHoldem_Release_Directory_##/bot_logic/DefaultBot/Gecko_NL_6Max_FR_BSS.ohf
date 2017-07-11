@@ -151,7 +151,7 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$river_call Call FORCE
 
-##allin_on_betsize_balance_ration##
+##f$allin_on_betsize_balance_ration##
 // Not present in Geckos original bot for OpenHoldem 2.x,
 // But his code suggests that he wants it this way.
 0.67
@@ -2555,29 +2555,30 @@ f$pt_icon==9
 
 ##f$pt_icon##
 // Sanity checks
-WHEN nopponentsplaying != 1	RETURN 0FORCE
-WHEN pt_raiseflop_headsupchair < 0 RETURN 0FORCE
-WHEN pt_foldtocbet < 0 RETURN 0FORCE
+WHEN nopponentsplaying != 1	RETURN 0 FORCE
+WHEN headsupchair < 0 RETURN 0 FORCE
+WHEN pt_flop_raise_cbet_headsupchair < 0 RETURN 0 FORCE
+WHEN pt_flop_fold_to_cbet_headsupchair < 0 RETURN 0 FORCE
 //
-WHEN pt_raiseflop_headsupchair > 0.18
-    WHEN pt_foldtocbet < 0.40 RETURN 1 FORCE
-	WHEN pt_foldtocbet > 0.60 RETURN 9 FORCE
-	WHEN Others RETURN 5 FORCE
+WHEN pt_flop_raise_cbet_headsupchair > 0.18
+   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 1 FORCE
+   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 9 FORCE
+   WHEN Others RETURN 5 FORCE
 //
-WHEN pt_raiseflop_headsupchair > 0.12
-    WHEN pt_foldtocbet < 0.40 RETURN 2 FORCE
-	WHEN pt_foldtocbet > 0.60 RETURN 10 FORCE
-	WHEN Others RETURN 6 FORCE
+WHEN pt_flop_raise_cbet_headsupchair > 0.12
+   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 2 FORCE
+   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 10 FORCE
+   WHEN Others RETURN 6 FORCE
 //
-WHEN pt_raiseflop_headsupchair > 0.06
-    WHEN pt_foldtocbet < 0.40 RETURN 3 FORCE
-	WHEN pt_foldtocbet > 0.60 RETURN 11 FORCE
-	WHEN Others RETURN 7 FORCE
+WHEN pt_flop_raise_cbet_headsupchair > 0.06
+   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 3 FORCE
+   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 11 FORCE
+   WHEN Others RETURN 7 FORCE
 //
 WHEN Others
-    WHEN pt_foldtocbet < 0.40 RETURN 4 FORCE
-	WHEN pt_foldtocbet > 0.60 RETURN 12 FORCE
-	WHEN Others RETURN 8 FORCE
+   WHEN pt_flop_fold_to_cbet_headsupchair < 0.40 RETURN 4 FORCE
+   WHEN pt_flop_fold_to_cbet_headsupchair > 0.60 RETURN 12 FORCE
+   WHEN Others RETURN 8 FORCE
 
 ##f$Player_10##
 f$pt_icon==10
