@@ -384,8 +384,8 @@ BEGIN
     CONTROL         "",IDC_SWAGDELAY3_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,84,11,14
     CONTROL         "Engage autoplayer upon connection",IDC_AUTOPLAYER_UPON_CONNECTION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,113,132,10
-    CONTROL         "Restore mouse position and window focus after action",IDC_RESTORE_POSITION_AND_FOCUS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,187,10
+    CONTROL         "Restore mouse position and window focus at real casinos",IDC_RESTORE_POSITION_AND_FOCUS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,129,230,10
     CONTROL         "Advance replay frames during replay",IDC_USE_AUTO_REPLAY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,145,134,10
 END
