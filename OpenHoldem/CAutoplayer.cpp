@@ -380,7 +380,7 @@ void CAutoplayer::EngageAutoplayer(bool to_be_enabled_or_not) {
   } else {
     p_flags_toolbar->ResetButtonsOnAutoplayerOff();
   }
-	// Set valuie at the very last to be extra safe
+	// Set value at the very last to be extra safe
 	// and avoid problems with multiple threads
 	// despite we use synchronization ;-)
 	_autoplayer_engaged = to_be_enabled_or_not;

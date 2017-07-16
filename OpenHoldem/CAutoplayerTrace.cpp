@@ -197,7 +197,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   int		userchair = p_symbol_engine_userchair->userchair();
   int		betround  = p_betround_calculator->betround();
   // Player cards
-  // There always exists a user, if notz then we have a fake-player. ;-)
+  // There always exists a user, if not then we have a fake-player. ;-)
   assert(p_table_state->User() != NULL);
   CString player_cards = p_table_state->User()->Cards();
   // Common cards

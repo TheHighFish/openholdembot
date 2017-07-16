@@ -38,6 +38,7 @@
 #include "CSymbolEngineOpenPPL.h"
 #include "CValidator.h"
 #include "CWatchdog.h"
+#include "MemoryLogging.h"
 #include "NumericalFunctions.h"
 #include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
@@ -155,6 +156,7 @@ void CFormulaParser::LoadFunctionLibrary(CString library_path) {
   LoadArchive(library_archive);
   _is_parsing_read_only_function_library = false;
   LeaveParserCode();
+  LogMemoryUsage(library_path.GetBuffer());
 }
  
 void CFormulaParser::LoadArchive(CArchive& formula_file) {
@@ -288,7 +290,12 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Parsing f$function %s\n", _function_name);
-    function_body =	ParseFunctionBody();
+    LogMemoryUsage("before ParseFunctionBody()");
+    function_body = ParseFunctionBody();
+    write_log(preferences.debug_memory_usage(),
+      "[FormulaParser] size of %s = %i\n",
+      _function_name, sizeof(*function_body));
+    LogMemoryUsage("after ParseFunctionBody()");
     CheckForExtraTokensAfterEndOfFunction();
   } else if (function_or_list_to_be_parsed->IsList()) {
     // ##listXYZ##
@@ -322,11 +329,13 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   assert(p_function_collection->Exists(_function_name));
   // Care about operator precendence
   _parse_tree_rotator.Rotate((CFunction*)function_or_list_to_be_parsed);
+  LogMemoryUsage("after rotation");
 #ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
   p_function_collection->LookUp(_function_name)->Dump();
 #endif
   LeaveParserCode();
+  LogMemoryUsage(_function_name.GetBuffer());
 }
 
 void CFormulaParser::ParseListBody(COHScriptList *list) {
