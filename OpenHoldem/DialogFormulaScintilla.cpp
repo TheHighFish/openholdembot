@@ -571,7 +571,7 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
 
   p_OH_script_object = p_function_collection->GetFirst();
   while (p_OH_script_object != NULL) {
-    if (p_OH_script_object->IsList()) {
+    if (p_OH_script_object->IsList() && !p_OH_script_object->IsReadOnlyLibrarySymbol()) {
       hItem = m_FormulaTree.InsertItem(p_OH_script_object->name(), parent);
       m_FormulaTree.SetItemData(hItem, (DWORD_PTR)FindScintillaWindow(
         p_OH_script_object->name()));
