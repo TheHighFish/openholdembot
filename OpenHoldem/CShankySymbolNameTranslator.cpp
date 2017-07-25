@@ -129,7 +129,7 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["have3rdtoppair"] = "HaveThirdTopPair";
   _shanky_symbol_table["have3rdtopset"] = "HaveThirdTopSet";
   _shanky_symbol_table["have4thnutflush"] = "HaveFourthNutFlush";
-  _shanky_symbol_table["have4thnutflushdraw"] = "HaveFourthNutFlushDraw ";
+  _shanky_symbol_table["have4thnutflushdraw"] = "HaveFourthNutFlushDraw";
   _shanky_symbol_table["have4thnutlow"] = "HaveFourthNutLow";
   _shanky_symbol_table["have4thnutlowdraw"] = "HaveFourthNutLowDraw";
   _shanky_symbol_table["have4thoverpair"] = "HaveFourthOverPair";
@@ -225,8 +225,8 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["threecardstraightinhand"] = "ThreeCardStraightInHand";
   _shanky_symbol_table["threecardstraightonboard"] = "ThreeCardStraightOnBoard";
   _shanky_symbol_table["threecardswith1gapinhand"] = "ThreeCardsWith1gapInHand";
-  _shanky_symbol_table["topflopcardpairedonriver"] = "TopFlopCardPairedonRiver";
-  _shanky_symbol_table["topflopcardpairedonturn"] = "TopFlopCardPairedonTurn";
+  _shanky_symbol_table["topflopcardpairedonriver"] = "TopFlopCardPairedOnRiver";
+  _shanky_symbol_table["topflopcardpairedonturn"] = "TopFlopCardPairedOnTurn";
   _shanky_symbol_table["tripsinhand"] = "TripsInHand"; 
   _shanky_symbol_table["tripsonboard"] = "TripsOnBoard";
   _shanky_symbol_table["tripsonboardonturn"] = "TripsOnBoardOnTurn";
