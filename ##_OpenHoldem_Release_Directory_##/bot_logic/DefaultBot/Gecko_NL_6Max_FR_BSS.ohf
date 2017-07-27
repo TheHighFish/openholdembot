@@ -15,6 +15,12 @@
 //
 // Required OpenHoldem version: 12.0.0 or later
 //
+// Main author: Gecko 
+//
+// Co-author:   ThehighFish
+//   (adaptions for OpenHoldem 12.x, documentation, simplification,          
+//    extending preflop to full-ring)
+//
 //*****************************************************************************
 //
 // TECHNICAL CHANGES:
@@ -92,6 +98,13 @@
 //     to require a minimal sample-size.
 //   * Extended f$prefold to full-ring
 //   * introducing f$delay
+//   * Added opening-ranges for full-ring
+//
+//*****************************************************************************
+//
+// KNOWN WEAKNESSES:
+//   * currently uses Geckos 3betting-range against MP2 (UTG short-handed)
+//     against all more early positions full-ring.
 //
 //*****************************************************************************
 
@@ -217,15 +230,15 @@ nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
 Random * 20
 
 ##f$prefold##
-WHEN (InBigBlind        AND !listGecko07  && (call>0)) RETURN true FORCE
-WHEN (InSmallBlind      AND !listGecko900) RETURN true FORCE
-WHEN (InButton          AND !listGecko900) RETURN true FORCE               
-WHEN (InCutOff          AND !listGecko05)  RETURN true FORCE
-WHEN (InMiddlePosition3 AND !listGecko02)  RETURN true FORCE
-WHEN (InMiddlePosition2 AND !listGecko01)  RETURN true FORCE
+WHEN (InBigBlind        AND NOT listGecko07  AND (call>0)) RETURN true FORCE
+WHEN (InSmallBlind      AND NOT listGecko900) RETURN true FORCE
+WHEN (InButton          AND NOT listGecko900) RETURN true FORCE               
+WHEN (InCutOff          AND NOT listGecko05)  RETURN true FORCE
+WHEN (InMiddlePosition3 AND NOT listGecko02)  RETURN true FORCE
+WHEN (InMiddlePosition2 AND NOT listGecko01)  RETURN true FORCE
 // Extended to full-ring
 // Simply assuming we can fold in early position as much as in MP2
-WHEN (Others            AND !listGecko01)  RETURN true FORCE
+WHEN (Others            AND NOT listGecko01)  RETURN true FORCE
 
 ##f$preflop_raise##
    f$Preflop_First_In
@@ -302,8 +315,8 @@ WHEN Others RETURN pt_river_af_headsup FORCE
 0
 
 ##f$wheeldraw##
-(rankbits>>9==0b111100)                                 //check AKQJ
-|| (rankbits & 0b0000000000011110)==0b0000000000011110        //check 432A
+(rankbits>>9==0b111100)                                 // AKQJ
+|| (rankbits & 0b0000000000011110)==0b0000000000011110  // 432A
 
 ##f$safeboard##
 [ nrankedcommon==1 && nsuitedcommon<=2 && nstraightcommon<=2 ]
@@ -2307,10 +2320,15 @@ log$SERIOUS_ERROR
 
 ##f$Chart_OpenRaise##
    [ InSmallBlind && listGecko900 ] // 50%
-|| [ InMiddlePosition2 && listGecko01  ] // 10%
-|| [ InMiddlePosition3 && listGecko02  ] // 15%
-|| [ InCutOff && listGecko05  ] // 27%
 || [ InButton && listGecko900 ] // 40%
+|| [ InCutOff && listGecko05  ] // 27%
+|| [ InMiddlePosition3 && listGecko02  ] // 15%
+|| [ InMiddlePosition2 && listGecko01  ] // 10%
+// Extended to full-ring, not original Gecko
+|| [ InMiddlePosition1 && listGecko_OpenRaise_MP1 ] // 10%
+|| [ InEarlyPosition3 && listGecko_OpenRaise_EP3  ] // 10%
+|| [ InEarlyPosition2 && listGecko_OpenRaise_EP2  ] // 10%
+|| [ InEarlyPosition1 && listGecko_OpenRaise_EP1  ] // 10%
 
 ##f$Position_CutOff##
 (nchairsdealtleft == 1)
@@ -2336,7 +2354,8 @@ log$SERIOUS_ERROR
     [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
-    [ f$logicalpositionrais==6 ] ? listGecko02 : 0 } :
+    [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
+	0 } :
 
 [ InBigBlind ] ? { // bb
 
@@ -2344,7 +2363,8 @@ log$SERIOUS_ERROR
     [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
-    [ f$logicalpositionrais==6 ] ? listGecko02 : 0 } :
+    [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
+	0 } :
 
 [ InMiddlePosition3 ] ? { // utg+1
 
@@ -3147,7 +3167,7 @@ WHEN (f$pt_icon_raischair==10) RETURN true FORCE
 ##f$ptype_nit##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN (f$pt_icon_raischair<=1)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==1)  RETURN true FORCE
 WHEN (f$pt_icon_raischair==6)  RETURN true FORCE
 WHEN (f$pt_icon_raischair==11) RETURN true FORCE
 
@@ -3422,7 +3442,7 @@ WHEN Others
    
 //*****************************************************************************
 //
-// Hand-lusts for the Fecko-bot
+// Hand-lists for the Gecko-bot
 //
 //*****************************************************************************
 
@@ -4410,3 +4430,38 @@ T7o  T8o  T9o
 97o 98o  
 87o  
 76o 
+
+##listGecko_OpenRaise_MP1##
+// Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
+// which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
+88  99  TT  JJ  QQ  KK  AA
+A9S ATS AJS AQS AKS 
+KTS KJS KQS
+QJs
+AJo AQo AKo 
+
+##listGecko_OpenRaise_EP3##
+// Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
+// which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
+88  99  TT  JJ  QQ  KK  AA
+ATS AJS AQS AKS 
+KTS KJS KQS
+QJs
+AQo AKo 
+
+##listGecko_OpenRaise_EP2##
+// Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
+// which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
+88  99  TT  JJ  QQ  KK  AA
+ATS AJS AQS AKS 
+KJS KQS
+AQo AKo 
+
+##listGecko_OpenRaise_EP1##
+// List for EP1 made up on my own ;-)
+TT  JJ  QQ  KK  AA
+AQS AKS 
+KQS
+AQo AKo 
+
+ 
