@@ -80,6 +80,7 @@ class CFormulaParser {
   TPParseTreeTerminalNodeBetsizeAction ParseOpenPPLRaiseByExpression();
   TPParseTreeNode ParseOpenPPLRaiseExpression();
   TPParseTreeNode ParseOpenPPLAction();
+  bool CheckForEmptyWhenCondition();
  private:
   TPParseTreeTerminalNode ParseOpenPPLUserVar(); 
  private:

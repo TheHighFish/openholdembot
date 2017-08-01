@@ -658,6 +658,20 @@ void CFormulaParser::ErrorMissingAction(int token_ID) {
   CParseErrors::Error(error_message);
 }
 
+bool CFormulaParser::CheckForEmptyWhenCondition() {
+  // Returns true if everything is OK. False on error.
+  int token_ID = _tokenizer.LookAhead();
+  if ((token_ID == kTokenEndOfFile) || (token_ID == kTokenEndOfFunction)) {
+    CParseErrors::Error("Empty when-condition at end of function\n");
+    return false;
+  } else if (token_ID == kTokenOperatorConditionalWhen) {
+    CParseErrors::Error("Two consecutive WHENs\n"
+      "Expecting a condition");
+    return false;
+  }
+  return true;
+}
+
 TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
   assert(_currently_parsed_function_or_list != NULL);
   TPParseTreeOperatorNode last_when_condition = NULL;
@@ -666,6 +680,9 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
   int token_ID = _tokenizer.LookAhead();
   while (token_ID == kTokenOperatorConditionalWhen) {
     token_ID = _tokenizer.GetToken();
+    if (CheckForEmptyWhenCondition() == false) {
+      break;
+    }
     TPParseTreeNode condition = ParseExpression();
     TPParseTreeOperatorNode when_condition = new CParseTreeOperatorNode(_tokenizer.LineRelative());
     when_condition->MakeWhenCondition(condition);
@@ -955,6 +972,7 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
     }   
   }
   // End of when-condition sequence reached
+  //!!!!!
   assert(last_when_condition != NULL);
   assert(last_when_condition->IsAnyKindOfWhenCondition());
   // Insert special node for end of function
