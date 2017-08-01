@@ -19,6 +19,9 @@
 #include "CPreferences.h"
 #include "CTokenizer.h"
 
+// static
+bool CParseTreeTerminalNodeEndOfFunction::_evaluating_defailt_logic = false;
+
 CParseTreeTerminalNodeEndOfFunction::CParseTreeTerminalNodeEndOfFunction(int relative_line_number) : 
   // Increment line number by 1 
   // to point to the first empty line after the function code
@@ -51,4 +54,15 @@ CParseTreeTerminalNodeEndOfFunction::CParseTreeTerminalNodeEndOfFunction(int rel
 }
 
 CParseTreeTerminalNodeEndOfFunction::~CParseTreeTerminalNodeEndOfFunction() {
+}
+
+double CParseTreeTerminalNodeEndOfFunction::Evaluate(bool log /* = false */) {
+  if (memcmp(_terminal_name, "Default", 7) == 0) {
+    _evaluating_defailt_logic = true;
+    return CParseTreeTerminalNodeIdentifier::Evaluate(log);
+    _evaluating_defailt_logic = false;
+  } else {
+    return CParseTreeTerminalNodeIdentifier::Evaluate(log);
+  }
+
 }

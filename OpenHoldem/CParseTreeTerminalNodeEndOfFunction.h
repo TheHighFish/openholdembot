@@ -21,6 +21,13 @@ class CParseTreeTerminalNodeEndOfFunction: public CParseTreeTerminalNodeIdentifi
  public:
   CParseTreeTerminalNodeEndOfFunction(int relative_line_number);
   virtual ~CParseTreeTerminalNodeEndOfFunction();
+ public:
+  virtual double Evaluate(bool log = false);
+  static bool evaluating_defailt_logic() {
+    return _evaluating_defailt_logic; 
+  }
+ private:
+  static bool _evaluating_defailt_logic;
 };
 
 typedef CParseTreeTerminalNodeEndOfFunction *TPParseTreeTerminalNodeEndOfFunction;

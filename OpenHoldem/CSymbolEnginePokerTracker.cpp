@@ -16,6 +16,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 
 #include "CFormulaParser.h"
+#include "CParseTreeTerminalNodeEndOfFunction.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
 #include "CPreferences.h"
@@ -181,10 +182,18 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
 			// Don't throw a warning here.
       write_log(preferences.debug_pokertracker(), "[PokerTracker] Not yet seated or formula parsing.\n");
 		} else {
-			// We are seated and playing.
-			// Serious problem, if we do not have a DB-connection.
-			OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
-				"Can't use PokerTracker symbols.");
+			// We are seated and playing, use a PT-symbol,
+      // but are noit connected to a database
+      if (CParseTreeTerminalNodeEndOfFunction::evaluating_defailt_logic()) {
+        // Not a problem
+        // The default-bot uses PT-symbols,
+        // but also plays well against unknown.
+        // Lots of people will use it without a DB
+      } else {
+        // Serious problem: PT-usage in user-code
+        OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
+          "Can't use PokerTracker symbols.");
+      }
 		}
 		*result = kUndefined;
 		return true;
