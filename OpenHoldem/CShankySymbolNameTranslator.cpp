@@ -216,6 +216,7 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["rivercardisovercardtoboard"] = "RiverCardIsOvercardToBoard";
   _shanky_symbol_table["secondtopflopcardpairedonriver"] = "SecondTopFlopCardPairedOnRiver";
   _shanky_symbol_table["secondtopflopcardpairedonturn"] = "SecondTopFlopCardPairedOnTurn";
+  _shanky_symbol_table["stackunknown"] = "StackUnknown";
   _shanky_symbol_table["straightflushpossible"] = "StraightFlushPossible";
   _shanky_symbol_table["straightflushpossiblebyothers"] = "StraightFlushPossibleByOthers";
   _shanky_symbol_table["straightonboard"] = "StraightOnBoard";
@@ -227,16 +228,18 @@ void CShankySymbolNameTranslator::InitSymbolTable() {
   _shanky_symbol_table["threecardswith1gapinhand"] = "ThreeCardsWith1gapInHand";
   _shanky_symbol_table["topflopcardpairedonriver"] = "TopFlopCardPairedOnRiver";
   _shanky_symbol_table["topflopcardpairedonturn"] = "TopFlopCardPairedOnTurn";
-  _shanky_symbol_table["tripsinhand"] = "TripsInHand"; 
+  _shanky_symbol_table["tripsinhand"] = "TripsInHand";
   _shanky_symbol_table["tripsonboard"] = "TripsOnBoard";
   _shanky_symbol_table["tripsonboardonturn"] = "TripsOnBoardOnTurn";
   _shanky_symbol_table["turncardpaired"] = "TurnCardPaired";
   _shanky_symbol_table["turncardisovercardtoboard"] = "TurnCardIsOvercardToBoard";
+  _shanky_symbol_table["twoofonesuitpresentonflop"] = "TwoOfOneSuitPresentOnFlop";
   _shanky_symbol_table["twopairinhand"] = "TwoPairInHand";
   _shanky_symbol_table["twopaironboard"] = "TwoPairOnBoard";
   _shanky_symbol_table["uncoordinatedflop"] = "UncoordinatedFlop";
   _shanky_symbol_table["wheelpossible"] = "WheelPossible";
   // Action constants
+  _shanky_symbol_table["beep"] = "Beep";
   _shanky_symbol_table["betmax"] = "BetMax";
   _shanky_symbol_table["betpot"] = "BetPot";
   _shanky_symbol_table["bethalfpot"] = "BetHalfPot";
