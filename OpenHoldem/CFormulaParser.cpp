@@ -844,7 +844,16 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
   if (_token_ID != kTokenKeywordForce) {
     // General error message on missing keyword force
     CParseErrors::Error("Missing keyword FORCE after action.\n");
+    // Don't consume the token (probably WHEN)
+    // We want to continue gracefully with the next condition
+    _tokenizer.PushBack();
     return false;
+  }
+  // Check for duplicate force
+  _token_ID = _tokenizer.LookAhead();
+  if (_token_ID == kTokenKeywordForce) {
+    CParseErrors::Error("Duplicate keyword force\n");
+    _tokenizer.GetToken();
   }
 	// Check for unsupported Shanky-style delay
 	// which can only happen after actions 
