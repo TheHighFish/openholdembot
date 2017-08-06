@@ -196,7 +196,7 @@ CString CFormulaFileSplitter::ExtractFunctionName(const CString function_header)
     return kErroneousFunctionName;
   } else if (function_name_lower_case.Left(2) != "##") {
     CParseErrors::Error("Shanky-style option settings?\n"
-      "Options are not supported, because OpenPPL does not provide a default bot.\n"
+      "Options for Shankys default-bot are not supported.\n"
       "They need to be removed.\n"
       "Expecting a ##f$function## or ##listXYZ## instead.\n");
     return kErroneousFunctionName;
