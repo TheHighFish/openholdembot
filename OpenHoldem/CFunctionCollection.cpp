@@ -482,6 +482,20 @@ void CFunctionCollection::ClearCache() {
 
 void CFunctionCollection::Save(CArchive &ar) {
   CSLock lock(m_critsec);
+  // In case this is Shanky-style code we have to
+  // show a warning and mark it as "custom"
+  // so that OpenHoldem can correctly import it next time.
+  if (Exists(k_OpenPPL_function_names[kBetroundPreflop])) {
+    if (LookUp(k_OpenPPL_function_names[kBetroundPreflop])->ImportedFromShankyPPL()) {
+      OH_MessageBox_Error_Warning(
+        "Saving Shanky-style bot-logic to semi-OpenPPL-format\n"
+        "Full conversion to OpenPPL is recommended.\n",
+        "Warning");
+      ar.WriteString("custom\n"
+        "// Bot-logic originally imported from Shanky-style PPL.\n"
+        "// Remove this keyword and comment once properly converted.\n\nn");
+    }
+  }
   // First write the date
   char nowtime[26] = {0};
   CString s;
