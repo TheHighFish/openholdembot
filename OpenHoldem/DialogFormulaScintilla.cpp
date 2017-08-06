@@ -400,12 +400,12 @@ BOOL CDlgFormulaScintilla::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return false
 }
 
-void CDlgFormulaScintilla::OnCancel()
-{
-	if (m_dirty)
-		if(!PromptToSave())
-			return;
-
+void CDlgFormulaScintilla::OnCancel() {
+  if (m_dirty) {
+    if (!PromptToSave()) {
+      return;
+    }
+  }
 	DestroyWindow();
 }
 

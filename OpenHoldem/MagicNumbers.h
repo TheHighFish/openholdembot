@@ -344,6 +344,15 @@ const char k_OpenPPL_function_names[kNumberOfBetrounds + 1][k_max_length_of_Open
   "f$river"
 };
 
+const int k_max_length_of_Shanky_style_betrounds = 7 + 1;
+const char k_Shanky_style_betrounds[kNumberOfBetrounds + 1][k_max_length_of_Shanky_style_betrounds] = {
+  "",       // 0 unused
+  "preflop",
+  "flop",
+  "turn",
+  "river"
+};
+
 // Special symbol for empty expressions. Its evaluation adds something 
 // meaningful to the log when the end of an open-ended when-condition 
 // gets reached during evaluation.

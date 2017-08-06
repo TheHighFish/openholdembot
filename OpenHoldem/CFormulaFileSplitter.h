@@ -33,7 +33,9 @@ class CFormulaFileSplitter {
   CString ExtractFunctionName(const CString function_header);
  private:
   inline bool IsFunctionHeader(CString line_of_code);
-  inline bool IsShankyFunction(CString line_of_code);
+  // Returns 0 / false if no Shanky-style betround-function
+  // Returns 1..4 for preflop..river
+  inline int IsShankyFunction(CString line_of_code);
   void SanityChecksForWrongFileTypes();
  private:
   CString _function_name;

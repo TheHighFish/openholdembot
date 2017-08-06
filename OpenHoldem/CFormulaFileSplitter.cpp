@@ -63,13 +63,31 @@ void CFormulaFileSplitter::SplitFile(CArchive &formula_file) {
   }
 }
 
-bool CFormulaFileSplitter::IsShankyFunction(CString line_of_code) {
-  // Input is expected to be lowercase without extra spaces
-  if (line_of_code == "preflop") return true;
-  if (line_of_code == "flop")    return true;
-  if (line_of_code == "turn")    return true;
-  if (line_of_code == "river")   return true;
-  return false;
+// Returns 0 / false if no Shanky-style betround-function
+// Returns 1..4 for preflop..river
+int CFormulaFileSplitter::IsShankyFunction(CString line_of_code) {
+  if (!isalpha(line_of_code[0])) {
+    return int(false);
+  }
+  if (toupper(line_of_code[0]) == 'W') {
+    // Quick exit on common when conditions
+    return false;
+  }
+  for (int i = kBetroundPreflop; i <= kBetroundRiver; ++i) {
+    int length = strlen(k_Shanky_style_betrounds[i]);
+      // Valid input is expected to be lowercase
+    if (memcmp(line_of_code, k_Shanky_style_betrounds[i], length) != 0) {
+      continue;
+    }
+    if (isalnum(line_of_code[length])) {
+      // Sort out longer identifiers at beginning of line.
+      // But oder characters may follow, e.g. spaces and comments
+      continue;
+    }
+    assert(i != int(false));
+    return i;
+  }
+  return int(false);
 }
 
 void CFormulaFileSplitter::SkipShankyOptionSettings(CArchive &formula_file) {
@@ -154,11 +172,11 @@ CString CFormulaFileSplitter::ExtractFunctionName(const CString function_header)
   // This can only happen before the first function
   CString function_name_lower_case = function_header;
   function_name_lower_case.MakeLower();
-  if ((function_name_lower_case.Left(7) == "preflop")
-    || (function_name_lower_case.Left(4) == "flop")
-    || (function_name_lower_case.Left(4) == "turn")
-    || (function_name_lower_case.Left(5) == "river")) {
-    CString correct_name = "f$" + function_name_lower_case;
+  int potential_shanky_betround_function = IsShankyFunction(function_name_lower_case);
+  if (potential_shanky_betround_function != int(false)) {
+    // We can't use the original input, 
+    // as the input might contain additional spaces and comments
+    CString correct_name = k_OpenPPL_function_names[potential_shanky_betround_function];
     return correct_name;
   } else if (function_name_lower_case.Left(3) == "new") {
     CParseErrors::Error("Old-style OpenPPL function.\n"
@@ -262,11 +280,9 @@ bool CFormulaFileSplitter::IsFunctionHeader(CString line_of_code)
     return true;
   }
   if (_splitting_shanky_ppl) {
-    line_of_code.MakeLower();
-    if (line_of_code == "preflop") return true;
-    if (line_of_code == "flop")    return true;
-    if (line_of_code == "turn")    return true;
-    if (line_of_code == "river")   return true;
+    if (IsShankyFunction(line_of_code)) {
+      return true;
+    }
   }
   return false;
 }
