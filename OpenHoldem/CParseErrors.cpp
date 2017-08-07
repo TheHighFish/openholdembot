@@ -17,6 +17,7 @@
 #include "CTokenizer.h"
 #include "OH_MessageBox.h"
 #include "..\StringFunctionsDLL\string_functions.h"
+#include "TokenizerConstants.h"
 
 bool CParseErrors::_is_error = false;
 CString CParseErrors::_last_error_message = "";
@@ -49,6 +50,13 @@ void CParseErrors::Error(CString short_message) {
 void CParseErrors::ErrorUnknownIdentifier(CString name) {
   CString message;
   message.Format("Unknown identifier: %s", name);
+  Error(message);
+}
+
+void CParseErrors::UnexpectedToken(CString short_error_message, CString expected, int token_found_instead) {
+  CString message;
+  message = short_error_message + expected;
+  message += "Found: " + TokenVerboseExplained(token_found_instead) + "\n";
   Error(message);
 }
 

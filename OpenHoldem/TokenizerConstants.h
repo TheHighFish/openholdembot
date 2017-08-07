@@ -217,6 +217,9 @@ inline int IsOperatorRightAssociativ(int token) {
 // For debugging output
 CString TokenString(int token);
 
+// For the generation of verbose error-messages (unexpected token in bot-logic)
+CString TokenVerboseExplained(int token);
+
 // For smart display of binary numbers in debug-tab
 bool TokenEvaluatesToBinaryNumber(int token);
 

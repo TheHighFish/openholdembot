@@ -280,6 +280,86 @@ CString TokenString(int token) {
   }
 }
 
+CString TokenVerboseExplained(int token) {
+  assert(token >= 0);
+  assert(token < kNumberOfTokens);
+  switch (token) {
+  case kTokenEndOfFile: return "end of file";
+  case kTokenEndOfFunction: return "end of function";
+  case kTokenOperatorPlus: return "binary operator +";
+  case kTokenOperatorMinus: return "binary operator -";
+  case kTokenOperatorMultiplication: return "binary operator *";
+  case kTokenOperatorDivision: return "binary operator /";
+  case kTokenOperatorUnaryMinus: return "unary operator -";
+  case kTokenOperatorModulo: return "binary operator modulo";	// because % can also mean percentage
+  case kTokenOperatorExponentiation: return "binary operator exponentiation";
+  case kTokenOperatorLog: return "unary operator ln";
+  case kTokenOperatorEquality: return "binary operator ==";
+  case kTokenOperatorApproximatellyEqual: return "binary operator ~~";
+  case kTokenOperatorSmaller: return "binary operator <";
+  case kTokenOperatorSmallerOrEqual: return "binary operator <=";
+  case kTokenOperatorGreater: return "binary operator >";
+  case kTokenOperatorGreaterOrEqual: return "binary operator >=";
+  case kTokenOperatorNotEqual: return "binary operator !=";
+  case kTokenOperatorLogicalAnd: return "binary operator AND";
+  case kTokenOperatorLogicalOr: return "binary operator OR";
+  case kTokenOperatorLogicalNot: return "binary operator NOT";
+  case kTokenOperatorLogicalXOr: return "binary operator XOR";
+  case kTokenOperatorBinaryAnd: return "binary operator BitAnd";
+  case kTokenOperatorBinaryOr: return "binary operator BitOr";
+  case kTokenOperatorBinaryNot: return "binary operator BitNot";
+  case kTokenOperatorBinaryXOr: return "binary operator BitXOr";
+  case kTokenOperatorBitShiftLeft: return "binary operator <<";
+  case kTokenOperatorBitShiftRight: return "binary operator >>";
+  case kTokenOperatorBitCount: return "unary operator BitCount";
+  case kTokenOperatorPercentage: return "binary operator percentage"; // because % can also mean modulo      
+  case kTokenOperatorConditionalIf: return "conditional operator ?";
+  case kTokenOperatorConditionalElse: return "conditional operator :";
+  case kTokenOperatorConditionalWhen: return "start of WHEN condition";
+  case kTokenBracketOpen_1: return "opening bracket (";
+  case kTokenBracketOpen_2: return "opening bracket [";
+  case kTokenBracketOpen_3: return "opening bracket {";
+  case kTokenBracketClose_1: return "closing bracket )";
+  case kTokenBracketClose_2: return "closing bracket]";
+  case kTokenBracketClose_3: return "closing bracket";
+  case kTokenIdentifier: return "identifier";
+  case kTokenNumber: return "number";
+  case kTokenCards: return "cards";
+  case kTokenDoubleShebang: return "##";
+  case kTokenActionBeep: return "action Beep";
+  case kTokenActionFold: return "action Fold";
+  case kTokenActionCheck: return "action Check";
+  case kTokenActionCall: return "action Call";
+  case kTokenActionRaise: return "action Raise";
+  case kTokenActionRaiseTo: return "action RaiseTo";
+  case kTokenActionRaiseBy: return "action RaiseBy";
+    // case kTokenActionRaiseMin: return "RaiseMin";
+  case kTokenActionRaiseFourthPot: return "action RaiseFourthPot";
+  case kTokenActionRaiseThirdPot: return "action RaiseThirdPot";
+  case kTokenActionRaiseHalfPot: return "action RaiseHalfPot";
+  case kTokenActionRaiseTwoThirdPot: return "action RaiseTwoThirdPot";
+  case kTokenActionRaiseThreeFourthPot: return "action RaiseThreeFourthPot";
+  case kTokenActionRaisePot: return "action RaisePot";
+  case kTokenActionRaiseMax: return "action RaiseMax";
+  case kTokenActionReturn: return "keyword Return";
+  case kTokenShankyKeywordSitOut: return "action SitOut";
+  case kTokenActionUserVariableToBeSet: return "action Set";
+  case kTokenKeywordForce: return "keyword Force";
+  case kTokenUnsupportedDelay: return "unsupported Shanky-style Delay";
+  case kTokenShankyKeywordHand: return "Shanky-style \"hand\"-expression";
+  case kTokenShankyKeywordBoard: return "Shanky-style \"board\"-expression";
+  case kTokenShankyKeywordIn: return "keyword In (part of Shanky-style position)";
+  case kTokenActionRaiseByBigBlinds: return "RaiseByBigBlinds";
+  case kTokenActionRaiseToBigBlinds: return "RaiseToBigBlinds";
+  case kTokenActionRaiseByPercentagedPotsize: return "RaiseByPercentagedPotsize";
+  default:
+    assert(kThisMustNotHappen);
+    CString error_message;
+    error_message.Format("Error: unexpected token ID in TokenVerboseExplained((%i)", token);
+    return error_message;
+  }
+}
+
 const int kOperatorPriority[kNumberOfTokens] = {
   // kTokenEndOfFile
   kUndefined,

@@ -26,6 +26,7 @@ class CParseErrors {
   // but have no state and don't want/need the instantiation of an object.
   static void ErrorUnknownIdentifier(CString name);
   static void Error(CString short_message);
+  static void UnexpectedToken(CString short_error_message, CString expected, int token_found_instead);
  public:
   static void ClearErrorStatus();
   static bool AnyError();

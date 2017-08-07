@@ -206,8 +206,10 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
 bool CFormulaParser::ExpectConditionalThen() {
 	int token_ID = _tokenizer.GetToken();
 	if (token_ID != kTokenOperatorConditionalElse)	{
-		CParseErrors::Error("Malformed conditional expression. \":\" expected,\n"
-      "but this could also be a missing operator or wrong bracket.\n");
+		CParseErrors::UnexpectedToken("Malformed conditional expression.\n",
+      "Expecting a \":\" ,\n"
+      "but this could also be a missing operator or wrong bracket.\n",
+      token_ID);
 		return false;
 	}
 	return true;
@@ -223,7 +225,9 @@ int token_ID = _tokenizer.GetToken();
       "but after the end of the expression starts an OpenPPL-style WHEN-condition.\n");
   } else if ((token_ID != kTokenEndOfFile)
     && (token_ID != kTokenEndOfFunction)) {
-    CParseErrors::Error("Unexpected token(s) after end of function.\n");
+    CParseErrors::UnexpectedToken("Unexpected token(s) after end of function.\n",
+      "Nothing (but this could be a missing operator)\n",
+      token_ID);
   }
   // Nothing more to do here, not even returning a result.
   // We are finished and just warn about the extra input.
@@ -231,17 +235,25 @@ int token_ID = _tokenizer.GetToken();
 
 void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
 	assert(TokenIsBracketOpen(opening_bracket));
-	int expected_bracket_close = _tokenizer.GetToken();
+  int current_token = _tokenizer.GetToken();
+  int expected_bracket_close = kUndefined;
 	switch (opening_bracket) {
 	case kTokenBracketOpen_1:
-		if (expected_bracket_close == kTokenBracketClose_1) return;
+    expected_bracket_close = kTokenBracketClose_1;
+    break;
 	case kTokenBracketOpen_2:
-		if (expected_bracket_close == kTokenBracketClose_2) return;
+    expected_bracket_close = kTokenBracketClose_2;
+    break;
 	case kTokenBracketOpen_3:
-		if (expected_bracket_close == kTokenBracketClose_3) return;
+    expected_bracket_close = kTokenBracketClose_3;
+    break;
 	}
-	CParseErrors::Error("Expecting a closing bracket\n" 
-    "(or bracket of another type).\n"); 
+  if (current_token == expected_bracket_close) {
+    return;
+  }
+	CParseErrors::UnexpectedToken("Unexpected token\n", 
+    "Expecting a closing bracket (or bracket of another type).\n",
+    expected_bracket_close); 
 }
 
 void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed) {
@@ -352,12 +364,13 @@ void CFormulaParser::ParseListBody(COHScriptList *list) {
         return;
       }
 		}	else {
-			CParseErrors::Error("Unexpected token inside list.\n"
-        "This does not look like valid hole-cards.\n"
+			CParseErrors::UnexpectedToken("Unexpected token inside list.\n"
+        "This does not look like valid hole-cards.\n",
         "Allowed are\n:"
         "  AA  KK...  pairs\n"
         "  AKs AQo... suited hands\n" 
-        "  AKo AQo... offsuited hands\n");
+        "  AKo AQo... offsuited hands\n",
+        token_ID);
 			return;
 		}
 		token_ID = _tokenizer.GetToken();
@@ -411,8 +424,9 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
     // We don't mention Shanky hand- and board-expressions here;
     // they are ugly to parse and only provided for an easy start.
     // We prefer users who write OpenPPL ;-)
-		CParseErrors::Error("Unexpected token inside expression.\n" 
-      "Expecting: opening bracket, unary operator, identifier or number.\n");
+		CParseErrors::UnexpectedToken("Unexpected token inside expression.\n",
+      "Expecting: opening bracket, unary operator, identifier or number.\n",
+      token_ID);
 		return NULL;
 	}
 	token_ID = _tokenizer.LookAhead();
@@ -573,8 +587,9 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
     // but when dealing with Shanky-PPL we replace them
     // by approximately-equal-operators
     // to handle Shankys implicit rounding (integers only)
-    CParseErrors::Error("Unexpected token inside Shanky-style hand- or board-expression.\n"
-      "Expecting: equality sign.\n");
+    CParseErrors::UnexpectedToken("Unexpected token inside Shanky-style hand- or board-expression.\n",
+      "Expecting: equality sign.\n",
+      token_ID);
     return NULL;
   }
   token_ID = _tokenizer.GetToken();
@@ -609,8 +624,9 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleInPositionExpr
   assert(token_ID = kTokenShankyKeywordIn);
   token_ID = _tokenizer.GetToken();
   if (token_ID != kTokenIdentifier) {
-    CParseErrors::Error("Unexpected token after keyword \"In\".\n"
-      "Expecting: Shanky-style position like \"In Bigblind\".\n");
+    CParseErrors::UnexpectedToken("Unexpected token after keyword \"In\".\n",
+      "Expecting: Shanky-style position like \"In Bigblind\".\n",
+      token_ID);
     return NULL;
   }
   position_symbol += _tokenizer.GetTokenString();
@@ -639,6 +655,7 @@ void CFormulaParser::ParseConditionalPartialThenElseExpressions(
 	// We have to put everything together on the call-site.
 }
 
+//!!!!!
 void CFormulaParser::ErrorMissingAction(int token_ID) {
   CString error_message = "Missing action after when-condition\n";
   if (token_ID == kTokenNumber) {
@@ -665,8 +682,9 @@ bool CFormulaParser::CheckForEmptyWhenCondition() {
     CParseErrors::Error("Empty when-condition at end of function\n");
     return false;
   } else if (token_ID == kTokenOperatorConditionalWhen) {
-    CParseErrors::Error("Two consecutive WHENs\n"
-      "Expecting a condition");
+    CParseErrors::UnexpectedToken("Two consecutive WHENs\n",
+      "Expecting a condition",
+      token_ID);
     return false;
   }
   return true;
@@ -755,20 +773,22 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
 	// User-variable to be set
   int token_ID = _tokenizer.GetToken();
   if (token_ID != kTokenIdentifier) {
-    CParseErrors::Error("Unexpected token.\n"
-      "User-variable or memory-store-command expected.\n");
+    CParseErrors::UnexpectedToken("Unexpected token.\n",
+      "User-variable or memory-store-command expected.\n",
+      token_ID);
 		return NULL;
   }
 	CString identifier = _tokenizer.GetTokenString();
 	if ((identifier.Left(4).MakeLower() != "user") 
       && (identifier.Left(3) != "me_")) { 
-		CParseErrors::Error("Unexpected identifier.\n"
+		CParseErrors::UnexpectedToken("Unexpected identifier.\n",
 		  "Valid options:\n"
 		  "   * user-variable (user_utg_limp_raised)\n"
 		  "   * memory-store-command (me_st_pi_3_141592653)\n"
 		  "   * memory-increment-command (me_inc_flopsseen)\n"
 		  "   * memory-add-command (me_add_outs_4)\n"
-		  "   * memory-sub-command (me_sub_outs_1_5)\n");
+		  "   * memory-sub-command (me_sub_outs_1_5)\n",
+      token_ID);
 		return NULL;
 	}
 	TPParseTreeTerminalNodeIdentifier user_variable 
@@ -832,10 +852,10 @@ void CFormulaParser::SkipUnsupportedShankyStyleDelay() {
   }
   _token_ID = _tokenizer.GetToken();
   if (_token_ID != kTokenNumber) {
-    CParseErrors::Error("Unexpected token after keyword \"delay\".\n"
+    CParseErrors::UnexpectedToken("Unexpected token after keyword \"delay\".\n",
       "Expecting a number.\n"
-      "But don't worry: Shanky-style delays are not supported anyway."
-    );
+      "But don't worry: Shanky-style delays are not supported anyway.\n",
+      _token_ID);
   }
 }
 
@@ -843,7 +863,8 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 	int _token_ID = _tokenizer.GetToken();
   if (_token_ID != kTokenKeywordForce) {
     // General error message on missing keyword force
-    CParseErrors::Error("Missing keyword FORCE after action.\n");
+    CParseErrors::UnexpectedToken("Missing keyword FORCE after action.\n",
+      "", _token_ID);
     // Don't consume the token (probably WHEN)
     // We want to continue gracefully with the next condition
     _tokenizer.PushBack();
@@ -877,8 +898,9 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpressi
 		  || TokenIsBracketOpen(_token_ID)) {
 		expression = ParseExpression();
 	} else {
-    CParseErrors::Error("Missing expression after keyword RaiseTo.\n"
-      "Expecting the betsize in big blinds.\n");
+    CParseErrors::UnexpectedToken("Missing expression after keyword RaiseTo.\n",
+      "Expecting the betsize in big blinds.\n",
+      _token_ID);
     return NULL;
   }
   action->MakeRaiseToAction(expression);
@@ -899,9 +921,10 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpressi
 		  || TokenIsBracketOpen(_token_ID)){
 		expression = ParseExpression();
 	} else {
-    CParseErrors::Error("Missing expression after keyword RaiseBy.\n"
+    CParseErrors::UnexpectedToken("Missing expression after keyword RaiseBy.\n",
       "Expecting the betsize in big blinds or a potsize-expression.\n"
-      "Example: WHEN ... RAISEBY 60% FORCE\n");
+      "Example: WHEN ... RAISEBY 60% FORCE\n",
+      _token_ID);
     return NULL;
   }
 	_token_ID = _tokenizer.LookAhead();
