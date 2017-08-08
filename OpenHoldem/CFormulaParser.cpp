@@ -438,7 +438,11 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
     // When ... RaiseBy 60% Force
     if (token_ID == kTokenOperatorPercentage) {
       int next_token_ID = _tokenizer.LookAhead();
-      if (next_token_ID == kTokenKeywordForce) {
+      // Also handling mal-formed potsize-actions without force,
+      // which are usually followed by a WHEN or end of function.
+      if ((next_token_ID == kTokenKeywordForce) 
+        || (next_token_ID == kTokenOperatorConditionalWhen)
+        || (next_token_ID == kTokenEndOfFunction)) {
         // Now we should pushback the *2nd last* token  (percentage)
         _tokenizer.PushBackAdditionalPercentageOperator();
         // and return the expression we got so far
