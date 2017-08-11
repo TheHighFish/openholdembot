@@ -213,29 +213,13 @@ CString CFilenames::PathOfExecutable() {
 }
 
 CString CFilenames::ExecutableFilename() {
-	CString complete_path = PathOfExecutable();
-	int pos = complete_path.ReverseFind('\\');
-	if (pos > 0) {
-		assert(pos < complete_path.GetLength() - 1);
-		return complete_path.Mid(pos + 1);
-	}
-  Log("ExecutableFilename", complete_path.GetString());
-	return complete_path;
+  return FilenameWithoutPath(PathOfExecutable());
 }
 
 CString CFilenames::PureExecutableFilename() {
-	CString filename = ExecutableFilename();
-	int pos = filename.ReverseFind('.');
-  CString result;
-	if (pos > 0) {
-		result = filename.Left(pos);
-	} else {
-    result = filename;
-  }
-  Log("PureExecutableFilename", result.GetString());
-	return result;
+  return FilenameWithoutPathAndExtension(ExecutableFilename());
 }
-
+	
 CString CFilenames::VersusPath() {
   CString result = OpenHoldemDirectory() + "versus.bin";
   Log("VersusPath", result.GetString());
@@ -262,4 +246,27 @@ bool CFilenames::Exists(CString filename_or_pattern) {
   if (hFind == INVALID_HANDLE_VALUE) return false;
   FindClose(hFind);
   return true;
+}
+
+CString CFilenames::FilenameWithoutPath(CString path) {
+  int pos = path.ReverseFind('\\');
+  if (pos > 0) {
+    assert(pos < path.GetLength() - 1);
+    return path.Mid(pos + 1);
+  }
+  return path;
+}
+
+CString CFilenames::FilenameWithoutPathAndExtension(CString path) {
+  CString filename = FilenameWithoutPath(path);
+  int pos = filename.ReverseFind('.');
+  CString result;
+  if (pos > 0) {
+  result = filename.Left(pos);
+  }
+  else {
+    result = filename;
+  }
+  Log("FilenameWithoutPathAndExtension()", result.GetString());
+return result;
 }

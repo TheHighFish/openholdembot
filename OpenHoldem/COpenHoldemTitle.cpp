@@ -53,7 +53,7 @@ CString COpenHoldemTitle::FullTitle() {
   CString full_title;
   write_log(preferences.debug_alltherest(), "[COpenHoldemTitle] location Johnny_6\n");
 	if (p_autoconnector->IsConnectedToAnything())	{
-		full_title.Format("%s - %s (%s)", p_function_collection->FormulaName(),
+		full_title.Format("%s | %s | %s", p_function_collection->FormulaName(),
 			p_tablemap->sitename(), p_table_title->Title());
 	}	else {
 		full_title.Format("%s", p_function_collection->FormulaName());

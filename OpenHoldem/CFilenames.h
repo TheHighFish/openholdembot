@@ -57,29 +57,32 @@ class CFilenames {
   CString ReplaySessionDirectory();
   CString ScraperDirectory();
   CString ToolsDirectory();
-public:
+ public:
   // Filenames
 	CString MiniDumpFilename();
 	CString ReplayBitmapFilename(int frame_number);
 	CString ReplayHTMLFilename(int frame_number);
 	CString ExecutableFilename();
 	CString PureExecutableFilename();
-public:
+ public:
   // Paths
   CString IniFilePath();
   CString LogFilePath();
   CString VersusPath();
   CString CustomLibraryPath();
   CString ManualModePath();
-public:
+ public:
   // Others
   CString TableMapWildcard();
  public:
 	void SwitchToOpenHoldemDirectory();
   bool Exists(CString filename_or_pattern);
+ public:
+  static CString FilenameWithoutPath(CString path);
+  static CString FilenameWithoutPathAndExtension(CString path);
  private:
 	CString IniFilename();
-  void Log(CString name, CString value);
+  static void Log(CString name, CString value);
  private:
 	char _startup_path[MAX_PATH];
 };

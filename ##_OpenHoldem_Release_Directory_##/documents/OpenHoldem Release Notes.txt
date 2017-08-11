@@ -31,7 +31,12 @@ MAINTENANCE:
   cintains a non-empty f$call-function.
   [THF]
 
-
+BUG FIXES
+- The title dod nopt contain the name of the formula.
+  Thanks to Eden and Lucky8 for reporting.
+  [THF]
+  
+  
 v﻿11.2.4 2017-07-03
 ==================
 BUG FIXES:
