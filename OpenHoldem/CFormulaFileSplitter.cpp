@@ -56,6 +56,8 @@ void CFormulaFileSplitter::SplitFile(CArchive &formula_file) {
   _starting_line_of_next_function = 0;
   _splitting_shanky_ppl = false;
   SkipShankyOptionSettings(formula_file);
+  // Line-counter needs to be aware of skipped Shanky option-settings
+  _starting_line_of_next_function = _total_lines_processed;
   COHScriptObject* next_function_or_list = GetNextObject(formula_file);
   while (next_function_or_list != NULL) {
     p_function_collection->Add(next_function_or_list);
