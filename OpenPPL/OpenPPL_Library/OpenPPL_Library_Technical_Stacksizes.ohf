@@ -316,3 +316,36 @@ ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
 // Balances are OH-style in dollars
 [bblind > 0] ? [balance9 / bblind] :
 ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+//
+// 'Synonyms for StackX to avoid confusion
+//
+##StackSize0##
+Stack0
+
+##StackSize1##
+Stack1
+
+##StackSize2##
+Stack2
+
+##StackSize3##
+Stack4
+
+##StackSize4##
+Stack4
+
+##StackSize5##
+Stack5
+
+##StackSize6##
+Stack6
+
+##StackSize7##
+Stack7
+
+##StackSize8##
+Stack8
+
+##StackSize9##
+Stack9
