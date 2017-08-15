@@ -155,11 +155,11 @@ void CFunctionCollection::Add(COHScriptObject *new_function) {
   }
   write_log(preferences.debug_formula(), 
 	  "[CFunctionCollection] Adding %s -> %i\n", name, new_function);
-   if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) { 
-     write_log(preferences.debug_formula(),
-       "[CFunctionCollection] Making function read-only\n");
-     new_function->SetAsReadOnlyLibraryFunction();
-   }
+  if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) { 
+    write_log(preferences.debug_formula(),
+      "[CFunctionCollection] Making function read-only\n");
+    new_function->SetAsReadOnlyLibraryFunction();
+  }
   _function_map[name] = new_function;
 }
 
@@ -335,6 +335,7 @@ void CFunctionCollection::CheckForDefaultFormulaEntries() {
     for (int i=kBetroundPreflop; i<=kBetroundRiver; ++i) {
       CString function_name = k_OpenPPL_function_names[i];
       CreateEmptyDefaultFunctionIfFunctionDoesNotExist(function_name);
+      assert(LookUp(function_name) != NULL);
     }
   } 
   // Autoplayer-functions
@@ -493,7 +494,7 @@ void CFunctionCollection::Save(CArchive &ar) {
         "Warning");
       ar.WriteString("custom\n"
         "// Bot-logic originally imported from Shanky-style PPL.\n"
-        "// Remove this keyword and comment once properly converted.\n\nn");
+        "// Remove this keyword and comment once properly converted.\n\n\n");
     }
   }
   // First write the date
@@ -649,9 +650,6 @@ bool CFunctionCollection::ParseAll() {
     "[CFunctionCollection] ParseAll()\n");
   CSLock lock(m_critsec);
   assert(p_formula_parser != NULL);
-  // Adding empty standard-functions
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
-  CheckForDefaultFormulaEntries();
   p_parser_symbol_table->Clear();
   COHScriptObject *p_oh_script_object = GetFirst();
   while (p_oh_script_object != NULL) {

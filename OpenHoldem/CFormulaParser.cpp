@@ -54,7 +54,7 @@ CString _function_name;
 
 CFormulaParser::CFormulaParser() {
   _is_parsing_counter = 0;
-  _is_parsing_read_only_function_library = false;
+  _is_parsing_read_only_function_library = true;
   _is_parsing_debug_tab = false;
   _currently_parsed_function_or_list = NULL;
 }
@@ -96,10 +96,15 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   p_function_collection->SetFormulaName(CFilenames::FilenameWithoutPathAndExtension(
     formula_file.GetFile()->GetFilePath()));
   EnterParserCode();
+  _is_parsing_read_only_function_library = false;
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   LoadArchive(formula_file);
+  // Adding empty standard-functions
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
+  p_function_collection->CheckForDefaultFormulaEntries();
   p_function_collection->ParseAll();
+  _is_parsing_read_only_function_library = true;
   LeaveParserCode();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup],
     preferences.log_ini_functions());
@@ -154,9 +159,7 @@ void CFormulaParser::LoadFunctionLibrary(CString library_path) {
   write_log(preferences.debug_parser(), 
 	    "[FormulaParser] Going to load and parse library %s\n", library_path);
   CArchive library_archive(&library_file, CArchive::load); 
-  _is_parsing_read_only_function_library = true;
   LoadArchive(library_archive);
-  _is_parsing_read_only_function_library = false;
   LeaveParserCode();
   LogMemoryUsage(library_path.GetBuffer());
 }
