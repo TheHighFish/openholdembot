@@ -306,11 +306,14 @@ StartOfScanForNextToken:
   // * 0xCE
   else if (isdigit(CURRENT_CHARACTER()) || (CURRENT_CHARACTER() == '.')) {
     // Special case suited and offsuited hands like 72o or 54s
+    // also Shanky-style hand = 98suited
     if (IsCardRankCharacter(NEXT_CHARACTER)) {
       char third_character_lowercase = tolower(SECOND_NEXT_CHARACTER);
 	    if ((third_character_lowercase == 's')
           || (third_character_lowercase == 'o')) {
-        _token_end_pointer += 3;
+        while (isalnum(CURRENT_CHARACTER())) {
+          ++_token_end_pointer;
+        }
         return kTokenCards;
       }
     }

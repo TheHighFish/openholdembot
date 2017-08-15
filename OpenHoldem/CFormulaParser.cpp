@@ -602,7 +602,7 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
     return NULL;
   }
   token_ID = _tokenizer.GetToken();
-  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenNumber)) {
+  while ((token_ID == kTokenIdentifier) || (token_ID == kTokenNumber) || (token_ID = kTokenCards)) {
     CString next_symbol = _tokenizer.GetTokenString();
     if (!SymbolLooksLikePartOfShankyHandOrBoardExpression(next_symbol)) {
       break;
