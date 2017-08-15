@@ -93,6 +93,7 @@ int CFormulaFileSplitter::IsShankyFunction(CString line_of_code) {
 }
 
 void CFormulaFileSplitter::SkipShankyOptionSettings(CArchive &formula_file) {
+  bool keyword_custom_seen = false;
   while (true) {
     if (!formula_file.ReadString(_next_line)) {
       break;
@@ -102,14 +103,24 @@ void CFormulaFileSplitter::SkipShankyOptionSettings(CArchive &formula_file) {
       SanityChecksForWrongFileTypes();
     }
     if (IsFunctionHeader(_next_line)) {
-      // OH-style function found
+      // Function found (OH-script or Shankynese)
       // No longer any Shanky option settings expected
+      if (IsShankyFunction(_next_line)) {
+        // preflop, flop, turn or river
+        if (!keyword_custom_seen) {
+          // No parse-error here.
+          // Outside of functions we don't have any reasonable context
+          OH_MessageBox_Error_Warning("Shanky-style code missing keyword \"custom\".");
+        }
+      }
       break;
     }
+    // !!!!! top-level commewnt outside function
     if (_next_line.Find('=') > 0) {
       // Probably Shanky-style option setting, e.g.
       // MaxSessionHands = 10000
       // MaxSessionTime = 720
+      _splitting_shanky_ppl = true;
       continue;
     }
     // Avoid problems with extra spaces
@@ -117,14 +128,11 @@ void CFormulaFileSplitter::SkipShankyOptionSettings(CArchive &formula_file) {
     _next_line.TrimRight();
     _next_line.MakeLower();
     if (_next_line == "custom") {
-      // Shanky keyword custom found
-      // end of option settings
+      // Shanky keyword custom found.
+      // Usually end of option settings
+      keyword_custom_seen = true;
       _splitting_shanky_ppl = true;
       continue;
-    }
-    if (IsShankyFunction(_next_line)) {
-      // preflop, flop, turn or river
-      break;
     }
     // Any other kind of input like empty lines.
     // continue
