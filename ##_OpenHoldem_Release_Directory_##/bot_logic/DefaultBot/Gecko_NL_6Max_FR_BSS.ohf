@@ -3448,42 +3448,42 @@ WHEN Others
 
 ##listGecko01##
 66  77  88  99  TT  JJ  QQ  KK  AA  
-ATS AJS AQS AKS KQS QJS JTS  
+ATs AJs AQs AKs KQs QJs JTs  
 AJo  AQo AKo
 
 ##listGecko02##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A9S ATS AJS AQS AKS  
-KTS KJS KQS  
-QJS  
-JTS  
-T9S  
-98S  
+A9s ATs AJs AQs AKs  
+KTs KJs KQs  
+QJs  
+JTs  
+T9s  
+98s  
 ATo  AJo AQo AKo 
 KJo  KQo  
 
 ##listGecko03##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-KJS KQS  
-QTS QJS  
-JTS  
-T9S  
-98S  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+KJs KQs  
+QTs QJs  
+JTs  
+T9s  
+98s  
 ATo  AJo AQo AKo 
 KQo 
 
 ##listGecko04##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K9S KTS KJS KQS  
-Q9S QTS QJS  
-J8S J9S JTS  
-T8S T9S  
-98S  
-87S  
-76S  
-65S  
+A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+K9s KTs KJs KQs  
+Q9s QTs QJs  
+J8s J9s JTs  
+T8s T9s  
+98s  
+87s  
+76s  
+65s  
 A9o  ATo AJo AQo AKo 
 KTo  KJo  KQo  
 QTo  QJo  
@@ -3491,16 +3491,16 @@ JTo
 
 ##listGecko05##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K8S K9S KTS KJS KQS  
-Q9S QTS QJS  
-J8S J9S JTS  
-T8S T9S  
-97S 98S  
-87S  
-76S  
-65S  
-54S  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+K8s K9s KTs KJs KQs  
+Q9s QTs QJs  
+J8s J9s JTs  
+T8s T9s  
+97s 98s  
+87s  
+76s  
+65s  
+54s  
 A8o  A9o ATo AJo AQo AKo 
 K9o  KTo  KJo  KQo  
 QTo  QJo  
@@ -3514,43 +3514,43 @@ KK  AA  QQ
 
 ##listGecko12##
 KK  AA  QQ  
-AKS  
+AKs  
 AKo
 
 ##listGecko13##
 KK  AA  QQ  JJ  TT  
-AKS  
+AKs  
 AKo
 
 ##listGecko14##
 KK  AA  QQ  JJ  TT  99  88  
-AKS AQS  
+AKs AQs  
 AKo
 
 ##listGecko15##
 KK  AA  QQ  JJ  TT  99  88  77  
-AKS AQS AJS ATS  
+AKs AQs AJs ATs  
 AKo AQo AJo 
-KQS  
+KQs  
 
 ##listGecko16##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  
-AKS AQS AJS ATS  
+AKs AQs AJs ATs  
 AKo AQo AJo 
-KQS  
+KQs  
 
 ##listGecko06##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K7S K8S K9S KTS KJS KQS  
-Q8S Q9S QTS QJS  
-J8S J9S JTS  
-T8S T9S  
-97S 98S  
-87S  
-76S  
-65S  
-54S  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+K7s K8s K9s KTs KJs KQs  
+Q8s Q9s QTs QJs  
+J8s J9s JTs  
+T8s T9s  
+97s 98s  
+87s  
+76s  
+65s  
+54s  
 A6o  A7o A8o A9o ATo AJo AQo AKo 
 K8o  K9o  KTo  KJo  KQo  
 QTo  QJo  
@@ -3558,16 +3558,16 @@ JTo
 
 ##listGecko07##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K7S K8S K9S KTS KJS KQS  
-Q8S Q9S QTS QJS  
-J8S J9S JTS  
-T7S T8S T9S  
-96S 97S 98S  
-86S 87S  
-75S 76S  
-64S 65S  
-54S  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+K7s K8s K9s KTs KJs KQs  
+Q8s Q9s QTs QJs  
+J8s J9s JTs  
+T7s T8s T9s  
+96s 97s 98s  
+86s 87s  
+75s 76s  
+64s 65s  
+54s  
 A5o  A6o A7o A8o A9o ATo AJo AQo AKo 
 K9o  KTo  KJo  KQo  
 Q9o  QTo  QJo  
@@ -3576,16 +3576,16 @@ T9o
 
 ##listGecko08##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
-Q6S Q7S Q8S Q9S QTS QJS  
-J7S J8S J9S JTS  
-T6S T7S T8S T9S  
-95S 96S 97S 98S  
-85S 86S 87S  
-75S 76S  
-64S 65S  
-54S  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs  
+Q6s Q7s Q8s Q9s QTs QJs  
+J7s J8s J9s JTs  
+T6s T7s T8s T9s  
+95s 96s 97s 98s  
+85s 86s 87s  
+75s 76s  
+64s 65s  
+54s  
 A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo 
 K8o  K9o  KTo  KJo  KQo  
 Q9o  QTo  QJo  
@@ -3595,18 +3595,18 @@ T9o  JTo
 
 ##listGecko00##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
-Q2S Q3S Q4S Q5S Q6S Q7S Q8S Q9S QTS QJS  
-J2S J3S J4S J5S J6S J7S J8S J9S JTS  
-T2S T3S T4S T5S T6S T7S T8S T9S  
-92S 93S 94S 95S 96S 97S 98S  
-82S 83S 84S 85S 86S 87S  
-72S 73S 74S 75S 76S  
-62S 63S 64S 65S  
-52S 53S 54S  
-42S 43S  
-32S  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs  
+Q2s Q3s Q4s Q5s Q6s Q7s Q8s Q9s QTs QJs  
+J2s J3s J4s J5s J6s J7s J8s J9s JTs  
+T2s T3s T4s T5s T6s T7s T8s T9s  
+92s 93s 94s 95s 96s 97s 98s  
+82s 83s 84s 85s 86s 87s  
+72s 73s 74s 75s 76s  
+62s 63s 64s 65s  
+52s 53s 54s  
+42s 43s  
+32s  
 A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo 
 K2o K3o  K4o  K5o  K6o  K7o  K8o  K9o  KTo  KJo  KQo  
 Q2o Q3o  Q4o  Q5o  Q6o  Q7o  Q8o  Q9o  QTo  QJo  
@@ -3625,31 +3625,31 @@ KK  AA
 
 ##listGecko17##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQS AKS  
+AQs AKs  
 AKo  
-KQS
+KQs
 
 ##listGecko18##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQS AKS  
+AQs AKs  
 AKo  KQo  
-KQS QJS JTS
+KQs QJs JTs
 
 ##listGecko19##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQS AKS  
+AQs AKs  
 AKo  KQo  
-KQS QJS JTS T9S 98S
+KQs QJs JTs T9s 98s
 
 ##listGecko99##
 QQ  KK  AA  
-AKS  
+AKs  
 AKo
 
 ##listGecko09##
 88  99  TT  JJ  QQ  KK  AA  
-AJS AQS AKS  
-KQS  
+AJs AQs AKs  
+KQs  
 AKo AQo 
 
 ##listGecko101##
@@ -3663,121 +3663,121 @@ AA  KK  QQ  JJ  TT
 
 ##listGecko106##
 AA  KK  QQ  JJ  TT  99  
-AKS AQS  
+AKs AQs  
 AKo  
 
 ##listGecko107##
 AA  KK  QQ  JJ  TT  99  
-AKS AQS AJS  
+AKs AQs AJs  
 AKo  AQo
 
 ##listGecko108##
 AA  KK  QQ  JJ  TT  99  88  
-AKS AQS AJS ATS  
+AKs AQs AJs ATs  
 AKo AQo AJo 
-KQS 
+KQs 
 
 ##listGecko109##
 AA  KK  QQ  JJ  TT  99  88  77  66  
-AKS AQS AJS ATS  
+AKs AQs AJs ATs  
 AKo AQo AJo 
-KQS 
+KQs 
 
 ##listGecko110##
 AA  KK  QQ  JJ  TT  99  88  77  
-AKS AQS AJS ATS A9S A8S  
+AKs AQs AJs ATs A9s A8s  
 AKo AQo AJo ATo A9o 
-KQS  
+KQs  
 KQo
 
 ##listGecko111##
 AA  KK  QQ  JJ  TT  99  88  77  66  
-AKS AQS AJS ATS A9S A8S  
+AKs AQs AJs ATs A9s A8s  
 AKo AQo AJo ATo A9o 
-KQS KJS  
-QJS   
+KQs KJs  
+QJs   
 KQo
 
 ##listGecko112##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  
-AKS AQS AJS ATS A9S A8S  
+AKs AQs AJs ATs A9s A8s  
 AKo AQo AJo ATo A9o 
-KQS KJS  
-QJS   
-JTS  
-T9S  
+KQs KJs  
+QJs   
+JTs  
+T9s  
 KQo
 
 ##listGecko113##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  
-AKS AQS AJS ATS A9S A8S A7S   
+AKs AQs AJs ATs A9s A8s A7s   
 AKo AQo AJo ATo A9o A8o 
-KQS KJS  
-QJS   
-JTS  
-T9S  
+KQs KJs  
+QJs   
+JTs  
+T9s  
 KQo
 
 ##listGecko114##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S   
+AKs AQs AJs ATs A9s A8s A7s   
 AKo AQo AJo ATo A9o A8o 
-KQS KJS  
-QJS   
-JTS  
-T9S  
-98S  
+KQs KJs  
+QJs   
+JTs  
+T9s  
+98s  
 KQo
 
 ##listGecko115##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S   
+AKs AQs AJs ATs A9s A8s A7s   
 AKo AQo AJo ATo A9o A8o 
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
+KQs KJs KTs   
+QJs QTs  
+JTs  
+T9s  
+98s  
 KQo KJo  
 
 ##listGecko116##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S  
+AKs AQs AJs ATs A9s A8s A7s A6s  
 AKo AQo AJo ATo A9o A8o A7o 
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
+KQs KJs KTs   
+QJs QTs  
+JTs  
+T9s  
+98s  
+87s  
 KQo  KJo  
 QJo  
 
 ##listGecko117##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s  
 AKo AQo AJo ATo A9o A8o A7o A6o 
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
+KQs KJs KTs   
+QJs QTs  
+JTs  
+T9s  
+98s  
+87s  
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
 
 ##listGecko118##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o 
-KQS KJS KTS K9S    
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
-76S  
+KQs KJs KTs K9s    
+QJs QTs  
+JTs  
+T9s  
+98s  
+87s  
+76s  
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
@@ -3785,19 +3785,19 @@ T9o
 
 ##listGecko119##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S    
-QJS QTS Q9S  
-JTS  
-T9S  
-98S  
-87S  
-76S  
-65S  
-54S  
-43S  
-32S  
+KQs KJs KTs K9s    
+QJs QTs Q9s  
+JTs  
+T9s  
+98s  
+87s  
+76s  
+65s  
+54s  
+43s  
+32s  
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
@@ -3805,19 +3805,19 @@ T9o
 
 ##listGecko120##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S     
-QJS QTS Q9S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S  
-65S  
-54S  
-43S  
-32S  
+KQs KJs KTs K9s K8s K7s     
+QJs QTs Q9s  
+JTs J9s J8s    
+T9s T8s  
+98s 97s   
+87s 86s   
+76s  
+65s  
+54s  
+43s  
+32s  
 KQo  KJo  KTo  K9o  
 QJo  QTo  Q9o  
 JTo  J9o  
@@ -3825,19 +3825,19 @@ T9o
 
 ##listGecko121##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s  
+JTs J9s J8s    
+T9s T8s  
+98s 97s   
+87s 86s   
+76s 75s   
+65s 64s  
+54s 53s  
+43s 42s  
+32s  
 KQo  KJo  KTo  K9o  
 QJo  QTo  Q9o  
 JTo  J9o  J8o  
@@ -3845,19 +3845,19 @@ T9o
 
 ##listGecko122##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S    
-JTS J9S J8S J7S J6S      
-T9S T8S T7S T6S   
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s    
+JTs J9s J8s J7s J6s      
+T9s T8s T7s T6s   
+98s 97s 96s    
+87s 86s   
+76s 75s   
+65s 64s  
+54s 53s  
+43s 42s  
+32s  
 KQo  KJo  KTo  K9o  K8o  
 QJo  QTo  Q9o  
 JTo  J9o  
@@ -3867,19 +3867,19 @@ T9o
 
 ##listGecko123##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S  
-98S 97S 96S    
-87S 86S 85S  
-76S 75S 74S  
-65S 64S 63S  
-54S 53S 52S  
-43S 42S  
-32S  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
+JTs J9s J8s J7s J6s J5s J4s J3s J2s  
+T9s T8s T7s T6s  
+98s 97s 96s    
+87s 86s 85s  
+76s 75s 74s  
+65s 64s 63s  
+54s 53s 52s  
+43s 42s  
+32s  
 KQo  KJo  KTo  K9o  K8o  
 QJo  QTo  Q9o  
 JTo  J9o  
@@ -3889,18 +3889,18 @@ T9o
 
 ##listGecko124##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S T5S T4S T3S T2S  
-98S 97S 96S 95S 94S 93S 92S  
-87S 86S 85S 84S 83S 82S  
-76S 75S 74S 73S 72S  
-65S 64S 63S 62S  
-54S 53S 52S  
-43S 42S  
-32S  
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
+JTs J9s J8s J7s J6s J5s J4s J3s J2s  
+T9s T8s T7s T6s T5s T4s T3s T2s  
+98s 97s 96s 95s 94s 93s 92s  
+87s 86s 85s 84s 83s 82s  
+76s 75s 74s 73s 72s  
+65s 64s 63s 62s  
+54s 53s 52s  
+43s 42s  
+32s  
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
 KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  K4o  K3o  K2o
 QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  Q2o 
@@ -3915,132 +3915,132 @@ T9o T8o T7o T6o T5o T4o T3o T2o
 
 ##listGecko125##
 TT  99  88  77  
-AQS AJS ATS 
+AQs AJs ATs 
 AKo AQo 
-KQS  
-QJS  
-JTS  
+KQs  
+QJs  
+JTs  
 
 ##listGecko126##
 TT  99  88  77  66  55  
-AQS AJS ATS 
+AQs AJs ATs 
 AKo AQo AJo 
-KQS  
-QJS  
-JTS  
+KQs  
+QJs  
+JTs  
 
 ##listGecko127##
 TT  99  88  77  66  55  
-AQS AJS ATS A9S 
+AQs AJs ATs A9s 
 AKo AQo AJo ATo 
-KQS KJS  
-QJS   
-JTS  
+KQs KJs  
+QJs   
+JTs  
 
 ##listGecko128##
 TT  99  88  77  66  55  44  
-AQS AJS ATS A9S A8S  
+AQs AJs ATs A9s A8s  
 AKo AQo AJo ATo 
-KQS KJS  
-QJS   
-JTS  
+KQs KJs  
+QJs   
+JTs  
 KQo
 
 ##listGecko129##
 TT  99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S  
+AQs AJs ATs A9s A8s  
 AKo AQo AJo ATo A9o 
-KQS KJS  
-QJS   
-JTS  
+KQs KJs  
+QJs   
+JTs  
 KQo
 
 ##listGecko130##
 TT  99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S  
+AQs AJs ATs A9s A8s  
 AKo AQo AJo ATo A9o A8o 
-KQS KJS KTS   
-QJS   
-JTS 
-T9S  
+KQs KJs KTs   
+QJs   
+JTs 
+T9s  
 KQo
 
 ##listGecko131##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S 
+AQs AJs ATs A9s A8s A7s A6s A5s 
 AQo  AJo ATo A9o A8o A7o 
-KQS KJS KTS 
-QJS QTS 
-JTS 
-T9S 
-98S 
-87S 
-76S 
+KQs KJs KTs 
+QJs QTs 
+JTs 
+T9s 
+98s 
+87s 
+76s 
 KQo  KJo  KTo  
 QJo  QTo  
 
 ##listGecko132##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S 
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s 
 AQo  AJo ATo A9o A8o A7o A6o A5o 
-KQS KJS KTS 
-QJS QTS 
-JTS 
-T9S 
-98S 
-87S 
-76S 
+KQs KJs KTs 
+QJs QTs 
+JTs 
+T9s 
+98s 
+87s 
+76s 
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
 
 ##listGecko133##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AQo  AJo ATo A9o A8o A7o A6o A5o 
-KQS KJS KTS K9S 
-QJS QTS Q9S 
-JTS J9S 
-T9S T8S 
-98S 97S 
-87S 
-76S 
+KQs KJs KTs K9s 
+QJs QTs Q9s 
+JTs J9s 
+T9s T8s 
+98s 97s 
+87s 
+76s 
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
 
 ##listGecko134##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o 
-KQS KJS KTS K9S 
-QJS QTS Q9S 
-JTS J9S 
-T9S T8S 
-98S 97S 
-87S 86S   
-76S 75S   
-65S 64S  
-54S 
+KQs KJs KTs K9s 
+QJs QTs Q9s 
+JTs J9s 
+T9s T8s 
+98s 97s 
+87s 86s   
+76s 75s   
+65s 64s  
+54s 
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
 
 ##listGecko135##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S 
-QJS QTS Q9S 
-JTS J9S 
-T9S T8S 
-98S 97S 
-87S 86S   
-76S 75S   
-65S 64S  
-54S 
-43S 
-32S  
+KQs KJs KTs K9s K8s K7s 
+QJs QTs Q9s 
+JTs J9s 
+T9s T8s 
+98s 97s 
+87s 86s   
+76s 75s   
+65s 64s  
+54s 
+43s 
+32s  
 KQo  KJo  KTo  K9o  
 QJo  QTo  Q9o  
 JTo  J9o  
@@ -4048,19 +4048,19 @@ T9o
 
 ##listGecko136##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S K6S K5S 
-QJS QTS Q9S Q8S 
-JTS J9S J8S 
-T9S T8S T7S 
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
+KQs KJs KTs K9s K8s K7s K6s K5s 
+QJs QTs Q9s Q8s 
+JTs J9s J8s 
+T9s T8s T7s 
+98s 97s 96s    
+87s 86s   
+76s 75s   
+65s 64s  
+54s 53s  
+43s 42s  
+32s  
 KQo  KJo  KTo  K9o  
 QJo  QTo  Q9o  
 JTo  J9o  
@@ -4070,19 +4070,19 @@ T9o
 
 ##listGecko137##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S    
-JTS J9S J8S J7S J6S      
-T9S T8S T7S T6S   
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s    
+JTs J9s J8s J7s J6s      
+T9s T8s T7s T6s   
+98s 97s 96s    
+87s 86s   
+76s 75s   
+65s 64s  
+54s 53s  
+43s 42s  
+32s  
 KQo  KJo  KTo  K9o  K8o  
 QJo  QTo  Q9o  
 JTo  J9o  
@@ -4092,19 +4092,19 @@ T9o
 
 ##listGecko138##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S  
-98S 97S 96S 95S     
-87S 86S 85S 84S   
-76S 75S 74S 73S   
-65S 64S 63S 62S   
-54S 53S 52S  
-43S 42S  
-32S  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
+JTs J9s J8s J7s J6s J5s J4s J3s J2s  
+T9s T8s T7s T6s  
+98s 97s 96s 95s     
+87s 86s 85s 84s   
+76s 75s 74s 73s   
+65s 64s 63s 62s   
+54s 53s 52s  
+43s 42s  
+32s  
 KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  
 QJo  QTo  Q9o  Q8o  
 JTo  J9o  J8o  
@@ -4114,18 +4114,18 @@ T9o
 
 ##listGecko139##
 99  88  77  66  55  44  33  22  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S T5S T4S T3S T2S  
-98S 97S 96S 95S 94S 93S 92S  
-87S 86S 85S 84S 83S 82S  
-76S 75S 74S 73S 72S  
-65S 64S 63S 62S  
-54S 53S 52S  
-43S 42S  
-32S  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
+JTs J9s J8s J7s J6s J5s J4s J3s J2s  
+T9s T8s T7s T6s T5s T4s T3s T2s  
+98s 97s 96s 95s 94s 93s 92s  
+87s 86s 85s 84s 83s 82s  
+76s 75s 74s 73s 72s  
+65s 64s 63s 62s  
+54s 53s 52s  
+43s 42s  
+32s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
 KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  K4o  K3o  K2o
 QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  
@@ -4139,80 +4139,80 @@ T9o T8o T7o T6o T5o T4o T3o
 
 ##listGecko140##
 99  88  77  66  55  44  33  22  
-AJS KQS QJS JTS T9S  
+AJs KQs QJs JTs T9s  
 AQo  
 KQo
 
 ##listGecko141##
 99  88  77  66  55  44  33  22  
-AJS ATS KQS QJS JTS T9S  
+AJs ATs KQs QJs JTs T9s  
 AQo  AJo KQo  
-KQS
+KQs
 
 ##listGecko142##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
+AJs ATs A9s A8s A7s   
 AQo  AJo ATo 
-KQS  
-QJS  
-JTS  
-T9S
+KQs  
+QJs  
+JTs  
+T9s
 
 ##listGecko143##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
+AJs ATs A9s A8s A7s   
 AQo  AJo ATo A9o 
-KQS KJS  
-QJS   
-JTS  
-T9S  
-98S  
+KQs KJs  
+QJs   
+JTs  
+T9s  
+98s  
 KQo
 
 ##listGecko144##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
+AJs ATs A9s A8s A7s   
 AQo  AJo ATo A9o A8o 
-KQS KJS  
-QJS   
-JTS  
-T9S  
+KQs KJs  
+QJs   
+JTs  
+T9s  
 KQo
 
 ##listGecko145##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S   
+AJs ATs A9s A8s A7s   
 AQo  AJo ATo A9o A8o 
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
+KQs KJs KTs   
+QJs QTs  
+JTs  
+T9s  
 KQo  KJo  
 
 ##listGecko146##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S  
+AJs ATs A9s A8s A7s A6s  
 AQo  AJo ATo A9o A8o A7o 
-KQS KJS KTS   
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
+KQs KJs KTs   
+QJs QTs  
+JTs  
+T9s  
+98s  
+87s  
 KQo  KJo  
 QJo  
 
 ##listGecko147##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S  
+AJs ATs A9s A8s A7s A6s A5s A4s  
 AQo  AJo ATo A9o A8o A7o A6o A5o 
-KQS KJS KTS K9S    
-QJS QTS  
-JTS  
-T9S  
-98S  
-87S  
-76S  
+KQs KJs KTs K9s    
+QJs QTs  
+JTs  
+T9s  
+98s  
+87s  
+76s  
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
@@ -4220,19 +4220,19 @@ T9o
 
 ##listGecko148##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQS KJS KTS K9S    
-QJS QTS Q9S  
-JTS  
-T9S  
-98S  
-87S  
-76S  
-65S  
-54S  
-43S  
-32S  
+KQs KJs KTs K9s    
+QJs QTs Q9s  
+JTs  
+T9s  
+98s  
+87s  
+76s  
+65s  
+54s  
+43s  
+32s  
 KQo  KJo  KTo  
 QJo  QTo  
 JTo  
@@ -4240,18 +4240,18 @@ T9o
 
 ##listGecko149##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S     
-QJS QTS Q9S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S  
-65S  
-54S  
-43S  
-32S  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
+KQs KJs KTs K9s K8s K7s     
+QJs QTs Q9s  
+JTs J9s J8s    
+T9s T8s  
+98s 97s   
+87s 86s   
+76s  
+65s  
+54s  
+43s  
+32s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
 KQo  KJo  KTo  K9o  
 QJo  QTo  Q9o  
@@ -4260,18 +4260,18 @@ T9o
 
 ##listGecko150##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S  
-JTS J9S J8S    
-T9S T8S  
-98S 97S   
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s  
+JTs J9s J8s    
+T9s T8s  
+98s 97s   
+87s 86s   
+76s 75s   
+65s 64s  
+54s 53s  
+43s 42s  
+32s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
 KQo  KJo  KTo  K9o  
 QJo  QTo  Q9o  
@@ -4280,18 +4280,18 @@ T9o
 
 ##listGecko151##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S    
-JTS J9S J8S J7S J6S      
-T9S T8S T7S T6S   
-98S 97S 96S    
-87S 86S   
-76S 75S   
-65S 64S  
-54S 53S  
-43S 42S  
-32S  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s    
+JTs J9s J8s J7s J6s      
+T9s T8s T7s T6s   
+98s 97s 96s    
+87s 86s   
+76s 75s   
+65s 64s  
+54s 53s  
+43s 42s  
+32s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
 KQo  KJo  KTo  K9o  K8o  
 QJo  QTo  Q9o  
@@ -4302,18 +4302,18 @@ T9o
 
 ##listGecko152##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S  
-98S 97S 96S    
-87S 86S 85S  
-76S 75S 74S  
-65S 64S 63S  
-54S 53S 52S  
-43S 42S  
-32S  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
+JTs J9s J8s J7s J6s J5s J4s J3s J2s  
+T9s T8s T7s T6s  
+98s 97s 96s    
+87s 86s 85s  
+76s 75s 74s  
+65s 64s 63s  
+54s 53s 52s  
+43s 42s  
+32s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
 KQo  KJo  KTo  K9o  K8o  
 QJo  QTo  Q9o  
@@ -4324,18 +4324,18 @@ T9o
 
 ##listGecko153##
 99  88  77  66  55  44  33  22  
-AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S  
-KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S      
-QJS QTS Q9S Q8S Q7S Q6S Q5S Q4S Q3S Q2S  
-JTS J9S J8S J7S J6S J5S J4S J3S J2S  
-T9S T8S T7S T6S T5S T4S T3S T2S  
-98S 97S 96S 95S 94S 93S 92S  
-87S 86S 85S 84S 83S 82S  
-76S 75S 74S 73S 72S  
-65S 64S 63S 62S  
-54S 53S 52S  
-43S 42S  
-32S  
+AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
+KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
+QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
+JTs J9s J8s J7s J6s J5s J4s J3s J2s  
+T9s T8s T7s T6s T5s T4s T3s T2s  
+98s 97s 96s 95s 94s 93s 92s  
+87s 86s 85s 84s 83s 82s  
+76s 75s 74s 73s 72s  
+65s 64s 63s 62s  
+54s 53s 52s  
+43s 42s  
+32s  
 AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
 KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  K4o  K3o  K2o
 QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  Q2o 
@@ -4350,78 +4350,78 @@ T9o T8o T7o T6o T5o T4o T3o T2o
 
 ##listGecko154##
 88  77  66  55  44  33  22  
-AJS ATS A9S A8S  
+AJs ATs A9s A8s  
 AJo  
-KQS  
-QJS  
-JTS  
-T9S  
-98S  
-87S  
+KQs  
+QJs  
+JTs  
+T9s  
+98s  
+87s  
 
 ##listGecko155##
 88  77  66  55  44  33  22  
-ATS A9S A8S A7S A6S   
+ATs A9s A8s A7s A6s   
 AJo  ATo 
-KQS  
-QJS  
-JTS  
-T9S  
-98S  
-87S  
+KQs  
+QJs  
+JTs  
+T9s  
+98s  
+87s  
 
 ##listGecko156##
 88  77  66  55  44  33  22  
-ATS A9S A8S A7S A6S   
+ATs A9s A8s A7s A6s   
 AJo  ATo A9o 
-KQS KJS  
-QJS   
-JTS T9S  
+KQs KJs  
+QJs   
+JTs T9s  
 KQo
 
 ##listGecko157##
 88  77  66  55  44  33  22  
-ATS A9S A8S A7S A6S   
+ATs A9s A8s A7s A6s   
 AJo  ATo A9o A8o 
-KQS KJS  
-QJS   
-JTS  
-T9S  
-98S  
+KQs KJs  
+QJs   
+JTs  
+T9s  
+98s  
 KQo
 
 ##listGecko300##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS KQS QJS JTS T9S 98S 87S 76S 65S  
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS J9S 
+AKs KQs QJs JTs T9s 98s 87s 76s 65s  
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs J9s 
 AKo AQo AJo ATo 
 
 ##listGecko301##
 AA  KK  QQ  JJ  TT  99  88  77  
-AKS KQS QJS JTS T9S 98S 
-AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KJS KTS QTS 
+AKs KQs QJs JTs T9s 98s 
+AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs 
 AKo AQo AJo ATo 
 
 ##listGecko302##
 AA  KK  QQ  JJ  TT  99  88  77  
-AKS KQS QJS JTS T9S 
-AQS AJS ATS A9S KJS KTS QTS 
+AKs KQs QJs JTs T9s 
+AQs AJs ATs A9s KJs KTs QTs 
 AKo AQo AJo ATo 
 
 ##listGecko900##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2S A3S A4S A5S A6S A7S A8S A9S ATS AJS AQS AKS  
-K2S K3S K4S K5S K6S K7S K8S K9S KTS KJS KQS  
-Q2S Q3S Q4S Q5S Q6S Q7S Q8S Q9S QTS QJS  
-J6S J7S J8S J9S JTS  
-T5S T6S T7S T8S T9S  
-95S 96S 97S 98S  
-85S 86S 87S  
-75S 76S  
-64S 65S  
-54S  
-43S  
-32S  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs  
+Q2s Q3s Q4s Q5s Q6s Q7s Q8s Q9s QTs QJs  
+J6s J7s J8s J9s JTs  
+T5s T6s T7s T8s T9s  
+95s 96s 97s 98s  
+85s 86s 87s  
+75s 76s  
+64s 65s  
+54s  
+43s  
+32s  
 A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo 
 K2o K3o  K4o  K5o  K6o  K7o  K8o  K9o  KTo  KJo  KQo  
 Q2o Q3o  Q4o  Q5o  Q6o  Q7o  Q8o  Q9o  QTo  QJo  
@@ -4431,12 +4431,12 @@ T7o  T8o  T9o
 87o  
 76o 
 
-##listGecko_OpenRaise_MP1##
+##listGecko_openRaise_MP1##
 // Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
 // which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
 88  99  TT  JJ  QQ  KK  AA
-A9S ATS AJS AQS AKS 
-KTS KJS KQS
+A9s ATs AJs AQs AKs 
+KTs KJs KQs
 QJs
 AJo AQo AKo 
 
