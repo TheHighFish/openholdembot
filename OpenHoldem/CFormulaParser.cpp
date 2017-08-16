@@ -54,7 +54,7 @@ CString _function_name;
 
 CFormulaParser::CFormulaParser() {
   _is_parsing_counter = 0;
-  _is_parsing_read_only_function_library = true;
+  _is_parsing_read_only_function_library = false;
   _is_parsing_debug_tab = false;
   _currently_parsed_function_or_list = NULL;
 }
@@ -96,7 +96,6 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   p_function_collection->SetFormulaName(CFilenames::FilenameWithoutPathAndExtension(
     formula_file.GetFile()->GetFilePath()));
   EnterParserCode();
-  _is_parsing_read_only_function_library = false;
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   LoadArchive(formula_file);
@@ -104,7 +103,6 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
   p_function_collection->CheckForDefaultFormulaEntries();
   p_function_collection->ParseAll();
-  _is_parsing_read_only_function_library = true;
   LeaveParserCode();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup],
     preferences.log_ini_functions());
@@ -112,6 +110,7 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
 
 void CFormulaParser::ParseDefaultLibraries() {
   EnterParserCode();
+  _is_parsing_read_only_function_library = true;
   // Parse all OpenPPL-libraries, which are now modular.
   // Parsing order does not matters; some early parts 
   // need stuff of later parts, but we check completeness
@@ -132,6 +131,7 @@ void CFormulaParser::ParseDefaultLibraries() {
   // Check again after the custom library
   p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
   p_function_collection->ParseAll(); 
+  _is_parsing_read_only_function_library = false;
   LeaveParserCode();
 }
 

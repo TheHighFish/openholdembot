@@ -85,7 +85,7 @@ class COHScriptObject {
   // * will be loaded once
   // * won't be shown in the editor
   // * won't be saved
-  void SetAsReadOnlyLibraryFunction() { _is_read_only = true; }
+   void SetAsReadOnlyLibraryFunction();
  protected:
   // To be used by CFunctionCollection::parseAll()
   virtual bool EmptyParseTree() { return false; }

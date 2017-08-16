@@ -14,8 +14,8 @@
 - OpenHoldem is now able to import Shanky-PPL directly
   (plain-text only, no encrypted PPL of course).
   Special thanks to Salem who contributed an important part
-  of the on-the-fly-converter and to Trish, OpenHoldemAli and R2D2 
-  for testing and feedback.
+  of the on-the-fly-converter and to Trish, OpenHoldemAli, R2D2 
+  and PastorPoker for testing and feedback.
   [THF]
 - Verbose OpenPPL functions IsPreflop, IsFlop, IsTurn, IsRiver, isPostflop
   [THF]

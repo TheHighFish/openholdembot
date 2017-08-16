@@ -33,6 +33,7 @@ COHScriptObject::COHScriptObject(
   _function_text = new_function_text;
   _file_path = file_path;
   _starting_line_of_function = starting_line_of_function;
+  _is_read_only = false;
 }
 
 COHScriptObject::~COHScriptObject() {
@@ -40,6 +41,16 @@ COHScriptObject::~COHScriptObject() {
 
 void COHScriptObject::Parse() {
   // virtual
+}
+
+void COHScriptObject::SetAsReadOnlyLibraryFunction() {
+#ifdef _DEBUG
+  // Just to be able to set a conditional break-point
+  if (_name == "f$preflop") {
+    _is_read_only = true;
+  }
+#endif
+  _is_read_only = true; 
 }
 
 double COHScriptObject::Evaluate(bool log /* = false */) {
