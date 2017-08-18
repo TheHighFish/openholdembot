@@ -125,10 +125,10 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::CheckForProbablyMistakenSpadesI
   CString message;
   message.Format("Hand- or board-expression \"%s\" detected.\n"
     "\n"
-    "Suit \"s\" (spades) located at the very end\n"
-    "though earlier positions would have been possible.\n"
-    "\n"
-    "Did you mean \"%s\" instead?\n",
+    "Suit \"s\" (spades) located at the very end.\n"
+    "Did you mean \"%s\" instead?\n"
+	"Please disambiguate this expression.\n"
+	"Either use \"suited\" or reorder the spades-card.\n",
     expression, guessed_correct_expression);
   CParseErrors::Error(message);
 }
