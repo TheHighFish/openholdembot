@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-22"/>
+<meta name="create-date" content="2017-08-19"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -184,17 +184,18 @@ Once you understand how when-conditions work, programming your first bot becomes
 <a class="toc" name="toc-Section--3"></a>Unspecified Return Values
 </h2>
 <div class="Unindented">
-It is common practice to add
+People who create complete profiles usually add
 </div>
 <div class="Indented">
 <div class="listing">
-<pre class="listing">WHEN Others Fold FORCE
+<pre class="listing">WHEN Others
+   WHEN Others Fold FORCE
 </pre>
 </div>
 
 </div>
 <div class="Indented">
-to the end of every code-section. But it does not hurt if you forget to do so. If no condition matches the situation OpenHoldem will automatically evaluate this function to zero, which is also the encoding for false, and also for check/fold.
+to the end of every code-section. But it does not hurt if you don’t so. If no condition matches the situation OpenHoldem will automatically continue to evaluate the built-in default-not (Gecko). If no default-bot is present (you may safely delete it) then OpenHoldem will evaluate functions without a return-value to zero, which is also the encoding for false, and also for check/fold.
 </div>
 <h2 class="Section-">
 <a class="toc" name="toc-Section--4"></a>More Advanced Coding

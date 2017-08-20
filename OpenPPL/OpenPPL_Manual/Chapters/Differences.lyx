@@ -84,38 +84,12 @@ If you are a botter who used Shanky-PPL in the past there are some differences
 \end_layout
 
 \begin_layout Section*
-No Default Bot
-\end_layout
-
-\begin_layout Standard
-OpenPPL does not provide a default 
-\begin_inset Quotes eld
-\end_inset
-
-winning-bot
-\begin_inset Quotes erd
-\end_inset
-
-, especially no built-in 
-\noun on
-doodle
-\noun default
--profile like BonusBots.
- 
-\noun on
-Doodle
-\noun default
- simply is a copyrighted business-secret of Shanky and giving away the miracle
- million-dollar-maker to every single one of your opponents would be no
- joy, would it?
-\end_layout
-
-\begin_layout Section*
 Plain Text Only
 \end_layout
 
 \begin_layout Standard
-For the same reason there is no support for encrypted PPL-profiles.
+The deciphering of encypted PPL is a business-secret of Shanky BonusBots.
+ We don't know and will never support this data-format.
  Our aim is to build an open-source botting-tool and not a marketing-platform
  for shady salesmen.
  Therefore OpenPPL is plain text only --- for profiles you own legally,
@@ -130,8 +104,8 @@ No Option Settings
 Standard Shanky-PPL supports option settings to configure their built-in-default
  bot; at least that was the old way to do so, but nowadays most of these
  settings get overwritten by the profile and have no effect at all.
- As OpenPPL does not support a default bot anyaway these option settings
- have no effect and get ignored.
+ OpenHoldems built-in Gecko-bot does not support any Shanky-opttions; they
+ have no effect and simply get ignored.
 \begin_inset listings
 inline false
 status open
