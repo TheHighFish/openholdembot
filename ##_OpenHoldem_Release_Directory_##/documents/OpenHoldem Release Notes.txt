@@ -1,4 +1,4 @@
-﻿﻿v﻿12.0.0 2017-07-04
+﻿﻿v﻿12.0.0 2017-08-20
 ==================
 ﻿NEW STUFF:
 - OpenHoldeme contains now a built-in default bot,
@@ -10,6 +10,8 @@
   in the OpenPPL-forum (soon).
   If your bot doesn't need any default-logic the files in the folder
   "bot_logic\DefaultBot" can safely be removed.
+  Special thanks to Trish, OpenHoldemAli, R2D2 
+  and PastorPoker for testing and feedback.
   [THF]
 - OpenHoldem is now able to import Shanky-PPL directly
   (plain-text only, no encrypted PPL of course).
