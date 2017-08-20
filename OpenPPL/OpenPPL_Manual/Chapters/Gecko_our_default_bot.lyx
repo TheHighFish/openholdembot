@@ -202,9 +202,8 @@ use Gecko as a starting-point.for your own complete bot.
 
 \begin_layout Itemize
 don't use Gecko at all.
- If you are one of the few, fortunate old-school-members who already have
- a complete and better bot, then you don't have to worry that Gecko ruins
- anything.
+ If you are one of the fortunate old-school-members who already have a complete
+ and better bot, then you don't have to worry that Gecko ruins anything.
  You can safely delete the Gecko-file from the botlogic folder or just terminate
  all evaluations with
 \begin_inset Newline newline
