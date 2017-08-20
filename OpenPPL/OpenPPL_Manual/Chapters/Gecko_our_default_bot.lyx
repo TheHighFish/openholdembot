@@ -117,8 +117,8 @@ Its playing style
 \begin_layout Standard
 Lots of people used the Gecko-bot as a base for their own poker-logic.Everybody
  praised its coding-style and its good play.
- Gecko plays no-limit big-stack in a tight-aggressive (or maybe semi-loose-agres
-sive) way.
+ Gecko plays no-limit big-stack in a tight-aggressive (or maybe semi-loose-aggre
+ssive) way.
  It uses PokerTracker to adapt to its opponents, stealing more against tight
  blind-posters, value-betting harder against calling-stations, being more
  cautious if a passive player gives action and more.
