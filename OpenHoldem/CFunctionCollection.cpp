@@ -648,6 +648,9 @@ bool CFunctionCollection::BotLogicCorrectlyParsed() {
 bool CFunctionCollection::ParseAll() {
   write_log(preferences.debug_formula(), 
     "[CFunctionCollection] ParseAll()\n");
+  // Adding empty standard-functions
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
+  p_function_collection->CheckForDefaultFormulaEntries();
   CSLock lock(m_critsec);
   assert(p_formula_parser != NULL);
   p_parser_symbol_table->Clear();

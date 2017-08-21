@@ -59,17 +59,17 @@ BOOL COpenHoldemDoc::SaveModified()
 		}
 
 		// Kill the formula dialog
-		if(m_formulaScintillaDlg) 
-			m_formulaScintillaDlg->DestroyWindow();
-
+    if (m_formulaScintillaDlg) {
+      m_formulaScintillaDlg->DestroyWindow();
+    }
 	}
 	return CDocument::SaveModified();
 }
 
 BOOL COpenHoldemDoc::OnNewDocument() {
-	if (!CDocument::OnNewDocument())
-		return FALSE;
-
+  if (!CDocument::OnNewDocument()) {
+    return FALSE;
+  }
 	// Default bot
 	p_function_collection->SetEmptyDefaultBot();
 	SetModifiedFlag(false);

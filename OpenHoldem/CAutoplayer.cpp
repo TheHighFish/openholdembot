@@ -175,6 +175,10 @@ bool CAutoplayer::DoBetPot(void) {
 }
 
 bool CAutoplayer::AnyPrimaryFormulaTrue() { 
+  // Some auto-player-functions MUST exist. If not then they get auto-generated.
+  // Missing all autoplayer-functions would be a bug that leads to time-outs.
+  assert(p_function_collection != NULL);
+  assert(p_function_collection->Exists(k_standard_function_names[k_autoplayer_function_fold]));
 	for (int i=k_autoplayer_function_beep; i<=k_autoplayer_function_fold; ++i)
 	{
 		double function_result = p_autoplayer_functions->GetAutoplayerFunctionValue(i);
@@ -233,9 +237,7 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
   if (!mutex.IsLocked()) {
 		return false;
 	}
-
 	PrepareActionSequence();
-
 	if (p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_allin))	{
 		if (DoAllin()) {
 			return true;
@@ -254,6 +256,10 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 bool CAutoplayer::ExecuteRaiseCallCheckFold() {
 	write_log(preferences.debug_autoplayer(), 
     "[AutoPlayer] ExecuteRaiseCallCheckFold()\n");
+  // Some auto-player-functions MUST exist. If not then they get auto-generated.
+  // Missing all autoplayer-functions would be a bug that leads to time-outs.
+  assert(p_function_collection != NULL);
+  assert(p_function_collection->Exists(k_standard_function_names[k_autoplayer_function_fold]));
 	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)	{
     if ((i == k_autoplayer_function_check) && p_symbol_engine_chip_amounts->call() > 0) {
       write_log(k_always_log_errors, 
@@ -478,7 +484,7 @@ void CAutoplayer::DoAutoplayer(void) {
 		goto AutoPlayerCleanupAndFinalization;
   }
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
-	if(p_symbol_engine_autoplayer->isfinalanswer())	{
+	if (p_symbol_engine_autoplayer->isfinalanswer())	{
 		p_autoplayer_functions->CalcPrimaryFormulas();
 		ExecutePrimaryFormulasIfNecessary();
 	}	else {

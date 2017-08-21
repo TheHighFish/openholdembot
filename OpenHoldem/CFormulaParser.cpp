@@ -98,10 +98,8 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   EnterParserCode();
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
+  p_function_collection->SetEmptyDefaultBot();
   LoadArchive(formula_file);
-  // Adding empty standard-functions
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16230
-  p_function_collection->CheckForDefaultFormulaEntries();
   p_function_collection->ParseAll();
   LeaveParserCode();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup],
