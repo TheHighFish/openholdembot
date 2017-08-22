@@ -30,11 +30,11 @@ MAINTENANCE:
 - Due to its popularity OpenPPL is now the new default-mode
   when starting a new empty formula with the editor.
   OpenHoldem will switch to OH-script-mode if the formula-set
-  cintains a non-empty f$call-function.
+  contains a non-empty f$call-function.
   [THF]
 
 BUG FIXES
-- The title dod nopt contain the name of the formula.
+- The title did not contain the name of the formula.
   Thanks to Eden and Lucky8 for reporting.
   [THF]
   

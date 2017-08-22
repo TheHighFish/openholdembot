@@ -115,7 +115,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename C:/Users/user4444/Documents/OpenHoldem/Documentation/Chapters/gui/images/menu_problem_solver.JPG
+	filename ../gui/images/menu_problem_solver.JPG
 
 \end_inset
 
@@ -153,9 +153,24 @@ size of the window
 table-title
 \end_layout
 
+\begin_layout Itemize
+optional tablepoints r$tablepointX if you have two very similar maps for
+ the same casino, e.g.
+ 6-max and 9-max.
+\end_layout
+
 \begin_layout Standard
-Usually the problem is the window-size caused by incorrect system-settings;
- Windows XP and Vista possess a higher titlebar than Windows 2000 classic-theme.
+Usually the problem is the window-size caused by 
+\begin_inset Quotes eld
+\end_inset
+
+wrong
+\begin_inset Quotes erd
+\end_inset
+
+ system-settings.
+ Tablepoints are rarely used, but you should be aware of their existence,
+ especially if you downloaded somebody elses map from the forum.
 \end_layout
 
 \begin_layout Section
