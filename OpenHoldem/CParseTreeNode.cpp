@@ -16,6 +16,7 @@
 #include "CParseTreeNode.h"
 
 #include "CFunction.h"
+#include "CMemoryPool.h"
 #include "CPreferences.h"
 #include "TokenizerConstants.h"
 
@@ -127,4 +128,9 @@ bool CParseTreeNode::EvaluatesToBinaryNumber() {
 // virtual 
 CString CParseTreeNode::Serialize() {
   return "";
+}
+
+void* CParseTreeNode::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
 }

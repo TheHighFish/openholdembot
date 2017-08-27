@@ -51,10 +51,8 @@ CFunction::CFunction(
 }
 
 CFunction::~CFunction() {
-  // Parse-tree-nodes may be NULL in case of an empty function
-  if (_parse_tree_node != NULL) {
-    delete _parse_tree_node;
-  }
+  // No longer deleting any parse-trees here,
+  // as parse-trees get handled by CMemoryPool
 }
 
 void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree) {
