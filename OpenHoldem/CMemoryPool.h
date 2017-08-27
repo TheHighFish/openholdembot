@@ -32,7 +32,9 @@ class CMemoryPool {
   int _bytes_used_in_current_block;
   void* _current_memory_block;
  private:
-   // For gouse-keeping
-   // All blocks to be released at some point
-   CArray <void*, void*> _memory_blocks;
+  // For gouse-keeping
+  // All blocks to be released at some point
+  CArray <void*, void*> _memory_blocks;
 };
+
+extern CMemoryPool *p_memory_pool;

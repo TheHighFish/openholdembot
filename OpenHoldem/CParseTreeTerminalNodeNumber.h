@@ -31,6 +31,8 @@ class CParseTreeTerminalNodeNumber: public CParseTreeTerminalNode {
  public:
   // For debugging output
   CString Serialize();
+ public:
+  void* operator new(size_t size);
  private:
   // In case of terminal node (number)
   double _constant_value;

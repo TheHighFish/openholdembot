@@ -28,71 +28,9 @@ CParseTreeNode::CParseTreeNode(int relative_line_number) {
 }
 
 CParseTreeNode::~CParseTreeNode() {
-  // OpenHoldem could crash when deleting(reloading, parsing, applying) a formula.
-  //   Open - ended when - conditions are usually reachable on two paths :
-  // a) from the OEWC above, if this OEWC was false
-  // b) from the sequence of when - conditions with actions above
-  // if none of these actions could be taken.
-  //   However when deleting a parse - tree each node must be deleted exactly once.
-  //   Care has been taken for OEWCs, but the identification of OEWCs
-  //   failed on a half - way destructed parse - tree.
-  //   So some OEWCs could be deleted twice which caused an access violation.
-  //   Thanks to JohnNash, Kkfc, Dolar and Salem for reporting the problem
-  //   and to Sagan, Gezs, BadHabit and Darkmund for providing log - files and crashing formulas.
-  //
-  // Therefore we have to check the open-ended-ness once at the very beginning
-  // and remeber the result.
-  bool is_open_ended_when_condition = IsOpenEndedWhenCondition();
-#ifdef _DEBUG
-  write_log(preferences.debug_formula(),
-    "[CParseTreeNode] Deleting parse tree node %i\n", this);
-  if (_node_type == kTokenOperatorConditionalWhen) {
-    if (_first_sibbling != NULL) {
-      // Can be NULL on invalid input
-      write_log(preferences.debug_formula(),
-        "[CParseTreeNode] WHEN condition: %s\n", _first_sibbling->Serialize());
-    }
-    write_log(preferences.debug_formula(),
-      "[CParseTreeNode] Open ended: %s\n", Bool2CString(IsOpenEndedWhenCondition()));
-  }
-  write_log(preferences.debug_formula(),
-    "[CParseTreeNode] 1st sibbling %i::%i\n", this, _first_sibbling);
-  write_log(preferences.debug_formula(),
-    "[CParseTreeNode] 2nd sibbling %i::%i\n", this, _second_sibbling);
-  write_log(preferences.debug_formula(),
-    "[CParseTreeNode] 3rd sibbling %i::%i\n", this, _third_sibbling);
-#endif
-  if (_first_sibbling != NULL) {
-#ifdef _DEBUG
-   write_log(preferences.debug_formula(),
-     "[CParseTreeNode] Deleting 1st sibbling %i::%i\n", this, _first_sibbling);
-#endif
-    delete _first_sibbling;
-    _first_sibbling = NULL;
-  }
-  if (_second_sibbling != NULL) {
-#ifdef _DEBUG
-    write_log(preferences.debug_formula(),
-      "[CParseTreeNode] Deleting 2nd sibbling %i::%i\n", this, _second_sibbling);
-#endif
-    delete _second_sibbling;
-    _second_sibbling = NULL;
-  }
-  if ((_third_sibbling != NULL) && !is_open_ended_when_condition) {
-    // Be carefull with open-ended when-conditions.
-    // They create graphs, no longer pure trees/
-    // The 3rd node is reachable on two paths.
-#ifdef _DEBUG
-    write_log(preferences.debug_formula(),
-      "[CParseTreeNode] Open ended: %s\n", Bool2CString(IsOpenEndedWhenCondition()));
-    write_log(preferences.debug_formula(),
-      "[CParseTreeNode] Node type %i\n", _node_type);
-    write_log(preferences.debug_formula(),
-      "[CParseTreeNode] Deleting 3rd sibbling %i::%i\n", this, _third_sibbling);
-#endif
-    delete _third_sibbling;
-    _third_sibbling = NULL;
-  }
+  // No longer deleting any sibblings
+  // (must not be done, because they didn't get allocated explicitly).
+  // CMemoryPool cares about all these small objects now.
 }
 
 TPParseTreeNode CParseTreeNode::GetRightMostSibbling() {

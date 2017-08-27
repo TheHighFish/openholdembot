@@ -58,9 +58,10 @@ CFunction::~CFunction() {
 }
 
 void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree) {
-  if (_parse_tree_node != NULL) {
-    delete _parse_tree_node;
-  }
+  // Don't worry about the old parse-tree here.
+  // It gets now handled by CMemoryPool.
+  // Explicit deletion is no longer possible
+  // as it didn't get allocated explicitly either.
 	_parse_tree_node = _new_parse_tree;
 }
 

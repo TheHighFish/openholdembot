@@ -26,6 +26,8 @@
 #include "CMemoryPool.h"
 #include "OH_MessageBox.h"
 
+CMemoryPool *p_memory_pool = NULL;
+
 // 64 KB = 1 default block at 64-bit-Windows 
 //       = 16 default blocks at 52-bit-Windows
 const int kMemoryBlockSize = 65536;
@@ -64,7 +66,7 @@ void* CMemoryPool::allocate(size_t size) {
   } else if (size > bytes_available_in_current_block()) {
     allocate_new_memory_block();
   }
-  assert(size < _bytes_available_in_current_block);
+  assert(size <= bytes_available_in_current_block());
   _all_emmory_released = false;
   size_t offset_to_allocation = _bytes_used_in_current_block;
   _bytes_used_in_current_block += size;
@@ -94,3 +96,20 @@ void CMemoryPool::release_all() {
   _bytes_used_in_current_block = kMemoryBlockSize;
   _memory_blocks.RemoveAll();
 }
+
+
+/*!!!!!
+void* operator new (size_t size)
+{
+  return gMemoryManager.allocate(size);
+}
+
+void* operator new[](size_t size)
+{
+  return  gMemoryManager.allocate(size);
+}
+
+void operator delete (void* pointerToDelete)
+{
+  gMemoryManager.free(pointerToDelete);
+}*/
