@@ -39,6 +39,10 @@ class CParseTreeNode {
  public:
   // For debugging output
   virtual CString Serialize();
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
  protected:
   TPParseTreeNode GetRightMostSibbling();
   TPParseTreeNode GetLeftMostSibbling();

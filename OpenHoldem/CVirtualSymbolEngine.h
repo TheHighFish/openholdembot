@@ -38,6 +38,10 @@ class CVirtualSymbolEngine {
 	virtual bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	// To build a list of identifiers for the editor
 	virtual CString SymbolsProvided();
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
 };
 
 #endif INC_CVIRTUALSYMBOLENGINE_H

@@ -274,7 +274,8 @@ void CEngineContainer::DestroyAllSymbolEngines() {
   DestroyAllSpecialSymbolEngines();
 	for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Going to delete symbol engine %i\n", i);
-		delete _symbol_engines[i];
+    // No longer deleting any symbol engines here,
+    // as these objects get handled by CMemoryPool mow
 		_symbol_engines[i] = NULL;
 	}
 	_number_of_symbol_engines_loaded = 0;

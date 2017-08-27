@@ -67,7 +67,8 @@ void CDebugTab::Clear() {
   write_log(preferences.debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
   for (int i=0; i<kMaxSizeOfDebugTab; ++i) {
     _expression_texts[i] = "";
-    delete _expressions[i];
+    // No longer deleting any parse-trees here,
+    // as parse-trees get handled by CMemoryPool
     _expressions[i] = NULL;
   }
   write_log(preferences.debug_alltherest(), "[CDebugTab] Expressions deleted\n");

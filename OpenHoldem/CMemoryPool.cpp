@@ -96,20 +96,3 @@ void CMemoryPool::release_all() {
   _bytes_used_in_current_block = kMemoryBlockSize;
   _memory_blocks.RemoveAll();
 }
-
-
-/*!!!!!
-void* operator new (size_t size)
-{
-  return gMemoryManager.allocate(size);
-}
-
-void* operator new[](size_t size)
-{
-  return  gMemoryManager.allocate(size);
-}
-
-void operator delete (void* pointerToDelete)
-{
-  gMemoryManager.free(pointerToDelete);
-}*/

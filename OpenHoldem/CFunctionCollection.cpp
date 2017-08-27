@@ -612,11 +612,8 @@ void CFunctionCollection::Delete(CString name) {
   COHScriptObject *object_to_delete = LookUp(name);
   RemoveFromBinaryTree(name);
   if (object_to_delete != NULL) {
-    write_log(preferences.debug_formula(),
-      "[CFunctionCollection] Deleting object %s\n", name);
-    delete object_to_delete;
-    write_log(preferences.debug_formula(),
-      "[CFunctionCollection] Object %s deleted\n", name);
+    // No longer deleting any lists or functions here,
+    // as these objects get handled by CMemoryPool mow
   }
 }
 

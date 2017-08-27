@@ -16,6 +16,7 @@
 
 #include "CCasinoInterface.h"
 #include "CFormulaParser.h"
+#include "CMemoryPool.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "OH_MessageBox.h"
 
@@ -90,3 +91,7 @@ void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
   }
 }
 
+void* CVirtualSymbolEngine::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
+}

@@ -15,6 +15,7 @@
 #include "COHScriptObject.h"
 
 #include "CFunctionCollection.h"
+#include "CMemoryPool.h"
 
 COHScriptObject::COHScriptObject() {
 	_name = "";
@@ -200,4 +201,9 @@ CString COHScriptObject::Serialize() {
 void COHScriptObject::Dump() {
   // Default: don't do anything
   // ATM we are only interested in formulas
+}
+
+void* COHScriptObject::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
 }

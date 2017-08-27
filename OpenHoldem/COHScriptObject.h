@@ -86,6 +86,10 @@ class COHScriptObject {
   // * won't be shown in the editor
   // * won't be saved
    void SetAsReadOnlyLibraryFunction();
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
  protected:
   // To be used by CFunctionCollection::parseAll()
   virtual bool EmptyParseTree() { return false; }
