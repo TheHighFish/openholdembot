@@ -801,6 +801,9 @@
     <ClCompile Include="CShankySymbolNameTranslator.cpp">
       <Filter>Source Files\Parser</Filter>
     </ClCompile>
+    <ClCompile Include="CMemoryPool.cpp">
+      <Filter>Source Files\Various Function Libraries</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1698,6 +1701,9 @@
     </ClInclude>
     <ClInclude Include="CShankySymbolNameTranslator.h">
       <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="CMemoryPool.h">
+      <Filter>Header Files\Various Function Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

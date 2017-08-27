@@ -220,6 +220,7 @@
     <ClCompile Include="CHeartbeatThread.cpp" />
     <ClCompile Include="CLevDistance.cpp" />
     <ClCompile Include="CLimitScraper.cpp" />
+    <ClCompile Include="CMemoryPool.cpp" />
     <ClCompile Include="CMyMutex.cpp" />
     <ClCompile Include="COcclusionCheck.cpp" />
     <ClCompile Include="CParseTreeOperatorNode.cpp" />
@@ -508,6 +509,7 @@
     <ClInclude Include="CLazyScraper.h" />
     <ClInclude Include="CLevDistance.h" />
     <ClInclude Include="CLimitScraper.h" />
+    <ClInclude Include="CMemoryPool.h" />
     <ClInclude Include="CMyMutex.h" />
     <ClInclude Include="COcclusionCheck.h" />
     <ClInclude Include="CParseTreeOperatorNode.h" />
