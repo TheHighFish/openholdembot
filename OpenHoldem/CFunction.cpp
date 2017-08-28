@@ -65,10 +65,11 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree) {
 }
 
 void CFunction::Parse() {
-  if ((_parse_tree_node == NULL) || IsFunction()) { 
+  if (NeedsToBeParsed()) { 
     write_log(preferences.debug_formula() || preferences.debug_parser(),
       "[CFunction] Parsing %s\n", _name);
     p_formula_parser->ParseFormula(this);
+    MarkAsParsed();
   } else {
     write_log(preferences.debug_formula() || preferences.debug_parser(),
       "[CFunction] No need to parse %s\n", _name);

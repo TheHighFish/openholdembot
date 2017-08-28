@@ -23,6 +23,7 @@ COHScriptObject::COHScriptObject() {
   _file_path = kNoSourceFileForThisCode;
   _starting_line_of_function = kUndefinedZero;
   _is_read_only = false;
+  _modified_since_last_parse = false;
 }
 
 COHScriptObject::COHScriptObject(
@@ -35,6 +36,7 @@ COHScriptObject::COHScriptObject(
   _file_path = file_path;
   _starting_line_of_function = starting_line_of_function;
   _is_read_only = false;
+  _modified_since_last_parse = true;
 }
 
 COHScriptObject::~COHScriptObject() {
@@ -42,6 +44,10 @@ COHScriptObject::~COHScriptObject() {
 
 void COHScriptObject::Parse() {
   // virtual
+}
+
+void COHScriptObject::MarkAsParsed() {
+  _modified_since_last_parse = false;
 }
 
 void COHScriptObject::SetAsReadOnlyLibraryFunction() {
@@ -62,6 +68,7 @@ double COHScriptObject::Evaluate(bool log /* = false */) {
 
 void COHScriptObject::SetText(CString text, bool is_read_only_library_symbol /* = true */) { 
   _function_text = text; 
+  _modified_since_last_parse = true;
   if (is_read_only_library_symbol == false) {
     // Functions and lists that get modified with the editor
     // need to get marked as not read-only.
@@ -206,4 +213,10 @@ void COHScriptObject::Dump() {
 void* COHScriptObject::operator new(size_t size) {
   assert(p_memory_pool != NULL);
   return p_memory_pool->allocate(size);
+}
+
+// virtual 
+bool COHScriptObject::NeedsToBeParsed() {
+  //!!!!! attention: care about failed parse
+  return _modified_since_last_parse;
 }

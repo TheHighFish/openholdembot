@@ -178,9 +178,16 @@ double COHScriptList::Evaluate(bool log /* = false */) {
 }
 
 void COHScriptList::Parse() {
-  write_log(preferences.debug_formula() || preferences.debug_parser(),
-    "[CFunction] Parsing %s\n", _name);
-  p_formula_parser->ParseFormula(this);
+  if (NeedsToBeParsed()) {
+    write_log(preferences.debug_formula() || preferences.debug_parser(),
+      "[CFunction] Parsing %s\n", _name);
+    p_formula_parser->ParseFormula(this);
+    MarkAsParsed();
+  }
+  else {
+    write_log(preferences.debug_formula() || preferences.debug_parser(),
+      "[COHScriptList] No need to parse %s\n", _name);
+  }
 }
 
 CString COHScriptList::function_text() {
