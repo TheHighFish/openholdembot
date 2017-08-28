@@ -18,6 +18,7 @@
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
+#include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -35,4 +36,9 @@ CParseTreeTerminalNode::CParseTreeTerminalNode(int relative_line_number) :
 }
 
 CParseTreeTerminalNode::~CParseTreeTerminalNode() {
+}
+
+void* CParseTreeTerminalNode::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
 }

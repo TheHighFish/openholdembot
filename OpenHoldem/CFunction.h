@@ -46,6 +46,10 @@ class CFunction: public COHScriptObject{
   static CFunction* CurrentlyEvaluatedFunction() {
     return _currently_evaluated_function;
   }
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
  protected:
   // For OpenPPL, which evaluates f$preflop, ...
   // instead of f$beep, f$alli, ...

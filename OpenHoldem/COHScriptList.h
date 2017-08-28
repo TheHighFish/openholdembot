@@ -69,6 +69,10 @@ class COHScriptList: public COHScriptObject {
  public:
   // To be called by OnOK() in the hand-list-editor
   void GenerateFunctionTextFromHandlistMatrix();
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
  private:
   void ErrorInvalidMember(CString list_member); 
   void ErrorOldStyleFormat(CString list_member);

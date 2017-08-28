@@ -22,6 +22,10 @@ class CParseTreeTerminalNode: public CParseTreeNode {
  public:
   CParseTreeTerminalNode(int relative_line_number);
   virtual ~CParseTreeTerminalNode();
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
 };
 
 typedef CParseTreeTerminalNode *TPParseTreeTerminalNode;

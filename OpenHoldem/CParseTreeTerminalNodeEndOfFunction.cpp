@@ -15,6 +15,7 @@
 #include "CParseTreeTerminalNodeEndOfFunction.h"
 
 #include "CFunctionCollection.h"
+#include "CMemoryPool.h"
 #include "COHScriptObject.h"
 #include "CPreferences.h"
 #include "CTokenizer.h"
@@ -65,4 +66,9 @@ double CParseTreeTerminalNodeEndOfFunction::Evaluate(bool log /* = false */) {
     return CParseTreeTerminalNodeIdentifier::Evaluate(log);
   }
 
+}
+
+void* CParseTreeTerminalNodeEndOfFunction::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
 }

@@ -38,6 +38,10 @@ class CParseTreeOperatorNode: public CParseTreeNode {
  public:
   double Evaluate(bool log /* = false */);
   CString EvaluateToString(bool log /* = false */);
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
  private:
   double EvaluateUnaryExpression(bool log_symbol);
   double EvaluateBinaryExpression(bool log);

@@ -3,6 +3,7 @@
 
 #include "CardFunctions.h"
 #include "CFormulaParser.h"
+#include "CMemoryPool.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
@@ -233,3 +234,8 @@ void COHScriptList::GenerateFunctionTextFromHandlistMatrix() {
   }
   _function_text = result;
 } 
+
+void* COHScriptList::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
+}

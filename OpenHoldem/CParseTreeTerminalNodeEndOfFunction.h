@@ -26,6 +26,10 @@ class CParseTreeTerminalNodeEndOfFunction: public CParseTreeTerminalNodeIdentifi
   static bool evaluating_defailt_logic() {
     return _evaluating_defailt_logic; 
   }
+ public:
+  // Custom memory-allocation to avoid always getting
+  // a 4KB-block when we create a little object
+  void* operator new(size_t size);
  private:
   static bool _evaluating_defailt_logic;
 };

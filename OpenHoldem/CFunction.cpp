@@ -17,6 +17,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerTrace.h"
 #include "CFormulaParser.h"
+#include "CMemoryPool.h"
 #include "COHScriptObject.h"
 #include "CParseTreeNode.h"
 #include "CPreferences.h"
@@ -166,4 +167,9 @@ void CFunction::Dump() {
 void CFunction::SetValue(double value) {
   _cached_result = value;
   _is_result_cached = true;
+}
+
+void* CFunction::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
 }

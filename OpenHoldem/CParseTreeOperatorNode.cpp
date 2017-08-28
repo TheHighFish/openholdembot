@@ -19,6 +19,7 @@
 #include "CEngineContainer.h"
 #include "CFunction.h"
 #include "CFunctionCollection.h"
+#include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
@@ -348,4 +349,9 @@ bool CParseTreeOperatorNode::EvaluatesToBinaryNumber() {
   }
   // Nothing binary
   return false;
+}
+
+void* CParseTreeOperatorNode::operator new(size_t size) {
+  assert(p_memory_pool != NULL);
+  return p_memory_pool->allocate(size);
 }
