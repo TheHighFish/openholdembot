@@ -19,7 +19,9 @@
 #ifndef INC_CVERSIONINFO_H
 #define INC_CVERSIONINFO_H
 
-class CVersionInfo
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CVersionInfo : public CSpaceOptimizedGlobalObject
 {
 public:
 	CVersionInfo();

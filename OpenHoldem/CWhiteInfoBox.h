@@ -11,7 +11,11 @@
 //
 //******************************************************************************
 
-class CWhiteInfoBox {
+#pragma once
+
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CWhiteInfoBox : public CSpaceOptimizedGlobalObject {
  public:
   CWhiteInfoBox();
   ~CWhiteInfoBox();
