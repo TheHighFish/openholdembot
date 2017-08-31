@@ -17,16 +17,19 @@
 #pragma once
 #include <map>
 
+void CreateMemoryPools();
+void DeleteAllMemoryPools();
+
 class CMemoryPool {
  public:
   CMemoryPool();
   ~CMemoryPool();
  public:
-  void* allocate(size_t size);
-  void release_all();
+  void*  Allocate(size_t size);
+  void ReleaseAll();
  private:
-  void allocate_new_memory_block();
-  size_t bytes_available_in_current_block();
+  void AllocateNewMemoryBlock();
+  size_t BytesAvailableInCurrentBlock();
  private:
   bool _all_emmory_released;
   int _bytes_used_in_current_block;
@@ -37,4 +40,7 @@ class CMemoryPool {
   CArray <void*, void*> _memory_blocks;
 };
 
-extern CMemoryPool *p_memory_pool;
+extern CMemoryPool *p_memory_pool_tablemaps;
+extern CMemoryPool *p_memory_pool_scraper;
+extern CMemoryPool *p_memory_pool_user_logic;
+extern CMemoryPool *p_memory_pool_global;
