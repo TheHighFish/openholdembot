@@ -15,8 +15,9 @@
 #define INC_CPARSERSYMBOLTABLE_H
 
 #include <map>
+#include "CSpaceOptimizedGlobalObject.h"
 
-class CParserSymbolTable {
+class CParserSymbolTable : public CSpaceOptimizedGlobalObject {
  public:
   CParserSymbolTable();
   ~CParserSymbolTable();
