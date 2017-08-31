@@ -19,8 +19,9 @@
 // import/export-directives that work automatically
 // for DLL and OpenHoldem.
 #include "..\Reference User DLL\user.h"
+#include "CSpaceOptimizedGlobalObject.h"
 
-class CDllExtension {
+class CDllExtension : public CSpaceOptimizedGlobalObject {
  public:
 	// public functions
 	CDllExtension();
