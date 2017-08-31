@@ -20,6 +20,7 @@
 #include "Card.h"
 #include "CPlayer.h"
 #include "CScrapedMoney.h"
+#include "CSpaceOptimizedGlobalObject.h"
 #include "CTableTitle.h"
 #include "MagicNumbers.h"
 #include "SLimitInfo.h"
@@ -59,9 +60,6 @@ class CTableState {
   CScrapedMoney _pot[kMaxNumberOfPots];
  private:
   CTableTitle _table_title;
- private:
-  
- private:
 };
 
 extern CTableState *p_table_state;
