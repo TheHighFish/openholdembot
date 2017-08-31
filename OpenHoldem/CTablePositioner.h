@@ -14,7 +14,9 @@
 #ifndef INC_TABLE_POSITIONER_H
 #define INC_TABLE_POSITIONER_H
 
-class CTablePositioner {
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CTablePositioner : public CSpaceOptimizedGlobalObject {
  public:
 	CTablePositioner();
 	~CTablePositioner();

@@ -527,6 +527,7 @@
     <ClInclude Include="CScrapedMoney.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
     <ClInclude Include="CShankySymbolNameTranslator.h" />
+    <ClInclude Include="CSpaceOptimizedGlobalObject.h" />
     <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
