@@ -15,7 +15,13 @@
 #define INC_VALIDATOR_H
 
 #include "NumericalFunctions.h"
-																																												
+
+// !!! ATTENTION
+// !!! CString not properly declared/included.
+// !!! atlstr / afxstr don't work.
+// !!! Any other includes cause lots of erros
+// !!! (escpecially CSpaceOptimiedObject.h).
+
 class CValidator
 {
 public:
@@ -25,7 +31,6 @@ public:
 	void ValidateIt();
 	void ValidateGameState();
 	void SetEnabledManually(bool Enabled);
-
 private:
 	// private functions
 	void ValidateSingleRule();
@@ -33,7 +38,6 @@ private:
   void ValidateICMOnlyIfTournament();
 	CString Symbols_And_Values(const CString symbols_possibly_affected);
 	double gws(const char *the_Symbol);
-
 private:
 	// private data members, not (directly) accessible
 	char	*_testcase_id;
