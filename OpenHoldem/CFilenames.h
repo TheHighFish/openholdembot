@@ -14,6 +14,8 @@
 #ifndef INC_CFILENAMES_H
 #define INC_CFILENAMES_H
 
+#include "CSpaceOptimizedGlobalObject.h"
+
 // OpenPPL-files in the botlogic-directory
 const int kNumberOfOpenPPLLibraries = 23;
 const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
@@ -42,7 +44,7 @@ const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Verbosity.ohf",
 };
 
-class CFilenames {
+class CFilenames : public CSpaceOptimizedGlobalObject {
  public:
 	CFilenames();
 	~CFilenames();

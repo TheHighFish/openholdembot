@@ -31,7 +31,7 @@ CDebugTab *p_debug_tab = NULL;
 CString _expression_texts[kMaxSizeOfDebugTab];
 TPParseTreeNode _expressions[kMaxSizeOfDebugTab];
 
-CDebugTab::CDebugTab() {
+CDebugTab::CDebugTab() : COHScriptObject("f$debug", "", kNoSourceFileForThisCode, kUndefinedZero) {
   // Name is alwayss the same and required for function lookup
   _name = CString("f$debug");
   _number_of_expressions = 0;

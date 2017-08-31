@@ -14,11 +14,12 @@
 #ifndef INC_CENGINECONTAINER_H
 #define INC_CENGINECONTAINER_H
 
+#include "CSpaceOptimizedGlobalObject.h"
 #include "CVirtualSymbolEngine.h"
 
 const int k_max_number_of_symbol_engines = 100;
 
-class CEngineContainer {
+class CEngineContainer : public CSpaceOptimizedGlobalObject {
  public:
   CEngineContainer();
   ~CEngineContainer();

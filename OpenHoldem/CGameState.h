@@ -23,9 +23,10 @@
 
 #include "CDllExtension.h"
 #include "..\CCritSec\CCritSec.h"
+#include "CSpaceOptimizedGlobalObject.h"
 #include "MagicNumbers.h"
 
-class CGameState {
+class CGameState : public CSpaceOptimizedGlobalObject {
  public:
 	// public functions
 	CGameState();
