@@ -16,10 +16,11 @@
 
 #include "inlines/eval.h"
 #include "..\CCritSec\CCritSec.h"
+#include "CSpaceOptimizedGlobalObject.h"
 
 extern sprw1326	_prw1326;	// prwin 1326 data structure Matrix 2008-04-29
 
-class CIteratorThread {
+class CIteratorThread : public CSpaceOptimizedGlobalObject {
  public:
 	// public functions
 	CIteratorThread();
@@ -64,8 +65,8 @@ class CIteratorThread {
  private:
 	// variables for iterator loop
 	CardMask		_plCards, _comCards;
-	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
+  static HANDLE			_m_stop_thread; //!!!!!
  private:
   static int _iterations_calculated;
   static int _iterations_required;
