@@ -196,6 +196,12 @@
     <Filter Include="Temp">
       <UniqueIdentifier>{a37fce48-f069-4910-b6e3-7743df529ef9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MemoryManagement">
+      <UniqueIdentifier>{467116e9-3588-41f1-80f6-427140070150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MemoryManagement">
+      <UniqueIdentifier>{b764422c-eabe-4c8f-a4df-fa7745fedaa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CFileSystemMonitor.cpp">
@@ -663,9 +669,6 @@
     <ClCompile Include="CSymbolengineTableStats.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
     </ClCompile>
-    <ClCompile Include="MemoryLogging.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CSymbolEngineTableLimits.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines\Blinds</Filter>
     </ClCompile>
@@ -803,6 +806,9 @@
     </ClCompile>
     <ClCompile Include="CMemoryPool.cpp">
       <Filter>Source Files\Various Function Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryLogging.cpp">
+      <Filter>Source Files\MemoryManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1567,9 +1573,6 @@
     <ClInclude Include="CSymbolengineTableStats.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryLogging.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CSymbolEngineTableLimits.h">
       <Filter>Header Files\Symbols\Symbol_Engines\Blinds</Filter>
     </ClInclude>
@@ -1704,6 +1707,9 @@
     </ClInclude>
     <ClInclude Include="CMemoryPool.h">
       <Filter>Header Files\Various Function Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryLogging.h">
+      <Filter>Header Files\MemoryManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

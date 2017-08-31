@@ -47,8 +47,7 @@ void CVirtualSymbolEngine::UpdateOnHeartbeat()
 void CVirtualSymbolEngine::UpdateAfterAutoplayerAction(int autoplayer_action_code)
 {}
 
-bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
-{
+bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
 	// We don't provide any symbols
 	return false;
 }
@@ -92,6 +91,6 @@ void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
 }
 
 void* CVirtualSymbolEngine::operator new(size_t size) {
-  assert(p_memory_pool != NULL);
-  return p_memory_pool->allocate(size);
+  assert(p_memory_pool_user_logic != NULL);
+  return p_memory_pool_user_logic->Allocate(size);
 }

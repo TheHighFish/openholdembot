@@ -149,6 +149,6 @@ bool CParseTreeTerminalNodeIdentifier::EvaluatesToBinaryNumber() {
 }
 
 void* CParseTreeTerminalNodeIdentifier::operator new(size_t size) {
-  assert(p_memory_pool != NULL);
-  return p_memory_pool->allocate(size);
+  assert(p_memory_pool_user_logic != NULL);
+  return p_memory_pool_user_logic->Allocate(size);
 }

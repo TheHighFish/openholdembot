@@ -70,9 +70,8 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CWatchdog\n");
   assert(!p_watchdog);
   p_watchdog = new CWatchdog;
-  write_log(preferences.debug_singletons(), "[Singletons] Going to create MemoryPool\n");
-  assert(!p_memory_pool);
-  p_memory_pool = new CMemoryPool;
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create m emory pools\n");
+  CreateMemoryPools();
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CTableTitle\n");
   assert(!p_table_title);
   p_table_title = new CTableTitle;
@@ -270,7 +269,7 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 09\n");
   DELETE_AND_CLEAR(p_parser_symbol_table)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 10\n");
-  DELETE_AND_CLEAR(p_debug_tab)
+  //!!!!!DELETE_AND_CLEAR(p_debug_tab)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 11\n");
   DELETE_AND_CLEAR(p_tablemap_access)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 12\n");
@@ -302,7 +301,7 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 26\n");
   DELETE_AND_CLEAR(p_table_title)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 27\n");
-  DELETE_AND_CLEAR(p_memory_pool)
+  DeleteAllMemoryPools();
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 28\n");
   DELETE_AND_CLEAR(p_watchdog)
   // Session counter at the very end,
