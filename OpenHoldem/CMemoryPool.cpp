@@ -24,21 +24,26 @@
 
 #include "stdafx.h"
 #include "CMemoryPool.h"
+
+#include "CFormulaParser.h"
 #include "OH_MessageBox.h"
 
 CMemoryPool *p_memory_pool_tablemaps = NULL;
 CMemoryPool *p_memory_pool_scraper = NULL;
 CMemoryPool *p_memory_pool_user_logic = NULL;
+CMemoryPool *p_memory_pool_library_logic = NULL;
 CMemoryPool *p_memory_pool_global = NULL;
 
 void CreateMemoryPools() {
   assert(p_memory_pool_tablemaps == NULL);
   assert(p_memory_pool_scraper == NULL);
   assert(p_memory_pool_user_logic == NULL);
+  assert(p_memory_pool_library_logic == NULL);
   assert(p_memory_pool_global == NULL);
   p_memory_pool_tablemaps = new CMemoryPool;
   p_memory_pool_scraper = new CMemoryPool;
   p_memory_pool_user_logic = new CMemoryPool;
+  p_memory_pool_library_logic = new CMemoryPool;
   p_memory_pool_global = new CMemoryPool;
 }
 
@@ -46,6 +51,7 @@ void DeleteAllMemoryPools() {
   delete p_memory_pool_tablemaps;
   delete p_memory_pool_scraper;
   delete p_memory_pool_user_logic;
+  delete p_memory_pool_library_logic;
   delete p_memory_pool_global;
 }
 
@@ -115,4 +121,13 @@ void CMemoryPool::ReleaseAll() {
   _current_memory_block = NULL;
   _bytes_used_in_current_block = kMemoryBlockSize;
   _memory_blocks.RemoveAll();
+}
+
+CMemoryPool *PMemoryPoolParser() {
+  if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) {
+    assert(p_memory_pool_library_logic != NULL);
+    return p_memory_pool_library_logic;
+  }
+  assert(p_memory_pool_user_logic != NULL);
+  return p_memory_pool_user_logic;
 }
