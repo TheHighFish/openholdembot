@@ -20,7 +20,7 @@
 #include "CSpaceOptimizedGlobalObject.h"
 #include "CWatchdog.h"
 
-class CHeartbeatThread : public CSpaceOptimizedGlobalObject {
+class CHeartbeatThread /*: public CSpaceOptimizedGlobalObject */{
  public:
 	// public functions
 	CHeartbeatThread();

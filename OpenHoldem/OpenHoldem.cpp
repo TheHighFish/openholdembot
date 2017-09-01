@@ -126,7 +126,7 @@ BOOL COpenHoldemApp::InitInstance() {
   free((void*)m_pszProfileName);
   m_pszProfileName = _strdup(p_filenames->IniFilePath().GetString());
   preferences.LoadPreferences();
-	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter;
+	if (!p_sessioncounter) p_sessioncounter = new CSessionCounter();
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter, which is necessary for 
 	// the filename of the log (oh_0.log, etc).
@@ -341,7 +341,7 @@ void COpenHoldemApp::InitializeThreads() {
   // Heartbeat thread cares about everything: connecting, scraping, playing
   write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to start heartbeat thread\n");
   assert(p_heartbeat_thread == NULL);
-  p_heartbeat_thread = new CHeartbeatThread;
+  p_heartbeat_thread = new CHeartbeatThread();
   assert(p_heartbeat_thread != NULL);
   p_heartbeat_thread->StartThread();
   // Iterator thread
