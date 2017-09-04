@@ -3328,7 +3328,7 @@ WHEN Others
    WHEN pt_flop_fold_to_cbet5 > 0.60 RETURN 12 FORCE
    WHEN Others RETURN 8 FORCE
    
-##f$pt_icon0##
+##f$pt_icon6##
 WHEN pt_flop_raise_cbet6 > 0.18
    WHEN pt_flop_fold_to_cbet6 < 0.40 RETURN 1 FORCE
    WHEN pt_flop_fold_to_cbet6 > 0.60 RETURN 9 FORCE
