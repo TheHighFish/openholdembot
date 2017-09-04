@@ -64,7 +64,7 @@ void* CMemoryPool::allocate(size_t size) {
   } else if (size > bytes_available_in_current_block()) {
     allocate_new_memory_block();
   }
-  assert(size < _bytes_available_in_current_block);
+  assert(size < bytes_available_in_current_block());
   _all_emmory_released = false;
   size_t offset_to_allocation = _bytes_used_in_current_block;
   _bytes_used_in_current_block += size;

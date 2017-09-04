@@ -23,7 +23,6 @@ int last_working_set_size = 0;
 
 void LogMemoryUsage(char *message) {
   if (!preferences.debug_memory_usage()) return;
-  write_log(true, "[MemoryLogging] %s\n", message);
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms683180%28v=vs.85%29.aspx
   DWORD process_ID = GetCurrentProcessId();
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms682050%28v=vs.85%29.aspx 
@@ -40,5 +39,9 @@ void LogMemoryUsage(char *message) {
     write_log(true, "[MemoryLogging] WorkingSetSize: %9d    [%9d]\n", 
       working_set_size, delta_working_set_size);
   }
+  // First log the memory-usage, then log the message.
+  // This way we see the memory-usage before and after an event
+  // and can more easy read the logs.
+  write_log(true, "[MemoryLogging] %s\n", message);
   CloseHandle(hProcess);
 }
