@@ -1,4 +1,18 @@
-﻿﻿v﻿12.0.0 2017-08-21
+﻿﻿v﻿12.0.1 2017-09-xx
+==================
+BUG FIXES:
+- Some functions of Gecko were in naming-conflict with multiplexer-postfixes (e.g. f$AF_turn)
+  These functions have now been renamed. Thanks to Relhby for reporting
+  [THF]
+- A PT-icon-function of the Gecko-bot had an incorrect name.
+  Thanks to DonkeyKong101 for reporting.
+  [THF]
+- Fixed a typo that affected the Stacksize of chair 3.
+  Thanks to JPHol for reporting and to Trish for helping to hunt the bug.
+  [THF]
+
+  
+﻿v﻿12.0.0 2017-08-21
 ==================
 ﻿NEW STUFF:
 - OpenHoldeme contains now a built-in default bot,
