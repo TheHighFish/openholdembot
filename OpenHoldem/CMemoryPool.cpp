@@ -115,7 +115,7 @@ void CMemoryPool::AllocateNewMemoryBlock() {
 void CMemoryPool::ReleaseAll() {
   for (int i = 0; i < _memory_blocks.GetCount(); ++i) {
     _current_memory_block = _memory_blocks[i];
-    delete _current_memory_block;
+    //!!!!!delete _current_memory_block;
   }
   _all_emmory_released = true;
   _current_memory_block = NULL;
@@ -124,6 +124,7 @@ void CMemoryPool::ReleaseAll() {
 }
 
 CMemoryPool *PMemoryPoolParser() {
+  assert(p_formula_parser != NULL);
   if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) {
     assert(p_memory_pool_library_logic != NULL);
     return p_memory_pool_library_logic;

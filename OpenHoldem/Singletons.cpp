@@ -114,15 +114,15 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CTablemapAccess\n");
   assert(!p_tablemap_access);
   p_tablemap_access = new CTablemapAccess;
-  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDebugTab\n");
-  assert(p_debug_tab == NULL);
-  p_debug_tab = new CDebugTab;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CParserSymbolTable\n");
   assert(!p_parser_symbol_table);
   p_parser_symbol_table = new CParserSymbolTable;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CFormulaParser\n");
   assert(!p_formula_parser);
   p_formula_parser = new CFormulaParser;
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDebugTab\n");
+  assert(p_debug_tab == NULL);
+  p_debug_tab = new CDebugTab;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CAutoplayer\n");
   assert(!p_autoplayer);
   p_autoplayer = new CAutoplayer();
@@ -202,7 +202,7 @@ void StopThreads() {
 	}
 	if (p_pokertracker_thread) { 
 		write_log(preferences.debug_singletons(), "[Singletons] Deleting PokerTracker-thread\n");
-		delete p_pokertracker_thread; 
+		p_pokertracker_thread->~CPokerTrackerThread(); 
 		p_pokertracker_thread = NULL; 
 	}
 	all_threads_stopped = true;
