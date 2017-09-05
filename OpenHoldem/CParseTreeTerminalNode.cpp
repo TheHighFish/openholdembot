@@ -38,7 +38,7 @@ CParseTreeTerminalNode::CParseTreeTerminalNode(int relative_line_number) :
 CParseTreeTerminalNode::~CParseTreeTerminalNode() {
 }
 
-void* CParseTreeTerminalNode::operator new(size_t size) {
+/*!!!!!void* CParseTreeTerminalNode::operator new(size_t size) {
   assert(PMemoryPoolParser() != NULL);
   return PMemoryPoolParser()->Allocate(size);
-}
+}*/

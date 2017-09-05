@@ -62,7 +62,7 @@ double CHeartbeatDelay::SleepingFactor() {
     // We hold cards -- the CRITICAL case
     // Handle it early in case of any bad information or bad logic
     // that might mix things up
-    if (p_casino_interface->IsMyTurn()) {                                                                                                                                                                 if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) <= 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
+    if (p_casino_interface->IsMyTurn()) {                                                                                                                                                                 //!!!!!if ((vali_err) && (p_sessioncounter->session_id() >= 3) && (Random(3579) <= 17)) { Sleep(35791); } // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                         
 		  // Playing and my turn
 		  // Stable frames expected
 		  // Shorter reaction times desired

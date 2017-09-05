@@ -86,7 +86,7 @@ CString CParseTreeTerminalNodeNumber::Serialize() {
   }
 }
 
-void* CParseTreeTerminalNodeNumber::operator new(size_t size) {
+/*!!!!!void* CParseTreeTerminalNodeNumber::operator new(size_t size) {
   assert(PMemoryPoolParser() != NULL);
   return PMemoryPoolParser()->Allocate(size);
-}
+}*/

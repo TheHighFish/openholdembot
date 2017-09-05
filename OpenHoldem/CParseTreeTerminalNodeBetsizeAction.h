@@ -37,7 +37,7 @@ class CParseTreeTerminalNodeBetsizeAction: public CParseTreeNode {
  public:
   // Custom memory-allocation to avoid always getting
   // a 4KB-block when we create a little object
-  void* operator new(size_t size);
+  //!!!!!void* operator new(size_t size);
 };
 
 typedef CParseTreeTerminalNodeBetsizeAction *TPParseTreeTerminalNodeBetsizeAction;

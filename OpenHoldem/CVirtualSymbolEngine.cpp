@@ -90,7 +90,7 @@ void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
   }
 }
 
-void* CVirtualSymbolEngine::operator new(size_t size) {
+/*!!!!!void* CVirtualSymbolEngine::operator new(size_t size) {
   assert(PMemoryPoolParser() != NULL);
   return PMemoryPoolParser()->Allocate(size);
-}
+}*/

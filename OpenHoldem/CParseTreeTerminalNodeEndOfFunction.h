@@ -29,7 +29,7 @@ class CParseTreeTerminalNodeEndOfFunction: public CParseTreeTerminalNodeIdentifi
  public:
   // Custom memory-allocation to avoid always getting
   // a 4KB-block when we create a little object
-  void* operator new(size_t size);
+  //!!!!!void* operator new(size_t size);
  private:
   static bool _evaluating_defailt_logic;
 };
