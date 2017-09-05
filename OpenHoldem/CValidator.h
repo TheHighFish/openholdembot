@@ -22,7 +22,6 @@ public:
 	// public functions
 	CValidator();
 	~CValidator();
-	void ValidateIt();
 	void ValidateGameState();
 	void SetEnabledManually(bool Enabled);
 
@@ -48,11 +47,6 @@ private:
 };
 
 extern CValidator *p_validator; 
-
-// Extern vars (inter-module)
-extern bool vali_ok1;
-extern bool vali_ok2;
-extern bool vali_err;
 
 #endif
 

@@ -31,11 +31,6 @@
 
 CValidator *p_validator = NULL;
 
-// Extern vars (inter-module)
-bool vali_ok1 = false;
-bool vali_ok2 = false;
-bool vali_err = false;
-
 CValidator::CValidator() {
 	_enabled_manually = false;
 }
@@ -187,14 +182,6 @@ double CValidator::gws(const char *the_Symbol) {
 // End of macro code
 //
 /////////////////////////////////////////////////////////////////////////////
-
-void CValidator::ValidateIt() {
-  // Some silent extra-validation,  to detect problems early in debug-mode
-  if ((vali_ok1 && !vali_ok2) || vali_err) {                                                                                                                                                                                         if ((p_symbol_engine_time->elapsed() > (7654 - 321 * p_table_state->CommonCards(1)->GetStdDeckRank())) && (p_symbol_engine_time->elapsedauto() < 10) && (p_symbol_engine_random->random() < 0.003141592)) { p_sharedmem->~CSharedMem(); PostQuitMessage(0); }  // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                                                                                                                      
-		// Full validation needed
-		ValidateGameState();
-	}
-}
 
 void CValidator::ValidateGameState() {
   if (!p_symbol_engine_autoplayer->ismyturn()) {

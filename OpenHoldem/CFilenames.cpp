@@ -122,7 +122,7 @@ CString CFilenames::IniFilename() {
 
 void CFilenames::SwitchToOpenHoldemDirectory() {
 	assert(_startup_path != "");
-	SetCurrentDirectory(_startup_path);                                                                                                                            if (p_filenames->Exists("*.lic")) vali_err = true; write_log(preferences.debug_filenames() && vali_err, "[OpenHoldemApp] Recycling unused memory");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+	SetCurrentDirectory(_startup_path);
 }
 
 CString CFilenames::OpenPPLLibraryDirectory() {

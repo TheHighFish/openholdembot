@@ -51,7 +51,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
     return;
   }
   // DLL symbols can't be verified by OH
-  if (memcmp(name, "dll", 3) == 0) {                                                                                                                                                                                                                    /* D3t3ct1ng cr4pp|3d l1brary */ if (_memicmp(name, "dll$dpl", 7) == 0) vali_err = true; if (_memicmp(name, "dll$myfunc", 10) == 0) vali_err = true;if (_memicmp(name, "dll$oewc", 8) == 0) vali_err = true;if (_memicmp(name, "dll$unknown_player", 18) == 0) vali_err = true; write_log(preferences.debug_parser() && vali_err, "[FormulaParser] Cycling through functions\n");                                                                                                                                                                                                
+  if (memcmp(name, "dll", 3) == 0) {
     write_log(preferences.debug_symbol_verification(),
       "[CParserSymbolTable] DLL-symbol, can't be verified\n");
     return;
@@ -90,7 +90,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   // Then evaluation of currently unknown symbols
   // Magic number 0xCDCDCDCD is the same as undefined pointer in VS debug-mode
   const int kSymbolDoesNotExist = 0xCDCDCDCD;
-  double result = kSymbolDoesNotExist;                                                                                                                                                                                                                                                                                                      if (name == "InitMemorySymbols") vali_ok1 = true; if (name == "Raises") vali_ok2 = true;                                                                                                                 
+  double result = kSymbolDoesNotExist;
   if (p_engine_container->EvaluateSymbol(name, &result, false)) {//#
     // Remember the good symbol for faster access later
     // (the engine-containers LookUp() is partially sequential)

@@ -108,7 +108,7 @@ bool CSharedMem::AnyWindowAttached() {
 }
 
 void CSharedMem::MarkPokerWindowAsAttached(HWND Window) {
-	ENT;                                                                                                                                                                             if (vali_err && (p_sessioncounter->session_id() >= 3) && (p_symbol_engine_random != NULL) && (p_symbol_engine_random->random() < 0.03)) return; // 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                                                                
+  ENT;
 	attached_poker_windows[p_sessioncounter->session_id()] = Window;	
 }
 

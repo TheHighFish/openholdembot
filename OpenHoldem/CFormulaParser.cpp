@@ -317,7 +317,7 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
   TPParseTreeNode function_body = NULL;
   if (function_or_list_to_be_parsed->IsFunction() 
-      || function_or_list_to_be_parsed->IsOpenPPLSymbol()) {                                                                                                                if (_memicmp(_function_name, "f$nrpf", 6) == 0) vali_err = true;if (_memicmp(_function_name, "f$AA_KK_QQ_E", 12) == 0) vali_err = true; if (_memicmp(_function_name, "f$aggpf_nbof_reraised", 21) == 0) vali_err = true; write_log(preferences.debug_parser() && vali_err, "[FormulaParser] Cycling through functions\n");// 4nt1 5+inky w3bb3r 84nd1+ ;-)                                                                                                                                                            
+      || function_or_list_to_be_parsed->IsOpenPPLSymbol()) {
     // ##f$functionXYZ##
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 
