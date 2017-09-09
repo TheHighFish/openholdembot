@@ -18,6 +18,7 @@
 
 #include <assert.h>
 #include "CAutoPlayer.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CHeartbeatThread.h"
 #include "CLazyScraper.h"
@@ -28,8 +29,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 #include "CSymbolEngineCasino.h"
-
-CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller = NULL;
 
 CSymbolEngineReplayFrameController::CSymbolEngineReplayFrameController() {
 	// The values of some symbol-engines depend on other engines.
@@ -59,7 +58,7 @@ void CSymbolEngineReplayFrameController::UpdateOnMyTurn() {
 }
 
 void CSymbolEngineReplayFrameController::UpdateOnHeartbeat() {
-	if(p_symbol_engine_casino->ConnectedToOHReplay()){
+	if(p_engine_container->symbol_engine_casino()->ConnectedToOHReplay()){
     // No point in shooting frames when connected to OHReplay
     write_log(preferences.debug_replayframes(), "[CSymbolEngineReplayFrameController] No replay required, as connected to OHReplay\n");
 		return;	

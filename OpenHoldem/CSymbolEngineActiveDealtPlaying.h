@@ -55,7 +55,7 @@ public:
  public:
 	// Especially useful for the case when we are only interested in opponents
 	// and calculate that value from players, subtracting the userchair.
-	int userchairbit()				{ return 1 << USER_CHAIR; }
+   int userchairbit();
  public:
    int maxnplayersdealt()   { return _maxnplayersdealt; }
  public:
@@ -72,7 +72,5 @@ private:
 	int _playersseatedbits;
   int _maxnplayersdealt;
 };
-
-extern CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing;
 
 #endif INC_CSYMBOLENGINEACTIVEDEALTPLAYING_H

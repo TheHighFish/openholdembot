@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CHandHistoryUncontested.h"
 
+#include "CEngineContainer.h"
 #include "CHandHistoryWriter.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -53,13 +54,13 @@ void CHandHistoryUncontested::UpdateOnMyTurn() {
 
 void CHandHistoryUncontested::UpdateOnHeartbeat() {
   if (_job_done) return;
-  if (p_symbol_engine_active_dealt_playing->nplayersdealt() < 2) return;
-  if (p_symbol_engine_active_dealt_playing->nplayersactive() != 1) return;
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() < 2) return;
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersactive() != 1) return;
   // So here we are:
   // * a game is going on
   // * only 1 player is left, who wins uncontested
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
-    if (IsBitSet(p_symbol_engine_active_dealt_playing->playersactivebits(), i)) {
+    if (IsBitSet(p_engine_container->symbol_engine_active_dealt_playing()->playersactivebits(), i)) {
       CString message;
       message.Format("Player %s wins the pot uncontested\n",
         p_table_state->Player(i)->name());

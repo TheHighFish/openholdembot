@@ -47,7 +47,7 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
 		_node_type, name);
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
   if (name.Left(4).MakeLower() == "user") {
-    p_symbol_engine_openppl_user_variables->Set(name);
+    p_engine_container->symbol_engine_openppl_user_variables()->Set(name);
     return true;
   }
   // Covering both me_st_ and me_inc_ here.
@@ -56,7 +56,7 @@ double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
   // Also me_add_ amd me_sub_ since openHoldem 11.1.0.
   if (name.Left(3) == "me_") {
     double temp_result;
-    p_symbol_engine_memory_symbols->EvaluateSymbol(name,
+    p_engine_container->symbol_engine_memory_symbols()->EvaluateSymbol(name,
       &temp_result, true);
     return temp_result;
   }

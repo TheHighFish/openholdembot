@@ -23,6 +23,7 @@
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
 #include "CDllExtension.h"
+#include "CEngineContainer.h"
 #include "CFlagsToolbar.h"
 #include "CFormulaParser.h"
 #include "inlines/eval.h"
@@ -109,7 +110,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
     write_log(preferences.debug_alltherest(), "[CSymbolEngineVariousDataLookup] location Johnny_8\n");
     if (p_formula_parser->IsParsing()
         || !p_autoconnector->IsConnectedToAnything()
-	      || !p_symbol_engine_userchair->userchair_confirmed()) {
+	      || !p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
 	    *result = 0;
     } else {
 	    OH_MessageBox_OH_Script_Messages(name);

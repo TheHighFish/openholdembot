@@ -17,6 +17,7 @@
 #include "CAutoConnector.h"
 #include "CAutoplayerTrace.h"
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "SwagAdjustment.h"
@@ -129,7 +130,7 @@ bool CBetsizeInputBox::EnterBetsize(double total_betsize_in_dollars) {
   }
   int betround = p_betround_calculator->betround();
   write_log(preferences.debug_autoplayer(), "[CBetsizeInputBox] ...ending DoBetsize, 'didbetsize' now: %d\n",
-    p_symbol_engine_history->didswag(betround));
+    p_engine_container->symbol_engine_history()->didswag(betround));
   return (!lost_focus); 
 }
 

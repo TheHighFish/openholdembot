@@ -16,6 +16,7 @@
 #include "stdafx.h"
 #include "COcclusionCheck.h"
 
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSCraper.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -33,7 +34,7 @@ COcclusionCheck::~COcclusionCheck()
 
 bool COcclusionCheck::UserChairKnown()
 {
-	if (p_symbol_engine_userchair->userchair_confirmed())
+	if (p_engine_container->symbol_engine_userchair()->userchair_confirmed())
 	{
 		return true;
 	}
@@ -46,7 +47,7 @@ bool COcclusionCheck::UserChairKnown()
 
 bool COcclusionCheck::UserBalanceNonZero()
 {
-	int userchair = p_symbol_engine_userchair->userchair();
+	int userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	if (UserChairKnown() 
 		&& (p_table_state->User()->_balance.GetValue() > 0))
 	{
@@ -60,7 +61,7 @@ bool COcclusionCheck::UserBalanceNonZero()
 }
 
 bool COcclusionCheck::UserNameKnown() {	
-	int Userchair = p_symbol_engine_userchair->userchair();
+	int Userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	if ((Userchair < 0) || (Userchair > 9))	{
 		write_log(preferences.debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false; chair out of range\n");
 		return false;
@@ -74,7 +75,7 @@ bool COcclusionCheck::UserNameKnown() {
 
 bool COcclusionCheck::AnyOpponentNameKnown()
 {
-	int Userchair = p_symbol_engine_userchair->userchair();
+	int Userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	for (int i=0; i<=9; i++)
 	{
     if ((i != Userchair) && (p_table_state->Player(i)->name() != ""))
@@ -88,7 +89,7 @@ bool COcclusionCheck::AnyOpponentNameKnown()
 
 bool COcclusionCheck::AnyApponentBalanceNonZero()
 {
-	int Userchair = p_symbol_engine_userchair->userchair();
+	int Userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	for (int i=0; i<=9; i++)
 	{
 		if ((i != Userchair) && (p_table_state->Player(i)->_balance.GetValue() > 0))

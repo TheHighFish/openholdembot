@@ -154,6 +154,4 @@ private:
 	HandVal	handval; 
 };
 
-extern CSymbolEnginePokerval *p_symbol_engine_pokerval;
-
 #endif INC_CSYMBOLENGINEPOKERVAL_H

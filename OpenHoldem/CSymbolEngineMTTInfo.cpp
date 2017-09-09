@@ -21,8 +21,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
-CSymbolEngineMTTInfo *p_symbol_engine_mtt_info = NULL;
-
 CSymbolEngineMTTInfo::CSymbolEngineMTTInfo() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

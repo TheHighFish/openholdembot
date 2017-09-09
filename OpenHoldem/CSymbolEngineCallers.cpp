@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -32,10 +33,8 @@
 #include "NumericalFunctions.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
-CSymbolEngineCallers *p_symbol_engine_callers = NULL;
-
 // Some symbols are only well-defined if it is my turn
-#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_symbol_engine_autoplayer->ismyturn()) *result = kUndefined; }
+#define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_engine_container->symbol_engine_autoplayer()->ismyturn()) *result = kUndefined; }
 
 CSymbolEngineCallers::CSymbolEngineCallers() {
 	// The values of some symbol-engines depend on other engines.
@@ -43,11 +42,11 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_active_dealt_playing != NULL);
   assert(p_symbol_engine_autoplayer != NULL);
-	assert(p_symbol_engine_chip_amounts != NULL);
-	assert(p_symbol_engine_dealerchair != NULL);
-  assert(p_symbol_engine_raisers != NULL);
+	assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
+	assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
+  assert(p_engine_container->symbol_engine_raisers()-> != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
 	// Also using p_symbol_engine_history one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
@@ -97,13 +96,13 @@ void CSymbolEngineCallers::CalculateCallers() {
   _nopponentscalling = 0;
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
-  int first_possible_raiser = p_symbol_engine_raisers->FirstPossibleActor();
-  int last_possible_raiser = p_symbol_engine_raisers->LastPossibleActor() + _nchairs;
+  int first_possible_raiser = p_engine_container->symbol_engine_raisers()->FirstPossibleActor();
+  int last_possible_raiser = p_engine_container->symbol_engine_raisers()->LastPossibleActor() + _nchairs;
   assert(last_possible_raiser > first_possible_raiser);
   assert((last_possible_raiser - first_possible_raiser) <= (2 * _nchairs));
   assert(p_symbol_engine_debug != NULL);
   int chairs_seen = 0;
-  double highest_bet = p_symbol_engine_raisers->MinimumStartingBetCurrentOrbit(false);
+  double highest_bet = p_engine_container->symbol_engine_raisers()->MinimumStartingBetCurrentOrbit(false);
   write_log(preferences.debug_symbolengine(),
     "[CSymbolEngineCallers] current highest bet: %.2f\n", highest_bet);
   for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
@@ -128,7 +127,7 @@ void CSymbolEngineCallers::CalculateCallers() {
         "[CSymbolEngineCallers] Chair %i checking\n", chair);
       continue;
     }
-    if (current_players_bet < p_symbol_engine_tablelimits->bblind()) {
+    if (current_players_bet < p_engine_container->symbol_engine_tablelimits()->bblind()) {
       // Player is posting the small-blind or ante
       write_log(preferences.debug_symbolengine(),
         "[CSymbolEngineCallers] Chair %i posts SB or ante\n", chair);
@@ -141,7 +140,7 @@ void CSymbolEngineCallers::CalculateCallers() {
       highest_bet = current_players_bet;
       continue;
     }
-    if (chair == USER_CHAIR) {
+    if (chair == p_engine_container->symbol_engine_userchair()->userchair()) {
       // User is no opponent
       // and its bet is of no interest either (start or end of search)
       write_log(preferences.debug_symbolengine(),

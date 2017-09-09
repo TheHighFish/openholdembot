@@ -15,6 +15,7 @@
 #include "CSymbolEnginePokerTracker.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 
+#include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CParseTreeTerminalNodeEndOfFunction.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
@@ -30,16 +31,14 @@
 #include "OH_MessageBox.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
-CSymbolEnginePokerTracker *p_symbol_engine_pokertracker = NULL;
-
 CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
 {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_isrush != NULL); 
-	assert(p_symbol_engine_raisers != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(p_engine_container->symbol_engine_raisers()-> != NULL);
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
 	assert(p_symbol_engine_active_dealt_playing != NULL);
 }
 
@@ -57,7 +56,7 @@ void CSymbolEnginePokerTracker::UpdateOnConnection() {
 }
 
 void CSymbolEnginePokerTracker::UpdateOnHandreset() {
-  if (p_symbol_engine_isrush->isrush())
+  if (p_engine_container->symbol_engine_isrush()->isrush())
     ClearAllStats();
 }
 
@@ -175,7 +174,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
 	int chair = 0;
 
 	if (!p_pokertracker_thread->IsConnected()) 	{
-		if (!p_symbol_engine_userchair->userchair_confirmed() || p_formula_parser->IsParsing()) {
+		if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed() || p_formula_parser->IsParsing()) {
 			// We are not yet seated or formula is getting parsed.
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.

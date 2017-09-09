@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CStringMatch.h"
@@ -26,16 +27,14 @@
 #include "CTableState.h"
 #include "NumericalFunctions.h"
 
-CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing = NULL;
-
 CSymbolEngineActiveDealtPlaying::CSymbolEngineActiveDealtPlaying()
 {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_dealerchair != NULL);
+	assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
 }
 
 CSymbolEngineActiveDealtPlaying::~CSymbolEngineActiveDealtPlaying()
@@ -105,6 +104,10 @@ void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits() {
 		}
 	}
 	AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);
+}
+
+int CSymbolEngineActiveDealtPlaying::userchairbit() { 
+  return 1 << p_engine_container->symbol_engine_userchair()->userchair(); 
 }
 
 void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {

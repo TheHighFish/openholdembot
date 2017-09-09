@@ -16,8 +16,6 @@
 #include "CSymbolEngineConstants.h"
 #include "MagicNumbers.h"
 
-CSymbolEngineConstants *p_symbol_engine_constants = NULL;
-
 CSymbolEngineConstants::CSymbolEngineConstants() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

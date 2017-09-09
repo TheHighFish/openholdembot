@@ -16,6 +16,7 @@
 
 #include "CAutoplayerFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "COHScriptObject.h"
 #include "CopenHoldemStatusbar.h"
@@ -194,7 +195,7 @@ CString CAutoplayerTrace::BestAction() {
 void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   CString	comcards, temp, rank, pokerhand;
   CString	fcra_formula_status;
-  int		userchair = p_symbol_engine_userchair->userchair();
+  int		userchair = p_engine_container->symbol_engine_userchair()->userchair();
   int		betround  = p_betround_calculator->betround();
   // Player cards
   // There always exists a user, if not then we have a fake-player. ;-)
@@ -218,11 +219,11 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   comcards.Append("..........");
   comcards = comcards.Left(10);
   // Always use handrank169 here
-  rank.Format("%.0f", p_symbol_engine_handrank->handrank169());
+  rank.Format("%.0f", p_engine_container->symbol_engine_handrank()->handrank169());
   // poker hand
-  pokerhand = p_symbol_engine_pokerval->HandType();
+  pokerhand = p_engine_container->symbol_engine_pokerval()->HandType();
   // fcra_seen
-  CString fcra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
+  CString fcra_seen = p_engine_container->symbol_engine_autoplayer()->GetFCKRAString();
   // fcra formula status
   fcra_formula_status.Format("%s%s%s%s%s",
 	p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_fold)  ? "F" : ".",
@@ -242,10 +243,10 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   write_log(k_always_log_basic_information, "  Hand:          %s\n",    pokerhand.GetString());
   write_log(k_always_log_basic_information, "  My balance:    %9.2f\n", p_table_state->User()->_balance.GetValue());
   write_log(k_always_log_basic_information, "  My currentbet: %9.2f\n", p_table_state->User()->_bet.GetValue()); 
-  write_log(k_always_log_basic_information, "  To call:       %9.2f\n", p_symbol_engine_chip_amounts->call());
-  write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", p_symbol_engine_chip_amounts->pot());
-  write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", p_symbol_engine_tablelimits->bblind());
-  write_log(k_always_log_basic_information, "  Big bet (FL):  %9.2f\n", p_symbol_engine_tablelimits->bigbet());
+  write_log(k_always_log_basic_information, "  To call:       %9.2f\n", p_engine_container->symbol_engine_chip_amounts()->call());
+  write_log(k_always_log_basic_information, "  Pot:           %9.2f\n", p_engine_container->symbol_engine_chip_amounts()->pot());
+  write_log(k_always_log_basic_information, "  Big blind:     %9.2f\n", p_engine_container->symbol_engine_tablelimits()->bblind());
+  write_log(k_always_log_basic_information, "  Big bet (FL):  %9.2f\n", p_engine_container->symbol_engine_tablelimits()->bigbet());
   write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
   write_log(k_always_log_basic_information, "  Formulas:      %s\n",    fcra_formula_status.GetString());
   write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
@@ -264,7 +265,7 @@ void CAutoplayerTrace::LogPlayers() {
   write_log_separator(k_always_log_basic_information, "Players");
   // Logging all players at the table
   // starting at userchair (hero), so that we can easily see all raises behind him
-  int	userchair = p_symbol_engine_userchair->userchair();
+  int	userchair = p_engine_container->symbol_engine_userchair()->userchair();
   int nchairs = p_tablemap->nchairs();
   for (int i = 0; i < nchairs; ++i) {
     int chair = (userchair + i) % nchairs;

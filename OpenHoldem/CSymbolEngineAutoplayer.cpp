@@ -17,6 +17,7 @@
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
@@ -26,8 +27,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
-
-CSymbolEngineAutoplayer *p_symbol_engine_autoplayer = NULL;
 
 CSymbolEngineAutoplayer::CSymbolEngineAutoplayer() {
 	// The values of some symbol-engines depend on other engines.
@@ -141,7 +140,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
   // if we are not playing (occluded?) 2008-03-25 Matrix
 	else if (!p_table_state->User()->HasKnownCards())	{
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because the user is \"not playing\"\n");
-		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", p_symbol_engine_userchair->userchair());
+		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Chair %d (locked) has no cards\n", p_engine_container->symbol_engine_userchair()->userchair());
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
 		_isfinalanswer = false;
 	}

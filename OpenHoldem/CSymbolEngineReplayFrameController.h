@@ -38,6 +38,4 @@ class CSymbolEngineReplayFrameController: public CVirtualSymbolEngine {
   int _heartbeat_of_last_replay_frame;
 };
 
-extern CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller;
-
 #endif INC_CSYMBOLENGINEREPLAYFRAMECONTROLLER_H

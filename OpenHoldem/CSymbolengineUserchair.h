@@ -16,8 +16,6 @@
 
 #include "CVirtualSymbolEngine.h"
 
-#define USER_CHAIR p_symbol_engine_userchair->userchair()
-
 class CSymbolEngineUserchair: public CVirtualSymbolEngine
 {
 public:
@@ -36,7 +34,7 @@ public:
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();;
 public:
-	int userchair()				{ return _userchair; }
+	int userchair()				  { return _userchair; }
 	int userchairbit()			{ return 1 << (_userchair); }
 	bool userchair_confirmed()	{ return (_userchair != kUndefined); }
 private:
@@ -45,7 +43,5 @@ private:
 private:
 	int _userchair;
 };
-
-extern CSymbolEngineUserchair *p_symbol_engine_userchair;
 
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

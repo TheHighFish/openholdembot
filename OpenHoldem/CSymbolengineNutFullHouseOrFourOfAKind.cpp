@@ -19,6 +19,7 @@
 #include "inlines/eval.h"
 #include "Card.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineIsOmaha.h"
@@ -27,8 +28,6 @@
 #include "MagicNumbers.h"
 #include "Numericalfunctions.h"
 
-CSymbolEngineNutFullhouseOrFourOfAKind *p_symbol_engine_nutfullhouse_or_four_of_a_kind = NULL;
-
 CSymbolEngineNutFullhouseOrFourOfAKind::CSymbolEngineNutFullhouseOrFourOfAKind() {
   // The values of some symbol-engines depend on other engines.
   // As the engines get later called in the order of initialization
@@ -36,7 +35,7 @@ CSymbolEngineNutFullhouseOrFourOfAKind::CSymbolEngineNutFullhouseOrFourOfAKind()
   //
   // This engine does not use any other engines.
   assert(p_symbol_engine_cards != NULL);
-  assert(p_symbol_engine_userchair != NULL);
+  assert(p_engine_container->symbol_engine_userchair()-> != NULL);
   // Also depending on CSymbolEngineIsOmaha.h, which returns "constant" values
 }
 
@@ -84,7 +83,7 @@ int CSymbolEngineNutFullhouseOrFourOfAKind::Handstrength(CardMask cards, int n_c
   if (hand_type != HandType_QUADS) {
     // Unmodified hand-strength of our 5-card-hand (non-quads).
   }
-  else if (p_symbol_engine_cards->nrankedcommon() == 4) {
+  else if (p_engine_container->symbol_engine_cards()->nrankedcommon() == 4) {
     // Quads on board, kickers do count.
     // Keep hand-strength unmodified.
   }
@@ -122,7 +121,7 @@ void CSymbolEngineNutFullhouseOrFourOfAKind::CalculateNutFullhouseOrFourOfAKind(
       "[CSymbolEngineNutFullhouseOrFourOfAKind] Not yet flop. no fullhouse possible\n");
     return;
   }
-  int userchair = p_symbol_engine_userchair->userchair();
+  int userchair = p_engine_container->symbol_engine_userchair()->userchair();
   if (userchair == kUndefined) {
     // Can happen if we are not seated 
     // or if we connect in a potential showdown-situation (river without buttons)

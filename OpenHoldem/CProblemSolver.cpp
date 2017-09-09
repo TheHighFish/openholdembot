@@ -17,6 +17,7 @@
 #include "CAutoConnector.h"
 #include "CCasinoInterface.h"
 #include "CConfigurationCheck.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePokerval.h"
@@ -47,18 +48,18 @@ bool CProblemSolver::NotConnected()
 
 bool CProblemSolver::UserChairUnknown()
 {
-	return (p_symbol_engine_userchair->userchair_confirmed() == false);
+	return (p_engine_container->symbol_engine_userchair()->userchair_confirmed() == false);
 }
 
 bool CProblemSolver::NoOpponents()
 {
-	return (p_symbol_engine_active_dealt_playing->nopponentsplaying() == 0);
+	return (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying() == 0);
 }
 
 bool CProblemSolver::AutoPlayerDidActAtLeastOnce()
 {
 	// We compare the time since connection to the time since last action.
-	return (p_symbol_engine_time->elapsed() != p_symbol_engine_time->elapsedauto());
+	return (p_engine_container->symbol_engine_time()->elapsed() != p_engine_container->symbol_engine_time()->elapsedauto());
 }
 
 bool CProblemSolver::NoCardsVisible()

@@ -43,6 +43,4 @@ class CSymbolEngineCasino: public CVirtualSymbolEngine {
   bool SitenameContainsCasinoIdentifier(const char *casino);
 };
 
-extern CSymbolEngineCasino *p_symbol_engine_casino;
-
 #endif /* INC_CSYMBOLENGINECASINO_H */

@@ -52,6 +52,4 @@ class CSymbolEngineChairs: public CVirtualSymbolEngine {
   bool _missing_smallblind_calculated;
 };
 
-extern CSymbolEngineChairs *p_symbol_engine_chairs;
-
 #endif INC_CSYMBOLENGINECHAIRS_H

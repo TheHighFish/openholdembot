@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineIsTournament.h"
@@ -91,7 +92,7 @@ CString CSymbolEngineGameType::GetGameTypeAsString() {
     // That's better than former "unknown".
 		result = "FL";
 	}
-	if (p_symbol_engine_istournament->istournament()) {
+	if (p_engine_container->symbol_engine_istournament()->istournament()) {
 		result += "T";
 	}
 	return result;

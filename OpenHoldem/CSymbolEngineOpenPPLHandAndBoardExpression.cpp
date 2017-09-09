@@ -15,6 +15,7 @@
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 
 #include "CardFunctions.h"
+#include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
@@ -23,8 +24,6 @@
 #include "CSymbolEnginePokerval.h"
 #include "CTableState.h"
 #include "..\StringFunctionsDLL\string_functions.h"
-
-CSymbolEngineOpenPPLHandAndBoardExpression *p_symbol_engine_open_ppl_hand_and_board_expression = NULL;
 
 const int prime_coded_card_ranks[k_rank_ace+1] = {
 	1,	// rank = 0, unused, exists due to C++-definition
@@ -72,7 +71,7 @@ void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnMyTurn() {
 }
 
 void CSymbolEngineOpenPPLHandAndBoardExpression::UpdateOnHeartbeat() {
-  if (p_symbol_engine_isomaha->isomaha()) {
+  if (p_engine_container->symbol_engine_isomaha()->isomaha()) {
     _prime_coded_hole_cards = PrimeCodedRanks(
       p_table_state->User()->hole_cards(0)->GetOpenHoldemRank(),
       p_table_state->User()->hole_cards(1)->GetOpenHoldemRank(),
@@ -199,7 +198,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const CString na
 		if (is_hand_expression)	{
 			// Suited hand-expression
 			// Ranks already checked, there are only 2, this simplifies things
-			if (!p_symbol_engine_cards->issuited()) {
+			if (!p_engine_container->symbol_engine_cards()->issuited()) {
         write_log(preferences.debug_hand_and_board_expressions(), 
 			    "[CSymbolEngineOpenPPLHandAndBoardExpression] No match, because off-suited hole-cards\n");
 				// No suited ranks available
@@ -208,7 +207,7 @@ bool CSymbolEngineOpenPPLHandAndBoardExpression::EvaluateSymbol(const CString na
 			}
 		}	else {
 			// Suited board-expression
-			int rankbits_available = p_symbol_engine_pokerval->srankbitscommon();
+			int rankbits_available = p_engine_container->symbol_engine_pokerval()->srankbitscommon();
 			// Check ranks in expression against available ranks
 			if ((rankbits_to_be_searched & rankbits_available) != rankbits_to_be_searched)
 			{

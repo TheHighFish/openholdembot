@@ -20,6 +20,7 @@
 #include "CardFunctions.h"
 #include "CAutoconnector.h"
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -173,7 +174,7 @@ void CScraper::ScrapeActionButtons() {
 		if (EvaluateRegion(button_name, &result)) {
       p_casino_interface->_technical_autoplayer_buttons[i].SetState(result);
 		}
-    if ((i == 5) && p_symbol_engine_casino->ConnectedToManualMode()) {
+    if ((i == 5) && p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
       // Ugly WinHoldem convention
       // When using ManualMode, grab i5state for PT network
       p_tablemap->set_network(result);
@@ -229,8 +230,8 @@ void CScraper::ScrapeBetsAndBalances() {
 		//   * scrape everybody up to my first action (then we know who was dealt)
 		//   * after that we scrape only dealt players
 		//   * and also players who have cards (fresh sitdown and hand-reset, former playersdealt is wrong)
-		if ((!p_symbol_engine_history->DidActThisHand())
-			|| IsBitSet(p_symbol_engine_active_dealt_playing->playersdealtbits(), i)
+		if ((!p_engine_container->symbol_engine_history()->DidActThisHand())
+			|| IsBitSet(p_engine_container->symbol_engine_active_dealt_playing()->playersdealtbits(), i)
       || p_table_state->Player(i)->HasAnyCards())
 		{
 			ScrapeBet(i);
@@ -752,25 +753,25 @@ void CScraper::ScrapeMTTRegions() {
   assert(p_symbol_engine_mtt_info != NULL);
 	CString result;
 	if (EvaluateRegion("mtt_number_entrants", &result)) {	
-		p_symbol_engine_mtt_info->set_mtt_number_entrants(result);
+		p_engine_container->symbol_engine_mtt_info()->set_mtt_number_entrants(result);
 	}
 	if (EvaluateRegion("mtt_players_remaining", &result)) {
-		p_symbol_engine_mtt_info->set_mtt_players_remaining(result);
+		p_engine_container->symbol_engine_mtt_info()->set_mtt_players_remaining(result);
 	}
 	if (EvaluateRegion("mtt_my_rank", &result)) {
-		p_symbol_engine_mtt_info->set_mtt_my_rank(result);
+		p_engine_container->symbol_engine_mtt_info()->set_mtt_my_rank(result);
 	}
 	if (EvaluateRegion("mtt_paid_places", &result)) {
-		p_symbol_engine_mtt_info->set_mtt_paid_places(result);
+		p_engine_container->symbol_engine_mtt_info()->set_mtt_paid_places(result);
 	}
 	if (EvaluateRegion("mtt_largest_stack", &result)) {
-		p_symbol_engine_mtt_info->set_mtt_largest_stack(result);
+		p_engine_container->symbol_engine_mtt_info()->set_mtt_largest_stack(result);
 	}
 	if (EvaluateRegion("mtt_average_stack", &result)) {
-		p_symbol_engine_mtt_info->set_mtt_average_stack(result);
+		p_engine_container->symbol_engine_mtt_info()->set_mtt_average_stack(result);
 	}
 	if (EvaluateRegion("mtt_smallest_stack", &result)) {
-		p_symbol_engine_mtt_info->set_mtt_smallest_stack(result);
+		p_engine_container->symbol_engine_mtt_info()->set_mtt_smallest_stack(result);
 	}
 }
 

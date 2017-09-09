@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "BetpotCalculations.h"
 
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineUserchair.h"
@@ -56,12 +57,12 @@ double BetPotFactor(int betpot_action_code) {
 double BetsizeForBetpot(int betpot_action_code) {
   assert(betpot_action_code >= k_autoplayer_function_betpot_2_1);
   assert(betpot_action_code <= k_autoplayer_function_betpot_1_4);
-  double pot_after_i_call = p_symbol_engine_chip_amounts->pot()
-    + p_symbol_engine_chip_amounts->call();
+  double pot_after_i_call = p_engine_container->symbol_engine_chip_amounts()->pot()
+    + p_engine_container->symbol_engine_chip_amounts()->call();
   double additional_money_into_pot = BetPotFactor(betpot_action_code) 
     * pot_after_i_call;
   double final_betsize = p_table_state->User()->_bet.GetValue()
-    + p_symbol_engine_chip_amounts->call()
+    + p_engine_container->symbol_engine_chip_amounts()->call()
     + additional_money_into_pot;
   assert(final_betsize > 0);
   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Betsize for betpot-action:  %.3f\n",

@@ -40,6 +40,4 @@ class CSymbolEngineIsRush: public CVirtualSymbolEngine {
   int handresets;
 };
 
-extern CSymbolEngineIsRush *p_symbol_engine_isrush;
-
 #endif INC_CSYMBOLENGINEUSERCHAIR_H

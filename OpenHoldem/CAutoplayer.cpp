@@ -92,14 +92,14 @@ void CAutoplayer::PrepareActionSequence() {
 
 void CAutoplayer::FinishActionSequenceIfNecessary() {
 	if (action_sequence_needs_to_be_finished) {
-    if (p_symbol_engine_casino->ConnectedToOHReplay() && preferences.use_auto_replay()) {
+    if (p_engine_container->symbol_engine_casino()->ConnectedToOHReplay() && preferences.use_auto_replay()) {
       // Needs to be done very early
       // before we restore the focus
       p_casino_interface->PressTabToSwitchOHReplayToNextFrame();
     }
     // avoid multiple-clicks within a short frame of time
     p_stableframescounter->UpdateOnAutoplayerAction();
-    if (p_symbol_engine_casino->ConnectedToOfflineSimulation() || preferences.restore_position_and_focus()) {
+    if (p_engine_container->symbol_engine_casino()->ConnectedToOfflineSimulation() || preferences.restore_position_and_focus()) {
       // Restore mouse position and window focus
       // Only for simulations, not for real casinos (stealth).
 		  // Restoring the original state has to be done in reversed order
@@ -227,8 +227,8 @@ bool CAutoplayer::ExecutePrimaryFormulasIfNecessary() {
 	// Execute beep (if necessary) independent of all other conditions (mutex, etc.)
 	// and with autoplayer-actions.
 	ExecuteBeep();
-  assert(p_symbol_engine_autoplayer->isfinalanswer());
-	assert(p_symbol_engine_autoplayer->ismyturn());
+  assert(p_engine_container->symbol_engine_autoplayer()->isfinalanswer());
+	assert(p_engine_container->symbol_engine_autoplayer()->ismyturn());
 	// Precondition: my turn and isfinalanswer
 	// So we have to take an action and are able to do so.
 	// This function will ALWAYS try to click a button,
@@ -261,7 +261,7 @@ bool CAutoplayer::ExecuteRaiseCallCheckFold() {
   assert(p_function_collection != NULL);
   assert(p_function_collection->Exists(k_standard_function_names[k_autoplayer_function_fold]));
 	for (int i=k_autoplayer_function_raise; i<=k_autoplayer_function_fold; i++)	{
-    if ((i == k_autoplayer_function_check) && p_symbol_engine_chip_amounts->call() > 0) {
+    if ((i == k_autoplayer_function_check) && p_engine_container->symbol_engine_chip_amounts()->call() > 0) {
       write_log(k_always_log_errors, 
         "[AutoPlayer] WARNING! Can't execute f$check because there is a bet to call\n");
       continue;
@@ -455,7 +455,7 @@ void CAutoplayer::DoAutoplayer(void) {
   CheckBringKeyboard();
   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of visible buttons: %d (%s)\n", 
 		p_casino_interface->NumberOfVisibleAutoplayerButtons(),
-		p_symbol_engine_autoplayer->GetFCKRAString());
+		p_engine_container->symbol_engine_autoplayer()->GetFCKRAString());
 	// Care about i86X regions first, because they are usually used 
 	// to handle popups which occlude the table (unstable input)
 	if (p_casino_interface->HandleInterfacebuttonsI86())	{
@@ -475,7 +475,7 @@ void CAutoplayer::DoAutoplayer(void) {
   } else {
     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not executing secondary formulas this heartbeat\n");
 	}
-  if (!p_symbol_engine_userchair->userchair_confirmed()) {
+  if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
     // Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
 		// However: for primary formulas (f$alli, f$rais, etc.)
@@ -484,7 +484,7 @@ void CAutoplayer::DoAutoplayer(void) {
 		goto AutoPlayerCleanupAndFinalization;
   }
 	write_log(preferences.debug_autoplayer(), "[AutoPlayer] Going to evaluate primary formulas.\n");
-	if (p_symbol_engine_autoplayer->isfinalanswer())	{
+	if (p_engine_container->symbol_engine_autoplayer()->isfinalanswer())	{
 		p_autoplayer_functions->CalcPrimaryFormulas();
 		ExecutePrimaryFormulasIfNecessary();
 	}	else {
