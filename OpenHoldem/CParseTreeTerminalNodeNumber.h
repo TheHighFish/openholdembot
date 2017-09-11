@@ -31,10 +31,6 @@ class CParseTreeTerminalNodeNumber: public CParseTreeTerminalNode {
  public:
   // For debugging output
   CString Serialize();
- public:
-  // Custom memory-allocation to avoid always getting
-  // a 4KB-block when we create a little object
-  //!!!!!void* operator new(size_t size);
  private:
   // In case of terminal node (number)
   double _constant_value;

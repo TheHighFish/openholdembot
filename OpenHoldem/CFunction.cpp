@@ -169,8 +169,3 @@ void CFunction::SetValue(double value) {
   _cached_result = value;
   _is_result_cached = true;
 }
-
-void* CFunction::operator new(size_t size) {
-  assert(PMemoryPoolParser() != NULL);
-  return PMemoryPoolParser()->Allocate(size);
-}

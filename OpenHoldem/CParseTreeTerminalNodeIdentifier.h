@@ -33,10 +33,6 @@ class CParseTreeTerminalNodeIdentifier: public CParseTreeTerminalNode {
   // Might be called by CSymbolEngineMemorySymbols
   // to evaluate right-hand-side expressions
   static double EvaluateIdentifier(CString name, bool log);
- public:
-  // Custom memory-allocation to avoid always getting
-  // a 4KB-block when we create a little object
-  //!!!!!void* operator new(size_t size);
  private:
   bool IsBinaryIdentifier();
  protected:

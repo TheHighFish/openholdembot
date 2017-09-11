@@ -28,10 +28,6 @@ class CParseTreeTerminalNodeUserVariable: public CParseTreeTerminalNodeIdentifie
  public:
   // For debugging output
   CString Serialize();
- public:
-  // Custom memory-allocation to avoid always getting
-  // a 4KB-block when we create a little object
-  //!!!!!void* operator new(size_t size);
 };
 
 typedef CParseTreeTerminalNodeUserVariable *TPParseTreeTerminalNodeUserVariable;

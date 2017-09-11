@@ -241,8 +241,3 @@ void COHScriptList::GenerateFunctionTextFromHandlistMatrix() {
   }
   _function_text = result;
 } 
-
-void* COHScriptList::operator new(size_t size) {
-  assert(PMemoryPoolParser() != NULL);
-  return PMemoryPoolParser()->Allocate(size);
-}

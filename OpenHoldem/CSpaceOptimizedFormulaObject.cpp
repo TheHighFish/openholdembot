@@ -7,23 +7,19 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: base class for formula objects 
+//   that use memory-pools
 //
 //******************************************************************************
 
-#ifndef INC_CPARSETREETERMINALNODE_H
-#define INC_CPARSETREETERMINALNODE_H
+#include "stdafx.h"
+#include "CSpaceOptimizedFormulaObject.h"
 
-#include "CParsetreeNode.h"
+#include <assert.h>
+#include "CMemoryPool.h"
 
-class CParseTreeTerminalNode: public CParseTreeNode {
-  friend class CFormulaParser;
-  friend class CParseTreeRotator;
- public:
-  CParseTreeTerminalNode(int relative_line_number);
-  virtual ~CParseTreeTerminalNode();
-};
+// Custom memory-allocation to avoid always getting
+// a 4KB-block when we create a little object
+void* :operator CSpaceOptimizedFormulaObject::new(size_t size) {
+}
 
-typedef CParseTreeTerminalNode *TPParseTreeTerminalNode;
-
-#endif INC_CPARSETREETERMINALNODE_H

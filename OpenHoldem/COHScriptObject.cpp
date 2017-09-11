@@ -210,11 +210,6 @@ void COHScriptObject::Dump() {
   // ATM we are only interested in formulas
 }
 
-void* COHScriptObject::operator new(size_t size) {
-  assert(PMemoryPoolParser() != NULL);
-  return PMemoryPoolParser()->Allocate(size);
-}
-
 // virtual 
 bool COHScriptObject::NeedsToBeParsed() {
   //!!!!! attention: care about failed parse

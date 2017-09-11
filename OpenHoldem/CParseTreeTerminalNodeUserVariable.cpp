@@ -90,7 +90,3 @@ CString CParseTreeTerminalNodeUserVariable::Serialize() {
   }
 }
 
-/*!!!!!void* CParseTreeTerminalNodeUserVariable::operator new(size_t size) {
-  assert(PMemoryPoolParser() != NULL);
-  return PMemoryPoolParser()->Allocate(size);
-}*/

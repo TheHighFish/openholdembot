@@ -350,8 +350,3 @@ bool CParseTreeOperatorNode::EvaluatesToBinaryNumber() {
   // Nothing binary
   return false;
 }
-
-void* CParseTreeOperatorNode::operator new(size_t size) {
-  assert(PMemoryPoolParser() != NULL);
-  return PMemoryPoolParser()->Allocate(size);
-}

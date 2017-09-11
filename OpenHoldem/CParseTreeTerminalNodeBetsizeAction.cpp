@@ -172,8 +172,3 @@ bool CParseTreeTerminalNodeBetsizeAction::EvaluatesToBinaryNumber() {
   // Nothing binary
   return false;
 }
-
-/*!!!!!void* CParseTreeTerminalNodeBetsizeAction::operator new(size_t size) {
-  assert(PMemoryPoolParser() != NULL);
-  return PMemoryPoolParser()->Allocate(size);
-}*/

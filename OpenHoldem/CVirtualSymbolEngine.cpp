@@ -89,8 +89,3 @@ void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
     OH_MessageBox_Error_Warning(error_message, "Warning");
   }
 }
-
-/*!!!!!void* CVirtualSymbolEngine::operator new(size_t size) {
-  assert(PMemoryPoolParser() != NULL);
-  return PMemoryPoolParser()->Allocate(size);
-}*/

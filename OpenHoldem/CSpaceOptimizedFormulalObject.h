@@ -1,3 +1,5 @@
+#pragma once
+
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -7,23 +9,18 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: base class for formula objects 
+//   that use memory-pools
 //
 //******************************************************************************
 
-#ifndef INC_CPARSETREETERMINALNODE_H
-#define INC_CPARSETREETERMINALNODE_H
-
-#include "CParsetreeNode.h"
-
-class CParseTreeTerminalNode: public CParseTreeNode {
-  friend class CFormulaParser;
-  friend class CParseTreeRotator;
- public:
-  CParseTreeTerminalNode(int relative_line_number);
-  virtual ~CParseTreeTerminalNode();
+class CSpaceOptimizedFormulaObject {
+public:
+  CSpaceOptimizedFormulaObject() {}
+  ~CSpaceOptimizedFormulaObject() {}
+public:
+  void* operator new(size_t size);
+public:
+  void operator delete(void* ptr) {}
+private:
 };
-
-typedef CParseTreeTerminalNode *TPParseTreeTerminalNode;
-
-#endif INC_CPARSETREETERMINALNODE_H

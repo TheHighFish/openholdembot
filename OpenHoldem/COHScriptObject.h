@@ -14,11 +14,13 @@
 #ifndef INC_COHSCRIPTOBJECT_H
 #define INC_COHSCRIPTOBJECT_H
 
+#include "CSpaceOptimizedFormulalObject.h"
+
 // Either auto-generated for completion
 // or created with the editor
 const CString kNoSourceFileForThisCode = "no source file";
 
-class COHScriptObject {
+class COHScriptObject: public CSpaceOptimizedFormulaObject {
   friend class CFunctionCollection;
  public:
   COHScriptObject(); 
