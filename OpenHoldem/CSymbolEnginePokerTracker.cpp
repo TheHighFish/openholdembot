@@ -202,7 +202,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
 		CString last_character = symbol.Right(1);
     if (!isdigit(last_character[0])) {
       CString error_message;
-      error_message.Format("Invalid PokerTracker Symbol: &s",
+      error_message.Format("Invalid PokerTracker Symbol: %s",
         symbol);
       OH_MessageBox_Formula_Error(error_message, "ERROR");
 		  *result = kUndefined;
