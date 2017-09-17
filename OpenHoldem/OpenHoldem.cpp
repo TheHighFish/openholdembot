@@ -136,10 +136,7 @@ BOOL COpenHoldemApp::InitInstance() {
   // which was not yet possible some lines above.
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20281&p=142334#p142334
   preferences.LoadPreferences();
-
 	InstantiateAllSingletons();
-  p_formula_parser->ParseDefaultLibraries();
-  
   write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to load mouse.DLL\n");
 	// mouse.dll - failure in load is fatal
 	_mouse_dll = LoadLibrary("mouse.dll");
@@ -208,6 +205,7 @@ BOOL COpenHoldemApp::InitInstance() {
   write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to InitializeThreads()\n");
   InitializeThreads();
   write_log(preferences.debug_openholdem(), "[OpenHoldem] Going to OpenLastRecentlyUsedFile()\n");
+  p_formula_parser->ParseDefaultLibraries(); //!!!!!!!
 	OpenLastRecentlyUsedFile();
 	write_log(preferences.debug_openholdem(), "[OpenHoldem] m_pMainWnd = %i\n",
 		m_pMainWnd);

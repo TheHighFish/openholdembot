@@ -47,6 +47,28 @@ CSymbolEngineVariousDataLookup			*p_symbol_engine_various_data_lookup = NULL;
 
 
 CSymbolEngineVariousDataLookup::CSymbolEngineVariousDataLookup() {
+  // The values of some symbol-engines depend on other engines.
+  // As the engines get later called in the order of initialization
+  // we assure correct ordering by checking if they are initialized.
+  assert(p_symbol_engine_userchair != NULL);
+  // Other objects that we depend on
+  assert(p_autoconnector != NULL);
+  assert(p_betround_calculator != NULL);
+  assert(p_dll_extension != NULL);
+  assert(p_handreset_detector != NULL);
+  assert(p_formula_parser != NULL);
+  assert(p_sessioncounter != NULL);
+  assert(p_tablemap != NULL);
+  assert(p_table_title != NULL);
+  assert(p_white_info_box != NULL);
+  // Objects that are part of the GUI which runs in its own thread.
+  // They might or might not yet be initialized.
+  // We wait, as we might need them very early
+  // when parsing the default logic and verifying symbols
+  while (p_flags_toolbar == NULL) { 
+    Sleep(100); 
+  }
+  assert(p_flags_toolbar != NULL);
 }
 
 CSymbolEngineVariousDataLookup::~CSymbolEngineVariousDataLookup() {
@@ -76,7 +98,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   // DLL
   if (memcmp(name, "dll$", 4) == 0) {
-    assert(p_dll_extension != NULL);
     if (p_dll_extension->IsLoaded()) {
 	    *result = ProcessQuery(name);
     } else {
@@ -131,7 +152,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   }  else if ((memcmp(name, "ispopup", 7) == 0) && (strlen(name) == 7)) {
     *result = p_tablemap->ispopup();
   } else if ((memcmp(name, "title$", 6) == 0) && (strlen(name) >= 7)) {
-    assert(p_table_title != NULL);
     CString substring = CString(name).Mid(6);
     *result = p_table_title->ContainsSubstring(substring);
   } else if ((memcmp(name, kEmptyExpression_False_Zero_WhenOthersFoldForce, strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))==0) 

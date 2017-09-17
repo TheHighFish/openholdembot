@@ -26,7 +26,6 @@ protected: // create from serialization only
 	afx_msg void OnViewShootreplayframe();
   afx_msg void OnManualMode();
 	afx_msg void OnEditPreferences();
-	afx_msg void OnFileLoadOpenPPL();
 	afx_msg void OnFileLoadTableMap();
 	afx_msg void OnDllLoad();
 	afx_msg void OnTimer(UINT nIDEvent);
