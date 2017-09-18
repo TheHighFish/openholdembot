@@ -63,12 +63,10 @@ CSymbolEngineVariousDataLookup::CSymbolEngineVariousDataLookup() {
   assert(p_white_info_box != NULL);
   // Objects that are part of the GUI which runs in its own thread.
   // They might or might not yet be initialized.
-  // We wait, as we might need them very early
-  // when parsing the default logic and verifying symbols
-  while (p_flags_toolbar == NULL) { 
-    Sleep(100); 
-  }
-  assert(p_flags_toolbar != NULL);
+  // We don#t wait here, as the GUI also waits at some point.
+  // We check these pointers only when really needed
+  //
+  // assert(p_flags_toolbar != NULL);
 }
 
 CSymbolEngineVariousDataLookup::~CSymbolEngineVariousDataLookup() {
@@ -110,13 +108,6 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
   else if (name == "currentround") *result = p_betround_calculator->betround();
   else if (name == "previousround") *result = p_betround_calculator->PreviousRound();
-  //FLAGS
-  else if (memcmp(name, "fmax", 4)==0 && strlen(name)==4)			*result = p_flags_toolbar->GetFlagMax();
-  // flags f0..f9
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==2)				*result = p_flags_toolbar->GetFlag(RightDigitCharacterToNumber(name));
-  // flags f10..f19
-  else if (memcmp(name, "f", 1)==0 && strlen(name)==3)				*result = p_flags_toolbar->GetFlag(10 * RightDigitCharacterToNumber(name, 1) + RightDigitCharacterToNumber(name, 0));
-  else if (memcmp(name, "flagbits", 8)==0 && strlen(name)==8)	*result = p_flags_toolbar->GetFlagBits();
   // GENERAL
   else if (memcmp(name, "session", 7)==0 && strlen(name)==7)	*result = p_sessioncounter->session_id();
   else if (memcmp(name, "version", 7)==0 && strlen(name)==7)	*result = VERSION_NUMBER;
@@ -157,6 +148,30 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   } else if ((memcmp(name, kEmptyExpression_False_Zero_WhenOthersFoldForce, strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))==0) 
       && (strlen(name)==strlen(kEmptyExpression_False_Zero_WhenOthersFoldForce))) {
     *result = kUndefinedZero;
+  } else if (memcmp(name, "f", 1) == 0 && strlen(name) == 2) {
+    if (p_flags_toolbar != NULL) {
+      *result = p_flags_toolbar->GetFlag(RightDigitCharacterToNumber(name));
+    } else {
+      *result = kUndefinedZero;
+    }
+  } else if (memcmp(name, "f", 1) == 0 && strlen(name) == 3) {
+    if (p_flags_toolbar != NULL) {
+      *result = p_flags_toolbar->GetFlag(10 * RightDigitCharacterToNumber(name, 1) + RightDigitCharacterToNumber(name, 0));
+    } else {
+      *result = kUndefinedZero;
+    }
+  } else if (memcmp(name, "fmax", 4) == 0 && strlen(name) == 4) {
+    if (p_flags_toolbar != NULL) {
+      *result = p_flags_toolbar->GetFlagMax();
+    } else {
+      *result = kUndefinedZero;
+    }
+  } else if (memcmp(name, "flagbits", 8) == 0 && strlen(name) == 8) {
+    if (p_flags_toolbar != NULL) {
+      *result = p_flags_toolbar->GetFlagBits();
+    } else {
+      *result = kUndefinedZero;
+    }
   } else {
     // Special symbol for empty expressions. Its evaluation adds something 
     // meaningful to the log when the end of an open-ended when-condition 
