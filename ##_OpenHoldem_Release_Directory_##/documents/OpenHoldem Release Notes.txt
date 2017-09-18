@@ -19,6 +19,11 @@ BUG FIXES:
   and might not have been initialized at this point of time.
   Thanks to Trish for reporting.
   [THF]
+  
+MAINTENANCE:
+- Improved some validator-rules.
+  Thanks to Jabsacyomama for reporting.
+  [THF]
 
   
 ﻿v﻿12.0.0 2017-08-21
