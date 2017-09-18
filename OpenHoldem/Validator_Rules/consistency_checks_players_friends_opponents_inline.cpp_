@@ -3,20 +3,20 @@
 BEGIN_TESTCASE
     TESTCASE_ID ("1401")
     HEURISTIC_RULE (false)
-    REASONING ("All players dealt must be active")
-    PRECONDITION (true)
+    REASONING ("In cash-games all players dealt must be active")
+    PRECONDITION (!gws("istournament"))
     POSTCONDITION ((int(gws("playersdealtbits")) & int(gws("playersactivebits"))) == int(gws("playersdealtbits")))
-    SYMBOLS_POSSIBLY_AFFECTED ("playersdealtbits, playersactivebits")
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, playersdealtbits, playersactivebits")
 END_TESTCASE
 
 
 BEGIN_TESTCASE
     TESTCASE_ID ("1402")
     HEURISTIC_RULE (false)
-    REASONING ("All players playing must be seated and dealt and active.")
-    PRECONDITION (true)
+    REASONING ("In cash-games all players playing must be seated and dealt and active.")
+    PRECONDITION (!gws("istournament"))
     POSTCONDITION ((int(gws("playersplayingbits")) & int(gws("playersseatedbits")) & int(gws("playersdealtbits")) & int(gws("playersactivebits"))) == int(gws("playersplayingbits")))
-    SYMBOLS_POSSIBLY_AFFECTED ("playersplayingbits, playersseatedbits, playersdealtbits, playersactivebits")
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament, playersplayingbits, playersseatedbits, playersdealtbits, playersactivebits")
 END_TESTCASE
 
 
@@ -63,8 +63,8 @@ END_TESTCASE
 BEGIN_TESTCASE
     TESTCASE_ID ("1407")
     HEURISTIC_RULE (false)
-    REASONING ("The sets of players playing, folded and sitting out are disjoint.")
-    PRECONDITION (true)
+    REASONING ("In cash-games the sets of players playing, folded and sitting out are disjoint.")
+    PRECONDITION (!gws("istournament"))
     POSTCONDITION ((int(gws("playersplayingbits")) & ~int(gws("playersactivebits"))) == 0)
-    SYMBOLS_POSSIBLY_AFFECTED ("playersplayingbits, playersactivebits")
+    SYMBOLS_POSSIBLY_AFFECTED ("istournament playersplayingbits, playersactivebits")
 END_TESTCASE
