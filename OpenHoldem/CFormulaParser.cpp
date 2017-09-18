@@ -100,12 +100,12 @@ void CFormulaParser::LoadDefaultBot() {
 
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
   LogMemoryUsage("ParseFormulaFileWithUserDefinedBotLogic()");
-  p_function_collection->SetFormulaName(CFilenames::FilenameWithoutPathAndExtension(
-    formula_file.GetFile()->GetFilePath()));
   EnterParserCode();
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   p_function_collection->SetEmptyDefaultBot();
+  p_function_collection->SetFormulaName(CFilenames::FilenameWithoutPathAndExtension(
+    formula_file.GetFile()->GetFilePath()));
   LoadArchive(formula_file);
   p_function_collection->ParseAll();
   LeaveParserCode();

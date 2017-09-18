@@ -29,7 +29,7 @@
 CFunctionCollection *p_function_collection = NULL;
 
 CFunctionCollection::CFunctionCollection(){
-  SetFormulaName("");
+  SetFormulaName("NoName");
   _path = "";
   _openPPL_library_loaded = false;
   DeleteAll(true, true);
