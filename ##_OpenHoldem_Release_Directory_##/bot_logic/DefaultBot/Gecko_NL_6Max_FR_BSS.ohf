@@ -233,7 +233,7 @@ nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
 Random * 20
 
 ##f$prefold##
-WHEN IsPostFlop    RETURN false FORCE
+WHEN IsPostflop    RETURN false FORCE
 WHEN (call < 0.01) RETURN false FORCE
 WHEN (InBigBlind        AND NOT listGecko07)  RETURN true FORCE
 WHEN (InSmallBlind      AND NOT listGecko900) RETURN true FORCE
