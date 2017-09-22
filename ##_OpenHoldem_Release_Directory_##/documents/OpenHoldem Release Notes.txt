@@ -1,4 +1,4 @@
-﻿﻿v﻿12.0.1 2017-09-xx
+﻿﻿v﻿12.0.1 2017-09-22
 ==================
 BUG FIXES:
 - Some functions of Gecko were in naming-conflict with multiplexer-postfixes (e.g. f$AF_turn)
