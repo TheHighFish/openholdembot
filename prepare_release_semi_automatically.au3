@@ -40,7 +40,6 @@ DirRemove($new_openholdem_dir, 1)
 DirCopy($pre_created_release_dir, $new_openholdem_dir)
 ; Copy OpenHoldem to the new main directory plus their LIBs to support linking
 CopyNeededFile($binary_optimized_dir, $new_openholdem_dir, "OpenHoldem.exe")
-CopyNeededFile($binary_optimized_dir, $new_openholdem_dir, "OpenHoldem.lib")
 ; Copy tools like ManualMode to the tools-directory
 CopyNeededFile($binary_dir, $new_tools_dir, "ManualMode.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OHReplay.exe")
@@ -48,24 +47,14 @@ CopyNeededFile($binary_dir, $new_tools_dir, "OpenReplayShooter.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OpenScrape.exe")
 ; Copy DLLs to the new directory  plus their LIBs to support linking
 CopyNeededFile($binary_dir, $new_openholdem_dir, "keyboard.dll")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "Reference Keyboard DLL.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "mouse.dll")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "Reference Mouse DLL.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "pokertracker_query_definitions.dll")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "PokerTracker_Query_Definitions.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "user.dll")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "Reference User DLL.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "string_functions.dll")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "string_functions.lib")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "window_functions.dll")
-CopyNeededFile($binary_dir, $new_openholdem_dir, "window_functions.lib")
-; Copy window_functions.lib to the tools-directory too,
-; because ManualMode needs it
-; string_functions too for OpenScrape
+; DLLs needed by OpenScrape
 CopyNeededFile($binary_dir, $new_tools_dir, "string_functions.dll")
-CopyNeededFile($binary_dir, $new_tools_dir, "string_functions.lib")
 CopyNeededFile($binary_dir, $new_tools_dir, "window_functions.dll")
-CopyNeededFile($binary_dir, $new_tools_dir, "window_functions.lib")
 ; Add Keyboard_DLL_VmWare_Unity_Mode into separate directory
 ; CopyNeededFile($binary_dir, $new_vmware_keyboard_dir, "Keyboard_DLL_VmWare_Unity_Mode.dll")
 ; CopyNeededFile($binary_dir, $new_vmware_keyboard_dir, "Keyboard_DLL_VmWare_Unity_Mode.lib")
