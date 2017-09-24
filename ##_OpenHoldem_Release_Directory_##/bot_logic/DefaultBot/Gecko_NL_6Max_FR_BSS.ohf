@@ -92,6 +92,9 @@
 //     f$mycurrentbet, currentbet_raischair which now use the
 //     multiplexer-engine instead of considering all possible chairs.
 //   * Resolved some naming conflict with validator-postfixes.
+//   * Removed the function f$betsizing_strategy that
+//     implemented some redundant "don't-raise"-logic
+//     when we already decided to raise.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -170,14 +173,6 @@ WHEN f$river_call Call FORCE
 ##f$flop_turn_raise_strong_set##
 [ IsPostflop && NOT IsRiver && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 : 0
 
-##f$betsizing_strategy##
-WHEN IsPreflop AND f$preflop_raise RETURN true FORCE
-WHEN IsFlop    AND f$flop_raise    RETURN true FORCE
-WHEN IsFlop    AND f$flop_turn_raise_strong_set RETURN true FORCE
-WHEN IsTurn    AND f$turn_raise    RETURN true FORCE
-WHEN IsTurn    AND f$flop_turn_raise_strong_set RETURN true FORCE
-WHEN IsRiver   AND f$river_raise   RETURN true FORCE
-
 ##f$best_betsize##
 // OpenPPL uses big blinds everywhere,
 // but the Gecko-bot (originally written in OH-script)
@@ -194,7 +189,6 @@ WHEN Others RETURN BigBlindSize FORCE
 // Fortunately we don't have to change any code here,
 // as OpenHoldem supports RaiseBy as an action (main code sections)
 // and all further conversions happen automagically.
-WHEN NOT f$betsizing_strategy RETURN 0 FORCE
 WHEN AmountToCall <= 0
     WHEN (f$Betsize_Adjusted >= balance) RETURN f$balance FORCE // f$balance? NOTNOTNOT
     WHEN (f$Betsize_Adjusted < balance) AND (nplayersplaying == 2) AND (f$stackopponent > 0) AND (f$stackopponent <= (f$Betsize_Adjusted * 1.5)) RETURN f$balance FORCE
