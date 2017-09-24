@@ -968,38 +968,33 @@ WHEN Others
 
 
 ##f$BetsizeFlopMultiway##
-    [ call<=bblind ] ? {
-        [ nbetsround1<=6 ] ? pot*.62 :
-        [ nbetsround1> 6 ] ? pot*.60 : 0 } :
-    [ call>bblind ] ? {
-        [ !didbetsize ] ? {
-            [ call<=potcommon*.33 ] ? pot*0.8 :
-            [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } :
-        [ didbetsize ] ? {
-            [ nbetsround1<=1 ] ? currentbet_raischair*4 :
-            [ nbetsround1>1  ] ? balance                  : 0 } : 0 } : 0 } :
+// Gecko had here 60% / 62%,
+// which is pointless due to rounding
+WHEN AmountToCall <= 1 RaiseBy 60% FORCE
+WHEN [ !didbetsize ] 
+   WHEN AmountToCaöö <= 33% PotSize RaiseBy 80% FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE:
+WHEN Others
+   WHEN (nbetsround1<=1) RaiseBy (4 * BetSize) FORCE
+   // Preflop raised, flop reraised
+   // Lots of action, large pot
+   WHEN Others RaiseMax FORCE
 
 ##f$BetsizeTurnMultiway##
-    [ call<=bblind ] ? {
-        [ pot<=25*bblind ] ? pot*.70 :
-        [ pot>25*bblind  ] ? pot*.60 : 0 } :
-    [ call>bblind ] ? {
-        [ call<=potcommon*.33 ] ? pot :
-        [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } : 0 } :
+WHEN AmountToCall <= 1                  ? {
+   WHEN PotSize <= 10 RaiseBy 70% FORCE
+   WHEN Others RaiseBy 60% FORCE
+WHEN Others
+   WHEN AmountToCaöö <= 33% PotSize RaisePot FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
 
 ##f$BetsizeRiverMultiway##
-
-    [ call<=bblind ]                  ? {
-
-        [ pot<=10*bblind ] ? pot     : 
-        [ pot>10*bblind  ] ? pot*.60 : 0 } :
-
-    [ call>bblind ] ? {
-
-        [ call<=potcommon*.33 ] ? pot :
-        [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } : 0 } : 0 } :
-
-
+WHEN AmountToCall <= 1                  ? {
+   WHEN PotSize <= 10 RaisePot FORCE
+   WHEN Others RaiseBy 60% FORCE
+WHEN Others
+   WHEN AmountToCaöö <= 33% PotSize RaisePot FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
 
 ##f$turn_raise_initiative##
 [ f$Position_Early ] ? {
