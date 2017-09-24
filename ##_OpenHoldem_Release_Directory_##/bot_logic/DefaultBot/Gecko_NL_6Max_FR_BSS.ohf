@@ -95,6 +95,11 @@
 //   * Removed the function f$betsizing_strategy that
 //     implemented some redundant "don't-raise"-logic
 //     when we already decided to raise.
+//   * Introducing functions f$BetsizePreflop,
+//     f$BetsizeFlopHeadsup, f$BetsizeFlopMultiway, 
+//     f$BetsizeTurnHeadsup, f$BetsizeTurnMultiway, 
+//     f$BetsizeRiverHeadsup, f$BetsizeRiverMultiway
+//     to structure f$Betsize_Adjusted better.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -908,111 +913,81 @@ betposition==1
 betposition==nplayersplaying 
 
 ##f$Betsize_Adjusted##
-[ IsPreflop ] ? {
+WHEN IsPreflop RETURN f$BetsizePreflop FORCE
+WHEN HandIsHeadsup
+   WHEN IsFlop  ETURN f$BetsizeFlopHeadsup  FORCE
+   WHEN IsTurn  ETURN f$BetsizeTurnHeadsup  FORCE
+   WHEN IsRiver ETURN f$BetsizeRuverHeadsup FORCE
+WHEN Others
+   WHEN IsFlop  ETURN f$BetsizeFlopMultiway  FORCE
+   WHEN IsTurn  ETURN f$BetsizeTurnMultiway  FORCE
+   WHEN IsRiver ETURN f$BetsizeRuverMultiway FORCE   
 
-    [ ncallbets<=1 ] ? 2.5*bblind+(nopponentscalling*sblind) :
-    [ ncallbets>1  ] ? currentbet_raischair*4              : 0 } :
-
-[ nplayersplaying==2 ] ? {
-
-[ IsFlop ] ? {
-
+##f$BetsizePreflop##
+[ ncallbets<=1 ] ? 2.5*bblind+(nopponentscalling*sblind) :
+[ ncallbets>1  ] ? currentbet_raischair*4              : 0 } :
+	
+##f$BetsizeFlopHeadsup##
    [ call<=bblind ] ? {
-
         [ nbetsround1<=6 ] ? pot*.75 :
         [ nbetsround1> 6 ] ? pot*.55 : 0 } :
-
     [ call>bblind ] ? {
-
         [ !didbetsize ] ? {
-
             [ call<=potcommon*.33 ] ? pot :
             [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } :
-
         [ didbetsize ] ? {
-
             [ nbetsround1<=1 ] ? currentbet_raischair*4 :
-
             [ nbetsround1>1  ] ? {
-
                 [  f$ptype_lag  ] ? currentbet_raischair*2 :
                 [ !f$ptype_lag  ] ? balance : 0 } : 0 } : 0 } : 0 } :
            
-[ IsTurn ] ? {
-
+##f$BetsizeTurnHeadsup##
     [ call<=0 ] ? {
-
         [ pot<=35*bblind ] ? pot*.7 :
         [ pot>35*bblind  ] ? pot    : 0 } :
-
     [ call>0 && call<=2*bblind ] ? {
-
         [ pot<=25*bblind ] ? pot     :
         [ pot>25*bblind  ] ? pot*.65 : 0 } :
-
     [ call>2*bblind ] ? {
-
         [  f$betline ] ? balance :
-
         [ !f$betline ] ? {
-
             [ call<=potcommon*.33 ] ? pot :
             [ call> potcommon*.33 ] ? currentbet_raischair*3 : 0 } : 0 } : 0 } :
 
-[ IsRiver ] ? {
-
+##f$BetsizeRiverHeadsup##
     [ call<=0 ] ? {
-
          [ pot<=10*bblind                  ] ? pot*.8 : 
          [ pot>10*bblind && pot<=80*bblind ] ? pot*.6 :
          [ pot>80*bblind                   ] ? {
-
             [ f$prwin<=0.8 ] ? pot*.25 :
             [ f$prwin>0.80 ] ? pot*.60 : 0 } : 0 } :
-
     [ call>0 && call<=2*bblind ] ? pot :
-
     [ call>2*bblind ] ? {
-
         [ call<=potcommon*.33 ] ? pot :
         [ call> potcommon*.33 ] ? currentbet_raischair*3 : 0 } : 0 } : 0 } :
 
-// ---------------------------
 
-[ nplayersplaying>=3 ] ? {
-
-[ IsFlop ] ? {
-
+##f$BetsizeFlopMultiway##
     [ call<=bblind ] ? {
-
         [ nbetsround1<=6 ] ? pot*.62 :
         [ nbetsround1> 6 ] ? pot*.60 : 0 } :
-
     [ call>bblind ] ? {
-
         [ !didbetsize ] ? {
-
             [ call<=potcommon*.33 ] ? pot*0.8 :
             [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } :
-
         [ didbetsize ] ? {
-
             [ nbetsround1<=1 ] ? currentbet_raischair*4 :
             [ nbetsround1>1  ] ? balance                  : 0 } : 0 } : 0 } :
 
-[ IsTurn ] ? {
-
+##f$BetsizeTurnMultiway##
     [ call<=bblind ] ? {
-
         [ pot<=25*bblind ] ? pot*.70 :
         [ pot>25*bblind  ] ? pot*.60 : 0 } :
-
     [ call>bblind ] ? {
-
         [ call<=potcommon*.33 ] ? pot :
         [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } : 0 } :
 
-[ IsRiver ] ? {
+##f$BetsizeRiverMultiway##
 
     [ call<=bblind ]                  ? {
 
@@ -1024,7 +999,7 @@ betposition==nplayersplaying
         [ call<=potcommon*.33 ] ? pot :
         [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } : 0 } : 0 } :
 
-0
+
 
 ##f$turn_raise_initiative##
 [ f$Position_Early ] ? {
