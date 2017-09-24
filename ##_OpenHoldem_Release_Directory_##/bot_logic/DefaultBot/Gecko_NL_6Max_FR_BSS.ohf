@@ -915,65 +915,63 @@ betposition==nplayersplaying
 ##f$Betsize_Adjusted##
 WHEN IsPreflop RETURN f$BetsizePreflop FORCE
 WHEN HandIsHeadsup
-   WHEN IsFlop  ETURN f$BetsizeFlopHeadsup  FORCE
-   WHEN IsTurn  ETURN f$BetsizeTurnHeadsup  FORCE
-   WHEN IsRiver ETURN f$BetsizeRuverHeadsup FORCE
+   WHEN IsFlop  RETURN f$BetsizeFlopHeadsup  FORCE
+   WHEN IsTurn  RETURN f$BetsizeTurnHeadsup  FORCE
+   WHEN IsRiver RETURN f$BetsizeRiverHeadsup FORCE
 WHEN Others
-   WHEN IsFlop  ETURN f$BetsizeFlopMultiway  FORCE
-   WHEN IsTurn  ETURN f$BetsizeTurnMultiway  FORCE
-   WHEN IsRiver ETURN f$BetsizeRuverMultiway FORCE   
+   WHEN IsFlop  RETURN f$BetsizeFlopMultiway  FORCE
+   WHEN IsTurn  RETURN f$BetsizeTurnMultiway  FORCE
+   WHEN IsRiver RETURN f$BetsizeRiverMultiway FORCE   
 
 ##f$BetsizePreflop##
-[ ncallbets<=1 ] ? 2.5*bblind+(nopponentscalling*sblind) :
-[ ncallbets>1  ] ? currentbet_raischair*4              : 0 } :
+WHEN (Raises = 0) RaiseBy (2.5 + (0.5 * nopponentscalling)) FORCE
+WHEN Others RaiseBy (4 * BetSize) FORCE
 	
 ##f$BetsizeFlopHeadsup##
-   [ call<=bblind ] ? {
-        [ nbetsround1<=6 ] ? pot*.75 :
-        [ nbetsround1> 6 ] ? pot*.55 : 0 } :
-    [ call>bblind ] ? {
-        [ !didbetsize ] ? {
-            [ call<=potcommon*.33 ] ? pot :
-            [ call> potcommon*.33 ] ? currentbet_raischair*4 : 0 } :
-        [ didbetsize ] ? {
-            [ nbetsround1<=1 ] ? currentbet_raischair*4 :
-            [ nbetsround1>1  ] ? {
-                [  f$ptype_lag  ] ? currentbet_raischair*2 :
-                [ !f$ptype_lag  ] ? balance : 0 } : 0 } : 0 } : 0 } :
+WHEN (AmountToCall <= 1)
+   WHEN (nbetsround1 <= 6)  RaiseBy 75% FORCE
+   WHEN Others  RaiseBy 55% FORCE
+WHEN NOT didbetsize
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
+WHEN Others
+   WHEN (nbetsround1 <= 1) RaiseBy (4 * BetSize) FORCE
+   WHEN f$ptype_lag RaiseBy (2 * BetSize) FORCE
+   WHEN Others RaiseMax FORCE
            
 ##f$BetsizeTurnHeadsup##
-    [ call<=0 ] ? {
-        [ pot<=35*bblind ] ? pot*.7 :
-        [ pot>35*bblind  ] ? pot    : 0 } :
-    [ call>0 && call<=2*bblind ] ? {
-        [ pot<=25*bblind ] ? pot     :
-        [ pot>25*bblind  ] ? pot*.65 : 0 } :
-    [ call>2*bblind ] ? {
-        [  f$betline ] ? balance :
-        [ !f$betline ] ? {
-            [ call<=potcommon*.33 ] ? pot :
-            [ call> potcommon*.33 ] ? currentbet_raischair*3 : 0 } : 0 } : 0 } :
+WHEN (AmountToCall <= 0)
+   WHEN (PotSize <= 35) RaiseBy 70% FORCE
+   WHEN Others RaiseBy RaisePot FORCE
+WHEN (AmountToCall <= 2)
+   WHEN (PotSize <= 25) RaisePot FORCE
+   WHEN Others RaiseBy 65% FORCE
+WHEN Others
+   WHEN f$betline RaiseMax FORCE
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
 
 ##f$BetsizeRiverHeadsup##
-    [ call<=0 ] ? {
-         [ pot<=10*bblind                  ] ? pot*.8 : 
-         [ pot>10*bblind && pot<=80*bblind ] ? pot*.6 :
-         [ pot>80*bblind                   ] ? {
-            [ f$prwin<=0.8 ] ? pot*.25 :
-            [ f$prwin>0.80 ] ? pot*.60 : 0 } : 0 } :
-    [ call>0 && call<=2*bblind ] ? pot :
-    [ call>2*bblind ] ? {
-        [ call<=potcommon*.33 ] ? pot :
-        [ call> potcommon*.33 ] ? currentbet_raischair*3 : 0 } : 0 } : 0 } :
-
+WHEN (AmountToCall <= 0)
+   WHEN (PotSize <= 10) RaiseBy 80% FORCE
+   WHEN (PotSize <= 80) RaiseBy 60% FORCE
+   // Huge pot, don't blow money away.
+   // Make betsize dependent on prwin.
+   // Block-bet with not so strong hands
+   WHEN (f$prwin<=0.8) RaiseBy 25% FORCE
+   WHEN Others RaiseBy 60% FORCE   
+WHEN (AmountToCall <= 2) RaisePot FORCE
+WHEN Others
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
+   WHEN Others RaiseBy (3 * BetSize) FORCE
 
 ##f$BetsizeFlopMultiway##
 // Gecko had here 60% / 62%,
 // which is pointless due to rounding
-WHEN AmountToCall <= 1 RaiseBy 60% FORCE
+WHEN (AmountToCall <= 1) RaiseBy 60% FORCE
 WHEN [ !didbetsize ] 
-   WHEN AmountToCaöö <= 33% PotSize RaiseBy 80% FORCE
-   WHEN Others RaiseBy (4 * BetSize) FORCE:
+   WHEN (AmountToCall <= 33% PotSize) RaiseBy 80% FORCE
+   WHEN Others RaiseBy (4 * BetSize) FORCE
 WHEN Others
    WHEN (nbetsround1<=1) RaiseBy (4 * BetSize) FORCE
    // Preflop raised, flop reraised
@@ -981,19 +979,19 @@ WHEN Others
    WHEN Others RaiseMax FORCE
 
 ##f$BetsizeTurnMultiway##
-WHEN AmountToCall <= 1                  ? {
-   WHEN PotSize <= 10 RaiseBy 70% FORCE
+WHEN (AmountToCall <= 1)
+   WHEN (PotSize <= 10) RaiseBy 70% FORCE
    WHEN Others RaiseBy 60% FORCE
 WHEN Others
-   WHEN AmountToCaöö <= 33% PotSize RaisePot FORCE
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
    WHEN Others RaiseBy (4 * BetSize) FORCE
 
 ##f$BetsizeRiverMultiway##
-WHEN AmountToCall <= 1                  ? {
-   WHEN PotSize <= 10 RaisePot FORCE
+WHEN AmountToCall <= 1
+   WHEN (PotSize <= 10) RaisePot FORCE
    WHEN Others RaiseBy 60% FORCE
 WHEN Others
-   WHEN AmountToCaöö <= 33% PotSize RaisePot FORCE
+   WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
    WHEN Others RaiseBy (4 * BetSize) FORCE
 
 ##f$turn_raise_initiative##
