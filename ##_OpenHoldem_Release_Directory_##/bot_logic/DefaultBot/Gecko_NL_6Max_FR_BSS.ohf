@@ -100,10 +100,13 @@
 //     f$BetsizeTurnHeadsup, f$BetsizeTurnMultiway, 
 //     f$BetsizeRiverHeadsup, f$BetsizeRiverMultiway
 //     to structure f$Betsize_Adjusted better.
+//   * Changing (nearly) all betsizing to Betpot-actions.
+//   * Removing f$best_betsize and f$best_betsize_in_dollars 
+//     and renaming f$Betsize_Adjusted to f%NestBetsize
+//     as the betsize calculations became now superfluous.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
-//     Geckos code suggested that 0.67 would be right.
 //   * Added sanity-check that prevents Gecko playing Omaha.
 //   * Added f$pt_min_hands_for_opponent_modelling
 //     to require a minimal sample-size.
@@ -121,7 +124,7 @@
 
 ##Gecko_6Max_FR_NL_BSS_Preflop##
 WHEN isomaha Fold FORCE
-WHEN f$preflop_raise RaiseBy f$best_betsize FORCE
+WHEN f$preflop_raise Return f$BestBetsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 // No WHEN f$call_potcommitted Call FORCE here.
@@ -132,8 +135,8 @@ WHEN f$preflop_call Call FORCE
 
 ##Gecko_6Max_FR_NL_BSS_Flop##
 WHEN isomaha Fold FORCE
-WHEN f$flop_raise RaiseBy f$best_betsize FORCE
-WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
+WHEN f$flop_raise Return f$BestBetsize FORCE
+WHEN f$flop_turn_raise_strong_set Return f$BestBetsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE 
@@ -141,8 +144,8 @@ WHEN f$flop_call Call FORCE
 
 ##Gecko_6Max_FR_NL_BSS_Turn##
 WHEN isomaha Fold FORCE
-WHEN f$turn_raise RaiseBy f$best_betsize FORCE
-WHEN f$flop_turn_raise_strong_set RaiseBy f$best_betsize FORCE
+WHEN f$turn_raise Return f$BestBetsize FORCE
+WHEN f$flop_turn_raise_strong_set Return f$BestBetsize FORCE
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
@@ -150,7 +153,7 @@ WHEN f$turn_call Call FORCE
 
 ##Gecko_6Max_FR_NL_BSS_River##
 WHEN isomaha Fold FORCE
-WHEN f$river_raise RaiseBy f$best_betsize FORCE
+WHEN f$river_raise Return f$BestBetsize FORCE
 // No longer going automatically broke with string sets
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
@@ -159,8 +162,10 @@ WHEN f$river_call Call FORCE
 
 ##f$allin_on_betsize_balance_ratio##
 // Not present in Geckos original bot for OpenHoldem 2.x,
-// But his code suggests that he wants it this way.
-0.67
+// His code suggests that he wanted it to be 0.66,
+// but as Gecko used raise-by-semantics and we use raise-to
+// about 0.50 looks like a more appropriate value.
+0.50
 
 ##f$call_nuts##
 // Basic calls with nuts or free to check
@@ -178,33 +183,6 @@ WHEN f$river_call Call FORCE
 ##f$flop_turn_raise_strong_set##
 [ IsPostflop && NOT IsRiver && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 : 0
 
-##f$best_betsize##
-// OpenPPL uses big blinds everywhere,
-// but the Gecko-bot (originally written in OH-script)
-// uses dollars, so we have to convert
-WHEN (BigBlindSize > 0) RETURN (f$best_betsize_in_dollars / BigBlindSize) FORCE
-WHEN Others RETURN BigBlindSize FORCE
-
-##f$best_betsize_in_dollars##
-// Returning the betsize in dollars with raise-by-semantics.
-// Gecko hard-coded the betsize for a casino with
-// betsizeinterpretationmethod 1, not using any
-// "swagtextmethod" as it was called at that time
-// for adaptions (Granted, these adaptions were complicated and ugly).
-// Fortunately we don't have to change any code here,
-// as OpenHoldem supports RaiseBy as an action (main code sections)
-// and all further conversions happen automagically.
-WHEN AmountToCall <= 0
-    WHEN (f$Betsize_Adjusted >= balance) RETURN f$balance FORCE // f$balance? NOTNOTNOT
-    WHEN (f$Betsize_Adjusted < balance) AND (nplayersplaying == 2) AND (f$stackopponent > 0) AND (f$stackopponent <= (f$Betsize_Adjusted * 1.5)) RETURN f$balance FORCE
-    WHEN (f$Betsize_Adjusted < balance) AND (nplayersplaying == 2) AND (f$stackopponent > (f$Betsize_Adjusted * 1.5)) RETURN f$Betsize_Adjusted FORCE
-    WHEN (f$Betsize_Adjusted < balance) AND (nplayersplaying >= 3) RETURN f$Betsize_Adjusted FORCE
-WHEN Others
-    //!!!!! "And not" logic here unclear
-    WHEN (f$stackraiser > 0) AND NOT(f$stackraiser>=(currentbet_raischair-bblind) AND f$stackraiser<=currentbet_raischair) AND f$Betsize_Adjusted>=balance*0.75 RETURN f$balance FORCE
-    WHEN (f$stackraiser > 0) AND NOT(f$stackraiser>=(currentbet_raischair-bblind) AND f$stackraiser<=currentbet_raischair) AND f$Betsize_Adjusted< balance*0.75 RETURN f$Betsize_Adjusted FORCE
-    // Above code does not consider the case of "noraiser" or raiser being allin
-    WHEN Others RETURN f$Betsize_Adjusted FORCE
 
 ##f$prwin_number_of_iterations##
 50000
@@ -912,7 +890,7 @@ betposition==1
 ##f$Position_Late##
 betposition==nplayersplaying 
 
-##f$Betsize_Adjusted##
+##f$BestBetsize##
 WHEN IsPreflop RETURN f$BetsizePreflop FORCE
 WHEN HandIsHeadsup
    WHEN IsFlop  RETURN f$BetsizeFlopHeadsup  FORCE
