@@ -104,6 +104,9 @@
 //   * Removing f$best_betsize and f$best_betsize_in_dollars 
 //     and renaming f$Betsize_Adjusted to f%NestBetsize
 //     as the betsize calculations became now superfluous.
+//   * Making f$allin_on_betsize_balance_ratio
+//     dependent on effective stacks headsup.
+//     This was formerly part of Geckos betsizing-logic.    
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -165,7 +168,14 @@ WHEN f$river_call Call FORCE
 // His code suggests that he wanted it to be 0.66,
 // but as Gecko used raise-by-semantics and we use raise-to
 // about 0.50 looks like a more appropriate value.
-0.50
+WHEN NOT HandIsHeadsup RETURN 0.50 FORCE
+// Fail-safe for mis-scraped opponents stack
+WHEN (StackSize_headsupchair <= 0) RETURN 0.50 FORCE
+// Opponents stack larger than ours: normal behaviour
+WHEN (StackSize_headsupchair = StackSize) RETURN 0.50 FORCE
+// Single opponent with smaller stack.
+// Go more lightly allin if our bet is more than 50% of his stack.
+WHEN Others RETURN (0.5 *(StackSize_headsupchair / StackSize)) FORCE
 
 ##f$call_nuts##
 // Basic calls with nuts or free to check
