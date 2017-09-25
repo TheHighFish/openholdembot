@@ -59,7 +59,7 @@
 //     Renamed f$pt_raggf to f$PT_Flop_AF_RaisChair (same for turn and river) 
 //   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
 //   * Replaced br by betround by even more verbosity: IsFlop, ...
-//   * Renamed hand$AA, hand$KK to more verbose handhand$AA, hsndhand$KK
+//   * Renamed $$AA, $$KK to more verbose hand$AA, hand$KK
 //   * Replaced nopponentsraising by Raises.
 //     Thank god Gecko had already created more abstract functions
 //     f$Preflop_Multiple_Raisers and f$BettingAction_Single_Raiser_Before_Us
@@ -116,6 +116,9 @@
 //   * Extended f$prefold to full-ring
 //   * introducing f$delay
 //   * Added opening-ranges for full-ring
+//   * changed all three RaiseMax-actions to RaisePot-actions
+//     because some smart people complained that check-raising allin
+//     at the turn is too much when we are 10.000 bb deep.
 //
 //*****************************************************************************
 //
@@ -157,7 +160,7 @@ WHEN f$turn_call Call FORCE
 ##Gecko_6Max_FR_NL_BSS_River##
 WHEN isomaha Fold FORCE
 WHEN f$river_raise Return f$BestBetsize FORCE
-// No longer going automatically broke with string sets
+// No longer going automatically broke with strong sets
 WHEN f$call_nuts Call FORCE
 WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
@@ -172,7 +175,7 @@ WHEN NOT HandIsHeadsup RETURN 0.50 FORCE
 // Fail-safe for mis-scraped opponents stack
 WHEN (StackSize_headsupchair <= 0) RETURN 0.50 FORCE
 // Opponents stack larger than ours: normal behaviour
-WHEN (StackSize_headsupchair = StackSize) RETURN 0.50 FORCE
+WHEN (StackSize_headsupchair >= StackSize) RETURN 0.50 FORCE
 // Single opponent with smaller stack.
 // Go more lightly allin if our bet is more than 50% of his stack.
 WHEN Others RETURN (0.5 *(StackSize_headsupchair / StackSize)) FORCE
@@ -925,7 +928,8 @@ WHEN NOT didbetsize
 WHEN Others
    WHEN (nbetsround1 <= 1) RaiseBy (4 * BetSize) FORCE
    WHEN f$ptype_lag RaiseBy (2 * BetSize) FORCE
-   WHEN Others RaiseMax FORCE
+   // Formerly RaiseMax.
+   WHEN Others RaisePot FORCE
            
 ##f$BetsizeTurnHeadsup##
 WHEN (AmountToCall <= 0)
@@ -935,7 +939,8 @@ WHEN (AmountToCall <= 2)
    WHEN (PotSize <= 25) RaisePot FORCE
    WHEN Others RaiseBy 65% FORCE
 WHEN Others
-   WHEN f$betline RaiseMax FORCE
+   // Formerly RaiseMax.
+   WHEN f$betline RaisePot FORCE
    WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
    WHEN Others RaiseBy (4 * BetSize) FORCE
 
@@ -962,9 +967,10 @@ WHEN [ !didbetsize ]
    WHEN Others RaiseBy (4 * BetSize) FORCE
 WHEN Others
    WHEN (nbetsround1<=1) RaiseBy (4 * BetSize) FORCE
-   // Preflop raised, flop reraised
-   // Lots of action, large pot
-   WHEN Others RaiseMax FORCE
+   // Preflop raised, flop reraised.
+   // Lots of action, large pot.
+   // Formerly RaiseMax.
+   WHEN Others RaisePot FORCE
 
 ##f$BetsizeTurnMultiway##
 WHEN (AmountToCall <= 1)
