@@ -1,4 +1,14 @@
-﻿﻿v﻿12.0.1 2017-09-22
+﻿﻿v﻿12.0.2 2017-10-xx
+==================
+MAINTENANCE:
+- Improved betsizing of the Gecko-bot.
+  Replaced some allins by potsized bets 
+  to avoid potential overbetting if our stack is really deep.
+  Thanks to Barthens and DoyBrungSong for reporting
+  and to SingSongSally for testing.
+  [THF]
+
+﻿v﻿12.0.1 2017-09-22
 ==================
 BUG FIXES:
 - Some functions of Gecko were in naming-conflict with multiplexer-postfixes (e.g. f$AF_turn)
