@@ -25,8 +25,6 @@
 #include "MagicNumbers.h"
 #include "OH_MessageBox.h"
 
-CSymbolEngineOpenPPL *p_symbol_engine_open_ppl = NULL;
-
 const char* kOpenPPLUpdateOnHandReset =
   "UpdateMemorySymbolsOnHandReset";
 const char* kOpenPPLUpdateOnNewRound =
@@ -45,7 +43,7 @@ CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
   // For convenience we assure only 
   // that the last other engines got initialiyed
 	assert(p_symbol_engine_various_data_lookup != NULL);
-  assert(p_symbol_engine_openppl_user_variables != NULL);
+  assert(p_engine_container->symbol_engine_openppl_user_variables()-> != NULL);
 }
 
 CSymbolEngineOpenPPL::~CSymbolEngineOpenPPL() {

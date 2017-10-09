@@ -44,6 +44,4 @@ class CSymbolEnginePokerAction: public CVirtualSymbolEngine {
 	const bool	AgchairAfter();
 };
 
-extern CSymbolEnginePokerAction *p_symbol_engine_poker_action;
-
 #endif INC_CSYMBOLENGINEPOKERACTION_H

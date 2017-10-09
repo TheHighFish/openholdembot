@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CCasinoInterface.h"
 
+#include "CEngineContainer.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTableMap\CTableMapAccess.h"
 #include "CAutoConnector.h"
@@ -90,7 +91,7 @@ void CCasinoInterface::ClickRect(RECT rect) {
 	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
     rect.left, rect.top, rect.right, rect.bottom);
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1);
-  p_symbol_engine_time->UpdateOnAutoPlayerAction();
+  p_engine_container->symbol_engine_time()->UpdateOnAutoPlayerAction();
 }
 
 bool CCasinoInterface::ClickButtonSequence(int first_button, int second_button, int delay_in_milli_seconds) {
@@ -129,7 +130,7 @@ void CCasinoInterface::PressTabToSwitchOHReplayToNextFrame() {
   RECT	rect_somewhere = {1, 1, 2, 2};
 	POINT	cur_pos = {0};
 
-  assert(p_symbol_engine_casino->ConnectedToOHReplay());
+  assert(p_engine_container->symbol_engine_casino()->ConnectedToOHReplay());
   (theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), 
     rect_somewhere, "\t", false);
 }

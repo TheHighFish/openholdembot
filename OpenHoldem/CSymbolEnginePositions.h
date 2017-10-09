@@ -56,6 +56,4 @@ private:
 	int _callposition;
 };
 
-extern CSymbolEnginePositions *p_symbol_engine_positions;
-
 #endif INC_CSYMBOLENGINEPOSITIONS_H

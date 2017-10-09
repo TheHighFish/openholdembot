@@ -73,25 +73,25 @@ double CParseTreeTerminalNodeBetsizeAction::Evaluate(bool log /* = false */) {
 	}	else if (_node_type == kTokenActionRaiseByBigBlinds)	{
     // RaiseBy N Force
     double raise_by_amount_in_bblinds = _first_sibbling->Evaluate(log);
-    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+    double final_betsize_in_bblinds = p_engine_container->symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
     write_log(preferences.debug_formula(), 
       "[CParseTreeTerminalNodeBetsizeAction] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
       raise_by_amount_in_bblinds,
-      p_symbol_engine_chip_amounts->ncallbets(),
+      p_engine_container->symbol_engine_chip_amounts()->ncallbets(),
       final_betsize_in_bblinds);
 		return final_betsize_in_bblinds;
 	}	else if (_node_type == kTokenActionRaiseByPercentagedPotsize)	{
     // RaiseBy X% Force
 		double raise_by_percentage = _first_sibbling->Evaluate(log);
-    assert(p_symbol_engine_tablelimits->bet() > 0);
+    assert(p_engine_container->symbol_engine_tablelimits()->bet() > 0);
 		double pot_size_after_call_in_big_blinds = 
-      (p_symbol_engine_chip_amounts->pot() / p_symbol_engine_tablelimits->bet()) 
-      + p_symbol_engine_chip_amounts->nbetstocall();
+      (p_engine_container->symbol_engine_chip_amounts()->pot() / p_engine_container->symbol_engine_tablelimits()->bet()) 
+      + p_engine_container->symbol_engine_chip_amounts()->nbetstocall();
     assert(pot_size_after_call_in_big_blinds >= 0);
 		double raise_by_amount_in_bblinds = 0.01 * raise_by_percentage
 			* pot_size_after_call_in_big_blinds;
-    double final_betsize_in_bblinds = p_symbol_engine_chip_amounts->ncallbets()
+    double final_betsize_in_bblinds = p_engine_container->symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
     write_log(preferences.debug_formula(), 
       "[CParseTreeTerminalNodeBetsizeAction] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",

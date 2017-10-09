@@ -17,6 +17,8 @@
 #include <assert.h>
 #include "CardFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
+
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineCards.h"
@@ -28,15 +30,13 @@
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 
-CSymbolEnginePokerval *p_symbol_engine_pokerval = NULL;
-
 CSymbolEnginePokerval::CSymbolEnginePokerval() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_cards != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
 }
 
 CSymbolEnginePokerval::~CSymbolEnginePokerval() {
@@ -317,8 +317,8 @@ void CSymbolEnginePokerval::CalculateRankBits() {
 	_srankbitscommonp = kUndefinedZero;
 	_srankbitspoker	  = kUndefinedZero;
 
-  int tsuit = p_symbol_engine_cards->tsuit();
-  int tsuitcommon = p_symbol_engine_cards->tsuitcommon();
+  int tsuit = p_engine_container->symbol_engine_cards()->tsuit();
+  int tsuitcommon = p_engine_container->symbol_engine_cards()->tsuitcommon();
   write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuit = %i\n", tsuit);
   write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuitcommon = %i\n", tsuitcommon);
 	

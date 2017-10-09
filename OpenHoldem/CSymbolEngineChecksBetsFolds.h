@@ -64,6 +64,4 @@ class CSymbolEngineChecksBetsFolds: public CVirtualSymbolEngine {
 	int _foldbits[kNumberOfBetrounds + 1];
 };
 
-extern CSymbolEngineChecksBetsFolds *p_symbol_engine_checks_bets_folds;
-
 #endif INC_CSYMBOLENGINECHECKSBETSFOLDS_H

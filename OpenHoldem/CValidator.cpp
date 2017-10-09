@@ -75,7 +75,7 @@ void CValidator::ValidateSingleRule() {
 			if (_no_errors_this_heartbeat) {
 				// First error: shoot replayframe, if needed
 				if (preferences.validator_shoot_replayframe_on_error()) {
-					p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+					p_engine_container->symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
 				}
 				_no_errors_this_heartbeat = false;
 			}
@@ -184,7 +184,7 @@ double CValidator::gws(const char *the_Symbol) {
 /////////////////////////////////////////////////////////////////////////////
 
 void CValidator::ValidateGameState() {
-  if (!p_symbol_engine_autoplayer->ismyturn()) {
+  if (!p_engine_container->symbol_engine_autoplayer()->ismyturn()) {
     // Validate only if it is my turn.
     //   * because then we have stable frames
     //   * because then it matters most
@@ -252,13 +252,13 @@ void CValidator::ValidateGameState() {
 }
 
 void CValidator::ValidateVersusDBOnlyIfInstalled() {
-	if(p_symbol_engine_versus->VersusBinLoaded())	{
+	if(p_engine_container->symbol_engine_versus()->VersusBinLoaded())	{
 #include "Validator_Rules\range_checks_versus_inline.cpp_"
 	}
 }
 
 void CValidator::ValidateICMOnlyIfTournament() {
-  if (p_symbol_engine_istournament->istournament()) {
+  if (p_engine_container->symbol_engine_istournament()->istournament()) {
 #include "Validator_Rules\range_checks_icm_symbols_inline.cpp_"
   }
 }

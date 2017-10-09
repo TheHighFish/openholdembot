@@ -23,6 +23,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CDllExtension.h"
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CHeartbeatThread.h"
@@ -337,7 +338,7 @@ void CMainFrame::OnScraperOutput() {
 }
 
 void CMainFrame::OnViewShootreplayframe() {
-	p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+	p_engine_container->symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
 }
 
 void CMainFrame::OnManualMode() {

@@ -24,8 +24,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
-CSymbolEngineDebug *p_symbol_engine_debug = NULL;
-
 CSymbolEngineDebug::CSymbolEngineDebug() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

@@ -76,8 +76,8 @@ void CGameState::CaptureState() {
 	bool				    playing = true;
 	unsigned char		card = CARD_NOCARD;
   // figure out if I am playing
-	int sym_chair = p_symbol_engine_userchair->userchair();
-	if (!p_symbol_engine_userchair->userchair_confirmed()) 	{
+	int sym_chair = p_engine_container->symbol_engine_userchair()->userchair();
+	if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) 	{
 		playing = false;
 	}	else if (!p_table_state->User()->HasKnownCards())	{
 		playing = false;
@@ -98,8 +98,8 @@ void CGameState::CaptureState() {
 		state[state_index].m_cards[i] = common_card;
 	}
   // playing, posting, dealerchair
-	int sym_dealerchair = p_symbol_engine_dealerchair->dealerchair();
-	bool sym_isautopost = p_symbol_engine_autoplayer->isautopost();
+	int sym_dealerchair = p_engine_container->symbol_engine_dealerchair()->dealerchair();
+	bool sym_isautopost = p_engine_container->symbol_engine_autoplayer()->isautopost();
 	state[state_index].m_is_playing = playing;
 	state[state_index].m_is_posting = sym_isautopost;
 	state[state_index].m_fillerbits = 0;

@@ -61,6 +61,4 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
   int _nchairs;
 };
 
-extern CSymbolEngineCallers *p_symbol_engine_callers;
-
 #endif INC_CSYMBOLENGINECALLERS_H

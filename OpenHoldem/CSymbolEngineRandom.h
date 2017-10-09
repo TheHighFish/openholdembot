@@ -47,6 +47,4 @@ class CSymbolEngineRandom: public CVirtualSymbolEngine {
 	double _randomround;
 };
 
-extern CSymbolEngineRandom *p_symbol_engine_random;
-
 #endif INC_CSYMBOLENGINERANDOM_H

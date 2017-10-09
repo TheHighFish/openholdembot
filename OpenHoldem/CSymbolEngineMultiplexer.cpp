@@ -24,8 +24,6 @@
 #include "OH_MessageBox.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
-CSymbolEngineMultiplexer *p_symbol_engine_multiplexer = NULL;
-
 const int kNumberOfSupportedPostfixes = 29;
 // If you extend the list below please don't forget to update FastExitOnLastCharacter()
 const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {

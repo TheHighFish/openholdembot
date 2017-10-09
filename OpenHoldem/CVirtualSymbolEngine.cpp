@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CVirtualSymbolEngine.h"
 
+#include "CEngineContainer.h"
 #include "CCasinoInterface.h"
 #include "CFormulaParser.h"
 #include "CSymbolEngineIsOmaha.h"
@@ -78,7 +79,7 @@ void CVirtualSymbolEngine::WarnIfSymbolRequiresMyTurn(CString name) {
 }
 
 void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
-  if (p_symbol_engine_isomaha->isomaha()) {
+  if (p_engine_container->symbol_engine_isomaha()->isomaha()) {
     CString error_message;
     error_message.Format("%s%s%s%s%s%s%s",
       "The symbol \"", name, "\"\n",

@@ -16,6 +16,7 @@
 
 #include "CAutoplayer.h"
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CHandresetDetector.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -87,8 +88,8 @@ void CLazyScraper::DoScrape() {
 		p_scraper->ScrapeDealer();
 	}
 	if (NeedUsersCards())	{
-		assert(p_symbol_engine_userchair->userchair_confirmed());
-		p_scraper->ScrapePlayerCards(p_symbol_engine_userchair->userchair());
+		assert(p_engine_container->symbol_engine_userchair()->userchair_confirmed());
+		p_scraper->ScrapePlayerCards(p_engine_container->symbol_engine_userchair()->userchair());
 	}
 	p_scraper->ScrapeSeatedActive();
 	if (NeedAllPlayersCards()) {
@@ -145,7 +146,7 @@ bool CLazyScraper::NeedHandNumber() {
 }
 
 bool CLazyScraper::NeedUsersCards() {
-	return (p_symbol_engine_userchair->userchair_confirmed());
+	return (p_engine_container->symbol_engine_userchair()->userchair_confirmed());
 }
 
 bool CLazyScraper::NeedAllPlayersCards() {
@@ -171,7 +172,7 @@ bool CLazyScraper::NeedInterfaceButtons() {
 
 bool CLazyScraper::NeedBetpotButtons() {
 	return (p_casino_interface->IsMyTurn()
-		&& (p_symbol_engine_gametype->isnl() || p_symbol_engine_gametype->ispl()));
+		&& (p_engine_container->symbol_engine_gametype()->isnl() || p_engine_container->symbol_engine_gametype()->ispl()));
 }
 
 bool CLazyScraper::NeedSlider() {
@@ -187,14 +188,14 @@ bool CLazyScraper::NeedAllPlayerNames() {
 	// It is enough if we do this until our turn, because
 	// * at our turn we have stable frames
 	// * new players after our turn can't affect the current hand
-  if (p_symbol_engine_history->DidActThisHand()) {
+  if (p_engine_container->symbol_engine_history()->DidActThisHand()) {
     return false;
   }
   // We can also stop scraping names if we see new cards 
   // after a hand-reset because then a poterntial new player
   // can no longer join the game.
-  if ((p_symbol_engine_time->elapsedhand() > 2)
-      && (p_symbol_engine_active_dealt_playing->nplayersdealt() >= 2)) {
+  if ((p_engine_container->symbol_engine_time()->elapsedhand() > 2)
+      && (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() >= 2)) {
     return false;
   }
   return true;

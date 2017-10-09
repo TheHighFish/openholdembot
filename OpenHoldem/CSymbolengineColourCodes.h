@@ -38,6 +38,4 @@ class CSymbolEngineColourCodes: public CVirtualSymbolEngine {
   int ColourCodeToDisplay(const int chair);
 };
 
-extern CSymbolEngineColourCodes *p_symbol_engine_colourcodes;
-
 #endif INC_CSYMBOLENGINECOLOURCODES_H

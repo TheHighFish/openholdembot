@@ -35,5 +35,4 @@ class CSymbolEngineConstants: public CVirtualSymbolEngine {
  public:
 };
 
-extern CSymbolEngineConstants *p_symbol_engine_constants;
 

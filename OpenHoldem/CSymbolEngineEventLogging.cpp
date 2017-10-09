@@ -25,8 +25,6 @@
 #include "CTableTitle.h"
 #include "CVersionInfo.h"
 
-CSymbolEngineEventLogging *p_symbol_engine_event_logging = NULL;
-
 CSymbolEngineEventLogging::CSymbolEngineEventLogging()
 {}
 

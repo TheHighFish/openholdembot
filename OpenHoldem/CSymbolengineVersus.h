@@ -77,6 +77,4 @@ private:
   int card_common[kNumberOfCommunityCards];
 };
 
-extern CSymbolEngineVersus *p_symbol_engine_versus;
-
 #endif INC_CSYMBOLENGINEVERSUS_H

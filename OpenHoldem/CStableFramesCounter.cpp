@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include "CStableFramesCounter.h"
 
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -60,7 +61,7 @@ void CStableFramesCounter::SaveCurrentState() {
 	/* 
 		Saves the current state for future reference
 	*/
-  _myturnbitslast = p_symbol_engine_autoplayer->myturnbits();
+  _myturnbitslast = p_engine_container->symbol_engine_autoplayer()->myturnbits();
   for (int i=0; i<kNumberOfCommunityCards; i++) {
     _card_common_last[i] = p_table_state->CommonCards(i)->GetValue();
   }
@@ -96,7 +97,7 @@ unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
 	// - playerbalances
 	// - button states
 	bool same_scrape = true;
-  if (_myturnbitslast != p_symbol_engine_autoplayer->myturnbits()) {
+  if (_myturnbitslast != p_engine_container->symbol_engine_autoplayer()->myturnbits()) {
 		same_scrape = false;
   }
 	for (int i=0; i<kNumberOfCommunityCards; i++) {

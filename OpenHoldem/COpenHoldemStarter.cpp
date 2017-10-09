@@ -15,6 +15,7 @@
 #include "COpenHoldemStarter.h"
 
 #include "CAutoConnector.h"
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CPreferences.h"
 #include "CSharedMem.h"
@@ -90,7 +91,7 @@ void COpenHoldemStarter::CloseThisInstanceIfNoLongerNeeded() {
     // Instance needed for new connections / popup handling
     return;
   }
-  if (p_symbol_engine_time->elapsedauto() < kSecondsToWaitBeforeTermination) {
+  if (p_engine_container->symbol_engine_time()->elapsedauto() < kSecondsToWaitBeforeTermination) {
     // Don't shut down immediately
     // Instance might be needed soon again
     write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] Not waited long enough for shutdown.\n");

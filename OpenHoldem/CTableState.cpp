@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include "CTableState.h"
 
+#include "CEngineContainer.h"
 #include "CSymbolEngineUserchair.h"
 #include "NumericalFunctions.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -45,13 +46,13 @@ void CTableState::Reset() {
 }
 
 CPlayer *CTableState::User() {
-  if (p_symbol_engine_userchair == NULL) {
+  if (p_engine_container->symbol_engine_userchair() == NULL) {
     return &_players[kFakeEntryForUnknownUserchair];
   }
-  if (!p_symbol_engine_userchair->userchair_confirmed()) {
+  if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
     return &_players[kFakeEntryForUnknownUserchair];
   }
-  int userchair = p_symbol_engine_userchair->userchair();
+  int userchair = p_engine_container->symbol_engine_userchair()->userchair();
   AssertRange(userchair, 0, kLastChair);
   return &_players[userchair];
 }

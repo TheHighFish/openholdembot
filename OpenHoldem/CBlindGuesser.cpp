@@ -16,6 +16,7 @@
 #include "CBlindGuesser.h"
 
 #include "CBlindLevels.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -174,7 +175,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   // but this looks acceptable, because we have to guess only
   // verz few times and don't have to act at the verz first heartbeat
   // (because of stable frames).
-  int dealer = p_symbol_engine_dealerchair->dealerchair();
+  int dealer = p_engine_container->symbol_engine_dealerchair()->dealerchair();
   // Exit on undefined or wrong dealer (outdated, from last hand)
   if ((dealer == kUndefined) || (p_table_state->Player(dealer)->dealer() == false)) {
     return;
@@ -205,7 +206,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
   // Using 0.61% here to support limits like 0.15/0.25
   if ((second_bet_after_dealer < 0.61 * first_bet_after_dealer) &&
 	  (second_bet_after_dealer > 0.0) &&
-    p_symbol_engine_active_dealt_playing->nplayersdealt() == 2) {
+    p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() == 2) {
     // Special handling for reveresed blinds headsup
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19102
     write_log(preferences.debug_table_limits(),

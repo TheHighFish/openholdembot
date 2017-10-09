@@ -552,7 +552,7 @@ void WarnAboutNonASCIICharacters(const CString *s) {
       // Shooting a replay-frame for closer inspection.
       // Should be handled somewhere else, preferrably in OH,
       // as this soon to be DLL will be used by various programs
-      p_symbol_engine_replayframe_controller->ShootReplayFrameIfNotYetDone();
+      p_engine_container->symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
 #endif
       unsigned int char_value = unsigned int(current_char);
       int signed_char_value = int(current_char);

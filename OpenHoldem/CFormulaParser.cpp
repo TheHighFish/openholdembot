@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <io.h>
 #include "CDebugTab.h"
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFunction.h"
 #include "CFunctionCollection.h"
@@ -135,7 +136,7 @@ void CFormulaParser::ParseDefaultLibraries() {
   LoadOptionalFunctionLibrary(p_filenames->CustomLibraryPath());
   LoadDefaultBot();
   // Check again after the custom library
-  p_symbol_engine_open_ppl->VerifyExistenceOfOpenPPLInitializationInLibrary();
+  p_engine_container->symbol_engine_open_ppl()->VerifyExistenceOfOpenPPLInitializationInLibrary();
   p_function_collection->ParseAll(); 
   _is_parsing_read_only_function_library = false;
   LeaveParserCode();

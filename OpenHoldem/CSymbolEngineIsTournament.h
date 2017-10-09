@@ -54,6 +54,4 @@ class CSymbolEngineIsTournament: public CVirtualSymbolEngine {
 	bool _decision_locked;
 };
 
-extern CSymbolEngineIsTournament *p_symbol_engine_istournament;
-
 #endif INC_CSYMBOLENGINEISTOURNAMENT_H

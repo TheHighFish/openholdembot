@@ -308,7 +308,7 @@ void CEngineContainer::EvaluateAll() {
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
-	p_symbol_engine_tablelimits->CalcTableLimits();
+	p_engine_container->symbol_engine_tablelimits()->CalcTableLimits();
 	// UpdateOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
 	// We only need to care about:

@@ -21,8 +21,6 @@
 #include "CTableState.h"
 #include "MagicNumbers.h"
 
-CSymbolEngineColourCodes *p_symbol_engine_colourcodes = NULL;
-
 CSymbolEngineColourCodes::CSymbolEngineColourCodes() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
