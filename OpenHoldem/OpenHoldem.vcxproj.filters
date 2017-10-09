@@ -681,9 +681,6 @@
     <ClCompile Include="CDllExtension.cpp">
       <Filter>Source Files\Programming the Bot\DLL</Filter>
     </ClCompile>
-    <ClCompile Include="CGameState.cpp">
-      <Filter>Source Files\Programming the Bot\DLL</Filter>
-    </ClCompile>
     <ClCompile Include="CHandHistoryDealPhase.cpp">
       <Filter>Source Files\HandhistoryGenerator</Filter>
     </ClCompile>
