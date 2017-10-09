@@ -45,6 +45,7 @@ class COHScriptObject {
  public:
   static bool IsFunction(CString name)      { return name.Left(2) ==  "f$"; }
   static bool IsList(CString name)          { return name.Left(4) ==  "list"; }
+  static bool IsNotes(CString name)         { return name == "notes"; }
   static bool IsOpenPPLSymbol(CString name);
   // f$preflop, f$flop, f$turn, f$river
   static bool IsMainOpenPPLFunction(CString name);
@@ -63,12 +64,12 @@ class COHScriptObject {
   bool IsIniFunction();
   bool IsHopperFunction();
   bool IsDebugFunction();
-  bool IsNotesOrDLL();
+  bool IsNotes();
   bool IsICMConfigurationFunction();
   bool IsUserDefinedFunction()  { return (IsFunction()
                                     && !IsStandardFunction()
                                     && !IsDebugFunction())
-                                    && !IsNotesOrDLL()
+                                    && !IsNotes()
                                     && !IsMainOpenPPLFunction(); }
  public:
   int EditorGroupingCategory();

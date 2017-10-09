@@ -157,8 +157,8 @@ bool COHScriptObject::IsDebugFunction() {
   return false;
 }
 
-bool COHScriptObject::IsNotesOrDLL() {
-  return ((_name == "DLL") || (_name == "notes"));
+bool COHScriptObject::IsNotes() {
+  return (_name == "notes");
 }
 
 int COHScriptObject::EditorGroupingCategory() {
@@ -167,7 +167,7 @@ int COHScriptObject::EditorGroupingCategory() {
   if (!p_function_collection->IsOpenPPLProfile() && IsAutoplayerFunction())  return 0;
   // Category 1: Secondary (f$chat,..) DLL, notes)
   if (IsSecondaryFunction()) return 1;
-  if (IsNotesOrDLL()) return 1;
+  if (IsNotes()) return 1;
   // Category 2: Hopper funvtions (f$sitin, f$close, ...)
   if (IsHopperFunction()) return 2;
   // Category 3: Ini-fucntions

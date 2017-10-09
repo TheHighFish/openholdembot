@@ -25,10 +25,6 @@ class CDllExtension {
 	// public functions
 	CDllExtension();
 	~CDllExtension();
- public:
-	void Load(const char * path);
-	void Unload();
-	bool IsLoaded();
  private:
 	// private variables - use public accessors and public mutators to address these
 	HMODULE	_hmod_dll;

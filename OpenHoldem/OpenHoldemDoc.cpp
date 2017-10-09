@@ -74,9 +74,6 @@ BOOL COpenHoldemDoc::OnNewDocument() {
 	p_function_collection->SetEmptyDefaultBot();
 	SetModifiedFlag(false);
 	p_openholdem_title->UpdateTitle();
-
-  // Try to (re)load dll
-	p_dll_extension->Load("");
 	return true;
 }
 
@@ -127,10 +124,6 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic(ar);
 		SetModifiedFlag(false);
 		p_openholdem_title->UpdateTitle();
-
-    // Try to (re)load (new) dll
-    write_log(preferences.debug_openholdem(), "[COpenHoldemDoc::Serialize] Going to try (re)load (new)dll \n");
-		p_dll_extension->Load("");
 	}
 }
 

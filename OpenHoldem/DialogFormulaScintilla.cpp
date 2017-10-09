@@ -532,9 +532,8 @@ void CDlgFormulaScintilla::PopulateFormulaTree() {
         }
         break;
       case 1:
-        // Standard functions, including "notes" and "DLL"
+        // Standard functions, including "notes"
         AddFunctionToTree(parent, "notes");
-        AddFunctionToTree(parent, "DLL");
         AddStandardFunctionsToTree(parent, 
           k_standard_function_prefold, k_standard_function_shoot_replay_frame);
         break;
@@ -814,8 +813,7 @@ void CDlgFormulaScintilla::OnTvnSelchangedFormulaTree(NMHDR *pNMHDR, LRESULT *pR
   } else {
     // A child item was selected
     // (OpenPPL-functions don't get shown in the editor)
-	if ((s == "notes")
-        || (s == "dll")
+	if (COHScriptObject::IsNotes(s)
         || COHScriptObject::IsFunction(s)
         || COHScriptObject::IsList(s)) {
       SetExtendedWindowTitle(s);
@@ -1797,7 +1795,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	int  iWhichTypeSelected = kUndefined; // 0=Standard, 1=Hand List, 2=User Defined Function, -1=In_valid
 	bool bFindInfo = false;
 	bool bDebugActive = false;
-	bool bNotesOrDllActive = false;
+	bool bNotesActive = false;
 	bool bEditorWindowActive = false;
 	// m_dirty
 
@@ -1818,7 +1816,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	{
 		headingText = m_FormulaTree.GetItemText(curSelected);
 		bDebugActive = (headingText == "f$debug");
-		bNotesOrDllActive = (headingText == "notes" || headingText == "dll");
+		bNotesActive = (headingText == "notes");
 		headingText = m_FormulaTree.GetItemText(parentItem);
 	}
 	if (headingText == "Autoplayer Functions")			iWhichTypeSelected = 0;
@@ -1854,7 +1852,7 @@ void CDlgFormulaScintilla::HandleEnables(bool AllItems)
 	m_FormulaTree.EnableWindow(true); // Spew: Just in Case?
 
 	// Enable the Buttons
-	m_ButtonCalc.EnableWindow(bTreeValidLeafSelected && !bNotesOrDllActive);
+	m_ButtonCalc.EnableWindow(bTreeValidLeafSelected && !bNotesActive);
 	m_ButtonAuto.EnableWindow(bDebugActive);
 
 	// File Menu

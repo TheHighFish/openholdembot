@@ -28,9 +28,6 @@
 // * Notes (OH-script only)
 //     ##Notes##
 //     Comments below
-// * DLL
-//     ##dll##
-//     Filename
 // * Lists
 //     ##list_preflop_monsters##
 //     AA KK ...  

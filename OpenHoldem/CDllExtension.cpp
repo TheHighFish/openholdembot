@@ -47,66 +47,6 @@ CDllExtension::CDllExtension() {
 CDllExtension::~CDllExtension() {
 }
 
-void CDllExtension::Load(const char * path) {
-  CString	dll_path;
-	if (IsLoaded()) {
-     Unload(); 
-  }
-	// try to load specific path if passed in as a parameter
-	if (strlen(path) > 0) {
-		dll_path = path;
-		write_log(preferences.debug_dll_extension(),
-			"[CDLLExtension] setting path (1) to %s\n", dll_path);
-	}	else {
-		// Nothing passed in, so we try the DLL of the formula
-		// and the DLL from preferences.
-		dll_path = p_function_collection->DLLPath();
-		write_log(preferences.debug_dll_extension(),
-			"[CDLLExtension] setting path (2) to %s\n", dll_path);
-		if (dll_path == "") {
-			dll_path = preferences.dll_name().GetString();
-			write_log(preferences.debug_dll_extension(),
-				"[CDLLExtension] setting path (3) to %s\n", dll_path);
-		}
-	}
-  p_filenames->SwitchToOpenHoldemDirectory();
-	if (dll_path == "")	{
-		// Nothing to do
-		return;
-	}
-	_hmod_dll = LoadLibrary(dll_path);
-	DWORD dll_error = GetLastError();
-  // If the DLL didn't get loaded
-	if (_hmod_dll == NULL) {
-		CString error_message;
-		error_message.Format("Unable to load DLL from:\n"
-			"%s\n"
-			"error-code: %d\n",
-			 dll_path.GetString(), dll_error);
-		OH_MessageBox_Error_Warning(error_message, "DLL Load Error");
-		return;
-	}
-	// No longer passing any pointers to the DLL.
-	// We do now export functions and link them implicitly:
-	// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=15470
-  DLLOnLoad();
-}
-
-void CDllExtension::Unload(void) {
-	if (_hmod_dll==NULL) return;
-  DLLOnUnLoad();
-  assert(p_iterator_thread != NULL);
-	p_iterator_thread->set_prw1326_useme(0);
-	if (FreeLibrary(_hmod_dll)) {
-		_hmod_dll = NULL;
-	}
-}
-
-bool CDllExtension::IsLoaded() {
-  // Always loaded due to static linking ATM !!!
-  return true;
-	// return _hmod_dll != NULL;
-}
 
 /*EXE_IMPLEMENTS*/ double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
 	CString	str = "";

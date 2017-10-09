@@ -96,11 +96,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   // DLL
   if (memcmp(name, "dll$", 4) == 0) {
-    if (p_dll_extension->IsLoaded()) {
-	    *result = ProcessQuery(name);
-    } else {
-	    *result = kUndefinedZero;
-    }
+    *result = ProcessQuery(name);
   }
   // Various symbols below
   // without any optimized lookup.

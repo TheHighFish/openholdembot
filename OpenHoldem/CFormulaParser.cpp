@@ -187,7 +187,6 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
     if (name.Left(4) == "list") return true;
     // Special cases: notes, dll and date
     if (name == "notes") return true;
-    if (name == "dll") return true;
     if (name.Left(2) == "20") return true;
   } else {
     // OpenPPL-library
@@ -337,11 +336,8 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
     LeaveParserCode();
     return;
   } else if (_function_name.MakeLower() == "dll") {
-    // ##DLL##
-    write_log(preferences.debug_parser(), 
-	  "[FormulaParser] Parsing ##DLL##\n");
-    // Nothing more to do
-    // We extract the DLL later
+    // Deprecated ##DLL##.
+    // Formerly nothing to do, now ignore it.
   } else if (_function_name.MakeLower() == "notes") {
     // ##Notes##
     write_log(preferences.debug_parser(), 
