@@ -330,7 +330,6 @@
     <ClCompile Include="CEngineContainer.cpp" />
     <ClCompile Include="Chair$Symbols.cpp" />
     <ClCompile Include="UnknownSymbols.cpp" />
-    <ClCompile Include="CGameState.cpp" />
     <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp" />
     <ClCompile Include="CSymbolEngineAutoplayer.cpp" />
     <ClCompile Include="CSymbolEngineBlinds.cpp" />
