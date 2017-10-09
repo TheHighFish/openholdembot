@@ -17,9 +17,13 @@
 
 #include <assert.h>
 #include "CMemoryPool.h"
+#include "CPreferences.h"
 
 // Custom memory-allocation to avoid always getting
 // a 4KB-block when we create a little object
-void* :operator CSpaceOptimizedFormulaObject::new(size_t size) {
+void* CSpaceOptimizedFormulaObject::operator new(size_t size) {
+  assert(PMemoryPoolParser() != NULL);
+  write_log(preferences.debug_memory_usage(), "[CParseTreeNode] Allocating %i bytes\n", size);
+  return PMemoryPoolParser()->Allocate(size);
 }
 

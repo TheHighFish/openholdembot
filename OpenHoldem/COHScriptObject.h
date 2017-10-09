@@ -14,7 +14,7 @@
 #ifndef INC_COHSCRIPTOBJECT_H
 #define INC_COHSCRIPTOBJECT_H
 
-#include "CSpaceOptimizedFormulalObject.h"
+#include "CSpaceOptimizedFormulaObject.h"
 
 // Either auto-generated for completion
 // or created with the editor
@@ -87,11 +87,7 @@ class COHScriptObject: public CSpaceOptimizedFormulaObject {
   // * will be loaded once
   // * won't be shown in the editor
   // * won't be saved
-   void SetAsReadOnlyLibraryFunction();
- public:
-  // Custom memory-allocation to avoid always getting
-  // a 4KB-block when we create a little object
-  void* operator new(size_t size);
+  void SetAsReadOnlyLibraryFunction();
  protected:
   virtual bool NeedsToBeParsed();
   void MarkAsParsed();
