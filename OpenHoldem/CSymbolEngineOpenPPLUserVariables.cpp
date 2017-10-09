@@ -17,8 +17,6 @@
 #include "CPreferences.h"
 #include "CStringHashtableTemplate.h"
 
-CSymbolEngineOpenPPLUserVariables *p_symbol_engine_openppl_user_variables = NULL;
-
 CSymbolEngineOpenPPLUserVariables::CSymbolEngineOpenPPLUserVariables() {
 }
 

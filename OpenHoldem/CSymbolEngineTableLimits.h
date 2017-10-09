@@ -17,8 +17,8 @@
 #include "MagicNumbers.h"
 #include "CVirtualSymbolEngine.h"
 
-#define BIG_BLIND p_symbol_engine_tablelimits->bblind()
-#define SMALL_BLIND p_symbol_engine_tablelimits->sblind()
+#define BIG_BLIND p_engine_container->symbol_engine_tablelimits()->bblind()
+#define SMALL_BLIND p_engine_container->symbol_engine_tablelimits()->sblind()
 
 struct STableLimit {
 	double sblind;
@@ -84,7 +84,5 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
  private:
 	double _ante;
 };
-
-extern CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
 
 #endif // INC_CTABLELIMITS_H

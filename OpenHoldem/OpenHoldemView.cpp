@@ -205,12 +205,12 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	CDC			*pDC = GetDC();
 
 	CString sym_handnumber = p_handreset_detector->GetHandNumber();
-	double  sym_bblind = p_symbol_engine_tablelimits->bblind();
-	double  sym_sblind = p_symbol_engine_tablelimits->sblind();
-	double  sym_ante = p_symbol_engine_tablelimits->ante();
-	int     sym_lim = p_symbol_engine_gametype->gametype();
-	bool    sym_istournament = p_symbol_engine_istournament->istournament();
-	double  sym_pot = p_symbol_engine_chip_amounts->pot();
+	double  sym_bblind = p_engine_container->symbol_engine_tablelimits()->bblind();
+	double  sym_sblind = p_engine_container->symbol_engine_tablelimits()->sblind();
+	double  sym_ante = p_engine_container->symbol_engine_tablelimits()->ante();
+	int     sym_lim = p_engine_container->symbol_engine_gametype()->gametype();
+	bool    sym_istournament = p_engine_container->symbol_engine_istournament()->istournament();
+	double  sym_pot = p_engine_container->symbol_engine_chip_amounts()->pot();
 
 	// Get size of current client window
 	GetClientRect(&_client_rect);
@@ -262,7 +262,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		update_it = true;
 	}
 
-  if ((p_symbol_engine_autoplayer->ismyturn()) || update_it || update_all) 
+  if ((p_engine_container->symbol_engine_autoplayer()->ismyturn()) || update_it || update_all) 
 	{
 		assert(p_white_info_box != NULL);
     p_white_info_box->Draw(_client_rect, _logfont, pDC,
@@ -944,7 +944,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
   int x_offset_to_next_card = CARDSIZEX - 10;
   // Calculate starting position for first card
   int first_pos_x_right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 7;
-  if (p_symbol_engine_isomaha->isomaha()) {
+  if (p_engine_container->symbol_engine_isomaha()->isomaha()) {
     // Original positions were designed for HoldEm.
     // If we play Omaha, then move everything one card to the left
     // for better centralization.
@@ -962,7 +962,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
 }
 
 void COpenHoldemView::DrawColourCodes(const int chair) {
-  if (p_symbol_engine_colourcodes == 0) {
+  if (p_engine_container->symbol_engine_colourcodes() == 0) {
     // Not yet initialized
     return;
   }
@@ -982,7 +982,7 @@ void COpenHoldemView::DrawColourCodes(const int chair) {
 	CBrush	*pTempBrush = NULL, oldbrush;
   pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
-  COLORREF colour_code = p_symbol_engine_colourcodes->ColourCodeToDisplay(chair);
+  COLORREF colour_code = p_engine_container->symbol_engine_colourcodes()->ColourCodeToDisplay(chair);
   CBrush mybrush(colour_code);
 	pTempBrush = (CBrush*)pDC->SelectObject(mybrush); 
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush

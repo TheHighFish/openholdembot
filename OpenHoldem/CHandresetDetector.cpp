@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -89,8 +90,8 @@ void CHandresetDetector::CalculateIsHandreset() {
   int number_of_methods_firing = bitcount(total_methods_firing);
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Number of methods firing last 3 heartbeat2: %i\n",
     number_of_methods_firing);
-  if ((p_symbol_engine_time->elapsedhand() < kMinimumtimeBetweenTwoHeartbeats) 
-      && (p_symbol_engine_time->elapsed() > kMinimumtimeBetweenTwoHeartbeats)) {
+  if ((p_engine_container->symbol_engine_time()->elapsedhand() < kMinimumtimeBetweenTwoHeartbeats) 
+      && (p_engine_container->symbol_engine_time()->elapsed() > kMinimumtimeBetweenTwoHeartbeats)) {
     // Prevent multiple fast hearbeats due to lagging casino
     // and too many handreset-events on multiple heartbeats
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19938
@@ -104,7 +105,7 @@ void CHandresetDetector::CalculateIsHandreset() {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
     _is_handreset_on_this_heartbeat = true;
     ++_hands_played;
-    if (p_symbol_engine_active_dealt_playing->nopponentsdealt() == 1) {
+    if (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsdealt() == 1) {
       // Last hand (data not yet reset) was headsup
       ++_hands_played_headsup;
     } else {
@@ -273,9 +274,9 @@ bool CHandresetDetector::SmallBlindExists() {
 }
 
 void CHandresetDetector::GetNewSymbolValues() {
-	assert(p_symbol_engine_dealerchair != NULL);
-	if (IsValidDealerChair(p_symbol_engine_dealerchair->dealerchair()))	{
-		dealerchair = p_symbol_engine_dealerchair->dealerchair();	
+	assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
+	if (IsValidDealerChair(p_engine_container->symbol_engine_dealerchair()->dealerchair()))	{
+		dealerchair = p_engine_container->symbol_engine_dealerchair()->dealerchair();	
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting new dealerchair to [%i]\n", dealerchair);
 	}
 	if (IsValidHandNumber(p_table_state->_s_limit_info.handnumber()))	{
@@ -284,12 +285,12 @@ void CHandresetDetector::GetNewSymbolValues() {
 	}	else {
 		write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Setting handnumber to [%s] was skipped. Reason: [digits number not in range]\n", handnumber);
 	}
-	assert(p_symbol_engine_userchair != NULL);
-	int userchair = p_symbol_engine_userchair->userchair();
-  _potsize = p_symbol_engine_chip_amounts->pot();
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
+	int userchair = p_engine_container->symbol_engine_userchair()->userchair();
+  _potsize = p_engine_container->symbol_engine_chip_amounts()->pot();
   _community_cards = p_table_state->NumberOfCommunityCards();
-  _nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
-  _bblind = p_symbol_engine_tablelimits->bblind();
+  _nopponentsplaying = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying();
+  _bblind = p_engine_container->symbol_engine_tablelimits()->bblind();
 	for (int i=0; i<kMaxNumberOfCardsPerPlayer; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->User()->hole_cards(i)->GetValue();
@@ -320,7 +321,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
 }
 
 void CHandresetDetector::OnNewHeartbeat() {
-	if (p_symbol_engine_dealerchair == NULL) {
+	if (p_engine_container->symbol_engine_dealerchair() == NULL) {
 		// Very early initialization phase
 		return;
 	}

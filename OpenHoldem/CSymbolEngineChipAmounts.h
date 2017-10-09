@@ -56,13 +56,7 @@ public:
 		}
 		return _stacks_at_hand_start[chair]; 
 	}
-  
-	double ncurrentbets()	{
-		if (p_symbol_engine_tablelimits->bet() == 0)		{
-			return 0;
-		}
-		return (p_table_state->User()->_bet.GetValue() / p_symbol_engine_tablelimits->bet());
-	}
+  double ncurrentbets();
  public:
 	double pot()		    	{ return _pot; }
 	double potcommon()		{ return _potcommon; }
@@ -111,7 +105,5 @@ public:
 	double _ncallbets;
 	double _nraisbets;
 };
-
-extern CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts;
 
 #endif INC_CSYMBOLENGINECHIPAMOUNTS_H

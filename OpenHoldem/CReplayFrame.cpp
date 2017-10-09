@@ -14,6 +14,7 @@
 #include "StdAfx.h"
 #include "CReplayFrame.h"
 
+#include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
@@ -201,11 +202,11 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
 		player_info += text;
 		// seated, active, button, dealt, playing
 		text = "      <td>";
-		text +=	(p_symbol_engine_active_dealt_playing->playersseatedbits() & (1<<i)) ? "s" : "-";
-		text +=	(p_symbol_engine_active_dealt_playing->playersactivebits() & (1<<i)) ? "a" : "-";
+		text +=	(p_engine_container->symbol_engine_active_dealt_playing()->playersseatedbits() & (1<<i)) ? "s" : "-";
+		text +=	(p_engine_container->symbol_engine_active_dealt_playing()->playersactivebits() & (1<<i)) ? "a" : "-";
 		text +=	(DEALER_CHAIR == i) ? "b" : "-";
-		text +=	(p_symbol_engine_active_dealt_playing->playersdealtbits() & (1<<i)) ? "d" : "-";
-		text +=	(p_symbol_engine_active_dealt_playing->playersplayingbits() & (1<<i)) ? "p" : "-";
+		text +=	(p_engine_container->symbol_engine_active_dealt_playing()->playersdealtbits() & (1<<i)) ? "d" : "-";
+		text +=	(p_engine_container->symbol_engine_active_dealt_playing()->playersplayingbits() & (1<<i)) ? "p" : "-";
 		text += "</td>\n";
 		player_info += text;  
 		// Cards
@@ -237,7 +238,7 @@ CString CReplayFrame::GetButtonStatesAsHTML() {
 	button_states += "  <tr><th>FCKRA</th></tr>\n";
 	button_states += "  <tr>\n";
 	// Buttons
-	CString fckra_seen = p_symbol_engine_autoplayer->GetFCKRAString();
+	CString fckra_seen = p_engine_container->symbol_engine_autoplayer()->GetFCKRAString();
 	// Table footer
 	button_states += "    <td>";
 	button_states += fckra_seen.GetString();
@@ -251,11 +252,11 @@ CString CReplayFrame::GetBlindInfoAsHTML() {
 	CString blind_info, text;
 	// Table for: sb, bb, BB
 	blind_info += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
-	text.Format("  <tr><th>sb</th><td>%11.2f</td></tr>\n", p_symbol_engine_tablelimits->sblind());
+	text.Format("  <tr><th>sb</th><td>%11.2f</td></tr>\n", p_engine_container->symbol_engine_tablelimits()->sblind());
 	blind_info += text;
-	text.Format("  <tr><th>bb</th><td>%11.2f</td></tr>\n", p_symbol_engine_tablelimits->bblind());
+	text.Format("  <tr><th>bb</th><td>%11.2f</td></tr>\n", p_engine_container->symbol_engine_tablelimits()->bblind());
 	blind_info += text;
-	text.Format("  <tr><th>BB</th><td>%11.2f</td></tr>\n", p_symbol_engine_tablelimits->bigbet());
+	text.Format("  <tr><th>BB</th><td>%11.2f</td></tr>\n", p_engine_container->symbol_engine_tablelimits()->bigbet());
 	blind_info += text;
 	text.Format("</table>\n");
 	blind_info += text;

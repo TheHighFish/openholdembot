@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include "CardFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "inlines/eval.h"
 #include "CFilenames.h"
 #include "CFunctionCollection.h"
@@ -29,13 +30,11 @@
 #include "OH_MessageBox.h"
 #include "COHScriptList.h"
 
-CSymbolEngineVersus *p_symbol_engine_versus = NULL;
-
 CSymbolEngineVersus::CSymbolEngineVersus() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_userchair != NULL);
+  assert(p_engine_container->symbol_engine_userchair()-> != NULL);
   // Check versus.bin
   _sopen_s(&_versus_fh, p_filenames->VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (_versus_fh == kUndefined) {
@@ -135,7 +134,7 @@ bool CSymbolEngineVersus::GetCounts() {
   // Get the lock
 	CSLock lock(m_critsec);
   ClearWinTieLosData();
-	if (!p_symbol_engine_userchair->userchair_confirmed()) return false;
+	if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) return false;
 
   if (!p_table_state->User()->HasKnownCards()) return false;
 

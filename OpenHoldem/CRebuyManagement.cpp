@@ -16,6 +16,7 @@
 #include <time.h>
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "COcclusionCheck.h"
@@ -73,7 +74,7 @@ bool CRebuyManagement::NoCards(){
 	if (!preferences.rebuy_condition_no_cards()) {
 		return true;
 	}
-	int UserChair = p_symbol_engine_userchair->userchair();
+	int UserChair = p_engine_container->symbol_engine_userchair()->userchair();
 	if ((UserChair < 0) || (UserChair > 9)) {
 		// "No cards", but not even seated.
 		// We should never get into that situation,
@@ -143,10 +144,10 @@ void CRebuyManagement::ExecuteRebuyScript() {
 		Casino = "Undefined";
 	}
 	HWND WindowHandleOfThePokerTable = p_autoconnector->attached_hwnd();
-	double SmallBlind = p_symbol_engine_tablelimits->sblind();
-	double BigBlind = p_symbol_engine_tablelimits->bblind();
-	double BigBet = p_symbol_engine_tablelimits->bigbet();
-	int UserChair = p_symbol_engine_userchair->userchair();
+	double SmallBlind = p_engine_container->symbol_engine_tablelimits()->sblind();
+	double BigBlind = p_engine_container->symbol_engine_tablelimits()->bblind();
+	double BigBet = p_engine_container->symbol_engine_tablelimits()->bigbet();
+	int UserChair = p_engine_container->symbol_engine_userchair()->userchair();
 	double Balance = p_table_state->User()->_balance.GetValue();
 	double TargetAmount = p_function_collection->Evaluate(k_standard_function_names[k_hopper_function_rebuy]);
 	CString RebuyScript = preferences.rebuy_script();

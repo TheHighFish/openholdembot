@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -42,7 +43,7 @@ double CAutoplayerFunctions::GetAutoplayerFunctionValue(const int function_code)
 
 void CAutoplayerFunctions::CalcPrimaryFormulas() {
   write_log(preferences.debug_formula(), "[CAutoplayerFunctions] CalcPrimaryFormulas()\n");
-  assert(p_symbol_engine_autoplayer->isfinalanswer());
+  assert(p_engine_container->symbol_engine_autoplayer()->isfinalanswer());
   if (p_function_collection->IsOpenPPLProfile()) {
     CalcPrimaryFormulasOpenPPL();
     CalculateOpenPPLBackupActions();
@@ -149,7 +150,7 @@ void CAutoplayerFunctions::TranslateOpenPPLDecisionToAutoplayerFunctions(double 
   if (decision > 0) {
     // OpenHoldem uses f$betsize in dollars
     assert(p_symbol_engine_tablelimits != NULL);
-    double betsize = decision * p_symbol_engine_tablelimits->bblind();
+    double betsize = decision * p_engine_container->symbol_engine_tablelimits()->bblind();
     p_function_collection->SetAutoplayerFunctionValue(k_autoplayer_function_betsize, 
       betsize);
   } else if (IsPercentagePotsizeBet(decision)) {
@@ -194,7 +195,7 @@ bool CAutoplayerFunctions::IsFoldAllinSituation() {
   // and not by easily misscraped bets and balances.
   // Fold and allin-button must be visible.
   // Raise. call and check must not.
-  CString fckra = p_symbol_engine_autoplayer->GetFCKRAString();
+  CString fckra = p_engine_container->symbol_engine_autoplayer()->GetFCKRAString();
   write_log(preferences.debug_formula(), 
     "[CAutoplayerFunctions] Buttons seen: %s\n", fckra);
   if (fckra == "F...A") {
@@ -271,12 +272,12 @@ double CAutoplayerFunctions::BetSizeForPercentagedPotsizeBet(double decision) {
   write_log(preferences.debug_formula(), 
     "[CAutoplayerFunctions] Calculate f$betsize for %.2f percent potsize\n",
     percentage_0_100);
-  assert(p_symbol_engine_chip_amounts != NULL);
-  assert(p_symbol_engine_userchair != NULL);
-  assert(p_symbol_engine_userchair->userchair_confirmed());
+  assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
+  assert(p_engine_container->symbol_engine_userchair()-> != NULL);
+  assert(p_engine_container->symbol_engine_userchair()->userchair_confirmed());
   double betsize = p_table_state->User()->_bet.GetValue() 
-    + p_symbol_engine_chip_amounts->call() 
-    + (-1 * decision) * (p_symbol_engine_chip_amounts->pot() + p_symbol_engine_chip_amounts->call());
+    + p_engine_container->symbol_engine_chip_amounts()->call() 
+    + (-1 * decision) * (p_engine_container->symbol_engine_chip_amounts()->pot() + p_engine_container->symbol_engine_chip_amounts()->call());
     write_log(preferences.debug_formula(), 
       "[CAutoplayerFunctions] f$betsize is %s\n",
     Number2CString(betsize, 2));

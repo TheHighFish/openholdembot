@@ -45,6 +45,4 @@ class CSymbolEnginePokerTracker: public CVirtualSymbolEngine {
 	bool	check_for_identity_of_players_executed_this_heartbeat;
 };
 
-extern CSymbolEnginePokerTracker *p_symbol_engine_pokertracker;
-
 #endif INC_CSYMBOLENGINEPOKERTRACKER_H

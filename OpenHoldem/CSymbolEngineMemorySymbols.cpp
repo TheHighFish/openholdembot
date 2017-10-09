@@ -19,8 +19,6 @@
 #include "CPreferences.h"
 #include "OH_MessageBox.h"
 
-CSymbolEngineMemorySymbols *p_symbol_engine_memory_symbols = NULL;
-
 CSymbolEngineMemorySymbols::CSymbolEngineMemorySymbols() {
 }
 

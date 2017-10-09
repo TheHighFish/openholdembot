@@ -15,6 +15,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineIsRush.h"
 
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
@@ -22,8 +23,6 @@
 #include "CSymbolEngineTime.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
-
-CSymbolEngineIsRush *p_symbol_engine_isrush = NULL;
 
 // Maximum average time between last action and handreset
 // if the game should be considered rush / zoom.
@@ -36,7 +35,7 @@ CSymbolEngineIsRush::CSymbolEngineIsRush() {
   // As the engines get later called in the order of initialization
   // we assure correct ordering by checking if they are initialized.
   assert(p_symbol_engine_active_dealt_playing !=NULL);
-  assert(p_symbol_engine_time != NULL);
+  assert(p_engine_container->symbol_engine_time()-> != NULL);
   assert(p_symbol_engine_istournament != NULL);
 }
 
@@ -54,11 +53,11 @@ void CSymbolEngineIsRush::UpdateOnConnection() {
 }
 
 void CSymbolEngineIsRush::UpdateOnHandreset() {
-  if (p_symbol_engine_time->elapsedauto() > 60) {
+  if (p_engine_container->symbol_engine_time()->elapsedauto() > 60) {
     // Unreliable value, we might have been sitting out
     return;
   }
-  sum_of_handreset_durations += p_symbol_engine_time->elapsedauto();
+  sum_of_handreset_durations += p_engine_container->symbol_engine_time()->elapsedauto();
   ++handresets;
 }
 
@@ -72,13 +71,13 @@ void CSymbolEngineIsRush::UpdateOnHeartbeat() {
 }
 
 bool CSymbolEngineIsRush::isrush() {
-  if (p_symbol_engine_istournament->istournament()) {
+  if (p_engine_container->symbol_engine_istournament()->istournament()) {
     // Not a cash-game, therefore not rush
     write_log(preferences.debug_symbolengine(),
       "[CSymbolEngineIsRush] Tournament, therefore not rush / zoom\n");
     return false;
   }
-  else if (p_symbol_engine_active_dealt_playing->nopponentsdealt()<2){
+  else if (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsdealt()<2){
     // Game may be HU
     write_log(preferences.debug_symbolengine(),
       "[CSymbolEngineIsRush] One dealt opponent, game may or may not be rush / zoom\n");

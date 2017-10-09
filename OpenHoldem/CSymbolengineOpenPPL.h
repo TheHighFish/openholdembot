@@ -42,6 +42,4 @@ class CSymbolEngineOpenPPL: public CVirtualSymbolEngine
   void CheckExistenceOfOpenPPLFunction(CString function);
 };
 
-extern CSymbolEngineOpenPPL *p_symbol_engine_open_ppl;
-
 #endif INC_CSYMBOLENGINE_OPENPPL_HANDSTRENGTH_H

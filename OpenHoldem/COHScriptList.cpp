@@ -2,6 +2,7 @@
 #include "COHScriptList.h"
 
 #include "CardFunctions.h"
+#include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
@@ -171,9 +172,9 @@ double COHScriptList::Evaluate(bool log /* = false */) {
   write_log(preferences.debug_formula(), 
     "[COHScriptList] Evaluating list %s\n", _name); 
   if (!p_table_state->User()->HasKnownCards()) return false;
-  return IsOnList(p_symbol_engine_pokerval->rankhiplayer(),
-    p_symbol_engine_pokerval->rankloplayer(),
-    p_symbol_engine_cards->issuited());
+  return IsOnList(p_engine_container->symbol_engine_pokerval()->rankhiplayer(),
+    p_engine_container->symbol_engine_pokerval()->rankloplayer(),
+    p_engine_container->symbol_engine_cards()->issuited());
 }
 
 void COHScriptList::Parse() {

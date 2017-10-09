@@ -48,7 +48,7 @@ CDllExtension::~CDllExtension() {
 		// restart iterator thread
     p_iterator_thread->RestartPrWinComputations();
 		// Recompute versus tables
-		p_symbol_engine_versus->GetCounts();
+		p_engine_container->symbol_engine_versus()->GetCounts();
     // Busy waiting until recalculation got finished.
     // Nothing better to do, as we already evaluate bot-logic,
     // so we can't continue with another heartbeat or something else.

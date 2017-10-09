@@ -45,6 +45,4 @@ private:
   bool _isomaha;
 };
 
-extern CSymbolEngineIsOmaha *p_symbol_engine_isomaha;
-
 #endif INC_CSYMBOLENGINEISOMAHA_H

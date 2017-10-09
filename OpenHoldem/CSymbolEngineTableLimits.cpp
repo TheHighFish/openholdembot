@@ -18,6 +18,7 @@
 #include "CBetroundCalculator.h"
 #include "CBlindGuesser.h"
 #include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineDealerchair.h"
@@ -37,7 +38,7 @@ CSymbolEngineTableLimits::CSymbolEngineTableLimits() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_dealerchair != NULL);
+	assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
 	//
 	// Actually this symbol-engine also depends on 
 	// p_symbol_engine_is_tournament.
@@ -135,7 +136,7 @@ bool CSymbolEngineTableLimits::TableLimitsNeedToBeComputed() {
 }
 
 void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
-	if (p_symbol_engine_istournament == NULL)	{
+	if (p_engine_container->symbol_engine_istournament() == NULL)	{
 		// Initialization phase
 		// Null pointer possible due to circular dependency
 		// Simply leave because it is too early to lock the blinds
@@ -148,7 +149,7 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
     Bool2CString(blinds_locked_for_complete_session));
 	write_log(preferences.debug_table_limits(), 
     "[CSymbolEngineTableLimits] istournament: %s\n", 
-    Bool2CString(p_symbol_engine_istournament->istournament()));
+    Bool2CString(p_engine_container->symbol_engine_istournament()->istournament()));
 	if (blinds_locked_for_complete_session) {
     write_log(preferences.debug_table_limits(), 
       "[CSymbolEngineTableLimits] blinds_locked_for_complete_session\n");
@@ -156,7 +157,7 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
       "[CSymbolEngineTableLimits] Leaving CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
 		return;
   }
-  if (p_symbol_engine_istournament->istournament())	{
+  if (p_engine_container->symbol_engine_istournament()->istournament())	{
 		write_log(preferences.debug_table_limits(), 
       "[CSymbolEngineTableLimits] istournament\n");
 		write_log(preferences.debug_table_limits(), 
@@ -270,7 +271,7 @@ double CSymbolEngineTableLimits::bet(int betround) {
 	assert(betround >= kBetroundPreflop);
 	assert(betround <= kBetroundRiver);
   assert(p_symbol_engine_gametype != NULL);
-  if (p_symbol_engine_gametype->isfl() && (betround >= kBetroundTurn)) {
+  if (p_engine_container->symbol_engine_gametype()->isfl() && (betround >= kBetroundTurn)) {
     return bigbet();
   }
 	return bblind();

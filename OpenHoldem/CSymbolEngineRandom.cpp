@@ -17,8 +17,6 @@
 #include "MagicNumbers.h"
 #include "NumericalFunctions.h"
 
-CSymbolEngineRandom *p_symbol_engine_random = NULL;
-
 CSymbolEngineRandom::CSymbolEngineRandom() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization

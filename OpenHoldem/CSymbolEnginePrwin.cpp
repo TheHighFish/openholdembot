@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include <math.h>
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CIteratorThread.h"
 #include "CPreferences.h"
@@ -24,8 +25,6 @@
 #include "CSymbolenginePokerval.h"
 #include "CTableState.h"
 
-CSymbolEnginePrwin *p_symbol_engine_prwin = NULL;
-
 CSymbolEnginePrwin::CSymbolEnginePrwin() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
@@ -33,7 +32,7 @@ CSymbolEnginePrwin::CSymbolEnginePrwin() {
   assert(p_symbol_engine_isomaha != NULL);
 	assert(p_symbol_engine_pokerval != NULL);
 	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
   // Initializations, needed early e.g. by CSymbolEngineHandrank
   _nhandshi = 0;
   _nhandslo = 0;
@@ -110,7 +109,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
   // player/common cards and pokerval
 	CardMask_OR(playerEvalCards, plCards, comCards);
 	hv_player = Hand_EVAL_N(playerEvalCards, nplCards+ncomCards);
-	pl_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_player, 
+	pl_pokval = p_engine_container->symbol_engine_pokerval()->CalculatePokerval(hv_player, 
 		nplCards+ncomCards, &dummy, CARD_NOCARD, CARD_NOCARD);
 	for (int i=0; i<(kNumberOfCardsPerDeck-1); i++) {
 		for (int j=(i+1); j<kNumberOfCardsPerDeck; j++)	{
@@ -124,7 +123,7 @@ void CSymbolEnginePrwin::CalculateNhands() {
 				CardMask_SET(oppCards, j);
         CardMask_OR(opponentEvalCards, oppCards, comCards);
 				hv_opponent = Hand_EVAL_N(opponentEvalCards, 2+ncomCards);
-				opp_pokval = p_symbol_engine_pokerval->CalculatePokerval(hv_opponent,
+				opp_pokval = p_engine_container->symbol_engine_pokerval()->CalculatePokerval(hv_opponent,
 					(NumberOfCardsPerPlayer() + ncomCards), 
 					&dummy, CARD_NOCARD, CARD_NOCARD);
 

@@ -53,5 +53,3 @@ class CSymbolEngineNutFullhouseOrFourOfAKind: public CVirtualSymbolEngine {
   std::map<int, bool> _list_all_fullhouses;
   std::map<int, bool> _list_better_fullhouses;
 };
-
-extern CSymbolEngineNutFullhouseOrFourOfAKind *p_symbol_engine_nutfullhouse_or_four_of_a_kind;

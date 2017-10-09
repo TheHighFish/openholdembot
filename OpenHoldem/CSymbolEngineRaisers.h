@@ -96,6 +96,4 @@ class CSymbolEngineRaisers: public CVirtualSymbolEngine {
   int _lastraised[kNumberOfBetrounds + 1]; 
 };
 
-extern CSymbolEngineRaisers *p_symbol_engine_raisers;
-
 #endif INC_CSYMBOLENGINERAISERS_H

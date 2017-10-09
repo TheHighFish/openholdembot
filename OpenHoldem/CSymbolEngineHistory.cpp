@@ -25,8 +25,6 @@
 #include "FloatingPoint_Comparisions.h"
 #include "NumericalFunctions.h"
 
-CSymbolEngineHistory *p_symbol_engine_history  = NULL;
-
 const char* const k_hist_sym_strings[k_hist_sym_count] = {
 	//PROBABILITIES (3)
 	"prwin", "prlos", "prtie", 
@@ -65,9 +63,9 @@ CSymbolEngineHistory::CSymbolEngineHistory() {
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_active_dealt_playing != NULL);
-	assert(p_symbol_engine_chip_amounts != NULL);
+	assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
   assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
   // Making sure that _hist_sym_count is correct,
 	// to avoid array overflows later if we remove symbols
 	// without adapting the counter.
@@ -139,7 +137,7 @@ void CSymbolEngineHistory::UpdateAfterAutoplayerAction(int autoplayer_action_cod
 	// depending on the amount to call.
 	if ((autoplayer_action_code == k_autoplayer_function_call)
 		  || (autoplayer_action_code == k_autoplayer_function_check)) {
-		if (IsSmallerOrEqual(p_symbol_engine_chip_amounts->call(), 0.0)) {
+		if (IsSmallerOrEqual(p_engine_container->symbol_engine_chip_amounts()->call(), 0.0)) {
 			// It was free to check
 			_autoplayer_actions[BETROUND][k_autoplayer_function_check]++;
 			SetPrevaction(k_autoplayer_function_check);
@@ -194,7 +192,7 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code) {
 void CSymbolEngineHistory::CalculateHistory() {
 	if (_nplayersround[BETROUND] == 0) {
 		_nplayersround[BETROUND] = 
-			p_symbol_engine_active_dealt_playing->nplayersplaying();
+			p_engine_container->symbol_engine_active_dealt_playing()->nplayersplaying();
 	}
   double maxbet = 0.0;
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
@@ -203,12 +201,12 @@ void CSymbolEngineHistory::CalculateHistory() {
 		// This may lead to ugly mis-scrapes, that's why he have to check
 		// if the user is still playing.
 		// (http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=10929)		
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->playersplayingbits(), i)) 	{
+		if (IsBitSet(p_engine_container->symbol_engine_active_dealt_playing()->playersplayingbits(), i)) 	{
 			double current_players_bet = p_table_state->Player(i)->_bet.GetValue();
 			maxbet = MAX(maxbet, current_players_bet);
 		}
 	}
-  double bet = MAX(p_symbol_engine_tablelimits->bet(), p_symbol_engine_tablelimits->bblind());
+  double bet = MAX(p_engine_container->symbol_engine_tablelimits()->bet(), p_engine_container->symbol_engine_tablelimits()->bblind());
 	if (bet > 0) {
 		maxbet /= bet;
 		_nbetsround[BETROUND] = MAX(_nbetsround[BETROUND], maxbet);	
@@ -299,8 +297,8 @@ bool CSymbolEngineHistory::DidAct() {
   // Extra pre-caution for preflop, in case of failed hand-reset,
   // including another extra fail-safe for unknown big-blind
   if ((BETROUND == kBetroundPreflop)
-      && p_symbol_engine_userchair->userchair_confirmed()
-      && ((p_table_state->User()->_bet.GetValue() < p_symbol_engine_tablelimits->bblind())
+      && p_engine_container->symbol_engine_userchair()->userchair_confirmed()
+      && ((p_table_state->User()->_bet.GetValue() < p_engine_container->symbol_engine_tablelimits()->bblind())
         || (p_table_state->User()->_bet.GetValue() == 0))) {
     return false;
   }
@@ -309,7 +307,7 @@ bool CSymbolEngineHistory::DidAct() {
 }
 
 bool CSymbolEngineHistory::DidAct(int betround) {
-	if (!p_symbol_engine_userchair->userchair_confirmed()) {
+	if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
 		return false;
 	}
 	// Considering fold or allin too. It's unneccessary for bot logic, but usefull for lazy scraping.

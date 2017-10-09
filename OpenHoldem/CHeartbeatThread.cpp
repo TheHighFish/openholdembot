@@ -168,8 +168,8 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	// Autoplayer
 	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
 		Bool2CString(p_autoplayer->autoplayer_engaged()));
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] user_chair_confirmed(): %s\n", 
-		Bool2CString(p_symbol_engine_userchair->userchair_confirmed()));
+	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] p_engine_container->symbol_engine_userchair()->userchair()_confirmed(): %s\n", 
+		Bool2CString(p_engine_container->symbol_engine_userchair()->userchair_confirmed()));
 	// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 	if (p_autoplayer->autoplayer_engaged()) {
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");

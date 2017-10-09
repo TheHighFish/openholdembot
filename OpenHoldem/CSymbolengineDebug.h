@@ -43,6 +43,4 @@ class CSymbolEngineDebug: public CVirtualSymbolEngine {
   double _debug_values[kNumberOfDebugValues];
 };
 
-extern CSymbolEngineDebug *p_symbol_engine_debug;
-
 #endif INC_CSYMBOLENGINEDEBUG_H

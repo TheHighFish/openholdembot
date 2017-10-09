@@ -14,12 +14,11 @@
 #include "stdafx.h"
 #include "CSymbolEngineDealerchair.h"
 
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
-
-CSymbolEngineDealerchair *p_symbol_engine_dealerchair = NULL;
 
 CSymbolEngineDealerchair::CSymbolEngineDealerchair()
 {
@@ -72,12 +71,12 @@ bool CSymbolEngineDealerchair::EvaluateSymbol(const CString name, double *result
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (name == "dealerchair")	
 	{
-		*result = p_symbol_engine_dealerchair->dealerchair();
+		*result = p_engine_container->symbol_engine_dealerchair()->dealerchair();
 		return true;
 	}
   if (name == "buttonchair")
   {
-    *result = p_symbol_engine_dealerchair->dealerchair();
+    *result = p_engine_container->symbol_engine_dealerchair()->dealerchair();
     return true;
   }
 	return false;

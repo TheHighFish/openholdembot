@@ -46,6 +46,4 @@ class CSymbolEngineMultiplexer: public CVirtualSymbolEngine {
   CString MultiplexedSymbolName(CString name);
 };
 
-extern CSymbolEngineMultiplexer *p_symbol_engine_multiplexer;
-
 #endif INC_CSYMBOLENGINEMULTIPLEXER_H

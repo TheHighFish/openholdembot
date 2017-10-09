@@ -19,6 +19,7 @@
 #include <comdef.h>
 #include "CAutoConnector.h"
 #include "CDllExtension.h"
+#include "CEngineContainer.h"
 #include "CLevDistance.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerLookUp.h"
@@ -386,7 +387,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	clock_t		updStart, updEnd;
 	int			  duration;
 
-	int sym_elapsed = p_symbol_engine_time->elapsed();
+	int sym_elapsed = p_engine_container->symbol_engine_time()->elapsed();
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	int siteid = pt_lookup.GetSiteId();
@@ -403,8 +404,8 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 
 	// get query string for the requested statistic
 	CString query = PT_DLL_GetQuery(stat,
-		p_symbol_engine_isomaha->isomaha(),
-		p_symbol_engine_istournament->istournament(),
+		p_engine_container->symbol_engine_isomaha()->isomaha(),
+		p_engine_container->symbol_engine_istournament()->istournament(),
 		siteid, _player_data[m_chr].pt_name);
 
 	// Do the query against the PT database
@@ -610,8 +611,8 @@ int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
 
 bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 {
-	int userchair = p_symbol_engine_userchair->userchair();
-	bool confirmed = p_symbol_engine_userchair->userchair_confirmed();
+	int userchair = p_engine_container->symbol_engine_userchair()->userchair();
+	bool confirmed = p_engine_container->symbol_engine_userchair()->userchair_confirmed();
 	if (userchair == chair && confirmed)
 	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair for chair [%d] had been skipped. Reason: [User sits in this chair]\n", chair);
@@ -742,7 +743,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam) {
 		} else if (PQstatus(pParent->_pgconn) != CONNECTION_OK) {
       pParent->Reconnect();
     }
-    double players = p_symbol_engine_active_dealt_playing->nplayersseated();
+    double players = p_engine_container->symbol_engine_active_dealt_playing()->nplayersseated();
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", (int)players);
 		if (players < 2) {
       // It looks like empty tables can cause long sleeping if we continue.
@@ -757,7 +758,7 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam) {
 		// Avoiding division by zero and setting sleep time
 		AdaptValueToMinMaxRange(&players, 1, kMaxNumberOfPlayers);
 		int sleep_time;
-		if (p_symbol_engine_isrush->isrush()) {
+		if (p_engine_container->symbol_engine_isrush()->isrush()) {
 			sleep_time = (int) ((double)(5 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
     }	else {
 			sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));

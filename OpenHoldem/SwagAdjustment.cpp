@@ -16,6 +16,7 @@
 
 #include <assert.h>
 #include "BetpotCalculations.h"
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -30,13 +31,13 @@
 #include "CSymbolEngineCasino.h"
 
 double MinimumBetsizeDueToPreviousRaise() {
-	double minimums_swag_amount = (p_symbol_engine_chip_amounts->call() 
-		+ p_symbol_engine_chip_amounts->sraiprev());
+	double minimums_swag_amount = (p_engine_container->symbol_engine_chip_amounts()->call() 
+		+ p_engine_container->symbol_engine_chip_amounts()->sraiprev());
 	// If there are no bets and no raises the min-bet is 1 big-blind
 	if (minimums_swag_amount <= 0)	{
-		if (p_symbol_engine_tablelimits->bblind() > 0) 	{
+		if (p_engine_container->symbol_engine_tablelimits()->bblind() > 0) 	{
 			write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MinimumBetsizeDueToPreviousRaise: set to 1 big-blind\n");
-			minimums_swag_amount = p_symbol_engine_tablelimits->bblind();
+			minimums_swag_amount = p_engine_container->symbol_engine_tablelimits()->bblind();
 		}	else {
 			write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MinimumBetsizeDueToPreviousRaise: SERIOUS TABLEMAP-PROBLEM; no bets; big-blind unknown; setting it to 0.02\n");
 			// Setting it to the absolute minimum
@@ -49,8 +50,8 @@ double MinimumBetsizeDueToPreviousRaise() {
 }
 
 double MaximumPossibleBetsizeBecauseOfBalance() {
-	assert(p_symbol_engine_userchair != NULL);
-  assert(p_symbol_engine_userchair->userchair_confirmed());
+	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
+  assert(p_engine_container->symbol_engine_userchair()->userchair_confirmed());
 	double maximum_betsize = p_table_state->User()->_bet.GetValue()
 		+ p_table_state->User()->_balance.GetValue();
 	if (maximum_betsize <= 0) {
@@ -64,7 +65,7 @@ double MaximumPossibleBetsizeBecauseOfBalance() {
 }
 
 double SwagAmountAjustedToCasino(double amount_to_raise_to) {
-	int userchair = p_symbol_engine_userchair->userchair();
+	int userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	assert(amount_to_raise_to >= 0);
 	double swag_amount_ajusted_to_casino = amount_to_raise_to;
 	// WinHoldems f$srai should return, what we want to add to (call + currentbet)
@@ -82,7 +83,7 @@ double SwagAmountAjustedToCasino(double amount_to_raise_to) {
 		// Old adjustment: 0, currentbet and call are too much.
 		swag_amount_ajusted_to_casino = amount_to_raise_to 
 			- p_table_state->User()->_bet.GetValue()
-			- p_symbol_engine_chip_amounts->call();
+			- p_engine_container->symbol_engine_chip_amounts()->call();
 	}
 	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] SwagAmountAjustedToCasino %.2f\n",
 		swag_amount_ajusted_to_casino);
@@ -99,7 +100,7 @@ bool BetSizeIsAllin(double amount_to_raise_to_in_dollars_and_cents) {
 }
 
 double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cents) {
-	if (!p_symbol_engine_istournament->istournament()) {
+	if (!p_engine_container->symbol_engine_istournament()->istournament()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[BetsizeAdjustment] Game-type is cash-game. No rounding necessary.\n");
 		return amount_to_raise_to_in_dollars_and_cents;
@@ -120,18 +121,18 @@ double RoundedBetsizeForTournaments(double amount_to_raise_to_in_dollars_and_cen
 
 double MaximumBetsizeForGameType() {
 	double maximum_betsize = 0;
-	if (p_symbol_engine_gametype->ispl())	{
+	if (p_engine_container->symbol_engine_gametype()->ispl())	{
 		write_log(preferences.debug_betsize_adjustment(),
 			"[BetsizeAdjustment] Game-type is Pot Limit.\n");
 		maximum_betsize = BetsizeForBetpot(k_autoplayer_function_betpot_1_1);
     write_log(preferences.debug_betsize_adjustment(), 
       "[BetsizeAdjustment] MaximumBetsizeForPotLimit: %.2f\n", maximum_betsize);
-	}	else if (p_symbol_engine_gametype->isfl()) {
+	}	else if (p_engine_container->symbol_engine_gametype()->isfl()) {
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[BetsizeAdjustment] Game-type is Fixed Limit. No betsizing supported.\n");
 		maximum_betsize = 0;
 	}	else {
-		int userchair = p_symbol_engine_userchair->userchair();
+		int userchair = p_engine_container->symbol_engine_userchair()->userchair();
 		write_log(preferences.debug_betsize_adjustment(), 
 			"[BetsizeAdjustment] Game-type is No Limit. Betsize restricted only by users balance.\n");
 		maximum_betsize = MaximumPossibleBetsizeBecauseOfBalance();
@@ -143,7 +144,7 @@ double MaximumBetsizeForGameType() {
 }
 
 double RoundToBeautifulBetsize(const double amount_to_raise_to) {
-  assert(amount_to_raise_to >= p_symbol_engine_tablelimits->bblind());
+  assert(amount_to_raise_to >= p_engine_container->symbol_engine_tablelimits()->bblind());
   // Don't round allin betsizes.
   if (BetSizeIsAllin(amount_to_raise_to) ) {
     write_log(preferences.debug_betsize_adjustment(),
@@ -153,11 +154,11 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
   double result;
   // Don't round very small betsizes.
   // There might be aa reason for it in very small pots.
-  if (amount_to_raise_to < (2.6 * p_symbol_engine_tablelimits->bblind())) {
+  if (amount_to_raise_to < (2.6 * p_engine_container->symbol_engine_tablelimits()->bblind())) {
     write_log(preferences.debug_betsize_adjustment(),
       "[BetsizeAdjustment] RoundToBeautifulBetsize: no rounding to multiples of SB/BB, because too small betsize\n");
     result = amount_to_raise_to;
-  } else if (amount_to_raise_to == Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind())) {
+  } else if (amount_to_raise_to == Rounding(amount_to_raise_to, p_engine_container->symbol_engine_tablelimits()->bblind())) {
     // Don't round betsizes that are alreadz a multiple of big-blind.
     // This case deserves specdial attention, because big-blind
     // might be not a multiple of smallblind, e.g $2/$5
@@ -167,16 +168,16 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
       "[BetsizeAdjustment] RoundToBeautifulBetsize: no rounding, because betsize is a multiple of big-blind\n");
     // But don~t return anzthing here.
     // Continue with rounding gor large numbers (later)
-  } else if (amount_to_raise_to < (10 * p_symbol_engine_tablelimits->sblind())) {
+  } else if (amount_to_raise_to < (10 * p_engine_container->symbol_engine_tablelimits()->sblind())) {
     // Small numbers
     // Round to multiples of SB
-    result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->sblind());
+    result = Rounding(amount_to_raise_to, p_engine_container->symbol_engine_tablelimits()->sblind());
     write_log(preferences.debug_betsize_adjustment(),
       "[BetsizeAdjustment] Rounding to multiples of SB %.2f\n", result);
   } else {
     // "Large" numbers
     // Round to multiples of BB
-    result = Rounding(amount_to_raise_to, p_symbol_engine_tablelimits->bblind());
+    result = Rounding(amount_to_raise_to, p_engine_container->symbol_engine_tablelimits()->bblind());
     write_log(preferences.debug_betsize_adjustment(),
       "[BetsizeAdjustment] Rounding to multiples of BB %.2f\n", result);
   }
@@ -214,7 +215,7 @@ double RoundToBeautifulBetsize(const double amount_to_raise_to) {
 }
 
 double MaximumBetsizeDueToMaxOppStack() {
-	double maximum = p_symbol_engine_chip_amounts->call() + p_table_state->User()->_bet.GetValue() + p_symbol_engine_chip_amounts->MaxActiveOpponentStack();
+	double maximum = p_engine_container->symbol_engine_chip_amounts()->call() + p_table_state->User()->_bet.GetValue() + p_engine_container->symbol_engine_chip_amounts()->MaxActiveOpponentStack();
 	write_log(preferences.debug_betsize_adjustment(), "[BetsizeAdjustment] MaximumBetsizeDueToMaxOppStack: %.2f\n", maximum);
 	assert(maximum > 0);
 	return maximum;
@@ -227,7 +228,7 @@ double AdjustedBetsize(double amount_to_raise_to) {
   // Rounding to beautiful numbers but only if enabled
   amount_to_raise_to = RoundToBeautifulBetsize(amount_to_raise_to);
   double minimum;
-  if (p_symbol_engine_casino->ConnectedToDDPoker()) {
+  if (p_engine_container->symbol_engine_casino()->ConnectedToDDPoker()) {
     write_log(preferences.debug_betsize_adjustment(),
       "[BetsizeAdjustment] Special adjustment for DDPoker needed.\n");
 	  minimum = min(MinimumBetsizeDueToPreviousRaise(), MaximumBetsizeDueToMaxOppStack() );
@@ -241,7 +242,7 @@ double AdjustedBetsize(double amount_to_raise_to) {
   AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, RoundedBetsizeForTournaments(amount_to_raise_to));
   // Special handling for DDPoker
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=19185&hilit=ddpoker
-  if(p_symbol_engine_casino->ConnectedToDDPoker()){
+  if(p_engine_container->symbol_engine_casino()->ConnectedToDDPoker()){
     //!!!????? Duplicate to ZeeZooLaas code above?
 		AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeDueToMaxOppStack());
 	}
