@@ -247,7 +247,7 @@ void CEngineContainer::CreateSymbolEngines() {
   // Can be initialized / called after OpenPPL,
   // as OpenPPL does not depend on the DLL
   // but the DLL might use OpenPPL.
-  p_symbol_engine_user_DLL = new CSymbolEngineUserDLLL;
+  p_symbol_engine_user_DLL = new CSymbolEngineUserDLL;
   AddSymbolEngine(p_symbol_engine_user_DLL);
   // Some OH-debug-support for the debug-tab
   // Does not depend on anything else,

@@ -56,6 +56,7 @@ class CSymbolEngineReplayFrameController;
 class CSymbolEngineTableStats;
 class CSymbolEngineTime;
 class CSymbolEngineUserchair;
+class CSymbolEngineUserDLL;
 class CSymbolEngineVariousDataLookup;
 class CSymbolEngineVersus;
 class CSymbolEngineICM;
@@ -176,6 +177,8 @@ public:
     { return p_symbol_engine_time; }
   CSymbolEngineUserchair *symbol_engine_userchair()
     { return p_symbol_engine_userchair; }
+  CSymbolEngineUserDLL *symbol_engine_user_DLL() {
+    return p_symbol_engine_user_DLL; }
   CSymbolEngineVariousDataLookup *symbol_engine_various_data_lookup()
     { return p_symbol_engine_various_data_lookup; }
   CSymbolEngineVersus *symbol_engine_versus()
@@ -223,6 +226,7 @@ private:
   CSymbolEngineTableStats *p_symbol_engine_table_stats;
   CSymbolEngineTime *p_symbol_engine_time;
   CSymbolEngineUserchair *p_symbol_engine_userchair;
+  CSymbolEngineUserDLL *p_symbol_engine_user_DLL;
   CSymbolEngineVariousDataLookup *p_symbol_engine_various_data_lookup;
   CSymbolEngineVersus *p_symbol_engine_versus;
   CSymbolEngineICM *p_symbol_engine_icm;
