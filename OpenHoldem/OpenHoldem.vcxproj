@@ -254,6 +254,7 @@
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
     <ClCompile Include="CSymbolEngineRaisers.cpp" />
     <ClCompile Include="CSymbolengineTableStats.cpp" />
+    <ClCompile Include="CSymbolengineUserDLL.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
     <ClCompile Include="CTableState.cpp" />
     <ClCompile Include="CTableTitle.cpp" />
@@ -542,6 +543,7 @@
     <ClInclude Include="CSymbolEnginePokerAction.h" />
     <ClInclude Include="CSymbolEngineRaisers.h" />
     <ClInclude Include="CSymbolengineTableStats.h" />
+    <ClInclude Include="CSymbolengineUserDLL.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
     <ClInclude Include="CTableState.h" />
     <ClInclude Include="CTableTitle.h" />

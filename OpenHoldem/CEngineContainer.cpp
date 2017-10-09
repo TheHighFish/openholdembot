@@ -69,6 +69,7 @@
 #include "CSymbolEngineTableStats.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEngineUserDLL.h"
 #include "CSymbolEngineVariousDataLookup.h"
 #include "CSymbolEngineVersus.h"
 #include "UnknownSymbols.h"
@@ -95,7 +96,7 @@ void CEngineContainer::CreateSpecialSymbolEngines() {
 }
 
 void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) {
-  assert(_number_of_symbol_engines_loaded < k_max_number_of_symbol_engines);
+  assert(_number_f_symbol_engines_loaded < k_max_number_of_symbol_engines);
   _symbol_engines[_number_of_symbol_engines_loaded] = new_symbol_engine;
   ++_number_of_symbol_engines_loaded;
 }
@@ -242,6 +243,12 @@ void CEngineContainer::CreateSymbolEngines() {
   // and therefore has to be the very last openPPL-symbol-engine
   p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
   AddSymbolEngine(p_symbol_engine_open_ppl);
+  // DLL-interface
+  // Can be initialized / called after OpenPPL,
+  // as OpenPPL does not depend on the DLL
+  // but the DLL might use OpenPPL.
+  p_symbol_engine_user_DLL = new CSymbolEngineUserDLLL;
+  AddSymbolEngine(p_symbol_engine_user_DLL);
   // Some OH-debug-support for the debug-tab
   // Does not depend on anything else,
   // does get used very rarely only by developers.

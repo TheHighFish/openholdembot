@@ -801,6 +801,9 @@
     <ClCompile Include="CMemoryPool.cpp">
       <Filter>Source Files\Various Function Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="CSymbolengineUserDLL.cpp">
+      <Filter>Source Files\Symbols\Symbol_Engines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1701,6 +1704,9 @@
     </ClInclude>
     <ClInclude Include="CMemoryPool.h">
       <Filter>Header Files\Various Function Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="CSymbolengineUserDLL.h">
+      <Filter>Header Files\Symbols\Symbol_Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
