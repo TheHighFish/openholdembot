@@ -16,6 +16,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineOpenPPL.h"
 
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -42,8 +43,8 @@ CSymbolEngineOpenPPL::CSymbolEngineOpenPPL() {
   // that use nearly all other symbol-engines.
   // For convenience we assure only 
   // that the last other engines got initialiyed
-	assert(p_symbol_engine_various_data_lookup != NULL);
-  assert(p_engine_container->symbol_engine_openppl_user_variables()-> != NULL);
+  assert(p_engine_container->symbol_engine_various_data_lookup() != NULL);
+  assert(p_engine_container->symbol_engine_openppl_user_variables() != NULL);
 }
 
 CSymbolEngineOpenPPL::~CSymbolEngineOpenPPL() {

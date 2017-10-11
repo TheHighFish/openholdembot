@@ -62,13 +62,13 @@ CSymbolEngineRaisers::CSymbolEngineRaisers() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_autoplayer != NULL);
-	assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
-	assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
-	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
-	// Also using p_symbol_engine_history one time,
+	assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_autoplayer() != NULL);
+	assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+	assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+	assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+	assert(p_engine_container->symbol_engine_userchair() != NULL);
+	// Also using p_engine_container->symbol_engine_history() one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
   //
@@ -220,7 +220,7 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 	int first_possible_raiser = FirstPossibleActor();
 	int last_possible_raiser  = LastPossibleActor();
   assert(last_possible_raiser > first_possible_raiser);
-  assert(p_symbol_engine_debug != NULL);
+  assert(p_engine_container->symbol_engine_debug() != NULL);
 	double highest_bet = MinimumStartingBetCurrentOrbit(true);
   write_log(preferences.debug_symbolengine(), "[CSymbolEngineRaisers] Searching for raisers from chair %i to %i with a bet higher than %.2f\n",
 		first_possible_raiser, last_possible_raiser, highest_bet); 

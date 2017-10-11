@@ -35,13 +35,13 @@ CSymbolEngineChecksBetsFolds::CSymbolEngineChecksBetsFolds() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_autoplayer != NULL);
-	assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
-	assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
-	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
-	// Also using p_symbol_engine_history one time,
+	assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_autoplayer() != NULL);
+	assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+	assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+	assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+	assert(p_engine_container->symbol_engine_userchair() != NULL);
+	// Also using p_engine_container->symbol_engine_history() one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
 }

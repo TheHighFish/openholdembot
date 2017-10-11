@@ -1,3 +1,4 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -11,12 +12,8 @@
 //
 //******************************************************************************
 
-#ifndef INC_CENGINECONTAINER_H
-#define INC_CENGINECONTAINER_H
-
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineTableLimits;
 class CSymbolEngineActiveDealtPlaying;
 class CSymbolEngineAutoplayer;
 class CSymbolEngineBlinds;
@@ -53,6 +50,7 @@ class CSymbolEnginePrwin;
 class CSymbolEngineRaisers;
 class CSymbolEngineRandom;
 class CSymbolEngineReplayFrameController;
+class CSymbolEngineTableLimits;
 class CSymbolEngineTableStats;
 class CSymbolEngineTime;
 class CSymbolEngineUserchair;
@@ -97,18 +95,16 @@ class CEngineContainer {
   bool _reset_on_connection_executed;
   CString _list_of_symbols;
 public:
-  CSymbolEngineTableLimits *symbol_engine_tablelimits()
-    { return p_symbol_engine_tablelimits; }
   CSymbolEngineActiveDealtPlaying *symbol_engine_active_dealt_playing()
-    { return p_symbol_engine_active_dealt_playing; }
+    { return symbol_engine_active_dealt_playing(); }
   CSymbolEngineAutoplayer *symbol_engine_autoplayer()
-    { return p_symbol_engine_autoplayer; }
+    { return symbol_engine_autoplayer(); }
   CSymbolEngineBlinds *symbol_engine_blinds()
-    { return p_symbol_engine_blinds; }
+    { return symbol_engine_blinds(); }
   CSymbolEngineCallers *symbol_engine_callers()
     { return p_symbol_engine_callers; }
   CSymbolEngineCards *symbol_engine_cards()
-    { return p_symbol_engine_cards; }
+    { return symbol_engine_cards(); }
   CSymbolEngineCasino *symbol_engine_casino()
     { return p_symbol_engine_casino; }
   CSymbolEngineChairs *symbol_engine_chairs()
@@ -132,15 +128,15 @@ public:
   CSymbolEngineHandrank *symbol_engine_handrank()
     { return p_symbol_engine_handrank; }
   CSymbolEngineHistory *symbol_engine_history()
-    { return p_symbol_engine_history; }
+    { return symbol_engine_history(); }
   CSymbolEngineIniFunctions *symbol_engine_ini_functions()
     { return p_symbol_engine_ini_functions; }
   CSymbolEngineIsOmaha *symbol_engine_isomaha()
-    { return p_symbol_engine_isomaha; }
+    { return symbol_engine_isomaha(); }
   CSymbolEngineIsRush *symbol_engine_isrush()
     { return p_symbol_engine_isrush; }
   CSymbolEngineIsTournament *symbol_engine_istournament()
-    { return p_symbol_engine_istournament; }
+    { return symbol_engine_istournament(); }
   CSymbolEngineMemorySymbols *symbol_engine_memory_symbols()
     { return p_symbol_engine_memory_symbols; }
   CSymbolEngineMTTInfo *symbol_engine_mtt_info()
@@ -158,19 +154,21 @@ public:
   CSymbolEnginePokerAction *symbol_engine_poker_action()
     { return p_symbol_engine_poker_action; }
   CSymbolEnginePokerTracker *symbol_engine_pokertracker()
-    { return p_symbol_engine_pokertracker; }
+    { return symbol_engine_pokertracker(); }
   CSymbolEnginePokerval *symbol_engine_pokerval()
-    { return p_symbol_engine_pokerval; }
+    { return symbol_engine_pokerval(); }
   CSymbolEnginePositions *symbol_engine_positions()
     { return p_symbol_engine_positions; }
   CSymbolEnginePrwin *symbol_engine_prwin()
-    { return p_symbol_engine_prwin; }
+    { return symbol_engine_prwin(); }
   CSymbolEngineRaisers *symbol_engine_raisers()
     { return p_symbol_engine_raisers; }
   CSymbolEngineRandom *symbol_engine_random()
-    { return p_symbol_engine_random; }
+    { return symbol_engine_random(); }
   CSymbolEngineReplayFrameController *symbol_engine_replayframe_controller()
     { return p_symbol_engine_replayframe_controller; }
+  CSymbolEngineTableLimits *symbol_engine_tablelimits() {
+    return p_symbol_engine_tablelimits; }
   CSymbolEngineTableStats *symbol_engine_table_stats()
     { return p_symbol_engine_table_stats; }
   CSymbolEngineTime *symbol_engine_time()
@@ -186,10 +184,9 @@ public:
   CSymbolEngineICM *symbol_engine_icm()
     { return p_symbol_engine_icm; }
 private:
-  CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
   CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing;
   CSymbolEngineAutoplayer *p_symbol_engine_autoplayer;
-  CSymbolEngineBlinds *p_symbol_engine_blinds; //!!!????
+  CSymbolEngineBlinds *p_symbol_engine_blinds;
   CSymbolEngineCallers *p_symbol_engine_callers;
   CSymbolEngineCards *p_symbol_engine_cards;
   CSymbolEngineCasino *p_symbol_engine_casino;
@@ -223,6 +220,7 @@ private:
   CSymbolEngineRaisers *p_symbol_engine_raisers;
   CSymbolEngineRandom *p_symbol_engine_random;
   CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller;
+  CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
   CSymbolEngineTableStats *p_symbol_engine_table_stats;
   CSymbolEngineTime *p_symbol_engine_time;
   CSymbolEngineUserchair *p_symbol_engine_userchair;
@@ -233,25 +231,3 @@ private:
 };
 
 extern CEngineContainer *p_engine_container;
-
-#endif INC_CENGINECONTAINER_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

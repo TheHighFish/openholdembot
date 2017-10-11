@@ -96,7 +96,7 @@ void CEngineContainer::CreateSpecialSymbolEngines() {
 }
 
 void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) {
-  assert(_number_f_symbol_engines_loaded < k_max_number_of_symbol_engines);
+  assert(_number_of_symbol_engines_loaded < k_max_number_of_symbol_engines);
   _symbol_engines[_number_of_symbol_engines_loaded] = new_symbol_engine;
   ++_number_of_symbol_engines_loaded;
 }
@@ -146,7 +146,7 @@ void CEngineContainer::CreateSymbolEngines() {
   p_symbol_engine_random = new CSymbolEngineRandom();
   AddSymbolEngine(p_symbol_engine_random);
   // CSymbolEngineVersus
-  p_symbol_engine_versus = new CSymbolEngineVersus;
+  p_symbol_engine_versus = new CSymbolEngineVersus();
   AddSymbolEngine(p_symbol_engine_versus);
   // CSymbolEngineActiveDealtPlaying
   p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
@@ -315,7 +315,7 @@ void CEngineContainer::EvaluateAll() {
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
-	p_engine_container->symbol_engine_tablelimits()->CalcTableLimits();
+	p_symbol_engine_tablelimits->CalcTableLimits();
 	// UpdateOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
 	// We only need to care about:

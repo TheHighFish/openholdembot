@@ -98,7 +98,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   // Various symbols below
   // without any optimized lookup.
   // Betting rounds
-  else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
+  if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
   else if (name == "currentround") *result = p_betround_calculator->betround();
   else if (name == "previousround") *result = p_betround_calculator->PreviousRound();
   // GENERAL
