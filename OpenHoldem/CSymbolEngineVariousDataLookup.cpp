@@ -51,7 +51,7 @@ CSymbolEngineVariousDataLookup::CSymbolEngineVariousDataLookup() {
   // The values of some symbol-engines depend on other engines.
   // As the engines get later called in the order of initialization
   // we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_userchair != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
   // Other objects that we depend on
   assert(p_autoconnector != NULL);
   assert(p_betround_calculator != NULL);
@@ -95,10 +95,6 @@ void CSymbolEngineVariousDataLookup::UpdateOnHeartbeat() {
 
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-  // DLL
-  if (memcmp(name, "dll$", 4) == 0) {
-    *result = ProcessQuery(name);
-  }
   // Various symbols below
   // without any optimized lookup.
   // Betting rounds
