@@ -303,6 +303,10 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
         s->SetAt(i, kCharToBeRemoved);
         // and remove it at the end of the function
         break;
+      case 0xFFFFFFF1:
+	    // Portuguese "n" with accent
+        s->SetAt(i, 'n');
+		break;
       }
     }
   }
