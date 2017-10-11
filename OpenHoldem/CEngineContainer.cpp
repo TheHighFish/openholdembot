@@ -78,9 +78,6 @@ CEngineContainer *p_engine_container = NULL;
 
 CEngineContainer::CEngineContainer() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
-  CreateSymbolEngines();
-  InitOnStartup();
-  _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
 
@@ -131,7 +128,7 @@ void CEngineContainer::CreateSymbolEngines() {
   p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
   AddSymbolEngine(p_symbol_engine_colourcodes);
   // CSymbolEngineTableLimits
-  p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
+  p_symbol_engine_tablelimits = new CSymbolEngineTableLimits();
   AddSymbolEngine(p_symbol_engine_tablelimits);
   // CSymbolEngineTime
   p_symbol_engine_time = new CSymbolEngineTime();
@@ -273,6 +270,8 @@ void CEngineContainer::CreateSymbolEngines() {
   // CHandHistoryWriter
   p_handhistory_writer = new CHandHistoryWriter;
   AddSymbolEngine(p_handhistory_writer);
+  InitOnStartup();
+  _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 

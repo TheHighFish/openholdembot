@@ -158,6 +158,7 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CEngineContainer\n");
   assert(!p_engine_container);
   p_engine_container = new CEngineContainer;
+  p_engine_container->CreateSymbolEngines();
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CRebuyManagement\n");
   assert(!p_rebuymanagement); 
   p_rebuymanagement = new CRebuyManagement;

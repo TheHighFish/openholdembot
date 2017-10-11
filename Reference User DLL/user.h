@@ -1,3 +1,4 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -15,9 +16,6 @@
 // Functions and data-types must exactly match.
 //
 //******************************************************************************
-
-#ifndef _INC_USER_H
-#define _INC_USER_H
 
 // Import and export directives
 // for use by this DLL and by OpenHoldem
@@ -39,6 +37,7 @@ DLL_IMPLEMENTS void __stdcall DLLUpdateOnNewRound();
 DLL_IMPLEMENTS void __stdcall DLLUpdateOnMyTurn();
 DLL_IMPLEMENTS void __stdcall DLLUpdateOnHeartbeat();
 
+/*!!!!!
 // Functions implemented and exported by OpenHoldem,
 // imported by the DLL
 EXE_IMPLEMENTS double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression);
@@ -48,5 +47,4 @@ EXE_IMPLEMENTS void   __stdcall ParseHandList(const char* name_of_list, const ch
 EXE_IMPLEMENTS char*  __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh);
 EXE_IMPLEMENTS void   __stdcall SendChatMessage(const char *message);
 EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
-
-#endif // _INC_USER_H
+*/

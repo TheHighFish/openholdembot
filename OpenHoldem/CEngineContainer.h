@@ -75,12 +75,13 @@ class CEngineContainer {
   void EvaluateAll();
   bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided()       { BuildListOfSymbolsProvided(); return _list_of_symbols; }
+ public:
+  void CreateSymbolEngines();
  private:
   void BuildListOfSymbolsProvided();
  private:
   void CreateSpecialSymbolEngines();
   void AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine);
-  void CreateSymbolEngines();
   void DestroyAllSymbolEngines();
   void DestroyAllSpecialSymbolEngines();
  private:
@@ -96,15 +97,15 @@ class CEngineContainer {
   CString _list_of_symbols;
 public:
   CSymbolEngineActiveDealtPlaying *symbol_engine_active_dealt_playing()
-    { return symbol_engine_active_dealt_playing(); }
+    { return p_symbol_engine_active_dealt_playing; }
   CSymbolEngineAutoplayer *symbol_engine_autoplayer()
-    { return symbol_engine_autoplayer(); }
+    { return p_symbol_engine_autoplayer; }
   CSymbolEngineBlinds *symbol_engine_blinds()
-    { return symbol_engine_blinds(); }
+    { return p_symbol_engine_blinds; }
   CSymbolEngineCallers *symbol_engine_callers()
     { return p_symbol_engine_callers; }
   CSymbolEngineCards *symbol_engine_cards()
-    { return symbol_engine_cards(); }
+    { return p_symbol_engine_cards; }
   CSymbolEngineCasino *symbol_engine_casino()
     { return p_symbol_engine_casino; }
   CSymbolEngineChairs *symbol_engine_chairs()
@@ -128,15 +129,15 @@ public:
   CSymbolEngineHandrank *symbol_engine_handrank()
     { return p_symbol_engine_handrank; }
   CSymbolEngineHistory *symbol_engine_history()
-    { return symbol_engine_history(); }
+    { return p_symbol_engine_history; }
   CSymbolEngineIniFunctions *symbol_engine_ini_functions()
     { return p_symbol_engine_ini_functions; }
   CSymbolEngineIsOmaha *symbol_engine_isomaha()
-    { return symbol_engine_isomaha(); }
+    { return p_symbol_engine_isomaha; }
   CSymbolEngineIsRush *symbol_engine_isrush()
     { return p_symbol_engine_isrush; }
   CSymbolEngineIsTournament *symbol_engine_istournament()
-    { return symbol_engine_istournament(); }
+    { return p_symbol_engine_istournament; }
   CSymbolEngineMemorySymbols *symbol_engine_memory_symbols()
     { return p_symbol_engine_memory_symbols; }
   CSymbolEngineMTTInfo *symbol_engine_mtt_info()
@@ -154,17 +155,17 @@ public:
   CSymbolEnginePokerAction *symbol_engine_poker_action()
     { return p_symbol_engine_poker_action; }
   CSymbolEnginePokerTracker *symbol_engine_pokertracker()
-    { return symbol_engine_pokertracker(); }
+    { return p_symbol_engine_pokertracker; }
   CSymbolEnginePokerval *symbol_engine_pokerval()
-    { return symbol_engine_pokerval(); }
+    { return p_symbol_engine_pokerval; }
   CSymbolEnginePositions *symbol_engine_positions()
     { return p_symbol_engine_positions; }
   CSymbolEnginePrwin *symbol_engine_prwin()
-    { return symbol_engine_prwin(); }
+    { return p_symbol_engine_prwin; }
   CSymbolEngineRaisers *symbol_engine_raisers()
     { return p_symbol_engine_raisers; }
   CSymbolEngineRandom *symbol_engine_random()
-    { return symbol_engine_random(); }
+    { return p_symbol_engine_random; }
   CSymbolEngineReplayFrameController *symbol_engine_replayframe_controller()
     { return p_symbol_engine_replayframe_controller; }
   CSymbolEngineTableLimits *symbol_engine_tablelimits() {
