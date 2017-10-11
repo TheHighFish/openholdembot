@@ -32,8 +32,12 @@
 // Functions implemented and exported by the DLL,
 // imported by OpenHoldem
 DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery);
-DLL_IMPLEMENTS void __stdcall DLLOnLoad();
-DLL_IMPLEMENTS void __stdcall DLLOnUnLoad();
+DLL_IMPLEMENTS void __stdcall DLLUpdateOnNewFormula();
+DLL_IMPLEMENTS void __stdcall DLLUpdateOnConnection();
+DLL_IMPLEMENTS void __stdcall DLLUpdateOnHandreset();
+DLL_IMPLEMENTS void __stdcall DLLUpdateOnNewRound();
+DLL_IMPLEMENTS void __stdcall DLLUpdateOnMyTurn();
+DLL_IMPLEMENTS void __stdcall DLLUpdateOnHeartbeat();
 
 // Functions implemented and exported by OpenHoldem,
 // imported by the DLL

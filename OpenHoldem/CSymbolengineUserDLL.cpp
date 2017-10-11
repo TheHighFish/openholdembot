@@ -13,6 +13,7 @@
 
 #include "stdafx.h"
 #include "CSymbolEngineUserDLL.h"
+#include "..\Reference User DLL\user.h"
 
 CSymbolEngineUserDLL *p_symbol_engine_formula_loading = NULL;
 
@@ -28,32 +29,37 @@ CSymbolEngineUserDLL::~CSymbolEngineUserDLL() {
 }
 
 void CSymbolEngineUserDLL::InitOnStartup() {
-	UpdateOnConnection();
+  DLLUpdateOnNewFormula();
 }
 
 void CSymbolEngineUserDLL::UpdateOnConnection() {
+  DLLUpdateOnConnection();
 }
 
 void CSymbolEngineUserDLL::UpdateOnHandreset() {
+  DLLUpdateOnHandreset();
 }
 
 void CSymbolEngineUserDLL::UpdateOnNewRound() {
+  DLLUpdateOnNewRound();
 }
 
 void CSymbolEngineUserDLL::UpdateOnMyTurn() {
+  DLLUpdateOnMyTurn();
 }
 
 void CSymbolEngineUserDLL::UpdateOnHeartbeat() {
+  DLLUpdateOnHeartbeat();
 }
 
 bool CSymbolEngineUserDLL::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "xxxxxxxxx", 9)==0 && strlen(name)==9)	{
-		*result = 0;
-		return true;
-	}
-	// Symbol of a different symbol-engine
-	return false;
+  if (memcmp(name, "dll$", 4) != 0) {
+    // Symbol of a different symbol-engine
+    return false;
+  }
+  *result = ProcessQuery(name);
+	return true;
 }
 
 CString CSymbolEngineUserDLL::SymbolsProvided() {
