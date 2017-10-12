@@ -177,8 +177,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
 
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
-  // e.g. "dll$, pl_ chair$, ....
-  CString list = "dll$ pl_ vs$ msgbox$ log$ "
+  // e.g. pl_ chair$, ....
+  CString list = "pl_ vs$ msgbox$ log$ "
     "betround currentround previousround "
     "fmax flagbits "
     "session version islobby ispopup"

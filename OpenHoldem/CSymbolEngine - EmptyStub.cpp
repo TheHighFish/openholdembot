@@ -46,7 +46,7 @@ void CSymbolEngineUserDLL::UpdateOnMyTurn() {
 void CSymbolEngineUserDLL::UpdateOnHeartbeat() {
 }
 
-bool CSymbolEngineUserDLL::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineUserDLL::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "xxxxxxxxx", 9)==0 && strlen(name)==9)	{
 		*result = 0;
