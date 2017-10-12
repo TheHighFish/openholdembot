@@ -37,6 +37,6 @@ DLL_IMPLEMENTS void __stdcall DLLUpdateOnNewRound();
 DLL_IMPLEMENTS void __stdcall DLLUpdateOnMyTurn();
 DLL_IMPLEMENTS void __stdcall DLLUpdateOnHeartbeat();
 
-// Please refer to the file OpenHoldemFunctions.
+// Please refer to the file OpenHoldemFunctions.h
 // for functios that get exported by OpenHoldem
 // and are available at the DLL-level.
