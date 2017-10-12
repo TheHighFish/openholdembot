@@ -119,8 +119,18 @@ void __stdcall WriteLog(char* format, ...) {
 //
 //******************************************************************************
 
-void* LookupOpenHoldemFunction(char* name) {
-	return nullptr;
+FARPROC WINAPI LookupOpenHoldemFunction(char* fubction_name) {
+  // No detailed error-handling here.
+  // This function should only fail for incompatible Openjoldem versions,  
+  // but then we return a null-pointer and show an error-message
+  // once this pointer gets used.
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
+  HMODULE openholdem_main_module = GetModuleHandle(NULL);
+  if (openholdem_main_module == nullptr) {
+    return nullptr;
+  }
+  // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
+  return GetProcAddress(openholdem_main_module, fubction_name);
 }
 
 void InitializeOpenHoldemFunctionInterface() {
