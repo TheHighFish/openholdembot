@@ -27,6 +27,7 @@
 //******************************************************************************
 
 #include "OpenHoldemFunctions.h"
+#include "Windows.h"
 
 //******************************************************************************
 //
@@ -133,5 +134,9 @@ void InitializeOpenHoldemFunctionInterface() {
 }
 
 void ErrorPointerNotInitialized() {
-  
+  MessageBox(0,
+    "OpenHoldem functions not yet initialized.\n"
+    "Can't use function XYZ.\n", //!!!!!
+    "Error",
+    MB_ICONERROR);
 }
