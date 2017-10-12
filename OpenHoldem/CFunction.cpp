@@ -17,6 +17,7 @@
 #include "CAutoplayer.h"
 #include "CAutoplayerTrace.h"
 #include "CFormulaParser.h"
+#include "CMemoryPool.h"
 #include "COHScriptObject.h"
 #include "CParseTreeNode.h"
 #include "CPreferences.h"
@@ -51,24 +52,24 @@ CFunction::CFunction(
 }
 
 CFunction::~CFunction() {
-  // Parse-tree-nodes may be NULL in case of an empty function
-  if (_parse_tree_node != NULL) {
-    delete _parse_tree_node;
-  }
+  // No longer deleting any parse-trees here,
+  // as parse-trees get handled by CMemoryPool
 }
 
 void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree) {
-  if (_parse_tree_node != NULL) {
-    delete _parse_tree_node;
-  }
+  // Don't worry about the old parse-tree here.
+  // It gets now handled by CMemoryPool.
+  // Explicit deletion is no longer possible
+  // as it didn't get allocated explicitly either.
 	_parse_tree_node = _new_parse_tree;
 }
 
 void CFunction::Parse() {
-  if ((_parse_tree_node == NULL) || IsFunction()) { 
+  if (NeedsToBeParsed()) { 
     write_log(preferences.debug_formula() || preferences.debug_parser(),
       "[CFunction] Parsing %s\n", _name);
     p_formula_parser->ParseFormula(this);
+    MarkAsParsed();
   } else {
     write_log(preferences.debug_formula() || preferences.debug_parser(),
       "[CFunction] No need to parse %s\n", _name);

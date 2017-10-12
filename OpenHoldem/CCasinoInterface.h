@@ -18,9 +18,10 @@
 #include "CAutoplayerButton.h"
 #include "CBetsizeInputBox.h"
 #include "CCasinoHotkey.h"
+#include "CSpaceOptimizedGlobalObject.h"
 #include "MagicNumbers.h"
 
-class CCasinoInterface {
+class CCasinoInterface: public CSpaceOptimizedGlobalObject {
   friend class CAllinSlider;
   friend class CAutoplayer;
   friend class CScraper;

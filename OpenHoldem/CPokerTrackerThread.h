@@ -16,6 +16,7 @@
 
 #include "libpq-fe.h"
 #include <map>
+#include "CSpaceOptimizedGlobalObject.h"
 #include "MagicNumbers.h"
 
 const int k_advanced_stat_update_every    =    5;
@@ -34,8 +35,7 @@ struct SPlayerData
 
 extern SPlayerData _player_data[kMaxNumberOfPlayers];
 
-
-class CPokerTrackerThread 
+class CPokerTrackerThread : public CSpaceOptimizedGlobalObject
 {
 	friend class CSymbolEnginePokerTracker;
 public:

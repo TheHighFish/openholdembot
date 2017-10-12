@@ -19,6 +19,7 @@
 #include "CEngineContainer.h"
 #include "CFunction.h"
 #include "CFunctionCollection.h"
+#include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeIdentifier.h"

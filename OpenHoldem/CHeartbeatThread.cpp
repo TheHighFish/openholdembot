@@ -96,17 +96,22 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
 			// Set event
       write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Ending heartbeat thread\n");
+      LogMemoryUsage("Hc");
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
     LogMemoryUsage("Begin of heartbeat thread cycle");
     assert(p_tablemap_loader != NULL);
+    LogMemoryUsage("H1");
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
+    LogMemoryUsage("H2");
     assert(p_autoconnector != NULL);
     write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_B\n");
     if (p_autoconnector->IsConnectedToGoneWindow()) {
+      LogMemoryUsage("H3");
       p_autoconnector->Disconnect("table disappeared");
     }
+    LogMemoryUsage("H4");
     if (!p_autoconnector->IsConnectedToAnything()) {
       // Not connected
       AutoConnect();
@@ -114,24 +119,32 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     // No "else" here
     // We want one fast scrape immediately after connection
     // without any heartbeat-sleeping.
+    LogMemoryUsage("H5");
     write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_C\n");
 		if (p_autoconnector->IsConnectedToExistingWindow()) {
       if (tablepoint_checker.TablepointsMismatchedTheLastNHeartbeats()) {
+        LogMemoryUsage("H6");
         p_autoconnector->Disconnect("table theme changed (tablepoints)");
       } else {
+        LogMemoryUsage("H7");
         ScrapeEvaluateAct();
       } 		
 		}
     assert(p_watchdog != NULL);
+    LogMemoryUsage("H8");
     p_watchdog->HandleCrashedAndFrozenProcesses();
     if (preferences.use_auto_starter()) {
+      LogMemoryUsage("H9");
       _openholdem_starter.StartNewInstanceIfNeeded();
     }
+    LogMemoryUsage("Ha");
     if (preferences.use_auto_shutdown()) {
       _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
     }
+    LogMemoryUsage("Hb");
     _heartbeat_delay.FlexibleSleep();
 		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
+    LogMemoryUsage("End of heartbeat cycle");
 	}
 }
 

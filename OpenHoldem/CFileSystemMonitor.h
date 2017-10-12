@@ -14,7 +14,9 @@
 #ifndef INC_CFILESYSTEM_MONITOR_H
 #define INC_CFILESYSTEM_MONITOR_H
 
-class CFileSystemMonitor {
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CFileSystemMonitor : public CSpaceOptimizedGlobalObject {
  public:
 	CFileSystemMonitor();
 	~CFileSystemMonitor();

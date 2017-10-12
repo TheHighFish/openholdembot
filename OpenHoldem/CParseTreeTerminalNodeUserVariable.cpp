@@ -18,6 +18,7 @@
 #include "CAutoplayerTrace.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
+#include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -88,3 +89,4 @@ CString CParseTreeTerminalNodeUserVariable::Serialize() {
     return "";
   }
 }
+

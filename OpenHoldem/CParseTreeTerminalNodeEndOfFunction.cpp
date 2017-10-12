@@ -15,6 +15,7 @@
 #include "CParseTreeTerminalNodeEndOfFunction.h"
 
 #include "CFunctionCollection.h"
+#include "CMemoryPool.h"
 #include "COHScriptObject.h"
 #include "CPreferences.h"
 #include "CTokenizer.h"

@@ -31,7 +31,7 @@ CDebugTab *p_debug_tab = NULL;
 CString _expression_texts[kMaxSizeOfDebugTab];
 TPParseTreeNode _expressions[kMaxSizeOfDebugTab];
 
-CDebugTab::CDebugTab() {
+CDebugTab::CDebugTab() : COHScriptObject("f$debug", "", kNoSourceFileForThisCode, kUndefinedZero) {
   // Name is alwayss the same and required for function lookup
   _name = CString("f$debug");
   _number_of_expressions = 0;
@@ -67,7 +67,8 @@ void CDebugTab::Clear() {
   write_log(preferences.debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
   for (int i=0; i<kMaxSizeOfDebugTab; ++i) {
     _expression_texts[i] = "";
-    delete _expressions[i];
+    // No longer deleting any parse-trees here,
+    // as parse-trees get handled by CMemoryPool
     _expressions[i] = NULL;
   }
   write_log(preferences.debug_alltherest(), "[CDebugTab] Expressions deleted\n");

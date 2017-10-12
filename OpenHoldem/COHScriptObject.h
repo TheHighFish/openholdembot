@@ -14,11 +14,13 @@
 #ifndef INC_COHSCRIPTOBJECT_H
 #define INC_COHSCRIPTOBJECT_H
 
+#include "CSpaceOptimizedFormulaObject.h"
+
 // Either auto-generated for completion
 // or created with the editor
 const CString kNoSourceFileForThisCode = "no source file";
 
-class COHScriptObject {
+class COHScriptObject: public CSpaceOptimizedFormulaObject {
   friend class CFunctionCollection;
  public:
   COHScriptObject(); 
@@ -85,8 +87,10 @@ class COHScriptObject {
   // * will be loaded once
   // * won't be shown in the editor
   // * won't be saved
-   void SetAsReadOnlyLibraryFunction();
+  void SetAsReadOnlyLibraryFunction();
  protected:
+  virtual bool NeedsToBeParsed();
+  void MarkAsParsed();
   // To be used by CFunctionCollection::parseAll()
   virtual bool EmptyParseTree() { return false; }
  protected:
@@ -96,6 +100,7 @@ class COHScriptObject {
   int _starting_line_of_function;
  private:
   bool _is_read_only;
+  bool _modified_since_last_parse;
 };
 
 #endif INC_COHSCRIPTOBJECT_H

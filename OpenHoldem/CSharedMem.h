@@ -15,6 +15,8 @@
 #ifndef INC_CSHAREDMEM_H
 #define INC_CSHAREDMEM_H
 
+#include "CSpaceOptimizedGlobalObject.h"
+
 // Shared memory to coordinate the auto-connectors
 // of multiple instances of OpenHoldem.
 //
@@ -30,7 +32,7 @@
 // If you changes this name you also have to change the linker pragmas
 #define kOpenHoldemSharedmemorySegment ".ohshmem"
 
-class CSharedMem {
+class CSharedMem : public CSpaceOptimizedGlobalObject {
  public:
 	CSharedMem();
 	~CSharedMem();

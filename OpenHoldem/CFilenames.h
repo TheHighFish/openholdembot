@@ -42,6 +42,9 @@ const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Verbosity.ohf",
 };
 
+// Not a CSpaceOptimizedGlobalObject
+// because we need CFilenames very early
+// and don't want to change the instantiation of memory-pools.
 class CFilenames {
  public:
 	CFilenames();

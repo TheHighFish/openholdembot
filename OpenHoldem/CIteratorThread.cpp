@@ -37,7 +37,8 @@
 #include "PrWinHandranges.h"
 #include "mtrand.h"
 
-CIteratorThread		*p_iterator_thread = NULL;
+CIteratorThread	*p_iterator_thread = NULL;
+HANDLE CIteratorThread::_m_stop_thread; //!!!!!
 
 // Static variables
 int CIteratorThread::_iterations_calculated;
@@ -180,7 +181,9 @@ UINT CIteratorThread::IteratorThreadFunction(LPVOID pParam) {
   while (true) {
     // Check event for thread stop signal once per main iterator loop
     // (and additionally once every 1000 iterations later)
-		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
+    // !!!!! can crash here on termination; pParent killed?
+		//if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
+    if (WaitForSingleObject(CIteratorThread::_m_stop_thread, 0) == WAIT_OBJECT_0) {
 			// Set event
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);

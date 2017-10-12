@@ -1705,6 +1705,9 @@
     <ClInclude Include="CMemoryPool.h">
       <Filter>Header Files\Various Function Libraries</Filter>
     </ClInclude>
+    <ClInclude Include="CSpaceOptimizedGlobalObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc">

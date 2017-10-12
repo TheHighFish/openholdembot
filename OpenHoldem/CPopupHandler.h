@@ -14,7 +14,9 @@
 #ifndef INC_CPOPUPHANDLER_H
 #define INC_CPOPUPHANDLER_H
 
-class CPopupHandler
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CPopupHandler : public CSpaceOptimizedGlobalObject
 {
 public:
 	CPopupHandler();

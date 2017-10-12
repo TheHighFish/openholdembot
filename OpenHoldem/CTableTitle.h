@@ -14,7 +14,9 @@
 #ifndef INC_CTABLETITLE_H
 #define INC_CTABLETITLE_H
 
-class CTableTitle {
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CTableTitle : public CSpaceOptimizedGlobalObject {
   friend class CDlgEditSymbols;
  public:
   CTableTitle();

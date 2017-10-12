@@ -17,6 +17,7 @@
 #include "CEngineContainer.h"
 #include "CCasinoInterface.h"
 #include "CFormulaParser.h"
+#include "CMemoryPool.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "OH_MessageBox.h"
 
@@ -47,8 +48,7 @@ void CVirtualSymbolEngine::UpdateOnHeartbeat()
 void CVirtualSymbolEngine::UpdateAfterAutoplayerAction(int autoplayer_action_code)
 {}
 
-bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
-{
+bool CVirtualSymbolEngine::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
 	// We don't provide any symbols
 	return false;
 }
@@ -90,4 +90,3 @@ void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
     OH_MessageBox_Error_Warning(error_message, "Warning");
   }
 }
-

@@ -14,6 +14,7 @@
 #ifndef INC_CTABLEMAPLOADER_H
 #define INC_CTABLEMAPLOADER_H
 
+#include "CSpaceOptimizedGlobalObject.h"
 #include "..\CTablemap\CTablemap.h"
 
 // This function has to be global and can't be part of the class,
@@ -21,7 +22,7 @@
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND h);
 
-class CTableMapLoader {
+class CTableMapLoader : public CSpaceOptimizedGlobalObject {
  public:
 	CTableMapLoader();
 	~CTableMapLoader();

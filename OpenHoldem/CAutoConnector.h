@@ -17,9 +17,9 @@
 
 #include "..\CCritSec\CCritSec.h"
 #include "..\CTablemap\CTablemap.h"
+#include "CSpaceOptimizedGlobalObject.h"
 
-
-class CAutoConnector {
+class CAutoConnector: public CSpaceOptimizedGlobalObject {
  public:
 	CAutoConnector();
 	~CAutoConnector();

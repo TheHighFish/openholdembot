@@ -4,6 +4,7 @@
 #include "CardFunctions.h"
 #include "CEngineContainer.h"
 #include "CFormulaParser.h"
+#include "CMemoryPool.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CSymbolEngineCards.h"
@@ -178,9 +179,16 @@ double COHScriptList::Evaluate(bool log /* = false */) {
 }
 
 void COHScriptList::Parse() {
-  write_log(preferences.debug_formula() || preferences.debug_parser(),
-    "[CFunction] Parsing %s\n", _name);
-  p_formula_parser->ParseFormula(this);
+  if (NeedsToBeParsed()) {
+    write_log(preferences.debug_formula() || preferences.debug_parser(),
+      "[CFunction] Parsing %s\n", _name);
+    p_formula_parser->ParseFormula(this);
+    MarkAsParsed();
+  }
+  else {
+    write_log(preferences.debug_formula() || preferences.debug_parser(),
+      "[COHScriptList] No need to parse %s\n", _name);
+  }
 }
 
 CString COHScriptList::function_text() {

@@ -15,6 +15,7 @@
 #define INC_CPREFERENCES_H_
 
 #include "..\CCritSec\CCritSec.h"
+#include "CSpaceOptimizedGlobalObject.h"
 #include "NumericalFunctions.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
@@ -168,7 +169,7 @@ enum {
 	k_prefs_last_CString_value,
 };
 
-class CPreferences {
+class CPreferences : public CSpaceOptimizedGlobalObject {
  public:
 	// public functions
 	CPreferences();

@@ -15,7 +15,9 @@
 
 #pragma once
 
-class CWatchdog {
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CWatchdog : public CSpaceOptimizedGlobalObject {
 public:
   CWatchdog();
   ~CWatchdog();

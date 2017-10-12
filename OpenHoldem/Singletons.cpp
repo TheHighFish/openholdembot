@@ -31,6 +31,7 @@
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
+#include "CMemoryPool.h"
 #include "COcclusioncheck.h"
 #include "COpenHoldemTitle.h"
 #include "CParserSymbolTable.h"
@@ -66,6 +67,8 @@ void InstantiateAllSingletons() {
   // to create the log-file, which might be needed before this point.
   // This function gets executed exactly once at startup.
   // So the global class-pointers have to be NULL.
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create m emory pools\n");
+  CreateMemoryPools();
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CWatchdog\n");
   assert(!p_watchdog);
   p_watchdog = new CWatchdog;
@@ -111,15 +114,15 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CTablemapAccess\n");
   assert(!p_tablemap_access);
   p_tablemap_access = new CTablemapAccess;
-  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDebugTab\n");
-  assert(p_debug_tab == NULL);
-  p_debug_tab = new CDebugTab;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CParserSymbolTable\n");
   assert(!p_parser_symbol_table);
   p_parser_symbol_table = new CParserSymbolTable;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CFormulaParser\n");
   assert(!p_formula_parser);
   p_formula_parser = new CFormulaParser;
+  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDebugTab\n");
+  assert(p_debug_tab == NULL);
+  p_debug_tab = new CDebugTab;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CAutoplayer\n");
   assert(!p_autoplayer);
   p_autoplayer = new CAutoplayer();
@@ -199,7 +202,7 @@ void StopThreads() {
 	}
 	if (p_pokertracker_thread) { 
 		write_log(preferences.debug_singletons(), "[Singletons] Deleting PokerTracker-thread\n");
-		delete p_pokertracker_thread; 
+		p_pokertracker_thread->~CPokerTrackerThread(); 
 		p_pokertracker_thread = NULL; 
 	}
 	all_threads_stopped = true;
@@ -266,7 +269,7 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 09\n");
   DELETE_AND_CLEAR(p_parser_symbol_table)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 10\n");
-  DELETE_AND_CLEAR(p_debug_tab)
+  //!!!!!DELETE_AND_CLEAR(p_debug_tab)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 11\n");
   DELETE_AND_CLEAR(p_tablemap_access)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 12\n");
@@ -297,13 +300,15 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_filenames)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 26\n");
   DELETE_AND_CLEAR(p_table_title)
-  write_log(preferences.debug_singletons(), "[Singletons] Deleting 27\n");
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting 28\n");
   DELETE_AND_CLEAR(p_watchdog)
   // Session counter at the very end,
   // as it lots of other modules depend on it,
   // but it doesn't depend on anything else.
   write_log(preferences.debug_singletons(), "[Singletons] Deleting CSessionCounter\n");
   DELETE_AND_CLEAR(p_sessioncounter)
+  write_log(preferences.debug_singletons(), "[Singletons] Deleting memory pools\n");
+  DeleteAllMemoryPools();
   write_log(preferences.debug_singletons(), "[Singletons] All singletons successfully deleted\n");
 }
   

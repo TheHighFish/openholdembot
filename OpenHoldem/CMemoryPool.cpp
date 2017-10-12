@@ -16,15 +16,44 @@
 //
 // Limitations:
 //   * does not handle memory-requests that are larger as the default buffer
-//   * does not handle multiple pools that could be released inbetween
-//       (but this does not really matter if we formerly wasted a 4KN-block
-//       for a 24-byte-request)
+//   * does not support partial release of memory;
+//     use multiple pools if needed
+//   * not thread-safe; use different pools for different threads
 //
 //******************************************************************************
 
 #include "stdafx.h"
 #include "CMemoryPool.h"
+
+#include "CFormulaParser.h"
 #include "OH_MessageBox.h"
+
+CMemoryPool *p_memory_pool_tablemaps = NULL;
+CMemoryPool *p_memory_pool_scraper = NULL;
+CMemoryPool *p_memory_pool_user_logic = NULL;
+CMemoryPool *p_memory_pool_library_logic = NULL;
+CMemoryPool *p_memory_pool_global = NULL;
+
+void CreateMemoryPools() {
+  assert(p_memory_pool_tablemaps == NULL);
+  assert(p_memory_pool_scraper == NULL);
+  assert(p_memory_pool_user_logic == NULL);
+  assert(p_memory_pool_library_logic == NULL);
+  assert(p_memory_pool_global == NULL);
+  p_memory_pool_tablemaps = new CMemoryPool;
+  p_memory_pool_scraper = new CMemoryPool;
+  p_memory_pool_user_logic = new CMemoryPool;
+  p_memory_pool_library_logic = new CMemoryPool;
+  p_memory_pool_global = new CMemoryPool;
+}
+
+void DeleteAllMemoryPools() {
+  delete p_memory_pool_tablemaps;
+  delete p_memory_pool_scraper;
+  delete p_memory_pool_user_logic;
+  delete p_memory_pool_library_logic;
+  delete p_memory_pool_global;
+}
 
 // 64 KB = 1 default block at 64-bit-Windows 
 //       = 16 default blocks at 52-bit-Windows
@@ -39,11 +68,11 @@ CMemoryPool::CMemoryPool() {
 
 CMemoryPool::~CMemoryPool() {
   if (!_all_emmory_released) {
-    release_all();
+    ReleaseAll();
   }
 }
 
-size_t CMemoryPool::bytes_available_in_current_block() {
+size_t CMemoryPool::BytesAvailableInCurrentBlock() {
   if (_current_memory_block == NULL) {
     return 0;
   }
@@ -51,27 +80,27 @@ size_t CMemoryPool::bytes_available_in_current_block() {
   return (kMemoryBlockSize - _bytes_used_in_current_block);
 }
 
-void* CMemoryPool::allocate(size_t size) {
+void* CMemoryPool::Allocate(size_t size) {
+  AlignNextMemoryBlock();
   if (size > kMemoryBlockSize) {
     OH_MessageBox_Error_Warning(
       "CMemoryPool received oversized request.\n"
-      "Going to terminate.\n");
-    PostQuitMessage(0);
+      "Going to terminate.\n");    PostQuitMessage(0);
     return NULL;
   }
   if (_current_memory_block == NULL) {
-    allocate_new_memory_block();
-  } else if (size > bytes_available_in_current_block()) {
-    allocate_new_memory_block();
+    AllocateNewMemoryBlock();
+  } else if (size > BytesAvailableInCurrentBlock()) {
+    AllocateNewMemoryBlock();
   }
-  assert(size < bytes_available_in_current_block());
+  assert(size <= BytesAvailableInCurrentBlock());
   _all_emmory_released = false;
   size_t offset_to_allocation = _bytes_used_in_current_block;
   _bytes_used_in_current_block += size;
   return ((char*)_current_memory_block + offset_to_allocation);
 }
 
-void CMemoryPool::allocate_new_memory_block() {
+void CMemoryPool::AllocateNewMemoryBlock() {
   _current_memory_block = malloc(kMemoryBlockSize);
   if (_current_memory_block == NULL) {
     OH_MessageBox_Error_Warning(
@@ -84,8 +113,8 @@ void CMemoryPool::allocate_new_memory_block() {
   _memory_blocks.Add(_current_memory_block);
 }
 
-void CMemoryPool::release_all() {
-  for (int i = 0; i < _memory_blocks.GetSize(); ++i) {
+void CMemoryPool::ReleaseAll() {
+  for (int i = 0; i < _memory_blocks.GetCount(); ++i) {
     _current_memory_block = _memory_blocks[i];
     delete _current_memory_block;
   }
@@ -93,4 +122,27 @@ void CMemoryPool::release_all() {
   _current_memory_block = NULL;
   _bytes_used_in_current_block = kMemoryBlockSize;
   _memory_blocks.RemoveAll();
+}
+
+void CMemoryPool::AlignNextMemoryBlock() {
+  // Align ,e,ory-addresses to multiples of 4 or 8
+  const int alignment = 4;
+  int mis_alignment = _bytes_used_in_current_block % alignment;
+  assert(mis_alignment >= 0);
+  if (mis_alignment != 0) {
+    int n_padding_bytes = alignment - mis_alignment;
+    assert(n_padding_bytes > 0);
+    _bytes_used_in_current_block += n_padding_bytes;
+    assert(_bytes_used_in_current_block % alignment == 0);
+  }
+}
+
+CMemoryPool *PMemoryPoolParser() {
+  assert(p_formula_parser != NULL);
+  if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) {
+    assert(p_memory_pool_library_logic != NULL);
+    return p_memory_pool_library_logic;
+  }
+  assert(p_memory_pool_user_logic != NULL);
+  return p_memory_pool_user_logic;
 }

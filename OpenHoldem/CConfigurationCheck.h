@@ -14,18 +14,18 @@
 #ifndef INC_CCONFIGURATIONCHECK_H
 #define INC_CCONFIGURATIONCHECK_H
 
-class CConfigurationCheck
-{
+#include "CSpaceOptimizedGlobalObject.h"
 
-public:
+class CConfigurationCheck : public CSpaceOptimizedGlobalObject {
+ public:
 	CConfigurationCheck();
 	~CConfigurationCheck();
-public:
+ public:
   // For Menu -> ProblemSolver
   void ForceAllConfigurationChercks();
-private:
+ private:
   void CheckEnabledConfigurationChecks(bool force_all);
-private:
+ private:
 	HKEY GetHive(CString mhive);
 	bool OpenKey(CString mhive, CString registry_path);
 	CString GetValue(CString mhive, int type, CString registry_path, CString key_name);

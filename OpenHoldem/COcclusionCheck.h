@@ -7,18 +7,16 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Heuristic occlusion-check for rebuy.
 //
 //******************************************************************************
 
 #ifndef __LIB_COCCLUSIONCHECK_H
-
 #define __LIB_COCCLUSIONCHECK_H
 
-// Heuristic occlusion-check for rebuy.
+#include "CSpaceOptimizedGlobalObject.h"
 
-class COcclusionCheck
-{
+class COcclusionCheck: public CSpaceOptimizedGlobalObject {
 public:
 	COcclusionCheck();
 	~COcclusionCheck();

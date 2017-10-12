@@ -14,9 +14,10 @@
 #ifndef INC_CHANDRESETDETECTOR_H
 #define INC_CHANDRESETDETECTOR_H
 
+#include "CSpaceOptimizedGlobalObject.h"
 #include "MagicNumbers.h"
 
-class CHandresetDetector {
+class CHandresetDetector : public CSpaceOptimizedGlobalObject {
  public:
 	CHandresetDetector();
 	~CHandresetDetector();

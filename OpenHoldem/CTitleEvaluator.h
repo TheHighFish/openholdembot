@@ -16,7 +16,9 @@
 #ifndef INC_CTITLEEVALUATOR_H
 #define INC_CTITLEEVALUATOR_H
 
-class CTitleEvaluator {
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CTitleEvaluator : public CSpaceOptimizedGlobalObject {
   friend class CDlgEditSymbols;
  public:
   CTitleEvaluator();
