@@ -27,6 +27,7 @@
 //******************************************************************************
 
 #include "OpenHoldemFunctions.h"
+#include "atlstr.h"
 #include "Windows.h"
 
 //******************************************************************************
@@ -57,9 +58,11 @@ t_WriteLog p_WriteLog = nullptr;
 //
 //******************************************************************************
 
+void ErrorPointerNotInitialized(CString function_name);
+
 double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
   if (p_GetSymbol == nullptr) {
-    ErrorPointerNotInitialized();
+    ErrorPointerNotInitialized("GetSymbol");
 	  return 0.0;
   }
   return p_GetSymbol(name_of_single_symbol__not_expression);
@@ -67,7 +70,7 @@ double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
 
 void* __stdcall GetPrw1326() {
   if (p_GetPrw1326 == nullptr) {
-    ErrorPointerNotInitialized();
+    ErrorPointerNotInitialized("GetPrw1326");
     return nullptr;
   }
   return p_GetPrw1326();
@@ -75,7 +78,7 @@ void* __stdcall GetPrw1326() {
 
 char* __stdcall GetHandnumber() {
   if (p_GetHandnumber == nullptr) {
-    ErrorPointerNotInitialized();
+    ErrorPointerNotInitialized("GetHandnumber");
     return "";
   }
   return p_GetHandnumber();
@@ -83,7 +86,7 @@ char* __stdcall GetHandnumber() {
 
 void __stdcall ParseHandList(const char* name_of_list, const char* list_body) {
   if (p_ParseHandList == nullptr) {
-    ErrorPointerNotInitialized();
+    ErrorPointerNotInitialized("ParseHandList");
     return;
   }
   p_ParseHandList(name_of_list, list_body);
@@ -91,7 +94,7 @@ void __stdcall ParseHandList(const char* name_of_list, const char* list_body) {
 
 char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
   if (p_ScrapeTableMapRegion == nullptr) {
-    ErrorPointerNotInitialized();
+    ErrorPointerNotInitialized("ScrapeTableMapRegion");
     return "";
   }
   return p_ScrapeTableMapRegion(p_region, p_returned_lengh);
@@ -99,7 +102,7 @@ char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
 
 void __stdcall SendChatMessage(const char *message) {
   if (p_SendChatMessage == nullptr) {
-    ErrorPointerNotInitialized();
+    ErrorPointerNotInitialized("SendChatMessage");
     return;
   }
   p_SendChatMessage(message);
@@ -107,7 +110,7 @@ void __stdcall SendChatMessage(const char *message) {
 
 void __stdcall WriteLog(char* format, ...) {
   if (p_WriteLog == nullptr) {
-    ErrorPointerNotInitialized();
+    ErrorPointerNotInitialized("WriteLog");
     return;
   }
   p_WriteLog(format); //!!!!!
@@ -143,10 +146,13 @@ void InitializeOpenHoldemFunctionInterface() {
   p_WriteLog = (t_WriteLog)LookupOpenHoldemFunction("WriteLog");
 }
 
-void ErrorPointerNotInitialized() {
+void ErrorPointerNotInitialized(CString function_name) {
+  CString error_message;
+  error_message.Format("OpenHoldem interface not yet initialized.\n"
+    "Can't use function %s.\n",
+    function_name);
   MessageBox(0,
-    "OpenHoldem functions not yet initialized.\n"
-    "Can't use function XYZ.\n", //!!!!!
-    "Error",
+    error_message,
+    "DLL Error",
     MB_ICONERROR);
 }

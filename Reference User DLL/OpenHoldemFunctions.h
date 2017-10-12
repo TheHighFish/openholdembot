@@ -32,4 +32,3 @@ EXE_IMPLEMENTS void   __stdcall SendChatMessage(const char *message);
 EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
 
 void InitializeOpenHoldemFunctionInterface();
-void ErrorPointerNotInitialized();
