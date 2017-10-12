@@ -119,7 +119,7 @@ void __stdcall WriteLog(char* format, ...) {
   va_list args;
   va_start(args, format);
   p_WriteLog(format, args);
-  va_end(args);!
+  va_end(args);
 }
 
 //******************************************************************************

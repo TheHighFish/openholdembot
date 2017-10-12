@@ -22,7 +22,6 @@
 #include "CAutoconnector.h"
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
-#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CFlagsToolbar.h"
 #include "CFormulaParser.h"
@@ -55,7 +54,6 @@ CSymbolEngineVariousDataLookup::CSymbolEngineVariousDataLookup() {
   // Other objects that we depend on
   assert(p_autoconnector != NULL);
   assert(p_betround_calculator != NULL);
-  assert(p_dll_extension != NULL);
   assert(p_handreset_detector != NULL);
   assert(p_formula_parser != NULL);
   assert(p_sessioncounter != NULL);

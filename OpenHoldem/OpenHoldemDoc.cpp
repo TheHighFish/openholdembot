@@ -16,7 +16,6 @@
 
 #include "stdafx.h"
 #include "CAutoplayer.h"
-#include "CDllExtension.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "COpenHoldemHopperCommunication.h"

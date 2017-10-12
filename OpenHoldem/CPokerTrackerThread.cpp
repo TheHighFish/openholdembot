@@ -18,7 +18,6 @@
 #include <process.h>
 #include <comdef.h>
 #include "CAutoConnector.h"
-#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CLevDistance.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"

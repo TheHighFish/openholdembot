@@ -21,7 +21,6 @@
 #include "CAutoplayerTrace.h"
 #include "CConfigurationCheck.h"
 #include "CDebugTab.h"
-#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
@@ -125,9 +124,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CPokerTrackerThread\n");
   assert(!p_pokertracker_thread);
   p_pokertracker_thread = new CPokerTrackerThread;
-  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDllExtension\n");
-  assert(!p_dll_extension);
-  p_dll_extension = new CDllExtension;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CValidator\n");
   assert(!p_validator);
   p_validator = new CValidator;
@@ -252,8 +248,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_table_positioner)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 03\n");
   DELETE_AND_CLEAR(p_validator)
-  write_log(preferences.debug_singletons(), "[Singletons] Deleting 06\n");
-  DELETE_AND_CLEAR(p_dll_extension)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 07\n");
   DELETE_AND_CLEAR(p_autoplayer)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 08\n");

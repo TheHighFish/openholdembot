@@ -22,7 +22,6 @@
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
-#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
