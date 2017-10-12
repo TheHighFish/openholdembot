@@ -113,7 +113,13 @@ void __stdcall WriteLog(char* format, ...) {
     ErrorPointerNotInitialized("WriteLog");
     return;
   }
-  p_WriteLog(format); //!!!!!
+  // Docu about ellipsis and variadic macro:
+  // http://msdn.microsoft.com/en-us/library/ms177415(v=vs.80).aspx
+  // http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
+  va_list args;
+  va_start(args, format);
+  p_WriteLog(format, args);
+  va_end(args);!
 }
 
 //******************************************************************************
