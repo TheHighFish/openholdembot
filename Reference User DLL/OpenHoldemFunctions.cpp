@@ -122,18 +122,24 @@ void __stdcall WriteLog(char* format, ...) {
 //
 //******************************************************************************
 
-FARPROC WINAPI LookupOpenHoldemFunction(char* fubction_name) {
-  // No detailed error-handling here.
-  // This function should only fail for incompatible Openjoldem versions,  
-  // but then we return a null-pointer and show an error-message
-  // once this pointer gets used.
+FARPROC WINAPI LookupOpenHoldemFunction(char* function_name) {
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
   HMODULE openholdem_main_module = GetModuleHandle(NULL);
   if (openholdem_main_module == nullptr) {
     return nullptr;
   }
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
-  return GetProcAddress(openholdem_main_module, fubction_name);
+  FARPROC WINAPI function_address = GetProcAddress(openholdem_main_module, function_name);
+  if (function_address == nullptr) {
+    CString error_message;
+    error_message.Format("Can not find %s in Openholdem.exe.\n",
+      function_name);
+    MessageBox(0,
+      error_message,
+      "DLL Error",
+      MB_ICONERROR);
+  }
+  return function_address;
 }
 
 void InitializeOpenHoldemFunctionInterface() {

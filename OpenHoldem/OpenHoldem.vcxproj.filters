@@ -47,9 +47,6 @@
     <Filter Include="Source Files\AutoConnector">
       <UniqueIdentifier>{3e943a5c-69d8-4224-b36d-84d8a57672a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Programming the Bot">
-      <UniqueIdentifier>{7913655f-dbd6-4bb2-9e8b-f858d0c16fa0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\PokerTracker">
       <UniqueIdentifier>{545adf4c-ec79-4906-8b90-26a0896d09f7}</UniqueIdentifier>
     </Filter>
@@ -114,9 +111,6 @@
     <Filter Include="Header Files\Synchronization\CCritSec">
       <UniqueIdentifier>{17789b0e-d452-470b-aba9-1fa246835581}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Programming the Bot">
-      <UniqueIdentifier>{70f8340b-4e1e-4d06-8c67-f0d6d920a248}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\PokerTracker">
       <UniqueIdentifier>{1ae88e00-25ce-4382-8c7b-cfd65b2afbf6}</UniqueIdentifier>
     </Filter>
@@ -180,12 +174,6 @@
     </Filter>
     <Filter Include="Header Files\Symbols\Symbol_Engines\Blinds">
       <UniqueIdentifier>{31fd34f7-e0a3-4d19-a8fd-8895f1bda00e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Programming the Bot\DLL">
-      <UniqueIdentifier>{c4dd8200-962c-43cb-b168-32ef5d3beba8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Programming the Bot\DLL">
-      <UniqueIdentifier>{cb906b06-3206-4087-8396-032290c20b19}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\HandhistoryGenerator">
       <UniqueIdentifier>{21cae660-62c0-4f10-9e03-0740953dc89e}</UniqueIdentifier>
@@ -677,9 +665,6 @@
     </ClCompile>
     <ClCompile Include="CSymbolEngineGameType.cpp">
       <Filter>Source Files\Symbols\Symbol_Engines</Filter>
-    </ClCompile>
-    <ClCompile Include="CDllExtension.cpp">
-      <Filter>Source Files\Programming the Bot\DLL</Filter>
     </ClCompile>
     <ClCompile Include="CHandHistoryDealPhase.cpp">
       <Filter>Source Files\HandhistoryGenerator</Filter>
@@ -1581,12 +1566,6 @@
     </ClInclude>
     <ClInclude Include="CSymbolEngineGameType.h">
       <Filter>Header Files\Symbols\Symbol_Engines</Filter>
-    </ClInclude>
-    <ClInclude Include="CDllExtension.h">
-      <Filter>Header Files\Programming the Bot\DLL</Filter>
-    </ClInclude>
-    <ClInclude Include="CGameState.h">
-      <Filter>Header Files\Programming the Bot\DLL</Filter>
     </ClInclude>
     <ClInclude Include="CHandHistoryDealPhase.h">
       <Filter>Header Files\HandhistoryGenerator</Filter>
