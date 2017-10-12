@@ -81,6 +81,7 @@ size_t CMemoryPool::BytesAvailableInCurrentBlock() {
 }
 
 void* CMemoryPool::Allocate(size_t size) {
+  AlignNextMemoryBlock();
   if (size > kMemoryBlockSize) {
     OH_MessageBox_Error_Warning(
       "CMemoryPool received oversized request.\n"
@@ -115,12 +116,25 @@ void CMemoryPool::AllocateNewMemoryBlock() {
 void CMemoryPool::ReleaseAll() {
   for (int i = 0; i < _memory_blocks.GetCount(); ++i) {
     _current_memory_block = _memory_blocks[i];
-    //!!!!!delete _current_memory_block;
+    delete _current_memory_block;
   }
   _all_emmory_released = true;
   _current_memory_block = NULL;
   _bytes_used_in_current_block = kMemoryBlockSize;
   _memory_blocks.RemoveAll();
+}
+
+void CMemoryPool::AlignNextMemoryBlock() {
+  // Align ,e,ory-addresses to multiples of 4 or 8
+  const int alignment = 4;
+  int mis_alignment = _bytes_used_in_current_block % alignment;
+  assert(mis_alignment >= 0);
+  if (mis_alignment != 0) {
+    int n_padding_bytes = alignment - mis_alignment;
+    assert(n_padding_bytes > 0);
+    _bytes_used_in_current_block += n_padding_bytes;
+    assert(_bytes_used_in_current_block % alignment == 0);
+  }
 }
 
 CMemoryPool *PMemoryPoolParser() {

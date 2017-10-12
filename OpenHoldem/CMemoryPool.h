@@ -25,10 +25,11 @@ class CMemoryPool {
   CMemoryPool();
   ~CMemoryPool();
  public:
-  void*  Allocate(size_t size);
+  void* Allocate(size_t size);
   void ReleaseAll();
  private:
   void AllocateNewMemoryBlock();
+  void AlignNextMemoryBlock();
   size_t BytesAvailableInCurrentBlock();
  private:
   bool _all_emmory_released;
