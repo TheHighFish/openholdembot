@@ -81,7 +81,7 @@ CString CSymbolEngineUserDLL::SymbolsProvided() {
 //
 //*******************************************************************************
 
-double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
+EXE_IMPLEMENTS double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
   CString	str = "";
   str.Format("%s", name_of_single_symbol__not_expression);
   if (strcmp(str, "cmd$recalc") == 0) {
@@ -105,12 +105,12 @@ double __stdcall GetSymbol(const char* name_of_single_symbol__not_expression) {
   return result;
 }
 
-void* __stdcall GetPrw1326() {
+EXE_IMPLEMENTS void* __stdcall GetPrw1326() {
   assert(p_iterator_thread != NULL);
   return (void *)(p_iterator_thread->prw1326());
 }
 
-char* __stdcall GetHandnumber() {
+EXE_IMPLEMENTS char* __stdcall GetHandnumber() {
   assert(p_handreset_detector->GetHandNumber().GetLength() < k_max_length_of_handnumber);
   static char handnumber_as_char_array[k_max_length_of_handnumber];
   strcpy_s(handnumber_as_char_array,
@@ -119,13 +119,13 @@ char* __stdcall GetHandnumber() {
   return handnumber_as_char_array;
 }
 
-void __stdcall ParseHandList(const char* name_of_list, const char* list_body) {
+EXE_IMPLEMENTS void __stdcall ParseHandList(const char* name_of_list, const char* list_body) {
   COHScriptList* p_new_list = new COHScriptList(name_of_list, list_body);
   p_formula_parser->ParseFormula(p_new_list);
   p_function_collection->Add(p_new_list);
 }
 
-char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
+EXE_IMPLEMENTS char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
   CString result;
   bool success = p_scraper->EvaluateRegion(p_region, &result);
   if (success) {
@@ -138,11 +138,11 @@ char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
   return nullptr;
 }
 
-void __stdcall SendChatMessage(const char *msg) {
+EXE_IMPLEMENTS void __stdcall SendChatMessage(const char *msg) {
   SendChatMessage((char *)msg);
 }
 
-void __stdcall WriteLog(char* fmt, ...) {
+EXE_IMPLEMENTS void __stdcall WriteLog(char* fmt, ...) {
   // Docu about ellipsis and variadic macro:
   // http://msdn.microsoft.com/en-us/library/ms177415(v=vs.80).aspx
   // http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
