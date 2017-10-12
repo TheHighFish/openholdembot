@@ -66,12 +66,12 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
     return 0;
   }
 	if (strncmp(pquery,"dll$test",9)==0) {
-	//!!!!!	return GetSymbol("random");
+	  return GetSymbol("random");
   }
   if (strncmp(pquery, "dll$scrape", 11) == 0) {
     char* scraped_result;
     int result_lenght;
-    //!!!!!scraped_result = ScrapeTableMapRegion("p0balance", result_lenght);
+    scraped_result = ScrapeTableMapRegion("p0balance", result_lenght);
     if (scraped_result != nullptr) {
       // The TEXT() macro supports both ASCII and Unicode.
       // For the people who use Unicode but don't understand the "error".
