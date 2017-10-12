@@ -20,6 +20,7 @@
 #include "user.h"
 #include <conio.h>
 #include <windows.h>
+#include "OpenHoldemFunctions.h"
 
 //******************************************************************************
 //
@@ -95,6 +96,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 #ifdef _DEBUG
 			AllocConsole();
 #endif _DEBUG
+			InitializeOpenHoldemFunctionInterface();
 			break;
 		case DLL_THREAD_ATTACH:
 			break;
