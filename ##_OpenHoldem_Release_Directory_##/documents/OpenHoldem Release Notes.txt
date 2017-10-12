@@ -1,11 +1,17 @@
 ﻿﻿v﻿12.0.2 2017-10-xx
 ==================
 MAINTENANCE:
+- Introducing memory-pools for better performance,
+  i.e less memory usage and more speed.
+  [THF]
 - Improved betsizing of the Gecko-bot.
   Replaced some allins by potsized bets 
   to avoid potential overbetting if our stack is really deep.
   Thanks to Barthens and DoyBrungSong for reporting
   and to SingSongSally for testing.
+  [THF]
+- Handling some special portuguese characters when title-preprocessing.
+  Thanks to Cold12zera for reporting and providing replay-frames.
   [THF]
 
 ﻿v﻿12.0.1 2017-09-22
