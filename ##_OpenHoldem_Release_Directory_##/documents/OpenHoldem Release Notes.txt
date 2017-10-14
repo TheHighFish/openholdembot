@@ -1,4 +1,4 @@
-﻿﻿v﻿12.0.2 2017-10-xx
+﻿﻿v﻿12.0.2 2017-10-14
 ==================
 MAINTENANCE:
 - Introducing memory-pools for better performance,
@@ -10,9 +10,10 @@ MAINTENANCE:
   Thanks to Barthens and DoyBrungSong for reporting
   and to SingSongSally for testing.
   [THF]
-- Handling some special portuguese characters when title-preprocessing.
+- Handling one more special portuguese characters when title-preprocessing.
   Thanks to Cold12zera for reporting and providing replay-frames.
   [THF]
+  
 
 ﻿v﻿12.0.1 2017-09-22
 ==================
