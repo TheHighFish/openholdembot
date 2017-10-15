@@ -3,6 +3,7 @@
 MAINTENANCE:
 - Introducing memory-pools for better performance,
   i.e less memory usage and more speed.
+  Thanks to Salem for testing.
   [THF]
 - Improved betsizing of the Gecko-bot.
   Replaced some allins by potsized bets 
