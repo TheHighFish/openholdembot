@@ -41,7 +41,7 @@ typedef void*(*t_GetPrw1326)();
 typedef char*(*t_GetHandnumber)();
 typedef void(*t_ParseHandList)(const char* name_of_list, const char* list_body);
 typedef char*(*t_ScrapeTableMapRegion)(char* p_region, int& p_returned_lengh);
-typedef void(*t_SendChatMessage)(const char *message);
+typedef void(*t_SendChatMessage)(char *message);
 typedef void(*t_WriteLog)(char* format, ...);
 
 t_GetSymbol p_GetSymbol = nullptr;
@@ -100,7 +100,7 @@ char* __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh) {
   return p_ScrapeTableMapRegion(p_region, p_returned_lengh);
 }
 
-void __stdcall SendChatMessage(const char *message) {
+void __stdcall SendChatMessage(char *message) {
   if (p_SendChatMessage == nullptr) {
     ErrorPointerNotInitialized("SendChatMessage");
     return;

@@ -138,9 +138,8 @@ EXE_IMPLEMENTS char* ScrapeTableMapRegion(char* p_region, int& p_returned_lengh)
   return nullptr;
 }
 
-EXE_IMPLEMENTS void SendChatMessage(const char *msg) {
-  SendChatMessage((char *)msg); //!!!!!
-}
+// EXE_IMPLEMENTS void SendChatMessage(char *message)
+// gets implemented by PokerChat.cpp
 
 EXE_IMPLEMENTS void WriteLog(char* fmt, ...) {
   // Docu about ellipsis and variadic macro:

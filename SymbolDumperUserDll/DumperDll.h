@@ -63,7 +63,7 @@ double process_query(const char* pquery);
 #ifndef OH_2
 // Functions exported by OpenHoldem
 extern "C" __declspec(dllimport) double __stdcall GetSymbol(const char* name);
-extern "C" __declspec(dllimport) void   __stdcall SendChatMessage(const char *msg);
+extern "C" __declspec(dllimport) void   __stdcall SendChatMessage(char *message);
 extern "C" __declspec(dllimport) void*  __stdcall GetPhl1k();
 extern "C" __declspec(dllimport) void*  __stdcall GetPrw1326();
 extern "C" __declspec(dllimport) void   __stdcall WriteLog(char* fmt, ...);

@@ -28,7 +28,7 @@ EXE_IMPLEMENTS void*  __stdcall GetPrw1326();
 EXE_IMPLEMENTS char*  __stdcall GetHandnumber();
 EXE_IMPLEMENTS void   __stdcall ParseHandList(const char* name_of_list, const char* list_body);
 EXE_IMPLEMENTS char*  __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh);
-EXE_IMPLEMENTS void   __stdcall SendChatMessage(const char *message);
+EXE_IMPLEMENTS void   __stdcall SendChatMessage(char *message);
 EXE_IMPLEMENTS void   __stdcall WriteLog(char* format, ...);
 
 void InitializeOpenHoldemFunctionInterface();
