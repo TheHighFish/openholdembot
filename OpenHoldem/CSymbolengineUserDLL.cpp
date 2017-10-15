@@ -20,8 +20,10 @@
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "COcclusionCheck.h"
+#include "COpenHoldemTitle.h"
 #include "CScraper.h"
 #include "CSymbolengineVersus.h"
+#include "CTableState.h"
 #include "..\Reference User DLL\user.h"
 
 CSymbolEngineUserDLL *p_symbol_engine_formula_loading = NULL;
@@ -111,12 +113,21 @@ EXE_IMPLEMENTS void* GetPrw1326() {
 }
 
 EXE_IMPLEMENTS char* GetHandnumber() {
-  assert(p_handreset_detector->GetHandNumber().GetLength() < k_max_length_of_handnumber);
-  static char handnumber_as_char_array[k_max_length_of_handnumber];
-  strcpy_s(handnumber_as_char_array,
-    k_max_length_of_handnumber,
-    p_handreset_detector->GetHandNumber());
-  return handnumber_as_char_array;
+  return p_handreset_detector->GetHandNumber().GetBuffer();
+}
+
+EXE_IMPLEMENTS char* GetPlayertName(int chair) {
+  if (chair < 0) {
+    return nullptr;
+  }
+  if (chair > kLastChair) {
+    return nullptr;
+  }
+  return p_table_state->Player(chair)->name().GetBuffer();
+}
+
+EXE_IMPLEMENTS char* GetTableTitle() {
+  return p_openholdem_title->GetTitle().GetBuffer();
 }
 
 EXE_IMPLEMENTS void ParseHandList(const char* name_of_list, const char* list_body) {

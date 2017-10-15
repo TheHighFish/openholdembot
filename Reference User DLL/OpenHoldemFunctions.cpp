@@ -28,7 +28,6 @@
 
 #include "OpenHoldemFunctions.h"
 #include "atlstr.h"
-#include "Windows.h"
 
 //******************************************************************************
 //
@@ -39,6 +38,8 @@
 typedef double(*t_GetSymbol)(const char* name_of_single_symbol__not_expression);
 typedef void*(*t_GetPrw1326)();
 typedef char*(*t_GetHandnumber)();
+typedef char*(*t_GetPlayerName)(int chair);
+typedef char*(*t_GetTableTitle)();
 typedef void(*t_ParseHandList)(const char* name_of_list, const char* list_body);
 typedef char*(*t_ScrapeTableMapRegion)(char* p_region, int& p_returned_lengh);
 typedef void(*t_SendChatMessage)(char *message);
@@ -47,6 +48,8 @@ typedef void(*t_WriteLog)(char* format, ...);
 t_GetSymbol p_GetSymbol = nullptr;
 t_GetPrw1326 p_GetPrw1326 = nullptr;
 t_GetHandnumber p_GetHandnumber = nullptr;
+t_GetHandnumber p_GetPlayerName = nullptr;
+t_GetHandnumber p_GetTableTitle = nullptr;
 t_ParseHandList p_ParseHandList = nullptr;
 t_ScrapeTableMapRegion p_ScrapeTableMapRegion = nullptr;
 t_SendChatMessage p_SendChatMessage = nullptr;
@@ -82,6 +85,22 @@ char* __stdcall GetHandnumber() {
     return "";
   }
   return p_GetHandnumber();
+}
+
+char* __stdcall GetPlayerName(int chair) {
+  if (p_GetPlayerName == nullptr) {
+    ErrorPointerNotInitialized("GetPlayerName");
+    return "";
+  }
+  return p_GetPlayerName();
+}
+
+char* __stdcall GetTableTitle() {
+  if (p_GetTableTitle == nullptr) {
+    ErrorPointerNotInitialized("GetTableTitle");
+    return "";
+  }
+  return p_GetTableTitle();
 }
 
 void __stdcall ParseHandList(const char* name_of_list, const char* list_body) {

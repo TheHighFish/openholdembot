@@ -81,7 +81,7 @@ time_t _first_possible_next_chat_time;
 // as we store a pointer to the message, until the autoplayer
 // acts again!
 //
-void SendChatMessage(char *message) {
+EXE_IMPLEMENTS void SendChatMessage(char *message) {
 	if (_the_chat_message != NULL || message == "")	{
 		// Old message has not been sent yet.
 		// Ignore newer one (especially, if
