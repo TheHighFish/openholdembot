@@ -115,15 +115,7 @@ CString PureSymbolName(CString symbol_name) {
 		char last_character = symbol_name[symbol_name.GetLength() - 1];
 		if (isdigit(last_character)) {
 			symbol_name = symbol_name.Left(symbol_name.GetLength() - 1);
-		}	else {
-      for (int i=0; i<kNumberOfPokerTrackerPostfixes; ++i) {
-        int length = strlen(kPokerTrackerPostfixes[i]);
-        if(symbol_name.Right(length) == kPokerTrackerPostfixes[i]) {
-			    symbol_name = symbol_name.Left(symbol_name.GetLength() - length);
-          break;
-        }
-      }
-	  }
+		}	
   }
   return symbol_name;
 }

@@ -78,8 +78,16 @@ void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s) {
 }
 
 bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s) {
-	return ((s.Left(2) == "pt") 
-		&& ((s.Left(3) != "pt_") || (s.Left(5) == "pt_r_")));
+  if (s.Left(2) == "pt") {
+    return false;
+  }
+  if (s.Left(3) != "pt_") {
+    return true;
+  } 
+  if (s.Left(5) == "pt_r_") {
+    return true;
+  }
+  return false;
 }
 
 void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup() {
@@ -129,18 +137,14 @@ int CSymbolEnginePokerTracker::PlayerIcon(const int chair) {
   return PT_DLL_GetStat("icon", chair);
 }
 
-bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
-{
+bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name,"pt_",3)!=0)
-	{
+	if (memcmp(name, "pt_", 3) != 0) {
 		// Symbol of a different symbol-engine
 		return false;
 	}
-	CString s = name;
 	CheckForChangedPlayersOncePerHeartbeatAndSymbolLookup();
-	if (IsOldStylePTSymbol(s))
-	{
+	if (IsOldStylePTSymbol(name))	{
 		CString error_message;
 		error_message.Format(
 			"Old style PokerTracker symbol detected: %s.\n"
@@ -164,15 +168,13 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
 		*result = kUndefined;
 		return true;
 	}
-	if (!PT_DLL_IsValidSymbol(CString(s)))
-	{
+	if (!PT_DLL_IsValidSymbol(CString(name)))	{
 		// Invalid PokerTracker symbol
-		WarnAboutInvalidPTSymbol(s);
+		WarnAboutInvalidPTSymbol(name);
 		*result = kUndefined;
 		return true;
 	}
 	int chair = 0;
-
 	if (!p_pokertracker_thread->IsConnected()) 	{
 		if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed() || p_formula_parser->IsParsing()) {
 			// We are not yet seated or formula is getting parsed.
@@ -197,25 +199,26 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
 		*result = kUndefined;
 		return true;
 	}	else {
-		CString symbol = s;
-		CString last_character = symbol.Right(1);
+		CString last_character = name.Right(1);
     if (!isdigit(last_character[0])) {
       CString error_message;
       error_message.Format("Invalid PokerTracker Symbol: %s",
-        symbol);
+        name);
       OH_MessageBox_Formula_Error(error_message, "ERROR");
 		  *result = kUndefined;
       return false;
     }
 		chair = atoi(last_character);
 	}
+
+
   // Catch undefined chair (e.g. pt_r_-symbol without raisee)
   if (chair < 0) {
     *result = kUndefined;
     return true;
   }
 	AssertRange(chair, kFirstChair, kLastChair);
-	*result = PT_DLL_GetStat(s, chair); 
+	*result = PT_DLL_GetStat(name, chair); 
 	return true;
 }
 
