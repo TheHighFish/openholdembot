@@ -1,4 +1,18 @@
-﻿﻿v﻿12.0.2 2017-10-14
+﻿﻿v﻿12.0.3 2017-10-xx
+==================
+BUG FIXES:
+- The PokerTracker-DLL still accepted outdated postfixes.
+  This old, now incorrect code has now been removed, 
+  so pokerTracker works now with the chair-symbols 
+  of the multiplexer-engine as it should.
+  [THF]
+- The default Gecko-bot still contained some old-style
+  PokerTracker-symbols that didn't get handled correctly at run-time.
+  Thanks to Noobwithquestions and Stars83 for reporting.
+  [THF]
+  
+
+﻿v﻿12.0.2 2017-10-14
 ==================
 MAINTENANCE:
 - Introducing memory-pools for better performance,

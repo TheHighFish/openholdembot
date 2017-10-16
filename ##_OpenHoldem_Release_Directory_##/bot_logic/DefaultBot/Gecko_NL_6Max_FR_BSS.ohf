@@ -248,23 +248,23 @@ OR f$Preflop_React_To_Reraise
 
 ##f$pt_pfr##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_pfr_headsup FORCE
+WHEN Others RETURN pt_pfr_headsupchair FORCE
 
 ##f$pt_vpip##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_vpip_headsup FORCE
+WHEN Others RETURN pt_vpip_headsupchair FORCE
 
 ##f$pt_flopaf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_flop_af_headsup FORCE
+WHEN Others RETURN pt_flop_af_headsupchair FORCE
 
 ##f$pt_turnaf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_turn_af_headsup FORCE
+WHEN Others RETURN pt_turn_af_headsupchair FORCE
 
 ##f$pt_riveraf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
-WHEN Others RETURN pt_river_af_headsup FORCE
+WHEN Others RETURN pt_river_af_headsupchair FORCE
 
 ##f$draws##
 (!f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && nstraightcommon<3 && !f$wheeldraw && nrankedcommon==1) ||
@@ -2194,7 +2194,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
 0
 
 ##f$pt_wtsd##
-pt_wtsd_headsup
+pt_wtsd_headsupchair
 
 ##f$Preflop_First_In##
 (f$BettingAction_First_In && f$Chart_OpenRaise) ? 1 : 0
@@ -2385,16 +2385,16 @@ log$SERIOUS_ERROR
 (f$BettingAction_Hero_Did_Already_Act && (nbetstocall > 0))
 
 ##f$pt_vpip##
-pt_vpip_headsup
+pt_vpip_headsupchair
 
 ##f$pt_pfr##
-pt_pfr_headsup
+pt_pfr_headsupchair
 
 ##f$pt_fbbts##
-pt_bb_fold_to_steal_headsup
+pt_bb_fold_to_steal_headsupchair
 
 ##f$pt_fsbts##
-pt_sb_fold_to_steal_headsup
+pt_sb_fold_to_steal_headsupchair
 
 ##f$Chart_CallRaise##
    (f$Position_SmallBlind && listGecko09)
