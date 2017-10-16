@@ -106,7 +106,11 @@
 //     as the betsize calculations became now superfluous.
 //   * Making f$allin_on_betsize_balance_ratio
 //     dependent on effective stacks headsup.
-//     This was formerly part of Geckos betsizing-logic.    
+//     This was formerly part of Geckos betsizing-logic.  
+//   * Removed now unused f$balance, formerly used to
+//     calculate the betsize for allins.  
+//   * Renamed symbols like nbetsround1 to nbetsround_preflop
+//     for more verbosity.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -119,6 +123,8 @@
 //   * changed all three RaiseMax-actions to RaisePot-actions
 //     because some smart people complained that check-raising allin
 //     at the turn is too much when we are 10.000 bb deep.
+//   * Extended f$prwin_number_of_opponents for potential more 
+//     than 7 players postflop (full-ring).
 //
 //*****************************************************************************
 //
@@ -183,12 +189,12 @@ WHEN Others RETURN (0.5 *(StackSize_headsupchair / StackSize)) FORCE
 
 ##f$call_nuts##
 // Basic calls with nuts or free to check
-[ prwin>=0.98 ] ? 1 :
-[ call<=0.001 ] ? 1 :
-[ IsPreflop && (hand$AA || hand$KK) ] ? 1 : 0
+WHEN [prwin>=0.98] RETURN true FORCE
+WHEN [call<=0.001] RETURN true FORCE
+WHEN [IsPreflop AND (hand$AA OR hand$KK)] RETURN true FORCE
 
 ##f$call_minbets##
-[ IsPostflop && call<=bblind && nbetsround1>1 && f$prwin>.15 ] ? 1 :
+[ IsPostflop && call<=bblind && nbetsround_preflop>1 && f$prwin>.15 ] ? 1 :
 [ IsPostflop && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 : 0
 
 ##f$call_potcommitted##
@@ -197,31 +203,35 @@ WHEN Others RETURN (0.5 *(StackSize_headsupchair / StackSize)) FORCE
 ##f$flop_turn_raise_strong_set##
 [ IsPostflop && NOT IsRiver && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 : 0
 
-
 ##f$prwin_number_of_iterations##
 50000
 
 ##f$prwin_number_of_opponents##
 // Values will be rounded down, but we prefer to distinguish these cases
-nplayersplaying==2 && nplayersround2<=2 ? 1.00 :
-nplayersplaying==2 && nplayersround2==3 ? 1.50 :
-nplayersplaying==2 && nplayersround2==4 ? 2.25 :
-nplayersplaying==2 && nplayersround2==5 ? 2.50 :
-nplayersplaying==2 && nplayersround2>=6 ? 2.25 :
-nplayersplaying==3 && nplayersround2<=3 ? 1.33 :
-nplayersplaying==3 && nplayersround2==4 ? 2.00 :
-nplayersplaying==3 && nplayersround2==5 ? 2.66 :
-nplayersplaying==3 && nplayersround2>=6 ? 3.00 :
-nplayersplaying==4 && nplayersround2<=4 ? 2.50 :
-nplayersplaying==4 && nplayersround2==5 ? 2.75 :
-nplayersplaying==4 && nplayersround2>=6 ? 3.00 :
-nplayersplaying==5 && nplayersround2<=5 ? 3.25 :
-nplayersplaying==5 && nplayersround2>=6 ? 3.33 :
-nplayersplaying==6 && nplayersround2<=6 ? 3.50 : 1
+nplayersplaying==2 && nplayersround_flop<=2 ? 1.00 :
+nplayersplaying==2 && nplayersround_flop==3 ? 1.50 :
+nplayersplaying==2 && nplayersround_flop==4 ? 2.25 :
+nplayersplaying==2 && nplayersround_flop==5 ? 2.50 :
+nplayersplaying==2 && nplayersround_flop>=6 ? 2.25 :
+nplayersplaying==3 && nplayersround_flop<=3 ? 1.33 :
+nplayersplaying==3 && nplayersround_flop==4 ? 2.00 :
+nplayersplaying==3 && nplayersround_flop==5 ? 2.66 :
+nplayersplaying==3 && nplayersround_flop>=6 ? 3.00 :
+nplayersplaying==4 && nplayersround_flop<=4 ? 2.50 :
+nplayersplaying==4 && nplayersround_flop==5 ? 2.75 :
+nplayersplaying==4 && nplayersround_flop>=6 ? 3.00 :
+nplayersplaying==5 && nplayersround_flop<=5 ? 3.25 :
+nplayersplaying==5 && nplayersround_flop>=6 ? 3.33 :
+nplayersplaying==6 && nplayersround_flop<=6 ? 3.50 : 
+// Extension for more than 6 players
+nplayersplaying==6 && nplayersround_flop>=6 ? 4.00 : 
+nplayersplaying>=7 && nplayersround_flop>=7 ? 4.50 : 
+// Geckos default
+1
 
 ##f$delay##
-// Rendom delay of 0..2000 milli-seconds
-Random * 20
+// Rendom delay of 0..3000 milli-seconds
+Random * 30
 
 ##f$prefold##
 WHEN IsPostflop    RETURN false FORCE
@@ -405,22 +415,22 @@ WHEN (dealpositionrais == (nplayersplaying - 2)) RETURN 4 FORCE
 WHEN Others RETURN 3 FORCE
 
 ##f$Initiative_Hero##
-IsPreflop && nbetsround1>1 && !didcallround1 ? 1 :
-IsFlop && nbetsround1>1 && !didcallround1 ? 1 :
-IsTurn && nbetsround2>0 && !didcallround2 ? 1 :
-IsRiver && nbetsround3>0 && !didcallround3 ? 1 : 0
+IsPreflop && nbetsround_preflop>1 && !didcallround_preflop ? 1 :
+IsFlop && nbetsround_preflop>1 && !didcallround_preflop ? 1 :
+IsTurn && nbetsround_flop>0 && !didcallround_flop ? 1 :
+IsRiver && nbetsround_turn>0 && !didcallround_turn ? 1 : 0
 
 ##f$Initiative_Nobody##
-IsPreflop ? nbetsround1<=1 :
-IsFlop ? nbetsround1<=1 :
-IsTurn ? nbetsround2<=0 :
-IsRiver ? nbetsround3<=0 : 0
+IsPreflop ? nbetsround_preflop<=1 :
+IsFlop ? nbetsround_preflop<=1 :
+IsTurn ? nbetsround_flop<=0 :
+IsRiver ? nbetsround_turn<=0 : 0
 
 ##f$Initiative_Villian##
-IsPreflop ? didcallround1 && nbetsround1>1 :
-IsFlop ? didcallround1 && nbetsround1>1 :
-IsTurn ? !didbetsizeround2 && didcallround2 && nbetsround2>0 :
-IsRiver ? !didbetsizeround2 && didcallround3 && nbetsround3>0 : 0
+IsPreflop ? didcallround_preflop && nbetsround_preflop>1 :
+IsFlop ? didcallround_preflop && nbetsround_preflop>1 :
+IsTurn ? !didbetsizeround_flop && didcallround_flop && nbetsround_flop>0 :
+IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 
 ##f$prwin##
 [prwin+(prtie/2)]**(1+f$threat)
@@ -635,13 +645,13 @@ IsRiver ? !didbetsizeround2 && didcallround3 && nbetsround3>0 : 0
 
         [ nplayersplaying==2 ] ? {
 
-            [ nplayersround2==2 ] ? f$prwin>0.70 :
-            [ nplayersround2>=3 ] ? f$prwin>0.75 : 0 } :
+            [ nplayersround_flop==2 ] ? f$prwin>0.70 :
+            [ nplayersround_flop>=3 ] ? f$prwin>0.75 : 0 } :
 
         [ nplayersplaying>=3 ] ? {
 
-            [ nplayersround2==3 ] ? f$prwin>0.75 :
-            [ nplayersround2>=4 ] ? f$prwin>0.80 : 0 } : 0 } :
+            [ nplayersround_flop==3 ] ? f$prwin>0.75 :
+            [ nplayersround_flop>=4 ] ? f$prwin>0.80 : 0 } : 0 } :
 
     [ f$actionpostflop_4 ] ? {
 
@@ -921,13 +931,13 @@ WHEN Others RaiseBy (4 * BetSize) FORCE
 	
 ##f$BetsizeFlopHeadsup##
 WHEN (AmountToCall <= 1)
-   WHEN (nbetsround1 <= 6)  RaiseBy 75% FORCE
+   WHEN (nbetsround_preflop <= 6)  RaiseBy 75% FORCE
    WHEN Others  RaiseBy 55% FORCE
 WHEN NOT didbetsize
    WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
    WHEN Others RaiseBy (4 * BetSize) FORCE
 WHEN Others
-   WHEN (nbetsround1 <= 1) RaiseBy (4 * BetSize) FORCE
+   WHEN (nbetsround_preflop <= 1) RaiseBy (4 * BetSize) FORCE
    WHEN f$ptype_lag RaiseBy (2 * BetSize) FORCE
    // Formerly RaiseMax.
    WHEN Others RaisePot FORCE
@@ -967,7 +977,7 @@ WHEN [ !didbetsize ]
    WHEN (AmountToCall <= 33% PotSize) RaiseBy 80% FORCE
    WHEN Others RaiseBy (4 * BetSize) FORCE
 WHEN Others
-   WHEN (nbetsround1<=1) RaiseBy (4 * BetSize) FORCE
+   WHEN (nbetsround_preflop<=1) RaiseBy (4 * BetSize) FORCE
    // Preflop raised, flop reraised.
    // Lots of action, large pot.
    // Formerly RaiseMax.
@@ -994,9 +1004,9 @@ WHEN Others
 
     [ f$actionpostflop_1 ] ? {
 
-        [ nplayersplaying==2 && nplayersround2==2 ] ? {
+        [ nplayersplaying==2 && nplayersround_flop==2 ] ? {
 
-            [ didcallround1 && nbetsround1>1 && nbetsround1<=5 ] ? f$prwin>0 : // donkbet and 2nd barrel turn
+            [ didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=5 ] ? f$prwin>0 : // donkbet and 2nd barrel turn
 
             [ f$AggressionFactor_Turn2<=3.00 ] ? {
 
@@ -1005,7 +1015,7 @@ WHEN Others
 
             [ f$AggressionFactor_Turn2>3.00 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>.70 && f$prwin<.80 : 0 } : // only barrel value oop
                 
-        [ nplayersplaying>=2 && nplayersround2>=3 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>.74 : 0 } :
+        [ nplayersplaying>=2 && nplayersround_flop>=3 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>.74 : 0 } :
 
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
@@ -1035,12 +1045,12 @@ WHEN Others
 
     [ f$actionpostflop_1 ] ? {
 
-        [ nplayersplaying==2 && nplayersround2==2 ] ? {
+        [ nplayersplaying==2 && nplayersround_flop==2 ] ? {
 
-             [ f$prwin<0.72 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) && ranklocommon<10 && nbetsround1<7 && nbetsround2<15 && nrankedcommon==1 ] ? 1 :
+             [ f$prwin<0.72 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) && ranklocommon<10 && nbetsround_preflop<7 && nbetsround_flop<15 && nrankedcommon==1 ] ? 1 :
              [ f$prwin>=0.78 ] ? 1 : 0 } :
 
-        [ nplayersplaying>=2 && nplayersround2>=3 && ranklocommon<10 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>0.65 : 0 } :
+        [ nplayersplaying>=2 && nplayersround_flop>=3 && ranklocommon<10 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>0.65 : 0 } :
 
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
@@ -1154,8 +1164,8 @@ WHEN Others
 
     [ f$actionpostflop_1 ] ? {
 
-         [ nplayersround2==2 ] ? f$prwin>0 :
-         [ nplayersround2>=3 ] ? {
+         [ nplayersround_flop==2 ] ? f$prwin>0 :
+         [ nplayersround_flop>=3 ] ? {
 
              [ f$draws>1   ] ? 1 :
              [ f$prwin>.60 ] ? 1 : 0 } : 0 } :
@@ -1212,9 +1222,9 @@ WHEN Others
 
     [ f$actionpostflop_1 ] ? {
 
-        [ nplayersplaying==2 && nplayersround2==2 && handsplayed>15 && !f$safeboard1 && !didcallround1 && nbetsround1>1 && nbetsround1<=6 && didbetsizeround2 && !didcallround2 && nbetsround2<11 ] ? f$prwin>0.00 :
-        [ nplayersplaying==2 && nbetsround2==0 ] ? f$prwin>0.70 :
-        [ nplayersplaying>=3 && nbetsround2==0 ] ? f$prwin>0.75 :
+        [ nplayersplaying==2 && nplayersround_flop==2 && handsplayed>15 && !f$safeboard1 && !didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=6 && didbetsizeround_flop && !didcallround_flop && nbetsround_flop<11 ] ? f$prwin>0.00 :
+        [ nplayersplaying==2 && nbetsround_flop==0 ] ? f$prwin>0.70 :
+        [ nplayersplaying>=3 && nbetsround_flop==0 ] ? f$prwin>0.75 :
         [ f$prwin>.80 ] ? 1 : 0 } :
 
     [ f$actionpostflop_2 ] ? f$prwin>.86 :
@@ -1272,18 +1282,18 @@ WHEN Others
 0
 
 ##f$river_raise_noaction##
-// Toevoegen NBETSROUND1
+// Toevoegen NBETSround_preflop
 
 [ f$Position_Early ] ? {
 
     [ f$actionpostflop_1 ] ? {
 
-         [ nplayersround2==2 ] ? {
+         [ nplayersround_flop==2 ] ? {
 
-             [ nbetsround1<6 && nbetsround2<15 ] ? f$prwin>0 :
+             [ nbetsround_preflop<6 && nbetsround_flop<15 ] ? f$prwin>0 :
              [ f$prwin>.65                     ] ? 1         : 0 } :
 
-         [ nplayersround2>=3 ] ? f$prwin>.65 : 0 } :
+         [ nplayersround_flop>=3 ] ? f$prwin>.65 : 0 } :
 
     [ f$actionpostflop_2 ] ? f$prwin>.98 :
     [ f$actionpostflop_3 ] ? f$prwin>.98 :
@@ -1312,8 +1322,8 @@ WHEN Others
 
     [ f$actionpostflop_1 ] ? {
 
-         [ nplayersround2==2 ] ? f$prwin>.50 :
-         [ nplayersround2>=3 ] ? f$prwin>.55 : 0 } :
+         [ nplayersround_flop==2 ] ? f$prwin>.50 :
+         [ nplayersround_flop>=3 ] ? f$prwin>.55 : 0 } :
 
     [ f$actionpostflop_2 ] ? f$prwin>.74 :
     [ f$actionpostflop_3 ] ? f$prwin>.78 :
@@ -1348,8 +1358,8 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 
 (IsFlop && rankloplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair                                                                                                              ? 6 : 0) +
 (IsFlop && rankhiplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair && !(rankloplayer>rankhicommon)                                                                              ? 3 : 0) +
-(IsTurn && rankloplayer>rankhicommon && nbetsround2<3 && nplayersplaying==2 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
-(IsTurn && rankloplayer>rankhicommon && nbetsround2<2 && nplayersplaying==3 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
+(IsTurn && rankloplayer>rankhicommon && nbetsround_flop<3 && nplayersplaying==2 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
+(IsTurn && rankloplayer>rankhicommon && nbetsround_flop<2 && nplayersplaying==3 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
 
 (nstraightcommon==3 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==1 && !f$wheeldraw      ? 4 : 0) +
 (nstraightcommon==3 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==2 && !f$wheeldraw      ? 2 : 0) +
@@ -1543,20 +1553,20 @@ IsTurn  ? (f$AggressionFactor_Turn+f$foldequity+f$villiantakeover+f$reducewincha
 IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair) : 0
 
 ##f$TightFactor##
-[ nbetsround1<=1 ] ? 1 :
+[ nbetsround_preflop<=1 ] ? 1 :
 
-[ nbetsround1>1 && nbetsround1<=5 ] ? {
+[ nbetsround_preflop>1 && nbetsround_preflop<=5 ] ? {
 
-    [ didbetsizeround1 ] ? 1.0 :
-    [ didcallround1 ] ? 0.8 : 0 } :
+    [ didbetsizeround_preflop ] ? 1.0 :
+    [ didcallround_preflop ] ? 0.8 : 0 } :
 
-[ nbetsround1>5 && nbetsround1<20 ] ? {
+[ nbetsround_preflop>5 && nbetsround_preflop<20 ] ? {
 
-    [ didbetsizeround1 && !didcallround1 ] ? 0.8 :
-    [ didbetsizeround1 &&  didcallround1 ] ? 0.6 :
-    [ didcallround1 && !didbetsizeround1 ] ? 0.7 : 0 } :
+    [ didbetsizeround_preflop && !didcallround_preflop ] ? 0.8 :
+    [ didbetsizeround_preflop &&  didcallround_preflop ] ? 0.6 :
+    [ didcallround_preflop && !didbetsizeround_preflop ] ? 0.7 : 0 } :
 
-[ nbetsround1>20 ] ? 0.6 : 1
+[ nbetsround_preflop>20 ] ? 0.6 : 1
 
 ##f$flop_call_initiative##
 [ f$Position_Early ] ? {
@@ -2101,7 +2111,7 @@ WHEN (raischair >= 0) RETURN balance_raischair FORCE
 WHEN IsPreflop RETURN balance_bigblindchair FORCE
 
 ##f$preflop_aggressor##
-[ nplayersround2>=3 && nplayersplaying==2 ]
+[ nplayersround_flop>=3 && nplayersplaying==2 ]
 
 ##f$foldequity##
 [ f$Initiative_Nobody && nplayersplaying==2 && call==0 && f$pt_hands>50 ] ? {
@@ -2134,7 +2144,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
-        [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
+        [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
 
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
@@ -2176,7 +2186,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
-        [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
+        [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
 
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
@@ -2680,8 +2690,8 @@ currentbet
 0
 
 ##f$Initiative_GotRaised##
-IsTurn ? didbetsizeround2 && didcallround2 && nbetsround2>0 :
-IsRiver ? didbetsizeround3 && didcallround3 && nbetsround3>0 : 0
+IsTurn ? didbetsizeround_flop && didcallround_flop && nbetsround_flop>0 :
+IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
 
 ##f$nuts##
    [ nhandshi<=0 ]
@@ -2691,7 +2701,7 @@ IsRiver ? didbetsizeround3 && didcallround3 && nbetsround3>0 : 0
 [ nhandshi<=1 ]
 
 ##f$villiantakeover##
-[ IsTurn && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 ] ? {
+[ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop ] ? {
 
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
 
@@ -2709,7 +2719,7 @@ IsRiver ? didbetsizeround3 && didcallround3 && nbetsround3>0 : 0
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
 
-[ IsRiver && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 ] ? {
+[ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop ] ? {
 
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.50 :
 
@@ -2730,11 +2740,11 @@ IsRiver ? didbetsizeround3 && didcallround3 && nbetsround3>0 : 0
 0
 
 ##f$reducewinchance_when_have_twopair##
-[ nrankedcommon==2 && nplayersround2>2 && istwopair && trankcommon>7 && !f$twopair ] ? 0.4 : 0
+[ nrankedcommon==2 && nplayersround_flop>2 && istwopair && trankcommon>7 && !f$twopair ] ? 0.4 : 0
 
 ##f$betline##
-[ !didcallround1 && nbetsround1>1 && nbetsround1<=7 && // raise preflop
-  didbetsizeround2 && !didcallround2 && nbetsround2>0 && nbetsround2<12 && // cbet flop
+[ !didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=7 && // raise preflop
+  didbetsizeround_flop && !didcallround_flop && nbetsround_flop>0 && nbetsround_flop<12 && // cbet flop
   f$Position_Early && !didbetsize ] // early position, did not act yet
 
 ##f$prwin1##
@@ -2923,7 +2933,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
-        [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
+        [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
 
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
@@ -2965,7 +2975,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
 
-        [ IsRiver && !didcallround2 && pot<32*bblind ] ? {
+        [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
 
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
@@ -2983,7 +2993,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
 0
 
 ##f$villiantakeover1##
-[ IsTurn && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 && f$Position_Late ] ? {
+[ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && f$Position_Late ] ? {
 
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
 
@@ -3001,7 +3011,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
 
-[ IsRiver && !didcallround1 && nbetsround1>1 && !didbetsizeround2 && didcallround2 && nbetsround3>0 && f$Position_Late ] ? {
+[ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && nbetsround_turn>0 && f$Position_Late ] ? {
 
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.50 :
 
@@ -3022,7 +3032,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
 0
 
 ##f$reducewinchance_when_have_twopair1##
-[ nrankedcommon==2 && istwopair && nplayersround2>2 && trankcommon>7 && !f$twopair ] ? 0.4 : 0
+[ nrankedcommon==2 && istwopair && nplayersround_flop>2 && trankcommon>7 && !f$twopair ] ? 0.4 : 0
 
 ##f$realbalance##
 // !!! name it remaining-balance or change the code to work with balance
@@ -3045,7 +3055,7 @@ IsPreflop ? {
 IsPostflop ? balance-f$mycurrentbet : 0
 
 ##f$bluffformula##
-nplayersplaying==2 && nplayersround2<4 && nbetsround2<12 && !didcallround2 ? {
+nplayersplaying==2 && nplayersround_flop<4 && nbetsround_flop<12 && !didcallround_flop ? {
 
 f$pt_vpip>0.12 && f$pt_vpip<=0.25 ? {
 
@@ -3146,9 +3156,6 @@ pt_turn_af_headsupchair * pt_wtsd_headsupchair * 4
 (f$pt_icon_headsupchair==7) ? 1 :
 (f$pt_icon_headsupchair==8) ? 1 :
 (f$pt_icon_headsupchair==9) ? 1 : 0
-
-##f$balance##
-(balance+bblind)
 
 //*****************************************************************************
 //
