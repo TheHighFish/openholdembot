@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineTime.h"
 
+#include "CCasinoInterface.h"
 #include "NumericalFunctions.h"
 
 CSymbolEngineTime::CSymbolEngineTime() {
@@ -33,6 +34,8 @@ void CSymbolEngineTime::InitOnStartup() {
   time(&_elapsedhold);
   time(&_elapsedhandhold);
   time(&_elapsedautohold);
+  time(&_elapsedmyturnhold);
+  _last_heartbeat_ay_my_turn;
 }
 
 void CSymbolEngineTime::UpdateOnConnection() {
@@ -49,6 +52,10 @@ void CSymbolEngineTime::UpdateOnNewRound() {
 }
 
 void CSymbolEngineTime::UpdateOnMyTurn() {
+  if (!_last_heartbeat_ay_my_turn) {
+    time(&_elapsedmyturnhold);
+  }
+  _last_heartbeat_ay_my_turn = true;
 }
 
 void CSymbolEngineTime::UpdateOnHeartbeat() {
@@ -58,6 +65,12 @@ void CSymbolEngineTime::UpdateOnHeartbeat() {
   //   b) because they were laggy in the debug-tab (flexible heartbeat)
   //   c) because we want them to be available all the time
   //      and normal calculations stop on disconnection.
+  assert(p_casino_interface != nullptr);
+  if (!p_casino_interface->IsMyTurn()) {
+    _last_heartbeat_ay_my_turn = false;
+  }
+  // Not setting anything to true here.
+  // We do this in UpdateOnMyTurn() after the calculations
 }	
 
 void CSymbolEngineTime::UpdateOnAutoPlayerAction() {
@@ -107,6 +120,13 @@ double CSymbolEngineTime::elapsedtoday() {
   return result;
 }
 
+double CSymbolEngineTime::elapsedmyturn() {
+  time_t t_now_time;
+  time(&t_now_time);
+  double result = t_now_time - _elapsedmyturnhold;
+  AssertRange(result, 0, elapsed());
+  return result;
+}
 
 bool CSymbolEngineTime::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
