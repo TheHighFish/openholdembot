@@ -10,7 +10,20 @@ BUG FIXES:
   PokerTracker-symbols that didn't get handled correctly at run-time.
   Thanks to Noobwithquestions and Stars83 for reporting.
   [THF]
-  
+- The symbols nopponentscalling and Calls did not count players
+  who called allin for less than the raisers bet (by design),
+  as they could not get distinguished easily from raisers
+  of the previous orbit. This has now be done.
+  Thanks to JPHol123 for reporting.
+  [THF]
+
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
 
 ﻿v﻿12.0.2 2017-10-14
 ==================

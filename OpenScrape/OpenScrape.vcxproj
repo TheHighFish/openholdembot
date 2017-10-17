@@ -87,6 +87,9 @@
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -126,6 +129,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\OpenHoldem\WebSafeColours.cpp" />
@@ -149,8 +155,8 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="..\OpenHoldem\NumericalFunctions.cpp" />
     <ClCompile Include="..\OpenHoldem\CTableTitle.cpp" />
-	<ClCompile Include="..\OpenHoldem\CTitleEvaluator.cpp" />
-	<ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp" />
+    <ClCompile Include="..\OpenHoldem\CTitleEvaluator.cpp" />
+    <ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp" />
     <ClCompile Include="OpenScrape.cpp" />
     <ClCompile Include="OpenScrapeDoc.cpp" />
     <ClCompile Include="OpenScrapeView.cpp" />
