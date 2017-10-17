@@ -21,8 +21,8 @@ class CStableFramesCounter : public CSpaceOptimizedGlobalObject {
 	CStableFramesCounter();
 	~CStableFramesCounter();
  public:
-	unsigned int	NumberOfStableFrames() {return _NumberOfStableFrames;}
-	unsigned int	UpdateNumberOfStableFrames();
+	int	NumberOfStableFrames() { return _NumberOfStableFrames; }
+	int	UpdateNumberOfStableFrames();
  public:
   // After an autoplayer-action we expect a change in table-state.
   // Therefore we reset the counter to zero after actions

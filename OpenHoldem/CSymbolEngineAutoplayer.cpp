@@ -23,6 +23,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"  
 #include "CStableFramesCounter.h"
+#include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "MagicNumbers.h"
@@ -33,6 +34,8 @@ CSymbolEngineAutoplayer::CSymbolEngineAutoplayer() {
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	assert(p_symbol_engine_tablelimits != NULL);
+  assert(p_symbol_engine_time != NULL);
+  assert(p_symbol_engine_userchair != NULL);
 }
 
 CSymbolEngineAutoplayer::~CSymbolEngineAutoplayer() {
@@ -119,11 +122,9 @@ bool CSymbolEngineAutoplayer::isfinaltable() {
   return p_table_state->_s_limit_info.is_final_table();
 }
 
-void CSymbolEngineAutoplayer::CalculateFinalAnswer()
-{
+void CSymbolEngineAutoplayer::CalculateFinalAnswer() {
 	// [IMPERFECT CODE] Updates stable-frames-counter as a side-effect
 	// and should therefore only get called once per heartbeat.
-
 	_isfinalanswer = true;
 	// check factors that affect isFinalAnswer status
 	if (p_iterator_thread->IteratorThreadWorking())	{
@@ -144,22 +145,19 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer()
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Possibly a tablemap-problem\n");
 		_isfinalanswer = false;
 	}
-
 	//  Avoiding unnecessary calls to p_stableframescounter->UpdateNumberOfStableFrames(),
 	if (_isfinalanswer)	{
 		p_stableframescounter->UpdateNumberOfStableFrames();
 	}
   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
-	// Scale f$delay to a number of scrapes and avoid division by 0 and negative values
-	unsigned int additional_frames_to_wait = 0;
   CString delay_function = k_standard_function_names[k_standard_function_delay];
   double desired_delay_in_seconds = p_function_collection->Evaluate(delay_function, preferences.log_delay_function());
-  if (preferences.scrape_delay() > 0 && desired_delay_in_seconds > 0) {  
-    additional_frames_to_wait = desired_delay_in_seconds / preferences.scrape_delay();
+  if (desired_delay_in_seconds < p_engine_container->symbol_engine_time()->elapsedmyturn()) {
+    write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not isfinalanswer because of f$delay\n");
+    _isfinalanswer = false;
   }
-
 	// If we don't have enough stable frames, or have not waited f$delay milliseconds, then return.
-	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay() + additional_frames_to_wait) {
+	if (p_stableframescounter->NumberOfStableFrames() < preferences.frame_delay()) {
 		write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not Final Answer because we don't have enough stable frames, or have not waited f$delay (=%.0f ms)\n", 
        p_function_collection->Evaluate(delay_function, preferences.log_delay_function()));
 		_isfinalanswer = false;

@@ -78,7 +78,7 @@ void CStableFramesCounter::SaveCurrentState() {
 // This function does automatically detect a changed game-state,
 // so there is no longer any need to do a "Reset()" after 
 // every autoplayer-action.
-unsigned int CStableFramesCounter::UpdateNumberOfStableFrames() {
+int CStableFramesCounter::UpdateNumberOfStableFrames() {
 	write_log(preferences.debug_stableframescounter(), "[CStableFramesCounter] Update number of stable frames\n");
   if (_isReset) {
 		// Counter got reset, e.g. after an autoplayer-action.
