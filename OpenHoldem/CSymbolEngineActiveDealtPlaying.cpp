@@ -40,22 +40,20 @@ CSymbolEngineActiveDealtPlaying::CSymbolEngineActiveDealtPlaying()
 CSymbolEngineActiveDealtPlaying::~CSymbolEngineActiveDealtPlaying()
 {}
 
-void CSymbolEngineActiveDealtPlaying::InitOnStartup()
-{
+void CSymbolEngineActiveDealtPlaying::InitOnStartup() {
 	UpdateOnConnection();
 }
 
-void CSymbolEngineActiveDealtPlaying::UpdateOnConnection()
-{
+void CSymbolEngineActiveDealtPlaying::UpdateOnConnection() {
 	_playersactivebits  = 0;
 	_playersplayingbits = 0;
 	_playersdealtbits   = 0;
 	_playersseatedbits  = 0;
+  _playersallinbits   = 0;
   _maxnplayersdealt   = 0;   
 }
 
-void CSymbolEngineActiveDealtPlaying::UpdateOnHandreset()
-{
+void CSymbolEngineActiveDealtPlaying::UpdateOnHandreset() {
 	_playersdealtbits   = 0;
 	_playersactivebits  = 0;
 	_playersplayingbits = 0;
@@ -73,6 +71,7 @@ void CSymbolEngineActiveDealtPlaying::UpdateOnHeartbeat() {
 	CalculatePlayingBits();
 	CalculateDealtBits();
 	CalculateSeatedBits();
+  CalculateAllinBits();
 }
 
 void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
@@ -104,6 +103,17 @@ void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits() {
 		}
 	}
 	AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);
+}
+
+void CSymbolEngineActiveDealtPlaying::CalculateAllinBits() {
+  _playersallinbits = 0;
+  // First: simply check for all players with no balance
+  for (int i = 0; i<kMaxNumberOfPlayers; i++) {
+    if (p_table_state->Player(i)->IsAllin()) {
+      _playersseatedbits |= 1 << i;
+    }
+  }
+  AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);
 }
 
 int CSymbolEngineActiveDealtPlaying::userchairbit() { 

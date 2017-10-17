@@ -76,6 +76,7 @@ void CSymbolEngineCallers::UpdateOnHandreset() {
   _nopponentscalling = 0;
   _firstcaller_chair = kUndefined;
   _lastcaller_chair = kUndefined;
+  _allinbits_previous_orbit = 0;
 }
 
 void CSymbolEngineCallers::UpdateOnNewRound() {
@@ -88,6 +89,10 @@ void CSymbolEngineCallers::UpdateOnMyTurn() {
 
 void CSymbolEngineCallers::UpdateOnHeartbeat() {
   CalculateCallers();
+}
+
+void CSymbolEngineCallers::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
+  _allinbits_previous_orbit = p_engine_container->symbol_engine_active_dealt_playing()->playersallinbits();
 }
 
 void CSymbolEngineCallers::CalculateCallers() {
@@ -147,16 +152,15 @@ void CSymbolEngineCallers::CalculateCallers() {
         "[CSymbolEngineCallers] Chair %i userchair\n", chair);
       continue;
     }
-    if (current_players_bet < highest_bet) {
+    if (current_players_bet == 0) {
+      // Allin from a previous betting round
+      // or not yet acted
+      continue;
+    }
+    if ((current_players_bet < highest_bet) && !p_table_state->Player(i)->IsAllin()) {
       // Not a caller
       write_log(preferences.debug_symbolengine(),
         "[CSymbolEngineCallers] Chair %i not calling (bet too small)\n", chair);
-      if (current_players_bet == 0) {
-        // Player is allin from previous orbit
-        // This does not get counted as "calling" 
-        // as he could have been raising allin.
-        continue;
-      } 
       // End of search loop reached.
       // We found somebody who was raising or calling in a previous orbit.
       // If we continue then we would find outdated callers,
@@ -164,6 +168,18 @@ void CSymbolEngineCallers::CalculateCallers() {
       // Aggregated OpenPPL-history-symbols like "Raises" would become wrong
       // if we count some callers twice.
       break;
+    }
+    if (p_table_state->Player(i)->IsAllin()) {
+      // Raisers already handled
+      assert(current_players_bet <= highest_bet);
+      if (IsBitSet(_allinbits_previous_orbit, i)) {
+        // Not a caller
+        write_log(preferences.debug_symbolengine(),
+          "[CSymbolEngineCallers] Chair %i allin from previous orbit\n", i);
+        continue;
+      }
+      // Else: calling and being allin
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=21128
     }
     write_log(preferences.debug_symbolengine(),
       "[CSymbolEngineCallers] Chair %i CALLS\n", chair);

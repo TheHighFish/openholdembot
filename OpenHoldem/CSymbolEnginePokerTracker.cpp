@@ -161,7 +161,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
       "  * _userchair\n"
       "  * _firstraiserchair\n"
       "  * _firstcallerchair\n"
-      "  * _lastcallerchair\n", s);
+      "  * _lastcallerchair\n", name);
 		OH_MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");

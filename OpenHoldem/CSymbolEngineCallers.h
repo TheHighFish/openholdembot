@@ -30,6 +30,7 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
 	void UpdateOnNewRound();
 	void UpdateOnMyTurn();
 	void UpdateOnHeartbeat();
+  void UpdateAfterAutoplayerAction(int autoplayer_action_code);
  public:
 	// Public accessors
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
@@ -58,6 +59,7 @@ class CSymbolEngineCallers: public CVirtualSymbolEngine {
 	// Index 0 is unused.
 	int _callbits[kNumberOfBetrounds + 1]; 
  private:
+  int _allinbits_previous_orbit;
   int _nchairs;
 };
 

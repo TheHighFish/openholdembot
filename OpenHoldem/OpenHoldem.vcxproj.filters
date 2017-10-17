@@ -804,6 +804,9 @@
     <ClCompile Include="CMemoryPool.cpp">
       <Filter>Source Files\Various Function Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="CSpaceOptimizedFormulaObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_">
@@ -1706,6 +1709,9 @@
       <Filter>Header Files\Various Function Libraries</Filter>
     </ClInclude>
     <ClInclude Include="CSpaceOptimizedGlobalObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpaceOptimizedFormulalObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

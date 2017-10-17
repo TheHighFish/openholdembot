@@ -53,6 +53,8 @@ public:
 	int nplayersseated()		  { return bitcount(playersseatedbits()); }
 	int nopponentsseated()		{ return bitcount(opponentsseatedbits()); }
  public:
+  int playersallinbits()    { return _playersallinbits; }
+ public:
 	// Especially useful for the case when we are only interested in opponents
 	// and calculate that value from players, subtracting the userchair.
    int userchairbit();
@@ -65,11 +67,13 @@ public:
 	void CalculatePlayingBits();
 	void CalculateDealtBits();
 	void CalculateSeatedBits();
+  void CalculateAllinBits();
 private:
 	int _playersactivebits;
 	int _playersplayingbits;
 	int _playersdealtbits;
 	int _playersseatedbits;
+  int _playersallinbits;
   int _maxnplayersdealt;
 };
 
