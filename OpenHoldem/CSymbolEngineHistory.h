@@ -18,14 +18,13 @@
 #include "CBetroundCalculator.h"
 #include "CSymbolEngineUserChair.h"
 
-const int k_hist_sym_count = 93;
+const int k_hist_sym_count = 93; 
 
-class CSymbolEngineHistory: public CVirtualSymbolEngine
-{
-public:
+class CSymbolEngineHistory: public CVirtualSymbolEngine {
+ public:
 	CSymbolEngineHistory();
 	~CSymbolEngineHistory();
-public:
+ public:
 	// Mandatory reset-functions
 	void InitOnStartup();
 	void UpdateOnConnection();
@@ -34,20 +33,16 @@ public:
 	void UpdateOnMyTurn();
 	void UpdateOnHeartbeat();
   void UpdateAfterAutoplayerAction(int autoplayer_action_code);
-public:
+ public:
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided();
-public:
+ public:
 	// Public accessors
 	// Public accessors
 	bool DidAct();	
 	bool DidAct(int betround);
-	
-	bool DidActThisHand()
-	{
-		return DidAct(kBetroundPreflop);
-	}
-public:
+	bool DidActThisHand()	{	return DidAct(kBetroundPreflop); }
+ public:
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }
 	int botslastaction(int betround)	{ return _botslastaction[betround]; }
 	double nbetsround(int betround)		{ return _nbetsround[betround]; }
@@ -61,13 +56,13 @@ public:
 	int didfold(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_fold]; }
 	int didalli(int betround)			{ return _autoplayer_actions[betround][k_autoplayer_function_allin]; }
 	int prevaction()			    	{ return _prevaction; }
-private:
+ private:
 	void SetPrevaction(int autoplayer_action_code);
 	void CalculateHistory();
   double HistorySymbol(const CString sym, const int round);
-private:
+ private:
 	int _prevaction;
-private:
+ private:
 	// Element 0 is unused
 	// Elements 1..4 are for the 4 betrounds
 	int _nplayersround[kNumberOfBetrounds + 1];		
