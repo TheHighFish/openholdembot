@@ -16,7 +16,7 @@ BUG FIXES:
   of the previous orbit. This has now be done.
   Thanks to JPHol123 for reporting.
   [THF]
-- History-symbols like nbetsroundX got calculated on every turn
+- History-symbols like nbetsroundX got calculated on every heartbeat
   (when we don't have stable frames). This could lead to ugly situations,
   for example turn-card already painted, but bets of the flop still visible,
   as a consequence affectibg other symbols like NoBettingOnTurn.
