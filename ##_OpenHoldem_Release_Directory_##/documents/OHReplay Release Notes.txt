@@ -1,3 +1,14 @@
+﻿v﻿12.0.3 2017-10-18
+==================
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+
 v11.0.1. 2017-01-14
 ===================
 NEW STUFF:

@@ -1,3 +1,14 @@
+﻿v﻿12.0.3 2017-10-18
+==================
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+
 v11.1.3 2016-04-12
 ==================
 BUG FIXES: 
@@ -9,6 +20,7 @@ BUG FIXES:
   of the game.info-dialog. Thanks to ValueBotty for reporting.
   [THF]
 
+  
 v11.0.1 2016-01-14
 ==================
 BUG FIXES: 
@@ -24,6 +36,7 @@ NEW STUFF:
   The rest work like before.
   [OpenHoldem, SingleMalt, THF]
 
+  
 v9.2.6 2016-08-30
 =================
 NEW STUFF:
@@ -154,7 +167,6 @@ v1.0.2 2007-12-14
 v1.0.1 2007-11-30
 =================
 - Class name of dialog changed to allow detection by OpenHoldem, and subsequent setting of "ismanual" symbol.
-
 - Scraper profile updated to correctly handle "check" button
  
 

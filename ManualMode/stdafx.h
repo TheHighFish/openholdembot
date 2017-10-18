@@ -63,16 +63,9 @@
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-
 // Version
-#define VERSION_NUMBER			11.01
-#define VERSION_TEXT				"11.0.1.0"  // change version number in ManualMode.rc also, when needed
-
-
-
-
-
-
+#define VERSION_NUMBER			12.03
+#define VERSION_TEXT				"12.0.3.0"  // change version number in ManualMode.rc also, when needed
 
 #ifdef _UNICODE
 #if defined _M_IX86

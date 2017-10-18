@@ -1,4 +1,4 @@
-﻿﻿v﻿12.0.3 2017-10-xx
+﻿﻿v﻿12.0.3 2017-10-18
 ==================
 BUG FIXES:
 - The PokerTracker-DLL still accepted outdated postfixes.
