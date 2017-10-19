@@ -153,7 +153,6 @@ enum {
 
 enum {
 	// String Values
-	k_prefs_dll_name,
 	k_prefs_pt_ip_addr,
 	k_prefs_pt_port,
 	k_prefs_pt_dbname,
@@ -164,7 +163,6 @@ enum {
 	k_prefs_mutex_name,
 	k_prefs_path_ohf,
 	k_prefs_path_tm,
-	k_prefs_path_dll,
 	// leave this always at the last position
 	k_prefs_last_CString_value,
 };
@@ -194,8 +192,6 @@ class CPreferences : public CSpaceOptimizedGlobalObject {
 	const bool restore_position_and_focus() { return prefs_numerical_values[k_prefs_restore_position_and_focus]; }
 	const bool use_auto_replay() { return prefs_numerical_values[k_prefs_use_auto_replay]; }
 
-	// Dll extension
-	const CString dll_name() { return prefs_CString_values[k_prefs_dll_name]; }
 	// Scraper
 	const int scrape_delay() { return prefs_numerical_values[k_prefs_scrape_delay]; }
 	// Replay Frames
@@ -327,7 +323,6 @@ class CPreferences : public CSpaceOptimizedGlobalObject {
 	// CFileDialog saved paths
 	const CString path_ohf()	{ return prefs_CString_values[k_prefs_path_ohf]; }
 	const CString path_tm()		{ return prefs_CString_values[k_prefs_path_tm]; }
-	const CString path_dll()	{ return prefs_CString_values[k_prefs_path_dll]; }
  public:
 	// public mutators
 	void SetValue(int index_of_variable, CString value);

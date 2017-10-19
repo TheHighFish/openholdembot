@@ -27,7 +27,6 @@ protected: // create from serialization only
   afx_msg void OnManualMode();
 	afx_msg void OnEditPreferences();
 	afx_msg void OnFileLoadTableMap();
-	afx_msg void OnDllLoad();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnUpdateStatus(CCmdUI *pCmdUI);
 	afx_msg void OnAutoplayer();
@@ -38,7 +37,6 @@ protected: // create from serialization only
 	afx_msg void OnUpdateMenuFileOpen(CCmdUI* pCmdUI);
   afx_msg void OnUpdateMenuFileEdit(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuDllLoad(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewStatusbar(CCmdUI *pCmdUI);
@@ -47,7 +45,6 @@ protected: // create from serialization only
 	afx_msg void OnUpdateEditForceuserchair(CCmdUI *pCmdUI);
 
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnDllLoadspecificfile();
 	afx_msg void OnHelpProblemSolver();
 public:
 	afx_msg void OnHelp();

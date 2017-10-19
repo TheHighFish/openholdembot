@@ -146,7 +146,6 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
 };
 
 const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] = {
-	"dll_name",
 	"pt_ip_addr",
 	"pt_port",
 	"pt_dbname",
@@ -157,7 +156,6 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] = {
 	"mutex_name",
 	"path_ohf",
 	"path_tm",
-	"path_dll",
 	// Finally an empty string
 	// This correspondents to k_prefs_last_numerical_value (unused)
 	// It will cause an assertion if used

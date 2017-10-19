@@ -155,14 +155,14 @@ CSymbolEngineIsTournament::CSymbolEngineIsTournament() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-	assert(p_symbol_engine_autoplayer != NULL);
-	assert(p_symbol_engine_casino != NULL);
-  assert(p_symbol_engine_checks_bets_folds != NULL);
-  assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
-	assert(p_symbol_engine_mtt_info != NULL);
-	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_engine_container->symbol_engine_time()-> != NULL);
+	assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+	assert(p_engine_container->symbol_engine_autoplayer() != NULL);
+	assert(p_engine_container->symbol_engine_casino() != NULL);
+  assert(p_engine_container->symbol_engine_checks_bets_folds() != NULL);
+  assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+	assert(p_engine_container->symbol_engine_mtt_info() != NULL);
+	assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+	assert(p_engine_container->symbol_engine_time() != NULL);
 }
 
 CSymbolEngineIsTournament::~CSymbolEngineIsTournament() {

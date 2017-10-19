@@ -21,12 +21,10 @@
 #include "CAutoplayerTrace.h"
 #include "CConfigurationCheck.h"
 #include "CDebugTab.h"
-#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CFormulaParser.h"
-#include "CGameState.h"
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -129,12 +127,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CPokerTrackerThread\n");
   assert(!p_pokertracker_thread);
   p_pokertracker_thread = new CPokerTrackerThread;
-  write_log(preferences.debug_singletons(), "[Singletons] Going to create CDllExtension\n");
-  assert(!p_dll_extension);
-  p_dll_extension = new CDllExtension;
-  write_log(preferences.debug_singletons(), "[Singletons] Going to create CGameState\n");
-  assert(!p_game_state);
-  p_game_state = new CGameState;
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CValidator\n");
   assert(!p_validator);
   p_validator = new CValidator;
@@ -165,6 +157,7 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CEngineContainer\n");
   assert(!p_engine_container);
   p_engine_container = new CEngineContainer;
+  p_engine_container->CreateSymbolEngines();
   write_log(preferences.debug_singletons(), "[Singletons] Going to create CRebuyManagement\n");
   assert(!p_rebuymanagement); 
   p_rebuymanagement = new CRebuyManagement;
@@ -258,10 +251,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_table_positioner)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 03\n");
   DELETE_AND_CLEAR(p_validator)
-  write_log(preferences.debug_singletons(), "[Singletons] Deleting 05\n");
-  DELETE_AND_CLEAR(p_game_state)
-  write_log(preferences.debug_singletons(), "[Singletons] Deleting 06\n");
-  DELETE_AND_CLEAR(p_dll_extension)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 07\n");
   DELETE_AND_CLEAR(p_autoplayer)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 08\n");

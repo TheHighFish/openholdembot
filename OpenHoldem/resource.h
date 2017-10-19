@@ -98,7 +98,6 @@
 #define IDC_CLICKDELAY_SPIN             1043
 #define IDC_COMBO2                      1052
 #define IDC_DEBUGLEVEL_PT               1052
-#define IDC_DLLNAME                     1055
 #define IDC_TEXTSELECTION               1059
 #define IDC_TEXTDELETION                1060
 #define IDC_BETCONFIRMATION             1061
@@ -485,7 +484,6 @@
 #define ID_FORMULA_TOOLBAR_SETTINGS     32863
 #define ID_MAIN_TOOLBAR_AUTOPLAYER      32872
 #define ID_MAIN_TOOLBAR_FORMULA         32876
-#define ID_DLL_LOAD                     32878
 #define ID_FORMULA_TOOLBAR_EQUAL_LEFT   32886
 #define ID_FORMULA_TOOLBAR_EQUAL_RIGHT  32887
 #define ID_EDIT_REDO32888               32888
@@ -506,7 +504,6 @@
 #define ID_DEBUG_ONLYWHEnit             32918
 #define ID_MAIN_TOOLBAR_SCRAPER_OUTPUT  32920
 #define ID_VIEW_SCRAPEROUTPUT           32921
-#define ID_DLL_LOADSPECIFICFILE         32922
 #define ID_FORMULA_TOOLBAR_HANDLIST     32923
 #define ID_EDIT_HANDLIST                32924
 #define ID_FORMULA_EDIT_HANDLIST        32925

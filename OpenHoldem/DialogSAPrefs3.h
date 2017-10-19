@@ -36,7 +36,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CEdit m_DllName;
 	virtual BOOL OnInitDialog();
 
 protected:

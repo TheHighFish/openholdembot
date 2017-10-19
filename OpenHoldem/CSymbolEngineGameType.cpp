@@ -30,7 +30,7 @@ CSymbolEngineGameType::CSymbolEngineGameType() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_istournament != NULL);
+	assert(p_engine_container->symbol_engine_istournament() != NULL);
   InitOnStartup();
 }
 

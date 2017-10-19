@@ -22,7 +22,6 @@
 #include "CAutoconnector.h"
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
-#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CFlagsToolbar.h"
 #include "CFormulaParser.h"
@@ -51,11 +50,10 @@ CSymbolEngineVariousDataLookup::CSymbolEngineVariousDataLookup() {
   // The values of some symbol-engines depend on other engines.
   // As the engines get later called in the order of initialization
   // we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_userchair != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
   // Other objects that we depend on
   assert(p_autoconnector != NULL);
   assert(p_betround_calculator != NULL);
-  assert(p_dll_extension != NULL);
   assert(p_handreset_detector != NULL);
   assert(p_formula_parser != NULL);
   assert(p_sessioncounter != NULL);
@@ -95,18 +93,10 @@ void CSymbolEngineVariousDataLookup::UpdateOnHeartbeat() {
 
 bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-  // DLL
-  if (memcmp(name, "dll$", 4) == 0) {
-    if (p_dll_extension->IsLoaded()) {
-	    *result = ProcessQuery(name);
-    } else {
-	    *result = kUndefinedZero;
-    }
-  }
   // Various symbols below
   // without any optimized lookup.
   // Betting rounds
-  else if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
+  if (memcmp(name, "betround", 8)==0 && strlen(name)==8)	*result = p_betround_calculator->betround();
   else if (name == "currentround") *result = p_betround_calculator->betround();
   else if (name == "previousround") *result = p_betround_calculator->PreviousRound();
   // GENERAL
@@ -185,8 +175,8 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
 
 CString CSymbolEngineVariousDataLookup::SymbolsProvided() {
   // This list includes some prefixes of symbols that can't be verified,
-  // e.g. "dll$, pl_ chair$, ....
-  CString list = "dll$ pl_ vs$ msgbox$ log$ "
+  // e.g. pl_ chair$, ....
+  CString list = "pl_ vs$ msgbox$ log$ "
     "betround currentround previousround "
     "fmax flagbits "
     "session version islobby ispopup"

@@ -21,7 +21,6 @@
 #include "CBetroundCalculator.h"
 #include "CHeartbeatDelay.h"
 #include "CEngineContainer.h"
-#include "CGameState.h"
 #include "CIteratorThread.h"
 #include "CLazyScraper.h"
 #include "COpenHoldemHopperCommunication.h"
@@ -100,7 +99,6 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
 		}
-    LogMemoryUsage("Begin of heartbeat thread cycle");
     assert(p_tablemap_loader != NULL);
     LogMemoryUsage("H1");
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
@@ -172,10 +170,6 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	if (m_ScraperOutputDlg) {
 		m_ScraperOutputDlg->UpdateDisplay();
 	}
-  ////////////////////////////////////////////////////////////////////////////////////////////
-	// Save state
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling CaptureState.\n");
-	p_game_state->CaptureState();
   
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// OH-Validator

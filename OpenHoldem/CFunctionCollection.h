@@ -89,7 +89,6 @@ class CFunctionCollection: public CVirtualSymbolEngine {
  public:
   CString FormulaName()     { return _formula_name; }
   CString FormulaPath()     { return _path; }
-  CString DLLPath();
  protected:
   void SetFormulaName(CString formula_name)	{ _formula_name = formula_name; }
   void SetPath(CString path)	  { _path = path; }

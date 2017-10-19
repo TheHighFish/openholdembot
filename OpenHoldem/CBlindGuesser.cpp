@@ -201,7 +201,7 @@ void CBlindGuesser::GetFirstBlindDataFromBetsAtTheTable(double *sblind,
       break;
     }
   }
-  assert(p_symbol_engine_active_dealt_playing != NULL);
+  assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
   // Checking for reversed blinds.
   // Using 0.61% here to support limits like 0.15/0.25
   if ((second_bet_after_dealer < 0.61 * first_bet_after_dealer) &&

@@ -750,7 +750,7 @@ void CScraper::ScrapePots() {
 }
 
 void CScraper::ScrapeMTTRegions() {
-  assert(p_symbol_engine_mtt_info != NULL);
+  assert(p_engine_container->symbol_engine_mtt_info() != NULL);
 	CString result;
 	if (EvaluateRegion("mtt_number_entrants", &result)) {	
 		p_engine_container->symbol_engine_mtt_info()->set_mtt_number_entrants(result);
