@@ -1,4 +1,19 @@
-﻿﻿v﻿12.0.3 2017-10-18
+﻿﻿v﻿12.1.0 2017-10-23
+==================
+﻿NEW STUFF:
+- The user-DLL has a new interface.
+  Code: https://github.com/OpenHoldem/openholdembot/tree/master/Reference%20User%20DLL
+  Forum: http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=21166
+  [THF]
+
+BUG FIXES:
+- The introduction of memory-pools nroke the reloading 
+  of new formulas. This has now been fuxed.
+  Thanks to Barthens and Salem for reporting.
+  [THF]
+  
+
+﻿v﻿12.0.3 2017-10-18
 ==================
 BUG FIXES:
 - The PokerTracker-DLL still accepted outdated postfixes.

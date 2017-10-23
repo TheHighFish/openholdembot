@@ -230,7 +230,7 @@ int CSymbolEngineChairs::CalculateMissingSmallBlind() {
     return false;
   }
   // All cases should be handled
-  assert(false);
+  // Can still be reached in simulations with bad input
   return false;
 }
 

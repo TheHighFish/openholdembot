@@ -33,6 +33,8 @@ class CDebugTab: public COHScriptObject{
   CString function_text();
  public:
   virtual void Parse();
+  // Optimized memory-allocation with memory-pools
+  void* operator new(size_t size);
  protected:
   void Clear();
   void AddExpression(CString expression_text, TPParseTreeNode expression);

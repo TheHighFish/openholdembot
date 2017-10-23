@@ -48,7 +48,8 @@ void CFunctionCollection::DeleteAll(bool delete_read_only_library_functions, boo
     bool needs_deletion = false;
     if (delete_read_only_library_functions && p_nextObject->IsReadOnlyLibrarySymbol()) {
       needs_deletion = true;
-    } else if (delete_user_defined && !p_nextObject->IsReadOnlyLibrarySymbol()) {
+    }
+    else if (delete_user_defined && !p_nextObject->IsReadOnlyLibrarySymbol()) {
       // The debug-tab must not be deleted.
       // It is a global object that is NOT in the function-collection
       // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=19616
@@ -56,11 +57,17 @@ void CFunctionCollection::DeleteAll(bool delete_read_only_library_functions, boo
       needs_deletion = true;
     }
     if (needs_deletion) {
-      write_log(preferences.debug_formula(), 
+      write_log(preferences.debug_formula(),
         "[CFunctionCollection] Going to delete %s\n", p_nextObject->name());
       Delete(p_nextObject->name());
     }
     p_nextObject = GetNext();
+  }
+  if (delete_read_only_library_functions) {
+    p_memory_pool_library_logic->ReleaseAll();
+  }
+  if (delete_user_defined) {
+    p_memory_pool_user_logic->ReleaseAll();
   }
 }
 
@@ -300,10 +307,10 @@ void CFunctionCollection::ExecuteSelftest() {
   p_function->Parse();
   CSelftestParserEvaluator selftest;
   selftest.Test();
-  /*!!!!!// The function should stay in the collection until the very end
+  /*!!!!!!!// The function should stay in the collection until the very end
   // and then should get released together with the OpenPPL-symbols.
-  // As VLD indicates that this DONOWORKS we delete it here.
-  p_function_collection->Delete(name);*/
+  // As VLD indicates that this DONOWORKS we delete it here.*/
+  p_function_collection->Delete(kSelftestName);
 }
 
 void CFunctionCollection::CheckForDefaultFormulaEntries() {
@@ -643,6 +650,7 @@ bool CFunctionCollection::ParseAll() {
   }
   // Finally parse the debug-tab,
   // that is no longer in the collection.
+  assert(p_debug_tab != NULL);
   p_debug_tab->Parse();
   return true;
 }

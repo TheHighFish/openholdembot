@@ -98,7 +98,6 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   EnterParserCode();
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
-  p_memory_pool_user_logic->ReleaseAll();
   p_function_collection->SetEmptyDefaultBot();
   p_function_collection->SetFormulaName(CFilenames::FilenameWithoutPathAndExtension(
     formula_file.GetFile()->GetFilePath()));

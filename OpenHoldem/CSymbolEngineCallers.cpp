@@ -157,7 +157,7 @@ void CSymbolEngineCallers::CalculateCallers() {
       // or not yet acted
       continue;
     }
-    if ((current_players_bet < highest_bet) && !p_table_state->Player(i)->IsAllin()) {
+    if ((current_players_bet < highest_bet) && !p_table_state->Player(chair)->IsAllin()) {
       // Not a caller
       write_log(preferences.debug_symbolengine(),
         "[CSymbolEngineCallers] Chair %i not calling (bet too small)\n", chair);
@@ -169,10 +169,10 @@ void CSymbolEngineCallers::CalculateCallers() {
       // if we count some callers twice.
       break;
     }
-    if (p_table_state->Player(i)->IsAllin()) {
+    if (p_table_state->Player(chair)->IsAllin()) {
       // Raisers already handled
       assert(current_players_bet <= highest_bet);
-      if (IsBitSet(_allinbits_previous_orbit, i)) {
+      if (IsBitSet(_allinbits_previous_orbit, chair)) {
         // Not a caller
         write_log(preferences.debug_symbolengine(),
           "[CSymbolEngineCallers] Chair %i allin from previous orbit\n", i);
