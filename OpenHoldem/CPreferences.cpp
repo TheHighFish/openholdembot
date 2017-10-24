@@ -154,7 +154,6 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] = {
 	"rebuy_script",
 	"window_class_name",
 	"mutex_name",
-	"path_ohf",
 	"path_tm",
 	// Finally an empty string
 	// This correspondents to k_prefs_last_numerical_value (unused)

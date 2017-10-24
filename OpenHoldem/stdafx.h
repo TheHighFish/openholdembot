@@ -141,7 +141,6 @@
 #include "poker_defs.h"
 #include "pokereval_export.h"
 #include "evx_defs.h"
-//#include "inlines/evx_inlines.h"
 
 // Assertions
 #include <assert.h>

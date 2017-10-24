@@ -161,7 +161,6 @@ enum {
 	k_prefs_rebuy_script,
 	k_prefs_window_class_name,
 	k_prefs_mutex_name,
-	k_prefs_path_ohf,
 	k_prefs_path_tm,
 	// leave this always at the last position
 	k_prefs_last_CString_value,
@@ -321,7 +320,6 @@ class CPreferences : public CSpaceOptimizedGlobalObject {
 	const CString &mutex_name()			{ return prefs_CString_values[k_prefs_mutex_name]; }
 	bool simple_window_title()			{ return prefs_numerical_values[k_prefs_simple_window_title]; }
 	// CFileDialog saved paths
-	const CString path_ohf()	{ return prefs_CString_values[k_prefs_path_ohf]; }
 	const CString path_tm()		{ return prefs_CString_values[k_prefs_path_tm]; }
  public:
 	// public mutators

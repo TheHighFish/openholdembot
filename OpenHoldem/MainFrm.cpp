@@ -443,7 +443,7 @@ void CMainFrame::OnFileOpen() {
 
 	CFileDialog			cfd(true);
 
-	cfd.m_ofn.lpstrInitialDir = preferences.path_ohf();
+  cfd.m_ofn.lpstrInitialDir = "";
   // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646839%28v=vs.85%29.aspx
   cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.oppl, *.txt)\0*.ohf;*.oppl;*.txt\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
@@ -453,7 +453,6 @@ void CMainFrame::OnFileOpen() {
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
 		p_openholdem_title->UpdateTitle();
-		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
 		theApp.StoreLastRecentlyUsedFileList();
 	}
 }
