@@ -47,12 +47,12 @@ CSymbolEngineChairs::CSymbolEngineChairs() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_checks_bets_folds != NULL);
-  assert(p_symbol_engine_poker_action != NULL);
-  assert(p_engine_container->symbol_engine_positions()-> != NULL);
-  assert(p_engine_container->symbol_engine_userchair()-> != NULL);
-  assert(p_symbol_engine_tablelimits != NULL);
+  assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_checks_bets_folds() != NULL);
+  assert(p_engine_container->symbol_engine_poker_action() != NULL);
+  assert(p_engine_container->symbol_engine_positions() != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
+  assert(p_engine_container->symbol_engine_tablelimits() != NULL);
   // Also using p_engine_container->symbol_engine_history()->DidAct()
   // but that's no real dependency, as it is from the past
 }
@@ -230,7 +230,7 @@ int CSymbolEngineChairs::CalculateMissingSmallBlind() {
     return false;
   }
   // All cases should be handled
-  assert(false);
+  // Can still be reached in simulations with bad input
   return false;
 }
 

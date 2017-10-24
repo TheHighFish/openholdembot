@@ -43,15 +43,13 @@ CString CVersionInfo::GetVersionInfo()
 	assert(p_function_collection != NULL);
 	assert(p_tablemap != NULL);
 
-	version_info.Format("OpenHoldem\n" 
-		"  Version  [%s, %s]\n" 
-		"  Formula  [%s]\n" 
-		"  Tablemap [%s]\n" 
-		"  DLL      [%s]\n",
-		VERSION_TEXT,
-		_openholdem_MD5,
-		p_function_collection->FormulaName(),
-		p_tablemap->filename(),
-		p_function_collection->DLLPath());
+  version_info.Format("OpenHoldem\n"
+    "  Version  [%s, %s]\n"
+    "  Formula  [%s]\n"
+    "  Tablemap [%s]\n",
+    VERSION_TEXT,
+    _openholdem_MD5,
+    p_function_collection->FormulaName(),
+    p_tablemap->filename());
 	return version_info;
 }

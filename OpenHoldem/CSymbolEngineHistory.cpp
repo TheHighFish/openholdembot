@@ -26,12 +26,19 @@
 #include "NumericalFunctions.h"
 
 const char* const k_hist_sym_strings[k_hist_sym_count] = {
-	//PROBABILITIES (3)
+  // CHIP AMOUNTS (21)
+  "balance", 
+  "balance0", "balance1", "balance2", "balance3", "balance4", 
+  "balance5", "balance6", "balance7", "balance8", "balance9", 
+  "stack0", "stack1", "stack2", "stack3", "stack4", 
+  "stack5", "stack6", "stack7", "stack8", "stack9",
+  // FLUSHES SETS STRAIGHTS (16)
+  "nsuited", 	"nsuitedcommon", "tsuit", "tsuitcommon", "nranked", 
+  "nrankedcommon", "trank", "trankcommon", "nstraight", "nstraightcommon", 
+  "nstraightfill", "nstraightfillcommon", "nstraightflush", 
+  "nstraightflushcommon", "nstraightflushfill", "nstraightflushfillcommon",
+	// PROBABILITIES (3)
 	"prwin", "prlos", "prtie", 
-	//CHIP AMOUNTS (21)
-	"balance", "balance0", "balance1", "balance2", "balance3", "balance4", "balance5", 
-	"balance6", "balance7", "balance8", "balance9", "stack0", "stack1", "stack2", "stack3", 
-	"stack4", "stack5", "stack6", "stack7", "stack8", "stack9", 
 	//POKER VALUES (5)
 	"pokerval", "pokervalplayer", "pokervalcommon", "pcbits", "npcbits", 
 	//HAND TESTS (12)
@@ -43,10 +50,6 @@ const char* const k_hist_sym_strings[k_hist_sym_count] = {
 	"ncardsbetter", 
 	//NHANDS (6)
 	"nhands", "nhandshi", "nhandslo", "nhandsti", "prwinnow", "prlosnow", 
-	//FLUSHES SETS STRAIGHTS (16)
-	"nsuited", 	"nsuitedcommon", "tsuit", "tsuitcommon", "nranked", "nrankedcommon", "trank", 
-	"trankcommon", "nstraight", "nstraightcommon", "nstraightfill", "nstraightfillcommon", 
-	"nstraightflush", "nstraightflushcommon", "nstraightflushfill", "nstraightflushfillcommon", 
 	//RANK BITS (8)
 	"rankbits", "rankbitscommon", "rankbitsplayer", "rankbitspoker", "srankbits", 
 	"srankbitscommon", "srankbitsplayer", "srankbitspoker", 
@@ -62,10 +65,10 @@ CSymbolEngineHistory::CSymbolEngineHistory() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-	assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
-  assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
+	assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+	assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+  assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+	assert(p_engine_container->symbol_engine_userchair() != NULL);
   // Making sure that _hist_sym_count is correct,
 	// to avoid array overflows later if we remove symbols
 	// without adapting the counter.
@@ -105,20 +108,21 @@ void CSymbolEngineHistory::UpdateOnNewRound() {
 }
 
 void CSymbolEngineHistory::UpdateOnMyTurn() {
-  // Collect symbol if ismyturn.
-  // Per definition we need to get the value at last myturn in betround N.
-  write_log(preferences.debug_symbolengine(),
-    "[SymbolEngineHistory] Update on my turn\n");
-  int	betround = p_betround_calculator->betround();
-	for (int i=0; i<k_hist_sym_count; ++i)	{
-		double result;
-		p_engine_container->EvaluateSymbol(k_hist_sym_strings[i], &result);
-		_hist_sym[i][betround] = result;
-	}
+  // Always update history when it is my turn
+  // That's when we have stable frames.
+  CalculateHistory();
 }
 
 void CSymbolEngineHistory::UpdateOnHeartbeat() {
-	CalculateHistory();
+  // Updating here only if the user is no longer playing
+  // At random heartbeats we don#t have stable frames;
+  // this can lead to ugly misscrapes, for example
+  // river-card already painted, but bets of the turn still visible.
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20825
+  // Try to avoid such situations!
+  if (!p_table_state->User()->HasAnyCards()) {
+    CalculateHistory();
+  }
 }
 
 void CSymbolEngineHistory::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
@@ -190,6 +194,17 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code) {
 }
 
 void CSymbolEngineHistory::CalculateHistory() {
+  // Collect symbol if ismyturn.
+  // Per definition we need to get the value at last myturn in betround N.
+  write_log(preferences.debug_symbolengine(),
+    "[SymbolEngineHistory] Update on my turn\n");
+  int	betround = p_betround_calculator->betround();
+  for (int i = 0; i<k_hist_sym_count; ++i) {
+    double result;
+    p_engine_container->EvaluateSymbol(k_hist_sym_strings[i], &result);
+    _hist_sym[i][betround] = result;
+  }
+
 	if (_nplayersround[BETROUND] == 0) {
 		_nplayersround[BETROUND] = 
 			p_engine_container->symbol_engine_active_dealt_playing()->nplayersplaying();

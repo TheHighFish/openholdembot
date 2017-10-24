@@ -28,11 +28,11 @@ CSymbolEnginePokerAction::CSymbolEnginePokerAction() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
-  assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
-  assert(p_engine_container->symbol_engine_positions()-> != NULL);
-  assert(p_engine_container->symbol_engine_raisers()-> != NULL);
+	assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+  assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+  assert(p_engine_container->symbol_engine_positions() != NULL);
+  assert(p_engine_container->symbol_engine_raisers() != NULL);
 }
 
 CSymbolEnginePokerAction::~CSymbolEnginePokerAction() {

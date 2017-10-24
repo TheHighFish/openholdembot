@@ -90,22 +90,15 @@ void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expressio
   ++_number_of_expressions;
 }
 
+void* CDebugTab::operator new(size_t size) {
+  assert(PMemoryPoolParser() != NULL);
+  write_log(preferences.debug_memory_usage(), "[CDebugTab] Allocating %i bytes\n", size);
+  return p_memory_pool_global->Allocate(size);
+}
+
 CString CDebugTab::function_text() {
   // It seems we need the current _function_text for parsing,
   // if changed in the editor, so we can't construct a new 
   // clean one from the old parsed data.
   return _function_text; 
-  /* !!
-  // Clean function text,
-  // nicely formatted without results
-  CString function_text;
-  for (int i=0; i<_number_of_expressions; ++i) {
-    function_text += " = ";
-    if (_expression_texts[i] != "") {
-      function_text += _expression_texts[i];
-    }
-    function_text += "\n";
-  }
-  return function_text;
-  */
 }

@@ -50,7 +50,7 @@ double MinimumBetsizeDueToPreviousRaise() {
 }
 
 double MaximumPossibleBetsizeBecauseOfBalance() {
-	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
+	assert(p_engine_container->symbol_engine_userchair() != NULL);
   assert(p_engine_container->symbol_engine_userchair()->userchair_confirmed());
 	double maximum_betsize = p_table_state->User()->_bet.GetValue()
 		+ p_table_state->User()->_balance.GetValue();

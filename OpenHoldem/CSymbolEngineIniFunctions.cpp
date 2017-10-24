@@ -19,6 +19,7 @@
 #include "CSymbolEngineIniFunctions.h"
 
 #include <assert.h>
+#include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
@@ -55,24 +56,24 @@ CSymbolEngineIniFunctions::CSymbolEngineIniFunctions() {
   //
   // CSymbolEngineIniFunctions() "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.
-  assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_autoplayer != NULL);
-  assert(p_symbol_engine_blinds != NULL);
-  assert(p_symbol_engine_cards != NULL);
-  assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
-  assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
-  assert(p_engine_container->symbol_engine_handrank()-> != NULL);
-  assert(p_symbol_engine_history != NULL);
-  assert(p_symbol_engine_isomaha != NULL);
-  assert(p_symbol_engine_istournament != NULL);
-  assert(p_symbol_engine_pokertracker != NULL);
-  assert(p_symbol_engine_pokerval != NULL);
-  assert(p_engine_container->symbol_engine_positions()-> != NULL);
-  assert(p_symbol_engine_prwin != NULL);
-  assert(p_engine_container->symbol_engine_raisers()-> != NULL);
-  assert(p_symbol_engine_random != NULL);
-  assert(p_engine_container->symbol_engine_time()-> != NULL);
-  assert(p_engine_container->symbol_engine_userchair()-> != NULL);
+  assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_autoplayer() != NULL);
+  assert(p_engine_container->symbol_engine_blinds() != NULL);
+  assert(p_engine_container->symbol_engine_cards() != NULL);
+  assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+  assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+  assert(p_engine_container->symbol_engine_handrank() != NULL);
+  assert(p_engine_container->symbol_engine_history() != NULL);
+  assert(p_engine_container->symbol_engine_isomaha() != NULL);
+  assert(p_engine_container->symbol_engine_istournament() != NULL);
+  assert(p_engine_container->symbol_engine_pokertracker() != NULL);
+  assert(p_engine_container->symbol_engine_pokerval() != NULL);
+  assert(p_engine_container->symbol_engine_positions() != NULL);
+  assert(p_engine_container->symbol_engine_prwin() != NULL);
+  assert(p_engine_container->symbol_engine_raisers() != NULL);
+  assert(p_engine_container->symbol_engine_random() != NULL);
+  assert(p_engine_container->symbol_engine_time() != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
 }
 
 CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions() {

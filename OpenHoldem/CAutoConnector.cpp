@@ -137,7 +137,7 @@ void CAutoConnector::CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd) {
     CString title = text;
     CString error_message;
     error_message.Format("%s%s%s%s%s%s%s%s%s",
-      "More then one tablemap fits to the same table\n\n",
+      "More than one tablemap fits to the same table\n\n",
       matching_tablemaps,
       "\nTable: ", 
       title,

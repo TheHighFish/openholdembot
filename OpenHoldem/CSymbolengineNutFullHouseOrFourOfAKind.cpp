@@ -34,8 +34,8 @@ CSymbolEngineNutFullhouseOrFourOfAKind::CSymbolEngineNutFullhouseOrFourOfAKind()
   // we assure correct ordering by checking if they are initialized.
   //
   // This engine does not use any other engines.
-  assert(p_symbol_engine_cards != NULL);
-  assert(p_engine_container->symbol_engine_userchair()-> != NULL);
+  assert(p_engine_container->symbol_engine_cards() != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
   // Also depending on CSymbolEngineIsOmaha.h, which returns "constant" values
 }
 

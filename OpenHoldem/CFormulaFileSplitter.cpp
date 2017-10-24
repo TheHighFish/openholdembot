@@ -28,9 +28,6 @@
 // * Notes (OH-script only)
 //     ##Notes##
 //     Comments below
-// * DLL
-//     ##dll##
-//     Filename
 // * Lists
 //     ##list_preflop_monsters##
 //     AA KK ...  
@@ -59,6 +56,10 @@ void CFormulaFileSplitter::SplitFile(CArchive &formula_file) {
   // Line-counter needs to be aware of skipped Shanky option-settings
   _starting_line_of_next_function = _total_lines_processed;
   COHScriptObject* next_function_or_list = GetNextObject(formula_file);
+  if (next_function_or_list == NULL) {
+    CParseErrors::Error("Input file does not contain any bot-logic\n");
+    return;
+  }
   while (next_function_or_list != NULL) {
     p_function_collection->Add(next_function_or_list);
     next_function_or_list = GetNextObject(formula_file);

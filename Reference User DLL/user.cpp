@@ -9,7 +9,7 @@
 //
 // Purpose: Very simple user-DLL as a starting-point
 //
-// Required OpenHoldem version: 7.7.6
+// Required OpenHoldem version: 12.1.6
 //
 //******************************************************************************
 
@@ -17,51 +17,56 @@
 // to generate proper export- and inport-definitions
 #define USER_DLL
 
-// #define OPT_DEMO_OUTPUT if you are a beginner 
-// who wants to see some message-boxes with output of game-states, etc.
-// It is disabled upon request, 
-//   * as it is not really needed
-//   * as some DLL-users don't have MFC (atlstr.h) installed
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16232
-#undef OPT_DEMO_OUTPUT
-
 #include "user.h"
 #include <conio.h>
 #include <windows.h>
+#include "OpenHoldemFunctions.h"
 
-#ifdef OPT_DEMO_OUTPUT
-#include <atlstr.h>
-#endif OPT_DEMO_OUTPUT
+//******************************************************************************
+//
+// Place all your initalizations in the functions below
+// DLLOnLoad() amd DLLOnUnLoad() get called by the DLL,
+// the other functions get called by OpenHoldem
+//
+//******************************************************************************
 
-// Supporting macros
-#define HIGH_NIBBLE(c)	(((c)>>4)&0x0F)
-#define LOW_NIBBLE(c)	  ((c)&0x0F)
+void DLLOnLoad() {
+}
 
-// Card macro
-#define RANK(c)         ( ISKNOWN(c) ? HIGH_NIBBLE(c) : 0 )
-#define SUIT(c)         ( ISKNOWN(c) ? LOW_NIBBLE(c) : 0 )
-#define ISCARDBACK(c)   ((c) == CARD_BACK)
-#define ISUNKNOWN(c)    ((c) == CARD_UNDEFINED)
-#define ISNOCARD(c)     ((c) == CARD_NOCARD)
-#define ISKNOWN(c)      (!ISCARDBACK(c) && !ISUNKNOWN(c) && !ISNOCARD(c))
+void DLLOnUnLoad() {
+}
 
+void __stdcall DLLUpdateOnNewFormula() {
+}
+
+void __stdcall DLLUpdateOnConnection() {
+}
+
+void __stdcall DLLUpdateOnHandreset() {
+}
+
+void __stdcall DLLUpdateOnNewRound() {
+}
+
+void __stdcall DLLUpdateOnMyTurn() {
+}
+
+void __stdcall DLLUpdateOnHeartbeat() {
+}
+
+//******************************************************************************
+//
 // ProcessQuery()
-//   Handling the lookup of dll$symbols
+// Handling the lookup of dll$symbols
+//
+//******************************************************************************
+
 DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
-	if (pquery==NULL)
-		return 0;
+  if (pquery == NULL) {
+    return 0;
+  }
 	if (strncmp(pquery,"dll$test",9)==0) {
-    //ParseHandList("list_dlltest", "AA AKs AKo");
-		return GetSymbol("random");
-  }
-	if (strncmp(pquery,"dll$spend",10)==0) {
-		return GetSymbol("f$spend");
-  }
-	if (strncmp(pquery,"dll$recurse",12)==0) {
-		return GetSymbol("dll$mynumber");
-  }
-	if (strncmp(pquery,"dll$mynumber",13)==0) {
-		return 12345.67;
+	  return GetSymbol("random");
   }
   if (strncmp(pquery, "dll$scrape", 11) == 0) {
     char* scraped_result;
@@ -79,45 +84,28 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
 	return 0;
 }
 
-// OnLoad and OnUnload()
-//   called once and at the beginning of a session
-//   when the DLL gets loaded / unloaded
-//   Do initilization / finalization here.
-
-DLL_IMPLEMENTS void __stdcall DLLOnLoad() {
-#ifdef OPT_DEMO_OUTPUT
-		MessageBox(NULL, "event-load", "MESSAGE", MB_OK);
-#endif OPT_DEMO_OUTPUT
-}
-
-DLL_IMPLEMENTS void __stdcall DLLOnUnLoad() {
-#ifdef OPT_DEMO_OUTPUT
-		MessageBox(NULL, "event-unload", "MESSAGE", MB_OK);
-#endif OPT_DEMO_OUTPUT
-}
-
+//******************************************************************************
+//
 // DLL entry point
-//   Technically required, but don't do anything here.
-//   Initializations belong into the OnLoad() function,
-//   where they get executed at run-time.
-//   Doing things here at load-time is a bad idea,
-//   as some functionalitz might not be properly initialized   
-//   (including error/handling).
+//
+//******************************************************************************
+
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
   switch (ul_reason_for_call)	{
 		case DLL_PROCESS_ATTACH:
-#ifdef OPT_DEMO_OUTPUT
+#ifdef _DEBUG
 			AllocConsole();
-#endif OPT_DEMO_OUTPUT
+#endif _DEBUG
+			InitializeOpenHoldemFunctionInterface();
 			break;
 		case DLL_THREAD_ATTACH:
 			break;
 		case DLL_THREAD_DETACH:
 			break;
 		case DLL_PROCESS_DETACH:
-#ifdef OPT_DEMO_OUTPUT
+#ifdef _DEBUG
 			FreeConsole();
-#endif OPT_DEMO_OUTPUT
+#endif _DEBUG
 			break;
     }
   return TRUE;

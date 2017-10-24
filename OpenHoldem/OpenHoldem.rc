@@ -164,11 +164,6 @@ BEGIN
         MENUITEM "View Scraper &Output\tF11",   ID_VIEW_SCRAPEROUTPUT
         MENUITEM "Shoot &Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
     END
-    POPUP "&DLL"
-    BEGIN
-        MENUITEM "&Load\tF3",                   ID_DLL_LOAD
-        MENUITEM "Load &Specific File...\tF4",  ID_DLL_LOADSPECIFICFILE
-    END
     MENUITEM "&Problem Solver",             ID_HELP_PROBLEMSOLVER
     POPUP "&Help"
     BEGIN
@@ -239,7 +234,6 @@ END
 IDR_MAINFRAME ACCELERATORS
 BEGIN
     "H",            ID_HELP_HELP,           VIRTKEY, SHIFT, CONTROL, NOINVERT
-    VK_F4,          ID_DLL_LOADSPECIFICFILE, VIRTKEY, NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
@@ -282,8 +276,8 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,208,8,SS_NOPREFIX
-    LTEXT           "Version 12.0.2",IDC_STATIC,32,22,208,8,SS_NOPREFIX
-    LTEXT           "Version 12.0.2",IDC_STATIC,32,22,208,8,SS_NOPREFIX
+    LTEXT           "Version 12.1.0",IDC_STATIC,32,22,208,8,SS_NOPREFIX
+    LTEXT           "Version 12.1.0",IDC_STATIC,32,22,208,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
     LTEXT           "http://www.maxinmontreal.com/forums/index.php",IDC_STATIC,32,54,208,8
     LTEXT           "https://github.com/OpenHoldem/openholdembot/",IDC_STATIC,32,66,208,8
@@ -395,9 +389,9 @@ IDD_SAPREFS3 DIALOGEX 0, 0, 219, 155
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_DLLNAME,120,8,80,12,ES_AUTOHSCROLL
-    LTEXT           "Name of DLL to load on startup",IDC_STATIC,4,12,116,8
-    LTEXT           "The DLL-interface had to be improved for version 4.x+. Your DLL has to use the new interface which can be found at ""trunk/Reference User DLL""",IDC_STATIC,4,32,182,32
+    LTEXT           "There are currently no DLL options.",IDC_STATIC,12,12,250,8
+    LTEXT           "The user.dll gets loaded automatically on startup.", IDC_STATIC, 12, 24, 250, 8
+    LTEXT           "A sample DLL can be found at ""trunk/Reference User DLL""",IDC_STATIC,12,36,250,32
 END
 
 IDD_SAPREFS4 DIALOGEX 0, 0, 261, 159
@@ -920,8 +914,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 12,0,1,0
- PRODUCTVERSION 12,0,1,0
+ FILEVERSION 12,1,0,0
+ PRODUCTVERSION 12,1,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -936,9 +930,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "12.0.2.0"
+            VALUE "FileVersion", "12.1.0.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "12.0.2.0"
+            VALUE "ProductVersion", "12.1.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1372,7 +1366,6 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_AUTOPLAYER "Engage autoplayer\nAutoplayer"
     ID_MAIN_TOOLBAR_FORMULA "Edit the formula\nFormula"
-    ID_DLL_LOAD             "Load the pre-defined DLL "
 END
 
 STRINGTABLE
@@ -1389,7 +1382,6 @@ STRINGTABLE
 BEGIN
     ID_MAIN_TOOLBAR_SCRAPER_OUTPUT "Scraper output\nScraper output"
     ID_VIEW_SCRAPEROUTPUT   "View images that get captured by the scraper-engine\nScraper output"
-    ID_DLL_LOADSPECIFICFILE "Prompt the user for a DLL to load\nLoad DLL"
 END
 
 STRINGTABLE

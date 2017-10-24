@@ -261,7 +261,7 @@ void draw_cur_frame()
 		SetWindowPos(g_hWnd, NULL, 0, 0, 320, 240, SWP_NOMOVE | SWP_NOZORDER);
 		hdc = GetDC(g_hWnd);
 		SetTextColor(hdc, RGB(220,0,0));
-		sprintf_s(text, 2048, "OHReplay 11.0.1\n");
+		sprintf_s(text, 2048, "OHReplay 12.0.3\n");
 		strcat_s(text, 2048, "----------------------------------\n");
 		strcat_s(text, 2048, "Open a frame: SysMenu/Open, Ctrl-O, F2\n\n");
 		strcat_s(text, 2048, "Next frame: Tab\n");

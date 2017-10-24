@@ -1,3 +1,4 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -11,13 +12,9 @@
 //
 //******************************************************************************
 
-#ifndef INC_CENGINECONTAINER_H
-#define INC_CENGINECONTAINER_H
-
 #include "CSpaceOptimizedGlobalObject.h"
 #include "CVirtualSymbolEngine.h"
 
-class CSymbolEngineTableLimits;
 class CSymbolEngineActiveDealtPlaying;
 class CSymbolEngineAutoplayer;
 class CSymbolEngineBlinds;
@@ -54,9 +51,11 @@ class CSymbolEnginePrwin;
 class CSymbolEngineRaisers;
 class CSymbolEngineRandom;
 class CSymbolEngineReplayFrameController;
+class CSymbolEngineTableLimits;
 class CSymbolEngineTableStats;
 class CSymbolEngineTime;
 class CSymbolEngineUserchair;
+class CSymbolEngineUserDLL;
 class CSymbolEngineVariousDataLookup;
 class CSymbolEngineVersus;
 class CSymbolEngineICM;
@@ -77,12 +76,13 @@ class CEngineContainer : public CSpaceOptimizedGlobalObject {
   void EvaluateAll();
   bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided()       { BuildListOfSymbolsProvided(); return _list_of_symbols; }
+ public:
+  void CreateSymbolEngines();
  private:
   void BuildListOfSymbolsProvided();
  private:
   void CreateSpecialSymbolEngines();
   void AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine);
-  void CreateSymbolEngines();
   void DestroyAllSymbolEngines();
   void DestroyAllSpecialSymbolEngines();
  private:
@@ -97,8 +97,6 @@ class CEngineContainer : public CSpaceOptimizedGlobalObject {
   bool _reset_on_connection_executed;
   CString _list_of_symbols;
 public:
-  CSymbolEngineTableLimits *symbol_engine_tablelimits()
-    { return p_symbol_engine_tablelimits; }
   CSymbolEngineActiveDealtPlaying *symbol_engine_active_dealt_playing()
     { return p_symbol_engine_active_dealt_playing; }
   CSymbolEngineAutoplayer *symbol_engine_autoplayer()
@@ -171,12 +169,16 @@ public:
     { return p_symbol_engine_random; }
   CSymbolEngineReplayFrameController *symbol_engine_replayframe_controller()
     { return p_symbol_engine_replayframe_controller; }
+  CSymbolEngineTableLimits *symbol_engine_tablelimits() {
+    return p_symbol_engine_tablelimits; }
   CSymbolEngineTableStats *symbol_engine_table_stats()
     { return p_symbol_engine_table_stats; }
   CSymbolEngineTime *symbol_engine_time()
     { return p_symbol_engine_time; }
   CSymbolEngineUserchair *symbol_engine_userchair()
     { return p_symbol_engine_userchair; }
+  CSymbolEngineUserDLL *symbol_engine_user_DLL() {
+    return p_symbol_engine_user_DLL; }
   CSymbolEngineVariousDataLookup *symbol_engine_various_data_lookup()
     { return p_symbol_engine_various_data_lookup; }
   CSymbolEngineVersus *symbol_engine_versus()
@@ -184,10 +186,9 @@ public:
   CSymbolEngineICM *symbol_engine_icm()
     { return p_symbol_engine_icm; }
 private:
-  CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
   CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing;
   CSymbolEngineAutoplayer *p_symbol_engine_autoplayer;
-  CSymbolEngineBlinds *p_symbol_engine_blinds; //!!!????
+  CSymbolEngineBlinds *p_symbol_engine_blinds;
   CSymbolEngineCallers *p_symbol_engine_callers;
   CSymbolEngineCards *p_symbol_engine_cards;
   CSymbolEngineCasino *p_symbol_engine_casino;
@@ -221,34 +222,14 @@ private:
   CSymbolEngineRaisers *p_symbol_engine_raisers;
   CSymbolEngineRandom *p_symbol_engine_random;
   CSymbolEngineReplayFrameController *p_symbol_engine_replayframe_controller;
+  CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
   CSymbolEngineTableStats *p_symbol_engine_table_stats;
   CSymbolEngineTime *p_symbol_engine_time;
   CSymbolEngineUserchair *p_symbol_engine_userchair;
+  CSymbolEngineUserDLL *p_symbol_engine_user_DLL;
   CSymbolEngineVariousDataLookup *p_symbol_engine_various_data_lookup;
   CSymbolEngineVersus *p_symbol_engine_versus;
   CSymbolEngineICM *p_symbol_engine_icm;
 };
 
 extern CEngineContainer *p_engine_container;
-
-#endif INC_CENGINECONTAINER_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

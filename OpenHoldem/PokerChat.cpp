@@ -30,14 +30,15 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <stdafx.h>
+#include "PokerChat.hpp"
+
 #include <math.h>
 #include <String>
 #include <time.h>
 #include <windows.h>
 #include <winuser.h>
-#include "PokerChat.hpp"
-
 #include "CPreferences.h"
+#include "..\Reference User DLL\user.h"
 
 char *_the_chat_message = NULL;
 
@@ -80,15 +81,15 @@ time_t _first_possible_next_chat_time;
 // as we store a pointer to the message, until the autoplayer
 // acts again!
 //
-void SendChatMessage(char* new_message) {
-	if (_the_chat_message != NULL || new_message == "")	{
+EXE_IMPLEMENTS void SendChatMessage(char *message) {
+	if (_the_chat_message != NULL || message == "")	{
 		// Old message has not been sent yet.
 		// Ignore newer one (especially, if
 		// new message == "")
 		return;
 	};
 	// Store it, until it is processed
-	_the_chat_message = new_message;
+	_the_chat_message = message;
 }
 
 // Chat enabled in preferences

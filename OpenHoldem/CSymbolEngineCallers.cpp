@@ -40,14 +40,14 @@ CSymbolEngineCallers::CSymbolEngineCallers() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_autoplayer != NULL);
-	assert(p_engine_container->symbol_engine_chip_amounts()-> != NULL);
-	assert(p_engine_container->symbol_engine_dealerchair()-> != NULL);
-  assert(p_engine_container->symbol_engine_raisers()-> != NULL);
-	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_engine_container->symbol_engine_userchair()-> != NULL);
-	// Also using p_symbol_engine_history one time,
+	assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_autoplayer() != NULL);
+	assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+	assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+  assert(p_engine_container->symbol_engine_raisers() != NULL);
+	assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+	assert(p_engine_container->symbol_engine_userchair() != NULL);
+	// Also using p_engine_container->symbol_engine_history() one time,
 	// but because we use "old" information here
 	// there is no dependency on this cycle.
   //
@@ -105,7 +105,7 @@ void CSymbolEngineCallers::CalculateCallers() {
   int last_possible_raiser = p_engine_container->symbol_engine_raisers()->LastPossibleActor() + _nchairs;
   assert(last_possible_raiser > first_possible_raiser);
   assert((last_possible_raiser - first_possible_raiser) <= (2 * _nchairs));
-  assert(p_symbol_engine_debug != NULL);
+  assert(p_engine_container->symbol_engine_debug() != NULL);
   int chairs_seen = 0;
   double highest_bet = p_engine_container->symbol_engine_raisers()->MinimumStartingBetCurrentOrbit(false);
   write_log(preferences.debug_symbolengine(),
@@ -157,7 +157,7 @@ void CSymbolEngineCallers::CalculateCallers() {
       // or not yet acted
       continue;
     }
-    if ((current_players_bet < highest_bet) && !p_table_state->Player(i)->IsAllin()) {
+    if ((current_players_bet < highest_bet) && !p_table_state->Player(chair)->IsAllin()) {
       // Not a caller
       write_log(preferences.debug_symbolengine(),
         "[CSymbolEngineCallers] Chair %i not calling (bet too small)\n", chair);
@@ -169,10 +169,10 @@ void CSymbolEngineCallers::CalculateCallers() {
       // if we count some callers twice.
       break;
     }
-    if (p_table_state->Player(i)->IsAllin()) {
+    if (p_table_state->Player(chair)->IsAllin()) {
       // Raisers already handled
       assert(current_players_bet <= highest_bet);
-      if (IsBitSet(_allinbits_previous_orbit, i)) {
+      if (IsBitSet(_allinbits_previous_orbit, chair)) {
         // Not a caller
         write_log(preferences.debug_symbolengine(),
           "[CSymbolEngineCallers] Chair %i allin from previous orbit\n", i);

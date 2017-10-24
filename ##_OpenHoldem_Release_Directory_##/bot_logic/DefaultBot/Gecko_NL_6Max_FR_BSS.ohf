@@ -111,7 +111,7 @@
 //     calculate the betsize for allins.  
 //   * Renamed symbols like nbetsround1 to nbetsround_preflop
 //     for more verbosity.
-//   * Replaced Position = Middle, Position = Early and Position = Late 
+//   * Replaced f$Position_Middle, f$Position_Early and f$Position_Late 
 //     by OpenPPL position symbols
 //   * Removed duplicate f$pt_vpip, $pt_pfr
 //
@@ -464,7 +464,7 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 [prwin+(prtie/2)]**(1+f$threat)
 
 ##f$flop_raise_initiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_1 ] ? {
 
@@ -596,7 +596,7 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 
 // ---------------------------------------------------
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_1 ] ? {
 
@@ -660,7 +660,7 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 0
 
 ##f$flop_raise_noinitiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_1 && nplayersplaying==2 ] ? { // donk flop
 
@@ -762,7 +762,7 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
     [ f$actionpostflop_9 ] ? f$prwin>.80 :
     [ f$actionpostflop_10] ? f$prwin>.80 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_1 ] ? {
 
@@ -817,7 +817,7 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 0
 
 ##f$flop_raise_noaction##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
 
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
@@ -896,7 +896,7 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
     [ f$actionpostflop_2 ] ? f$prwin>.60 :
@@ -1019,7 +1019,7 @@ WHEN Others
    WHEN Others RaiseBy (4 * BetSize) FORCE
 
 ##f$turn_raise_initiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
     [ f$actionpostflop_1 ] ? {
         [ nplayersplaying==2 && nplayersround_flop==2 ] ? {
             [ didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=5 ] ? f$prwin>0 : // donkbet and 2nd barrel turn
@@ -1048,7 +1048,7 @@ WHEN Others
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-[ Position = Late ] ? {
+[ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? {
         [ nplayersplaying==2 && nplayersround_flop==2 ] ? {
              [ f$prwin<0.72 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) && ranklocommon<10 && nbetsround_preflop<7 && nbetsround_flop<15 && nrankedcommon==1 ] ? 1 :
@@ -1066,7 +1066,7 @@ WHEN Others
 0
 
 ##f$turn_raise_noinitiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
     [ nplayersplaying==2 ] ? {
         [ f$actionpostflop_1 ] ? f$prwin>.88 : // check raise
         [ f$actionpostflop_2 ] ? f$prwin>.75 :
@@ -1100,7 +1100,7 @@ WHEN Others
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-[ Position = Late ] ? {
+[ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? f$prwin>.80 :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
@@ -1114,7 +1114,7 @@ WHEN Others
 0
 
 ##f$turn_raise_noaction##
-[ Position = Early ] ? {
+[ Position = First ] ? {
     [ f$actionpostflop_1 ] ? {
         [ nplayersplaying==2 ] ? {
             [ f$draws>1   ] ? 1 :
@@ -1142,7 +1142,7 @@ WHEN Others
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-[ Position = Late ] ? {
+[ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? {
          [ nplayersround_flop==2 ] ? f$prwin>0 :
          [ nplayersround_flop>=3 ] ? {
@@ -1160,7 +1160,7 @@ WHEN Others
 0
 
 ##f$river_raise_initiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
     [ f$actionpostflop_1 ] ? {
       [ nplayersplaying==2 ] ? {
         [ f$draws>1 && nsuited==4 && f$pt_vpip>0.50 && f$pt_wtsd>0.30 && random>.50 ] ? 1 :
@@ -1187,7 +1187,7 @@ WHEN Others
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-[ Position = Late ] ? {
+[ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? {
         [ nplayersplaying==2 && nplayersround_flop==2 && handsplayed>15 && !f$safeboard1 && !didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=6 && didbetsizeround_flop && !didcallround_flop && nbetsround_flop<11 ] ? f$prwin>0.00 :
         [ nplayersplaying==2 && nbetsround_flop==0 ] ? f$prwin>0.70 :
@@ -1205,7 +1205,7 @@ WHEN Others
 0
 
 ##f$river_raise_noinitiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
     [ f$actionpostflop_1 ] ? f$prwin>.80 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.90 :
@@ -1227,7 +1227,7 @@ WHEN Others
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-[ Position = Late ] ? {
+[ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? f$prwin>.80 :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
@@ -1242,7 +1242,7 @@ WHEN Others
 
 ##f$river_raise_noaction##
 // Toevoegen NBETSround_preflop
-[ Position = Early ] ? {
+[ Position = First ] ? {
     [ f$actionpostflop_1 ] ? {
          [ nplayersround_flop==2 ] ? {
              [ nbetsround_preflop<6 && nbetsround_flop<15 ] ? f$prwin>0 :
@@ -1268,7 +1268,7 @@ WHEN Others
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-[ Position = Late ] ? {
+[ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? {
          [ nplayersround_flop==2 ] ? f$prwin>.50 :
          [ nplayersround_flop>=3 ] ? f$prwin>.55 : 0 } :
@@ -1509,7 +1509,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 [ nbetsround_preflop>20 ] ? 0.6 : 1
 
 ##f$flop_call_initiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
@@ -1577,7 +1577,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
@@ -1614,7 +1614,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 0
 
 ##f$flop_call_noaction##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
@@ -1682,7 +1682,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.65 :
@@ -1720,7 +1720,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 
 ##f$flop_call_noinitiative##
 // Early position
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
@@ -1790,7 +1790,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 
 // Late position
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
@@ -1827,7 +1827,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 0
 
 ##f$turn_call_initiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.55 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
@@ -1851,7 +1851,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
@@ -1892,7 +1892,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 0
 
 ##f$turn_call_noaction##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
@@ -1916,7 +1916,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
@@ -1983,7 +1983,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 0
 
 ##f$turn_call_noinitiative##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.70 :
@@ -2007,7 +2007,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.70 :
@@ -2056,7 +2056,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
 ##f$foldequity##
 [ f$Initiative_Nobody && nplayersplaying==2 && call==0 && f$pt_hands>50 ] ? {
 
-    [ Position = Early ] ? {
+    [ Position = First ] ? {
 
         [ IsFlop && pot<6*bblind ] ? {
 
@@ -2098,7 +2098,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
 
 
-    [ Position = Late ] ? {
+    [ Position = Last ] ? {
 
         [ IsFlop && pot<6*bblind ] ? {
 
@@ -2435,7 +2435,7 @@ currentbet
 [ didbetsize && (f$mycurrentbet>potcommon*3) ]
 
 ##f$river_raise_wegotraised##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
 //  [ f$actionpostflop_1 ] ? f$prwin>.76 : // let the aggressor do the betting
     [ f$actionpostflop_2 ] ? f$prwin>.96 :
@@ -2461,7 +2461,7 @@ currentbet
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_1 ] ? f$prwin>.82 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
@@ -2477,7 +2477,7 @@ currentbet
 0
 
 ##f$river_call_wegotraised##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.85 :
@@ -2501,7 +2501,7 @@ currentbet
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.90 :
@@ -2516,7 +2516,7 @@ currentbet
 0
 
 ##f$turn_raise_wegotraised##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ nplayersplaying==2 ] ? {
 
@@ -2557,7 +2557,7 @@ currentbet
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_1 ] ? f$prwin>.82 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
@@ -2573,7 +2573,7 @@ currentbet
 0
 
 ##f$turn_call_wegotraised##
-[ Position = Early ] ? {
+[ Position = First ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.78 :
@@ -2597,7 +2597,7 @@ currentbet
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
 
-[ Position = Late ] ? {
+[ Position = Last ] ? {
 
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.78 :
@@ -2667,7 +2667,7 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
 ##f$betline##
 [ !didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=7 && // raise preflop
   didbetsizeround_flop && !didcallround_flop && nbetsround_flop>0 && nbetsround_flop<12 && // cbet flop
-  Position = Early && !didbetsize ] // early position, did not act yet
+  Position = First && !didbetsize ] // early position, did not act yet
 
 ##f$prwin1##
 [prwin+(prtie/2)]**(1+f$threat)
@@ -2827,7 +2827,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
 ##f$foldequity1##
 [ f$Initiative_Nobody && nplayersplaying==2 && call==0 && f$pt_hands>50 ] ? {
 
-    [ Position = Early ] ? {
+    [ Position = First ] ? {
 
         [ IsFlop && pot<6*bblind ] ? {
 
@@ -2869,7 +2869,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
 
 
-    [ Position = Late ] ? {
+    [ Position = Last ] ? {
 
         [ IsFlop && pot<6*bblind ] ? {
 
@@ -2915,7 +2915,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
 0
 
 ##f$villiantakeover1##
-[ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && Position = Late ] ? {
+[ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && Position = Last ] ? {
 
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
 
@@ -2933,7 +2933,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
 
-[ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && nbetsround_turn>0 && Position = Late ] ? {
+[ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && nbetsround_turn>0 && Position = Last ] ? {
 
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.50 :
 

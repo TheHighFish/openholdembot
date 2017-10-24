@@ -7,25 +7,16 @@
 //
 //*******************************************************************************
 //
-// Purpose: Changing formulas with the load$-command,
-//   therefore implemented as a symbol-engine.
+// Purpose: 
 //
 //*******************************************************************************
 
 #include "stdafx.h"
-#include "CSymbolEngineFormulaLoading.h"
+#include "CSymbolEngineUserDLL.h"
 
-#include "CBetroundCalculator.h"
-#include "CPreferences.h"
-#include "CScraper.h"
-#include "CScraperAccess.h"
-#include "CStringMatch.h"
-#include "CTableState.h"
-#include "MagicNumbers.h"
+CSymbolEngineUserDLL *p_symbol_engine_formula_loading = NULL;
 
-CSymbolEngineFormulaLoading *p_symbol_engine_formula_loading = NULL;
-
-CSymbolEngineFormulaLoading::CSymbolEngineFormulaLoading() {
+CSymbolEngineUserDLL::CSymbolEngineUserDLL() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
@@ -33,29 +24,29 @@ CSymbolEngineFormulaLoading::CSymbolEngineFormulaLoading() {
 	// This engine does not use any other engines.
 }
 
-CSymbolEngineFormulaLoading::~CSymbolEngineFormulaLoading() {
+CSymbolEngineUserDLL::~CSymbolEngineUserDLL() {
 }
 
-void CSymbolEngineFormulaLoading::InitOnStartup() {
-	IpdateOnConnection();
+void CSymbolEngineUserDLL::InitOnStartup() {
+	UpdateOnConnection();
 }
 
-void CSymbolEngineFormulaLoading::IpdateOnConnection() {
+void CSymbolEngineUserDLL::UpdateOnConnection() {
 }
 
-void CSymbolEngineFormulaLoading::IpdateOnHandIpdate() {
+void CSymbolEngineUserDLL::UpdateOnHandreset() {
 }
 
-void CSymbolEngineFormulaLoading::IpdateOnNewRound() {
+void CSymbolEngineUserDLL::UpdateOnNewRound() {
 }
 
-void CSymbolEngineFormulaLoading::IpdateOnMyTurn() {
+void CSymbolEngineUserDLL::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineFormulaLoading::IpdateOnHeartbeat() {
+void CSymbolEngineUserDLL::UpdateOnHeartbeat() {
 }
 
-bool CSymbolEngineFormulaLoading::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineUserDLL::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "xxxxxxxxx", 9)==0 && strlen(name)==9)	{
 		*result = 0;
@@ -65,6 +56,6 @@ bool CSymbolEngineFormulaLoading::EvaluateSymbol(const char *name, double *resul
 	return false;
 }
 
-CString CSymbolEngineFormulaLoading::SymbolsProvided() {
+CString CSymbolEngineUserDLL::SymbolsProvided() {
   return " ";
 }

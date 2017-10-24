@@ -22,7 +22,6 @@
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
-#include "CDllExtension.h"
 #include "CEngineContainer.h"
 #include "CFilenames.h"
 #include "CFlagsToolbar.h"
@@ -82,8 +81,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
   ON_UPDATE_COMMAND_UI(ID_EDIT_FORMULA, &CMainFrame::OnUpdateMenuFileEdit)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnUpdateViewShootreplayframe)
   ON_UPDATE_COMMAND_UI(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnUpdateViewScraperOutput)
-	ON_UPDATE_COMMAND_UI(ID_DLL_LOAD, &CMainFrame::OnUpdateMenuDllLoad)
-	ON_UPDATE_COMMAND_UI(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnUpdateDllLoadspecificfile)
 
 	//  Menu commands
 	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
@@ -94,8 +91,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
   ON_COMMAND(ID_EDIT_CLEARLOG, &CMainFrame::OnEditClearLog)
 	ON_COMMAND(ID_VIEW_SCRAPEROUTPUT, &CMainFrame::OnScraperOutput)
 	ON_COMMAND(ID_VIEW_SHOOTREPLAYFRAME, &CMainFrame::OnViewShootreplayframe)
-	ON_COMMAND(ID_DLL_LOAD, &CMainFrame::OnDllLoad)
-	ON_COMMAND(ID_DLL_LOADSPECIFICFILE, &CMainFrame::OnDllLoadspecificfile)
 	ON_COMMAND(ID_HELP_HELP, &CMainFrame::OnHelp)
 	ON_COMMAND(ID_HELP_OPEN_PPL, &CMainFrame::OnHelpOpenPPL)
 	ON_COMMAND(ID_HELP_FORUMS, &CMainFrame::OnHelpForums)
@@ -421,7 +416,6 @@ void CMainFrame::OnEditPreferences()
 }
 
 BOOL CMainFrame::DestroyWindow() {
-	p_dll_extension->Unload();
 	StopThreads();
   PMainframe()->KillTimers();
 	// Save window position
@@ -449,7 +443,7 @@ void CMainFrame::OnFileOpen() {
 
 	CFileDialog			cfd(true);
 
-	cfd.m_ofn.lpstrInitialDir = preferences.path_ohf();
+  cfd.m_ofn.lpstrInitialDir = "";
   // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646839%28v=vs.85%29.aspx
   cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.oppl, *.txt)\0*.ohf;*.oppl;*.txt\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
@@ -459,7 +453,6 @@ void CMainFrame::OnFileOpen() {
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
 		p_openholdem_title->UpdateTitle();
-		preferences.SetValue(k_prefs_path_ohf, cfd.GetPathName());
 		theApp.StoreLastRecentlyUsedFileList();
 	}
 }
@@ -547,27 +540,6 @@ void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI)
 	p_openholdem_statusbar->OnUpdateStatusbar();
 }
 
-void CMainFrame::OnDllLoad() 
-{
-	if (p_dll_extension->IsLoaded())
-		p_dll_extension->Unload();
-	else
-		p_dll_extension->Load("");
-}
-
-void CMainFrame::OnDllLoadspecificfile() {
-	CFileDialog			cfd(true);
-
-	cfd.m_ofn.lpstrInitialDir = preferences.path_dll();
-	cfd.m_ofn.lpstrFilter = "DLL Files (.dll)\0*.dll\0\0";
-	cfd.m_ofn.lpstrTitle = "Select OpenHoldem DLL file to OPEN";
-
-	if (cfd.DoModal() == IDOK) {
-		p_dll_extension->Load(cfd.m_ofn.lpstrFile);
-		preferences.SetValue(k_prefs_path_dll, cfd.GetPathName());
-	}
-}
-
 BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	if (_wait_cursor)
@@ -596,15 +568,6 @@ void CMainFrame::OnUpdateMenuFileOpen(CCmdUI* pCmdUI) {
 }
 
 void CMainFrame::OnUpdateMenuFileEdit(CCmdUI* pCmdUI) {
-	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
-}
-
-void CMainFrame::OnUpdateMenuDllLoad(CCmdUI* pCmdUI) {
-	if (p_dll_extension->IsLoaded()) {
-		pCmdUI->SetText("&Unload\tF3");
-  } else {
-		pCmdUI->SetText("&Load\tF3");
-  }
 	pCmdUI->Enable(!p_autoplayer->autoplayer_engaged());
 }
 

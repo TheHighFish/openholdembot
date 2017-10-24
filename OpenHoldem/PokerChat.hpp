@@ -1,3 +1,4 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -7,31 +8,16 @@
 //
 //******************************************************************************
 //
-// Purpose:
-//
-//******************************************************************************
-
-#ifndef INC_POKERCHAT_HPP
-#define INC_POKERCHAT_HPP
-
-//////////////////////////////////////////////////////////////////////////
-//
-//  Author: TheHighFish
-//
-//  Created: 2007.11.21
-//
-//  Last change: 2008.02.25
-//
-//  Description: A very simple chat system for OpenHoldem,
+// Purpose: A very simple chat system for OpenHoldem,
 //	providing:
 //	  - an interface for user.dll
 //	  - (limited) chat support for the OH scripting language.
 //
 //  PokerChat is non-OOP, as we pass a function pointer to DLLs,
-//	which would lead to problems for methods du to the
-//	implicit this pointer.
 //
-//////////////////////////////////////////////////////////////////////////
+//******************************************************************************
+
+#include "..\Reference User DLL\user.h"
 
 //  Enumeration constants for simple chat messages.
 //
@@ -61,26 +47,6 @@ enum
 	last_chat_message = simple_chat_sad
 };
 
-
-//  Startup message for the DLL,
-//	combined with a pointer to "send_ChatMessage"
-//	similar to "pfgws".
-//
-static const char pointer_for_send_chat_message[] = "p_send_chat_message";
-
-typedef void (*PointerTypeSendChatMessage)(char* message);
-
-
-//  Interface for the DLL-guys.
-//
-//  IMPORTANT: 
-//  ==========
-//	The variable containing the message has to be global,
-//	as we store a pointer to the message, until the autoplayer
-//	acts again!
-//
-void SendChatMessage(char* message);
-
 //  Chat enabled in preferences
 //	and safety delay expired?
 bool IsChatAllowed();
@@ -95,5 +61,3 @@ void RegisterChatMessage(double message_index);
 //	until it is processed and send to the keyboard
 //
 extern char *_the_chat_message;
-
-#endif //INC_POKERCHAT_HPP

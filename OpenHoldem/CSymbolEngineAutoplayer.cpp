@@ -34,9 +34,9 @@ CSymbolEngineAutoplayer::CSymbolEngineAutoplayer() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_tablelimits != NULL);
-  assert(p_symbol_engine_time != NULL);
-  assert(p_symbol_engine_userchair != NULL);
+  assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+  assert(p_engine_container->symbol_engine_time() != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
 }
 
 CSymbolEngineAutoplayer::~CSymbolEngineAutoplayer() {

@@ -69,6 +69,7 @@
 #include "CSymbolEngineTableStats.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEngineUserDLL.h"
 #include "CSymbolEngineVariousDataLookup.h"
 #include "CSymbolEngineVersus.h"
 #include "UnknownSymbols.h"
@@ -77,9 +78,6 @@ CEngineContainer *p_engine_container = NULL;
 
 CEngineContainer::CEngineContainer() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
-  CreateSymbolEngines();
-  InitOnStartup();
-  _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
 
@@ -130,7 +128,7 @@ void CEngineContainer::CreateSymbolEngines() {
   p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
   AddSymbolEngine(p_symbol_engine_colourcodes);
   // CSymbolEngineTableLimits
-  p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
+  p_symbol_engine_tablelimits = new CSymbolEngineTableLimits();
   AddSymbolEngine(p_symbol_engine_tablelimits);
   // CSymbolEngineTime
   p_symbol_engine_time = new CSymbolEngineTime();
@@ -145,7 +143,7 @@ void CEngineContainer::CreateSymbolEngines() {
   p_symbol_engine_random = new CSymbolEngineRandom();
   AddSymbolEngine(p_symbol_engine_random);
   // CSymbolEngineVersus
-  p_symbol_engine_versus = new CSymbolEngineVersus;
+  p_symbol_engine_versus = new CSymbolEngineVersus();
   AddSymbolEngine(p_symbol_engine_versus);
   // CSymbolEngineActiveDealtPlaying
   p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
@@ -242,6 +240,12 @@ void CEngineContainer::CreateSymbolEngines() {
   // and therefore has to be the very last openPPL-symbol-engine
   p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
   AddSymbolEngine(p_symbol_engine_open_ppl);
+  // DLL-interface
+  // Can be initialized / called after OpenPPL,
+  // as OpenPPL does not depend on the DLL
+  // but the DLL might use OpenPPL.
+  p_symbol_engine_user_DLL = new CSymbolEngineUserDLL;
+  AddSymbolEngine(p_symbol_engine_user_DLL);
   // Some OH-debug-support for the debug-tab
   // Does not depend on anything else,
   // does get used very rarely only by developers.
@@ -266,6 +270,8 @@ void CEngineContainer::CreateSymbolEngines() {
   // CHandHistoryWriter
   p_handhistory_writer = new CHandHistoryWriter;
   AddSymbolEngine(p_handhistory_writer);
+  InitOnStartup();
+  _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
@@ -309,7 +315,7 @@ void CEngineContainer::EvaluateAll() {
 	p_betround_calculator->OnNewHeartbeat();
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
-	p_engine_container->symbol_engine_tablelimits()->CalcTableLimits();
+	p_symbol_engine_tablelimits->CalcTableLimits();
 	// UpdateOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
 	// We only need to care about:

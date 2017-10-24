@@ -55,7 +55,6 @@ CFormulaParser *p_formula_parser = NULL;
 CString _function_name;
 
 CFormulaParser::CFormulaParser() {
-  LogMemoryUsage("CFormulaParser()");
   _is_parsing_counter = 0;
   _is_parsing_read_only_function_library = false;
   _is_parsing_debug_tab = false;
@@ -66,7 +65,6 @@ CFormulaParser::~CFormulaParser() {
 }
 
 void CFormulaParser::EnterParserCode() {
-  LogMemoryUsage("EnterParserCode()");
   // We use a counter here, not a boolean flag.
   // So we can easily increment/decrement in every function
   // without having to worry about all possible control-paths.
@@ -75,13 +73,11 @@ void CFormulaParser::EnterParserCode() {
 }
 
 void CFormulaParser::LeaveParserCode() {
-  LogMemoryUsage("LeaveParserCode()");
   assert(_is_parsing_counter >= 0);
   --_is_parsing_counter;
 }
 
 void CFormulaParser::InitNewParse() {
-  LogMemoryUsage("InitNewParse()");
   // !!! maybe to be removed completely
   CParseErrors::ClearErrorStatus();
   _tokenizer.InitNewParse();
@@ -94,17 +90,14 @@ void CFormulaParser::InitNewParse() {
 
 
 void CFormulaParser::LoadDefaultBot() {
-  LogMemoryUsage("LoadDefaultBot()");
   LoadOptionalFunctionLibrary(p_filenames->DefaultLogicDirectory() + "DefaultBot.ohf");
   LoadOptionalFunctionLibrary(p_filenames->DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");
 }
 
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
-  LogMemoryUsage("ParseFormulaFileWithUserDefinedBotLogic()");
   EnterParserCode();
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
-  p_memory_pool_user_logic->ReleaseAll();
   p_function_collection->SetEmptyDefaultBot();
   p_function_collection->SetFormulaName(CFilenames::FilenameWithoutPathAndExtension(
     formula_file.GetFile()->GetFilePath()));
@@ -116,7 +109,6 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
 }
 
 void CFormulaParser::ParseDefaultLibraries() {
-  LogMemoryUsage("ParseDefaultLibraries()");
   EnterParserCode();
   _is_parsing_read_only_function_library = true;
   // Parse all OpenPPL-libraries, which are now modular.
@@ -144,7 +136,6 @@ void CFormulaParser::ParseDefaultLibraries() {
 }
 
 void CFormulaParser::LoadOptionalFunctionLibrary(CString library_path) {
-  LogMemoryUsage("LoadOptionalFunctionLibrary()");
   if (_access(library_path, F_OK) != 0) {
     return;
   }
@@ -152,7 +143,6 @@ void CFormulaParser::LoadOptionalFunctionLibrary(CString library_path) {
 }
 
 void CFormulaParser::LoadFunctionLibrary(CString library_path) {
-  LogMemoryUsage("LoadFunctionLibrary()");
   assert(p_function_collection != NULL);
   assert(p_filenames != NULL);
   if (_access(library_path, F_OK) != 0) {
@@ -171,17 +161,14 @@ void CFormulaParser::LoadFunctionLibrary(CString library_path) {
   CArchive library_archive(&library_file, CArchive::load); 
   LoadArchive(library_archive);
   LeaveParserCode();
-  LogMemoryUsage(library_path.GetBuffer());
 }
  
 void CFormulaParser::LoadArchive(CArchive& formula_file) {
-  LogMemoryUsage("LoadArchive()");
   _formula_file_splitter.SplitFile(formula_file);
 }
 
 // !!!!!To be moved to CFunction
 bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
-  LogMemoryUsage("VerifyFunctionNamingConventions()");
   if (p_function_collection->OpenPPLLibraryLoaded()) {
     // User-defined bot-logic
     // Must be a f$-symbol or a list
@@ -189,7 +176,6 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
     if (name.Left(4) == "list") return true;
     // Special cases: notes, dll and date
     if (name == "notes") return true;
-    if (name == "dll") return true;
     if (name.Left(2) == "20") return true;
   } else {
     // OpenPPL-library
@@ -209,7 +195,6 @@ bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
 }
 
 bool CFormulaParser::IsValidFunctionName(CString name) {
-  LogMemoryUsage("IsValidFunctionName()");
   int length = name.GetLength();
   for (int i = 0; i<length; ++i) {
     char next_character = name[i];
@@ -222,7 +207,6 @@ bool CFormulaParser::IsValidFunctionName(CString name) {
 }
 
 bool CFormulaParser::ExpectConditionalThen() {
-  LogMemoryUsage("ExpectConditionalThen()");
 	int token_ID = _tokenizer.GetToken();
 	if (token_ID != kTokenOperatorConditionalElse)	{
 		CParseErrors::UnexpectedToken("Malformed conditional expression.\n",
@@ -235,7 +219,6 @@ bool CFormulaParser::ExpectConditionalThen() {
 }
 
 void CFormulaParser::CheckForExtraTokensAfterEndOfFunction() {
-  LogMemoryUsage("CheckForExtraTokensAfterEndOfFunction()");
   int token_ID = _tokenizer.GetToken();
   if (token_ID == kTokenOperatorConditionalWhen) {
     // "Special" case: OpenPPL-code after OH-script expression.
@@ -254,7 +237,6 @@ void CFormulaParser::CheckForExtraTokensAfterEndOfFunction() {
 }
 
 void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
-  LogMemoryUsage(":ExpectMatchingBracketClose()");
 	assert(TokenIsBracketOpen(opening_bracket));
   int current_token = _tokenizer.GetToken();
   int expected_bracket_close = kUndefined;
@@ -278,7 +260,6 @@ void CFormulaParser::ExpectMatchingBracketClose(int opening_bracket){
 }
 
 void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed) {
-  LogMemoryUsage("ParseFormula()");
   // ATTENTION!
   // This function contasins many returns.
   // Make sure to call LeaveParserCode() everywhere!
@@ -324,12 +305,10 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
     // ##OpenPPL##
     write_log(preferences.debug_parser(), 
       "[FormulaParser] Parsing f$function %s\n", _function_name);
-    LogMemoryUsage("before ParseFunctionBody()");
     function_body = ParseFunctionBody();
     write_log(preferences.debug_memory_usage(),
       "[FormulaParser] size of %s = %i\n",
       _function_name, sizeof(*function_body));
-    LogMemoryUsage("after ParseFunctionBody()");
     CheckForExtraTokensAfterEndOfFunction();
   } else if (function_or_list_to_be_parsed->IsList()) {
     // ##listXYZ##
@@ -339,11 +318,8 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
     LeaveParserCode();
     return;
   } else if (_function_name.MakeLower() == "dll") {
-    // ##DLL##
-    write_log(preferences.debug_parser(), 
-	  "[FormulaParser] Parsing ##DLL##\n");
-    // Nothing more to do
-    // We extract the DLL later
+    // Deprecated ##DLL##.
+    // Formerly nothing to do, now ignore it.
   } else if (_function_name.MakeLower() == "notes") {
     // ##Notes##
     write_log(preferences.debug_parser(), 
@@ -363,17 +339,14 @@ void CFormulaParser::ParseFormula(COHScriptObject* function_or_list_to_be_parsed
   assert(p_function_collection->Exists(_function_name));
   // Care about operator precendence
   _parse_tree_rotator.Rotate((CFunction*)function_or_list_to_be_parsed);
-  LogMemoryUsage("after rotation");
 #ifdef DEBUG_PARSER
   p_new_function->Serialize(); 
   p_function_collection->LookUp(_function_name)->Dump();
 #endif
   LeaveParserCode();
-  LogMemoryUsage(_function_name.GetBuffer());
 }
 
 void CFormulaParser::ParseListBody(COHScriptList *list) {
-  LogMemoryUsage("ParseListBody()");
 	int token_ID = _tokenizer.GetToken();
 	while (token_ID != kTokenEndOfFunction)	{
 		if ((token_ID == kTokenIdentifier)      // High cards (at least one), like AK2 T2o
@@ -401,7 +374,6 @@ void CFormulaParser::ParseListBody(COHScriptList *list) {
 }
 
 TPParseTreeNode CFormulaParser::ParseFunctionBody() {
-  LogMemoryUsage("ParseFunctionBody()");
   // Just look-ahead 1 token
   int token_ID = _tokenizer.LookAhead();
   if ((token_ID == kTokenEndOfFile) 
@@ -431,7 +403,6 @@ TPParseTreeNode CFormulaParser::ParseFunctionBody() {
 }
 
 TPParseTreeNode CFormulaParser::ParseExpression() {
-  LogMemoryUsage("ParseExpression()");
   int token_ID = _tokenizer.LookAhead();
   TPParseTreeNode expression;
   // Handle brackets before unary, because brackets are also "unary"
@@ -506,7 +477,6 @@ TPParseTreeNode CFormulaParser::ParseExpression() {
 }
 
 TPParseTreeOperatorNode CFormulaParser::ParseBracketExpression() {
-  LogMemoryUsage("ParseBracketExpression()");
   // Bracket expressions, three different types () [] {}
 	int opening_bracket = _tokenizer.GetToken();
 	assert(TokenIsBracketOpen(opening_bracket));
@@ -523,7 +493,6 @@ TPParseTreeOperatorNode CFormulaParser::ParseBracketExpression() {
 }
 
 TPParseTreeOperatorNode CFormulaParser::ParseUnaryExpression() {
-  LogMemoryUsage("ParseUnaryExpression()");
 	int unary_operator = _tokenizer.GetToken();
 	assert(TokenIsUnary(unary_operator));
 	TPParseTreeNode expression = ParseExpression();
@@ -536,7 +505,6 @@ TPParseTreeOperatorNode CFormulaParser::ParseUnaryExpression() {
 }
 
 TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
-  LogMemoryUsage("ParseSimpleExpression()");
   // Numbers, identifiers
 	int terminal = _tokenizer.GetToken();
 	assert((terminal == kTokenIdentifier) || (terminal == kTokenNumber));
@@ -576,7 +544,6 @@ TPParseTreeTerminalNode CFormulaParser::ParseSimpleExpression() {
 }
 
 bool CFormulaParser::SymbolLooksLikePartOfShankyHandOrBoardExpression(CString symbol) {
-  LogMemoryUsage("SymbolLooksLikePartOfShankyHandOrBoardExpression()");
   int length = symbol.GetLength();
   for (int i = 0; i < length; ++i) {
     switch (toupper(symbol[i])) {
@@ -610,7 +577,6 @@ bool CFormulaParser::SymbolLooksLikePartOfShankyHandOrBoardExpression(CString sy
 }
 
 TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardExpression() {
-  LogMemoryUsage("ParseShankyStyleHandAndBoardExpression()");
   CString identifier;
   int token_ID = _tokenizer.GetToken();
   if (token_ID == kTokenShankyKeywordHand) {
@@ -656,7 +622,6 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleHandAndBoardEx
 }
 
 TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleInPositionExpression() {
-  LogMemoryUsage("ParseShankyStyleInPositionExpression()");
   // Turning valid Shanky-PPL to proper OpenPPL:
   // "In Bigblind" -> InBigBlind".
   // Shanky doesn't care about spaces in the input-stream.
@@ -684,7 +649,6 @@ TPParseTreeTerminalNodeIdentifier CFormulaParser::ParseShankyStyleInPositionExpr
 
 void CFormulaParser::ParseConditionalPartialThenElseExpressions(
 	TPParseTreeNode *then_expression, TPParseTreeNode *else_expression) {
-  LogMemoryUsage("ParseConditionalPartialThenElseExpressions()");
 	// <Condition> ? <Then-Expression> : <Else-Expression>
 	// Condition up to question-mark already parsed
 	int token_ID = _tokenizer.GetToken();
@@ -701,7 +665,6 @@ void CFormulaParser::ParseConditionalPartialThenElseExpressions(
 
 //!!!!!
 void CFormulaParser::ErrorMissingAction(int token_ID) {
-  LogMemoryUsage("ErrorMissingAction()");
   CString error_message = "Missing action after when-condition\n";
   if (token_ID == kTokenNumber) {
     error_message += "Found a number. Probably missing operator\n";
@@ -721,7 +684,6 @@ void CFormulaParser::ErrorMissingAction(int token_ID) {
 }
 
 bool CFormulaParser::CheckForEmptyWhenCondition() {
-  LogMemoryUsage("CheckForEmptyWhenCondition()");
   // Returns true if everything is OK. False on error.
   int token_ID = _tokenizer.LookAhead();
   if ((token_ID == kTokenEndOfFile) || (token_ID == kTokenEndOfFunction)) {
@@ -737,7 +699,6 @@ bool CFormulaParser::CheckForEmptyWhenCondition() {
 }
 
 TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
-  LogMemoryUsage("ParseOpenEndedWhenConditionSequence()");
   assert(_currently_parsed_function_or_list != NULL);
   TPParseTreeOperatorNode last_when_condition = NULL;
   bool last_when_condition_was_open_ended = false;
@@ -819,7 +780,6 @@ TPParseTreeOperatorNode CFormulaParser::ParseOpenEndedWhenConditionSequence() {
 }
 
 TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
-  LogMemoryUsage("ParseOpenPPLUserVar()");
 	// User-variable to be set
   int token_ID = _tokenizer.GetToken();
   if (token_ID != kTokenIdentifier) {
@@ -849,7 +809,6 @@ TPParseTreeTerminalNode CFormulaParser::ParseOpenPPLUserVar() {
 }
 
 TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
-  LogMemoryUsage("ParseOpenPPLAction()");
 	int token_ID = _tokenizer.GetToken();
 	assert(TokenIsOpenPPLAction(token_ID));
 	TPParseTreeNode action;
@@ -892,7 +851,6 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLAction() {
 }
 
 void CFormulaParser::SkipUnsupportedShankyStyleDelay() {
-  LogMemoryUsage("SkipUnsupportedShankyStyleDelay()");
   int _token_ID = _tokenizer.GetToken();
   assert(_token_ID == kTokenUnsupportedDelay);
   assert(_currently_parsed_function_or_list != NULL);
@@ -912,7 +870,6 @@ void CFormulaParser::SkipUnsupportedShankyStyleDelay() {
 }
 
 bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
-  LogMemoryUsage("ExpectKeywordForce()");
 	int _token_ID = _tokenizer.GetToken();
   if (_token_ID != kTokenKeywordForce) {
     // General error message on missing keyword force
@@ -941,7 +898,6 @@ bool CFormulaParser::ExpectKeywordForce(int last_important_roken_ID) {
 }
 
 TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpression() {
-  LogMemoryUsage("ParseOpenPPLRaiseToExpression()");
   // RaiseTo N Force
 	// Keyword RaiseTo got already consumed
 	TPParseTreeTerminalNodeBetsizeAction action = new CParseTreeTerminalNodeBetsizeAction(_tokenizer.LineRelative());
@@ -962,7 +918,6 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseToExpressi
 }
 
 TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpression() {
-  LogMemoryUsage("ParseOpenPPLRaiseByExpression()");
 	// There are 3 possibilities
 	//   RAISE <Amount> FORCE
 	//   RAISE <PercentagedPot>% FORCE
@@ -996,7 +951,6 @@ TPParseTreeTerminalNodeBetsizeAction CFormulaParser::ParseOpenPPLRaiseByExpressi
 }
 
 TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression() {
-  LogMemoryUsage("ParseOpenPPLRaiseExpression()");
   if (_tokenizer.LookAhead() == kTokenKeywordForce) {
     // Predefined action, here Raise
     TPParseTreeTerminalNodeFixedAction fixed_action
@@ -1018,7 +972,6 @@ TPParseTreeNode CFormulaParser::ParseOpenPPLRaiseExpression() {
 
 void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
   TPParseTreeNode first_when_condition_of_a_function) {
-  LogMemoryUsage("BackPatchOpenEndedWhenConditionSequence()");
   // Backpatching everything after a complete functiuon got parsed
   TPParseTreeNode last_open_ended_when_condition = NULL;
   TPParseTreeNode current_when_condition = first_when_condition_of_a_function;
@@ -1077,7 +1030,6 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
 }
 
 void CFormulaParser::ParseDebugTab(CString function_text) {
-  LogMemoryUsage("ParseDebugTab()");
   EnterParserCode();
   assert(p_debug_tab != NULL);
   _is_parsing_debug_tab = true;
