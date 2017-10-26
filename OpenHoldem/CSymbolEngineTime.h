@@ -48,7 +48,7 @@ class CSymbolEngineTime: public CVirtualSymbolEngine {
   time_t _elapsedhandhold;	 // The time since start of last hand
   time_t _elapsedmyturnhold;// The time when my turn started
  private:
-  bool _last_heartbeat_ay_my_turn;
+  bool _last_heartbeat_was_my_turn;
 };
 
 #endif INC_CSYMBOLENGINETIME_H

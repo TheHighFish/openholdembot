@@ -152,9 +152,11 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer() {
 	}
   write_log(preferences.debug_autoplayer(), "[AutoPlayer] Number of stable frames: % d\n", p_stableframescounter->NumberOfStableFrames());
   CString delay_function = k_standard_function_names[k_standard_function_delay];
-  double desired_delay_in_seconds = p_function_collection->Evaluate(delay_function, preferences.log_delay_function()) / 1000;
-  p_engine_container->symbol_engine_debug()->SetValue(1, desired_delay_in_seconds);
-  if (desired_delay_in_seconds < p_engine_container->symbol_engine_time()->elapsedmyturn()) {
+  double desired_delay_in_milli_seconds = p_function_collection->Evaluate(delay_function, preferences.log_delay_function());
+  p_engine_container->symbol_engine_debug()->SetValue(1, desired_delay_in_milli_seconds);
+  double milli_seconds_since_my_turn = p_engine_container->symbol_engine_time()->elapsedmyturn() * 1000;
+  p_engine_container->symbol_engine_debug()->SetValue(2, milli_seconds_since_my_turn);
+  if (milli_seconds_since_my_turn < desired_delay_in_milli_seconds) {
     write_log(preferences.debug_autoplayer(), "[AutoPlayer] Not isfinalanswer because of f$delay\n");
     _isfinalanswer = false;
   }
@@ -164,7 +166,7 @@ void CSymbolEngineAutoplayer::CalculateFinalAnswer() {
        p_function_collection->Evaluate(delay_function, preferences.log_delay_function()));
 		_isfinalanswer = false;
 	}
-  p_engine_container->symbol_engine_debug()->SetValue(2, _isfinalanswer);
+  p_engine_container->symbol_engine_debug()->SetValue(3, _isfinalanswer);
 }
 
 CString CSymbolEngineAutoplayer::GetFCKRAString()

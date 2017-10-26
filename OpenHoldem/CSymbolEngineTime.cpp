@@ -33,17 +33,15 @@ CSymbolEngineTime::~CSymbolEngineTime() {
 
 void CSymbolEngineTime::InitOnStartup() {
   // Initilizing all "old" values to time of startup for reasonability
-  time(&_elapsedhold);
-  time(&_elapsedhandhold);
-  time(&_elapsedautohold);
-  time(&_elapsedmyturnhold);
-  _last_heartbeat_ay_my_turn;
+  UpdateOnConnection();
 }
 
 void CSymbolEngineTime::UpdateOnConnection() {
   time(&_elapsedhold);
   time(&_elapsedhandhold);
   time(&_elapsedautohold);
+  time(&_elapsedmyturnhold);
+  _last_heartbeat_was_my_turn = false;
 }
 
 void CSymbolEngineTime::UpdateOnHandreset() {
@@ -54,10 +52,10 @@ void CSymbolEngineTime::UpdateOnNewRound() {
 }
 
 void CSymbolEngineTime::UpdateOnMyTurn() {
-  if (!_last_heartbeat_ay_my_turn) {
+  if (!_last_heartbeat_was_my_turn) {
     time(&_elapsedmyturnhold);
   }
-  _last_heartbeat_ay_my_turn = true;
+  _last_heartbeat_was_my_turn = true;
 }
 
 void CSymbolEngineTime::UpdateOnHeartbeat() {
@@ -69,7 +67,7 @@ void CSymbolEngineTime::UpdateOnHeartbeat() {
   //      and normal calculations stop on disconnection.
   assert(p_casino_interface != nullptr);
   if (!p_casino_interface->IsMyTurn()) {
-    _last_heartbeat_ay_my_turn = false;
+    _last_heartbeat_was_my_turn = false;
   }
   // Not setting anything to true here.
   // We do this in UpdateOnMyTurn() after the calculations
