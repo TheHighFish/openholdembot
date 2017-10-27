@@ -122,6 +122,15 @@ void CSymbolEngineHistory::UpdateOnHeartbeat() {
   // Try to avoid such situations!
   if (!p_table_state->User()->HasAnyCards()) {
     CalculateHistory();
+    return;
+  }
+  // Also calculating history when we acted on this round.
+  // This seems to be necess<ry to catch nbetsroundX if we are the last raiser
+  // and seems to be safe (not affected by the problem above)
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=21226
+  if (DidAct()) {
+    CalculateHistory();
+    return;
   }
 }
 
