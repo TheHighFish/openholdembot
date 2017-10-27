@@ -1,4 +1,23 @@
-﻿﻿v﻿12.1.0 2017-10-23
+﻿﻿v﻿12.1.1 2017-10-26
+==================
+BUG FIXES:
+- The f$delay-function was not precise.
+  It calculated the number of additional heartbeats required,
+  but due to flexible heartbeats OpenHoldem acted too fast.
+  Thanks to Barthens for reporting.
+  [THF]
+- The improved calculation of nbetsroundX )OH 12.0.3)
+  could make things worse in other situations.
+  This has now been addressed with another improvement.
+  Thanks to stars83 for reporting.
+ 
+MAINTENANCE:
+- Adapted the Openppl-symbols NoNettingOnFlop and NoBettingOnTurn
+  to consider also autoplayer-action-counters in addition to nbetsroundX.
+  [THF]  
+  
+
+﻿v﻿12.1.0 2017-10-23
 ==================
 ﻿NEW STUFF:
 - The user-DLL has a new interface.

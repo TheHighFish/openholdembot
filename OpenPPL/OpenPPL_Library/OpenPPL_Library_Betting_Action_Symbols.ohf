@@ -227,9 +227,15 @@ AND NOT BotIsLastRaiser
 
 ##NoBettingOnFlop##
 (nbetsround_flop == 0)
+AND NOT didraiseround_flop
+AND NOT didbetsizeround_flop
+AND NOT didalliround_flop
 
 ##NoBettingOnTurn##
 (nbetsround_turn == 0)
+AND NOT didraiseround_turn
+AND NOT didbetsizeround_turn
+AND NOT didalliround_turn
 
 ##OpponentCalledOnFlop##
     (betround > flop)
