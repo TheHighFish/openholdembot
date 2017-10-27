@@ -9,10 +9,10 @@ BUG FIXES:
 - The improved calculation of nbetsroundX )OH 12.0.3)
   could make things worse in other situations.
   This has now been addressed with another improvement.
-  Thanks to stars83 for reporting.
+  Thanks to Stars83 for reporting.
  
 MAINTENANCE:
-- Adapted the Openppl-symbols NoNettingOnFlop and NoBettingOnTurn
+- Adapted the OpenPPL-symbols NoNettingOnFlop and NoBettingOnTurn
   to consider also autoplayer-action-counters in addition to nbetsroundX.
   [THF]  
   

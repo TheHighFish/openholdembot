@@ -224,7 +224,7 @@ WHEN [IsPreflop AND (hand$AA OR hand$KK)] RETURN true FORCE
 [ IsPostflop && f$committed ] 
 
 ##f$flop_turn_raise_strong_set##
-[ IsPostflop AND NOT IsRiver AND HaveSet AND nsuitedcommon<4 AND nstraightcommon<4 ANS NOT PairOnBoard ] 
+[ IsPostflop AND NOT IsRiver AND HaveSet AND nsuitedcommon<4 AND nstraightcommon<4 AND NOT PairOnBoard ] 
 
 ##f$prwin_number_of_iterations##
 50000
@@ -325,31 +325,31 @@ pt_hands_headsupchair
 50
 
 ##f$draws##
-(!TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nstraight==4 && NOT StraightPossible && !f$wheeldraw && NOT PairOnBoard) ||
-(!TwoPairOnBoard && HaveFlushDraw && FlushPossible && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && NOT StraightPossible && NOT PairOnBoard) ||
-(IsFlop && !TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nstraight==4 && !f$wheeldraw && NOT StraightPossible && PairOnBoard) ||
-(IsFlop && !TwoPairOnBoard && HaveFlushDraw && FlushPossible && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && NOT StraightPossible && PairOnBoard) ? 4 :
-((!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && NOT PairOnBoard) ||
-(!TwoPairOnBoard && rankloplayer>rankhicommon && NOT StraightPossible && NOT PairOnBoard && HaveFlushDraw && nsuitedcommon==2) ||
-(!TwoPairOnBoard && hand$AA && FlushPossible && HaveFlushDraw && NOT PairOnBoard) ||
-(!TwoPairOnBoard && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ishipair && NOT FlushPossible && NOT PairOnBoard && (pokervalcommon < onepair)) ||
-(HaveFlushDraw && nsuited>nsuitedcommon && ishipair && NOT PairOnBoard)) ? 3 :
-((!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && NOT PairOnBoard) || 
-(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && nrankedcommon<3) ||
-(!TwoPairOnBoard && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ismidpair && nrankedcommon<3 && NOT FlushPossible (pokervalcommon < onepair)) ||
-(!TwoPairOnBoard && HaveFlushDraw && nsuited>nsuitedcommon && ismidpair && nrankedcommon<3 && (pokervalcommon < onepair)) ||
-(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==1 && nrankedcommon<3) ||
-(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) ||
-(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) ||
-(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nrankedcommon<3) ||
-(!TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nrankedcommon<3) ||
-(isthreeofakind && NOT IsRiver && NOT PairOnBoard) ||
-(rankloplayer>rankhicommon && NOT IsRiver && f$safeboard && isonepair && !ispair) ||
-(rankloplayer>rankhicommon && NOT IsRiver && NOT FlushPossible && NOT StraightPossible && nstraightfillcommon>1 && istwopair && PairOnBoard) ||
-(nstraightfill==1 && NOT IsRiver && istwopair && PairOnBoard && NOT FlushPossible) ||
-(nstraightfill==1 && NOT IsRiver && rankloplayer>rankhicommon && f$safeboard) ||
-(nstraightfill==1 && NOT IsRiver && nsuited==3 && IsFlop && rankhiplayer>rankhicommon && f$safeboard) ||
-(!TwoPairOnBoard && NOT IsRiver && HaveFlushDraw && FlushPossible && rankloplayer>11 && nrankedcommon<3) ||
+   (!TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nstraight==4 && NOT StraightPossible && !f$wheeldraw && NOT PairOnBoard) 
+|| (!TwoPairOnBoard && HaveFlushDraw && FlushPossible && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && NOT StraightPossible && NOT PairOnBoard) 
+|| (IsFlop && !TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nstraight==4 && !f$wheeldraw && NOT StraightPossible && PairOnBoard) 
+|| (IsFlop && !TwoPairOnBoard && HaveFlushDraw && FlushPossible && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && NOT StraightPossible && PairOnBoard) ? 4 :
+   ((!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && NOT PairOnBoard) 
+|| (!TwoPairOnBoard && rankloplayer>rankhicommon && NOT StraightPossible && NOT PairOnBoard && HaveFlushDraw && nsuitedcommon==2) 
+||(!TwoPairOnBoard && hand$AA && FlushPossible && HaveFlushDraw && NOT PairOnBoard) 
+|| (!TwoPairOnBoard && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ishipair && NOT FlushPossible && NOT PairOnBoard && (pokervalcommon < onepair)) 
+||(HaveFlushDraw && nsuited>nsuitedcommon && ishipair && NOT PairOnBoard)) ? 3 :
+   ((!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && NOT PairOnBoard) 
+|| (!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && nrankedcommon<3) 
+|| (!TwoPairOnBoard && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ismidpair && nrankedcommon<3 && NOT FlushPossible && (pokervalcommon < onepair)) 
+|| (!TwoPairOnBoard && HaveFlushDraw && nsuited>nsuitedcommon && ismidpair && nrankedcommon<3 && (pokervalcommon < onepair)) 
+|| (!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==1 && nrankedcommon<3) 
+|| (!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) 
+|| (!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) 
+|| (!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nrankedcommon<3) 
+|| (!TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nrankedcommon<3) 
+|| (isthreeofakind && NOT IsRiver && NOT PairOnBoard) 
+|| (rankloplayer>rankhicommon && NOT IsRiver && f$safeboard && isonepair && !ispair) 
+|| (rankloplayer>rankhicommon && NOT IsRiver && NOT FlushPossible && NOT StraightPossible && nstraightfillcommon>1 && istwopair && PairOnBoard) 
+|| (nstraightfill==1 && NOT IsRiver && istwopair && PairOnBoard && NOT FlushPossible) 
+|| (nstraightfill==1 && NOT IsRiver && rankloplayer>rankhicommon && f$safeboard) 
+|| (nstraightfill==1 && NOT IsRiver && nsuited==3 && IsFlop && rankhiplayer>rankhicommon && f$safeboard) 
+|| (!TwoPairOnBoard && NOT IsRiver && HaveFlushDraw && FlushPossible && rankloplayer>11 && nrankedcommon<3) ||
 (!TwoPairOnBoard && NOT IsRiver && nsuited==3 && nsuitedcommon==1 && nstraight==3 && nstraightcommon<=2 && rankloplayer>rankhicommon && NOT PairOnBoard && IsFlop) ||
 (!TwoPairOnBoard && IsFlop && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && NOT FlushPossible && nrankedcommon<3 && rankhiplayer>rankhicommon) ||
 (!TwoPairOnBoard && nstraight==4 && nstraightcommon<=2 && NOT FlushPossible && nrankedcommon<3 && !f$wheeldraw && nrankedcommon<3) ||
