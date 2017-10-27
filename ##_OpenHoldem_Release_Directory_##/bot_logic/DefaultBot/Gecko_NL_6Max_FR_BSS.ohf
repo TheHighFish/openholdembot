@@ -116,6 +116,15 @@
 //   * Removed duplicate f$pt_vpip, $pt_pfr
 //   * Removed f$BettingAction_Raisers_Behind_Us which became superfluous  
 //     after the multiple use-cases of list100 got distinguished.
+//   * Replaces f$twopair by TwoPairOnBoard
+//   * Replaced "nrankedcommon==2" by PairOnBoard
+//   * Replaced "nsuited==4" by HaveFlushDraw
+//   * Replaced "nrankedcommon==1" by "NOT PairOnBoard"
+//   * Replaced "nstraightcommon < 3" by "NOT StraightPossible"
+//   * Replaced "nstraightfillcommon<=2" by Straightpossible
+//   * Replaced "nsuitedcommon==3" by FlushPossible
+//   * Replaced "nsuitedcommon<3" by "NOT FlushPossible"
+//   * Removed now unused function f$realbalance, formerly used for allins
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -134,11 +143,11 @@
 //     Now introduced
 //       listGeckoMultipleRaisers
 //       listGeckoSqueeze
-//       listGeckoSingleRaisersBehindUs
+//       listGeckoSingleRaiserBehindUs
 //       listGeckoMultipleRaisersBehindUs
 //     and rewrote f$Preflop_React_To_Reraise to distinguish
 //     one or multiple raises behind us and added AKo 
-//     to listGeckoSingleRaisersBehindUs.
+//     to listGeckoSingleRaiserBehindUs.
 //
 //*****************************************************************************
 //
@@ -212,10 +221,10 @@ WHEN [IsPreflop AND (hand$AA OR hand$KK)] RETURN true FORCE
 [ IsPostflop && call<=bblind && pot>6*bblind && f$prwin>.50  ] ? 1 : 0
 
 ##f$call_potcommitted##
-[ IsPostflop && f$committed                                  ] ? 1 : 0
+[ IsPostflop && f$committed ] 
 
 ##f$flop_turn_raise_strong_set##
-[ IsPostflop && NOT IsRiver && isthreeofakind && ispair && nsuitedcommon<4 && nstraightcommon<4 && nrankedcommon==1 ] ? 1 : 0
+[ IsPostflop AND NOT IsRiver AND HaveSet AND nsuitedcommon<4 AND nstraightcommon<4 ANS NOT PairOnBoard ] 
 
 ##f$prwin_number_of_iterations##
 50000
@@ -316,58 +325,52 @@ pt_hands_headsupchair
 50
 
 ##f$draws##
-(!f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && nstraightcommon<3 && !f$wheeldraw && nrankedcommon==1) ||
-(!f$twopair && nsuited==4 && nsuitedcommon==3 && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && nstraightcommon<3 && nrankedcommon==1) ||
-(IsFlop && !f$twopair && nsuited==4 && nsuitedcommon==2 && nstraight==4 && !f$wheeldraw && nstraightcommon<3 && nrankedcommon==2) ||
-(IsFlop && !f$twopair && nsuited==4 && nsuitedcommon==3 && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && nstraightcommon<3 && nrankedcommon==2) ? 4 :
-
-((!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon==1) ||
-(!f$twopair && rankloplayer>rankhicommon && nstraightcommon<3 && nrankedcommon==1 && nsuited==4 && nsuitedcommon==2) ||
-(!f$twopair && hand$AA && nsuitedcommon==3 && nsuited==4 && nrankedcommon==1) ||
-(!f$twopair && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ishipair && nsuitedcommon<3 && nrankedcommon==1 && (pokervalcommon < onepair)) ||
-(nsuited==4 && nsuited>nsuitedcommon && ishipair && nrankedcommon==1)) ? 3 :
-
-((!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon==1) || 
-(!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon<3) ||
-(!f$twopair && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ismidpair && nrankedcommon<3 && nsuitedcommon<3 && nrankedcommon<3 && (pokervalcommon < onepair)) ||
-(!f$twopair && nsuited==4 && nsuited>nsuitedcommon && ismidpair && nrankedcommon<3 && (pokervalcommon < onepair)) ||
-(!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==1 && nrankedcommon<3) ||
-(!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) ||
-(!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) ||
-(!f$twopair && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nrankedcommon<3) ||
-(!f$twopair && nsuited==4 && nsuitedcommon==2 && nrankedcommon<3) ||
-(isthreeofakind && NOT IsRiver && nrankedcommon==1) ||
+(!TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nstraight==4 && NOT StraightPossible && !f$wheeldraw && NOT PairOnBoard) ||
+(!TwoPairOnBoard && HaveFlushDraw && FlushPossible && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && NOT StraightPossible && NOT PairOnBoard) ||
+(IsFlop && !TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nstraight==4 && !f$wheeldraw && NOT StraightPossible && PairOnBoard) ||
+(IsFlop && !TwoPairOnBoard && HaveFlushDraw && FlushPossible && nstraight==4 && !f$wheeldraw && `((~srankbits&0x7fff)>>srankhiplayer)<=3 && NOT StraightPossible && PairOnBoard) ? 4 :
+((!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && NOT PairOnBoard) ||
+(!TwoPairOnBoard && rankloplayer>rankhicommon && NOT StraightPossible && NOT PairOnBoard && HaveFlushDraw && nsuitedcommon==2) ||
+(!TwoPairOnBoard && hand$AA && FlushPossible && HaveFlushDraw && NOT PairOnBoard) ||
+(!TwoPairOnBoard && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ishipair && NOT FlushPossible && NOT PairOnBoard && (pokervalcommon < onepair)) ||
+(HaveFlushDraw && nsuited>nsuitedcommon && ishipair && NOT PairOnBoard)) ? 3 :
+((!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && NOT PairOnBoard) || 
+(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && nrankedcommon<3) ||
+(!TwoPairOnBoard && nstraight==4 && nstraight>nstraightcommon && !f$wheeldraw && ismidpair && nrankedcommon<3 && NOT FlushPossible (pokervalcommon < onepair)) ||
+(!TwoPairOnBoard && HaveFlushDraw && nsuited>nsuitedcommon && ismidpair && nrankedcommon<3 && (pokervalcommon < onepair)) ||
+(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==1 && nrankedcommon<3) ||
+(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) ||
+(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==2 && nrankedcommon<3) ||
+(!TwoPairOnBoard && HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nrankedcommon<3) ||
+(!TwoPairOnBoard && HaveFlushDraw && nsuitedcommon==2 && nrankedcommon<3) ||
+(isthreeofakind && NOT IsRiver && NOT PairOnBoard) ||
 (rankloplayer>rankhicommon && NOT IsRiver && f$safeboard && isonepair && !ispair) ||
-(rankloplayer>rankhicommon && NOT IsRiver && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && istwopair && nrankedcommon==2) ||
-(nstraightfill==1 && NOT IsRiver && istwopair && nrankedcommon==2 && nsuitedcommon<3) ||
+(rankloplayer>rankhicommon && NOT IsRiver && NOT FlushPossible && NOT StraightPossible && nstraightfillcommon>1 && istwopair && PairOnBoard) ||
+(nstraightfill==1 && NOT IsRiver && istwopair && PairOnBoard && NOT FlushPossible) ||
 (nstraightfill==1 && NOT IsRiver && rankloplayer>rankhicommon && f$safeboard) ||
 (nstraightfill==1 && NOT IsRiver && nsuited==3 && IsFlop && rankhiplayer>rankhicommon && f$safeboard) ||
-(!f$twopair && NOT IsRiver && nsuited==4 && nsuitedcommon==3 && rankloplayer>11 && nrankedcommon<3) ||
-(!f$twopair && NOT IsRiver && nsuited==3 && nsuitedcommon==1 && nstraight==3 && nstraightcommon<=2 && rankloplayer>rankhicommon && nrankedcommon==1 && IsFlop) ||
-(!f$twopair && IsFlop && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && nsuitedcommon<3 && nrankedcommon<3 && rankhiplayer>rankhicommon) ||
-(!f$twopair && nstraight==4 && nstraightcommon<=2 && nsuitedcommon<3 && nrankedcommon<3 && !f$wheeldraw && nrankedcommon<3) ||
-(!f$twopair && NOT IsRiver && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && rankloplayer>ranklocommon && rankhiplayer>rankhicommon && nrankedcommon<3)) ? 2 :
-
-((!f$twopair && (nstraight==2 && nstraightfillcommon==1 && nsuitedcommon<3 && nrankedcommon==1)||(nstraight==3 && nstraightfillcommon==1 && nsuitedcommon<3 && nrankedcommon==1)) ||
-(nstraightfill==1 && nsuitedcommon<3) ||
-(istwopair && nrankedcommon==1) ||
-(isonepair && nsuitedcommon<3 && nstraightcommon<3 && nrankedcommon==1) ||
-(!f$twopair && nsuitedcommon==3 && nsuited==4 && (srankloplayer>6||srankhiplayer>6) && nrankedcommon==1) ||
-(!f$twopair && nstraight==4 && nstraightcommon==3 && nrankedcommon==1) ||
-(!f$twopair && nstraight==3 && nstraightcommon==2 && nstraightfillcommon<=2 && nrankedcommon==1) ||
-(f$wheeldraw && nrankedcommon==1)) ? 1 :
-
+(!TwoPairOnBoard && NOT IsRiver && HaveFlushDraw && FlushPossible && rankloplayer>11 && nrankedcommon<3) ||
+(!TwoPairOnBoard && NOT IsRiver && nsuited==3 && nsuitedcommon==1 && nstraight==3 && nstraightcommon<=2 && rankloplayer>rankhicommon && NOT PairOnBoard && IsFlop) ||
+(!TwoPairOnBoard && IsFlop && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && NOT FlushPossible && nrankedcommon<3 && rankhiplayer>rankhicommon) ||
+(!TwoPairOnBoard && nstraight==4 && nstraightcommon<=2 && NOT FlushPossible && nrankedcommon<3 && !f$wheeldraw && nrankedcommon<3) ||
+(!TwoPairOnBoard && NOT IsRiver && nstraight==4 && nstraightcommon==3 && !f$wheeldraw && rankloplayer>ranklocommon && rankhiplayer>rankhicommon && nrankedcommon<3)) ? 2 :
+((!TwoPairOnBoard && (nstraight==2 && nstraightfillcommon==1 && NOT FlushPossible && NOT PairOnBoard)||(nstraight==3 && nstraightfillcommon==1 && NOT FlushPossible && NOT PairOnBoard)) ||
+(nstraightfill==1 && NOT FlushPossible) ||
+(istwopair && NOT PairOnBoard) ||
+(isonepair && NOT FlushPossible && NOT StraightPossible && NOT PairOnBoard) ||
+(!TwoPairOnBoard && FlushPossible && HaveFlushDraw && (srankloplayer>6||srankhiplayer>6) && NOT PairOnBoard) ||
+(!TwoPairOnBoard && nstraight==4 && nstraightcommon==3 && NOT PairOnBoard) ||
+(!TwoPairOnBoard && nstraight==3 && nstraightcommon==2 && StraightPossible && NOT PairOnBoard) ||
+(f$wheeldraw && NOT PairOnBoard)) ? 1 :
 0
 
 ##f$wheeldraw##
+// !!! Does not consider all wheels
 (rankbits>>9==0b111100)                                 // AKQJ
 || (rankbits & 0b0000000000011110)==0b0000000000011110  // 432A
 
 ##f$safeboard##
-[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightcommon<=2 ]
-
-##f$twopair##
-(pokervalcommon & twopair)
+[ NOT PairOnBoard && nsuitedcommon<=2 && nstraightcommon<=2 ]
 
 ##f$actionpreflop_1##
 [ ncallbets<=1 && nopponentscalling<=0 ]
@@ -476,355 +479,237 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 
 ##f$flop_raise_initiative##
 [ Position = First ] ? {
-
     [ f$actionpostflop_1 ] ? {
-
         [ nplayersplaying<=2 ] ? 1 :
-
 //          [ f$fold2cbet_veel || f$fold2cbet_normal ] ? {
- 
 //            [ f$stackopponent< 30*bblind ] ? {
-
 //                [ rankhicommon==13 || rankhicommon==14 ] ? f$prwin>0 :
 //                [ f$prwin>0.65                         ] ? 1         : 0 } :
-
 //            [ f$stackopponent>=30*bblind ] ? {
-
 //                [ f$pt_flopaf<4  ] ? f$prwin>0.00 :
 //                [ f$pt_flopaf>=4 ] ? f$prwin>0.00 && f$prwin<.92 : 0 } : 0 } :
-
 //          [ f$fold2cbet_weinig ] ? {
-
 //              [ f$pt_flopaf<4  ] ? {
-
 //                  [ rankhicommon==13 || rankhicommon==14 ] ? f$prwin>0 :
 //                  [ f$prwin>0.65                         ] ? 1         : 0 } :
-
 //              [ f$pt_flopaf>=4 ] ? f$prwin>0.65 && f$prwin<.92 : 0 } : 0 } :
-
         [ nplayersplaying==3 ] ? 1            :
         [ nplayersplaying>=4 ] ? f$prwin>0.45 : 0 } :
-
     [ f$actionpostflop_2 ] ? {
-
         [ nplayersplaying<=2 ] ? f$prwin>0.45 :
         [ nplayersplaying==3 ] ? f$prwin>0.68 :
         [ nplayersplaying>=4 ] ? f$prwin>0.70 : 0 } :
-
     [ f$actionpostflop_3 ] ? f$prwin>0.75 :
     [ f$actionpostflop_4 ] ? f$prwin>0.76 :
     [ f$actionpostflop_5 ] ? f$prwin>0.77 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.78 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.72 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.78 : 0 } : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.78 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.76 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.78 : 0 } : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.77 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
-
 // ---------------------------------------------
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? {
-
         [ nplayersplaying==2 ] ? 1 :
-
         [ nplayersplaying==3 ] ? {
-
-            [ f$draws>1 && nsuited==4 ] ? 1 :
+            [ f$draws>1 && HaveFlushDraw ] ? 1 :
             [ f$prwin>0.65            ] ? 1 : 0 } :
-
         [ nplayersplaying>=4 ] ? f$prwin>0.58 : 0 } :
-
     [ f$actionpostflop_2 ] ? {
-
         [ nplayersplaying==3 ] ? f$prwin>0.65 :
         [ nplayersplaying>=4 ] ? f$prwin>0.65 : 0 } :
-
     [ f$actionpostflop_3 ] ? {
-
         [ nplayersplaying==2 ] ? f$prwin>.75 :
         [ nplayersplaying>=3 ] ? f$prwin>.78 : 0 } :
-
     [ f$actionpostflop_4 ] ? f$prwin>.78 :
     [ f$actionpostflop_5 ] ? f$prwin>.78 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.78 :
         [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.78 :
         [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
         [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
-
 // ---------------------------------------------------
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? {
-
         [ nplayersplaying<=2 ] ? {
-
             [ f$prwin>0.00 && f$prwin<0.38 ] ? 1 :
             [ f$prwin>0.40 && f$prwin<0.45 ] ? 1 :
             [ f$prwin>0.50 && f$prwin<0.55 ] ? 1 :
             [ f$prwin>0.60 && f$prwin<0.82 ] ? 1 :
             [ f$prwin>0.86                 ] ? 1 : 0 } :
-
         [ nplayersplaying==3 ] ? 1            :
         [ nplayersplaying>=4 ] ? f$prwin>0.65 : 0 } :
-
     [ f$actionpostflop_2 ] ? {
-
         [ nplayersplaying<=2 ] ? f$prwin>0.30 :
         [ nplayersplaying==3 ] ? f$prwin>0.65 :
         [ nplayersplaying>=4 ] ? f$prwin>0.70 : 0 } :
-
     [ f$actionpostflop_3 ] ? {
-
         [ nplayersplaying==2 ] ? {
-
-            [                      f$pt_wtsd<=0.00 ] ? f$prwin>.70 :
+            [ f$pt_wtsd<=0.00 ] ? f$prwin>.70 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.30 ] ? f$prwin>.65 && f$prwin<.95 : // bluffraise his lead
-            [ f$pt_wtsd>0.30                       ] ? f$prwin>.70 : 0 } :
-
+            [ f$pt_wtsd>0.30 ] ? f$prwin>.70 : 0 } :
         [ nplayersplaying>=3 ] ? f$prwin>.78 : 0 } :
-
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.83 :
         [ f$ptype_tag     ] ? f$prwin2>.79 :
         [ f$ptype_semilag ] ? f$prwin2>.78 :
         [ f$ptype_lag     ] ? f$prwin2>.77 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.83 :
         [ f$ptype_tag     ] ? f$prwin2>.79 :
         [ f$ptype_semilag ] ? f$prwin2>.78 :
         [ f$ptype_lag     ] ? f$prwin2>.77 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.83 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.78:
         [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
-
 0
 
 ##f$flop_raise_noinitiative##
 [ Position = First ] ? {
-
     [ f$actionpostflop_1 && nplayersplaying==2 ] ? { // donk flop
-
         [ f$draws>=2                   ] ? 1 :
         [ f$prwin>0.40 && f$prwin<0.60 ] ? 1 : 0 } :
-
     [ f$actionpostflop_2 ] ? f$prwin>.50 : // raise minbet
-
     [ f$actionpostflop_3 ] ? {
-
         [ nplayersplaying==2 ] ? {
-
             [ nplayersround_flop==2 ] ? f$prwin>0.70 :
             [ nplayersround_flop>=3 ] ? f$prwin>0.75 : 0 } :
-
         [ nplayersplaying>=3 ] ? {
-
             [ nplayersround_flop==3 ] ? f$prwin>0.75 :
             [ nplayersround_flop>=4 ] ? f$prwin>0.80 : 0 } : 0 } :
-
     [ f$actionpostflop_4 ] ? {
-
         [ f$draws>1 && nplayersplaying==2 ] ? 1 :
         [ f$prwin>0.75 && f$prwin<0.95    ] ? 1 : 0 } :
-
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.82 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.80 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.82 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.78 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.82 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.78 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin>.80 :
     [ f$actionpostflop_10] ? f$prwin>.80 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.72 :
     [ f$actionpostflop_2 ] ? f$prwin>.76 :
     [ f$actionpostflop_3 ] ? f$prwin>.78 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.82 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
         [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.82 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
         [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.82 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
         [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin>.80 :
     [ f$actionpostflop_10] ? f$prwin>.80 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? {
-
        [ nplayersplaying==2 ] ? {
-
            [ f$draws>1   ] ? 1 :
            [ f$prwin>.50 ] ? 1 : 0 } :
-
        [ nplayersplaying>=3 ] ? f$prwin>.60 : 0 } :
-
     [ f$actionpostflop_2 ] ? f$prwin>.67 :
-
     [ f$actionpostflop_3 ] ? {
-
         [ f$draws>1                    ] ? 1 :
         [ f$prwin>0.72 && f$prwin<0.90 ] ? 1 : 0 } :
-
     [ f$actionpostflop_4 ] ? {
-
         [ f$draws>3                    ] ? 1 :
         [ f$prwin>0.75 && f$prwin<0.90 ] ? 1 : 0 } :
-
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.82 :
         [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.82 :
         [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.83 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
-
 0
 
 ##f$flop_raise_noaction##
@@ -1036,9 +921,9 @@ WHEN Others
             [ didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=5 ] ? f$prwin>0 : // donkbet and 2nd barrel turn
             [ f$AggressionFactor_Turn2<=3.00 ] ? {
                 [ f$draws>1   ] ? 1 :
-                [ f$prwin>.70 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? 1 : 0 } :
-            [ f$AggressionFactor_Turn2>3.00 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>.70 && f$prwin<.80 : 0 } : // only barrel value oop
-        [ nplayersplaying>=2 && nplayersround_flop>=3 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>.74 : 0 } :
+                [ f$prwin>.70 && !(ismidpair && rankhicommon==14 && NOT PairOnBoard) ] ? 1 : 0 } :
+            [ f$AggressionFactor_Turn2>3.00 && !(ismidpair && rankhicommon==14 && NOT PairOnBoard) ] ? f$prwin>.70 && f$prwin<.80 : 0 } : // only barrel value oop
+        [ nplayersplaying>=2 && nplayersround_flop>=3 && !(ismidpair && rankhicommon==14 && NOT PairOnBoard) ] ? f$prwin>.74 : 0 } :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 : // check push allin
@@ -1062,9 +947,9 @@ WHEN Others
 [ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? {
         [ nplayersplaying==2 && nplayersround_flop==2 ] ? {
-             [ f$prwin<0.72 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) && ranklocommon<10 && nbetsround_preflop<7 && nbetsround_flop<15 && nrankedcommon==1 ] ? 1 :
+             [ f$prwin<0.72 && !(ismidpair && rankhicommon==14 && NOT PairOnBoard) && ranklocommon<10 && nbetsround_preflop<7 && nbetsround_flop<15 && NOT PairOnBoard ] ? 1 :
              [ f$prwin>=0.78 ] ? 1 : 0 } :
-        [ nplayersplaying>=2 && nplayersround_flop>=3 && ranklocommon<10 && !(ismidpair && rankhicommon==14 && nrankedcommon==1) ] ? f$prwin>0.65 : 0 } :
+        [ nplayersplaying>=2 && nplayersround_flop>=3 && ranklocommon<10 && !(ismidpair && rankhicommon==14 && NOT PairOnBoard) ] ? f$prwin>0.65 : 0 } :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
     [ f$actionpostflop_4 ] ? f$prwin>.85 :
@@ -1174,7 +1059,7 @@ WHEN Others
 [ Position = First ] ? {
     [ f$actionpostflop_1 ] ? {
       [ nplayersplaying==2 ] ? {
-        [ f$draws>1 && nsuited==4 && f$pt_vpip>0.50 && f$pt_wtsd>0.30 && random>.50 ] ? 1 :
+        [ f$draws>1 && HaveFlushDraw && f$pt_vpip>0.50 && f$pt_wtsd>0.30 && random>.50 ] ? 1 :
         [ f$pt_riveraf<2  ] ? f$prwin>.78 :
         [ f$pt_riveraf>=2 ] ? f$prwin>.90 : 0 } :
       [ nplayersplaying>=3 ] ? f$prwin>.80 : 0 } :
@@ -1301,42 +1186,42 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 ##f$nOuts##
 [0+
 
-(IsFlop && nsuitedcommon==2 && nsuited==4 && nrankedcommon==1                                    ? 9 : 0) +
-(IsFlop && nsuitedcommon==2 && nsuited==4 && nrankedcommon==2                                    ? 8 : 0) +
-(IsTurn && nsuitedcommon==2 && nsuited==4 && nrankedcommon==1                                    ? 9 : 0) +
-(IsTurn && nsuitedcommon==2 && nsuited==4 && nrankedcommon==2                                    ? 9 : 0) +
-(nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nsuitedcommon==3 && nrankedcommon==1 ? 7 : 0) + 
-(nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==2 && nsuitedcommon==3 && nrankedcommon==2 ? 5 : 0) + 
-(nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==1 && nsuitedcommon==3 && nrankedcommon==1 ? 8 : 0) + 
-(nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==1 && nsuitedcommon==3 && nrankedcommon==2 ? 6 : 0) + 
-(nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon==1 ? 9 : 0) + 
-(nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nsuitedcommon==3 && nrankedcommon==2 ? 7 : 0) + 
+(IsFlop && nsuitedcommon==2 && HaveFlushDraw && NOT PairOnBoard                                    ? 9 : 0) +
+(IsFlop && nsuitedcommon==2 && HaveFlushDraw && PairOnBoard                                    ? 8 : 0) +
+(IsTurn && nsuitedcommon==2 && HaveFlushDraw && NOT PairOnBoard                                    ? 9 : 0) +
+(IsTurn && nsuitedcommon==2 && HaveFlushDraw && PairOnBoard                                    ? 9 : 0) +
+(HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==2 && FlushPossible && NOT PairOnBoard ? 7 : 0) + 
+(HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==2 && FlushPossible && PairOnBoard ? 5 : 0) + 
+(HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==1 && FlushPossible && NOT PairOnBoard ? 8 : 0) + 
+(HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==1 && FlushPossible && PairOnBoard ? 6 : 0) + 
+(HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && NOT PairOnBoard ? 9 : 0) + 
+(HaveFlushDraw && `((~srankbits&0x7fff)>>srankhiplayer)==0 && FlushPossible && PairOnBoard ? 7 : 0) + 
 (IsFlop && rankloplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair                                                                                                             ? 6 : 0) +
 (IsFlop && rankhiplayer>rankhicommon && nplayersplaying<=4 && f$safeboard && !isonepair && !(rankloplayer>rankhicommon)                                                                              ? 3 : 0) +
-(IsTurn && rankloplayer>rankhicommon && nbetsround_flop<3 && nplayersplaying==2 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
-(IsTurn && rankloplayer>rankhicommon && nbetsround_flop<2 && nplayersplaying==3 && nsuitedcommon<3 && nstraightcommon<3 && nstraightfillcommon>1 && nrankedcommon==1 && !(isonepair && nrankedcommon==1) ? 6 : 0) +
+(IsTurn && rankloplayer>rankhicommon && nbetsround_flop<3 && nplayersplaying==2 && NOT FlushPossible && NOT StraightPossible && nstraightfillcommon>1 && NOT PairOnBoard && !(isonepair && NOT PairOnBoard) ? 6 : 0) +
+(IsTurn && rankloplayer>rankhicommon && nbetsround_flop<2 && nplayersplaying==3 && NOT FlushPossible && NOT StraightPossible && nstraightfillcommon>1 && NOT PairOnBoard && !(isonepair && NOT PairOnBoard) ? 6 : 0) +
 
-(nstraightcommon==3 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==1 && !f$wheeldraw      ? 4 : 0) +
-(nstraightcommon==3 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==2 && !f$wheeldraw      ? 2 : 0) +
-(nstraightcommon==2 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==1 && !f$wheeldraw      ? 8 : 0) +         
-(nstraightcommon==2 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==2 && !f$wheeldraw      ? 6 : 0) +
-(nstraightcommon==1 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==1 && !f$wheeldraw      ? 8 : 0) +         
-(nstraightcommon==1 && nstraight==4 && nsuitedcommon<3 && nrankedcommon==2 && !f$wheeldraw      ? 6 : 0) +
-(nstraightcommon<=3 && nstraight==4 && nsuitedcommon<3 && nrankedcommon<=2 &&  f$wheeldraw      ? 4 : 0) +
+(nstraightcommon==3 && nstraight==4 && NOT FlushPossible && NOT PairOnBoard && !f$wheeldraw      ? 4 : 0) +
+(nstraightcommon==3 && nstraight==4 && NOT FlushPossible && PairOnBoard && !f$wheeldraw      ? 2 : 0) +
+(nstraightcommon==2 && nstraight==4 && NOT FlushPossible && NOT PairOnBoard && !f$wheeldraw      ? 8 : 0) +         
+(nstraightcommon==2 && nstraight==4 && NOT FlushPossible && PairOnBoard && !f$wheeldraw      ? 6 : 0) +
+(nstraightcommon==1 && nstraight==4 && NOT FlushPossible && NOT PairOnBoard && !f$wheeldraw      ? 8 : 0) +         
+(nstraightcommon==1 && nstraight==4 && NOT FlushPossible && PairOnBoard && !f$wheeldraw      ? 6 : 0) +
+(nstraightcommon<=3 && nstraight==4 && NOT FlushPossible && nrankedcommon<=2 &&  f$wheeldraw      ? 4 : 0) +
 
 (f$safeboard && ispair                                                                          ? 2 : 0) +
 (f$safeboard && isonepair && !ispair && nstraightfillcommon>2                                   ? 5 : 0) +
 
-(nrankedcommon==1 && istwopair && !f$twopair                                                    ? 4 : 0) +
-(nrankedcommon==2 && istwopair && !f$twopair                                                    ? 1 : 0) +
+(NOT PairOnBoard && istwopair && !TwoPairOnBoard                                                    ? 4 : 0) +
+(PairOnBoard && istwopair && !TwoPairOnBoard                                                    ? 1 : 0) +
 
-(IsFlop && isthreeofakind && nrankedcommon==2                                                    ? 7 : 0) +
-(IsTurn && isthreeofakind && nrankedcommon==2                                                    ? 9 : 0) +
-(IsFlop && isthreeofakind && nrankedcommon==1                                                    ? 7 : 0) +
-(IsTurn && isthreeofakind && nrankedcommon==1                                                    ? 12: 0) +
+(IsFlop && isthreeofakind && PairOnBoard                                                    ? 7 : 0) +
+(IsTurn && isthreeofakind && PairOnBoard                                                    ? 9 : 0) +
+(IsFlop && isthreeofakind && NOT PairOnBoard                                                    ? 7 : 0) +
+(IsTurn && isthreeofakind && NOT PairOnBoard                                                    ? 12: 0) +
 
-(IsFlop && nsuited==3 && nsuitedcommon==2 && nrankedcommon==1 && srankhiplayer>12                ? 3 : 0) +
-(IsFlop && nstraightfill==1 && nstraightcommon<3 && nsuitedcommon<2 && nrankedcommon==1          ? 2 : 0) + 0 ]
+(IsFlop && nsuited==3 && nsuitedcommon==2 && NOT PairOnBoard && srankhiplayer>12                ? 3 : 0) +
+(IsFlop && nstraightfill==1 && NOT StraightPossible && nsuitedcommon<2 && NOT PairOnBoard          ? 2 : 0) + 0 ]
 
 ##f$OutOdds##
 [ f$nOuts/46 ]
@@ -1373,13 +1258,9 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
 
 ##f$AggressionFactor_Turn##
 [ call<=0 ] ? {
-
     [ f$Initiative_Hero   ] ? 0 :
-
     [ f$Initiative_Nobody ] ? 0 :
-
     [ f$Initiative_Villian && f$pt_hands>25 ] ? {
-
                             f$pt_flopaf<=0.00 ? 0.00 :
         f$pt_flopaf>0.00 && f$pt_flopaf<=0.33 ? 0.50 :
         f$pt_flopaf>0.33 && f$pt_flopaf<=0.66 ? 0.40 :
@@ -1392,12 +1273,9 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
         f$pt_flopaf>3.00 && f$pt_flopaf<=4.00 ? 0.00 :
         f$pt_flopaf>4.00 && f$pt_flopaf<=5.00 ? 0.00 :
         f$pt_flopaf>5.00                         ? 0.00 : 0 } : 0 } :
-
 [ call>0 && pt_hands_raischair>25 ] ? {
-
   [ !didbetsize ] ? {
-
-    [                    f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
+    [ f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>0.00 && f$PT_Turn_AF_RaisChair<=0.25 ] ? 0.50 :
     [ f$PT_Turn_AF_RaisChair>0.25 && f$PT_Turn_AF_RaisChair<=0.50 ] ? 0.40 :
     [ f$PT_Turn_AF_RaisChair>0.50 && f$PT_Turn_AF_RaisChair<=0.75 ] ? 0.30 :
@@ -1412,10 +1290,8 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_Turn_AF_RaisChair>3.00 && f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>4.00 && f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
-  [  didbetsize ] ? {
-
-    [                    f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
+  [ didbetsize ] ? {
+    [ f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>0.00 && f$PT_Turn_AF_RaisChair<=0.25 ] ? 1.00 :
     [ f$PT_Turn_AF_RaisChair>0.25 && f$PT_Turn_AF_RaisChair<=0.50 ] ? 0.65 :
     [ f$PT_Turn_AF_RaisChair>0.50 && f$PT_Turn_AF_RaisChair<=0.75 ] ? 0.50 :
@@ -1430,19 +1306,14 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_Turn_AF_RaisChair>3.00 && f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>4.00 && f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 0 } :
-
 0
 
 ##f$AggressionFactor_River##
 [ call<=0 ] ? {
-
     [ f$Initiative_Hero   ] ? 0 :
-
     [ f$Initiative_Nobody ] ? 0 :
-
     [ f$Initiative_Villian && f$pt_hands>25 ] ? {
-
-        [                        f$pt_turnaf<=0.00 ] ? 0.00 :
+        [ f$pt_turnaf<=0.00 ] ? 0.00 :
         [ f$pt_turnaf>0.00 && f$pt_turnaf<=0.25 ] ? 0.50 :
         [ f$pt_turnaf>0.25 && f$pt_turnaf<=0.50 ] ? 0.40 :
         [ f$pt_turnaf>0.50 && f$pt_turnaf<=0.75 ] ? 0.30 :
@@ -1456,13 +1327,10 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
         [ f$pt_turnaf>2.50 && f$pt_turnaf<=3.00 ] ? 0.00 :
         [ f$pt_turnaf>3.00 && f$pt_turnaf<=4.00 ] ? 0.00 :
         [ f$pt_turnaf>4.00 && f$pt_turnaf<=5.00 ] ? 0.00 :
-        [ f$pt_turnaf>5.00                         ] ? 0.00 : 0 } : 0 } :
-
+        [ f$pt_turnaf>5.00 ] ? 0.00 : 0 } : 0 } :
 [ call>0 && pt_hands_raischair>25 ] ? {
-
   [ !didbetsize ] ? {
-
-    [                    f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
+    [ f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>0.00 && f$PT_River_AF_RaisChair<=0.25 ] ? 0.50 :
     [ f$PT_River_AF_RaisChair>0.25 && f$PT_River_AF_RaisChair<=0.50 ] ? 0.40 :
     [ f$PT_River_AF_RaisChair>0.50 && f$PT_River_AF_RaisChair<=0.75 ] ? 0.30 :
@@ -1477,10 +1345,8 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_River_AF_RaisChair>3.00 && f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>4.00 && f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
-  [  didbetsize ] ? {
-
-    [                    f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
+  [ didbetsize ] ? {
+    [ f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>0.00 && f$PT_River_AF_RaisChair<=0.25 ] ? 1.00 :
     [ f$PT_River_AF_RaisChair>0.25 && f$PT_River_AF_RaisChair<=0.50 ] ? 0.65 :
     [ f$PT_River_AF_RaisChair>0.50 && f$PT_River_AF_RaisChair<=0.75 ] ? 0.50 :
@@ -1494,7 +1360,7 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_River_AF_RaisChair>2.50 && f$PT_River_AF_RaisChair<=3.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>3.00 && f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>4.00 && f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 0 } :
+    [ f$PT_River_AF_RaisChair>5.00 ] ? 0.00 : 0 } : 0 } :
 
 0
 
@@ -1505,120 +1371,89 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 
 ##f$TightFactor##
 [ nbetsround_preflop<=1 ] ? 1 :
-
 [ nbetsround_preflop>1 && nbetsround_preflop<=5 ] ? {
-
     [ didbetsizeround_preflop ] ? 1.0 :
     [ didcallround_preflop ] ? 0.8 : 0 } :
-
 [ nbetsround_preflop>5 && nbetsround_preflop<20 ] ? {
-
     [ didbetsizeround_preflop && !didcallround_preflop ] ? 0.8 :
     [ didbetsizeround_preflop &&  didcallround_preflop ] ? 0.6 :
     [ didcallround_preflop && !didbetsizeround_preflop ] ? 0.7 : 0 } :
-
 [ nbetsround_preflop>20 ] ? 0.6 : 1
 
 ##f$flop_call_initiative##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.80 :
         [ f$ptype_nit     ] ? f$prwin2>.78 :
         [ f$ptype_tag     ] ? f$prwin2>.75 :
         [ f$ptype_semilag ] ? f$prwin2>.72 :
         [ f$ptype_lag     ] ? f$prwin2>.70 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.84 :
         [ f$ptype_nit     ] ? f$prwin2>.80 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.82 :
         [ f$ptype_nit     ] ? f$prwin2>.80 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.75 :
         [ f$ptype_lag     ] ? f$prwin2>.72 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.80 :
         [ f$ptype_nit     ] ? f$prwin2>.78 :
         [ f$ptype_tag     ] ? f$prwin2>.75 :
         [ f$ptype_semilag ] ? f$prwin2>.72 :
         [ f$ptype_lag     ] ? f$prwin2>.70 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.78 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.79 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 
@@ -1626,220 +1461,162 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 
 ##f$flop_call_noaction##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.65 :
     [ f$actionpostflop_4 ] ? f$prwin1>.70 :
     [ f$actionpostflop_5 ] ? f$prwin1>.80 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
 0
 
 ##f$flop_call_noinitiative##
-// Early position
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
-// Middle position
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
-// Late position
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.15 :
     [ f$actionpostflop_3 ] ? f$prwin1>.60 :
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.82 :
         [ f$ptype_tag     ] ? f$prwin2>.80 :
         [ f$ptype_semilag ] ? f$prwin2>.77 :
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
 0
 
 ##f$turn_call_initiative##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.55 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
     [ f$actionpostflop_4 ] ? f$prwin1>.77 :
@@ -1849,9 +1626,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.80 :
     [ f$actionpostflop_4 ] ? f$prwin1>.80 :
@@ -1861,9 +1636,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
     [ f$actionpostflop_4 ] ? f$prwin1>.77 :
@@ -1873,38 +1646,28 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 0
 
 ##f$river_call_initiative##
 [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-
 [ f$actionpostflop_3 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.65 :
     [ nplayersplaying>=3 ] ? f$prwin>.70 : 0 } :
-
 [ f$actionpostflop_4 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.80 :
     [ nplayersplaying>=3 ] ? f$prwin>.75 : 0 } :
-
 [ f$actionpostflop_5 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.90 :
     [ nplayersplaying>=3 ] ? f$prwin>.95 : 0 } :
-
 [ f$actionpostflop_6  ] ? f$prwin1>.78 :
 [ f$actionpostflop_7  ] ? f$prwin1>.82 :
 [ f$actionpostflop_8  ] ? f$prwin1>.95 :
 [ f$actionpostflop_9  ] ? f$prwin1>.95 :
 [ f$actionpostflop_10 ] ? f$prwin1>.97 :
-
 0
 
 ##f$turn_call_noaction##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
     [ f$actionpostflop_4 ] ? f$prwin1>.78 :
@@ -1914,9 +1677,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.55 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
     [ f$actionpostflop_4 ] ? f$prwin1>.78 :
@@ -1926,9 +1687,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.75 :
     [ f$actionpostflop_4 ] ? f$prwin1>.78 :
@@ -1938,64 +1697,46 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 0
 
 ##f$river_call_noaction##
 [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-
 [ f$actionpostflop_3 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.65 :
     [ nplayersplaying>=3 ] ? f$prwin>.70 : 0 } :
-
 [ f$actionpostflop_4 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.80 :
     [ nplayersplaying>=3 ] ? f$prwin>.75 : 0 } :
-
 [ f$actionpostflop_5 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.90 :
     [ nplayersplaying>=3 ] ? f$prwin>.95 : 0 } :
-
 [ f$actionpostflop_6  ] ? f$prwin1>.78 :
 [ f$actionpostflop_7  ] ? f$prwin1>.82 :
 [ f$actionpostflop_8  ] ? f$prwin1>.95 :
 [ f$actionpostflop_9  ] ? f$prwin1>.95 :
 [ f$actionpostflop_10 ] ? f$prwin1>.97 :
-
 0
 
 ##f$river_call_noinitiative##
 [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-
 [ f$actionpostflop_3 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.65 :
     [ nplayersplaying>=3 ] ? f$prwin>.70 : 0 } :
-
 [ f$actionpostflop_4 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.80 :
     [ nplayersplaying>=3 ] ? f$prwin>.75 : 0 } :
-
 [ f$actionpostflop_5 ] ? {
-
     [ nplayersplaying==2 ] ? f$prwin>.90 :
     [ nplayersplaying>=3 ] ? f$prwin>.95 : 0 } :
-
 [ f$actionpostflop_6  ] ? f$prwin1>.78 :
 [ f$actionpostflop_7  ] ? f$prwin1>.82 :
 [ f$actionpostflop_8  ] ? f$prwin1>.95 :
 [ f$actionpostflop_9  ] ? f$prwin1>.95 :
 [ f$actionpostflop_10 ] ? f$prwin1>.97 :
-
 0
 
 ##f$turn_call_noinitiative##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.70 :
     [ f$actionpostflop_4 ] ? f$prwin1>.70 :
@@ -2005,9 +1746,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.55 :
     [ f$actionpostflop_3 ] ? f$prwin1>.70 :
     [ f$actionpostflop_4 ] ? f$prwin1>.70 :
@@ -2017,9 +1756,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.50 :
     [ f$actionpostflop_3 ] ? f$prwin1>.70 :
     [ f$actionpostflop_4 ] ? f$prwin1>.70 :
@@ -2029,27 +1766,19 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
-
 0
 
 ##f$preflop_call##
 [ hand$AA || hand$KK ] ? 1 : 
-
 [ !didbetsize ] ? {
-
     [ ncallbets<=1 ] ? {
-
         [ nopponentscalling==0 && (ispair   ||dealposition==1 && handrank169<50) ] ? 1 :
         [ nopponentscalling==1 && (listGecko301||dealposition==1 && handrank169<50) ] ? 1 :
         [ nopponentscalling>=2 && (listGecko300||dealposition==1 && handrank169<50) ] ? 1 : 0 } :
-
     [ ncallbets>1 && (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
-
 [ didbetsize ] ? {
-
     [ call*4<pot                                                             ] ? 1 :
     [ (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
-
 0
 
 ##f$stackopponent##
@@ -2172,7 +1901,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
 ##f$Preflop_React_To_Reraise##
 WHEN NOT IsPreflop RETURN false FORCE
 WHEN NOT f$BettingAction_Hero_Did_Already_Act RETURN false FORCE
-WHEN (RaisesSinceLastPlay == 1) AND listGeckoSingleRaisersBehindUs RETURN true FORCE
+WHEN (RaisesSinceLastPlay == 1) AND listGeckoSingleRaiserBehindUs RETURN true FORCE
 WHEN (RaisesSinceLastPlay >= 2) AND listGeckoMultipleRaisersBehindUs RETURN true FORCE
 
 ##f$Preflop_Raise_After_One_Limper##
@@ -2673,7 +2402,7 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
 0
 
 ##f$reducewinchance_when_have_twopair##
-[ nrankedcommon==2 && nplayersround_flop>2 && istwopair && trankcommon>7 && !f$twopair ] ? 0.4 : 0
+[ PairOnBoard && nplayersround_flop>2 && istwopair && trankcommon>7 && !TwoPairOnBoard ] ? 0.4 : 0
 
 ##f$betline##
 [ !didcallround_preflop && nbetsround_preflop>1 && nbetsround_preflop<=7 && // raise preflop
@@ -2965,45 +2694,18 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
 0
 
 ##f$reducewinchance_when_have_twopair1##
-[ nrankedcommon==2 && istwopair && nplayersround_flop>2 && trankcommon>7 && !f$twopair ] ? 0.4 : 0
-
-##f$realbalance##
-// !!! name it remaining-balance or change the code to work with balance
-IsPreflop ? {
-
-    ncallbets<=1 ? {
-
-        dealposition==1 ? balance-sblind :
-        dealposition==2 ? balance-bblind :
-        dealposition>=3 ? balance        : 0 } :
-
-    ncallbets>1 ? {
-
-        dealposition==1 ? balance+sblind-f$mycurrentbet :
-        dealposition==2 ? balance+bblind-f$mycurrentbet :
-        dealposition>=3 ? balance-f$mycurrentbet        : 0 } :
-
-0 } :
-
-IsPostflop ? balance-f$mycurrentbet : 0
+[ PairOnBoard && istwopair && nplayersround_flop>2 && trankcommon>7 && !TwoPairOnBoard ] ? 0.4 : 0
 
 ##f$bluffformula##
 nplayersplaying==2 && nplayersround_flop<4 && nbetsround_flop<12 && !didcallround_flop ? {
-
 f$pt_vpip>0.12 && f$pt_vpip<=0.25 ? {
-
     f$pt_wtsd>0.00 && f$pt_wtsd<=0.20 ? 3 :
     f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ? 1 : 0 } :
-
 f$pt_vpip>0.25 && f$pt_vpip<=0.50 ? {
-
     f$pt_wtsd>0.00 && f$pt_wtsd<=0.20 ? 3 :
     f$pt_wtsd>0.20 && f$pt_wtsd<=0.25 ? 2 : 0 } :
-
 f$pt_vpip>0.50 && f$pt_wtsd>0 && f$pt_wtsd<0.25 ? 3 : 
-
 0 } :
-
 0
 
 ##f$ptype_ubernit##
@@ -3051,7 +2753,7 @@ IsFlop ? (f$foldequity+f$reducewinchance_when_have_twopair) : 0
 pt_turn_af_headsupchair * pt_wtsd_headsupchair * 4
 
 ##f$safeboard1##
-[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightcommon<=2 ]
+[ NOT PairOnBoard && nsuitedcommon<=2 && nstraightcommon<=2 ]
 
 ##f$fold2cbet_normal##
 // Fold normaal
@@ -3358,8 +3060,9 @@ AA  KK  QQ
 ##listGeckoSqueeze##
 AA  KK  QQ  
 
-##listGeckoSingleRaisersBehindUs##
+##listGeckoSingleRaiserBehindUs##
 AA  KK  QQ  
+AKs
 AKo
 
 ##listGeckoMultipleRaisersBehindUs##
@@ -4318,6 +4021,4 @@ AQo AKo
 TT  JJ  QQ  KK  AA
 AQS AKS 
 KQS
-AQo AKo 
-
- 
+AQo AKo
