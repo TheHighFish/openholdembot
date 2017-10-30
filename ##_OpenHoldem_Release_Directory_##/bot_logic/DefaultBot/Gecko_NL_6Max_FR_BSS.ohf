@@ -125,6 +125,8 @@
 //   * Replaced "nsuitedcommon==3" by FlushPossible
 //   * Replaced "nsuitedcommon<3" by "NOT FlushPossible"
 //   * Removed now unused function f$realbalance, formerly used for allins
+//   * Introduced f$effective_balance_to_call_ratio to make the code simpler
+//     and more verbose
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -1768,19 +1770,28 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
 0
 
+##f$effective_balance_to_call_ratio##
+WHEN (call <= 0) RETURN StackSize FORCE
+WHEN (balance <= f$stackraiser) RETURN (balanance / call FORCE)
+WHEN Others RETURN (f$stackraiser / call) FORCE
+   
 ##f$preflop_call##
-[ hand$AA || hand$KK ] ? 1 : 
-[ !didbetsize ] ? {
-    [ ncallbets<=1 ] ? {
-        [ nopponentscalling==0 && (ispair   ||dealposition==1 && handrank169<50) ] ? 1 :
-        [ nopponentscalling==1 && (listGecko301||dealposition==1 && handrank169<50) ] ? 1 :
-        [ nopponentscalling>=2 && (listGecko300||dealposition==1 && handrank169<50) ] ? 1 : 0 } :
-    [ ncallbets>1 && (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
-[ didbetsize ] ? {
-    [ call*4<pot                                                             ] ? 1 :
-    [ (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
-0
-
+WHEN (hand$AA OR hand$KK) RETURN true FORCE
+WHEN didbetsize
+   // React to re-raises
+   WHEN (4 * call < pot) RETURN true FORCE
+   WHEN [(f$effective_balance_to_call_ratio > 8)  AND (call*2)<pot AND listGecko17] RETURN true FORCE
+WHEN Others
+// Below: we did not betsize
+WHEN (ncallbets<=1)
+   // Unraised pot
+   WHEN [nopponentscalling==0 && (ispair   ||dealposition==1 && handrank169<50)] RETURN true FORCE
+   WHEN [nopponentscalling==1 && (listGecko301||dealposition==1 && handrank169<50)] RETURN true FORCE
+   WHEN [nopponentscalling>=2 && (listGecko300||dealposition==1 && handrank169<50)] RETURN true FORCE
+WHEN (ncallbets>1) 
+   // Raised pot
+  WHEN [(f$effective_balance_to_call_ratio > 8) && (call*2)<pot && listGecko17] RETURN true FORCE
+  
 ##f$stackopponent##
 balance_headsupchair
 
