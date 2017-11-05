@@ -350,6 +350,16 @@ lastcallerchair
 headsupchair (chair of your last remaining opponent)
 \end_layout
 
+\begin_layout Itemize
+smallstackchair (chair of our opponent with the smallest stack (currentbet
+ + balance))
+\end_layout
+
+\begin_layout Itemize
+bigstackchair (chair of our opponent with the biggest stack (currentbet
+ + balance))
+\end_layout
+
 \begin_layout Section*
 Betrounds
 \end_layout

@@ -266,12 +266,56 @@ These symbols are intended to provide a format string that is used to parse
  The syntax usage of the format string is very much like the standard C-language
  format strings for scanf and printf.
  The placeholders use the caret character as the indicator and have the
- following meanings: ^h hand number ^d dummy integer (read chars 0-9 only)
- ^f dummy float (read chars 0-9 including decimal '.') ^s sblind ^b bblind
- ^B bigbet ^a ante ^v sb or bb depending on limit type ^V bb or BB depending
- on limit type ^* skip all text up to the literal character following the
- * ^R roman numeral as in "Level VIII" as typically seen in SNGs ^L limit
- indicator 
+ following meanings: 
+\end_layout
+
+\begin_layout Itemize
+^h hand number 
+\end_layout
+
+\begin_layout Itemize
+^d dummy integer (read chars 0-9 only) 
+\end_layout
+
+\begin_layout Itemize
+^f dummy float (read chars 0-9 including decimal '.') 
+\end_layout
+
+\begin_layout Itemize
+^s sblind 
+\end_layout
+
+\begin_layout Itemize
+^b bblind 
+\end_layout
+
+\begin_layout Itemize
+^B bigbet 
+\end_layout
+
+\begin_layout Itemize
+^a ante 
+\end_layout
+
+\begin_layout Itemize
+^v sb or bb depending on limit type 
+\end_layout
+
+\begin_layout Itemize
+^V bb or BB depending on limit type 
+\end_layout
+
+\begin_layout Itemize
+^y buyin; this will also set the game-type to tournament
+\end_layout
+
+\begin_layout Itemize
+^* skip all text up to the literal character following the * 
+\end_layout
+
+\begin_layout Itemize
+^R roman numeral as in "Level VIII" as typically seen in SNGs ^L limit indicator
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -299,7 +343,7 @@ As an example, this title bar text "NL SNG Level VI 25/50 (2)" could be
 
 \begin_layout Plain Layout
 If multiple ttlimits symbols are provided, then the engine will scan each
- in order, and extract matching information from the first time it is found.
+ in order, and combine the information from all matching limit specifiers..
  That means that if you specify ^s in both ttlimits and ttlimits3, for example,
  it will be extracted from ttlimits and ignored in ttlimits3.
  OpenHoldem allows you to specify up to 11 ttlimits records in any single

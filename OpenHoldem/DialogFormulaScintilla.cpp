@@ -2054,6 +2054,9 @@ void CDlgFormulaScintilla::PopulateSymbols()
   AddSymbol(parent, "lastcallerchair", "last caller chair number (0-9)");
   AddSymbol(parent, "firstraiserchair", "first raiser chair number (0-9)");
   AddSymbol(parent, "lastraiserchair", "last raiser chair number (0-9)");
+  // Small and big stacks
+  AddSymbol(parent, "bigstackchair", "chair of the playing opponent with the biggest stack (0 - 9)");
+  AddSymbol(parent, "smallstackchair", "chair of the playing opponent with the smallest stack (0 - 9)");
   // lastraiserchair and raischair are synonyms
 	AddSymbol(parent, "raischair", "synonym for lastraiserchair (0-9)");
 	AddSymbol(parent, "chair$abc", "player abc chair number (0-9); -1 if not found");

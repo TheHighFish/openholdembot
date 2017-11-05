@@ -1,5 +1,10 @@
 ﻿﻿v﻿12.1.2 2017-11-xx
 ==================
+﻿NEW STUFF:
+- New symbols smallstackchair and bigstackchair.
+  These wymbols can also be used as multiplexer-postfixes of course.
+  [THF]
+  
 MAINTENANCE:
 - Improved backdoor draws, now ignoring draws that
   are shared on the board. Thanks to Salem who did all the work.
@@ -9,7 +14,7 @@ MAINTENANCE:
   to avoid difficult decisions.
   [THF]
   
-  
+   
 ﻿v﻿12.1.1 2017-10-26
 ==================
 BUG FIXES:
