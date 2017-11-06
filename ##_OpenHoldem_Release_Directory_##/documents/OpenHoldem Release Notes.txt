@@ -2,7 +2,7 @@
 ==================
 ﻿NEW STUFF:
 - New symbols smallstackchair and bigstackchair.
-  These wymbols can also be used as multiplexer-postfixes of course.
+  These symbols can also be used as multiplexer-postfixes of course.
   [THF]
   
 MAINTENANCE:

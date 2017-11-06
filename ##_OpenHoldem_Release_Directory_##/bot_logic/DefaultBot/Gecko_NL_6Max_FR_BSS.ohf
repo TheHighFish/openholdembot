@@ -127,6 +127,13 @@
 //   * Removed now unused function f$realbalance, formerly used for allins
 //   * Introduced f$effective_balance_to_call_ratio to make the code simpler
 //     and more verbose
+//   * Renamed lists
+//       listGecko17  -> listGeckoSetMining
+//       listGecko300 -> listGeckoLimpMultiway
+//       listGecko301 -> listGeckoLimpAgainstOneOpponent
+//   * Restructured f$preflop_call, introducing
+//       f$preflop_call_for_setmining, f$preflop_call_reraise
+//       and f$preflop_limp_good_hand
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -155,6 +162,10 @@
 //     to reduce the disadvantage of position and put more 
 //     pressure on the opponent.
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&p=147907#p147907
+//   * Introduced f$required_balance_to_call_ratio_for_setmining
+//     which us slightly more conservatice than Gecko 
+//     and also considers position.
+//     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
 //
 //*****************************************************************************
 //
@@ -1790,23 +1801,52 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 WHEN (call <= 0) RETURN StackSize FORCE
 WHEN (balance <= f$stackraiser) RETURN (balance / call) FORCE
 WHEN Others RETURN (f$stackraiser / call) FORCE
+
+##f$required_balance_to_call_ratio_for_setmining##
+// Higher requirements in unraised pots, less likely to get action postflop
+// Higher requirements OOP
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
+WHEN (BotsLastAction = None)
+   WHEN (Raises = 0) RETURN 20 FORCE
+   WHEN ((Raises = 1) AND ac_agchair_after) RETURN 15 FORCE
+   WHEN ((Raises = 1) AND NOT ac_agchair_after) RETURN 12 FORCE
+WHEN (BotsLastAction = Call) 
+   WHEN ((RaisesSinceLastPlay = 1) AND ac_agchair_after) RETURN 12 FORCE
+   WHEN ((RaisesSinceLastPlay = 1) AND NOT ac_agchair_after) RETURN 10 FORCE
+WHEN (BotsLastAction = Raise) 
+   WHEN ((RaisesSinceLastPlay = 1) AND ac_agchair_after) RETURN 12 FORCE
+   WHEN ((RaisesSinceLastPlay = 1) AND NOT ac_agchair_after) RETURN 10 FORCE   
+WHEN Others
+   // Multiple raises, we don't want to call
+   WHEN Others RETURN 999 FORCE
+   
+##f$preflop_call_for_setmining##
+// Rules are the same for raised and reraised pots.
+// Different balance-to-call-ratios get handled by f$required_balance_to_call_ratio_for_setmining.
+// "Setmining"-range also contains some premium-hands
+WHEN (f$effective_balance_to_call_ratio < f$required_balance_to_call_ratio_for_setmining) RETURN false FORCE
+WHEN (call > 0.50 * pot) RETURN false FORCE
+WHEN listGeckoSetMining RETURN true FORCE
+
+##f$preflop_call_reraise##
+// Call any min-reraise
+WHEN [didbetsize AND (4 * call < pot)] RETURN true FORCE
+// With premium hands we make action.
+// Raises after setmining get handled be f$preflop_call_for_setmining.
+   
+##f$preflop_limp_good_hand##
+WHEN [(ncallbets<=1) >= 1] RETURN false FORCE
+WHEN [BotsLastAction != None] RETURN false FORCE
+WHEN [(StillToAct >= 5) AND (handrank169 < 50)] RETURN true FORCE
+WHEN [nopponentscalling==0 AND ispair] RETURN true FORCE
+WHEN [nopponentscalling==1 AND listGeckoLimpAgainstOneOpponent] RETURN true FORCE
+WHEN [nopponentscalling>=2 && (listGeckoLimpMultiway)] RETURN true FORCE
    
 ##f$preflop_call##
 WHEN (hand$AA OR hand$KK) RETURN true FORCE
-WHEN didbetsize
-   // React to re-raises
-   WHEN (4 * call < pot) RETURN true FORCE
-   WHEN [(f$effective_balance_to_call_ratio > 8)  AND (call*2)<pot AND listGecko17] RETURN true FORCE
-WHEN Others
-// Below: we did not betsize
-WHEN (ncallbets<=1)
-   // Unraised pot
-   WHEN [nopponentscalling==0 && (ispair   ||dealposition==1 && handrank169<50)] RETURN true FORCE
-   WHEN [nopponentscalling==1 && (listGecko301||dealposition==1 && handrank169<50)] RETURN true FORCE
-   WHEN [nopponentscalling>=2 && (listGecko300||dealposition==1 && handrank169<50)] RETURN true FORCE
-WHEN (ncallbets>1) 
-   // Raised pot
-  WHEN [(f$effective_balance_to_call_ratio > 8) && (call*2)<pot && listGecko17] RETURN true FORCE
+WHEN f$preflop_call_for_setmining RETURN true FORCE
+WHEN f$preflop_call_reraise RETURN true FORCE
+WHEN f$preflop_limp_good_hand RETURN true FORCE
   
 ##f$stackopponent##
 balance_headsupchair
@@ -3209,7 +3249,7 @@ T2o T3o T4o T5o T6o T7o T8o JTo
 ##listGecko10##
 KK  AA  
 
-##listGecko17##
+##listGeckoSetMining##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQs AKs  
 AKo  
@@ -3976,13 +4016,13 @@ T9s
 98s  
 KQo
 
-##listGecko300##
+##listGeckoLimpMultiway##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKs KQs QJs JTs T9s 98s 87s 76s 65s  
 AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs J9s 
 AKo AQo AJo ATo 
 
-##listGecko301##
+##listGeckoLimpAgainstOneOpponent##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKs KQs QJs JTs T9s 98s 
 AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs 
