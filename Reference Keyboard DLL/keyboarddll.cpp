@@ -11,7 +11,6 @@
 //
 //******************************************************************************
 
-
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 #endif
@@ -34,10 +33,9 @@
 #define _WIN32_IE 0x0600	// Change this to the appropriate value to target other versions of IE.
 #endif
 
+#include "keyboarddll.h"
 #include <windows.h>
 #include <math.h>
-#include <atlstr.h>
-#include "keyboarddll.h"
 
 const int Shift   = 1;
 const int Control = 2;
@@ -143,20 +141,6 @@ KEYBOARDDLL_API int SendKey(const HWND hwnd, const RECT rect, UINT vkey)
 KEYBOARDDLL_API void ProcessMessage(const char *message, const void *param)
 {
 	if (message==NULL)  return;
-}
-
-BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
-{
-	switch (ul_reason_for_call)
-	{
-	case DLL_PROCESS_ATTACH:
-		//MessageBox(NULL, "kbd", "1", 0);
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
-	}
-    return true;
 }
 
 const POINT RandomizeClickLocation(const RECT rect) 

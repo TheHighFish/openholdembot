@@ -34,8 +34,9 @@
 #define _WIN32_IE 0x0600	// Change this to the appropriate value to target other versions of IE.
 #endif
 
-#include <windows.h>
+#include <afx.h>
 #include <math.h>
+#include <windows.h>
 #include "mousedll.h"
 
 MOUSEDLL_API int MouseClick(const HWND hwnd, const RECT rect, const MouseButton button, const int clicks)
@@ -153,19 +154,6 @@ MOUSEDLL_API int MouseClickDrag(const HWND hwnd, const RECT rect) {
 MOUSEDLL_API void ProcessMessage(const char *message, const void *param)
 {
 	if (message==NULL)  return;
-}
-
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
-{
-	switch (ul_reason_for_call)
-	{
-	case DLL_PROCESS_ATTACH:
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
-	}
-    return true;
 }
 
 const POINT RandomizeClickLocation(const RECT rect) 

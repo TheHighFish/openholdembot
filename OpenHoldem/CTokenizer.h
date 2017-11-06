@@ -14,7 +14,6 @@
 #ifndef INC_CTOKENIZER_H
 #define INC_CTOKENIZER_H
 
-#include "atlstr.h"
 #include "COHScriptObject.h"
 
 class CTokenizer {	

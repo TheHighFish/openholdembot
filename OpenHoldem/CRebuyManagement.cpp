@@ -12,7 +12,6 @@
 //******************************************************************************
 
 #include "stdafx.h"
-#include <atlstr.h>
 #include <time.h>
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
