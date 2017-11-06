@@ -134,6 +134,9 @@
 //   * Restructured f$preflop_call, introducing
 //       f$preflop_call_for_setmining, f$preflop_call_reraise
 //       and f$preflop_limp_good_hand
+//   * Introduced f$villain_allin and $villain_potcommitted
+//     to make the code more verbose and fixed a bug in the code
+//     that detects potcommitted villains.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -163,7 +166,7 @@
 //     pressure on the opponent.
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&p=147907#p147907
 //   * Introduced f$required_balance_to_call_ratio_for_setmining
-//     which us slightly more conservatice than Gecko 
+//     which is slightly more conservatice than Gecko 
 //     and also considers position.
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
 //
@@ -2174,7 +2177,15 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 
 || [ f$Position_CutOff && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze )] 
+						  
+##f$villain_allin##
+WHEN (nopponentsplaying > 1) RETURN false FORCE
+WHEN (f$stackopponent == 0) RETURN true FORCE
 
+##f$villain_potcommitted##
+WHEN (nopponentsplaying > 1) RETURN false FORCE
+WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
+							  
 ##f$committed##
 [ call*10<pot ] ? f$prwin>.30 :
 [ call*9 <pot ] ? f$prwin>.40 :
@@ -2184,19 +2195,14 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 [ call*5 <pot ] ? f$prwin>.80 :
 [ call*4 <pot ] ? f$prwin>.85 :
 [ call*3 <pot ] ? f$prwin>.95 :
-
-
 [ nplayersplaying==2 ] ? {
-
     [ f$prwin>0.65 && f$prwin<=0.70 ] ? (balance*7<pot) :
     [ f$prwin>0.70 && f$prwin<=0.75 ] ? (balance*6<pot) :
     [ f$prwin>0.75 && f$prwin<=0.80 ] ? (balance*5<pot) :
     [ f$prwin>0.80 && f$prwin<=0.85 ] ? (balance*4<pot) :
     [ f$prwin>0.85 && f$prwin<=0.90 ] ? (balance*3<pot) :
     [ f$prwin>0.90                  ] ? (balance*3<pot) :
-
-    [ (f$stackopponent==0||(f$stackopponent-currentbet_raischair)==0) ] ? {
-
+    [ (f$villain_allin OR f$villain_potcommitted) ] ? {
         [ f$prwin>0.68 && f$prwin<=0.72 ] ? (call*7.0<pot) :
         [ f$prwin>0.72 && f$prwin<=0.76 ] ? (call*6.0<pot) :
         [ f$prwin>0.76 && f$prwin<=0.80 ] ? (call*4.0<pot) :
@@ -2205,7 +2211,6 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
         [ f$prwin>0.86 && f$prwin<=0.90 ] ? (call*2.5<pot) : 
         [ f$prwin>0.90 && f$prwin<=0.96 ] ? (call*2.0<pot) : 
         [ f$prwin>0.96                  ] ? (call*1.0<pot) : 0 } : 0 } :
-
 0
 
 ##f$mycurrentbet##
