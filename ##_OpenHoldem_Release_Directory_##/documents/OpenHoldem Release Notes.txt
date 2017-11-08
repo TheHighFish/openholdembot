@@ -1,4 +1,11 @@
-﻿﻿v﻿12.1.2 2017-11-06
+﻿﻿v﻿12.1.3 2017-11-xx
+==================
+BUG FIXES:
+- The new symbol bigstackchair incorrectly considered players who folded.
+  Thanks to Stars83 for reporting.
+  [THF]
+
+﻿v﻿12.1.2 2017-11-06
 ==================
 ﻿NEW STUFF:
 - New symbols smallstackchair and bigstackchair.
