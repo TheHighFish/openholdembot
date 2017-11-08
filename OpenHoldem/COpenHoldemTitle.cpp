@@ -16,7 +16,6 @@
 
 #include <assert.h>
 #include "CAutoConnector.h"
-#include "CFilenames.h"
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "../CTablemap/CTablemap.h"
@@ -27,8 +26,7 @@ COpenHoldemTitle *p_openholdem_title = NULL;
 
 COpenHoldemTitle::COpenHoldemTitle() {
 	user_defined_title = "";
-	assert(p_filenames != NULL);
-	simple_title = p_filenames->PureExecutableFilename();
+	simple_title = PureExecutableFilename();
 }
 
 COpenHoldemTitle::~COpenHoldemTitle()

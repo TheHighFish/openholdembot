@@ -14,6 +14,7 @@
 #ifndef INC_CVIRTUALSYMBOLENGINE_H
 #define INC_CVIRTUALSYMBOLENGINE_H
 
+#include <afxwin.h>
 #include "CSpaceOptimizedGlobalObject.h"
 
 // OH-symbols are lower-case

@@ -33,7 +33,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 

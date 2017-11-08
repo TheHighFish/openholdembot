@@ -19,7 +19,7 @@
 #include "CBetsizeInputBox.h"
 #include "CCasinoHotkey.h"
 #include "CSpaceOptimizedGlobalObject.h"
-#include "MagicNumbers.h"
+
 
 class CCasinoInterface: public CSpaceOptimizedGlobalObject {
   friend class CAllinSlider;

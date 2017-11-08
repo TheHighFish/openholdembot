@@ -14,9 +14,7 @@
 #ifndef INC_CPREFERENCES_H_
 #define INC_CPREFERENCES_H_
 
-#include "..\CCritSec\CCritSec.h"
 #include "CSpaceOptimizedGlobalObject.h"
-#include "NumericalFunctions.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
 // global preferences constants

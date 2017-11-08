@@ -25,11 +25,8 @@
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CTableState.h"
-#include "debug.h"
 #include "FloatingPoint_Comparisions.h"
-#include "MagicNumbers.h"
 #include "Median.h"
-#include "Numericalfunctions.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineTableLimits::CSymbolEngineTableLimits() {

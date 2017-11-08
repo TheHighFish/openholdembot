@@ -21,6 +21,7 @@
 *.vspx
 ..bfg-report
 Debug
+DLLs/DLL_Template
 Documentation/OpenHoldem_Manual.chm
 Documentation/Chapters/titlepage/images/Temp
 Documentation/Chapters/titlepage/original_images

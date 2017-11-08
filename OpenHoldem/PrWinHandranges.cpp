@@ -14,7 +14,7 @@
 #include "stdafx.h"
 #include "PrWinHandranges.h"
 
-#include "NumericalFunctions.h"
+
 
 bool IsHandInWeightedRange(const int card1, const int card2, 
 							const int willplay, const int wontplay, 

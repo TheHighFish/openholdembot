@@ -27,7 +27,7 @@
 #include "CStableFramesCounter.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 #include "CSymbolEngineCasino.h"
 
 CSymbolEngineReplayFrameController::CSymbolEngineReplayFrameController() {

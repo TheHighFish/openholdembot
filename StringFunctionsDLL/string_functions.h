@@ -20,7 +20,7 @@
 #define STRING_FUNCTIONS_API __declspec(dllimport)
 #endif
 
-#include <afxstr.h>
+#include <atlstr.h>
 
 STRING_FUNCTIONS_API CString Bool2CString(bool b);
 STRING_FUNCTIONS_API CString CStringRemoveLeft(CString string, int number_of_characters_to_remove);

@@ -14,7 +14,7 @@
 #ifndef INC_CCasinoHotkey_H
 #define INC_CCasinoHotkey_H
 
-#include "MagicNumbers.h"
+
 
 class CCasinoHotkey {
  public:

@@ -17,7 +17,7 @@
 #include "CVirtualSymbolEngine.h"
 #include "assert.h"
 #include "CSymbolEngineTableLimits.h"
-#include "MagicNumbers.h"
+
 
 // Changing myturnbits to FCKRA (F = lowest bit)
 const int kMyTurnBitsFold  = 0x01;

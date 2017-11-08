@@ -14,11 +14,12 @@
 #ifndef INC_CTABLEMAP_H
 #define INC_CTABLEMAP_H
 
+#include <atlstr.h>
 #include <map>
 #include <stdint.h>
 #include "../CTransform/pdiff/RGBAImage.h"
-#include "../CCritSec/CCritSec.h"
-#include "../OpenHoldem/MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
+#include "..\Shared\CCritSec\CCritSec.h"
 
 ///////////////////////////////
 // structs

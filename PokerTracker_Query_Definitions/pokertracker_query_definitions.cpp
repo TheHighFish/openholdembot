@@ -43,7 +43,7 @@
 #include "pokertracker_query_definitions.h"
 
 #include <atlstr.h>
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
 #include "PokerTracker_Queries_Version_4.h"
 

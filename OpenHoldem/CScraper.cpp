@@ -37,7 +37,7 @@
 #include "CTitleEvaluator.h"
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
-#include "debug.h"
+
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 

@@ -16,7 +16,7 @@
 
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "MagicNumbers.h"
+
 
 CHandHistoryAction *p_handhistory_action = NULL;
 

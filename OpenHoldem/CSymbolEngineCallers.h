@@ -16,7 +16,7 @@
 
 #include "CVirtualSymbolEngine.h"
 #include "CBetroundCalculator.h"
-#include "NumericalFunctions.h"
+
 
 class CSymbolEngineCallers: public CVirtualSymbolEngine {
  public:

@@ -18,8 +18,8 @@
 #include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
+
 
 class CSymbolEnginePokerval: public CVirtualSymbolEngine
 {

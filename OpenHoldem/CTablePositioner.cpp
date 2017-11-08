@@ -19,7 +19,7 @@
 #include "CSessionCounter.h"
 #include "CSharedMem.h"
 #include "../CTablemap/CTableMapAccess.h"
-#include "MagicNumbers.h"
+
 #include "WinDef.h"
 #include "..\WindowFunctionsDLL\window_functions.h"
 #include "Winuser.h"

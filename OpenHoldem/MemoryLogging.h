@@ -14,7 +14,7 @@
 #ifndef INC_MEMORYLOGGING_H
 #define INC_MEMORYLOGGING_H
 
-#include "debug.h"
+
 #include "CPreferences.h"
 
 // Logs memory-usage if enabled at debugging-preferences

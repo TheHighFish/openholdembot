@@ -12,6 +12,7 @@
 //******************************************************************************
 
 #include "stdafx.h"
+#include <atlstr.h>
 #include <time.h>
 #include "CAutoconnector.h"
 #include "CAutoplayerFunctions.h"
@@ -27,7 +28,6 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
-#include "debug.h"
 #include "OH_MessageBox.h"
 
 CRebuyManagement *p_rebuymanagement = NULL;

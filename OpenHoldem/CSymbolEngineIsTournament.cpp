@@ -30,7 +30,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 #include "..\StringFunctionsDLL\string_functions.h"
 
 const double k_lowest_bigblind_ever_seen_in_tournament           = 10.0;

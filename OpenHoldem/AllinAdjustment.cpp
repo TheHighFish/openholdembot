@@ -25,8 +25,8 @@
 #include "CSymbolEngineTableLimits.h"
 #include "..\..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "debug.h"
-#include "NumericalFunctions.h"
+
+
 #include "SwagAdjustment.h"
 
 bool ChangeBetsizeToAllin(double amount_to_raise_to) {

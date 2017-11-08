@@ -14,8 +14,8 @@
 #include "stdafx.h"
 #include "CSymbolEngineRandom.h"
 
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
+
 
 CSymbolEngineRandom::CSymbolEngineRandom() {
 	// The values of some symbol-engines depend on other engines.

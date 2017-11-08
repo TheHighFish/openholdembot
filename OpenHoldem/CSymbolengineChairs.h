@@ -34,13 +34,10 @@ class CSymbolEngineChairs: public CVirtualSymbolEngine {
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();
  private:
-  int HeadsupChair();
+   int HeadsupChair();
   int SmallBlindChair();
   int BigBlindChair();
   int UTGChair();
- private:
-  int SmallStackChair();
-  int BigStackChair();
  private:
   bool MissingSmallBlind();
   int CalculateMissingSmallBlind();

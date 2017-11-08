@@ -2,7 +2,7 @@
 #define INC_MAINFRM_H
 
 #include "..\CTablemap\CTablemap.h"
-#include "..\CCritSec\CCritSec.h"
+#include "..\Shared\CCritSec\CCritSec.h"
 
 #define HWND_CHECK_TIMER				1
 #define ENABLE_BUTTONS_TIMER    2

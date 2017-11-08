@@ -17,7 +17,7 @@
 #include "CVirtualSymbolEngine.h"
 
 #include "CSymbolengineUserChair.h"
-#include "NumericalFunctions.h"
+
 
 class CSymbolEngineBlinds: public CVirtualSymbolEngine
 {

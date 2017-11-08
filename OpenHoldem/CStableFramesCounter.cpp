@@ -23,7 +23,7 @@
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CStableFramesCounter *p_stableframescounter = NULL;
 

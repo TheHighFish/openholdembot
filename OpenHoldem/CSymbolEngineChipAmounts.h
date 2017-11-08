@@ -19,7 +19,7 @@
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
 {

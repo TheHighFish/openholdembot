@@ -19,7 +19,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
-#include "MagicNumbers.h"
+
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 

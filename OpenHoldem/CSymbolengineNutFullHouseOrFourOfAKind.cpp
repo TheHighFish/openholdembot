@@ -25,8 +25,8 @@
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
-#include "Numericalfunctions.h"
+
+
 
 CSymbolEngineNutFullhouseOrFourOfAKind::CSymbolEngineNutFullhouseOrFourOfAKind() {
   // The values of some symbol-engines depend on other engines.

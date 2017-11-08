@@ -21,8 +21,6 @@
 #include "CScraper.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CTableState.h"
-#include "debug.h"
-#include "MagicNumbers.h"
 
 CSymbolEngineGameType	*p_symbol_engine_gametype = NULL;
 

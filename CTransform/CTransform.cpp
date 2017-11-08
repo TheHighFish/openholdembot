@@ -16,13 +16,13 @@
 
 #include <Math.h>
 #include "..\OpenHoldem\CPreferences.h"
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 #include "..\OpenHoldem\WebSafeColours.h"
 
 #ifdef OPENHOLDEM_PROGRAM
-#include "../OpenHoldem/debug.h"
+//include "../DLLs/Debug_DLL\debug.h"
 #endif
 
 #ifdef OPENSCRAPE_PROGRAM

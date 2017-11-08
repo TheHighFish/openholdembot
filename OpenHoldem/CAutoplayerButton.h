@@ -15,7 +15,7 @@
 #define INC_CAUTOPLAYERBUTTON_H
 
 #include "CCasinoHotkey.h"
-#include "MagicNumbers.h"
+
 
 class CAutoplayerButton {
   friend class CScraper;

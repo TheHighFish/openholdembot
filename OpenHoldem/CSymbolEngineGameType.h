@@ -14,7 +14,7 @@
 #ifndef INC_CSYMBOLENGINEGAMETYPE_H
 #define INC_CSYMBOLENGINEGAMETYPE_H
 
-#include "MagicNumbers.h"
+
 #include "CVirtualSymbolEngine.h"
 
 class CSymbolEngineGameType: public CVirtualSymbolEngine {

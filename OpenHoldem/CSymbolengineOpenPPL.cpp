@@ -23,7 +23,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEngineVariousDataLookup.h"
-#include "MagicNumbers.h"
+
 #include "OH_MessageBox.h"
 
 const char* kOpenPPLUpdateOnHandReset =

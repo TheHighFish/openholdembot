@@ -14,7 +14,6 @@
 #ifndef INC_CTABLELIMITS_H
 #define INC_CTABLELIMITS_H
 
-#include "MagicNumbers.h"
 #include "CVirtualSymbolEngine.h"
 
 #define BIG_BLIND p_engine_container->symbol_engine_tablelimits()->bblind()

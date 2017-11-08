@@ -26,8 +26,8 @@
 #include "CSymbolEngineTableLimits.h"
 #include "..\..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "debug.h"
-#include "NumericalFunctions.h"
+
+
 #include "CSymbolEngineCasino.h"
 
 double MinimumBetsizeDueToPreviousRaise() {

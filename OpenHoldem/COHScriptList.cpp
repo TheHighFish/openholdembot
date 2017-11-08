@@ -10,7 +10,7 @@
 #include "CSymbolEngineCards.h"
 #include "CSymbolEnginePokerval.h"
 #include "CTableState.h"
-#include "NumericalFunctions.h"
+
 
 COHScriptList::COHScriptList(
     CString new_name,

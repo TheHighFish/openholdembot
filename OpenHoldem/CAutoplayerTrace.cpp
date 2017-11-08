@@ -160,7 +160,7 @@ CString CAutoplayerTrace::Indentation() {
 }
 
 void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary_formulas) {
-  CSLock lock(log_critsec);
+  //!!!!!CSLock lock(log_critsec);
   if (full_log_for_primary_formulas) {
     LogPlayers();
     // This information is only meaningful for playing decision f$all .. f$fold

@@ -14,7 +14,6 @@
 #ifndef INC_CFUNCTIONCOLLECTION_H
 #define INC_CFUNCTIONCOLLECTION_H
 
-#include "..\CCritSec\CCritSec.h"
 #include "COHScriptObject.h"
 #include "CVirtualSymbolEngine.h"
 #include <map>

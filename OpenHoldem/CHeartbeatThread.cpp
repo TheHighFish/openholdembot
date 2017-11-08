@@ -41,7 +41,7 @@
 #include "DialogScraperOutput.h"
 #include "MainFrm.h"
 #include "MemoryLogging.h"
-#include "NumericalFunctions.h"
+
 #include "OpenHoldem.h"
 
 CHeartbeatThread	 *p_heartbeat_thread = NULL;
@@ -173,8 +173,8 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
   
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// OH-Validator
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling ValidateGameState.\n");
-	p_validator->ValidateGameState();
+	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling Validator.\n");
+  p_validator->Validate();
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Autoplayer

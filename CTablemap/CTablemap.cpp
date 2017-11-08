@@ -20,7 +20,7 @@
 #include "../OpenHoldem/OH_MessageBox.h"
 
 #ifdef OPENHOLDEM_PROGRAM
-#include "../OpenHoldem/debug.h"
+#include "../DLLs/Debug_DLL/debug.h"
 #include "../OpenHoldem/CPreferences.h"
 #endif
 
@@ -807,7 +807,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// Date/Time
-	s.Format("// %s\r\n", get_time(nowtime)); ar.WriteString(s);
+  //!!!s.Format("// %s\r\n", get_time(nowtime)); ar.WriteString(s);
 	ar.WriteString("// 32 bits per pixel\r\n");
 	ar.WriteString("\r\n");
 
@@ -977,7 +977,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 		logpath.Format("%s\\hash creation log.txt", startup_path);
 		if (fopen_s(&fp, logpath.GetString(), "a")==0)
 		{
-			get_now_time(timebuf);
+			//!!!get_now_time(timebuf);
 			fprintf(fp, "<%s>\nCreating _hashes\n", timebuf);
 			fprintf(fp, "Hashes with no matching image:\n");
 

@@ -15,12 +15,11 @@
 #include "CTableMaploader.h"
 
 #include "CAutoConnector.h"
-#include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CPreferences.h"
 #include "CTablemapCompletenessChecker.h"
 #include "CTablePointChecker.h"
-#include "MagicNumbers.h"
+
 #include "..\CTablemap\CTablemapAccess.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
@@ -64,9 +63,8 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 }
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData() {
-	CString TableMapWildcard;
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
-	ParseAllTableMapsToLoadConnectionData(p_filenames->TableMapWildcard());	
+	ParseAllTableMapsToLoadConnectionData(TableMapWildcard());	
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
 

@@ -17,7 +17,7 @@
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 #include "CSymbolengineDebug.h"
-#include "NumericalFunctions.h"
+
 
 CSymbolEngineTime::CSymbolEngineTime() {
   // The values of some symbol-engines depend on other engines.

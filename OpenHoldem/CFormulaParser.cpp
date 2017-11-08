@@ -18,7 +18,6 @@
 #include <io.h>
 #include "CDebugTab.h"
 #include "CEngineContainer.h"
-#include "CFilenames.h"
 #include "CFunction.h"
 #include "CFunctionCollection.h"
 #include "MemoryLogging.h"
@@ -41,7 +40,7 @@
 #include "CValidator.h"
 #include "CWatchdog.h"
 #include "MemoryLogging.h"
-#include "NumericalFunctions.h"
+
 #include "OH_MessageBox.h"
 #include "TokenizerConstants.h"
 
@@ -90,8 +89,8 @@ void CFormulaParser::InitNewParse() {
 
 
 void CFormulaParser::LoadDefaultBot() {
-  LoadOptionalFunctionLibrary(p_filenames->DefaultLogicDirectory() + "DefaultBot.ohf");
-  LoadOptionalFunctionLibrary(p_filenames->DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");
+  LoadOptionalFunctionLibrary(DefaultLogicDirectory() + "DefaultBot.ohf");
+  LoadOptionalFunctionLibrary(DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");
 }
 
 void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_file) {
@@ -99,7 +98,7 @@ void CFormulaParser::ParseFormulaFileWithUserDefinedBotLogic(CArchive& formula_f
   write_log(preferences.debug_parser(),
     "[CFormulaParser] ParseFormulaFileWithUserDefinedBotLogic()\n");
   p_function_collection->SetEmptyDefaultBot();
-  p_function_collection->SetFormulaName(CFilenames::FilenameWithoutPathAndExtension(
+  p_function_collection->SetFormulaName(FilenameWithoutPathAndExtension(
     formula_file.GetFile()->GetFilePath()));
   LoadArchive(formula_file);
   p_function_collection->ParseAll();
@@ -120,13 +119,13 @@ void CFormulaParser::ParseDefaultLibraries() {
     CString library_path;
     assert(kOpenPPLLibraries[i] != "");
     library_path.Format("%s%s",
-      p_filenames->OpenPPLLibraryDirectory(),
+      OpenPPLLibraryDirectory(),
       kOpenPPLLibraries[i]);
     LoadOptionalFunctionLibrary(library_path);
   }
   // Check once at the end of the modular OpenPPL-library
   p_function_collection->SetOpenPPLLibraryLoaded(true);
-  LoadOptionalFunctionLibrary(p_filenames->CustomLibraryPath());
+  LoadOptionalFunctionLibrary(CustomLibraryPath());
   LoadDefaultBot();
   // Check again after the custom library
   p_engine_container->symbol_engine_open_ppl()->VerifyExistenceOfOpenPPLInitializationInLibrary();
@@ -144,7 +143,6 @@ void CFormulaParser::LoadOptionalFunctionLibrary(CString library_path) {
 
 void CFormulaParser::LoadFunctionLibrary(CString library_path) {
   assert(p_function_collection != NULL);
-  assert(p_filenames != NULL);
   if (_access(library_path, F_OK) != 0) {
     // Using a message-box instead of silent logging, as OpenPPL is mandatory 
     // and we expect the user to supervise at least the first test.

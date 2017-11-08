@@ -16,7 +16,6 @@
 
 #include "CAutoConnector.h"
 #include "CEngineContainer.h"
-#include "CFilenames.h"
 #include "CPreferences.h"
 #include "CSharedMem.h"
 #include "CSessionCounter.h"
@@ -65,11 +64,11 @@ void COpenHoldemStarter::StartNewInstanceIfNeeded() {
   // No error-checking, as Openholdem exists (at least when we started).
   // http://msdn.microsoft.com/en-us/library/windows/desktop/bb762153%28v=vs.85%29.aspx
   write_log(preferences.debug_autostarter(), "[COpenHoldemStarter] Starting new instance [%s].\n",
-    p_filenames->ExecutableFilename());
+    ExecutableFilename());
   ShellExecute(
     NULL,               // Pointer to parent window; not needed
     "open",             // "open" == "execute" for an executable
-    p_filenames->ExecutableFilename(),
+    ExecutableFilename(),
     NULL, 		          // Parameters
     "",                 // Working directory
     SW_SHOWNORMAL);		  // Active window, default size

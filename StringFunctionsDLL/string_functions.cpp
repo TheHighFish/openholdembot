@@ -45,7 +45,7 @@
 #include <windows.h>
 #include "assert.h"
 #include "string_functions.h"
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "Psapi.h"
 
 #ifdef OPENHOLDEM_PROGRAM

@@ -18,7 +18,7 @@
 #include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
-#include "MagicNumbers.h"
+
 
 class CSymbolEnginePrwin: public CVirtualSymbolEngine
 {

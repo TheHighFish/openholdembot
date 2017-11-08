@@ -15,7 +15,7 @@
 #include "MemoryLogging.h"
 
 #include "CPreferences.h"
-#include "debug.h"
+
 #include <psapi.h>
 #include "Windows.h"
 

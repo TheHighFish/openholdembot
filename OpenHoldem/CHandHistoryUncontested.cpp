@@ -20,8 +20,8 @@
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
+
 
 CHandHistoryUncontested *p_handhistory_uncontested = NULL;
 

@@ -20,7 +20,7 @@
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CSymbolEngineUserchair::CSymbolEngineUserchair() {
 	// The values of some symbol-engines depend on other engines.

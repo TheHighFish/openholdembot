@@ -26,7 +26,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CHandHistoryWriter *p_handhistory_writer = NULL;
 

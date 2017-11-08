@@ -15,7 +15,7 @@
 #define INC_CSESSIONCOUNTER_H
 
 #include "CSpaceOptimizedGlobalObject.h"
-#include "MagicNumbers.h"
+
 
 class CSessionCounter /*!!!!!: public CSpaceOptimizedGlobalObject*/
 {

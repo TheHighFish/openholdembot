@@ -27,7 +27,6 @@
 #include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
-#include "debug.h"
 #include "OH_MessageBox.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 

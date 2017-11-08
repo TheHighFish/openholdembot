@@ -16,6 +16,7 @@
 #define INC_CFORMULAFILESPLITTER_H
 
 #include "afx.h"
+#include "atlstr.h"
 #include "COHScriptObject.h"
 
 class CFormulaFileSplitter {

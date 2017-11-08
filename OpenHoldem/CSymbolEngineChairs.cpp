@@ -54,7 +54,7 @@ CSymbolEngineChairs::CSymbolEngineChairs() {
   assert(p_engine_container->symbol_engine_userchair() != NULL);
   assert(p_engine_container->symbol_engine_tablelimits() != NULL);
   // Also using p_engine_container->symbol_engine_history()->DidAct()
-// but that's no real dependency, as it is from the past
+  // but that's no real dependency, as it is from the past
 }
 
 CSymbolEngineChairs::~CSymbolEngineChairs() {
@@ -86,22 +86,22 @@ void CSymbolEngineChairs::UpdateOnMyTurn() {
 void CSymbolEngineChairs::UpdateOnHeartbeat() {
 }
 
-int CSymbolEngineChairs::HeadsupChair() {
+int CSymbolEngineChairs::HeadsupChair(){
   if (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying() != 1) {
     return kUndefined;
   }
-  for (int i = 0; i < _nchairs; ++i) {
-    if (IsBitSet(p_engine_container->symbol_engine_active_dealt_playing()->opponentsplayingbits(), i)) {
+	for (int i = 0; i < _nchairs; ++i)	{
+		if (IsBitSet(p_engine_container->symbol_engine_active_dealt_playing()->opponentsplayingbits(), i)) {
       return i;
     }
-  }
+	}
   assert(kThisMustNotHappen);
   return kUndefined;
 
 }
 
 int CSymbolEngineChairs::ChairByDealposition(int dealposition) {
-  for (int i = 0; i < _nchairs; ++i) {
+  for (int i=0; i<_nchairs; ++i) {
     if (p_engine_container->symbol_engine_poker_action()->DealPosition(i) == dealposition) {
       return i;
     }
@@ -141,51 +141,6 @@ int CSymbolEngineChairs::UTGChair() {
   }
   // Normal case: player behind BB
   return ChairByDealposition(3);
-}
-
-int CSymbolEngineChairs::SmallStackChair() {
-  int result = kUndefined;
-  int nchairs = p_tablemap->nchairs();
-  int userchair = p_engine_container->symbol_engine_userchair()->userchair();
-  // Init with huge number that we will never see in practice
-  double smallest_stack = 999999999999;
-  for (int i = 0; i < nchairs; ++i) {
-    if (i == userchair) {
-      // not an opponent
-      continue;
-    }
-    if (!p_table_state->Player(i)->HasAnyCards()) {
-      // Not seated, not dealt or folded
-      continue;
-    }
-    if (p_table_state->Player(i)->stack() < smallest_stack) {
-      smallest_stack = p_table_state->Player(i)->stack();
-      result = i;
-    }
-  }
-  return result;
-}
-
-int CSymbolEngineChairs::BigStackChair() {
-  int result = kUndefined;
-  int nchairs = p_tablemap->nchairs();
-  int userchair = p_engine_container->symbol_engine_userchair()->userchair();
-  double biggest_stack = 0.0;
-  for (int i = 0; i < nchairs; ++i) {
-    if (i == userchair) {
-      // not an opponent
-      continue;
-    }
-    if (!p_table_state->Player(i)->HasAnyCards()) {
-      // Not seated, not dealt or folded
-      continue;
-    }
-    if (p_table_state->Player(i)->stack() > biggest_stack) {
-      biggest_stack = p_table_state->Player(i)->stack();
-      result = i;
-    }
-  }
-  return result;
 }
 
 int CSymbolEngineChairs::SmallBlindChair() {
@@ -354,14 +309,6 @@ bool CSymbolEngineChairs::EvaluateSymbol(const CString name, double *result, boo
     *result = BigBlindChair();
     return true;
   }
-  if (name == "smallstackchair") {
-    *result = SmallStackChair();
-    return true;
-  }
-  if (name == "bigstackchair") {
-    *result = BigStackChair();
-    return true;
-  }
   // Symbol of a different symbol-engine
 	return false;
 }
@@ -372,7 +319,6 @@ CString CSymbolEngineChairs::SymbolsProvided() {
   	"cutoffchair "
 	  "ep3chair ep2chair ep1chair "
 	  "mp3chair mp2chair mp1chair "
-    "missingsmallblind "
-    "smallstackchair bigstackchair ";
+    "missingsmallblind ";
 }
 

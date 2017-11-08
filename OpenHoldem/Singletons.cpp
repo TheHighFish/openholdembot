@@ -22,7 +22,6 @@
 #include "CConfigurationCheck.h"
 #include "CDebugTab.h"
 #include "CEngineContainer.h"
-#include "CFilenames.h"
 #include "CFileSystemMonitor.h"
 #include "CFormulaParser.h"
 #include "CHandresetDetector.h"
@@ -173,8 +172,7 @@ void InstantiateAllSingletons() {
 void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance() {
 	// Filenames have to be available very early,
 	// even before we read the ini-file.
-	assert(!p_filenames);
-	p_filenames = new CFilenames;
+  // !!! no longer used
 }
 
 bool all_threads_stopped = false;
@@ -285,8 +283,6 @@ void DeleteAllSingletons() {
   DELETE_AND_CLEAR(p_table_state)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 24\n");
   DELETE_AND_CLEAR(p_string_match)
-  write_log(preferences.debug_singletons(), "[Singletons] Deleting 25\n");
-  DELETE_AND_CLEAR(p_filenames)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 26\n");
   DELETE_AND_CLEAR(p_table_title)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 28\n");

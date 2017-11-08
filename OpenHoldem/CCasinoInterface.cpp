@@ -33,7 +33,7 @@
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineTime.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"

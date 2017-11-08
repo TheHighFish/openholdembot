@@ -27,7 +27,7 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+#include "resource.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
 COpenHoldemStatusbar *p_openholdem_statusbar = NULL;
@@ -45,6 +45,12 @@ COpenHoldemStatusbar::~COpenHoldemStatusbar() {
 
 void COpenHoldemStatusbar::InitStatusbar() {
   _status_bar.Create(_main_window);
+  static UINT indicators[] = {
+    ID_INDICATOR_STATUS_ACTION,
+    ID_INDICATOR_STATUS_DUMMY,
+    ID_INDICATOR_STATUS_HANDRANK,
+    ID_INDICATOR_STATUS_PRWIN,
+  };
   _status_bar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
   int position = 0;
   _status_bar.SetPaneInfo(position, ID_INDICATOR_STATUS_ACTION, NULL, 100);

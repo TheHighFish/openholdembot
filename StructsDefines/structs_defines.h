@@ -15,7 +15,7 @@
 #define INC_STRUCTS_DEFINES_H
 
 #include "..\pokereval\include\poker_defs.h"
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 
 //Allow keywords as macros.  Needed for vs2013
 #define _ALLOW_KEYWORD_MACROS

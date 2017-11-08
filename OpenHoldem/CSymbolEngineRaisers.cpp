@@ -55,7 +55,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
 #include "CTableState.h"
-#include "NumericalFunctions.h"
+
 #include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEngineRaisers::CSymbolEngineRaisers() {

@@ -125,18 +125,6 @@
 //   * Replaced "nsuitedcommon==3" by FlushPossible
 //   * Replaced "nsuitedcommon<3" by "NOT FlushPossible"
 //   * Removed now unused function f$realbalance, formerly used for allins
-//   * Introduced f$effective_balance_to_call_ratio to make the code simpler
-//     and more verbose
-//   * Renamed lists
-//       listGecko17  -> listGeckoSetMining
-//       listGecko300 -> listGeckoLimpMultiway
-//       listGecko301 -> listGeckoLimpAgainstOneOpponent
-//   * Restructured f$preflop_call, introducing
-//       f$preflop_call_for_setmining, f$preflop_call_reraise
-//       and f$preflop_limp_good_hand
-//   * Introduced f$villain_allin and $villain_potcommitted
-//     to make the code more verbose and fixed a bug in the code
-//     that detects potcommitted villains.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -160,15 +148,6 @@
 //     and rewrote f$Preflop_React_To_Reraise to distinguish
 //     one or multiple raises behind us and added AKo 
 //     to listGeckoSingleRaiserBehindUs.
-//   * Introduced f$positional_allin_on_betsize_balance_ratio
-//     to go more liberally allin out of position
-//     to reduce the disadvantage of position and put more 
-//     pressure on the opponent.
-//     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&p=147907#p147907
-//   * Introduced f$required_balance_to_call_ratio_for_setmining
-//     which is slightly more conservatice than Gecko 
-//     and also considers position.
-//     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
 //
 //*****************************************************************************
 //
@@ -216,31 +195,20 @@ WHEN f$call_minbets Call FORCE
 WHEN f$call_potcommitted Call FORCE
 WHEN f$river_call Call FORCE
 
-##f$positional_allin_on_betsize_balance_ratio##
-// As a small improvement we decided that we should
-// go more liberally allin out of position
-// to reduce the disadvantage of position and put more 
-// pressure on the opponent.
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&p=147907#p147907
-WHEN (Position = Last) RETURN 0.50 FORCE
-WHEN Others RETURN 0.40 FORCE
-
 ##f$allin_on_betsize_balance_ratio##
 // Not present in Geckos original bot for OpenHoldem 2.x,
 // His code suggests that he wanted it to be 0.66,
 // but as Gecko used raise-by-semantics and we use raise-to
-// about 0.50 looks like a more appropriate value,
-// firther improving it to 40% OOP,
+// about 0.50 looks like a more appropriate value.
+WHEN NOT HandIsHeadsup RETURN 0.50 FORCE
 // Fail-safe for mis-scraped stacks
-WHEN (StackSize <= 0) RETURN 0.00 FORCE
-WHEN NOT HandIsHeadsup RETURN f$positional_allin_on_betsize_balance_ratio FORCE
-// Sole opponent already allin or mis-scraped opponents stack
-WHEN (StackSize_headsupchair <= 0) RETURN f$positional_allin_on_betsize_balance_ratio FORCE
+WHEN (StackSize <= 0) RETURN 0.50 FORCE
+WHEN (StackSize_headsupchair <= 0) RETURN 0.50 FORCE
 // Opponents stack larger than ours: normal behaviour
-WHEN (StackSize_headsupchair >= StackSize) RETURN f$positional_allin_on_betsize_balance_ratio FORCE
+WHEN (StackSize_headsupchair >= StackSize) RETURN 0.50 FORCE
 // Single opponent with smaller stack.
 // Go more lightly allin if our bet is more than 50% of his stack.
-WHEN Others RETURN (f$positional_allin_on_betsize_balance_ratio * (StackSize_headsupchair / StackSize)) FORCE
+WHEN Others RETURN (0.5 *(StackSize_headsupchair / StackSize)) FORCE
 
 ##f$call_nuts##
 // Basic calls with nuts or free to check
@@ -1800,57 +1768,19 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
 0
 
-##f$effective_balance_to_call_ratio##
-WHEN (call <= 0) RETURN StackSize FORCE
-WHEN (balance <= f$stackraiser) RETURN (balance / call) FORCE
-WHEN Others RETURN (f$stackraiser / call) FORCE
-
-##f$required_balance_to_call_ratio_for_setmining##
-// Higher requirements in unraised pots, less likely to get action postflop
-// Higher requirements OOP
-// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
-WHEN (BotsLastAction = None)
-   WHEN (Raises = 0) RETURN 20 FORCE
-   WHEN ((Raises = 1) AND ac_agchair_after) RETURN 15 FORCE
-   WHEN ((Raises = 1) AND NOT ac_agchair_after) RETURN 12 FORCE
-WHEN (BotsLastAction = Call) 
-   WHEN ((RaisesSinceLastPlay = 1) AND ac_agchair_after) RETURN 12 FORCE
-   WHEN ((RaisesSinceLastPlay = 1) AND NOT ac_agchair_after) RETURN 10 FORCE
-WHEN (BotsLastAction = Raise) 
-   WHEN ((RaisesSinceLastPlay = 1) AND ac_agchair_after) RETURN 12 FORCE
-   WHEN ((RaisesSinceLastPlay = 1) AND NOT ac_agchair_after) RETURN 10 FORCE   
-WHEN Others
-   // Multiple raises, we don't want to call
-   WHEN Others RETURN 999 FORCE
-   
-##f$preflop_call_for_setmining##
-// Rules are the same for raised and reraised pots.
-// Different balance-to-call-ratios get handled by f$required_balance_to_call_ratio_for_setmining.
-// "Setmining"-range also contains some premium-hands
-WHEN (f$effective_balance_to_call_ratio < f$required_balance_to_call_ratio_for_setmining) RETURN false FORCE
-WHEN (call > 0.50 * pot) RETURN false FORCE
-WHEN listGeckoSetMining RETURN true FORCE
-
-##f$preflop_call_reraise##
-// Call any min-reraise
-WHEN [didbetsize AND (4 * call < pot)] RETURN true FORCE
-// With premium hands we make action.
-// Raises after setmining get handled be f$preflop_call_for_setmining.
-   
-##f$preflop_limp_good_hand##
-WHEN [(ncallbets<=1) >= 1] RETURN false FORCE
-WHEN [BotsLastAction != None] RETURN false FORCE
-WHEN [(StillToAct >= 5) AND (handrank169 < 50)] RETURN true FORCE
-WHEN [nopponentscalling==0 AND ispair] RETURN true FORCE
-WHEN [nopponentscalling==1 AND listGeckoLimpAgainstOneOpponent] RETURN true FORCE
-WHEN [nopponentscalling>=2 && (listGeckoLimpMultiway)] RETURN true FORCE
-   
 ##f$preflop_call##
-WHEN (hand$AA OR hand$KK) RETURN true FORCE
-WHEN f$preflop_call_for_setmining RETURN true FORCE
-WHEN f$preflop_call_reraise RETURN true FORCE
-WHEN f$preflop_limp_good_hand RETURN true FORCE
-  
+[ hand$AA || hand$KK ] ? 1 : 
+[ !didbetsize ] ? {
+    [ ncallbets<=1 ] ? {
+        [ nopponentscalling==0 && (ispair   ||dealposition==1 && handrank169<50) ] ? 1 :
+        [ nopponentscalling==1 && (listGecko301||dealposition==1 && handrank169<50) ] ? 1 :
+        [ nopponentscalling>=2 && (listGecko300||dealposition==1 && handrank169<50) ] ? 1 : 0 } :
+    [ ncallbets>1 && (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
+[ didbetsize ] ? {
+    [ call*4<pot                                                             ] ? 1 :
+    [ (call*8)<balance && (call*2)<pot && listGecko17 && (call*8)<f$stackraiser ] ? 1 : 0 } :
+0
+
 ##f$stackopponent##
 balance_headsupchair
 
@@ -2177,15 +2107,7 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 
 || [ f$Position_CutOff && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze )] 
-						  
-##f$villain_allin##
-WHEN (nopponentsplaying > 1) RETURN false FORCE
-WHEN (f$stackopponent == 0) RETURN true FORCE
 
-##f$villain_potcommitted##
-WHEN (nopponentsplaying > 1) RETURN false FORCE
-WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
-							  
 ##f$committed##
 [ call*10<pot ] ? f$prwin>.30 :
 [ call*9 <pot ] ? f$prwin>.40 :
@@ -2195,14 +2117,19 @@ WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
 [ call*5 <pot ] ? f$prwin>.80 :
 [ call*4 <pot ] ? f$prwin>.85 :
 [ call*3 <pot ] ? f$prwin>.95 :
+
+
 [ nplayersplaying==2 ] ? {
+
     [ f$prwin>0.65 && f$prwin<=0.70 ] ? (balance*7<pot) :
     [ f$prwin>0.70 && f$prwin<=0.75 ] ? (balance*6<pot) :
     [ f$prwin>0.75 && f$prwin<=0.80 ] ? (balance*5<pot) :
     [ f$prwin>0.80 && f$prwin<=0.85 ] ? (balance*4<pot) :
     [ f$prwin>0.85 && f$prwin<=0.90 ] ? (balance*3<pot) :
     [ f$prwin>0.90                  ] ? (balance*3<pot) :
-    [ (f$villain_allin OR f$villain_potcommitted) ] ? {
+
+    [ (f$stackopponent==0||(f$stackopponent-currentbet_raischair)==0) ] ? {
+
         [ f$prwin>0.68 && f$prwin<=0.72 ] ? (call*7.0<pot) :
         [ f$prwin>0.72 && f$prwin<=0.76 ] ? (call*6.0<pot) :
         [ f$prwin>0.76 && f$prwin<=0.80 ] ? (call*4.0<pot) :
@@ -2211,6 +2138,7 @@ WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
         [ f$prwin>0.86 && f$prwin<=0.90 ] ? (call*2.5<pot) : 
         [ f$prwin>0.90 && f$prwin<=0.96 ] ? (call*2.0<pot) : 
         [ f$prwin>0.96                  ] ? (call*1.0<pot) : 0 } : 0 } :
+
 0
 
 ##f$mycurrentbet##
@@ -3254,7 +3182,7 @@ T2o T3o T4o T5o T6o T7o T8o JTo
 ##listGecko10##
 KK  AA  
 
-##listGeckoSetMining##
+##listGecko17##
 KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQs AKs  
 AKo  
@@ -4021,13 +3949,13 @@ T9s
 98s  
 KQo
 
-##listGeckoLimpMultiway##
+##listGecko300##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKs KQs QJs JTs T9s 98s 87s 76s 65s  
 AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs J9s 
 AKo AQo AJo ATo 
 
-##listGeckoLimpAgainstOneOpponent##
+##listGecko301##
 AA  KK  QQ  JJ  TT  99  88  77  
 AKs KQs QJs JTs T9s 98s 
 AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs 

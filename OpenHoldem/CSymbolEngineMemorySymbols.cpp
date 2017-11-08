@@ -56,7 +56,7 @@ void CSymbolEngineMemorySymbols::ErrorInvalidMemoryStoreCommand(CString command)
     "  * a value\n"
     " Example: me_st_Pi_3_141592653\n",
     command);
-  OH_MessageBox_Formula_Error(message, "Error");
+  //!!!!!OH_MessageBox_Formula_Error(message, "Error");
 }
 
 void CSymbolEngineMemorySymbols::ErrorUnnamedMemorySymbol(CString command) {

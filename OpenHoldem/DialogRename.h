@@ -16,6 +16,8 @@
 
 // CDlgRename dialog
 
+#include "resource.h"
+
 class CDlgRename : public CDialog
 {
 	DECLARE_DYNAMIC(CDlgRename)

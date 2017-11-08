@@ -18,7 +18,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CSymbolEngineDealerchair::CSymbolEngineDealerchair()
 {

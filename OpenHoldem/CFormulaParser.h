@@ -15,6 +15,7 @@
 #define INC_CFORMULAPARSER_H
 
 #include "afx.h"
+#include "atlstr.h"
 #include "CFormulaFileSplitter.h"
 #include "COHScriptList.h"
 #include "CParseTreeNode.h"

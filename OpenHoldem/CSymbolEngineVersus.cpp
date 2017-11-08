@@ -21,7 +21,6 @@
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
 #include "inlines/eval.h"
-#include "CFilenames.h"
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -36,7 +35,7 @@ CSymbolEngineVersus::CSymbolEngineVersus() {
 	// we assure correct ordering by checking if they are initialized.
   assert(p_engine_container->symbol_engine_userchair() != NULL);
   // Check versus.bin
-  _sopen_s(&_versus_fh, p_filenames->VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+  _sopen_s(&_versus_fh, VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (_versus_fh == kUndefined) {
 		// We do no longer warn directly, 
 		// but only when versus symbols get used without the file.

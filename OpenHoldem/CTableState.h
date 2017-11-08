@@ -22,7 +22,7 @@
 #include "CScrapedMoney.h"
 #include "CSpaceOptimizedGlobalObject.h"
 #include "CTableTitle.h"
-#include "MagicNumbers.h"
+
 #include "SLimitInfo.h"
 
 // One fake-entry for the case of unknown user-chair

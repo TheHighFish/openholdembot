@@ -23,7 +23,7 @@
 #include "CParserSymbolTable.h"
 #include "CPreferences.h"
 #include "CSelftestParserEvaluator.h"
-#include "MagicNumbers.h"
+
 #include "OH_MessageBox.h"
 
 CFunctionCollection *p_function_collection = NULL;
@@ -489,7 +489,7 @@ void CFunctionCollection::Save(CArchive &ar) {
   // First write the date
   char nowtime[26] = {0};
   CString s;
-  s.Format("##%s##\r\n\r\n", get_time(nowtime)); 
+  /*!!!!!s.Format("##%s##\r\n\r\n", get_time(nowtime)); */
   ar.WriteString(s);
   // Notes are a bit special "functions",
   // so they get extra treatment.

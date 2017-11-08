@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-11-05"/>
+<meta name="create-date" content="2017-01-28"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -88,47 +88,8 @@ ttlimits, ttlimits0 - ttlimits9
 </td>
 <td align="left" valign="top" style="width: 75%;">
 <div class="PlainVisible">
-These symbols are intended to provide a format string that is used to parse the window’s titlebar text, and extract sblind, bblind, bigbet, ante and game type information. The syntax usage of the format string is very much like the standard C-language format strings for scanf and printf. The placeholders use the caret character as the indicator and have the following meanings: 
-</div>
-<ul>
-<li>
-^h hand number 
-</li>
-<li>
-^d dummy integer (read chars 0-9 only) 
-</li>
-<li>
-^f dummy float (read chars 0-9 including decimal ’.’) 
-</li>
-<li>
-^s sblind 
-</li>
-<li>
-^b bblind 
-</li>
-<li>
-^B bigbet 
-</li>
-<li>
-^a ante 
-</li>
-<li>
-^v sb or bb depending on limit type 
-</li>
-<li>
-^V bb or BB depending on limit type 
-</li>
-<li>
-^y buyin; this will also set the game-type to tournament
-</li>
-<li>
-^* skip all text up to the literal character following the * 
-</li>
-<li>
-^R roman numeral as in "Level VIII" as typically seen in SNGs ^L limit indicator 
-</li>
 
-</ul>
+</div>
 <div class="PlainVisible">
 
 </div>
@@ -139,10 +100,11 @@ These symbols are intended to provide a format string that is used to parse the 
 
 </div>
 <div class="PlainVisible">
+These symbols are intended to provide a format string that is used to parse the window’s titlebar text, and extract sblind, bblind, bigbet, ante and game type information. The syntax usage of the format string is very much like the standard C-language format strings for scanf and printf. The placeholders use the caret character as the indicator and have the following meanings: ^h hand number ^d dummy integer (read chars 0-9 only) ^f dummy float (read chars 0-9 including decimal ’.’) ^s sblind ^b bblind ^B bigbet ^a ante ^v sb or bb depending on limit type ^V bb or BB depending on limit type ^* skip all text up to the literal character following the * ^R roman numeral as in "Level VIII" as typically seen in SNGs ^L limit indicator <br/>
 For the integer and float numerics, the scanner will automatically accept and skip a leading dollar sign “$” or leading/trailing cent sign “¢” (ascii 162 hex a2). In the case of the cent sign the target number will be divided by 100. The scanner will also recognize the standard trailing metric unit multipliers of “k” and “m” (1000 and 1000000 respectively). <br/>
 The following case-insensitive strings are recognized for the ^L limit indicator: no limit, no-limit, nolimit, nl pot limit, pot-limit, potlimit, pl fixed limit, fixed-limit, fixedlimit, fl, limit <br/>
 As an example, this title bar text "NL SNG Level VI 25/50 (2)" could be parsed with this format string "^L SNG Level ^R ^s/^b (^a)" to result in the sblind, bblind and game type being recognized. <br/>
-If multiple ttlimits symbols are provided, then the engine will scan each in order, and combine the information from all matching limit specifiers.. That means that if you specify ^s in both ttlimits and ttlimits3, for example, it will be extracted from ttlimits and ignored in ttlimits3. OpenHoldem allows you to specify up to 11 ttlimits records in any single Table Map file. Specifying multiple ttlimits records might be needed if a given Table Map file is intended to describe multiple Texas Hold’em game flavors. However, it is a best practice to define different game flavors in different Table Maps, and thus most Table Maps contain a single ttlimits symbol record. 
+If multiple ttlimits symbols are provided, then the engine will scan each in order, and extract matching information from the first time it is found. That means that if you specify ^s in both ttlimits and ttlimits3, for example, it will be extracted from ttlimits and ignored in ttlimits3. OpenHoldem allows you to specify up to 11 ttlimits records in any single Table Map file. Specifying multiple ttlimits records might be needed if a given Table Map file is intended to describe multiple Texas Hold’em game flavors. However, it is a best practice to define different game flavors in different Table Maps, and thus most Table Maps contain a single ttlimits symbol record. 
 </div>
 
 </td>

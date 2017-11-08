@@ -22,7 +22,7 @@
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
-#include "MagicNumbers.h"
+
 
 CSymbolEngineTableStats::CSymbolEngineTableStats() {
 	// The values of some symbol-engines depend on other engines.

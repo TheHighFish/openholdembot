@@ -41,7 +41,7 @@
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
-#include "MagicNumbers.h"
+
 
 // We can't evaluate ini-functions if no formula is loaded.
 // This was no problem on startup, but caused crashes

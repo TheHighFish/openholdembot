@@ -29,7 +29,7 @@
 #include "CStringMatch.h"
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTransform\CTransform.h"
-#include "MagicNumbers.h"
+
 #include "OpenHoldem.h"
 #include "OH_MessageBox.h"
 

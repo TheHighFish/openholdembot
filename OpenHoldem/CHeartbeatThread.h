@@ -14,7 +14,6 @@
 #ifndef INC_CHEARTBEATTHREAD_H
 #define INC_CHEARTBEATTHREAD_H
 
-#include "..\CCritSec\CCritSec.h"
 #include "CHeartbeatDelay.h"
 #include "COpenHoldemStarter.h"
 #include "CSpaceOptimizedGlobalObject.h"

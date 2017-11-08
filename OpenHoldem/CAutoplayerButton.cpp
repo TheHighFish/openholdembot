@@ -19,7 +19,7 @@
 #include "CPreferences.h"
 #include "CStringMatch.h"
 #include "..\CTablemap\CTablemap.h"
-#include "MagicNumbers.h"
+
 
 CAutoplayerButton::CAutoplayerButton() {
   Reset();

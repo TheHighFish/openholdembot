@@ -19,8 +19,8 @@
 #include <stdint.h>
 #include "../CTablemap/CTablemap.h"
 #include "CSpaceOptimizedGlobalObject.h"
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
+
 
 class CScraper : public CSpaceOptimizedGlobalObject {
   friend class CLazyScraper;

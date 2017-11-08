@@ -17,7 +17,7 @@
 #include "libpq-fe.h"
 #include <map>
 #include "CSpaceOptimizedGlobalObject.h"
-#include "MagicNumbers.h"
+
 
 const int k_advanced_stat_update_every    =    5;
 const int k_min_hands_for_slower_updates  = 1000;

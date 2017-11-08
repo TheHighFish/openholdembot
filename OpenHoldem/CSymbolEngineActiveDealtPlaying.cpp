@@ -25,7 +25,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "NumericalFunctions.h"
+
 
 CSymbolEngineActiveDealtPlaying::CSymbolEngineActiveDealtPlaying()
 {

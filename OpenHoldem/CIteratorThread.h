@@ -15,7 +15,6 @@
 #define INC_CITERATORTHREAD_H
 
 #include "inlines/eval.h"
-#include "..\CCritSec\CCritSec.h"
 #include "CSpaceOptimizedGlobalObject.h"
 
 extern sprw1326	_prw1326;	// prwin 1326 data structure Matrix 2008-04-29

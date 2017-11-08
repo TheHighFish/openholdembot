@@ -23,7 +23,7 @@
 #include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "NumericalFunctions.h"
+
 
 CSymbolEnginePositions::CSymbolEnginePositions()
 {

@@ -32,8 +32,8 @@
 #include "CTableState.h"
 #include "CValidator.h"
 #include "inlines/eval.h"
-#include "MagicNumbers.h"
-#include "Numericalfunctions.h"
+
+
 #include "PrWinHandranges.h"
 #include "mtrand.h"
 

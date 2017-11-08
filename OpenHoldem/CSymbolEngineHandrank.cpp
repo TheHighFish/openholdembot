@@ -22,7 +22,7 @@
 #include "CSymbolEnginePrwin.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 int handrank_table_2652[kMaxNumberOfPlayers][kNumberOfStartingHands] =
 {

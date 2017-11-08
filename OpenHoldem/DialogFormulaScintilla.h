@@ -14,6 +14,7 @@
 #ifndef INC_DIALOGFORMULASCINTILLA_H
 #define INC_DIALOGFORMULASCINTILLA_H
 
+#include "resource.h"
 #include "ScintillaWnd.h"
 #include "WinMgr.h"
 #include "SizerBar.h"
@@ -68,12 +69,10 @@
 #define SCE_C_GLOBALCLASS 19
 #define MAX_STYLE_NUM 19
 
-
 // mandatory to use toolTip : "http://forums.codeguru.com/showthread.php?231227-MFC-Tree-Control-How-to-use-SetItemData()-and-GetItemData()"
 struct toolTipData {
 	CString* description;
 };
-
 
 class CScintillaInfo {
  public:

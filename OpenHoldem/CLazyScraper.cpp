@@ -27,7 +27,7 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "debug.h"
+
 
 CLazyScraper *p_lazyscraper = NULL;
 

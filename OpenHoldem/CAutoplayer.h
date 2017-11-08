@@ -14,7 +14,7 @@
 #ifndef INC_CAUTOPLAYER_H
 #define INC_CAUTOPLAYER_H
 
-#include "../CCritSec/CCritSec.h"
+
 #include "MainFrm.h"
 #include "../CTablemap/CTablemap.h"
 #include "../CTablemap/CTableMapAccess.h"

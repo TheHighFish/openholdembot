@@ -15,7 +15,6 @@
 
 #include "stdafx.h"
 #include "UnknownSymbols.h"
-
 #include "OH_MessageBox.h"
 
 char *title_outdated_symbol = "ERROR: outdated symbol";

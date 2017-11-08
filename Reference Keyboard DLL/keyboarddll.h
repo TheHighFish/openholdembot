@@ -20,8 +20,6 @@
 #define KEYBOARDDLL_API __declspec(dllimport)
 #endif
 
-#include <afx.h>
-
 typedef int (*keyboard_sendstring_t)(const HWND hwnd, const RECT rect, const CString s, const bool use_comma);
 KEYBOARDDLL_API int SendString(const HWND hwnd, const RECT rect, const CString s, const bool use_comma);
 

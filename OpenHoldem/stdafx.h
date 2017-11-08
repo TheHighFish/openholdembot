@@ -131,11 +131,12 @@
 
 #include <windows.h>
 #include <stdlib.h>
-#include <string.h>
+
+#define OPENHOLDEM_PROGRAM
 
 // Version
-#define VERSION_NUMBER			12.12
-#define VERSION_TEXT				"12.1.2.0"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER			12.11
+#define VERSION_TEXT				"12.1.1.0"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"
@@ -147,9 +148,12 @@
 
 // Important project headers
 #include "CValidator.h"
-#include "debug.h"
 #include "FloatingPoint_Comparisions.h"
-#include "MagicNumbers.h"
+#include "NumericalFunctions.h"
+#include "..\DLLs\Debug_DLL\debug.h"
+#include "..\DLLs\Files_DLL\files.h"
+#include "..\Shared\CCritSec\CCritSec.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "..\StructsDefines\structs_defines.h"
 
 // To avoid some race-conditions

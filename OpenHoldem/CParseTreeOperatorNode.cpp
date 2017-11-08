@@ -29,7 +29,7 @@
 #include "CSymbolEngineOpenPPLUserVariables.h"
 #include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
-#include "NumericalFunctions.h"
+
 #include "OH_MessageBox.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 #include "TokenizerConstants.h"

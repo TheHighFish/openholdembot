@@ -43,7 +43,7 @@
 
 #include "CVirtualSymbolEngine.h"
 #include "CBetroundCalculator.h"
-#include "NumericalFunctions.h"
+
 
 class CSymbolEngineRaisers: public CVirtualSymbolEngine {
  friend class CSymbolEngineCallers;

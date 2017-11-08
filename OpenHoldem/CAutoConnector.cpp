@@ -22,7 +22,6 @@
 #include "CAutoplayer.h"
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
-#include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -37,7 +36,7 @@
 #include "CTablePositioner.h"
 #include "CVersionInfo.h"
 #include "DialogScraperOutput.h"
-#include "MagicNumbers.h"
+
 #include "MainFrm.h"
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"

@@ -38,8 +38,8 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEnginePokerAction.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
+
 #include "OH_MessageBox.h"
 
 CSymbolEngineICM::CSymbolEngineICM() {

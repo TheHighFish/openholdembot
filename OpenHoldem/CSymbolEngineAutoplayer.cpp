@@ -27,8 +27,8 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
+
 
 CSymbolEngineAutoplayer::CSymbolEngineAutoplayer() {
 	// The values of some symbol-engines depend on other engines.

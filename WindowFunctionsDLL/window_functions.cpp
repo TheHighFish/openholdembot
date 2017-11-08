@@ -45,7 +45,7 @@
 #include <math.h>
 #include <windows.h>
 #include "window_functions.h"
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "Psapi.h"
 
 RECT desktop_dimensions;

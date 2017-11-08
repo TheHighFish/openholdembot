@@ -1,3 +1,4 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -11,11 +12,6 @@
 //
 //******************************************************************************
 
-#ifndef INC_VALIDATOR_H
-#define INC_VALIDATOR_H
-
-#include "NumericalFunctions.h"
-
 // !!! ATTENTION
 // !!! CString not properly declared/included.
 // !!! atlstr / afxstr don't work.
@@ -28,30 +24,11 @@ public:
 	// public functions
 	CValidator();
 	~CValidator();
-	void ValidateGameState();
+public:
+  void Validate();
 	void SetEnabledManually(bool Enabled);
-private:
-	// private functions
-	void ValidateSingleRule();
-	void ValidateVersusDBOnlyIfInstalled();
-  void ValidateICMOnlyIfTournament();
-	CString Symbols_And_Values(const CString symbols_possibly_affected);
-	double gws(const char *the_Symbol);
-private:
-	// private data members, not (directly) accessible
-	char	*_testcase_id;
-	bool	_heuristic;
-	char    *_reasoning;
-	bool	_precondition;
-	bool	_postcondition;
-	char	*_symbols_possibly_affected;
-private:
-	bool _enabled_manually;
-	bool _no_errors_this_heartbeat;
+ private:
+  bool _enabled_manually;
 };
 
-extern CValidator *p_validator; 
-
-#endif
-
-																																																						
+extern CValidator *p_validator; 																																																					

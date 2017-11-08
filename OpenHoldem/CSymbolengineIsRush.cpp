@@ -22,7 +22,7 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTime.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 // Maximum average time between last action and handreset
 // if the game should be considered rush / zoom.

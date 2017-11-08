@@ -21,7 +21,7 @@
 #include "CSCraper.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CTableState.h"
-#include "debug.h"
+
 
 COcclusionCheck *p_occlusioncheck = NULL;
 

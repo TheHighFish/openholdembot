@@ -1,0 +1,25 @@
+LIBRARY	files
+EXPORTS
+BotlogicDirectory
+DefaultLogicDirectory
+LogsDirectory
+OpenHoldemDirectory
+OpenPPLLibraryDirectory
+PathOfExecutable
+ReplaySessionDirectory
+ScraperDirectory
+ToolsDirectory
+ReplayBitmapFilename
+ReplayHTMLFilename
+ExecutableFilename
+PureExecutableFilename
+IniFilePath
+LogFilePath
+VersusPath
+CustomLibraryPath
+ManualModePath
+TableMapWildcard
+SwitchToOpenHoldemDirectory
+FilenameWithoutPath
+FilenameWithoutPathAndExtension
+IniFilename

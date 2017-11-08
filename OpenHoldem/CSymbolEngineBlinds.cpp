@@ -23,7 +23,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CSymbolEngineBlinds::CSymbolEngineBlinds()
 {

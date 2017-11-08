@@ -15,7 +15,7 @@
 #include "Chair$Symbols.h"
 
 #include "CScraper.h"
-#include "MagicNumbers.h"
+
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 

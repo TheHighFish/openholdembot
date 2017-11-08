@@ -14,8 +14,8 @@
 #include "stdafx.h"
 #include "CPreferences.h"
 
-#include "debug.h"
-#include "MagicNumbers.h"
+
+
 #include "OH_MessageBox.h"
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method

@@ -27,8 +27,8 @@
 #include "CTableState.h"
 #include "inlines/eval.h"
 #include "..\CTransform\CTransform.h"
-#include "MagicNumbers.h"
-#include "Numericalfunctions.h"
+
+
 
 CSymbolEngineCards::CSymbolEngineCards() {
 	// The values of some symbol-engines depend on other engines.

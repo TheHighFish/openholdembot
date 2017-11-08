@@ -39,7 +39,7 @@
 #include "..\CTransform\CTransform.h"
 #include "CTableTitle.h"
 #include "CWhiteInfoBox.h"
-#include "MagicNumbers.h"
+
 #include "OpenHoldem.h"
 #include "OH_MessageBox.h"
 

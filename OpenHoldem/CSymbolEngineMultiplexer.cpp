@@ -24,7 +24,7 @@
 #include "OH_MessageBox.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 
-const int kNumberOfSupportedPostfixes = 33;
+const int kNumberOfSupportedPostfixes = 29;
 // If you extend the list below please don't forget to update FastExitOnLastCharacter()
 const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {
   // Chairs, special ones
@@ -43,17 +43,11 @@ const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {
   "ep2chair",
   "ep1chair",
   "utgchair",
-  // Small and big stacks
-  "smallstackchair",
-  "bigstackchair",
   // Chairs, raisers and callers
   "firstcallerchair",
   "lastcallerchair",
   "firstraiserchair",
   "lastraiserchair",
-  // small and vig stacks
-  "smallstackchair",
-  "bigstackchair",
   // lastraiserchair and raischair are synonyms
   "raischair",
   // Betrounds

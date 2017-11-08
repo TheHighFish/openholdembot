@@ -16,14 +16,12 @@
 
 #include "stdafx.h"
 #include "MainFrm.h"
-
 #include <io.h>
 #include <process.h>
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
 #include "CEngineContainer.h"
-#include "CFilenames.h"
 #include "CFlagsToolbar.h"
 #include "CHeartbeatThread.h"
 #include "CIteratorThread.h"
@@ -34,6 +32,7 @@
 #include "CProblemSolver.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CScraper.h"
+#include "CSessionCounter.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTransform\CTransform.h"
@@ -60,7 +59,7 @@
 #include "DialogSAPrefs22.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
-#include "MagicNumbers.h"
+
 #include "OH_MessageBox.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
@@ -276,13 +275,9 @@ void CMainFrame::OnEditFormula() {
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_FORMULA, true);
 }
 
-void CMainFrame::OnEditViewLog()
-{
-	if (p_filenames == NULL)
-	{
-		return;
-	}
-	ShellExecute(NULL, "open", p_filenames->LogFilePath(), NULL, NULL, SW_SHOW);
+void CMainFrame::OnEditViewLog() {
+  assert(p_sessioncounter != nullptr);
+  ShellExecute(NULL, "open", LogFilePath(p_sessioncounter->session_id()), NULL, NULL, SW_SHOW);
 }
 
 void CMainFrame::OnEditTagLog() {
@@ -343,9 +338,9 @@ void CMainFrame::OnManualMode() {
   ShellExecute(
     NULL,               // Pointer to parent window; not needed
     "open",             // "open" == "execute" for an executable
-    p_filenames->ManualModePath(),
+    ManualModePath(),
 		NULL, 		          // Parameters
-		p_filenames->ToolsDirectory(), // Working directory, location of ManualMode
+		ToolsDirectory(), // Working directory, location of ManualMode
 		SW_SHOWNORMAL);		  // Active window, default size
 }
 

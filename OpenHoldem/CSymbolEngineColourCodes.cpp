@@ -19,7 +19,7 @@
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CSymbolEngineColourCodes::CSymbolEngineColourCodes() {
 	// The values of some symbol-engines depend on other engines.

@@ -35,7 +35,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 #include "CWhiteInfoBox.h"
-#include "MagicNumbers.h"
+
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 

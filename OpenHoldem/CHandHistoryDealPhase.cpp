@@ -25,7 +25,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CHandHistoryDealPhase *p_handhistory_deal_phase = NULL;
 

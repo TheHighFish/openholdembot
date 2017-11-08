@@ -21,7 +21,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "FloatingPoint_Comparisions.h"
-#include "NumericalFunctions.h"
+
 
 CSymbolEngineChipAmounts::CSymbolEngineChipAmounts() {
 	// The values of some symbol-engines depend on other engines.

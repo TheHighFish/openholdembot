@@ -21,7 +21,7 @@
 #include "CScraper.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 #include "..\StringFunctionsDLL\string_functions.h"
 
 // The number of cards per player depends on the game-type.

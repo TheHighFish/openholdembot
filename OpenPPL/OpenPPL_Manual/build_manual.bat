@@ -1,1 +1,0 @@
-"c:\Program Files\HTML Help Workshop\hhc.exe" OpenPPL_Manual.hhp

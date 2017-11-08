@@ -16,7 +16,7 @@
 
 #include "stdafx.h"
 #include "DialogHandList.h"
-#include "MagicNumbers.h"
+
 
 // CDlgHandList dialog
 CDlgHandList::CDlgHandList(CWnd* pParent /*=NULL*/)

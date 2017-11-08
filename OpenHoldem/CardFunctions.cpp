@@ -15,8 +15,7 @@
 #include "CardFunctions.h"
 
 #include <assert.h>
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
 
 int RankCharacterToRankNumber(char rank) {
 	switch (rank) {

@@ -19,7 +19,7 @@
 
 #include "CEngineContainer.h"
 #include "CSymbolEngineUserchair.h"
-#include "NumericalFunctions.h"
+
 #include "CSymbolEngineActiveDealtPlaying.h"
 
 CTableState *p_table_state = NULL;
