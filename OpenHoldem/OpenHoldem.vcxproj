@@ -754,9 +754,6 @@
     <ProjectReference Include="..\StringFunctionsDLL\string_functions.vcxproj_____">
       <Project>{9a3a25e1-3045-4ec3-be51-5bd55f1f94b9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\WindowFunctionsDLL\window_functions.vcxproj">
-      <Project>{e87d7887-adde-41db-aa09-3ddab950faa5}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

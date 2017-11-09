@@ -48,4 +48,15 @@ WINDOW_FUNCTIONS_API bool WinIsProgramManager(HWND window);
 WINDOW_FUNCTIONS_API bool WinIsTaskManager(HWND window);
 WINDOW_FUNCTIONS_API bool WinIsZeroSized(HWND window);
 
+// Errors and warnings.
+// Get displayed (or not) depending on settings
+WINDOW_FUNCTIONS_API void MessageBox_Error_Warning(CString Message, CString Title = "Error");
+// Interactive messages.
+// Get always displayed, even if they are not critical.
+// They are either a result of the users action 
+// or we need request some direct input.
+WINDOW_FUNCTIONS_API int MessageBox_Interactive(CString Message, CString Title, int Flags);
+// MessageBox for the msgbox$MESSAGE-command of OH-script
+WINDOW_FUNCTIONS_API void MessageBox_OH_Script_Messages(CString message);
+
 #endif // INC_WINDOW_FUNCTIONS_H 

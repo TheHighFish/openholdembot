@@ -41,11 +41,11 @@
 #define _WIN32_IE 0x0600	// Change this to the appropriate value to target other versions of IE.
 #endif
 
+#include "window_functions.h"
 #include <assert.h>
 #include <math.h>
 #include <windows.h>
-#include "window_functions.h"
-#include "..\Shared\MagicNumbers\MagicNumbers.h"
+#include "..\..\Shared\MagicNumbers\MagicNumbers.h"
 #include "Psapi.h"
 
 RECT desktop_dimensions;
