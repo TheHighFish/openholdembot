@@ -56,6 +56,13 @@ const int kBetroundFlop		   = 2;
 const int kBetroundTurn	     = 3;
 const int kBetroundRiver	   = 4;
 
+// Aztoplayer FCKRA-bits
+const int kMyTurnBitsFold = 0x01;
+const int kMyTurnBitsCall = 0x02;
+const int kMyTurnBitsCheck = 0x04;
+const int kMyTurnBitsRaise = 0x08;
+const int kMyTurnBitsAllin = 0x10;
+
 // Players
 const int kMaxNumberOfPlayers         = 10;
 const int kMaxLengthOfPlayername      = 32;

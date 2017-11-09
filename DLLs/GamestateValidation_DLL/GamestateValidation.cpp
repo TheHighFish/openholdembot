@@ -14,12 +14,16 @@
 
 #define VALIDATOR_DLL_EXPORTS
 
+#include "GamestateValidation.h"
+#include "..\WindowFunctions_DLL\window_functions.h"
 #include "..\..\Shared\MagicNumbers\MagicNumbers.h"
-#include "..\..\OpenHoldem\CSymbolEngineAutoplayer.h"
 
 // Constants for the validators range-checks
 #define UNDEFINED_ZERO 0
 #define	UNDEFINED_NEGATIVE_ONE -1
+
+// Global var to be shared between interface and macro magic
+bool heuristic_rules = false;
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -50,7 +54,7 @@
 // Action: Assign the heuristic-flag to a private variable
 //
 //
-#define HEURISTIC_RULE(H) { _heuristic = (H); }
+#define HEURISTIC_RULE(H) { _rule_is_heuristic = (H); }
 
 // PRECONDITION
 //
@@ -87,7 +91,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 char *_testcase_id;
-bool _heuristic;
+bool _rule_is_heuristic;
 char *_reasoning;
 bool _precondition;
 bool _postcondition;
@@ -119,30 +123,25 @@ CString Symbols_And_Values(const CString symbols_possibly_affected) {
   return Result;
 }
 
-bool ValidateSingleRule() {
+void ValidateSingleRule() {
   // Heuristic rules and not to be tested?
-/*!!!!!  if (_heuristic && !preferences.validator_use_heuristic_rules()) {
+  if (_rule_is_heuristic && !heuristic_rules) {
     return;
-  }*/
+  }
   // Test to be executed?
   if (_precondition) {
     // Test failed?
     if (!_postcondition) {
       if (_no_errors_this_heartbeat) {
-        // First error: shoot replayframe, if needed
-/*!!!!!        if (preferences.validator_shoot_replayframe_on_error()) {
-          p_engine_container->symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
-        }*/
+        // Keep error-status
+        // Needed for replay-frames and autoplayer
         _no_errors_this_heartbeat = false;
       }
-      /*!!!!!       if (preferences.validator_stop_on_error()) {
-        p_autoplayer->EngageAutoplayer(false);
-      }*/
       // Create error message
       CString the_ErrorMessage = "TESTCASE ID: "
         + CString(_testcase_id)
         + "\n\n";
-      if (_heuristic) {
+      if (_rule_is_heuristic) {
         the_ErrorMessage += "HEURISTIC RULE: yes\n\n";
       }
       the_ErrorMessage += "REASONING: "
@@ -153,20 +152,19 @@ bool ValidateSingleRule() {
         + "\n\n"
         + "(The validator is a tool to help you finding errors in your tablemap.)\n";
       // Show error message, if appropriate
-      //!!!!!OH_MessageBox_Error_Warning(the_ErrorMessage, "VALIDATOR ERROR");
-      // Log error message
-      the_ErrorMessage.Replace("\n\n", ". ");
-      the_ErrorMessage.Replace("\n", " ");
-      //!!!!!write_log(k_always_log_errors, "%s%s\n", "VALIDATOR ERROR: ", the_ErrorMessage);
+      // The error-message gets logged by the message-box
+      MessageBox_Error_Warning(the_ErrorMessage, "VALIDATOR ERROR");
     }
   }
-  return _no_errors_this_heartbeat; //!!!!!=????
+  return;
 }
 
 bool ValidateGamestate(
     bool use_heuristic_rules,
 	  bool is_tournament,
 	  bool versus_bin_loaded) {
+  heuristic_rules = use_heuristic_rules;
+  _no_errors_this_heartbeat = true;
 #include "Validator_Rules\range_checks_general_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_tablemap_symbols_inline.cpp_"
 #include "Validator_Rules\range_checks_formula_file_inline.cpp_"

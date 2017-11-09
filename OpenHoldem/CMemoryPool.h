@@ -1,3 +1,4 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -14,7 +15,7 @@
 //
 //******************************************************************************
 
-#pragma once
+#include <afxtempl.h>
 #include <map>
 
 void CreateMemoryPools();

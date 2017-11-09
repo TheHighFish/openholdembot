@@ -18,14 +18,6 @@
 #include "assert.h"
 #include "CSymbolEngineTableLimits.h"
 
-
-// Changing myturnbits to FCKRA (F = lowest bit)
-const int kMyTurnBitsFold  = 0x01;
-const int kMyTurnBitsCall  = 0x02;
-const int kMyTurnBitsCheck = 0x04;
-const int kMyTurnBitsRaise = 0x08;
-const int kMyTurnBitsAllin = 0x10;
-
 class CSymbolEngineAutoplayer: public CVirtualSymbolEngine {
  public:
 	CSymbolEngineAutoplayer();
