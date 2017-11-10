@@ -18,7 +18,7 @@
 #include "..\OpenHoldem\CPreferences.h"
 #include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 #include "..\OpenHoldem\WebSafeColours.h"
 
 #ifdef OPENHOLDEM_PROGRAM

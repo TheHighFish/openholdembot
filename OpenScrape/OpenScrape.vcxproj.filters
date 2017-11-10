@@ -45,9 +45,6 @@
     <ClCompile Include="CTablemap_TroubleChecking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DialogCopyRegion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,18 +138,12 @@
     <ClCompile Include="..\OpenHoldem\CTableTitle.cpp">
       <Filter>Source Files\OpenHoldem_Functions</Filter>
     </ClCompile>
-	<ClCompile Include="..\OpenHoldem\CTitleEvaluator.cpp">
-      <Filter>Source Files\OpenHoldem_Functions</Filter>
-    </ClCompile>
-	<ClCompile Include="..\OpenHoldem\OH_MessageBox.cpp">
+    <ClCompile Include="..\OpenHoldem\CTitleEvaluator.cpp">
       <Filter>Source Files\OpenHoldem_Functions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CRegionCloner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DialogCopyRegion.h">
@@ -251,10 +242,7 @@
     <ClInclude Include="..\OpenHoldem\CTableTitle.h">
       <Filter>Header Files\OpenHoldem_Functions</Filter>
     </ClInclude>
-	<ClInclude Include="..\OpenHoldem\CTitleEvaluator.h">
-      <Filter>Header Files\OpenHoldem_Functions</Filter>
-    </ClInclude>
-	<ClInclude Include="..\OpenHoldem\OH_MessageBox.h">
+    <ClInclude Include="..\OpenHoldem\CTitleEvaluator.h">
       <Filter>Header Files\OpenHoldem_Functions</Filter>
     </ClInclude>
   </ItemGroup>

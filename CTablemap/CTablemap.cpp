@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <Math.h>
 #include "../CTransform/CTransform.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"!"
 
 #ifdef OPENHOLDEM_PROGRAM
@@ -26,7 +27,7 @@
 
 #ifdef OPENSCRAPE_PROGRAM
 #include "../OpenScrape/debug.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 #endif
 
 CTablemap			*p_tablemap = NULL;

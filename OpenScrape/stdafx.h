@@ -66,7 +66,6 @@
 #define VERSION_NUMBER			12.0.3
 #define VERSION_TEXT				"12.0.3"  // change version number in OpenScrape.rc also, when needed
 
-#include "debug.h"
 #include "..\StructsDefines\structs_defines.h"
 
 // Window constants for the improved GUI

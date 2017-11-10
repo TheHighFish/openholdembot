@@ -14,7 +14,7 @@
 #include "stdafx.h"
 #include <vector>
 #include "ListOfSymbols.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 // declared as extern in the heqder
 std::vector<CString> list_of_regions;
