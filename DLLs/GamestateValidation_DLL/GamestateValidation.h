@@ -20,5 +20,5 @@
 
 VALIDATOR_DLL_API bool ValidateGamestate(
     bool use_heuristic_rules,
-	bool is_tournament,
-	bool versus_bin_loaded);
+  	bool is_tournament,
+	  bool versus_bin_loaded);

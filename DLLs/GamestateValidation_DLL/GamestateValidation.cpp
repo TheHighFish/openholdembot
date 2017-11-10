@@ -15,6 +15,7 @@
 #define VALIDATOR_DLL_EXPORTS
 
 #include "GamestateValidation.h"
+#include <atlstr.h>
 #include "..\WindowFunctions_DLL\window_functions.h"
 #include "..\..\Shared\MagicNumbers\MagicNumbers.h"
 
@@ -98,8 +99,25 @@ bool _postcondition;
 char *_symbols_possibly_affected;
 bool _no_errors_this_heartbeat;
 
-double gws(const char *the_Symbol) {
-  return kUndefined; //!!!!!
+// !! can be replaced by static linking once the symbol-engines are in a DLL
+typedef double(*t_GetSymbol)(const char* name_of_single_symbol__not_expression);
+t_GetSymbol p_GetSymbol = nullptr;
+
+double gws(const char *the_symbol) {
+  if (p_GetSymbol == nullptr) {
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
+    HMODULE openholdem_main_module = GetModuleHandle(NULL);
+    if (openholdem_main_module == nullptr) {
+      return kUndefined;
+    }
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
+    FARPROC WINAPI p_GetSymbol = GetProcAddress(openholdem_main_module, "GetSymbol");
+    if (p_GetSymbol == nullptr) {
+      return kUndefined;
+    }
+  }
+  double result = p_GetSymbol(the_symbol);
+  return result;
 }
 
 // Create a stringified list of (symbol: value)-pairs
