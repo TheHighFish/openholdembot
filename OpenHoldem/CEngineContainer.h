@@ -60,8 +60,6 @@ class CSymbolEngineVariousDataLookup;
 class CSymbolEngineVersus;
 class CSymbolEngineICM;
 
-const int k_max_number_of_symbol_engines = 100; //!!!!!!
-
 class CEngineContainer : public CSpaceOptimizedGlobalObject {
  public:
   CEngineContainer();
@@ -92,8 +90,7 @@ class CEngineContainer : public CSpaceOptimizedGlobalObject {
   void UpdateOnMyTurn();
   void UpdateOnHeartbeat();
  private:
-  CVirtualSymbolEngine *_symbol_engines[k_max_number_of_symbol_engines]; 
-  int _number_of_symbol_engines_loaded;
+  CArray <CVirtualSymbolEngine*, CVirtualSymbolEngine*> _symbol_engines;
   bool _reset_on_connection_executed;
   CString _list_of_symbols;
 public:
