@@ -243,7 +243,7 @@ double AdjustedBetsize(double amount_to_raise_to) {
   // Special handling for DDPoker
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=19185&hilit=ddpoker
   if(p_engine_container->symbol_engine_casino()->ConnectedToDDPoker()){
-    //!!!????? Duplicate to ZeeZooLaas code above?
+    //!!?? Duplicate to ZeeZooLaas code above?
 		AdaptValueToMinMaxRange(&amount_to_raise_to, amount_to_raise_to, MaximumBetsizeDueToMaxOppStack());
 	}
   AdaptValueToMinMaxRange(&amount_to_raise_to, 0, SwagAmountAjustedToCasino(amount_to_raise_to));

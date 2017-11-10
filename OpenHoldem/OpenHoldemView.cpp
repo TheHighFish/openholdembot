@@ -410,7 +410,7 @@ void COpenHoldemView::DrawButtonIndicators(void) {
 		DrawSpecificButtonIndicator('P', true, _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
 		prefold_drawn = true;
 	}
-  // !!! To do: rematch
+  // !! To do: rematch
   
 	// Draw "off" buttons
   if (!fold_drawn) {

@@ -89,9 +89,9 @@ void CWatchdog::WatchForCrashedProcesses() {
   }
 }
 
-// !!! move to dll
+// !! move to dll
 BOOL KillProcess(DWORD dwProcessId) {
-  // http://stackoverflow.com/questions/2443738/c-terminateprocess-function !!!
+  // http://stackoverflow.com/questions/2443738/c-terminateprocess-function
   DWORD dwDesiredAccess = PROCESS_TERMINATE;
   BOOL  bInheritHandle = FALSE;
   INT   uExitCode = -1;

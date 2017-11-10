@@ -12,11 +12,11 @@
 //
 //******************************************************************************
 
-// !!! ATTENTION
-// !!! CString not properly declared/included.
-// !!! atlstr / afxstr don't work.
-// !!! Any other includes cause lots of erros
-// !!! (escpecially CSpaceOptimiedObject.h).
+// !! ATTENTION
+// !! CString not properly declared/included.
+// !! atlstr / afxstr don't work.
+// !! Any other includes cause lots of erros
+// !! (escpecially CSpaceOptimiedObject.h).
 
 class CValidator
 {

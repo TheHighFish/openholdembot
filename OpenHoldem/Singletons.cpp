@@ -52,12 +52,6 @@
 #include "CWatchdog.h"
 #include "CWhiteInfoBox.h"
 
-/*!!!#define CREATE_SINGLETON(singleton_variable, class_type) { \ 
-  write_log(preferences.debug_singletons(), "[Singletons] Going to create \n"); \ 
-  assert(!singleton_variable); \ 
-  singleton_variable = new class_type; \ 
-}*/
-
 void InstantiateAllSingletons() {
   // Instantiation of all singletons, except session-counter.
   // session-counter has to be done do earlier, as it is needed 
@@ -169,12 +163,6 @@ void InstantiateAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] All singletons created.\n");
 }
 
-void InstantiateSomeSingletonsForVeryEarlyUseInInitInstance() {
-	// Filenames have to be available very early,
-	// even before we read the ini-file.
-  // !!! no longer used
-}
-
 bool all_threads_stopped = false;
 
 // To be executed first,
@@ -256,7 +244,7 @@ void DeleteAllSingletons() {
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 09\n");
   DELETE_AND_CLEAR(p_parser_symbol_table)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 10\n");
-  //!!!!!DELETE_AND_CLEAR(p_debug_tab)
+  //!!!DELETE_AND_CLEAR(p_debug_tab)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 11\n");
   DELETE_AND_CLEAR(p_tablemap_access)
   write_log(preferences.debug_singletons(), "[Singletons] Deleting 12\n");
