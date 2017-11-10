@@ -12,9 +12,6 @@
 //
 //******************************************************************************
 
-#ifndef INC_CSESSIONCOUNTER_H
-#define INC_CSESSIONCOUNTER_H
-
 #include "CSpaceOptimizedGlobalObject.h"
 
 class CSessionCounter {
