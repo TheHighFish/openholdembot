@@ -26,7 +26,6 @@
 #include "..\..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 
-
 #include "SwagAdjustment.h"
 
 bool ChangeBetsizeToAllin(double amount_to_raise_to) {

@@ -14,8 +14,6 @@
 #include "stdafx.h"
 #include "CPreferences.h"
 
-
-
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method

@@ -24,7 +24,7 @@
 #define WINDOW_FUNCTIONS_API __declspec(dllimport)
 #endif
 
-#include <atlstr.h>
+#include <windows.h>
 
 WINDOW_FUNCTIONS_API int CalculateTotalHeightForClientHeight(HWND window, int desired_client_height);
 WINDOW_FUNCTIONS_API int CalculateTotalWidthForClientWidth(HWND window, int desired_client_width);
@@ -50,13 +50,13 @@ WINDOW_FUNCTIONS_API bool WinIsZeroSized(HWND window);
 
 // Errors and warnings.
 // Get displayed (or not) depending on settings
-WINDOW_FUNCTIONS_API void MessageBox_Error_Warning(CString Message, CString Title = "Error");
+WINDOW_FUNCTIONS_API void MessageBox_Error_Warning(const char* Message, const char*  Title = "Error");
 // Interactive messages.
 // Get always displayed, even if they are not critical.
 // They are either a result of the users action 
 // or we need request some direct input.
-WINDOW_FUNCTIONS_API int MessageBox_Interactive(CString Message, CString Title, int Flags);
+WINDOW_FUNCTIONS_API int MessageBox_Interactive(const char*  Message, const char*  Title, int Flags);
 // MessageBox for the msgbox$MESSAGE-command of OH-script
-WINDOW_FUNCTIONS_API void MessageBox_OH_Script_Messages(CString message);
+WINDOW_FUNCTIONS_API void MessageBox_OH_Script_Messages(const char*  message);
 
 #endif // INC_WINDOW_FUNCTIONS_H 
