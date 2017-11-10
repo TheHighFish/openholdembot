@@ -477,7 +477,7 @@ void CFunctionCollection::Save(CArchive &ar) {
   // so that OpenHoldem can correctly import it next time.
   if (Exists(k_OpenPPL_function_names[kBetroundPreflop])) {
     if (LookUp(k_OpenPPL_function_names[kBetroundPreflop])->ImportedFromShankyPPL()) {
-      OH_MessageBox_Error_Warning(
+      MessageBox_Error_Warning(
         "Saving Shanky-style bot-logic to semi-OpenPPL-format\n"
         "Full conversion to OpenPPL is recommended.\n",
         "Warning");

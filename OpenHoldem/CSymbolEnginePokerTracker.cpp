@@ -191,7 +191,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
         // Lots of people will use it without a DB
       } else {
         // Serious problem: PT-usage in user-code
-        OH_MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
+        MessageBox_Error_Warning("Not connected to PokerTracker database.\n"
           "Can't use PokerTracker symbols.");
       }
 		}

@@ -387,7 +387,7 @@ NegativeNumber:
       assert(p_formula_parser != NULL);
       if (p_formula_parser->IsParsingDebugTab()) {
         // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19973&p=140389#p140389
-        OH_MessageBox_Error_Warning("Operator % in debug-tab detected.\n"
+        MessageBox_Error_Warning("Operator % in debug-tab detected.\n"
           "\n"
           "This opertor can mean\n"
           "  * modulo (OH-script)\n"

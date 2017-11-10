@@ -80,7 +80,7 @@ CString IniFilename() {
   // http://msdn.microsoft.com/en-us/library/windows/desktop/aa364428(v=vs.85).aspx
   if (FindNextFile(h_find, &find_file_data)) {
     FindClose(h_find);
-    /*!!!OH_MessageBox_Error_Warning(
+    /*!!!MessageBox_Error_Warning(
       "More than one ini-file in OpenHoldem-directory.\n"
       "Don't know which one to use.\n"
       "\n"

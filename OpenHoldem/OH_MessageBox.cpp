@@ -19,7 +19,7 @@ void OH_MessageBox_Formula_Error(CString Message, CString Title) {
   if (p_formula_parser->IsParsing()) {
     CParseErrors::Error(Message);
   } else {
-    OH_MessageBox_Error_Warning(Message, Title);
+    MessageBox_Error_Warning(Message, Title);
   }
 }
 #endif OPENHOLDEM_PROGRAM

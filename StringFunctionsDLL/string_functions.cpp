@@ -569,7 +569,7 @@ void WarnAboutNonASCIICharacters(const CString *s) {
         "http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167",
         char_value, signed_char_value);
 #ifdef OPENHOLDEM_PROGRAM
-      OH_MessageBox_Error_Warning(message);
+      MessageBox_Error_Warning(message);
 #else
       MessageBox(0, message, "Warning", 0);
 #endif

@@ -26,8 +26,6 @@
 CDlgEditGrHashPoints::CDlgEditGrHashPoints(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditGrHashPoints::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	for (int i=0; i<=3; i++)
 		working_hash_points[i].RemoveAll();
 }

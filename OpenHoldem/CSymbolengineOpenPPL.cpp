@@ -60,7 +60,7 @@ void CSymbolEngineOpenPPL::CheckExistenceOfOpenPPLFunction(CString function) {
       "Without this function most history-symbols will be broken.\n"
       "Probably caused by one-sided renaming of that function.",
       function);
-    OH_MessageBox_Error_Warning(message);
+    MessageBox_Error_Warning(message);
   }
 }
 

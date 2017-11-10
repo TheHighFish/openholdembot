@@ -24,7 +24,6 @@ IMPLEMENT_DYNAMIC(CDlgEditSizes, CDialog)
 
 CDlgEditSizes::CDlgEditSizes(CWnd* pParent /*=NULL*/) : CDialog(CDlgEditSizes::IDD, pParent)
 {
-    __SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEditSizes::~CDlgEditSizes()

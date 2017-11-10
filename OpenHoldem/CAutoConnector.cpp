@@ -145,7 +145,7 @@ void CAutoConnector::CheckIfWindowMatchesMoreThanOneTablemap(HWND hwnd) {
       "  * titletext(s)\n",
       "  * and/or tablepoints\n",
       "to make the tablemap-selection-process unambiguous.");
-    OH_MessageBox_Error_Warning(error_message);
+    MessageBox_Error_Warning(error_message);
   }
 }
 

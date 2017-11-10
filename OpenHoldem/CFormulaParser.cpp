@@ -148,7 +148,7 @@ void CFormulaParser::LoadFunctionLibrary(CString library_path) {
     // and we expect the user to supervise at least the first test.
     CString message;
     message.Format("Can not load \"%s\".\nFile not found.\n", library_path);
-    OH_MessageBox_Error_Warning(message);
+    MessageBox_Error_Warning(message);
     return;
   }
   EnterParserCode();

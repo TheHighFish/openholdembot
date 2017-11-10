@@ -16,7 +16,7 @@
 #define INC_C_REGIONCLONER_H
 
 #include "..\CTablemap\CTablemap.h"
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 
 class CRegionCloner
 {

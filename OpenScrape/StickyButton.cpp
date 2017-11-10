@@ -20,8 +20,6 @@ const UINT WM_STICKYBUTTONUP = RegisterWindowMessage("WM_STICKYBUTTONUP");
 
 CStickyButton::CStickyButton(void) 
 {
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-
 	m_bState = false;
 	m_bIgnore = false;
 }

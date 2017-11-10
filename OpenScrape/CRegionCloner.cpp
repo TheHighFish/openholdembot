@@ -19,7 +19,7 @@
 #include <math.h>
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTablemap\CTablemapAccess.h"
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "OpenScrape.h"
 
 const int k_number_of_circular_cloneable_regions = 39;

@@ -28,7 +28,6 @@ IMPLEMENT_DYNAMIC(CDlgEditFont, CDialog)
 CDlgEditFont::CDlgEditFont(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditFont::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEditFont::~CDlgEditFont()

@@ -91,7 +91,7 @@ void CSymbolEngineVersus::DoCalc(const CardMask plCards, const CardMask oppCards
 
 bool CSymbolEngineVersus::CheckForLoadedVersusBin() {
 	if (_versus_bin_not_loaded)	{
-		OH_MessageBox_Error_Warning("Impossible to use versus-symbols.\n"
+		MessageBox_Error_Warning("Impossible to use versus-symbols.\n"
 			"Versus.bin not loaded and probably not installed.\n"
 			"Please download this file from our download page:\n"
       "https://sites.google.com/site/openholdempokerbot/downloads", 

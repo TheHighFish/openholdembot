@@ -171,7 +171,7 @@ void CPreferences::LoadPreferences() {
 
 void CPreferences::CheckForOutdatedICMConfig() {
   if (prefs_numerical_values[k_prefs_icm_prize1] != kUndefinedZero) {
-    OH_MessageBox_Error_Warning(
+    MessageBox_Error_Warning(
       "Outdated ICM-configuration\n"
       "\n"
       "OpenHoldem does no longer use the ini-file for that\n"

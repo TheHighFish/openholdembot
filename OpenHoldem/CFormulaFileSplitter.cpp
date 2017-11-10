@@ -111,7 +111,7 @@ void CFormulaFileSplitter::SkipShankyOptionSettings(CArchive &formula_file) {
         if (!keyword_custom_seen) {
           // No parse-error here.
           // Outside of functions we don't have any reasonable context
-          OH_MessageBox_Error_Warning("Shanky-style code missing keyword \"custom\".");
+          MessageBox_Error_Warning("Shanky-style code missing keyword \"custom\".");
         }
       }
       break;

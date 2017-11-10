@@ -25,7 +25,6 @@ IMPLEMENT_DYNAMIC(CDlgEditHashPoint, CDialog)
 CDlgEditHashPoint::CDlgEditHashPoint(CWnd* pParent /*=NULL*/)
 	: CDialog(CDlgEditHashPoint::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER
 }
 
 CDlgEditHashPoint::~CDlgEditHashPoint()

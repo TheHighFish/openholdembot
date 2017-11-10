@@ -22,7 +22,6 @@
 
 // CGameInfoDlg dialog
 CGameInfoDlg::CGameInfoDlg(CWnd* pParent /*=NULL*/)	: CDialog(CGameInfoDlg::IDD, pParent) {
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
 	pPlacement = NULL;
 }
 

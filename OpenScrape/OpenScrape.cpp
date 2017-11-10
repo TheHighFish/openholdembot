@@ -41,11 +41,8 @@ END_MESSAGE_MAP()
 // COpenScrapeApp construction
 COpenScrapeApp::COpenScrapeApp()
 {
-    __SEH_SET_EXCEPTION_HANDLER
-
     // Save startup directory
     ::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
-
 }
 
 // The one and only COpenScrapeApp object

@@ -208,7 +208,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
       "Sitenames are necessary to recognize duplicate TMs\n"
       "(and for other features like PokerTracker).\n\n",
       "%s", p_tablemap->filepath());
-    OH_MessageBox_Error_Warning(error_message, "Warning");
+    MessageBox_Error_Warning(error_message, "Warning");
   }
   // Range-check nchairs
   int nchairs = p_tablemap->nchairs();

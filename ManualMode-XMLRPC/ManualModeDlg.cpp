@@ -6,7 +6,7 @@
 
 #include "ManualModeDlg.h"
 
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "ManualMode.h"
 #include "poker_defs.h"
 #include "debug.h"

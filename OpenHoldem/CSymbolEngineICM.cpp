@@ -283,7 +283,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const CString name, double *result, bool l
     error_message.Format("Incorrect f$icm_prizeX-functions.\n"
       "The sum of all values should be in the range (0..1].\n"
       "Current value: %.3f", sum_of_prizes);
-    OH_MessageBox_Error_Warning(error_message);
+    MessageBox_Error_Warning(error_message);
     *result = 0.0;
     return true;
   }

@@ -17,7 +17,7 @@
 #include <assert.h>
 #include <Math.h>
 #include "../CTransform/CTransform.h"
-#include "../OpenHoldem/OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "../DLLs/Debug_DLL/debug.h"
@@ -233,7 +233,7 @@ void CTablemap::WarnAboutGeneralTableMapError(int line, int error_code)
     error += "Incomplete master file";
     break;
   }
-	OH_MessageBox_Error_Warning(error, "Table map load error");
+	MessageBox_Error_Warning(error, "Table map load error");
 }
 
 bool CTablemap::ItemExists(CString name) {
@@ -328,7 +328,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			"\n"
 			"To avoid costly mis-scrapes and crashes OpenHoldem will terminate now.\n",
 			_filename);
-		OH_MessageBox_Error_Warning(error_message, "Table map load error");
+		MessageBox_Error_Warning(error_message, "Table map load error");
 		PostQuitMessage(1);
 		return ERR_VERSION;
 	}
@@ -380,11 +380,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				if (z_iter != _z$.end())
 				{
 					t.Format("'%s' skipped, as this size record already exists.\nYou have to fix that tablemap.", strLine);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding size record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding size record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding size record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding size record");			
 				}
 			}
 		}
@@ -424,11 +424,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 					if (s_iter != _s$.end())
 					{
 						t.Format("'%s' skipped, as this string/symbol record already exists.\nYou have to fix that tablemap.", strLine);
-						OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding string/symbol record");			
+						MessageBox_Error_Warning(t.GetString(), "ERROR adding string/symbol record");			
 					}
 					else
 					{
-						OH_MessageBox_Error_Warning(strLine, "ERROR adding string/symbol record");			
+						MessageBox_Error_Warning(strLine, "ERROR adding string/symbol record");			
 					}
 				}
 			}
@@ -519,11 +519,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				if (r_iter != _r$.end())
 				{
 					t.Format("'%s' skipped, as this region record already exists.\nYou have to fix that tablemap.", strLine);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding region record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding region record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding region record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding region record");			
 				}
 			}
 		}
@@ -544,7 +544,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			font_group = DigitCharacterToNumber(strLineType[1]);
 
 			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap) {
-				OH_MessageBox_Error_Warning(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]");
+				MessageBox_Error_Warning(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -565,11 +565,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as this character already exists in group %d as '%c'.\nYou have to fix that tablemap.",
 						strLine, font_group, t_iter->second.ch);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding font record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding font record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding font record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding font record");			
 				}
 			}
 		}
@@ -585,7 +585,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			if (hashpoint_group < 0 || hashpoint_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 
-				OH_MessageBox_Error_Warning(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..k_max_number_of_hashpoint_groups_in_tablemap]");
+				MessageBox_Error_Warning(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..k_max_number_of_hashpoint_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -617,11 +617,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as hash point (%d, %d) already exists in group %d.\nYou have to fix that tablemap.", 
 						strLine, hold_hash_point.x, hold_hash_point.y, hashpoint_group);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding hash point record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding hash point record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding hash point record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding hash point record");			
 				}
 			}
 		}
@@ -636,7 +636,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			int hash_group = DigitCharacterToNumber(strLineType[1]);
 			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
-				OH_MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");
+				MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -661,11 +661,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as hash %08x already exists in group %d.\nYou have to fix that tablemap.", 
 						strLine, hold_hash_value.hash, hash_group);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding hash record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding hash record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding hash record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding hash record");			
 				}
 
 			}
@@ -748,11 +748,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as image already exists as '%s', with identical width, height and pixels.\nYou have to fix that tablemap.", 
 						strLineType, i_iter->second.name);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding image record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding image record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding image record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding image record");			
 				}
 			}
 			// Delete images later, when they are no longer needed,
@@ -768,7 +768,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			error.Format("Unknown Line Type.\n"
 				"Some line in your tablemap is completely wrong\n"
 				"and can't be processed at all:\n%s", strLine);
-			OH_MessageBox_Error_Warning(error, "TABLEMAP ERROR");
+			MessageBox_Error_Warning(error, "TABLEMAP ERROR");
 			return ERR_UNK_LN_TYPE;
 		}
 
@@ -916,7 +916,7 @@ void CTablemap::ErrorHashCollision(CString name1, CString name2) {
 		name1, " and ", name2, "\n\n",
     "This looks like a naming conflict.\n",
     "Please remove or rename the duplicate items.\n");
-  OH_MessageBox_Error_Warning(message, "Hash collision");
+  MessageBox_Error_Warning(message, "Hash collision");
 }
 
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
@@ -940,7 +940,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	// Get number of records of each type in this table map
 	if (_i$.begin()==_i$.end()) 
 	{
-		OH_MessageBox_Error_Warning("No images found - cannot create hashes.", "Table Map Error");
+		MessageBox_Error_Warning("No images found - cannot create hashes.", "Table Map Error");
 		return ERR_NOTMASTER;
 	}
 
@@ -993,7 +993,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			fclose(fp);
 		}
 
-		OH_MessageBox_Error_Warning("Could not complete hash creation, due to missing images.\n"\
+		MessageBox_Error_Warning("Could not complete hash creation, due to missing images.\n"\
 				   "Please see the \"hash creation log.txt\" file for details.", 
 				   "Hash Creation Error");
 	}
@@ -1080,7 +1080,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			{
         CString e;
 				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
-				OH_MessageBox_Error_Warning(e, "ERROR adding hash value record: " + hold_hash_value.name);	
+				MessageBox_Error_Warning(e, "ERROR adding hash value record: " + hold_hash_value.name);	
 			}
 		}
 	}

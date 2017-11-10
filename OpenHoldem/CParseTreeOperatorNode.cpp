@@ -140,7 +140,7 @@ void CParseTreeOperatorNode::ErrorDivisionByZero(int relative_line, TPParseTreeN
     CFunction::CurrentlyEvaluatedFunction()->name(),
     relative_line,
     second_operand);
-  OH_MessageBox_Error_Warning(message);
+  MessageBox_Error_Warning(message);
 }
 
 double CParseTreeOperatorNode::EvaluateBinaryExpression(bool log) {

@@ -15,7 +15,6 @@
 #ifndef INC_DEBUG_H
 #define INC_DEBUG_H
 
-LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers);
 char * get_time(char * timebuf);
 char * get_now_time(char * timebuf);
 void logfatal (char* fmt, ...);

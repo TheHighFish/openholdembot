@@ -74,7 +74,7 @@ void CVirtualSymbolEngine::WarnIfSymbolRequiresMyTurn(CString name) {
       "(This error might also be caused by derived OpenPPL-symbols\n",
       "like Raises, Calls, CallsSinceLastRaise, ...\n",
       "which use basic OpenHoldem-symbols.)");
-    OH_MessageBox_Error_Warning(error_message, "Warning");
+    MessageBox_Error_Warning(error_message, "Warning");
   }
 }
 
@@ -87,6 +87,6 @@ void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
       "\n",
       "Please get in contact with the development team\n",
       "if you volunteer to implement it for Omaha.");
-    OH_MessageBox_Error_Warning(error_message, "Warning");
+    MessageBox_Error_Warning(error_message, "Warning");
   }
 }

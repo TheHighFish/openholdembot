@@ -39,8 +39,6 @@ END_MESSAGE_MAP()
 
 COpenScrapeView::COpenScrapeView()
 {
-    __SEH_SET_EXCEPTION_HANDLER
-
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 	red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);

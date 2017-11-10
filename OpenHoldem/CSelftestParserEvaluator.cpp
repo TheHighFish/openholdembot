@@ -26,7 +26,7 @@ CSelftestParserEvaluator::~CSelftestParserEvaluator() {
 
 void CSelftestParserEvaluator::Test() {
   if (!p_function_collection->Exists(kSelftestName)) {
-    OH_MessageBox_Error_Warning("Can't find selftest-function\n"
+    MessageBox_Error_Warning("Can't find selftest-function\n"
       "Please get in contact with the developmen team.\n");
     return;
   }
@@ -38,7 +38,7 @@ void CSelftestParserEvaluator::Test() {
       "Calculated result = %.3f\n"
       "Expected result = %.3f\n",
       result, kSelftestExpectedResult);
-    OH_MessageBox_Error_Warning(message);
+    MessageBox_Error_Warning(message);
   }
 }
 

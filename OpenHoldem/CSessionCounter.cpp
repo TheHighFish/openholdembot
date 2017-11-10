@@ -41,7 +41,7 @@ CSessionCounter::CSessionCounter()
 	}
 
 	// Otherwise: We failed. No ID available.
-	OH_MessageBox_Error_Warning("Could not grab a session ID.\n"
+	MessageBox_Error_Warning("Could not grab a session ID.\n"
 		"Too many instances of OpenHoldem\n",
 		"SessionCounter Error");
 	PostQuitMessage(-1);

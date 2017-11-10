@@ -80,8 +80,6 @@ static UINT openscrape_indicators[] =
 /////////////////////////////////////////////////////
 
 CMainFrame::CMainFrame() {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	// Save startup directory
   ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309%28v=vs.85%29.aspx

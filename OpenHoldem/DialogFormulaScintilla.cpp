@@ -1481,7 +1481,7 @@ void CDlgFormulaScintilla::OnBnClickedCalc() {
     s.Append("preventing calculation.\n");
     s.Append("These errors need to be corrected before the 'Calc'\n");
     s.Append("button can be used.");
-    OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
+    MessageBox_Error_Warning(s, "PARSE ERROR(s)");
     return;
   }
 
@@ -1516,7 +1516,7 @@ void CDlgFormulaScintilla::OnBnClickedAuto() {
 	    s.Append("preventing calculation of this formula.\n");
 	    s.Append("These errors need to be corrected before the 'Auto'\n");
 	    s.Append("button can be used.");
-	    OH_MessageBox_Error_Warning(s, "PARSE ERROR(s)");
+	    MessageBox_Error_Warning(s, "PARSE ERROR(s)");
 	    // All we need to do is remove the Auto Check since the button text hasn't been
       // updated yet and ok_to_update_debug has already been set to false
 	    m_ButtonAuto.SetCheck(0);

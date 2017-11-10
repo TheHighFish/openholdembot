@@ -20,8 +20,8 @@
 
 #include "ManualModeDlg.h"
 
-#include "..\OpenHoldem\MagicNumbers.h"
-#include "..\WindowFunctionsDLL\window_functions.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "ManualMode.h"
 #include "poker_defs.h"
 #include "debug.h"
@@ -138,7 +138,6 @@ CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg
   reg.read_reg();
   macro_text = reg.macro;
 	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);

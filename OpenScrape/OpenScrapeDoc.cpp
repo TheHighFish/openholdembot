@@ -40,8 +40,6 @@ END_MESSAGE_MAP()
 
 COpenScrapeDoc::COpenScrapeDoc()
 {
-    __SEH_SET_EXCEPTION_HANDLER
-
 	p_tablemap->ClearTablemap();
 
 	attached_hwnd = NULL;

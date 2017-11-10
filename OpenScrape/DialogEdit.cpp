@@ -22,13 +22,10 @@
 IMPLEMENT_DYNAMIC(CDlgEdit, CDialog)
 
 CDlgEdit::CDlgEdit(CWnd* pParent /*=NULL*/)	: CDialog(CDlgEdit::IDD, pParent) 
-{
-	__SEH_SET_EXCEPTION_HANDLER
-}
+{}
 
 CDlgEdit::~CDlgEdit() 
-{
-}
+{}
 
 void CDlgEdit::DoDataExchange(CDataExchange* pDX) 
 {

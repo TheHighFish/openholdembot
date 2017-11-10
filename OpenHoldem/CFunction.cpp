@@ -90,7 +90,7 @@ double CFunction::Evaluate(bool log /* = false */) {
       "Stopping autoplayer.\n"
       "\n"
       "Last function: %s", _name);
-	  OH_MessageBox_Error_Warning(error_message);
+	  MessageBox_Error_Warning(error_message);
 	  p_autoplayer->EngageAutoplayer(false);
 	  ++recursion_depth;
 	  return kUndefinedZero;

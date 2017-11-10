@@ -83,7 +83,7 @@ size_t CMemoryPool::BytesAvailableInCurrentBlock() {
 void* CMemoryPool::Allocate(size_t size) {
   AlignNextMemoryBlock();
   if (size > kMemoryBlockSize) {
-    OH_MessageBox_Error_Warning(
+    MessageBox_Error_Warning(
       "CMemoryPool received oversized request.\n"
       "Going to terminate.\n");    PostQuitMessage(0);
     return NULL;
@@ -103,7 +103,7 @@ void* CMemoryPool::Allocate(size_t size) {
 void CMemoryPool::AllocateNewMemoryBlock() {
   _current_memory_block = malloc(kMemoryBlockSize);
   if (_current_memory_block == NULL) {
-    OH_MessageBox_Error_Warning(
+    MessageBox_Error_Warning(
       "CMemoryPool received oversized request.\n"
       "Going to terminate.\n");
     PostQuitMessage(0);

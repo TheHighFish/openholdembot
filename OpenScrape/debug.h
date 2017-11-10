@@ -6,9 +6,6 @@
 #define OPENSCRAPE_PROGRAM
 #endif
 
-#define __SEH_SET_EXCEPTION_HANDLER SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-
-LONG WINAPI MyUnHandledExceptionFilter(EXCEPTION_POINTERS *pExceptionPointers);
 char * get_time(char * timebuf);
 char * get_now_time(char * timebuf);
 void logfatal (char* fmt, ...);

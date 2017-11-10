@@ -185,6 +185,6 @@ void CRebuyManagement::ExecuteRebuyScript() {
 	}	else {
 		CString ErrorMessage = CString("Could not execute rebuy-script: ") + CString(RebuyScript) + "\n";
 		write_log(preferences.debug_rebuy(), ErrorMessage.GetBuffer());
-		OH_MessageBox_Error_Warning(ErrorMessage.GetBuffer());
+		MessageBox_Error_Warning(ErrorMessage.GetBuffer());
 	}
 }
