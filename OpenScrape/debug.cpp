@@ -96,13 +96,9 @@ void logfatal (char* fmt, ...)
 	}
 }
 
-void start_log(void) 
-{
-	if (log_fp==NULL) 
-	{
+void start_log(void) {
+	if (log_fp==NULL) {
 		CString fn;
-		fn.Format("%s\\oh%d.log", _startup_path, theApp.sessionnum);
-
 		if (fopen_s(&log_fp, fn.GetString(), "a")==0)
 		{
 			write_log("! log file open\n");

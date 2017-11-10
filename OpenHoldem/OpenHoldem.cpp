@@ -127,6 +127,14 @@ BOOL COpenHoldemApp::InitInstance() {
 	// Start logging immediatelly after the loading the preferences
 	// and initializing the sessioncounter, which is necessary for 
 	// the filename of the log (oh_0.log, etc).
+  /*fn.Format("%s\\oh%d.log", _startup_path, theApp.sessionnum);
+  struct stat file_stats = { 0 };
+  if (stat(fn.GetString(), &file_stats) == 0) {
+    unsigned long int max_file_size = 1E06 * preferences.log_max_logsize();
+    size_t file_size = file_stats.st_size;
+    if (file_size > max_file_size) {
+      delete_log();
+    }*/
 	start_log(p_sessioncounter->session_id(), false); //!!!!!
   // ...then re-Load the preferences immediately after creation 
   // of the log-file again, as We might want to to log the preferences too,
