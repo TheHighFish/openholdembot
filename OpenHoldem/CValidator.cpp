@@ -7,17 +7,19 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: checking the game-state for inconsistencies
 //
 //******************************************************************************
 
 #include "StdAfx.h"
 #include "CValidator.h"
 
+#include "CAutoplayer.h"
 #include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineIsTournament.h"
+#include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineVersus.h"
 #include "..\DLLs\GamestateValidation_DLL\GamestateValidation.h"
 
@@ -35,6 +37,7 @@ void CValidator::SetEnabledManually(bool Enabled) {
 }
 
 void CValidator::Validate() {
+  assert(p_engine_container != nullptr);
   if (!p_engine_container->symbol_engine_autoplayer()->ismyturn()) {
     // Validate only if it is my turn.
     //   * because then we have stable frames
@@ -44,18 +47,19 @@ void CValidator::Validate() {
 	if (preferences.validator_enabled()
 		  // Manually enabled via toolbar?
 		  || (_enabled_manually)) {
-	  // Validate.
-	  //
-	  // Validator-rules are defined in "pseudo-code",
-	  // that is easily understandable for non-programmers,
-	  // but can be turned into C-code using macro-techniques.
-	  //
-	  // Due to the large number of rules, 
-	  // we just put them in external files
-	  // and include them here as is.
-	  //
-    ValidateGamestate(preferences.validator_use_heuristic_rules(),
+    bool success = ValidateGamestate(preferences.validator_use_heuristic_rules(),
       p_engine_container->symbol_engine_istournament()->istournament(),
       p_engine_container->symbol_engine_versus()->VersusBinLoaded());
+    if (success) {
+      return;
+    }
+  }
+  // Failed consistence-checks
+  if (preferences.validator_shoot_replayframe_on_error()) {
+    p_engine_container->symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
+  }
+  if (preferences.validator_stop_on_error()) {
+    assert(p_autoplayer != nullptr);
+    p_autoplayer->EngageAutoplayer(false);
   }
 }

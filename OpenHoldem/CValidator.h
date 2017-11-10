@@ -8,7 +8,7 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: checking the game-state for inconsistencies
 //
 //******************************************************************************
 
@@ -18,13 +18,12 @@
 // !! Any other includes cause lots of erros
 // !! (escpecially CSpaceOptimiedObject.h).
 
-class CValidator
-{
-public:
+class CValidator {
+ public:
 	// public functions
 	CValidator();
 	~CValidator();
-public:
+ public:
   void Validate();
 	void SetEnabledManually(bool Enabled);
  private:
