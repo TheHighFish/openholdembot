@@ -22,7 +22,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 // The number of cards per player depends on the game-type.
 // This affects cards to be scraped and evaluated.

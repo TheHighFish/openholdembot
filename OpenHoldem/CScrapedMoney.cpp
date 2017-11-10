@@ -19,7 +19,7 @@
 
 #include "stdafx.h"
 #include "CScrapedMoney.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CScrapedMoney::CScrapedMoney() {
   Reset();

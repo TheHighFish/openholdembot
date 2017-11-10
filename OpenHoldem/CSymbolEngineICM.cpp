@@ -40,7 +40,7 @@
 #include "CTableState.h"
 
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CSymbolEngineICM::CSymbolEngineICM() {
   // The values of some symbol-engines depend on other engines.

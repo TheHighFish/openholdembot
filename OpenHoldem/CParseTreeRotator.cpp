@@ -42,7 +42,7 @@
 #include "CParseTreeNode.h"
 #include "CParseTreeOperatorNode.h"
 #include "CPreferences.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "TokenizerConstants.h"
 
 // undef for no extra debug output

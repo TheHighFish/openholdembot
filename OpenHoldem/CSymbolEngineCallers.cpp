@@ -31,7 +31,7 @@
 #include "CPreferences.h"
 #include "CTableState.h"
 
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 // Some symbols are only well-defined if it is my turn
 #define RETURN_UNDEFINED_VALUE_IF_NOT_MY_TURN { if (!p_engine_container->symbol_engine_autoplayer()->ismyturn()) *result = kUndefined; }

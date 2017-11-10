@@ -41,7 +41,7 @@
 #include "CWatchdog.h"
 #include "MemoryLogging.h"
 
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "TokenizerConstants.h"
 
 #ifdef _DEBUG

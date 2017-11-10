@@ -41,7 +41,7 @@
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 #include "CMyMutex.h"
 
 CAutoplayer	*p_autoplayer = NULL;

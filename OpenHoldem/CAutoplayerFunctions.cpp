@@ -25,7 +25,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CPreferences.h"
 
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 // TODO make it a symbol-engine?
 // Call it!

@@ -38,7 +38,7 @@
 #include "DialogScraperOutput.h"
 
 #include "MainFrm.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
 
 CAutoConnector *p_autoconnector = NULL;

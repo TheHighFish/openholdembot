@@ -16,7 +16,7 @@
 
 #include "CSpaceOptimizedGlobalObject.h"
 #include "..\Shared\CCritSec\CCritSec.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 // global preferences constants
 enum {

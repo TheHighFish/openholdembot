@@ -29,7 +29,7 @@
 #include "CPreferences.h"
 #include "CTableState.h"
 
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CSymbolEngineChecksBetsFolds::CSymbolEngineChecksBetsFolds() {
 	// The values of some symbol-engines depend on other engines.

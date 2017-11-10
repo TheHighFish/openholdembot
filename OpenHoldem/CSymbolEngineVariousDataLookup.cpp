@@ -41,7 +41,7 @@
 #include "CWhiteInfoBox.h"
 
 #include "OpenHoldem.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CSymbolEngineVariousDataLookup			*p_symbol_engine_various_data_lookup = NULL;
 

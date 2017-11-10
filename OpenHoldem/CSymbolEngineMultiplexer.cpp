@@ -21,8 +21,8 @@
 #include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CPreferences.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 const int kNumberOfSupportedPostfixes = 29;
 // If you extend the list below please don't forget to update FastExitOnLastCharacter()

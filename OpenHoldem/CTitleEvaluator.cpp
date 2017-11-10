@@ -15,7 +15,7 @@
 
 #include "stdafx.h"
 #include "CTitleEvaluator.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "CPreferences.h"

@@ -37,7 +37,7 @@
 #include "DialogNew.h"
 #include "DialogRename.h"
 #include "MainFrm.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"

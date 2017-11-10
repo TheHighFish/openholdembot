@@ -28,7 +28,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CRebuyManagement *p_rebuymanagement = NULL;
 

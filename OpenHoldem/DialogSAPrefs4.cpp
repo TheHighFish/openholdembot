@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs4.h"
 #include "CPreferences.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 // CDlgSAPrefs4 dialog
 

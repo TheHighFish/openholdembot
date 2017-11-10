@@ -27,7 +27,7 @@
 #include "CTableState.h"
 #include "FloatingPoint_Comparisions.h"
 #include "Median.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CSymbolEngineTableLimits::CSymbolEngineTableLimits() {
 	// The values of some symbol-engines depend on other engines.

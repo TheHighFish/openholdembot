@@ -27,7 +27,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
-#include "..\StringFunctionsDLL\string_functions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 enum {
   // offset from the dealer, counter-clockwise
