@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs10.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 #define MAX_DELAY 1000000
 
@@ -73,14 +73,14 @@ void CDlgSAPrefs10::OnOK()
 
 	m_MinimumDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
-		OH_MessageBox_Interactive("Invalid minimum Chat Delay", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid minimum Chat Delay", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_chat_min_delay, strtoul(text.GetString(), 0, 10));
 
 	m_RandomDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
-		OH_MessageBox_Interactive("Invalid random Chat Delay", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid random Chat Delay", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_chat_random_delay, strtoul(text.GetString(), 0, 10));

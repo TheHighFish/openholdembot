@@ -18,7 +18,7 @@
 #include "DialogRename.h"
 
 #include "COHScriptObject.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "OpenHoldem.h"
 #include "VerifyFunctionAndListNames.h"
 

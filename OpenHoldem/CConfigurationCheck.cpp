@@ -15,7 +15,7 @@
 
 #include "CConfigurationCheck.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 
 CConfigurationCheck *p_configurationcheck = 0;

@@ -23,7 +23,7 @@
 #include "CPreferences.h"
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 
@@ -48,7 +48,7 @@ BOOL COpenHoldemDoc::SaveModified()
 	{
 		if (m_formulaScintillaDlg->m_dirty)
 		{
-			if (OH_MessageBox_Interactive(
+			if (MessageBox_Interactive(
 				"The Formula Editor has un-applied changes.\n"
 				"Really exit?", 
 				"Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
@@ -114,7 +114,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		//
 		if (p_autoplayer->autoplayer_engaged())
 		{
-			OH_MessageBox_Interactive("Can't load formula while autoplayer engaged.", "ERROR", 0);
+			MessageBox_Interactive("Can't load formula while autoplayer engaged.", "ERROR", 0);
 			return;
 		}
 		// Read ohf file

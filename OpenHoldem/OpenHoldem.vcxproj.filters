@@ -117,7 +117,6 @@
     <ClCompile Include="DialogRename.cpp" />
     <ClCompile Include="DialogScraperOutput.cpp" />
     <ClCompile Include="MyCToolBar.cpp" />
-    <ClCompile Include="OH_MessageBox.cpp" />
     <ClCompile Include="OpenHoldemView.cpp" />
     <ClCompile Include="ScintillaWnd.cpp" />
     <ClCompile Include="VerifyFunctionAndListNames.cpp" />
@@ -273,7 +272,6 @@
     <ClInclude Include="MemoryLogging.h" />
     <ClInclude Include="mtrand.h" />
     <ClInclude Include="MyCToolBar.h" />
-    <ClInclude Include="OH_MessageBox.h" />
     <ClInclude Include="OpenHoldem.h" />
     <ClInclude Include="OpenHoldemDoc.h" />
     <ClInclude Include="COpenHoldemStarter.h" />

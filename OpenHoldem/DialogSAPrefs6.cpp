@@ -21,7 +21,7 @@
 #include "DialogSAPrefs6.h"
 #include "OpenHoldem.h"
 #include "MainFrm.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "SAPrefsSubDlg.h"
 
 
@@ -103,7 +103,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest() {
 	if (dbname.IsEmpty()) {
 		// http://www.postgresql.org/docs/8.1/static/libpq.html
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB Name not set ! Default : It will be set to '%s'\n", user);
-		OH_MessageBox_Interactive("PostgreSQL DB Name not set !\nBy Default : the same as the Username",
+		MessageBox_Interactive("PostgreSQL DB Name not set !\nBy Default : the same as the Username",
 					   "Warning", MB_OK);
 	}
 
@@ -125,10 +125,10 @@ void CDlgSAPrefs6::OnBnClickedPtTest() {
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL DB opened successfully <%s/%s/%s>\n", ip_addr, port, dbname);
 		if (PQisthreadsafe()) {
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is thread safe.\n\n");
-			OH_MessageBox_Interactive("PostgreSQL DB opened successfully", "Success", MB_OK);
+			MessageBox_Interactive("PostgreSQL DB opened successfully", "Success", MB_OK);
 		} else {
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Test: PostgreSQL library is *NOT* thread safe!  This is a problem!\n\n");
-			OH_MessageBox_Interactive("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
+			MessageBox_Interactive("PostgreSQL DB opened successfully, but\nPostgreSQL library is *NOT* thread safe!\nThis is a problem!",
 					   "Success (partial)", MB_OK);
 		}
 		PQfinish(pgconn);
@@ -139,7 +139,7 @@ void CDlgSAPrefs6::OnBnClickedPtTest() {
 		e += "\nConn string:";
 		e += conn_str;
 
-		OH_MessageBox_Interactive(e.GetString(), "ERROR", MB_OK);
+		MessageBox_Interactive(e.GetString(), "ERROR", MB_OK);
 
 		PQfinish(pgconn);
 	}

@@ -21,7 +21,7 @@
 #include "../CTablemap/CTableMapAccess.h"
 
 #include "WinDef.h"
-#include "..\WindowFunctionsDLL\window_functions.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "Winuser.h"
 
 CTablePositioner *p_table_positioner = NULL;

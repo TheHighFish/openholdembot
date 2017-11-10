@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs2.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 
 // CDlgSAPrefs2 dialog
@@ -111,7 +111,7 @@ void CDlgSAPrefs2::OnOK()
 	m_FrameDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_FRAMEDELAY)
 	{
-		OH_MessageBox_Interactive("Invalid Frame Delay", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Frame Delay", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_frame_delay, strtoul(text.GetString(), 0, 10));
@@ -127,7 +127,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay1.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY1)
 	{
-		OH_MessageBox_Interactive("Invalid Betsize Delay (Select to Delete)", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Betsize Delay (Select to Delete)", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_swag_delay_1, strtoul(text.GetString(), 0, 10));
@@ -135,7 +135,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay2.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY2)
 	{
-		OH_MessageBox_Interactive("Invalid Betsize Delay (Delete to Entry)", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Betsize Delay (Delete to Entry)", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_swag_delay_2, strtoul(text.GetString(), 0, 10));
@@ -143,7 +143,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay3.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY3) 
 	{
-		OH_MessageBox_Interactive("Invalid Betsize Delay (Entry to Confirm)", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Betsize Delay (Entry to Confirm)", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_swag_delay_3, strtoul(text.GetString(), 0, 10));

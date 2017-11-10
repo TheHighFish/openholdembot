@@ -41,7 +41,7 @@
 #include "CWhiteInfoBox.h"
 
 #include "OpenHoldem.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 CSymbolEngineVariousDataLookup			*p_symbol_engine_various_data_lookup = NULL;
 
@@ -115,7 +115,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
 	      || !p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
 	    *result = 0;
     } else {
-	    OH_MessageBox_OH_Script_Messages(name);
+	    MessageBox_OH_Script_Messages(name);
 	    *result = 0;
     }
   } else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {

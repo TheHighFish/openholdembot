@@ -22,11 +22,12 @@
 #include "CEngineContainer.h"
 #include "inlines/eval.h"
 #include "CFunctionCollection.h"
+#include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "COHScriptList.h"
 
 CSymbolEngineVersus::CSymbolEngineVersus() {
@@ -388,7 +389,7 @@ bool CSymbolEngineVersus::GetCounts() {
 void CSymbolEngineVersus::ErrorInvalidSymbol(CString name) {
   CString message;
   message.Format("Not a valid versus-symbol: %s", name);
-  OH_MessageBox_Formula_Error(message, "Error");
+  CParseErrors::MessageBox_Formula_Error(message, "Error");
 }
 
 bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double *result, bool log /* = false */) {
@@ -572,7 +573,7 @@ bool CSymbolEngineVersus::EvaluateSymbol(const CString name, double *result, boo
     bool valid_symbol = EvaluateVersusMultiplexSymbol(name, result, log);
     return valid_symbol;
   } else if (isdigit(name[3])) {
-    OH_MessageBox_Formula_Error(
+    CParseErrors::MessageBox_Formula_Error(
       "Old style versus-list format, like vs$123$win.\n"
       "No longer valid, as we do no longer have 1000 lists,\n"
       "but arbitrary many named lists.\n"

@@ -21,7 +21,7 @@
 #include "COHScriptObject.h"
 #include "CParseTreeNode.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 // Global counter to detect potentially endless recursion_depth
 int recursion_depth = 0;

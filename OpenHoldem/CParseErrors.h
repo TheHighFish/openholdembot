@@ -27,6 +27,7 @@ class CParseErrors {
   static void ErrorUnknownIdentifier(CString name);
   static void Error(CString short_message);
   static void UnexpectedToken(CString short_error_message, CString expected, int token_found_instead);
+  static void MessageBox_Formula_Error(CString Message, CString Title);
  public:
   static void ClearErrorStatus();
   static bool AnyError();

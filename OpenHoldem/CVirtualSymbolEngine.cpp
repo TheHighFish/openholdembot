@@ -19,7 +19,7 @@
 #include "CFormulaParser.h"
 #include "CMemoryPool.h"
 #include "CSymbolEngineIsOmaha.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 CVirtualSymbolEngine::CVirtualSymbolEngine()
 {}

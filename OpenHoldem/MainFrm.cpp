@@ -60,7 +60,7 @@
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
 
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
@@ -249,7 +249,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 void CMainFrame::OnEditFormula() {
 	if (m_formulaScintillaDlg) {
 		if (m_formulaScintillaDlg->m_dirty)	{
-			if (OH_MessageBox_Interactive(
+			if (MessageBox_Interactive(
 				  "The Formula Editor has un-applied changes.\n"
 				  "Really exit?", 
 				  "Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO) {
@@ -307,7 +307,7 @@ void CMainFrame::OnScraperOutput() {
 		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
 	}
 	
-	OH_MessageBox_Interactive("Please note:\n"
+	MessageBox_Interactive("Please note:\n"
 	  "OpenScrape scrapes everything, but OpenHoldem is optimized\n"		  
 	  "to scrape only necessary info.\n"
 	  "\n"
@@ -606,7 +606,7 @@ void CMainFrame::OpenHelpFile(CString windows_help_file_chm)
 		error_message.Format("Could not open help-file %s\n"
 			"Please put it into your OpenHoldem folder\n",
 			windows_help_file_chm);
-		OH_MessageBox_Interactive(error_message, "Error", 0);
+		MessageBox_Interactive(error_message, "Error", 0);
 	}
 }
 

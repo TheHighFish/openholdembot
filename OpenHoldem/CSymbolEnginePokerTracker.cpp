@@ -17,6 +17,7 @@
 
 #include "CEngineContainer.h"
 #include "CFormulaParser.h"
+#include "CParseErrors.h"
 #include "CParseTreeTerminalNodeEndOfFunction.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
@@ -27,7 +28,7 @@
 #include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "..\StringFunctionsDLL\string_functions.h"
 
 CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()
@@ -73,7 +74,7 @@ void CSymbolEnginePokerTracker::UpdateOnHeartbeat()
 void CSymbolEnginePokerTracker::WarnAboutInvalidPTSymbol(CString s) {
 	CString error_message;
   error_message.Format("Invalid PokerTracker-symbol: %s\n", s);
-	OH_MessageBox_Formula_Error(error_message, "Error");
+	CParseErrors::MessageBox_Formula_Error(error_message, "Error");
 }
 
 bool CSymbolEnginePokerTracker::IsOldStylePTSymbol(CString s) {
@@ -161,7 +162,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
       "  * _firstraiserchair\n"
       "  * _firstcallerchair\n"
       "  * _lastcallerchair\n", name);
-		OH_MessageBox_Formula_Error(
+		CParseErrors::MessageBox_Formula_Error(
 			error_message,			 
 			"ERROR: Invalid PokerTracker Symbol");
 		*result = kUndefined;
@@ -203,7 +204,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
       CString error_message;
       error_message.Format("Invalid PokerTracker Symbol: %s",
         name);
-      OH_MessageBox_Formula_Error(error_message, "ERROR");
+      CParseErrors::MessageBox_Formula_Error(error_message, "ERROR");
 		  *result = kUndefined;
       return false;
     }

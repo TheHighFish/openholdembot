@@ -42,7 +42,7 @@
 #include "CParseTreeNode.h"
 #include "CParseTreeOperatorNode.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "TokenizerConstants.h"
 
 // undef for no extra debug output
@@ -65,7 +65,7 @@ void CParseTreeRotator::Rotate(CFunction *function) {
   Rotate(function->_parse_tree_node, &function->_parse_tree_node);
   VerifyCorrectRotation(function->_parse_tree_node);
 #ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION_COMPLETELY_FINISHED
-  OH_MessageBox_Interactive(function->Serialize(), function->name(), 0);
+  MessageBox_Interactive(function->Serialize(), function->name(), 0);
   if (preferences.debug_ast_priority_ordering()) {
     CString serialized_function = function->Serialize();
     if (serialized_function.GetLength() < 2000) {

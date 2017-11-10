@@ -15,17 +15,17 @@
 #include "VerifyFunctionAndListNames.h"
 
 #include "COHScriptObject.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 bool VerifyFunctionName(CString name) {
   if (!COHScriptObject::IsFunction(name)) {
-	OH_MessageBox_Interactive(
+	MessageBox_Interactive(
       "UDF's must begin with the name 'f$'\r\n"
       "e.g. 'f$myfunc'", 
       "Invalid Name", MB_ICONERROR);
 	  return false;
   } else if (strlen(name)==2) {
-   OH_MessageBox_Interactive(
+   MessageBox_Interactive(
      "UDF's must begin with the name 'f$'\r\n"
      "and be followed be the name of the function.\r\n"
      "e.g. 'f$myfunc'", 
@@ -37,13 +37,13 @@ bool VerifyFunctionName(CString name) {
 
 bool VerifyListName(CString name) {
   if (memcmp(name, "list", 4)!=0) {
-	OH_MessageBox_Interactive(
+	MessageBox_Interactive(
       "Lists must begin with the name 'list'.\r\n"
       "e.g. 'list_limp_UTG'", 
       "Invalid Name", MB_ICONERROR);
 	return false;
   } else if (strlen(name)==4) {
-	OH_MessageBox_Interactive(
+	MessageBox_Interactive(
       "Lists must begin with the name 'list'\r\n"
       "and be followed by a number or identifier.\r\n"
       "e.g. 'list45'", 

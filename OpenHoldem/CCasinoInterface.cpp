@@ -38,7 +38,7 @@
 #include "OpenHoldem.h"
 #include "PokerChat.hpp"
 #include "SwagAdjustment.h"
-#include "..\WindowFunctionsDLL\window_functions.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CCasinoInterface *p_casino_interface = NULL;
 

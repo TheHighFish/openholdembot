@@ -30,7 +30,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "FloatingPoint_Comparisions.h"
 
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "..\StringFunctionsDLL\string_functions.h"
 #include "TokenizerConstants.h"
 

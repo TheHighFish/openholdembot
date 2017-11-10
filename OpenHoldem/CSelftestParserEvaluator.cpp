@@ -16,7 +16,7 @@
 
 #include "CFunctionCollection.h"
 #include "CSymbolEngineMemorySymbols.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 CSelftestParserEvaluator::CSelftestParserEvaluator() {
 }

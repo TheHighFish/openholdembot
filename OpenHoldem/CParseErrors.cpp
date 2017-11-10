@@ -14,8 +14,9 @@
 #include "stdafx.h"
 #include "CParseErrors.h"
 
+#include "CFormulaParser.h"
 #include "CTokenizer.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "..\StringFunctionsDLL\string_functions.h"
 #include "TokenizerConstants.h"
 
@@ -43,7 +44,7 @@ void CParseErrors::Error(CString short_message) {
   if (_last_error_message == message) {
     return;
   }
-  OH_MessageBox_Interactive(message, "Parse Error", 0);
+  MessageBox_Interactive(message, "Parse Error", 0);
   _last_error_message = message;
 }
 
@@ -112,4 +113,17 @@ void CParseErrors::ClearErrorStatus() {
 
 bool CParseErrors::AnyError() {
   return _is_error;
+}
+
+void CParseErrors::MessageBox_Formula_Error(CString Message, CString Title) {
+  // Make sure, that we have a line-break at the end.
+  if (Message.Right(1) != "\n") {
+    Message += "\n";
+  }
+  if (p_formula_parser->IsParsing()) {
+    CParseErrors::Error(Message);
+  }
+  else {
+    MessageBox_Error_Warning(Message, Title);
+  }
 }

@@ -293,7 +293,7 @@ void write_log_separator(bool debug_settings_for_this_message, const char* heade
 #include "Psapi.h"
 
 #ifdef OPENHOLDEM_PROGRAM
-#include "..\OpenHoldem\OH_MessageBox.h"
+#include "..\OpenHoldem\MessageBox.h"
 #include "..\OpenHoldem\CSymbolEngineReplayFrameController.h"
 #endif
 

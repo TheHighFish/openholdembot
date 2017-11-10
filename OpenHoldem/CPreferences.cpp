@@ -16,7 +16,7 @@
 
 
 
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 // CPreferences needs to be globally created, in order to provide saved settings to CMainFrame::PreCreateWindow method
 CPreferences		preferences;

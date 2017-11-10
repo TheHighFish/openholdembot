@@ -25,7 +25,7 @@
 #include "CSymbolEngineUserchair.h"
 #include "CTableMapLoader.h"
 #include "CTableState.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 CProblemSolver::CProblemSolver()
 {}
@@ -78,7 +78,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
   p_configurationcheck->ForceAllConfigurationChercks();
 	if (NoTableMapsInScraperFolder())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"BAD NEWS:\n"
 			"    - No tablemaps in scraper folder.\n"
 			"\n"
@@ -88,7 +88,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	}
 	else if (NotConnected())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
 			"\n"
@@ -105,7 +105,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	}
 	else if (NoOpponents())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n."
 			"    - You are connected to a table.\n"
@@ -121,7 +121,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	}
 	else if (UserChairUnknown())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
 			"    - You are connected to a table.\n"
@@ -140,7 +140,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	else if (AutoPlayerDidActAtLeastOnce())
 	{
 		// This is the GOOD case!
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"REALLY GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
 			"    - You are connected to a table.\n"
@@ -161,7 +161,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	// even if everything is ok.
 	else if (NoCardsVisible())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
 			"    - You are connected to a table.\n"
@@ -177,7 +177,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	}
 	else if (NotEnoughButtonsVisible())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
 			"    - You are connected to a table.\n"
@@ -196,7 +196,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		// This should not happen.
 		// No error detected, but autoplayer did not yet act.
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
 			"    - You are connected to a table\n"

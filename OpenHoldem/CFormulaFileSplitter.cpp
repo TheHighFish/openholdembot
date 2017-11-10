@@ -20,7 +20,7 @@
 #include "COHScriptObject.h"
 #include "COHScriptList.h"
 #include "CParseErrors.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 // Format of a formula file:
 // * Date and time (OH-script only)
@@ -280,7 +280,7 @@ void CFormulaFileSplitter::ScanForNextFunctionOrList(CArchive &formula_file) {
   _function_text += "\n";
 #ifdef DEBUG_FORMULA_FILESPLITTER
   //printf("[CFormulaFileSplitter] next function: %s\n", _formula_content);
-  OH_MessageBox_Interactive(_function_text, "Function", 0);
+  MessageBox_Interactive(_function_text, "Function", 0);
 #endif
 }
 

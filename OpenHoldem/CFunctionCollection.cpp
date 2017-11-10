@@ -24,7 +24,7 @@
 #include "CPreferences.h"
 #include "CSelftestParserEvaluator.h"
 
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 CFunctionCollection *p_function_collection = NULL;
 
@@ -220,7 +220,7 @@ void CFunctionCollection::VerifyExistence(CString name) {
   } else {
     // Else: general error-message
   }
-  OH_MessageBox_Interactive(message, "Error", 0);
+  MessageBox_Interactive(message, "Error", 0);
 }
 
 CString CFunctionCollection::GetSimilarNameWithDifferentCases(CString function_name) {
@@ -565,7 +565,7 @@ bool CFunctionCollection::Rename(CString from_name, CString to_name) {
   COHScriptObject *object_to_rename = LookUp(from_name);
   if (object_to_rename == NULL) return false;
   if (p_function_collection->LookUp(to_name) != NULL) {
-    OH_MessageBox_Interactive("Cannot rename to a function/list that already exists", "Error", 0);
+    MessageBox_Interactive("Cannot rename to a function/list that already exists", "Error", 0);
     return false;
   }
   RemoveFromBinaryTree(from_name);

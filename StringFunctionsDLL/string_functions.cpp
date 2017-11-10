@@ -49,7 +49,7 @@
 #include "Psapi.h"
 
 #ifdef OPENHOLDEM_PROGRAM
-#include "..\OpenHoldem\OH_MessageBox.h"
+#include "..\OpenHoldem\MessageBox.h"
 #include "..\OpenHoldem\CSymbolEngineReplayFrameController.h"
 #endif
 

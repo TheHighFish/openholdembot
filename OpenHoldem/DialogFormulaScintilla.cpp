@@ -37,7 +37,7 @@
 #include "DialogNew.h"
 #include "DialogRename.h"
 #include "MainFrm.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
@@ -926,7 +926,7 @@ void CDlgFormulaScintilla::OnNew() {
     return;
   }
   if (p_function_collection->Exists(newdlg.CSnewname)) {
-    OH_MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
+    MessageBox_Interactive("Cannot proceed as function or list already exists", "Error", 0);
     return;
   }
   if (newdlg.is_function == false) {
@@ -1049,7 +1049,7 @@ void CDlgFormulaScintilla::CloseTabOnDelete(CString name) {
 }
 
 void CDlgFormulaScintilla::OnDelete() {
-  if (IDYES != OH_MessageBox_Interactive(
+  if (IDYES != MessageBox_Interactive(
       "REALLY delete \"" 
       + m_FormulaTree.GetItemText(m_FormulaTree.GetSelectedItem()) 
       + "\" ?", 
@@ -1552,7 +1552,7 @@ void CDlgFormulaScintilla::UpdateDebugAuto(void) {
 
 void CDlgFormulaScintilla::WarnAboutAutoplayerWhenApplyingFormula()
 {
-	OH_MessageBox_Interactive("Editing the formula while the autoplayer is enabled\n"
+	MessageBox_Interactive("Editing the formula while the autoplayer is enabled\n"
 		"is an extremely insane idea\n"
 		"(like changing wheels while driving on the highway).\n\n"
 		"We will have to turn the autoplayer off,\n"
@@ -1586,7 +1586,7 @@ void CDlgFormulaScintilla::OnBnClickedApply() {
   CopyTabContentsToFormulaSet();
   p_function_collection->ParseAll();
   if (!p_function_collection->BotLogicCorrectlyParsed()) {
-    if (OH_MessageBox_Interactive("There are errors in the working formula set.\n\n"
+    if (MessageBox_Interactive("There are errors in the working formula set.\n\n"
         "Would you still like to apply changes in the working set to the main set?\n\n"
         "Note that if you choose yes here, then the main formula set will \n"
         "contain errors, will likely not act as you expect, and may cause you\n"
@@ -1608,7 +1608,7 @@ bool CDlgFormulaScintilla::PromptToSave()
 {
 	COpenHoldemDoc		*pDoc = COpenHoldemDoc::GetDocument();
 
-	int response = OH_MessageBox_Interactive("You have made changes to this formula.\n\nDo you want to apply changes?", 
+	int response = MessageBox_Interactive("You have made changes to this formula.\n\nDo you want to apply changes?", 
 				   "Apply changes?", 
 				   MB_YESNOCANCEL);
 	if (response == IDYES)

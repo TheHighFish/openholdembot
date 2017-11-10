@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs15.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 
 // CDlgSAPrefs15 dialog
@@ -71,7 +71,7 @@ void CDlgSAPrefs15::OnOK()
 void CDlgSAPrefs15::OnBnClickedDisableMsgbox()
 {
 	if (m_disable_msgbox.GetCheck()==BST_CHECKED)
-		OH_MessageBox_Interactive("Warning: Selecting this option instructs OpenHoldem to refrain from\n"
+		MessageBox_Interactive("Warning: Selecting this option instructs OpenHoldem to refrain from\n"
 				   "displaying ANY runtime informational or error message boxes.  Examples\n"
 				   "include parse errors, DLL load errors, etc.  It is strongly advised that\n"
 				   "this option only be used in a production environment that has been\n"

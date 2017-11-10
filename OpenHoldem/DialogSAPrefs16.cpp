@@ -17,7 +17,7 @@
 #include "stdafx.h"
 #include "CPreferences.h"
 #include "DialogSAPrefs16.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "SAPrefsSubDlg.h"
 
 // CDlgSAPrefs16 dialog
@@ -87,7 +87,7 @@ void CDlgSAPrefs16::OnOK()
 	_rebuy_minimum_time_to_next_try_Edit.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MINIMUM_DELAY_TO_NEXT_REBUY) 
 	{
-		OH_MessageBox_Interactive("Invalid minimum time to next rebuy", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid minimum time to next rebuy", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_rebuy_minimum_time_to_next_try, strtoul(text.GetString(), 0, 10));

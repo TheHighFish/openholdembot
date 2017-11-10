@@ -19,7 +19,7 @@
 #include "crc32hash.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineRandom.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 #define ENT CSLock lock(m_critsec);
 
@@ -192,7 +192,7 @@ void CSharedMem::VerifyMainMutexName() {
 		// ==> failure.
 		// We assume that the user is present at the very first
 		// test-run, so we throw an interactive message, no matter what.
-		OH_MessageBox_Interactive("Incorrect mutex name.\n"
+		MessageBox_Interactive("Incorrect mutex name.\n"
 			"It is strictly necessary that all instances\n"
 			"of OpenHoldem get the same main mutex name,\n"
 			"otherwise very important functionality will fail:\n"

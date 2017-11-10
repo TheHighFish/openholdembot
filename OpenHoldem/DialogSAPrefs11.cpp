@@ -20,7 +20,7 @@
 #include <limits.h>
 #include "SAPrefsSubDlg.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 #define MAX_MAX_LOG 1000000
 

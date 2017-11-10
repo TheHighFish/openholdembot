@@ -31,7 +31,7 @@
 #include "..\CTransform\CTransform.h"
 
 #include "OpenHoldem.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 CSymbolEngineCasino	*p_symbol_engine_casino = NULL;
 

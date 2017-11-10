@@ -21,7 +21,7 @@
 #include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 #include "..\StringFunctionsDLL\string_functions.h"
 
 const int kNumberOfSupportedPostfixes = 29;

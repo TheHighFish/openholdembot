@@ -16,7 +16,7 @@
 
 #include "CSessionCounter.h"
 #include "../CTablemap/CTablemap.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
 
 CTablemapCompletenessChecker::CTablemapCompletenessChecker() {
 }
@@ -30,7 +30,7 @@ void CTablemapCompletenessChecker::ErrorMissingItem(CString item) {
     "This item is absolutely necessary for correct execution.\n"
     "%s", 
     item, p_tablemap->filepath());
-  OH_MessageBox_Interactive(message, "Error", 0);
+  MessageBox_Interactive(message, "Error", 0);
 }
 
 void CTablemapCompletenessChecker::ErrorDeprecatedItem(CString item) {
@@ -42,7 +42,7 @@ void CTablemapCompletenessChecker::ErrorDeprecatedItem(CString item) {
     "\n"
     "%s", 
     item, p_tablemap->filepath());
-  OH_MessageBox_Interactive(message, "Error", 0);
+  MessageBox_Interactive(message, "Error", 0);
 }
 
 void CTablemapCompletenessChecker::ErrorSwagRenamed() {
@@ -57,7 +57,7 @@ void CTablemapCompletenessChecker::ErrorSwagRenamed() {
     "\n"
     "%s", 
     p_tablemap->filepath());
-  OH_MessageBox_Interactive(message, "Error", 0);
+  MessageBox_Interactive(message, "Error", 0);
 }
 
 void CTablemapCompletenessChecker::ErrorMissingTablepoint() {
@@ -69,7 +69,7 @@ void CTablemapCompletenessChecker::ErrorMissingTablepoint() {
     "\n"
     "%s",
     p_tablemap->filepath());
-  OH_MessageBox_Interactive(message, "Error", 0);
+  MessageBox_Interactive(message, "Error", 0);
 }
 
 void CTablemapCompletenessChecker::ErrorClientsizeReplaced() {
@@ -79,7 +79,7 @@ void CTablemapCompletenessChecker::ErrorClientsizeReplaced() {
     "  * z$clientsizemin\n"
     "  * z$clientsizemax\n"
     "  * z$targetsize\n";
-  OH_MessageBox_Interactive(message, "Error", 0);
+  MessageBox_Interactive(message, "Error", 0);
 }
 
 void CTablemapCompletenessChecker::CheckItem(CString item) {
@@ -219,7 +219,7 @@ void CTablemapCompletenessChecker::VerifyMap() {
       "Correct values: 2..10\n"
       "%s",
       p_tablemap->filepath());
-    OH_MessageBox_Interactive(message, "Error", 0);
+    MessageBox_Interactive(message, "Error", 0);
   }
   // Check mandatory items for every seat
   CheckSetOfItems("p", last_chair, "active",   true);  
@@ -274,7 +274,7 @@ if (number_of_buttons_seen < 3) {
     "At least one of them is missing.\n"
     "%s",
     p_tablemap->filepath());
-  OH_MessageBox_Interactive(message, "Error", 0);
+  MessageBox_Interactive(message, "Error", 0);
 }
 // No Limit only
 if (IsNoLimitMap()) {
@@ -340,7 +340,7 @@ void CTablemapCompletenessChecker::VerifyTitleTexts() {
           "It must not contain additional titles: %s\n"
           "%s",
           title, p_tablemap->filepath());
-        OH_MessageBox_Interactive(message, "Error", 0);
+        MessageBox_Interactive(message, "Error", 0);
       }
     }
     return;
@@ -360,7 +360,7 @@ void CTablemapCompletenessChecker::VerifyTitleTexts() {
         "Mixed empty and specified titles are not supported."
         "%s",
         title, p_tablemap->filepath());
-      OH_MessageBox_Interactive(message, "Error", 0);
+      MessageBox_Interactive(message, "Error", 0);
     }
   }
 }
