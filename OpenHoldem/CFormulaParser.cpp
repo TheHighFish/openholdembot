@@ -77,7 +77,7 @@ void CFormulaParser::LeaveParserCode() {
 }
 
 void CFormulaParser::InitNewParse() {
-  // !!! maybe to be removed completely
+  // !! maybe to be removed completely
   CParseErrors::ClearErrorStatus();
   _tokenizer.InitNewParse();
   // We do NOT clear the function collection here,
@@ -165,7 +165,7 @@ void CFormulaParser::LoadArchive(CArchive& formula_file) {
   _formula_file_splitter.SplitFile(formula_file);
 }
 
-// !!!!!To be moved to CFunction
+// !!!To be moved to CFunction
 bool CFormulaParser::VerifyFunctionNamingConventions(CString name) {
   if (p_function_collection->OpenPPLLibraryLoaded()) {
     // User-defined bot-logic
@@ -1012,7 +1012,6 @@ void CFormulaParser::BackPatchOpenEndedWhenConditionSequence(
     }   
   }
   // End of when-condition sequence reached
-  //!!!!!
   assert(last_when_condition != NULL);
   assert(last_when_condition->IsAnyKindOfWhenCondition());
   // Insert special node for end of function

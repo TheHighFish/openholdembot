@@ -175,7 +175,7 @@ void CSymbolEngineNutFullhouseOrFourOfAKind::CalculateNutFullhouseOrFourOfAKind(
     assert(_nutfullhouseorfourofakind == kNutFullhouseOrFourOfAKind_NoFullHouseAtAll);
     return;
   }
-  // Enumerate all possible better opponent holdings. !!!
+  // Enumerate all possible better opponent holdings. 
   // We have to enumerate bottom up if we want to count all holdings 
   // exactly once if we want to avoid ugly tricks like remembering
   // and sorting.

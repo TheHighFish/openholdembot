@@ -54,7 +54,7 @@ void CConfigurationCheck::CheckEnabledConfigurationChecks(bool force_all)
 	{
 		CheckForFontSmoothing();
 	}
-  // !!! Might be reused for MSVCRT 2010
+  // !! Might be reused for MSVCRT 2010
 	//CheckForMissingMSVCRT();
 }
 

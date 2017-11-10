@@ -1,3 +1,4 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
@@ -16,25 +17,21 @@
 
 #include "CSpaceOptimizedGlobalObject.h"
 
-
-class CSessionCounter /*!!!!!: public CSpaceOptimizedGlobalObject*/
-{
-public:
+class CSessionCounter {
+ public:
 	// public functions
 	CSessionCounter();
 	~CSessionCounter();
-public:
+ public:
 	// public accessors
 	// session_id() returns a value in the range 0..(MAX_SESSION_IDS - 1)
 	const unsigned int session_id() { return _session_id; }
-private:
+ private:
 	// private variables - use public accessors and public mutators to address these
 	unsigned int _session_id;
-private:
+ private:
 	// private functions and variables - not available via accessors or mutators		
 	HANDLE hMutex;
 };
 
 extern CSessionCounter *p_sessioncounter;
-
-#endif //INC_CSESSIONCOUNTER_H

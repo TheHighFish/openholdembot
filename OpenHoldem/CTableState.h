@@ -52,7 +52,7 @@ class CTableState {
   bool set_pot(int sidepot_index, CString new_value);
   void ResetPots();
  public:
-  // !!! To do: proper encapsulation
+  // !! To do: proper encapsulation
   CLimitInfo _s_limit_info;
  private:
   CPlayer _players[kNumberOfPlayerEntries];

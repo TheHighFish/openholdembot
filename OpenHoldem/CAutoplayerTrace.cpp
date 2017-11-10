@@ -160,7 +160,8 @@ CString CAutoplayerTrace::Indentation() {
 }
 
 void CAutoplayerTrace::Print(const char *action_taken, bool full_log_for_primary_formulas) {
-  //!!!!!CSLock lock(log_critsec);
+  // Probably not necessary: CSLock lock(log_critsec);
+  // as nothing else should happen when the autoplayer is finished
   if (full_log_for_primary_formulas) {
     LogPlayers();
     // This information is only meaningful for playing decision f$all .. f$fold
@@ -250,7 +251,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   write_log(k_always_log_basic_information, "  f$betsize:     %9.2f\n", p_function_collection->EvaluateAutoplayerFunction(k_autoplayer_function_betsize));
   write_log(k_always_log_basic_information, "  Formulas:      %s\n",    fcra_formula_status.GetString());
   write_log(k_always_log_basic_information, "  Buttons:       %s\n",    fcra_seen.GetString());
-  // !!! "Best action" is undefined if the executed action
+  // !! "Best action" is undefined if the executed action
   // is "something else" like a hopper function
   write_log(k_always_log_basic_information, "  Best action:   %s\n", BestAction().GetString());
   write_log(k_always_log_basic_information, "  Action taken:  %s\n",    action_taken);

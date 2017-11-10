@@ -260,8 +260,8 @@ bool CCasinoInterface::AllinOptionAvailable() {
 
 void CCasinoInterface::SendKey(const char ascii_key) {
   RECT r_null;
-  // !!! kUndefined causes SendKey to return early
-  // !!! keyboard-DLL is a mess.
+  // !! kUndefined causes SendKey to return early
+  // !! keyboard-DLL is a mess.
   r_null.bottom = kUndefinedZero;
   r_null.left = kUndefinedZero;
   r_null.right = kUndefinedZero;
