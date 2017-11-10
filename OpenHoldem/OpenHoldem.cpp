@@ -29,7 +29,7 @@
 #include "CSessionCounter.h"
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldemDoc.h"
 #include "OpenHoldemView.h"
 #include "Singletons.h"

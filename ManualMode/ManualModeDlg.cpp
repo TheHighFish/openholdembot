@@ -21,7 +21,7 @@
 #include "ManualModeDlg.h"
 
 #include "..\Shared\MagicNumbers\MagicNumbers.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h""
 #include "ManualMode.h"
 #include "poker_defs.h"
 #include "registry.h"

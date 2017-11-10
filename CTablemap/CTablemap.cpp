@@ -18,7 +18,7 @@
 #include <Math.h>
 #include "../CTransform/CTransform.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h""
 
 #ifdef OPENHOLDEM_PROGRAM
 #include "../DLLs/Debug_DLL/debug.h"

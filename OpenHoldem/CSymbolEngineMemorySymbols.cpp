@@ -18,7 +18,7 @@
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
 #include "CPreferences.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CSymbolEngineMemorySymbols::CSymbolEngineMemorySymbols() {
 }

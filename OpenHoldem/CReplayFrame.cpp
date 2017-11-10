@@ -26,7 +26,7 @@
 #include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
 
 //  Sanity check: enough disk-space for a replay frame?

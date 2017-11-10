@@ -28,7 +28,7 @@
 #include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineUserchair.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CSymbolEnginePokerTracker::CSymbolEnginePokerTracker()

@@ -27,7 +27,7 @@
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"!
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "COHScriptList.h"
 
 CSymbolEngineVersus::CSymbolEngineVersus() {
