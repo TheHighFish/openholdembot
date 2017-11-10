@@ -16,7 +16,6 @@
 #include "registry.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "debug.h"
 
 #define MM_SUBKEY  "Software\\OpenHoldem\\ManualMode"
 

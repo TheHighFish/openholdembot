@@ -133,7 +133,6 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="debug.cpp" />
     <ClCompile Include="EditDlg.cpp" />
     <ClCompile Include="GameInfoDlg.cpp" />
     <ClCompile Include="ManualMode.cpp" />
@@ -145,7 +144,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="debug.h" />
     <ClInclude Include="EditDlg.h" />
     <ClInclude Include="GameInfoDlg.h" />
     <ClInclude Include="ManualMode.h" />

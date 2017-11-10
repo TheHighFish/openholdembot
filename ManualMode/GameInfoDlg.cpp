@@ -17,7 +17,6 @@
 
 #include "stdafx.h"
 #include "GameInfoDlg.h"
-#include "debug.h"
 #include "ManualModeDlg.h"
 
 // CGameInfoDlg dialog

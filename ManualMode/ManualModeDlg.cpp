@@ -24,7 +24,6 @@
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"!"
 #include "ManualMode.h"
 #include "poker_defs.h"
-#include "debug.h"
 #include "registry.h"
 #include "EditDlg.h"
 #include "GameInfoDlg.h"
