@@ -107,12 +107,14 @@ double gws(const char *the_symbol) {
   if (p_GetSymbol == nullptr) {
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
     HMODULE openholdem_main_module = GetModuleHandle(NULL);
-    if (openholdem_main_module == nullptr) {
+    if (openholdem_main_module == NULL) {
+      MessageBox_Error_Warning("GamestateValidation.DLL can't find OpenHoldem main module");
       return kUndefined;
     }
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
     FARPROC WINAPI p_GetSymbol = GetProcAddress(openholdem_main_module, "GetSymbol");
-    if (p_GetSymbol == nullptr) {
+    if (p_GetSymbol == NULL) {
+      MessageBox_Error_Warning("GamestateValidation.DLL can't find GetSymbol-function in OpenHoldem");
       return kUndefined;
     }
   }
