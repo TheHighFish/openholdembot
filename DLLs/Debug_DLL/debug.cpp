@@ -123,7 +123,7 @@ char *get_now_time(char * timebuf) {
 CString log_filename() {
   assert(session_ID >= 0);
   CString log_filename;
-  log_filename.Format("log\OH_%2d.log");
+  log_filename.Format("logs\\OH_%d.log", session_ID);
   return log_filename;
 }
 
