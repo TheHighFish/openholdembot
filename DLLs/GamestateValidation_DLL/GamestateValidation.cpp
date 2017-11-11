@@ -101,10 +101,10 @@ bool _no_errors_this_heartbeat;
 
 // !! can be replaced by static linking once the symbol-engines are in a DLL
 typedef double(*t_GetSymbol)(const char* name_of_single_symbol__not_expression);
-t_GetSymbol p_GetSymbol = nullptr;
+t_GetSymbol p_GetSymbol = NULL;
 
 double gws(const char *the_symbol) {
-  if (p_GetSymbol == nullptr) {
+  if (p_GetSymbol == NULL) {
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
     HMODULE openholdem_main_module = GetModuleHandle(NULL);
     if (openholdem_main_module == NULL) {
@@ -112,7 +112,7 @@ double gws(const char *the_symbol) {
       return kUndefined;
     }
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
-    FARPROC WINAPI p_GetSymbol = GetProcAddress(openholdem_main_module, "GetSymbol");
+    p_GetSymbol = (t_GetSymbol)GetProcAddress(openholdem_main_module, "GetSymbol");
     if (p_GetSymbol == NULL) {
       MessageBox_Error_Warning("GamestateValidation.DLL can't find GetSymbol-function in OpenHoldem");
       return kUndefined;
