@@ -9,7 +9,7 @@
 #ce ----------------------------------------------------------------------------
 
 Local $pre_created_release_dir  = "##_OpenHoldem_Release_Directory_##"
-Local $new_openholdem_dir       = "OpenHoldem_11.x.y"
+Local $new_openholdem_dir       = "OpenHoldem_12.x.y"
 Local $new_bot_logic_dir        = $new_openholdem_dir & "\bot_logic"
 Local $new_openppl_library_dir  = $new_bot_logic_dir  & "\OpenPPL_Library"
 Local $new_vmware_keyboard_dir  = $new_openholdem_dir & "\Keyboard_DLL_VmWare_Unity_Mode"
@@ -32,9 +32,6 @@ MsgBox(0, "Next Step", "Update the version and release-date in the release-notes
 MsgBox(0, "Next Step", "Change the version of OpenHoldem. (Search the OpenHoldem-project for the old one, e.g. ""4.2.5"" and ""4.25"", but don't auto-replace) OpenHoldem\stdaxafx.h OpenHoldem\OpenHoldem.rc")
 MsgBox(0, "Next Step", "Choose the correct build option. Usually optimized for OH, but debug if there are some known problems left. Release for the rest (as end-users usually miss debug-DLLs)." )
 MsgBox(0, "Next Step", "Rebuild everything")
-MsgBox(0, "Next Step", "Test ""everything"", at least briefly that OH ""works"".")
-MsgBox(0, "Next Step", "Push everything to GitHub")
-MsgBox(0, "Next Step", "Tag the release on GitHub. Comment: ""Tagging OpenHoldem 7.x.y for release"".")
 
 DirRemove($new_openholdem_dir, 1)
 DirCopy($pre_created_release_dir, $new_openholdem_dir)
@@ -74,7 +71,10 @@ FileDelete($new_openholdem_dir & "\logs\*.*")
 DirMove($new_openholdem_dir, @DesktopDir & "\" & $new_openholdem_dir)
 ; Release it
 MsgBox(0, "Next Step", "The new direcory is at your desktop. Please create a rar-archive")
-MsgBox(0, "Next Step", "Upload the rar-file to https://sites.google.com/site/openholdempokerbot/downloads")
+MsgBox(0, "Next Step", "Test ""everything"", at least briefly that OH ""works"".")
+MsgBox(0, "Next Step", "Push everything to GitHub")
+MsgBox(0, "Next Step", "Tag the release on GitHub. Comment: ""Tagging OpenHoldem 12.x.y for release"".")
+MsgBox(0, "Next Step", "Attach the rar-file to the latest release at GitHub"
 ; Open release-notes for announcement
 ShellExecute($release_notes)
 Sleep(1000)
