@@ -18,12 +18,15 @@ Local $binary_dir               = "Release"
 Local $binary_optimized_dir     = "Release - Optimized"
 Local $openppl_dir              = "OpenPPL"
 Local $openppl_library_dir      = $openppl_dir & "\OpenPPL_Library"
-Local $openppl_manual_dir       = $openppl_dir & "\OpenPPL_Manual"
-Local $openholdem_manual_dir    = "Documentation\OpenHoldem_Manual_ready_for_release"
-Local $pokertracker_docu_dir    = "Documentation\Chapters\symbols"
 Local $release_notes            = $pre_created_release_dir & "\documents\OpenHoldem Release Notes.txt"
 
-; Script Start - Add your code below here
+; Build manuals if needed
+Local $choice = MsgBox(0x24, "build manuals?", "Build OpenHoldem and OpenPPL manuals?")
+If ($choice = 6) Then
+   ShellExecuteWait("build_manual.bat", "", "OpenPPL\OpenPPL_manual\")
+   ShellExecuteWait("build_manual.bat", "", "Documentation\")
+EndIf
+
 MsgBox(0, "Next Step", "Have a look at http://code.google.com/p/openholdembot/source/list and ask the developers, if all work is completed and remind them to update the release-notes")
 ; Open release-notes for editing
 ShellExecute($release_notes)
@@ -60,10 +63,6 @@ FileDelete($new_openholdem_dir & "\*.exp")
 FileDelete($new_openholdem_dir & "\*.pdb")
 ; Add the OpenPPL-library
 CopyNeededFile($openppl_library_dir, $new_openppl_library_dir, "*.ohf")
-; Add OpenPPL_Manual.chm and symbol_pokertracker.pdf
-CopyNeededFile($openppl_manual_dir, $new_openholdem_dir, "OpenPPL_Manual.chm")
-CopyNeededFile($openholdem_manual_dir, $new_openholdem_dir, "OpenHoldem_Manual.chm")
-CopyNeededFile($pokertracker_docu_dir, $new_openholdem_dir, "symbols_pokertracker.pdf")
 ; Remove replay-direcoty (if existent), logs and other private data
 DirRemove($new_openholdem_dir & "\Replay")
 FileDelete($new_openholdem_dir & "\logs\*.*")
@@ -74,7 +73,7 @@ MsgBox(0, "Next Step", "The new direcory is at your desktop. Please create a rar
 MsgBox(0, "Next Step", "Test ""everything"", at least briefly that OH ""works"".")
 MsgBox(0, "Next Step", "Push everything to GitHub")
 MsgBox(0, "Next Step", "Tag the release on GitHub. Comment: ""Tagging OpenHoldem 12.x.y for release"".")
-MsgBox(0, "Next Step", "Attach the rar-file to the latest release at GitHub"
+MsgBox(0, "Next Step", "Attach the rar-file to the latest release at GitHub")
 ; Open release-notes for announcement
 ShellExecute($release_notes)
 Sleep(1000)
