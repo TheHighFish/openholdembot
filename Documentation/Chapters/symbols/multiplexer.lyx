@@ -350,6 +350,14 @@ lastcallerchair
 headsupchair (chair of your last remaining opponent)
 \end_layout
 
+\begin_layout Itemize
+bigstackchair
+\end_layout
+
+\begin_layout Itemize
+smallstackchair
+\end_layout
+
 \begin_layout Section*
 Betrounds
 \end_layout
