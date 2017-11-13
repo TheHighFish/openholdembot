@@ -1,4 +1,21 @@
-﻿﻿v﻿12.1.1 2017-10-26
+﻿﻿v﻿12.1.2 2017-11-06
+==================
+﻿NEW STUFF:
+- New symbols smallstackchair and bigstackchair.
+  These symbols can also be used as multiplexer-postfixes of course.
+  [THF]
+  
+MAINTENANCE:
+- Improved backdoor draws, now ignoring draws that
+  are shared on the board. Thanks to Salem who did all the work.
+  [THF]
+- Default Gecko-bot: various little improvements,
+  please see the change-log. Thanks to Gtwhat for providing 
+  hand-histories and logs.
+  [THF]
+  
+   
+﻿v﻿12.1.1 2017-10-26
 ==================
 BUG FIXES:
 - The f$delay-function was not precise.
