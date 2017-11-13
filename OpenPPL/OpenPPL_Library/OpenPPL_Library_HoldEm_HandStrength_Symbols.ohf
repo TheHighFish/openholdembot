@@ -136,6 +136,8 @@ WHEN Others RETURN false FORCE
 
 ##HaveGoodBackdoorStraightDrawAKQJT##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b111110000000000) = 3) RETURN false FORCE
 // Idiot-end does not matter here, we draw to the nuts
 // Hole-cards and board-cards must contribute three cards to a straight.
 // ..............................AKQJT98765432a-
@@ -144,6 +146,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawKQJT9##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b011111000000000) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) != 2) RETURN false FORCE
@@ -154,6 +158,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawQJT98##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b001111100000000) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) != 2) RETURN false FORCE
@@ -164,6 +170,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawJT987##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000111110000000) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) != 2) RETURN false FORCE
@@ -174,6 +182,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDrawT9876##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000011111000000) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) != 2) RETURN false FORCE
@@ -184,6 +194,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw98765##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000001111100000) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) != 2) RETURN false FORCE
@@ -194,6 +206,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw87654##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000111110000) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) != 2) RETURN false FORCE
@@ -204,6 +218,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw76543##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000011111000) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) != 2) RETURN false FORCE
@@ -214,6 +230,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw65432##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000001111100) = 3) RETURN false FORCE
 // We have to contribute both hole-cards, but not the idiot-end.
 // ....................................AKQJT98765432a-
 WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) != 2) RETURN false FORCE
@@ -224,6 +242,8 @@ WHEN Others RETURN true FORCE
 
 ##HaveGoodBackdoorStraightDraw54321##
 WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000000111110) = 3) RETURN false FORCE
 // We have to contribute both hole-cards.
 // contrary to the other functions we allow the idiot-end.
 // for a backdoor-wheeldraw to an A2345-straight
