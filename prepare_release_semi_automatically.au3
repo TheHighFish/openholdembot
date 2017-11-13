@@ -30,7 +30,7 @@ EndIf
 MsgBox(0, "Next Step", "Have a look at http://code.google.com/p/openholdembot/source/list and ask the developers, if all work is completed and remind them to update the release-notes")
 ; Open release-notes for editing
 ShellExecute($release_notes)
-Sleep(1000)
+Sleep(3000)
 MsgBox(0, "Next Step", "Update the version and release-date in the release-notes ")
 MsgBox(0, "Next Step", "Change the version of OpenHoldem. (Search the OpenHoldem-project for the old one, e.g. ""4.2.5"" and ""4.25"", but don't auto-replace) OpenHoldem\stdaxafx.h OpenHoldem\OpenHoldem.rc")
 MsgBox(0, "Next Step", "Choose the correct build option. Usually optimized for OH, but debug if there are some known problems left. Release for the rest (as end-users usually miss debug-DLLs)." )
@@ -46,6 +46,9 @@ CopyNeededFile($binary_dir, $new_tools_dir, "OHReplay.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OpenReplayShooter.exe")
 CopyNeededFile($binary_dir, $new_tools_dir, "OpenScrape.exe")
 ; Copy DLLs to the new directory  plus their LIBs to support linking
+CopyNeededFile($binary_dir, $new_openholdem_dir, "debug.dll")
+CopyNeededFile($binary_dir, $new_openholdem_dir, "files.dll")
+CopyNeededFile($binary_dir, $new_openholdem_dir, "GamestateValidation.dll")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "keyboard.dll")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "mouse.dll")
 CopyNeededFile($binary_dir, $new_openholdem_dir, "pokertracker_query_definitions.dll")
