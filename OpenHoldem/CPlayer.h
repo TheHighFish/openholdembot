@@ -62,6 +62,8 @@ class CPlayer {
   // For the log-file
   CString DataDump();
  public:
+  double stack() { return (_balance.GetValue() + _bet.GetValue()); }
+ public:
   CScrapedMoney _balance;
   CScrapedMoney _bet;
  private:
