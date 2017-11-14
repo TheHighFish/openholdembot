@@ -18,6 +18,9 @@
 #include "MainFrm.h"
 #include <io.h>
 #include <process.h>
+#include "..\DLLs\Files_DLL\Files.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "CAutoConnector.h"
 #include "CAutoplayer.h"
 #include "CAutoplayerFunctions.h"
@@ -59,13 +62,10 @@
 #include "DialogSAPrefs22.h"
 #include "DialogScraperOutput.h"
 #include "inlines/eval.h"
-
-#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 #include "SAPrefsDialog.h"
 #include "Singletons.h"
-#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 // CMainFrame
 
@@ -146,8 +146,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
-CMainFrame::CMainFrame() 
-{
+CMainFrame::CMainFrame() {
 	_wait_cursor = false;
 
 	_prev_att_rect.bottom = 0;
@@ -160,10 +159,8 @@ CMainFrame::CMainFrame()
 	_prev_wrect.top = 0;
 }
 
-CMainFrame::~CMainFrame() 
-{
-	if (p_flags_toolbar != NULL)
-	{
+CMainFrame::~CMainFrame() {
+	if (p_flags_toolbar != NULL) {
 		delete(p_flags_toolbar);
 	}
   if (p_openholdem_statusbar != NULL) {
@@ -189,8 +186,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 	return 0;
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) 
-{
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if ( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 
@@ -200,8 +196,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	HINSTANCE hInst = AfxGetInstanceHandle();
 
 	// Set class name
-	if (!(::GetClassInfo(hInst, preferences.window_class_name(), &wnd)))
-	{
+	if (!(::GetClassInfo(hInst, preferences.window_class_name(), &wnd))) {
 		wnd.style			    = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 		wnd.lpfnWndProc		= ::DefWindowProc;
 		wnd.cbClsExtra		= wnd.cbWndExtra = 0;
@@ -259,8 +254,7 @@ void CMainFrame::OnEditFormula() {
 		}
     BOOL	bWasShown = ::IsWindow(m_formulaScintillaDlg->m_hWnd) && m_formulaScintillaDlg->IsWindowVisible();
     m_formulaScintillaDlg->DestroyWindow();
-    if (bWasShown)
-    {
+    if (bWasShown) {
 			return;
     }
 	}
@@ -277,7 +271,7 @@ void CMainFrame::OnEditFormula() {
 
 void CMainFrame::OnEditViewLog() {
   assert(p_sessioncounter != nullptr);
-  ShellExecute(NULL, "open", LogFilePath(p_sessioncounter->session_id()), NULL, NULL, SW_SHOW);
+  OpenFileInExternalSoftware(LogFilePath(p_sessioncounter->session_id()));
 }
 
 void CMainFrame::OnEditTagLog() {
@@ -344,8 +338,7 @@ void CMainFrame::OnManualMode() {
 		SW_SHOWNORMAL);		  // Active window, default size
 }
 
-void CMainFrame::OnEditPreferences() 
-{
+void CMainFrame::OnEditPreferences() {
 	//CDlgPreferences  myDialog;
 	CSAPrefsDialog dlg;
 
@@ -404,8 +397,7 @@ void CMainFrame::OnEditPreferences()
 
 	// launch it like any other dialog...
 	//dlg1.m_csText = m_csStupidCString;
-	if (dlg.DoModal()==IDOK)
-	{
+	if (dlg.DoModal()==IDOK) {
 		//m_csStupidCString = dlg1.m_csText;
 	}
 }
@@ -431,19 +423,16 @@ BOOL CMainFrame::DestroyWindow() {
 }
 
 void CMainFrame::OnFileOpen() {
-    COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();   
-   
-    if (!pDoc->SaveModified())
-        return;        // leave the original one
-
+  COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();   
+  if (!pDoc->SaveModified()) {
+    return;        // leave the original one
+  }
 	CFileDialog			cfd(true);
-
   cfd.m_ofn.lpstrInitialDir = "";
   // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646839%28v=vs.85%29.aspx
   cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.oppl, *.txt)\0*.ohf;*.oppl;*.txt\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
-	if (cfd.DoModal() == IDOK)
-	{				
+	if (cfd.DoModal() == IDOK) {				
 		pDoc->OnOpenDocument(cfd.GetPathName());
 		pDoc->SetPathName(cfd.GetPathName());
 		// Update window title, registry
@@ -509,45 +498,35 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
 	CWnd::OnTimer(nIDEvent); 
 }
 
-void CMainFrame::OnAutoplayer() 
-{
+void CMainFrame::OnAutoplayer() {
 	bool is_autoplaying = p_autoplayer->autoplayer_engaged();
 	// Toggle the autoplayer-state
 	p_autoplayer->EngageAutoplayer(!is_autoplaying);
 }
 
-void CMainFrame::OnValidator() 
-{
-	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) 
-	{
+void CMainFrame::OnValidator() {
+	if (p_flags_toolbar->IsButtonChecked(ID_MAIN_TOOLBAR_VALIDATOR)) {
 		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, true);
 		p_validator->SetEnabledManually(true);
-	}
-	else
-	{
+	}	else {
 		p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_VALIDATOR, false);
 		p_validator->SetEnabledManually(false);
 	}
 }
 
-void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) 
-{
+void CMainFrame::OnUpdateStatus(CCmdUI *pCmdUI) {
 	p_openholdem_statusbar->OnUpdateStatusbar();
 }
 
-BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
-{
-	if (_wait_cursor)
-	{
+BOOL CMainFrame::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
+	if (_wait_cursor)	{
 		RestoreWaitCursor();
 		return TRUE;
 	}
-
 	return CFrameWnd::OnSetCursor(pWnd, nHitTest, message);
 }
 
-void CMainFrame::OnClickedFlags()
-{
+void CMainFrame::OnClickedFlags() {
 	p_flags_toolbar->OnClickedFlags();
 }
 
@@ -592,47 +571,29 @@ void CMainFrame::KillTimers() {
   CFrameWnd::KillTimer(UPDATE_STATUS_BAR_TIMER);
 }
 
-void CMainFrame::ResetDisplay()
-{
+void CMainFrame::ResetDisplay() {
 	InvalidateRect(NULL, true); 
 }
 
-void CMainFrame::OpenHelpFile(CString windows_help_file_chm)
-{
-	long long int RetValue = long long int(ShellExecute(NULL, "open", windows_help_file_chm, NULL, NULL, SW_SHOW));
-	if (RetValue <= 32)
-	{
-		CString error_message;
-		error_message.Format("Could not open help-file %s\n"
-			"Please put it into your OpenHoldem folder\n",
-			windows_help_file_chm);
-		MessageBox_Interactive(error_message, "Error", 0);
-	}
-}
-
 void CMainFrame::OnHelp() {
-	OpenHelpFile("OpenHoldem_Manual.chm");
+  OpenFileInExternalSoftware(OpenHoldemManualpath());
 }
 
-void CMainFrame::OnHelpOpenPPL()
-{
-	OpenHelpFile("OpenPPL_Manual.chm");
+void CMainFrame::OnHelpOpenPPL() {
+  OpenFileInExternalSoftware(OpenPPLManualpath());
 }
 
-void CMainFrame::OnHelpForums()
-{
+void CMainFrame::OnHelpForums() {
 	ShellExecute(NULL, "open", "http://www.maxinmontreal.com/forums/index.php", "", "", SW_SHOWDEFAULT);
 }
 
-void CMainFrame::OnHelpProblemSolver() 
-{
+void CMainFrame::OnHelpProblemSolver() {
 	CProblemSolver my_problem_solver;
 	my_problem_solver.TryToDetectBeginnersProblems();
 }
 
 
-CMainFrame* PMainframe()
-{
+CMainFrame* PMainframe() {
 	CMainFrame *p_mainframe = (CMainFrame *) (theApp.m_pMainWnd);
 	return p_mainframe;
 }

@@ -38,7 +38,7 @@
 #include <windows.h>
 #include <winuser.h>
 #include "CPreferences.h"
-#include "..\Reference User DLL\user.h"
+#include "..\DLLs\User_DLL\user.h"
 
 char *_the_chat_message = NULL;
 

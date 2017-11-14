@@ -109,6 +109,33 @@ CString OpenPPLLibraryDirectory() {
   return BotlogicDirectory() + "OpenPPL_Library\\";
 }
 
+void OpenFileInExternalSoftware(CString file_name) {
+  long long int RetValue = long long int(ShellExecute(NULL, "open", file_name, 
+    "", "", 0));
+  if (RetValue <= 32) {
+    CString error_message;
+    error_message.Format("Could not open file \n%s\n",
+      file_name);
+    MessageBox(0, error_message, "Error", 0);
+  }
+}
+
+CString ManualDirectory() {
+  assert(OpenHoldemDirectory() != "");
+  CString manual_directory = OpenHoldemDirectory() + "documents\\HelpFiles\\";
+  return manual_directory;
+}
+
+CString OpenHoldemManualpath() {
+  CString manual_path = ManualDirectory() + "OpenHoldem_manual.chm";
+  return manual_path;
+}
+
+CString OpenPPLManualpath() {
+  CString manual_path = ManualDirectory() + "OpenPPL_manual.chm";
+  return manual_path;
+}
+
 CString TableMapWildcard() {
   assert(OpenHoldemDirectory() != "");
   CString wildcard;
@@ -125,7 +152,6 @@ CString ScraperDirectory() {
 CString ToolsDirectory() {
   assert(OpenHoldemDirectory() != "");
   CString tools_dir = CString(OpenHoldemDirectory()) + "tools\\";
-
   return tools_dir;
 }
 

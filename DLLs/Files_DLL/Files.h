@@ -59,20 +59,23 @@ CString ReplaySessionDirectory(int session_ID);
 CString ScraperDirectory();
 CString ToolsDirectory();
 // Filenames
+CString ExecutableFilename();
+CString IniFilename();
+CString PureExecutableFilename();
 CString ReplayBitmapFilename(int session_ID, int frame_number);
 CString ReplayHTMLFilename(int session_ID, int frame_number);
-CString ExecutableFilename();
-CString PureExecutableFilename();
 // Paths
+CString CustomLibraryPath();
 CString IniFilePath();
 CString LogFilePath(int session_ID);
-CString VersusPath();
-CString CustomLibraryPath();
 CString ManualModePath();
+CString OpenHoldemManualpath();
+CString OpenPPLManualpath();
+CString VersusPath();
 // Others
+void OpenFileInExternalSoftware(CString file_name);
 CString TableMapWildcard();
 void SwitchToOpenHoldemDirectory();
 //!!bool FileExists(CString filename_or_pattern);
 CString FilenameWithoutPath(CString path);
 CString FilenameWithoutPathAndExtension(CString path);
-CString IniFilename();
