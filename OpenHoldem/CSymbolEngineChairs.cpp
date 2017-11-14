@@ -176,6 +176,10 @@ int CSymbolEngineChairs::BigStackChair() {
       // not an opponent
       continue;
     }
+    if (!p_table_state->Player(i)->HasAnyCards()) {
+      // Not seated, not dealt or folded
+      continue;
+    }
     if (p_table_state->Player(i)->stack() > biggest_stack) {
       biggest_stack = p_table_state->Player(i)->stack();
       result = i;

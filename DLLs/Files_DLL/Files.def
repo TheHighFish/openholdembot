@@ -3,8 +3,11 @@ EXPORTS
 BotlogicDirectory
 DefaultLogicDirectory
 LogsDirectory
+OpenFileInExternalSoftware
 OpenHoldemDirectory
+OpenHoldemManualpath
 OpenPPLLibraryDirectory
+OpenPPLManualpath
 PathOfExecutable
 ReplaySessionDirectory
 ScraperDirectory
