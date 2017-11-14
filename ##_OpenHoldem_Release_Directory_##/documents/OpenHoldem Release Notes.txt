@@ -6,7 +6,7 @@ BUG FIXES:
   [THF]
   
 MAINTENANCE:
-- Restructuring openHoldem and introducing 3 new DLLs:
+- Restructuring OpenHoldem and introducing 3 new DLLs:
     * Debug.DLL
     * Files.DLL
     * GamestateValidation.DLL
