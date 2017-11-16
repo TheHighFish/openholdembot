@@ -348,9 +348,9 @@ NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 (nstraightflushfillcommon <= 2)
 
 ##SuitsOnBoard##
-(betround == flop)  ? SuitsOnFlop :
-(betround == turn)  ? SuitsOnTurn :
-(betround == river) ? SuitsOnRiver :
+IsFlop  ? SuitsOnFlop :
+IsTurn  ? SuitsOnTurn :
+IsRiver ? SuitsOnRiver :
 HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
 
 ##SuitsOnFlop##

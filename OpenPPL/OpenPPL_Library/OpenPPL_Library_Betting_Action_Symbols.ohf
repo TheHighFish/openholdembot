@@ -133,7 +133,7 @@ OR didraisround_turn
 OR didbetsizeround_turn
 
 ##BotsActionsOnFlop##
-WHEN (betround == flop) RETURN BotsActionsOnThisRound FORCE
+WHEN IsFlop RETURN BotsActionsOnThisRound FORCE
 WHEN Others RETURN
   ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
   // Checks are not counted
@@ -142,7 +142,7 @@ WHEN Others RETURN
   + didbetsizeround_flop) FORCE
 
 ##BotsActionsOnTurn##
-WHEN (betround == turn) RETURN BotsActionsOnThisRound FORCE
+WHEN IsTurn RETURN BotsActionsOnThisRound FORCE
 WHEN Others RETURN
   ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
   // Checks are not counted
@@ -162,7 +162,7 @@ WHEN Others RETURN 0 FORCE
 ##BotsActionsOnThisRound##
 // Special condition to ease simulations at Manualmode 
 // without the need for hand-resets
-WHEN ((betround == preflop) AND (currentbet < bblind)) RETURN 0 FORCE
+WHEN (IsPreflop AND (currentbet < bblind)) RETURN 0 FORCE
 WHEN ((betround > preflop) AND (currentbet == 0)) RETURN 0 FORCE
 WHEN (BotsActionsOnThisRoundAdapted < 0) RETURN 0 FORCE
 WHEN Others RETURN BotsActionsOnThisRoundAdapted FORCE
@@ -170,7 +170,7 @@ WHEN Others RETURN BotsActionsOnThisRoundAdapted FORCE
 ##BotsActionsOnThisRoundIncludingChecks##
 // Special condition to ease simulations at Manualmode 
 // without the need for hand-resets
-WHEN ((betround == preflop) AND (currentbet < bblind)) RETURN 0 FORCE
+WHEN (IsPreflop AND (currentbet < bblind)) RETURN 0 FORCE
 WHEN (BotsActionsOnThisRoundIncludingChecksAdapted < 0) RETURN 0 FORCE
 WHEN Others RETURN BotsActionsOnThisRoundIncludingChecksAdapted FORCE
 
@@ -193,7 +193,7 @@ WHEN Others RETURN BotsActionsOnThisRoundIncludingChecksAdapted FORCE
 + ActionCounterCorrectionForUpdateInProgress]
 
 ##BotsActionsPreflop##
-WHEN (betround == preflop) RETURN BotsActionsOnThisRound FORCE
+WHEN IsPreflop RETURN BotsActionsOnThisRound FORCE
 WHEN Others RETURN
   ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
   // Checks are not counted per definition
@@ -215,10 +215,10 @@ WHEN (PlayersRaisingOrColdCallingTheLastRaise <= 0) RETURN HINT_There_Is_No_Rais
 WHEN Others RETURN (PlayersRaisingOrColdCallingTheLastRaise - 1) FORCE
 
 ##Folds##
-WHEN (betround == preflop) RETURN (nplayersdealt  - nopponentsplaying - 1) FORCE
-WHEN (betround == flop)    RETURN (nplayersround_flop - nopponentsplaying - 1) FORCE
-WHEN (betround == turn)    RETURN (nplayersround_turn - nopponentsplaying - 1) FORCE
-WHEN (betround == river)   RETURN (nplayersround_river - nopponentsplaying - 1) FORCE
+WHEN IsPreflop RETURN (nplayersdealt  - nopponentsplaying - 1) FORCE
+WHEN IsFlop    RETURN (nplayersround_flop - nopponentsplaying - 1) FORCE
+WHEN IsTurn    RETURN (nplayersround_turn - nopponentsplaying - 1) FORCE
+WHEN IsRiver   RETURN (nplayersround_river - nopponentsplaying - 1) FORCE
 WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
 
 ##LastAggressorActsAfterUs##		

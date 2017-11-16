@@ -229,7 +229,7 @@ HINT_No_LastCaller
 
 ##LastRaiserPosition##
 // Handling the case of blind-raisers only first
-[(betround == preflop) AND (ncallbets <= 1)] ? HINT_There_Are_No_true_Raisers :
+[IsPreflop AND (ncallbets <= 1)] ? HINT_There_Are_No_true_Raisers :
 // Big blind = 0
 BigBlindRaising ? 0 :
 // Small blind = 1

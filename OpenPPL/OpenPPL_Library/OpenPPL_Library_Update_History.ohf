@@ -75,7 +75,7 @@
 // The most easy solution was this code-clone.
 //
 // We removed the first lines of BotsLastAction
-// WHEN [(betround == preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+// WHEN [IsPreflop AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
 // WHEN (betround != preflop) RETURN BotsLastPreflopAction FORCE
 // because BotsActionsOnThisRoundIncludingChecks and BotsLastPreflopAction
 // could be [cached] after the first action and we could get wrong results.
@@ -165,15 +165,15 @@ WHEN Others SET me_st_MemRaises_Raises
 WHEN Others SET me_st_MemChecks_Checks
 WHEN Others SET me_st_MemCalls_Calls
 WHEN Others SET me_st_MemBets_Bets
-WHEN (betround == preflop) SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN IsPreflop SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
 // CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
 // can also be used on other betting-rounds, as it is not specific to preflop.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20960
-WHEN (betround == flop)    SET me_st_MemBotsLastFlopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
-WHEN (betround == turn)    SET me_st_MemBotsLastTurnAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
-WHEN (betround == preflop) SET me_st_MemRaisesBeforeFlop_Raises
-WHEN (betround == flop) SET me_st_MemRaisesOnFlop_Raises
-WHEN (betround == turn) SET me_st_MemRaisesOnTurn_Raises
+WHEN IsFlop    SET me_st_MemBotsLastFlopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN IsTurn    SET me_st_MemBotsLastTurnAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN IsPreflop SET me_st_MemRaisesBeforeFlop_Raises
+WHEN IsFlop SET me_st_MemRaisesOnFlop_Raises
+WHEN IsTurn SET me_st_MemRaisesOnTurn_Raises
 WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
 WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize

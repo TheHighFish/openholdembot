@@ -68,16 +68,16 @@
 //*****************************************************************************
 
 ##IsPreflop##
-(betround == preflop)
+IsPreflop
 
 ##IsFlop##
-(betround == flop)
+IsFlop
 
 ##IsTurn##
-(betround == turn)
+IsTurn
 
 ##IsRiver##
-(betround == river)
+IsRiver
 
 ##IsPostflop##
 NOT IsPreflop

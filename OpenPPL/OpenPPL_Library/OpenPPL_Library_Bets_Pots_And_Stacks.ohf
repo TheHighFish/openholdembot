@@ -63,23 +63,24 @@
 //*****************************************************************************
 
 ##AmountToCall##
-(bblind > 0) ? (DollarsToCall / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+WHEN (bblind > 0) RETURN (DollarsToCall / bblind) FORCE 
+WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE
 
 ##BetSize##
 ncallbets
 
 ##BigBlindSize##
-bet1
-
+bet_preflop
+	
 ##MaxOpponentsLeftStackSize##
 // We believe MaxOpponentsLeftStackSize is better than MaxStacksizeOfActiveOpponents
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18924
 MaxStacksizeOfActiveOpponents
 
 ##MaxStacksizeOfActiveOpponents##
-(bblind > 0) ? 
-(stack0 == balance ? stack1/bblind : stack0/bblind) :
-ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+WHEN (bblind <= 0) RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE 
+WHEN (stack0 == balance) RETURN (stack1 / bblind) FORCE 
+WHEN Others RETURN (stack0 / bblind) FORCE 
 
 ##EffectiveMaxStacksizeOfActiveOpponents##
 (StackSize <= MaxStacksizeOfActiveOpponents) ? StackSize : MaxStacksizeOfActiveOpponents
@@ -127,11 +128,12 @@ WHEN ismyturn AND (StackSize <= 0) RETURN true FORCE
 WHEN Others RETURN false FORCE
 
 ##TotalInvested##
-WHEN (betround == preflop) RETURN (Ante + ncurrentbets) FORCE
-WHEN (betround == flop)    RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE
-WHEN (betround == turn)    RETURN (Ante + nbetsround_preflop + nbetsround_flop + ncurrentbets) FORCE
-WHEN (betround == river)   RETURN (Ante + nbetsround_preflop + nbetsround_flop + nbetsround_turn + ncurrentbets) FORCE 
+WHEN IsPreflop RETURN (Ante + ncurrentbets) FORCE
+WHEN IsFflop   RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE
+WHEN IsTurn    RETURN (Ante + nbetsround_preflop + nbetsround_flop + ncurrentbets) FORCE
+WHEN IsRiver   RETURN (Ante + nbetsround_preflop + nbetsround_flop + nbetsround_turn + ncurrentbets) FORCE 
 WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
 
 ##TotalInvestedThisRound##
-(betround == preflop) ? (ncurrentbets + Ante) : ncurrentbets
+WHEN IsPreflop RETURN (ncurrentbets + Ante) FORCE 
+WHEN Others RETURN ncurrentbets FORCE 

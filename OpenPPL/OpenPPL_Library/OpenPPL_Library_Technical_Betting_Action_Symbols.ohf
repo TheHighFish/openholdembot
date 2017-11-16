@@ -77,7 +77,7 @@ OR (prevaction == 5) // Jamming the slider
 ##ChecksAfterHero##
 // No checks preflop. Not even big blind can check (game over).
 // We ignore additional blind-posters however.
-WHEN (betround == preflop) RETURN 0 FORCE
+WHEN IsPreflop RETURN 0 FORCE
 // We called or raised, therefore no longer any checks possible
 WHEN (currentbet > 0) RETURN 0 FORCE
 // We did not yet act, therefore no checks behind us possible
@@ -95,7 +95,7 @@ WHEN Others RETURN (nplayersplaying - betposition) FORCE
 ##ChecksInFrontOfHero##
 // No checks preflop. Not even big blind can check (game over).
 // We ignore additional blind-posters however.
-WHEN (betround == preflop) RETURN 0 FORCE
+WHEN IsPreflop RETURN 0 FORCE
 // I did already act, so no longer any posters in front of me
 // (at my 2nd turn)
 WHEN (currentbet > 0) RETURN 0 FORCE

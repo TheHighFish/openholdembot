@@ -109,7 +109,7 @@ NumberOfOpponentsAllin > 0
 BitCount(Opponents_AllinBits)
 
 ##Opponents_AllinBits##
-[(betround == preflop) AND NOT Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
+[IsPreflop AND NOT Casino_Moves_Allinbets_Immediatelly_To_The_Mainpot] ?
 // Player must be playing, his balance must be 0 and he must have a positive bet.
 [0
 | ((((opponentsplayingbits & (1 << 0)) != 0) AND (currentbet0 > 0) AND (balance0 == 0)) ? 1 << 0 : 0)
@@ -181,6 +181,6 @@ WHEN Others RETURN (nchairsdealtleft + 2) FORCE
 
 ##StillToAct##
 (BotsActionsOnThisRoundIncludingChecks > 0) ? HINT_StillToAct_Is_Only_Valid_On_First_Orbit :
-((betround == preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPreflop:
+(IsPreflop AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPreflop:
 ((betround != preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPostflop:
 0

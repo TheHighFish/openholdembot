@@ -382,25 +382,25 @@ ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard 
 AND NOT HaveStraight 
 
 ##HoldEm_HaveBackdoorFlushDrawContributingTwoCards##
-    (betround == flop)
+    IsFlop
 AND (nsuited >= 3)
 AND ($$ps0 == tsuit)
 AND ($$ps1 == tsuit)
 
 ##HoldEm_HaveBackdoorNutFlushDraw##
-    (betround == flop)
+    IsFlop
 AND (nsuited >= 3)
 AND (nsuited > nsuitedcommon) 
 AND (NumberOfUnknownSuitedOvercards == 0)
 
 ##HoldEm_HaveBackdoorSecondNutFlushDraw##
-    (betround == flop)
+    IsFlop
 AND (nsuited >= 3)
 AND (nsuited > nsuitedcommon) 
 AND (NumberOfUnknownSuitedOvercards == 1)
 
 ##HoldEm_HaveBackdoorThirdNutFlushDraw##
-    (betround == flop)
+    IsFlop
 AND (nsuited >= 3)
 AND (nsuited > nsuitedcommon) 
 AND (NumberOfUnknownSuitedOvercards == 2)
@@ -976,7 +976,7 @@ ispair
 ##HoldEm_HaveRunnerRunnerFlushAtRiver##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=20307&p=143536#p143536
     HaveFlush
-AND (betround == river)
+AND IsRiver
 AND (nsuited == 5)
 AND (SuitsOnFlop >= 2)
 AND (TurnSuit==RiverSuit) 
