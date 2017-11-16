@@ -119,10 +119,10 @@ WHEN (firstraiserchair == 8) RETURN ac_betpos8 FORCE
 WHEN (firstraiserchair == 9) RETURN ac_betpos9 FORCE
 
 ##NoVillainBetOrRaisedOnFlop##
-((raisbits2 & ~(1<<userchair)) == 0)
+((raisbits_flop & ~(1<<userchair)) == 0)
 
 ##NoVillainBetOrRaisedOnTurn##
-((raisbits3 & ~(1<<userchair)) == 0)
+((raisbits_turn & ~(1<<userchair)) == 0)
 
 ##RaisesBeforeOurFirstActionThisRoundPostflop##
 (nopponentstruelyraising > 0) ? (nopponentstruelyraising - 1) : 0

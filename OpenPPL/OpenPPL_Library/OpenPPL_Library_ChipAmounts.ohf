@@ -123,5 +123,3 @@ isfl ? bet : currentbet
 ##SidePot##
 // Money in the side-pot, i.e. the money we don't compete for (measured in big blinds)
 (bblind > 0) ? (SidePotInDollars / bblind) : 0
-
-
