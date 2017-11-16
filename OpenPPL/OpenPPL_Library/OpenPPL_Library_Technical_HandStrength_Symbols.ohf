@@ -64,19 +64,17 @@
 //*****************************************************************************
 
 ##HighCardOfCommonStraight##
-// Precondition: straight on board
-//..........................AKQJT98765432a-
-BitCount(rankbitscommon & 0b111110000000000) == 5 ? ace   :
-BitCount(rankbitscommon & 0b011111000000000) == 5 ? king  :
-BitCount(rankbitscommon & 0b001111100000000) == 5 ? queen :
-BitCount(rankbitscommon & 0b000111110000000) == 5 ? jack  :
-BitCount(rankbitscommon & 0b000011111000000) == 5 ? ten   :
-BitCount(rankbitscommon & 0b000001111100000) == 5 ? Nine  :
-BitCount(rankbitscommon & 0b000000111110000) == 5 ? Eight :
-BitCount(rankbitscommon & 0b000000011111000) == 5 ? Seven :
-BitCount(rankbitscommon & 0b000000001111100) == 5 ? Six   :
-BitCount(rankbitscommon & 0b000000000111110) == 5 ? Five  :
-ERROR_Board_Does_Not_Have_Any_Straight__Do_Not_Call_This_Function
+WHEN board$AKQJT RETURN ace FORCE
+WHEN board$KQJT9 RETURN king FORCE
+WHEN board$QJT98 RETURN queen FORCE
+WHEN board$JT987 RETURN jack FORCE
+WHEN board$T9876 RETURN ten FORCE
+WHEN board$98765 RETURN Nine FORCE
+WHEN board$87654 RETURN Eight FORCE
+WHEN board$76543 RETURN Seven FORCE
+WHEN board$65432 RETURN Six FORCE
+WHEN board$5432A RETURN Five FORCE
+WHEN Others RETURN ERROR_Board_Does_Not_Have_Any_Straight__Do_Not_Call_This_Function FORCE
 
 ##HighCardOfOurStraight##
 // Precondition: we have a straight
