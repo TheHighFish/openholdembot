@@ -116,7 +116,7 @@ EXE_IMPLEMENTS char* GetHandnumber() {
   return p_handreset_detector->GetHandNumber().GetBuffer();
 }
 
-EXE_IMPLEMENTS char* GetPlayertName(int chair) {
+EXE_IMPLEMENTS char* GetPlayerName(int chair) {
   if (chair < 0) {
     return nullptr;
   }

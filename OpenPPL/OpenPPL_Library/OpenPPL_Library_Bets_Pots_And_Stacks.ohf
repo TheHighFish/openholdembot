@@ -130,7 +130,7 @@ WHEN Others RETURN false FORCE
 
 ##TotalInvested##
 WHEN IsPreflop RETURN (Ante + ncurrentbets) FORCE
-WHEN IsFflop   RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE
+WHEN IsFlop   RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE
 WHEN IsTurn    RETURN (Ante + nbetsround_preflop + nbetsround_flop + ncurrentbets) FORCE
 WHEN IsRiver   RETURN (Ante + nbetsround_preflop + nbetsround_flop + nbetsround_turn + ncurrentbets) FORCE 
 WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
