@@ -18,8 +18,8 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
-
 #include <time.h>
+#include "..\Files_DLL\Files.h"
 #include "..\..\Shared\CCritSec\CCritSec.h"
 #include "..\..\Shared\MagicNumbers\MagicNumbers.h"
 
@@ -120,16 +120,10 @@ char *get_now_time(char * timebuf) {
   return timebuf;
 }
 
-CString log_filename() {
-  assert(session_ID >= 0);
-  CString log_filename;
-  log_filename.Format("logs\\OH_%d.log", session_ID);
-  return log_filename;
-}
-
 void delete_log() {
-  // Log file must not be open
-  remove(log_filename().GetString());
+  assert(session_ID >= 0);
+  // Precondition: log file must not be open
+  remove(LogFilePath(session_ID).GetString());
 }
 
 void clear_log() {
@@ -149,7 +143,7 @@ void start_log(int current_session_iD, bool delete_old_log) {
     delete_log();
   }
   // Append (or create) log
-  if ((log_fp = _fsopen(log_filename().GetString(), "a", _SH_DENYWR)) != 0) {
+  if ((log_fp = _fsopen(LogFilePath(session_ID).GetString(), "a", _SH_DENYWR)) != 0) {
     write_log_separator(k_always_log_basic_information, "LOG FILE OPEN");
     fflush(log_fp);
   }
