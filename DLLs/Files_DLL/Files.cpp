@@ -110,8 +110,13 @@ CString OpenPPLLibraryDirectory() {
 }
 
 void OpenFileInExternalSoftware(CString file_name) {
-  long long int RetValue = long long int(ShellExecute(NULL, "open", file_name, 
-    "", "", 0));
+  long long int RetValue = long long int(ShellExecute(
+    NULL, 
+    "open", 
+    file_name, 
+    NULL, 
+    "", 
+    SW_SHOWNORMAL));
   if (RetValue <= 32) {
     CString error_message;
     error_message.Format("Could not open file \n%s\n",
