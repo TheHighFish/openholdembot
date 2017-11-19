@@ -48,8 +48,8 @@ typedef void(*t_WriteLog)(char* format, ...);
 t_GetSymbol p_GetSymbol = nullptr;
 t_GetPrw1326 p_GetPrw1326 = nullptr;
 t_GetHandnumber p_GetHandnumber = nullptr;
-t_GetHandnumber p_GetPlayerName = nullptr;
-t_GetHandnumber p_GetTableTitle = nullptr;
+t_GetPlayerName p_GetPlayerName = nullptr;
+t_GetTableTitle p_GetTableTitle = nullptr;
 t_ParseHandList p_ParseHandList = nullptr;
 t_ScrapeTableMapRegion p_ScrapeTableMapRegion = nullptr;
 t_SendChatMessage p_SendChatMessage = nullptr;
@@ -92,7 +92,7 @@ char* __stdcall GetPlayerName(int chair) {
     ErrorPointerNotInitialized("GetPlayerName");
     return "";
   }
-  return p_GetPlayerName();
+  return p_GetPlayerName(chair);
 }
 
 char* __stdcall GetTableTitle() {
@@ -171,6 +171,8 @@ void InitializeOpenHoldemFunctionInterface() {
   p_GetSymbol = (t_GetSymbol)LookupOpenHoldemFunction("GetSymbol");
   p_GetPrw1326 = (t_GetPrw1326)LookupOpenHoldemFunction("GetPrw1326");
   p_GetHandnumber = (t_GetHandnumber)LookupOpenHoldemFunction("GetHandnumber");
+  p_GetPlayerName = (t_GetPlayerName)LookupOpenHoldemFunction("GetPlayerName");
+  p_GetTableTitle = (t_GetTableTitle) LookupOpenHoldemFunction("GetTableTitle");
   p_ParseHandList = (t_ParseHandList)LookupOpenHoldemFunction("ParseHandList");
   p_ScrapeTableMapRegion = (t_ScrapeTableMapRegion)LookupOpenHoldemFunction("ScrapeTableMapRegion");
   p_SendChatMessage = (t_SendChatMessage)LookupOpenHoldemFunction("SendChatMessage");

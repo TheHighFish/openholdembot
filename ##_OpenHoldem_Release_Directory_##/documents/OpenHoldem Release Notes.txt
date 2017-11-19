@@ -1,8 +1,11 @@
-﻿﻿v﻿12.1.3 2017-11-14
+﻿﻿v﻿12.1.3 2017-11-xx
 ==================
 BUG FIXES:
 - The new symbol bigstackchair incorrectly considered folded players.
   Thanks to Stars83 for reporting.
+  [THF]
+- The new interface of the user.DLL contained two half-made functions.
+  Special thanks to LonelyBoy for funding the bug.
   [THF]
   
 MAINTENANCE:
