@@ -85,8 +85,8 @@ MsgBox(0, "Next Step", "Announce the new download in ""OpenHoldem Stickies"" and
 Func CopyNeededFile($source_dir, $destination_dir, $name)
    Local $source = $source_dir & "\" & $name
    Local $destination = $destination_dir & "\" & $name
-   If Not FileCopy($source, $destination) Then
-	  MsgBox(0, "Error", "Missing file: " & $source)
+   If Not FileCopy($source, $destination, 9) Then
+	  MsgBox(0, "Error", "Can't copy: " & $source & " to " & $destination)
 	  Exit(-1)
    EndIf
 EndFunc
