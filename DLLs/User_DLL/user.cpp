@@ -65,8 +65,10 @@ DLL_IMPLEMENTS double __stdcall ProcessQuery(const char* pquery) {
   if (pquery == NULL) {
     return 0;
   }
-	if (strncmp(pquery,"dll$test",9)==0) {
-	  return GetSymbol("random");
+  if (strncmp(pquery,"dll$test",9)==0) {
+    MessageBox(0, GetTableTitle(), TEXT("Rable title"), 0);
+	MessageBox(0, GetPlayername(0), TEXT("Name of player 0"), 0);
+    return GetSymbol("random");
   }
   if (strncmp(pquery, "dll$scrape", 11) == 0) {
     char* scraped_result;
