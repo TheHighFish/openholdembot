@@ -30,6 +30,8 @@
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "COHScriptList.h"
 
+const int kNTotal = 1712304;
+
 CSymbolEngineVersus::CSymbolEngineVersus() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
@@ -176,24 +178,24 @@ bool CSymbolEngineVersus::GetCounts() {
 				  memcpy(&lostemp, &byte[4], sizeof(unsigned int));
 
 				  _nwin += wintemp;
-				  _ntie += 1712304 - wintemp - lostemp;
+				  _ntie += kNTotal - wintemp - lostemp;
 				  _nlos += lostemp;
 				  _nhands = _nhands + 1;
 
 				  if (wintemp<lostemp) {
 					  _nhandshi = _nhandshi + 1;
 					  nhiwin += wintemp;
-					  nhitie += 1712304 - wintemp - lostemp;
+					  nhitie += kNTotal - wintemp - lostemp;
 					  nhilos += lostemp;
 				  } else if (wintemp>lostemp) {
 					  _nhandslo = _nhandslo + 1;
 					  nlowin += wintemp;
-					  nlotie += 1712304 - wintemp - lostemp;
+					  nlotie += kNTotal - wintemp - lostemp;
 					  nlolos += lostemp;
 				  } else {
 					  _nhandsti = _nhandsti + 1;
 					  ntiwin += wintemp;
-					  ntitie += 1712304 - wintemp - lostemp;
+					  ntitie += kNTotal - wintemp - lostemp;
 					  ntilos += lostemp;
 				  }
 
@@ -206,7 +208,8 @@ bool CSymbolEngineVersus::GetCounts() {
 					  c1rank = temprank;
 				  }
 				  _n_win_against_hand[i][j] = wintemp;
-          _n_tie_against_hand[i][j] = tietemp;
+				  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=21301
+          _n_tie_against_hand[i][j] = kNTotal - wintemp - lostemp;
           _n_los_against_hand[i][j] = lostemp;
 			  }
 		  }

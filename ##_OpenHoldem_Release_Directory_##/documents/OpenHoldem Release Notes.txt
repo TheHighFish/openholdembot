@@ -7,6 +7,9 @@ BUG FIXES:
 - The new interface of the user.DLL contained two half-made functions.
   Special thanks to LonelyBoy for funding the bug.
   [THF]
+- Fix for the versus-symbol prtie. Special thanks to Eden for
+  reporting and for providing the fix.
+  [THF]
   
 MAINTENANCE:
 - Improving the OpenPPL-functions for backdoorstraights
