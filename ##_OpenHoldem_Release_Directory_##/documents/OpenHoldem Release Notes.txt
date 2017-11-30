@@ -5,7 +5,7 @@ BUG FIXES:
   Thanks to Stars83 for reporting.
   [THF]
 - The new interface of the user.DLL contained two half-made functions.
-  Special thanks to LonelyBoy for funding the bug.
+  Special thanks to LonelyBoy for finding the bug.
   [THF]
 - Fix for the versus-symbol prtie. Special thanks to Eden for
   reporting and for providing the fix.
