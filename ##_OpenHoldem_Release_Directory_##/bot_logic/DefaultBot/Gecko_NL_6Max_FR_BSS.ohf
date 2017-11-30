@@ -169,6 +169,8 @@
 //     which is slightly more conservatice than Gecko 
 //     and also considers position.
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
+//   * Improved f$BetsizePreflop, now adapting its betsize to position/range
+//     when open-raising.
 //
 //*****************************************************************************
 //
@@ -873,8 +875,15 @@ WHEN Others
    WHEN IsRiver RETURN f$BetsizeRiverMultiway FORCE   
 
 ##f$BetsizePreflop##
-WHEN (Raises = 0) RaiseBy (2.5 + (0.5 * nopponentscalling)) FORCE
-WHEN Others RaiseBy (4 * BetSize) FORCE
+WHEN (Raises > 0) RaiseBy (4 * BetSize) FORCE
+WHEN (Calls > 0) RaiseTo (3.5 + (0.5 * nopponentscalling)) FORCE
+// Openraising with flexible betsize, depending on position / range
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=90#p148218
+WHEN InLatePosition AND istournament AND (BigBlindSize > 100) RaiseTo 2.5 FORCE
+WHEN InLatePosition RaiseTo 3 FORCE
+WHEN InMiddlePosition RaiseTo 3.5 FORCE
+WHEN InEarlyPosition RaiseTo 4 FORCE
+WHEN InTheBlinds RaiseTo 3 FORCE
 	
 ##f$BetsizeFlopHeadsup##
 WHEN (AmountToCall <= 1)
