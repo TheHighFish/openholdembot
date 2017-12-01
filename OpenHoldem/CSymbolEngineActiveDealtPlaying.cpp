@@ -110,7 +110,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateAllinBits() {
   // First: simply check for all players with no balance
   for (int i = 0; i<kMaxNumberOfPlayers; i++) {
     if (p_table_state->Player(i)->IsAllin()) {
-      _playersseatedbits |= 1 << i;
+      _playersallinbits |= 1 << i;
     }
   }
   AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);

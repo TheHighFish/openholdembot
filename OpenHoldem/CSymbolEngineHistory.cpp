@@ -335,9 +335,23 @@ bool CSymbolEngineHistory::DidAct(int betround) {
 		return false;
 	}
 	// Considering fold or allin too. It's unneccessary for bot logic, but usefull for lazy scraping.
-	return (didchec(betround) || didcall(betround) 
-			|| didswag(betround) || didrais(betround)
-			|| didfold(betround) || didalli(betround));
+  if (didchec(betround) || didcall(betround)
+    || didswag(betround) || didrais(betround)
+    || didfold(betround) || didalli(betround)) {
+    return true;
+  }
+  // Considering my bet, in case the user acts manually
+  // or we cinnect in the middle of a hand.
+  // Ignoring limped pots preflop
+  double currentbet = p_table_state->User()->_bet.GetValue();
+  if (currentbet > p_engine_container->symbol_engine_tablelimits()->bblind()) {
+    return true;
+  }
+  if ((p_betround_calculator->betround() > kBetroundPreflop)
+    && (currentbet > 0)) {
+    return true;
+  }
+  return false;
 }
 
 CString CSymbolEngineHistory::SymbolsProvided() {

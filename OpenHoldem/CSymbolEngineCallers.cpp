@@ -93,6 +93,9 @@ void CSymbolEngineCallers::UpdateOnHeartbeat() {
 
 void CSymbolEngineCallers::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
   _allinbits_previous_orbit = p_engine_container->symbol_engine_active_dealt_playing()->playersallinbits();
+  write_log(preferences.debug_symbolengine(),
+    "[CSymbolEngineCallers] Players allin from previous orbit: %x\n",
+    _allinbits_previous_orbit);
 }
 
 void CSymbolEngineCallers::CalculateCallers() {
@@ -110,6 +113,9 @@ void CSymbolEngineCallers::CalculateCallers() {
   double highest_bet = p_engine_container->symbol_engine_raisers()->MinimumStartingBetCurrentOrbit(false);
   write_log(preferences.debug_symbolengine(),
     "[CSymbolEngineCallers] current highest bet: %.2f\n", highest_bet);
+  write_log(preferences.debug_symbolengine(),
+    "[CSymbolEngineCallers] Players allin from previous orbit: %x\n",
+    _allinbits_previous_orbit);
   for (int i = first_possible_raiser; i <= last_possible_raiser; ++i) {
     ++chairs_seen;
     if (chairs_seen > _nchairs) {
