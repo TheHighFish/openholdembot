@@ -16,7 +16,7 @@
 
 #include "CCasinoHotkey.h"
 #include "CCasinoInterface.h"
-#include "CPreferences.h"
+
 #include "CStringMatch.h"
 #include "..\CTablemap\CTablemap.h"
 
@@ -45,7 +45,7 @@ bool CAutoplayerButton::Click() {
   if (_clickable) {
     // Try to send a hotkey first, if specified in tablemap
     if (_hotkey.PressHotkey()) {
-      write_log(preferences.debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", _label);
+      write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Pressed hotkey for button button %s\n", _label);
       return true;
     }
     // Lookup the region
@@ -53,10 +53,10 @@ bool CAutoplayerButton::Click() {
     p_tablemap->GetTMRegion(_technical_name, &button_region);
     // Otherwise: click the button the normal way
     p_casino_interface->ClickRect(button_region);
-    write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Clicked button [%s] [%s]\n", _label, _technical_name);
+    write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Clicked button [%s] [%s]\n", _label, _technical_name);
     return true;
   } else {
-    write_log(preferences.debug_autoplayer(), "[CAutoplayerButton] Could not click button %s. Either undefined or not visible.\n", _label);
+    write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Could not click button %s. Either undefined or not visible.\n", _label);
     return false;
   }
 }
@@ -189,7 +189,7 @@ void CAutoplayerButton::PrecomputeButtonType() {
     // Clear button
     _button_type = kUndefined;
   } else {
-    write_log(preferences.debug_autoplayer(), 
+    write_log(Preferences()->debug_autoplayer(), 
       "[CasinoInterface] WARNING! Unknown button type %s\n", _label);
   }
 }

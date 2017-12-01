@@ -16,7 +16,7 @@
 
 #include "CEngineContainer.h"
 #include "CHandHistoryWriter.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CTableState.h"

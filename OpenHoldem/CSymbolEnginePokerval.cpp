@@ -19,7 +19,7 @@
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
 
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineIsOmaha.h"
@@ -188,9 +188,9 @@ void CSymbolEnginePokerval::CalcPokerValues() {
     p_table_state->User()->hole_cards(0)->GetValue(), 
     p_table_state->User()->hole_cards(1)->GetValue());
 
-  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
+  write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] handval = %i\n", handval);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
 	_phandval[BETROUND-1] = _pokerval & 0xff000000; 
   if (BETROUND > kBetroundPreflop
@@ -222,8 +222,8 @@ void CSymbolEnginePokerval::CalculateHandType()
 {
   int nCards = CardCount(_all_cards);
 	_hand_type = HandVal_HANDTYPE(handval);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handval = %i\n", handval);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handtype = %i\n", _hand_type);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handval = %i\n", handval);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval::CalculateHandType] handtype = %i\n", _hand_type);
 
 	if  (isstraightflush() 
 		&& StdDeck_RANK(HandVal_TOP_CARD(handval)) == Rank_ACE)
@@ -319,8 +319,8 @@ void CSymbolEnginePokerval::CalculateRankBits() {
 
   int tsuit = p_engine_container->symbol_engine_cards()->tsuit();
   int tsuitcommon = p_engine_container->symbol_engine_cards()->tsuitcommon();
-  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuit = %i\n", tsuit);
-  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuitcommon = %i\n", tsuitcommon);
+  write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuit = %i\n", tsuit);
+  write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() tsuitcommon = %i\n", tsuitcommon);
 	
   _rankbitsplayer = CardMaskToRankBits(_player_cards);
   _rankbitscommon = CardMaskToRankBits(_board_cards);
@@ -357,12 +357,12 @@ void CSymbolEnginePokerval::CalculateRankBits() {
   // Take care about ace (low bit)
 	_srankbitspoker |= ((_srankbitspoker&0x4000) ? (1<<1) : 0); 
 
-  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitsplayer  = %i\n", _rankbitsplayer);
-  write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitscommon  = %i\n", _rankbitscommon);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitspoker   = %i\n", _rankbitspoker);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitsplayer = %i\n", _srankbitsplayer);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitscommon = %i\n", _srankbitscommon);
-	write_log(preferences.debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitspoker  = %i\n", _srankbitspoker);
+  write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitsplayer  = %i\n", _rankbitsplayer);
+  write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitscommon  = %i\n", _rankbitscommon);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() rankbitspoker   = %i\n", _rankbitspoker);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitsplayer = %i\n", _srankbitsplayer);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitscommon = %i\n", _srankbitscommon);
+	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] CalculateHandType() srankbitspoker  = %i\n", _srankbitspoker);
 
 	AssertRange(_rankbitsplayer,  0, k_rankbits_all_cards_111_111_111_111_110);
 	AssertRange(_rankbitscommon,  0, k_rankbits_all_cards_111_111_111_111_110); 

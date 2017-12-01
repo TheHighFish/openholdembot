@@ -46,6 +46,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reference User DLL", "DLLs\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "globals", "DLLs\Globals_DLL\globals.vcxproj", "{49099A5E-FD74-48D8-BF74-CF0483863343}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68FF47A5-168D-44B1-A0F8-64157FD7F133}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Preferences", "DLLs\Preferences_DLL\Preferences.vcxproj", "{11E82A06-6DEB-49EA-A176-A7F9C1164F11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +255,16 @@ Global
 		{49099A5E-FD74-48D8-BF74-CF0483863343}.Release|Any CPU.ActiveCfg = Release|Win32
 		{49099A5E-FD74-48D8-BF74-CF0483863343}.Release|Win32.ActiveCfg = Release|Win32
 		{49099A5E-FD74-48D8-BF74-CF0483863343}.Release|Win32.Build.0 = Release|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Debug|Win32.ActiveCfg = Debug|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Debug|Win32.Build.0 = Debug|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Release - Optimized|Any CPU.ActiveCfg = Release|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Release - Optimized|Any CPU.Build.0 = Release|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Release - Optimized|Win32.ActiveCfg = Release|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Release - Optimized|Win32.Build.0 = Release|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Release|Any CPU.ActiveCfg = Release|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Release|Win32.ActiveCfg = Release|Win32
+		{11E82A06-6DEB-49EA-A176-A7F9C1164F11}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,7 +17,7 @@
 #include "CFunction.h"
 #include "CFunctionCollection.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CParserSymbolTable *p_parser_symbol_table = NULL;
@@ -31,7 +31,7 @@ CParserSymbolTable::~CParserSymbolTable() {
 }
 
 void CParserSymbolTable::Clear() {
-  write_log(preferences.debug_symbol_verification(),
+  write_log(Preferences()->debug_symbol_verification(),
     "[CParserSymbolTable] Clear()\n");
   _known_symbols.clear();
   _used_functions.clear();
@@ -44,7 +44,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
     // Some of them get set to "Default_preflp" or similar, but not all.
     return;
   }
-  write_log(preferences.debug_symbol_verification(),
+  write_log(Preferences()->debug_symbol_verification(),
     "[CParserSymbolTable] VerifySymbol %s\n", name);
   // No short names, and we have to compare the first N characters later
   if (name.GetLength() < 3) {
@@ -52,25 +52,25 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   }
   // DLL symbols can't be verified by OH
   if (memcmp(name, "dll", 3) == 0) {
-    write_log(preferences.debug_symbol_verification(),
+    write_log(Preferences()->debug_symbol_verification(),
       "[CParserSymbolTable] DLL-symbol, can't be verified\n");
     return;
   }
   // Memory_symbols, OpenPPL user-variables (and userchair)
   if (memcmp(name, "me_", 3) == 0) {
-    write_log(preferences.debug_symbol_verification(),
+    write_log(Preferences()->debug_symbol_verification(),
       "[CParserSymbolTable] memory-symbol, can't be verified\n");
     return;
   }
   if (memicmp(name, "user", 4) == 0) {
-    write_log(preferences.debug_symbol_verification(),
+    write_log(Preferences()->debug_symbol_verification(),
       "[CParserSymbolTable] user-variable, can't be verified\n");
     return;
   }
   // Other symbols
   // First: fast lookup of known good symbols
   if (_known_symbols[name]) {
-    write_log(preferences.debug_symbol_verification(),
+    write_log(Preferences()->debug_symbol_verification(),
       "[CParserSymbolTable] Known good symbol\n");
     return;
   }
@@ -94,11 +94,11 @@ void CParserSymbolTable::VerifySymbol(CString name) {
   if (p_engine_container->EvaluateSymbol(name, &result, false)) {//#
     // Remember the good symbol for faster access later
     // (the engine-containers LookUp() is partially sequential)
-    write_log(preferences.debug_symbol_verification(),
+    write_log(Preferences()->debug_symbol_verification(),
       "[CParserSymbolTable] symbol cirrectly evaluated, adding to known symbols\n");
     _known_symbols[name] = true;
   } else {
-    write_log(preferences.debug_symbol_verification(),
+    write_log(Preferences()->debug_symbol_verification(),
       "[CParserSymbolTable] ERROR! Unknown symbol %s\n", name);
     // EvaluateSymbol() will show a popup on error
   }
@@ -108,7 +108,7 @@ void CParserSymbolTable::VerifySymbol(CString name) {
 if (COHScriptObject::IsFunction(name)
 || COHScriptObject::IsList(name)
 || COHScriptObject::IsOpenPPLSymbol(name)) {
-write_log(preferences.debug_symbol_verification(),
+write_log(Preferences()->debug_symbol_verification(),
 "[CParserSymbolTable] Remembering list / OPPL / user-defined symbol for later verification\n");
 _used_functions[name] = true;
 return;
@@ -116,7 +116,7 @@ return;
 
 
 void CParserSymbolTable::VerifyAllUsedFunctionsAtEndOfParse() {
-  write_log(preferences.debug_symbol_verification(),
+  write_log(Preferences()->debug_symbol_verification(),
     "[CParserSymbolTable] VerifyAllUsedFunctionsAtEndOfParse()\n");
   assert(p_function_collection != NULL);
   CString function_name;
@@ -124,7 +124,7 @@ void CParserSymbolTable::VerifyAllUsedFunctionsAtEndOfParse() {
   enumerator_it = _used_functions.begin();
   while (enumerator_it != _used_functions.end()) {
     function_name = enumerator_it->first;
-    write_log(preferences.debug_symbol_verification(),
+    write_log(Preferences()->debug_symbol_verification(),
       "[CParserSymbolTable] Verifying existence of %s\n", function_name);
     p_function_collection->VerifyExistence(function_name);
     ++enumerator_it;

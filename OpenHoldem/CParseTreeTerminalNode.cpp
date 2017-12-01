@@ -20,7 +20,7 @@
 #include "CFunctionCollection.h"
 #include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"

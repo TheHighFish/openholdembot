@@ -18,7 +18,7 @@
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 #ifdef OPENHOLDEM_PROGRAM
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CTableState.h"
 #include "CTableTitle.h"
@@ -46,7 +46,7 @@ void CTitleEvaluator::EvaluateScrapedHandNumbers() {
     if (text != "") {
       p_table_state->_s_limit_info._handnumber = ExtractHandnumFromString(text);
     }
-    write_log(preferences.debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
+    write_log(Preferences()->debug_scraper(), "[CScraper] c0handnumber, result %s\n", text.GetString());
   }
   for (int j = 0; j <= 9; j++) {
     // r$c0handnumberX
@@ -56,7 +56,7 @@ void CTitleEvaluator::EvaluateScrapedHandNumbers() {
       if (text != "") {
         p_table_state->_s_limit_info._handnumber = ExtractHandnumFromString(text);
       }
-      write_log(preferences.debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
+      write_log(Preferences()->debug_scraper(), "[CScraper] c0handnumber%d, result %s\n", j, text.GetString());
     }
   }
 }
@@ -141,7 +141,7 @@ void CTitleEvaluator::EvaluateScrapedGameInfo() {
   p_table_state->_s_limit_info._ante.SetValue(result);
   // r$c0isfinaltable
   p_scraper->EvaluateTrueFalseRegion(&p_table_state->_s_limit_info._is_final_table, "c0isfinaltable");
-  write_log(preferences.debug_scraper(), "[CScraper] small blind at the very end: %.2f\n",
+  write_log(Preferences()->debug_scraper(), "[CScraper] small blind at the very end: %.2f\n",
     p_table_state->_s_limit_info._sblind.GetValue());
 }
 #endif
@@ -406,24 +406,24 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   if (p_table_state->_s_limit_info.buyin() <= kUndefinedZero) {
     p_table_state->_s_limit_info._buyin.SetValue(new_buyin);
   }
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CTransform] parsed title string\n");
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CTransform] title = %s, format = %s\n",
     title, ttlimits_format);
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CTransform] handnumber = %s, sblind = %f, bblind = %f\n",
     p_table_state->_s_limit_info.handnumber(), 
     p_table_state->_s_limit_info.sblind(),
     p_table_state->_s_limit_info.bblind());
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CTransform] bbet = %f, ante = %f, limit = %d, sb_bb = %f, bb_BB = %f\n",
     p_table_state->_s_limit_info.bbet(), 
     p_table_state->_s_limit_info.ante(), 
     p_table_state->_s_limit_info.limit(), 
     p_table_state->_s_limit_info._sb_bb.GetValue(), 
     p_table_state->_s_limit_info._bb_BB.GetValue());
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CTransform] buyin = %d\n",
     p_table_state->_s_limit_info.buyin());
 #endif
@@ -462,6 +462,6 @@ p_table_state->_s_limit_info._buyin.SetValue(Number2CString(l_buyin));
 }
 
 
-/*write_log(preferences.debug_scraper(), "[CScraper] ttlimits(X), result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
+/*write_log(Preferences()->debug_scraper(), "[CScraper] ttlimits(X), result sblind/bblind/bbet/ante/gametype: %.2f / %.2f / %.2f / %.2f / %i\n",
 l_sblind, l_bblind, l_bbet, l_ante, l_limit);
 */

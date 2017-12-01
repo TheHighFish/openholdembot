@@ -17,7 +17,7 @@
 #include <assert.h>
 #include "CAutoConnector.h"
 #include "CFunctionCollection.h"
-#include "CPreferences.h"
+
 #include "../CTablemap/CTablemap.h"
 #include "CTableTitle.h"
 #include "MainFrm.h"
@@ -37,7 +37,7 @@ CString COpenHoldemTitle::GetTitle() {
 	if (user_defined_title != "") 	{
 		return user_defined_title;
 	}
-	if (preferences.simple_window_title()) {
+	if (Preferences()->simple_window_title()) {
 		return simple_title;
 	}	else {
 		return FullTitle();
@@ -49,7 +49,7 @@ CString COpenHoldemTitle::FullTitle() {
 	assert(p_function_collection != NULL);
 	assert(p_tablemap != NULL);
   CString full_title;
-  write_log(preferences.debug_alltherest(), "[COpenHoldemTitle] location Johnny_6\n");
+  write_log(Preferences()->debug_alltherest(), "[COpenHoldemTitle] location Johnny_6\n");
 	if (p_autoconnector->IsConnectedToAnything())	{
 		full_title.Format("%s | %s | %s", p_function_collection->FormulaName(),
 			p_tablemap->sitename(), p_table_title->Title());

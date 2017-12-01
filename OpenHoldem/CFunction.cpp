@@ -20,7 +20,7 @@
 #include "CMemoryPool.h"
 #include "COHScriptObject.h"
 #include "CParseTreeNode.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 // Global counter to detect potentially endless recursion_depth
@@ -66,18 +66,18 @@ void CFunction::SetParseTree(TPParseTreeNode _new_parse_tree) {
 
 void CFunction::Parse() {
   if (NeedsToBeParsed()) { 
-    write_log(preferences.debug_formula() || preferences.debug_parser(),
+    write_log(Preferences()->debug_formula() || Preferences()->debug_parser(),
       "[CFunction] Parsing %s\n", _name);
     p_formula_parser->ParseFormula(this);
     MarkAsParsed();
   } else {
-    write_log(preferences.debug_formula() || preferences.debug_parser(),
+    write_log(Preferences()->debug_formula() || Preferences()->debug_parser(),
       "[CFunction] No need to parse %s\n", _name);
   }
 };
 
 double CFunction::Evaluate(bool log /* = false */) {
-  write_log(preferences.debug_formula(), 
+  write_log(Preferences()->debug_formula(), 
     "[CFunction] Evaluating function %s\n", _name); 
   // Check recursion depth of DoCalcF$symbol 
   // to detect a recursive formula.
@@ -103,7 +103,7 @@ double CFunction::Evaluate(bool log /* = false */) {
   // Result already cached
   if (_is_result_cached) {
     if (log) {
-      write_log(preferences.debug_formula(),
+      write_log(Preferences()->debug_formula(),
         "[CFunction] %s -> %.3f [cached]\n", _name, _cached_result);
       p_autoplayer_trace->Add(_name, _cached_result);  
     }
@@ -162,7 +162,7 @@ void CFunction::Dump() {
     (_is_result_cached ? "[cached]" : "[not chached]"),
     _cached_result,
     _parse_tree_node);
-  write_log(preferences.debug_formula() , (char*)(LPCTSTR)data);
+  write_log(Preferences()->debug_formula() , (char*)(LPCTSTR)data);
 }
 
 void CFunction::SetValue(double value) {

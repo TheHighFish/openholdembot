@@ -17,7 +17,7 @@
 #include "stdafx.h"
 #include "DialogSAPrefs9.h"
 
-#include "CPreferences.h"
+
 #include "SAPrefsSubDlg.h"
 
 // DialogSAPrefs9 dialog
@@ -43,16 +43,16 @@ void CDlgSAPrefs9::DoDataExchange(CDataExchange* pDX)
 BOOL CDlgSAPrefs9::OnInitDialog()
 {
   CSAPrefsSubDlg::OnInitDialog();
-  m_use_auto_starter.SetCheck(preferences.use_auto_starter() ? BST_CHECKED : BST_UNCHECKED);
-  m_use_auto_shutdown.SetCheck(preferences.use_auto_shutdown() ? BST_CHECKED : BST_UNCHECKED);
+  m_use_auto_starter.SetCheck(Preferences()->use_auto_starter() ? BST_CHECKED : BST_UNCHECKED);
+  m_use_auto_shutdown.SetCheck(Preferences()->use_auto_shutdown() ? BST_CHECKED : BST_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CDlgSAPrefs9::OnOK()
 {
-  preferences.SetValue(k_prefs_use_auto_starter, m_use_auto_starter.GetCheck() == BST_CHECKED ? true : false);
-  preferences.SetValue(k_prefs_use_auto_shutdown, m_use_auto_shutdown.GetCheck() == BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_use_auto_starter, m_use_auto_starter.GetCheck() == BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_use_auto_shutdown, m_use_auto_shutdown.GetCheck() == BST_CHECKED ? true : false);
 	CSAPrefsSubDlg::OnOK();
 }
 

@@ -22,7 +22,7 @@
 #include "CEngineContainer.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
@@ -82,52 +82,52 @@ CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions() {
 void CSymbolEngineIniFunctions::InitOnStartup() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
   UpdateOnConnection();
-  p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup], preferences.log_ini_functions());
+  p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup], Preferences()->log_ini_functions());
 }
 
 void CSymbolEngineIniFunctions::UpdateOnConnection() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnConnection()\n");
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnConnection()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_connection],
-    preferences.log_ini_functions());
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnConnection() completed\n");
+    Preferences()->log_ini_functions());
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnConnection() completed\n");
 }
 
 void CSymbolEngineIniFunctions::UpdateOnHandreset(){
   RETURN_IF_LOADING_NEW_FORMULA
 
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHandreset()\n");
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHandreset()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_handreset],
-    preferences.log_ini_functions());
+    Preferences()->log_ini_functions());
 }
 
 void CSymbolEngineIniFunctions::UpdateOnNewRound() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnNewRound()\n");
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnNewRound()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_new_round],
-    preferences.log_ini_functions());
+    Preferences()->log_ini_functions());
 }
 
 void CSymbolEngineIniFunctions::UpdateOnMyTurn() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnMyTurn()\n");
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnMyTurn()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_my_turn],
-    preferences.log_ini_functions());
+    Preferences()->log_ini_functions());
 }
 
 void CSymbolEngineIniFunctions::UpdateOnHeartbeat() {
   RETURN_IF_LOADING_NEW_FORMULA
   	
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHeartbeat()\n");
-  write_log(preferences.debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHeartbeat() evaluating %s\n",
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHeartbeat()\n");
+  write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHeartbeat() evaluating %s\n",
 	  k_standard_function_names[k_init_on_heartbeat]);
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_heartbeat],
-    preferences.log_ini_functions());
+    Preferences()->log_ini_functions());
 }
 
 CString CSymbolEngineIniFunctions::SymbolsProvided() {

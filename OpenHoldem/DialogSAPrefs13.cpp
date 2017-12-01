@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs13.h"
 #include "COpenHoldemTitle.h"
-#include "CPreferences.h"
+
 
 
 // CDlgSAPrefs13 dialog
@@ -54,9 +54,9 @@ BOOL CDlgSAPrefs13::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_class_name_edit.SetWindowText(preferences.window_class_name());
-	_class_mutex_edit.SetWindowText(preferences.mutex_name());
-	bool use_simple_title = preferences.simple_window_title();
+	_class_name_edit.SetWindowText(Preferences()->window_class_name());
+	_class_mutex_edit.SetWindowText(Preferences()->mutex_name());
+	bool use_simple_title = Preferences()->simple_window_title();
 	CheckDlgButton(IDC_SIMPLE_TITLE, use_simple_title ? MF_CHECKED : MF_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -68,10 +68,10 @@ void CDlgSAPrefs13::OnOK()
 	CString temp;
 
 	_class_name_edit.GetWindowText(temp);
-	preferences.SetValue(k_prefs_window_class_name, temp);
+	Preferences()->SetValue(k_prefs_window_class_name, temp);
 	_class_mutex_edit.GetWindowText(temp);
-	preferences.SetValue(k_prefs_mutex_name, temp);
-	preferences.SetValue(k_prefs_simple_window_title, IsDlgButtonChecked(IDC_SIMPLE_TITLE));
+	Preferences()->SetValue(k_prefs_mutex_name, temp);
+	Preferences()->SetValue(k_prefs_simple_window_title, IsDlgButtonChecked(IDC_SIMPLE_TITLE));
 
 	p_openholdem_title->UpdateTitle();
 	CSAPrefsSubDlg::OnOK();

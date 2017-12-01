@@ -17,7 +17,7 @@
 #include "CParseErrors.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CSymbolEngineMemorySymbols::CSymbolEngineMemorySymbols() {
@@ -197,7 +197,7 @@ double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_han
     result = CParseTreeTerminalNodeIdentifier::EvaluateIdentifier(
       right_hand_value, true); // !!! Needs function parameter
   }
-  write_log(preferences.debug_memorysymbols(), 
+  write_log(Preferences()->debug_memorysymbols(), 
     "[CSymbolEngineMemorySymbols] Evaluating %s -> %.3f\n",
     right_hand_value, result);
   return result;
@@ -208,7 +208,7 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const CString name, double *resu
   // "name" = query
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "me_", 3) == 0) {
-    write_log(preferences.debug_memorysymbols(), 
+    write_log(Preferences()->debug_memorysymbols(), 
       "[CSymbolEngineMemorySymbols] EvaluateSymbol(%s)\n", name);
     if (memcmp(name, "me_st_", 6) == 0) {  
       Store(name);

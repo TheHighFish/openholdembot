@@ -17,7 +17,7 @@
 #include "CFunctionCollection.h"
 #include "CMemoryPool.h"
 #include "COHScriptObject.h"
-#include "CPreferences.h"
+
 #include "CTokenizer.h"
 
 // static
@@ -29,7 +29,7 @@ CParseTreeTerminalNodeEndOfFunction::CParseTreeTerminalNodeEndOfFunction(int rel
   // to avoid confusion and emphasize that we reached the end.
   CParseTreeTerminalNodeIdentifier((relative_line_number + 1), "") {
   CString currenttly_parsed_function = CTokenizer::CurrentFunctionName();
-  write_log(preferences.debug_parser(), "[CParseTreeTerminalNodeEndOfFunction] %s\n",
+  write_log(Preferences()->debug_parser(), "[CParseTreeTerminalNodeEndOfFunction] %s\n",
     currenttly_parsed_function);
   if (COHScriptObject::IsMainOpenPPLFunction(currenttly_parsed_function)) {
     assert(currenttly_parsed_function.Left(2) == "f$");
@@ -38,17 +38,17 @@ CParseTreeTerminalNodeEndOfFunction::CParseTreeTerminalNodeEndOfFunction(int rel
     // e.g. f$preflop -> DefaultPreflop
     CString default_function = "Default" + currenttly_parsed_function.Mid(2);
     default_function.SetAt(7, toupper(default_function.GetAt(7)));
-    write_log(preferences.debug_parser(), "[CParseTreeTerminalNodeEndOfFunction] %s\n",
+    write_log(Preferences()->debug_parser(), "[CParseTreeTerminalNodeEndOfFunction] %s\n",
       default_function);
     if (p_function_collection->Exists(default_function)) {
       _terminal_name = default_function;
-      write_log(preferences.debug_parser(), 
+      write_log(Preferences()->debug_parser(), 
         "[CParseTreeTerminalNodeEndOfFunction] Default bot-logic referenced.\n");
       return;
     }
   }
   // Not a main OPPL-function or fallback-logic does not exist
-  write_log(preferences.debug_parser(),
+  write_log(Preferences()->debug_parser(),
     "[CParseTreeTerminalNodeEndOfFunction] Falling back to %s\n",
     kEmptyExpression_False_Zero_WhenOthersFoldForce);
   _terminal_name = kEmptyExpression_False_Zero_WhenOthersFoldForce;

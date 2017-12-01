@@ -19,7 +19,7 @@
 #include "CBlindGuesser.h"
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineGameType.h"
@@ -53,7 +53,7 @@ void CSymbolEngineTableLimits::InitOnStartup() {
 }
 
 void CSymbolEngineTableLimits::UpdateOnConnection() {
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] UpdateOnConnection()\n");
 	number_of_saved_tablelimits = 0;
 	for (int i=0; i<k_number_of_hands_to_autolock_blinds_for_cashgames; i++)	{
@@ -74,7 +74,7 @@ void CSymbolEngineTableLimits::UpdateOnConnection() {
 }
 
 void CSymbolEngineTableLimits::UpdateOnHandreset() {
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] UpdateOnHandreset()\n");
 	blinds_locked_for_current_hand = false;
 	tablelimit_locked_for_current_hand.sblind = 0;
@@ -96,7 +96,7 @@ void CSymbolEngineTableLimits::UpdateOnMyTurn() {
 }
 
 void CSymbolEngineTableLimits::UpdateOnHeartbeat() {
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] UpdateOnHeartbeat()\n");
   if (TableLimitsNeedToBeComputed()) {
     CBlindGuesser _blind_guesser;
@@ -121,11 +121,11 @@ void CSymbolEngineTableLimits::UpdateOnHeartbeat() {
 bool CSymbolEngineTableLimits::TableLimitsNeedToBeComputed() {
   if (blinds_locked_for_current_hand 
       || blinds_locked_for_complete_session) {
-    write_log(preferences.debug_table_limits(), 
+    write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] TableLimitsNeedToBeComputed() false, because locked\n");
     return false;
   }
-  write_log(preferences.debug_table_limits(), 
+  write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] TableLimitsNeedToBeComputed() true, because not locked\n");
   return true;
 }
@@ -137,25 +137,25 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
 		// Simply leave because it is too early to lock the blinds
 		return;
 	}
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] AutoLockBlindsForCashgamesAfterNHands()\n");
-	write_log(preferences.debug_table_limits(),
+	write_log(Preferences()->debug_table_limits(),
     "[CSymbolEngineTableLimits] blinds_locked_for_complete_session: %s\n", 
     Bool2CString(blinds_locked_for_complete_session));
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] istournament: %s\n", 
     Bool2CString(p_engine_container->symbol_engine_istournament()->istournament()));
 	if (blinds_locked_for_complete_session) {
-    write_log(preferences.debug_table_limits(), 
+    write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] blinds_locked_for_complete_session\n");
-		write_log(preferences.debug_table_limits(), 
+		write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] Leaving CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
 		return;
   }
   if (p_engine_container->symbol_engine_istournament()->istournament())	{
-		write_log(preferences.debug_table_limits(), 
+		write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] istournament\n");
-		write_log(preferences.debug_table_limits(), 
+		write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] Leaving CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() early\n");
 		return;
 	}
@@ -168,41 +168,41 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCashgamesAfterNHands() {
 		tablelimit_locked_for_complete_session.bblind = median(tablelimits_first_N_hands_bblind, k_number_of_hands_to_autolock_blinds_for_cashgames);
 		tablelimit_locked_for_complete_session.bbet   = median(tablelimits_first_N_hands_bbet,   k_number_of_hands_to_autolock_blinds_for_cashgames);
 		blinds_locked_for_complete_session = true;
-		write_log(preferences.debug_table_limits(), 
+		write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] Locking blinds at %.2f / %.2f / %.2f\n", 
       tablelimit_locked_for_complete_session.sblind, 
 			tablelimit_locked_for_complete_session.bblind, 
       tablelimit_locked_for_complete_session.bbet);
 	}	else {
-		write_log(preferences.debug_table_limits(), 
+		write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] Not yet enough hands to lock blinds permanent.\n");
 	}
 }
 
 void CSymbolEngineTableLimits::RememberBlindsForCashgames() {
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] RememberBlindsForCashgames()\n");
 	if (number_of_saved_tablelimits < k_number_of_hands_to_autolock_blinds_for_cashgames)	{
-		write_log(preferences.debug_table_limits(), 
+		write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] Saving blinds for hand %d\n", number_of_saved_tablelimits);
 		tablelimits_first_N_hands_sblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.sblind;
 		tablelimits_first_N_hands_bblind[number_of_saved_tablelimits] = tablelimit_locked_for_current_hand.bblind;
 		tablelimits_first_N_hands_bbet[number_of_saved_tablelimits]   = tablelimit_locked_for_current_hand.bbet;
 		number_of_saved_tablelimits++;
 	}	else {
-		write_log(preferences.debug_table_limits(), 
+		write_log(Preferences()->debug_table_limits(), 
       "[CSymbolEngineTableLimits] Already enough saved blinds.\n");
 	}
 }
 
 void CSymbolEngineTableLimits::AutoLockBlindsForCurrentHand() {
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] AutoLockBlindsForCurrentHand()\n");
 	blinds_locked_for_current_hand = true;
 	tablelimit_locked_for_current_hand.sblind = tablelimit_best_guess.sblind;
 	tablelimit_locked_for_current_hand.bblind = tablelimit_best_guess.bblind;
 	tablelimit_locked_for_current_hand.bbet	  = tablelimit_best_guess.bbet;
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] Locked blinds at %.2f / %.2f / %.2f\n", 
     tablelimit_locked_for_current_hand.sblind,
 		tablelimit_locked_for_current_hand.bblind, 
@@ -211,9 +211,9 @@ void CSymbolEngineTableLimits::AutoLockBlindsForCurrentHand() {
 }
 
 void CSymbolEngineTableLimits::AutoLockBlinds() {
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] AutoLockBlinds()\n");
-	write_log(preferences.debug_table_limits(), 
+	write_log(Preferences()->debug_table_limits(), 
     "[CSymbolEngineTableLimits] blinds_locked_for_current_hand: %s\n", 
     Bool2CString(blinds_locked_for_current_hand));
 	// Reasonable blinds guaranteed by the way we guess.
@@ -225,7 +225,7 @@ void CSymbolEngineTableLimits::AutoLockBlinds() {
 }
 
 void CSymbolEngineTableLimits::CalcTableLimits() { 
- 	write_log(preferences.debug_table_limits(), "[CSymbolEngineTableLimits] CalcTableLimits()\n");
+ 	write_log(Preferences()->debug_table_limits(), "[CSymbolEngineTableLimits] CalcTableLimits()\n");
   UpdateOnHeartbeat();
 }
 

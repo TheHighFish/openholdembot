@@ -20,7 +20,7 @@
 #include "CFunctionCollection.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemTitle.h"
-#include "CPreferences.h"
+
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
@@ -35,7 +35,7 @@ END_MESSAGE_MAP()
 
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() {
-	write_log(preferences.debug_openholdem(), "[COpenHoldemDoc] Going to call  p_function_collection->DeleteAll\n");
+	write_log(Preferences()->debug_openholdem(), "[COpenHoldemDoc] Going to call  p_function_collection->DeleteAll\n");
 	p_function_collection->DeleteAll(false, true);
 }
 
@@ -119,7 +119,7 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		}
 		// Read ohf file
     assert(p_formula_parser != NULL);
-		write_log(preferences.debug_openholdem(), "[COpenHoldemDoc::Serialize] Going to call p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic \n");
+		write_log(Preferences()->debug_openholdem(), "[COpenHoldemDoc::Serialize] Going to call p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic \n");
 		p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic(ar);
 		SetModifiedFlag(false);
 		p_openholdem_title->UpdateTitle();

@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs7.h"
 
-#include "CPreferences.h"
+
 
 // CDlgSAPrefs7 dialog
 

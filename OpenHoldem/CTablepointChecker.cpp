@@ -16,7 +16,7 @@
 #include "CTablepointChecker.h"
 
 #include "CAutoConnector.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CTableMapLoader.h"
 #include "..\CTransform\CTransform.h"
@@ -30,7 +30,7 @@ CTablepointChecker::~CTablepointChecker() {
 }
 
 bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_index) {
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] CheckTablepoints()\n");
+  write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] CheckTablepoints()\n");
   // Function for checking tablepoints of not connected tables.
   // taking an extra screenshot
   // !! Might be reafactored if we manage to change the scraper
@@ -84,7 +84,7 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
           tablemap_connection_data[tablemap_index].TablePoint[i].radius,
           alpha, red, green, blue)) 
         {
-          write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
+          write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
           good_table_points = false;
         }
       }
@@ -97,7 +97,7 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
           -tablemap_connection_data[tablemap_index].TablePoint[i].radius,
           alpha, red, green, blue))
         {
-          write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
+          write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
           good_table_points = false;
         }
       }
@@ -109,17 +109,17 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
       DeleteDC(hdcCompatible);
       ReleaseDC(window_candidate, hdcScreen);
       if (!good_table_points) {
-        write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
+        write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
         return false;
       }
     }
   }
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
+  write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
   return true;
 }
 
 bool CTablepointChecker::CheckTablepointsOfCurrentTablemap() {
- write_log(preferences.debug_tablepoints(), "[CTablepointChecker] CheckTablepointsOfCurrentTablemap()\n");
+ write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] CheckTablepointsOfCurrentTablemap()\n");
   // Function for re-checking tablepoints of already connected tables.
   // Not using the function "CheckTablepoints()" above,
   // because that takes an extra screenshot
@@ -127,7 +127,7 @@ bool CTablepointChecker::CheckTablepointsOfCurrentTablemap() {
   // We use p_scraper->EvaluateRegion() to re-use
   // the already existing screenshot of the scraper.
   assert(p_autoconnector != NULL);
-  write_log(preferences.debug_alltherest(), "[CTablePointChecker] location Johnny_4\n");
+  write_log(Preferences()->debug_alltherest(), "[CTablePointChecker] location Johnny_4\n");
   assert(p_autoconnector->IsConnectedToAnything());
   for (int i = 0; i < k_max_number_of_tablepoints; ++i) {
     assert(p_tablemap != NULL);
@@ -138,13 +138,13 @@ bool CTablepointChecker::CheckTablepointsOfCurrentTablemap() {
       assert(p_scraper != NULL);
       p_scraper->EvaluateRegion(tablepointX, &tablepoint_result);
       if (tablepoint_result != "true") {
-        write_log(preferences.debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
-        write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
+        write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] tablepoint%i failed\n", i);
+        write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
         return false;
       }
     }
   }
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
+  write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] All tablepoints match.\n");
   return true;
 }
 
@@ -154,7 +154,7 @@ bool CTablepointChecker::TablepointsMismatchedTheLastNHeartbeats() {
   } else {
     ++_number_of_mismatches_the_last_N_heartbeats;
   }
-  write_log(preferences.debug_tablepoints(), "[CTablepointChecker] Tablepoints failed %i heartbeats in a row\n",
+  write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] Tablepoints failed %i heartbeats in a row\n",
     _number_of_mismatches_the_last_N_heartbeats);
   if (_number_of_mismatches_the_last_N_heartbeats > kMaxToleratedHeartbeatsWithMismatchingTablepointsBeforeDisconnect) {
     return true;

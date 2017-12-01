@@ -14,7 +14,7 @@
 #include "stdafx.h"
 #include "MemoryLogging.h"
 
-#include "CPreferences.h"
+
 
 #include <psapi.h>
 #include "Windows.h"
@@ -22,7 +22,7 @@
 int last_working_set_size = 0;
 
 void LogMemoryUsage(char *message) {
-  if (!preferences.debug_memory_usage()) return;
+  if (!Preferences()->debug_memory_usage()) return;
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms683180%28v=vs.85%29.aspx
   DWORD process_ID = GetCurrentProcessId();
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms682050%28v=vs.85%29.aspx 

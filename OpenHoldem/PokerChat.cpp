@@ -37,7 +37,7 @@
 #include <time.h>
 #include <windows.h>
 #include <winuser.h>
-#include "CPreferences.h"
+
 #include "..\DLLs\User_DLL\user.h"
 
 char *_the_chat_message = NULL;
@@ -109,10 +109,10 @@ void ComputeFirstPossibleNextChatTime(void) {
 	time_t the_actual_time;
 	time(&the_actual_time);
 	_first_possible_next_chat_time = the_actual_time +
-								   preferences.chat_min_delay() +
+								   Preferences()->chat_min_delay() +
 								   // We have to convert to a double here,
 								   // as integer "division" would be result in zero.
-								   (double(rand()) / RAND_MAX) * preferences.chat_random_delay();
+								   (double(rand()) / RAND_MAX) * Preferences()->chat_random_delay();
 }
 
 // Simple messages for the formula guys.

@@ -15,7 +15,7 @@
 #include "CDebugTab.h"
 
 #include "CFormulaParser.h"
-#include "CPreferences.h"
+
 
 CDebugTab *p_debug_tab = NULL; 
 
@@ -61,19 +61,19 @@ CString CDebugTab::EvaluateAll() {
 }
 
 void CDebugTab::Clear() {
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Clear()\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Clear()\n");
   assert(_number_of_expressions >= 0);
   assert(_number_of_expressions <= kMaxSizeOfDebugTab);
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
   for (int i=0; i<kMaxSizeOfDebugTab; ++i) {
     _expression_texts[i] = "";
     // No longer deleting any parse-trees here,
     // as parse-trees get handled by CMemoryPool
     _expressions[i] = NULL;
   }
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Expressions deleted\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Expressions deleted\n");
   _number_of_expressions = 0;
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Done\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Done\n");
 }
 
 void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expression) {
@@ -92,7 +92,7 @@ void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expressio
 
 void* CDebugTab::operator new(size_t size) {
   assert(PMemoryPoolParser() != NULL);
-  write_log(preferences.debug_memory_usage(), "[CDebugTab] Allocating %i bytes\n", size);
+  write_log(Preferences()->debug_memory_usage(), "[CDebugTab] Allocating %i bytes\n", size);
   return p_memory_pool_global->Allocate(size);
 }
 

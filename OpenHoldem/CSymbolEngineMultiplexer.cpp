@@ -20,7 +20,7 @@
 
 #include "CEngineContainer.h"
 #include "CFormulaParser.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
@@ -116,7 +116,7 @@ CString CSymbolEngineMultiplexer::MultiplexedSymbolName(CString name) {
     return name;
   }
   CString postfix = name.Mid(underscore_position + 1);
-  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Postfix %s\n", postfix);
+  write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] Postfix %s\n", postfix);
   bool valid_postfix = false;
   for (int i = 0; i < kNumberOfSupportedPostfixes; ++i) {
     if (postfix == kSupportedPostFixes[i]) {
@@ -143,13 +143,13 @@ CString CSymbolEngineMultiplexer::MultiplexedSymbolName(CString name) {
     }
   }
   CString pure_name = name.Left(underscore_position);
-  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Pure name %s\n", pure_name);
+  write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] Pure name %s\n", pure_name);
   // Recurse, to resolve multiple postfixes
   CString multiplexed_name = MultiplexedSymbolName(pure_name);
   // Append multiplexed postfix by its evaluation,
   // e.g. balance_user -> balance3 if the user sits in chair 3.
   multiplexed_name += Number2CString(evaluated_postfix, 0);
-  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] Multiplexed name %s\n",
+  write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] Multiplexed name %s\n",
     multiplexed_name);
   return multiplexed_name;
 }
@@ -172,7 +172,7 @@ bool CSymbolEngineMultiplexer::EvaluateSymbol(const CString name, double *result
     return false;
   }
   bool success = p_engine_container->EvaluateSymbol(multiplexed_symbol_name, result, log);
-  write_log(preferences.debug_multiplexer(), "[CSymbolEngineMultiplexer] %s -> %s -> %.2f\n",
+  write_log(Preferences()->debug_multiplexer(), "[CSymbolEngineMultiplexer] %s -> %s -> %.2f\n",
     name, multiplexed_symbol_name, *result);
   return success;
 }

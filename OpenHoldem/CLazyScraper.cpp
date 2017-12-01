@@ -18,7 +18,7 @@
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 #include "CHandresetDetector.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineHistory.h"

@@ -20,7 +20,7 @@
 #include "CFormulaparser.h"
 #include "COHScriptObject.h"
 #include "CParseErrors.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "TokenizerConstants.h"
 
@@ -125,7 +125,7 @@ int CTokenizer::LookAhead(bool expect_action /*= false */) {
   if (expect_action) {
     CheckTokenForOpenPPLAction(&_last_token);
   }
-  write_log(preferences.debug_tokenizer(), "[CTokenizer] \"%s\" -> %i\n",
+  write_log(Preferences()->debug_tokenizer(), "[CTokenizer] \"%s\" -> %i\n",
     GetTokenString(), _last_token);
 	return _last_token;
 }

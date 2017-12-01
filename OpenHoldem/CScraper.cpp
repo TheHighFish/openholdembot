@@ -21,7 +21,7 @@
 #include "CAutoconnector.h"
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -77,11 +77,11 @@ CScraper::~CScraper(void) {
 }
 
 bool CScraper::ProcessRegion(RMapCI r_iter) {
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CScraper] ProcessRegion %s (%i, %i, %i, %i)\n",
     r_iter->first, r_iter->second.left, r_iter->second.top,
     r_iter->second.right, r_iter->second.bottom);
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CScraper] ProcessRegion color %i radius %i transform %s\n",
     r_iter->second.color, r_iter->second.radius, r_iter->second.transform);
 	__HDC_HEADER
@@ -109,7 +109,7 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 
 bool CScraper::EvaluateRegion(CString name, CString *result) {
   __HDC_HEADER
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
     "[CScraper] EvaluateRegion %s\n", name);
 	CTransform	trans;
 	RMapCI		r_iter = p_tablemap->r$()->find(name.GetString());
@@ -118,16 +118,16 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
     ++total_region_counter;
 		if (ProcessRegion(r_iter)) {
       ++identical_region_counter;
-      write_log(preferences.debug_scraper(),
+      write_log(Preferences()->debug_scraper(),
         "[CScraper] Region %s identical\n", name);
     } else {
-      write_log(preferences.debug_scraper(),
+      write_log(Preferences()->debug_scraper(),
         "[CScraper] Region %s NOT identical\n", name);
     }
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
 		trans.DoTransform(r_iter, hdcCompatible, result);
 		SelectObject(hdcCompatible, old_bitmap);
-		write_log(preferences.debug_scraper(), "[CScraper] EvaluateRegion(), [%s] -> [%s]\n", 
+		write_log(Preferences()->debug_scraper(), "[CScraper] EvaluateRegion(), [%s] -> [%s]\n", 
 			name, *result);
     __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
@@ -144,7 +144,7 @@ bool CScraper::EvaluateRegion(CString name, CString *result) {
 void CScraper::EvaluateTrueFalseRegion(bool *result, const CString name) {
   CString text_result;
 	if (EvaluateRegion(name, &text_result))	{
-    write_log(preferences.debug_scraper(), "[CScraper] %s result %s\n", 
+    write_log(Preferences()->debug_scraper(), "[CScraper] %s result %s\n", 
       name, text_result.GetString());
     if (text_result == "true") {
       *result = true;
@@ -353,12 +353,12 @@ void CScraper::ScrapeSlider() {
 				handle_xy.x = handleCI->second.left + k;
 				handle_xy.y = handleCI->second.top;
         p_casino_interface->_allin_slider.SetHandlePosition(handle_xy);
-				write_log(preferences.debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
+				write_log(Preferences()->debug_scraper(), "[CScraper] i3handle, result %d,%d\n", handle_xy.x, handle_xy.y);
         __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 				return;
 			}
 		}
-		write_log(preferences.debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
+		write_log(Preferences()->debug_scraper(), "[CScraper] i3handle, cannot find handle in the slider region...\n");
 	}
   __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 }
@@ -426,11 +426,11 @@ int CScraper::ScrapeNoCard(CString base_name){
   CString no_card_result;
   if (EvaluateRegion(card_no_card, &no_card_result) 
 		  && (no_card_result == "true"))	{
-    write_log(preferences.debug_scraper(), "[CScraper] ScrapeNoCard(%s) -> true\n",
+    write_log(Preferences()->debug_scraper(), "[CScraper] ScrapeNoCard(%s) -> true\n",
       card_no_card);
     return CARD_NOCARD;
   }
-  write_log(preferences.debug_scraper(), "[CScraper] ScrapeNoCard(%s) -> false\n",
+  write_log(Preferences()->debug_scraper(), "[CScraper] ScrapeNoCard(%s) -> false\n",
       card_no_card);
   return CARD_UNDEFINED;
 }
@@ -593,7 +593,7 @@ void CScraper::ScrapeName(int chair) {
 	// Player name uXname
 	s.Format("u%dname", chair);
 	EvaluateRegion(s, &result);	
-	write_log(preferences.debug_scraper(), "[CScraper] u%dname, result %s\n", chair, result.GetString());
+	write_log(Preferences()->debug_scraper(), "[CScraper] u%dname, result %s\n", chair, result.GetString());
 	if (result != "")	{
     p_table_state->Player(chair)->set_name(result);
 		return;
@@ -601,7 +601,7 @@ void CScraper::ScrapeName(int chair) {
 	// Player name pXname
 	s.Format("p%dname", chair);
 	EvaluateRegion(s, &result);
-	write_log(preferences.debug_scraper(), "[CScraper] p%dname, result %s\n", chair, result.GetString());
+	write_log(Preferences()->debug_scraper(), "[CScraper] p%dname, result %s\n", chair, result.GetString());
 	if (result != "") {
 		p_table_state->Player(chair)->set_name(result);
     return;
@@ -615,13 +615,13 @@ CString CScraper::ScrapeUPBalance(int chair, char scrape_u_else_p) {
   name.Format("%c%dbalance", scrape_u_else_p, chair);
   if (EvaluateRegion(name, &text)) {
 		if (p_string_match->IsStringAllin(text)) { 
-      write_log(preferences.debug_scraper(), "[CScraper] %s, result ALLIN", name);
+      write_log(Preferences()->debug_scraper(), "[CScraper] %s, result ALLIN", name);
        return Number2CString(0.0);
 		}	else if (	text.MakeLower().Find("out")!=-1
 				||	text.MakeLower().Find("inactive")!=-1
 				||	text.MakeLower().Find("away")!=-1 ) {
 			p_table_state->Player(chair)->set_active(false);
-			write_log(preferences.debug_scraper(), "[CScraper] %s, result OUT/INACTIVE/AWAY\n", name);
+			write_log(Preferences()->debug_scraper(), "[CScraper] %s, result OUT/INACTIVE/AWAY\n", name);
       return Number2CString(kUndefinedZero);
 		}	else {
       return text;
@@ -682,7 +682,7 @@ void CScraper::ScrapeBet(int chair) {
 
 		t.Format("%.2f", chipscrape_res);
 		p_table_state->Player(chair)->_bet.SetValue(t.GetString());
-		write_log(preferences.debug_scraper(), "[CScraper] p%dchipXY, result %f\n", 
+		write_log(Preferences()->debug_scraper(), "[CScraper] p%dchipXY, result %f\n", 
       chair, p_table_state->Player(chair)->_bet.GetValue());
 	}
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
@@ -694,9 +694,9 @@ void CScraper::ScrapeAllPlayerCards() {
 			p_table_state->Player(i)->hole_cards(j)->ClearValue();
 		}
 	}
-	write_log(preferences.debug_scraper(), "[CScraper] ScrapeAllPlayerCards()\n");
+	write_log(Preferences()->debug_scraper(), "[CScraper] ScrapeAllPlayerCards()\n");
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		write_log(preferences.debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
+		write_log(Preferences()->debug_scraper(), "[CScraper] Calling ScrapePlayerCards, chair %d.\n", i);
 		ScrapePlayerCards(i);
 	}
 }
@@ -730,7 +730,7 @@ void CScraper::ScrapePots() {
 			SelectObject(hdcCompatible, old_bitmap);
 			t.Format("%.2f", chipscrape_res);
 			p_table_state->set_pot(j, t.GetString());
-			write_log(preferences.debug_scraper(), 
+			write_log(Preferences()->debug_scraper(), 
         "[CScraper] c0pot%dchipXY, result %f\n", j, p_table_state->Pot(j));
 
 			// update the bitmap for second chip position in the first stack
@@ -1050,7 +1050,7 @@ bool CScraper::IsIdenticalScrape() {
 		DeleteDC(hdcCompatible);
 		DeleteDC(hdcScreen);
 		ReleaseDC(p_autoconnector->attached_hwnd(), hdc);
-		write_log(preferences.debug_scraper(), "[CScraper] IsIdenticalScrape() true\n");
+		write_log(Preferences()->debug_scraper(), "[CScraper] IsIdenticalScrape() true\n");
     __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
 	}
@@ -1060,7 +1060,7 @@ bool CScraper::IsIdenticalScrape() {
 	SelectObject(hdc, old_bitmap);
 
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
-	write_log(preferences.debug_scraper(), "[CScraper] IsIdenticalScrape() false\n");
+	write_log(Preferences()->debug_scraper(), "[CScraper] IsIdenticalScrape() false\n");
 	return false;
 }
 

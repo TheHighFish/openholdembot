@@ -13,7 +13,7 @@
 
 #include "stdafx.h"
 #include "CSessionCounter.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 // Global instantiation of CSessionCounter class
@@ -27,7 +27,7 @@ CSessionCounter::CSessionCounter()
 	for (int i=0; i<MAX_SESSION_IDS; i++)
 	{
 		// Name the mutexes A..Y
-		CString mutex_name = preferences.mutex_name() + "_" + CString(char('A' + i));
+		CString mutex_name = Preferences()->mutex_name() + "_" + CString(char('A' + i));
 		hMutex = CreateMutex(0, FALSE, mutex_name);
 		if (GetLastError() != ERROR_ALREADY_EXISTS)
 		{

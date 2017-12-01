@@ -21,5 +21,7 @@
 #define GLOBALS_DLL_API __declspec(dllimport)
 #endif
 
+class CPreferences;
+
 GLOBALS_DLL_API void InitGlobals();
-GLOBALS_DLL_API void Preferences();
+GLOBALS_DLL_API CPreferences* Preferences();

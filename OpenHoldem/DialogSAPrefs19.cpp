@@ -18,7 +18,7 @@
 #include "DialogSAPrefs19.h"
 
 #include "SAPrefsSubDlg.h"
-#include "CPreferences.h"
+
 
 
 // CDlgSAPrefs19 dialog
@@ -51,7 +51,7 @@ BOOL CDlgSAPrefs19::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_handhistory_generator_enable_Button.SetCheck(preferences.handhistory_generator_enable());
+	_handhistory_generator_enable_Button.SetCheck(Preferences()->handhistory_generator_enable());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -59,7 +59,7 @@ BOOL CDlgSAPrefs19::OnInitDialog()
 
 void CDlgSAPrefs19::OnOK()
 {
-	preferences.SetValue(k_prefs_handhistory_generator_enable, _handhistory_generator_enable_Button.GetCheck() == BST_CHECKED ? true : false);
+	Preferences()->SetValue(k_prefs_handhistory_generator_enable, _handhistory_generator_enable_Button.GetCheck() == BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();
 }

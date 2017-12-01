@@ -23,7 +23,7 @@
 #include "CParserSymbolTable.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -71,7 +71,7 @@ void CParseTreeOperatorNode::MakeWhenCondition(TPParseTreeNode condition) {
 }
 
 double CParseTreeOperatorNode::Evaluate(bool log /* = false */) {
- write_log(preferences.debug_formula(), 
+ write_log(Preferences()->debug_formula(), 
     "[CParseTreeOperatorNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
@@ -284,7 +284,7 @@ double CParseTreeOperatorNode::EvaluateSibbling(
     // for better readability of the log-file.
     double null_value = CParseTreeTerminalNodeIdentifier::EvaluateIdentifier(
       kEmptyExpression_False_Zero_WhenOthersFoldForce, log);
-		write_log(preferences.debug_formula(), 
+		write_log(Preferences()->debug_formula(), 
       "[CParseTreeOperatorNode] Evaluating empty tree: false / zero / fold\n");
     assert(null_value == kUndefinedZero);
     return null_value;

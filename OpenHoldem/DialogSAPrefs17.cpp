@@ -18,7 +18,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs17.h"
-#include "CPreferences.h"
+
 
 // CDlgSAPrefs17 dialog
 
@@ -48,8 +48,8 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs17::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	m_ConfigurationInputSettings_Button.SetCheck(preferences.configurationcheck_input_settings() != 0);
-	m_ConfigurationFontSettings_Button.SetCheck(preferences.configurationcheck_font_settings() != 0);
+	m_ConfigurationInputSettings_Button.SetCheck(Preferences()->configurationcheck_input_settings() != 0);
+	m_ConfigurationFontSettings_Button.SetCheck(Preferences()->configurationcheck_font_settings() != 0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -57,8 +57,8 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 
 void CDlgSAPrefs17::OnOK()
 {
-	preferences.SetValue(k_prefs_configurationcheck_input_settings, m_ConfigurationInputSettings_Button.GetCheck());
-	preferences.SetValue(k_prefs_configurationcheck_font_settings, m_ConfigurationFontSettings_Button.GetCheck());
+	Preferences()->SetValue(k_prefs_configurationcheck_input_settings, m_ConfigurationInputSettings_Button.GetCheck());
+	Preferences()->SetValue(k_prefs_configurationcheck_font_settings, m_ConfigurationFontSettings_Button.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }
 

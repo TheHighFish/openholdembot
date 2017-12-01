@@ -31,7 +31,7 @@
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemStatusbar.h"
 #include "COpenHoldemTitle.h"
-#include "CPreferences.h"
+
 #include "CProblemSolver.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CScraper.h"
@@ -196,7 +196,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	HINSTANCE hInst = AfxGetInstanceHandle();
 
 	// Set class name
-	if (!(::GetClassInfo(hInst, preferences.window_class_name(), &wnd))) {
+	if (!(::GetClassInfo(hInst, Preferences()->window_class_name(), &wnd))) {
 		wnd.style			    = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 		wnd.lpfnWndProc		= ::DefWindowProc;
 		wnd.cbClsExtra		= wnd.cbWndExtra = 0;
@@ -205,7 +205,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 		wnd.hCursor			  = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 		wnd.hbrBackground	= (HBRUSH) (COLOR_3DFACE + 1);
 		wnd.lpszMenuName	= NULL;
-		wnd.lpszClassName	= preferences.window_class_name();
+		wnd.lpszClassName	= Preferences()->window_class_name();
     // Fixed size window, not resizable 
     // Because bad-sized windows are annoying
     // and because of potential support for a 4th user-card ;-)
@@ -218,7 +218,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 
 		AfxRegisterClass( &wnd );
 	}
-	cs.lpszClass = preferences.window_class_name();
+	cs.lpszClass = Preferences()->window_class_name();
 
 	// Restore window location and size
   // -32 to avoid placement directly under the taskbar,
@@ -228,8 +228,8 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON - 32);
   // Make sure that our coordinates are not out of screen
   // (too large or even negative)
-	cs.x = min(preferences.main_x(), max_x);
-	cs.y = min(preferences.main_y(), max_y);
+	cs.x = min(Preferences()->main_x(), max_x);
+	cs.y = min(Preferences()->main_y(), max_y);
   cs.x = max(cs.x, 0);
   cs.y = max(cs.y, 0);
   // GUI size
@@ -286,19 +286,19 @@ void CMainFrame::OnEditClearLog() {
 // Menu -> Edit -> View Scraper Output
 void CMainFrame::OnScraperOutput() {
 	if (m_ScraperOutputDlg) {
-		write_log(preferences.debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
-		write_log(preferences.debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
+		write_log(Preferences()->debug_gui(), "[GUI] m_ScraperOutputDlg = %i\n", m_ScraperOutputDlg);
+		write_log(Preferences()->debug_gui(), "[GUI] Going to destroy existing scraper output dialog\n");
 
 		BOOL	bWasShown = ::IsWindow(m_ScraperOutputDlg->m_hWnd) && m_ScraperOutputDlg->IsWindowVisible();
-		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
+		write_log(Preferences()->debug_gui(), "[GUI] Scraper output dialog was visible: %s\n", Bool2CString(bWasShown));
 
     CDlgScraperOutput::DestroyWindowSafely();
 		if (bWasShown) {
-			write_log(preferences.debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
+			write_log(Preferences()->debug_gui(), "[GUI] Scraper output dialog destroyed; going to return\n");
 			return;
 		}
 	}	else {
-		write_log(preferences.debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
+		write_log(Preferences()->debug_gui(), "[GUI] Scraper output dialog does not yet exist\n");
 	}
 	
 	MessageBox_Interactive("Please note:\n"
@@ -310,15 +310,15 @@ void CMainFrame::OnScraperOutput() {
 	  "This is a feature, not a bug.\n",
 	  "Info", 0);
 
-	write_log(preferences.debug_gui(), "[GUI] Going to create scraper output dialog\n");
+	write_log(Preferences()->debug_gui(), "[GUI] Going to create scraper output dialog\n");
 	m_ScraperOutputDlg = new CDlgScraperOutput(this);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
+	write_log(Preferences()->debug_gui(), "[GUI] Scraper output dialog: step 1 finished\n");
 	m_ScraperOutputDlg->Create(CDlgScraperOutput::IDD,this);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
+	write_log(Preferences()->debug_gui(), "[GUI] Scraper output dialog: step 2 finished\n");
 	m_ScraperOutputDlg->ShowWindow(SW_SHOW);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
+	write_log(Preferences()->debug_gui(), "[GUI] Scraper output dialog: step 3 finished\n");
 	p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, true);
-	write_log(preferences.debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
+	write_log(Preferences()->debug_gui(), "[GUI] Scraper output dialog: step 4 (final) finished\n"); 
 }
 
 void CMainFrame::OnViewShootreplayframe() {
@@ -408,17 +408,17 @@ BOOL CMainFrame::DestroyWindow() {
 	// Save window position
   WINDOWPLACEMENT wp;
 	GetWindowPlacement(&wp); 		
-	preferences.SetValue(k_prefs_main_x, wp.rcNormalPosition.left); 		
- 	preferences.SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
-  write_log(preferences.debug_gui(), "[GUI] Going to delete the GUI\n");
-  write_log(preferences.debug_gui(), "[GUI] this = [%i]\n", this);
+	Preferences()->SetValue(k_prefs_main_x, wp.rcNormalPosition.left); 		
+ 	Preferences()->SetValue(k_prefs_main_y, wp.rcNormalPosition.top);
+  write_log(Preferences()->debug_gui(), "[GUI] Going to delete the GUI\n");
+  write_log(Preferences()->debug_gui(), "[GUI] this = [%i]\n", this);
   // All OK here
   assert(AfxCheckMemory());
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20459
   // probably caused by incorrect order of deletion,
   // caused by incorrect position of StopThreads and KillTimers.
   bool success = CFrameWnd::DestroyWindow(); 
-  write_log(preferences.debug_gui(), "[GUI] Window deleted\n");
+  write_log(Preferences()->debug_gui(), "[GUI] Window deleted\n");
   return success;
 }
 
@@ -442,7 +442,7 @@ void CMainFrame::OnFileOpen() {
 }
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
-  write_log(preferences.debug_timers(), "[GUI] CMainFrame::OnTimer()\n");
+  write_log(Preferences()->debug_timers(), "[GUI] CMainFrame::OnTimer()\n");
   // There was a race-condition in this function during termination 
   // if OnTimer was in progress and p_autoconnector became dangling.
   // This is probably fixed, as we now kill the timers
@@ -458,43 +458,43 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent) {
     return;
   }
   if (nIDEvent == HWND_CHECK_TIMER) {
-    write_log(preferences.debug_timers(), "[GUI] OnTimer checking table connection\n");
+    write_log(Preferences()->debug_timers(), "[GUI] OnTimer checking table connection\n");
     // Important: check is_conected first.
     // Checking only garbage HWND, then disconnecting
     // can lead to freezing if it colludes with Connect()
  	  if (p_autoconnector->IsConnectedToGoneWindow()) {
  	    // Table disappeared 		
-      write_log(preferences.debug_timers(), "[GUI] OnTimer found disappeared window()\n");
+      write_log(Preferences()->debug_timers(), "[GUI] OnTimer found disappeared window()\n");
  	    p_autoconnector->Disconnect("table disappeared"); 		 		
     }
  	} else if (nIDEvent == ENABLE_BUTTONS_TIMER) {
 		// Autoplayer
 		// Since OH 4.0.5 we support autoplaying immediatelly after connection
 		// without the need to know the userchair to act on secondary formulas.
-    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_E\n");
+    write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_E\n");
 		if (p_autoconnector->IsConnectedToAnything()) 	{
-      write_log(preferences.debug_timers(), "[GUI] OnTimer enabling buttons\n");
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_F\n");
+      write_log(Preferences()->debug_timers(), "[GUI] OnTimer enabling buttons\n");
+      write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_F\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, true);
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_G\n");
+      write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_G\n");
       p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, true);
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_L\n");
+      write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_L\n");
 		}	else {
-      write_log(preferences.debug_timers(), "[GUI] OnTimer disabling buttons\n");
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_H\n");
+      write_log(Preferences()->debug_timers(), "[GUI] OnTimer disabling buttons\n");
+      write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_H\n");
 			p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_AUTOPLAYER, false);
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_I\n");
+      write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_I\n");
       p_flags_toolbar->EnableButton(ID_MAIN_TOOLBAR_SHOOTFRAME, false);
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_N\n");
+      write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_N\n");
 		}
-    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_O\n");
+    write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_O\n");
 	}	else if (nIDEvent == UPDATE_STATUS_BAR_TIMER) {
-    write_log(preferences.debug_timers(), "[GUI] OnTimer updating statusbar\n");
-    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_P\n");
+    write_log(Preferences()->debug_timers(), "[GUI] OnTimer updating statusbar\n");
+    write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_P\n");
 		p_openholdem_statusbar->OnUpdateStatusbar();
-    write_log(preferences.debug_alltherest(), "[GUI] location Johnny_Q\n");
+    write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_Q\n");
 	}
-  write_log(preferences.debug_alltherest(), "[GUI] location Johnny_R\n");
+  write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_R\n");
 	CWnd::OnTimer(nIDEvent); 
 }
 

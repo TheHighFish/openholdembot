@@ -17,10 +17,14 @@
 #define GLOBALS_DLL_EXPORTS
 
 #include "globals.h"
+#include "..\Preferences_DLL\Preferences.h"
+
+CPreferences preferences;
 
 GLOBALS_DLL_API void InitGlobals() {
 }
 
-GLOBALS_DLL_API void Preferences() {
+GLOBALS_DLL_API CPreferences* Preferences() {
+  return &preferences;
 }
 

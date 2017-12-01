@@ -16,7 +16,7 @@
 
 #include "CAutoConnector.h"
 #include "CFileSystemMonitor.h"
-#include "CPreferences.h"
+
 #include "CTablemapCompletenessChecker.h"
 #include "CTablePointChecker.h"
 
@@ -29,7 +29,7 @@ CTableMapLoader *p_tablemap_loader = NULL;
 std::map<int, t_tablemap_connection_data> tablemap_connection_data;
 
 CTableMapLoader::CTableMapLoader() {
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] CTableMapLoader()\n");
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] CTableMapLoader()\n");
 	tablemaps_in_scraper_folder_already_parsed = false;
 	// Parse all tablemaps once on startup.
 	// We want to avoid heavy workload in the connect()-function.
@@ -43,7 +43,7 @@ CTableMapLoader::~CTableMapLoader() {
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard) {
 	CFileFind	hFile;
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
   tablemap_connection_data.clear();
 	_number_of_tablemaps_loaded = 0;
 	CString	current_path = p_tablemap->filepath();
@@ -56,14 +56,14 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWild
 				ExtractConnectionDataFromCurrentTablemap(p_tablemap);
         CTablemapCompletenessChecker tablemap_completeness_checker;
         tablemap_completeness_checker.VerifyMap();
-				write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
+				write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
 			}
 		}
 	}
 }
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData() {
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
 	ParseAllTableMapsToLoadConnectionData(TableMapWildcard());	
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
@@ -73,11 +73,11 @@ bool CTableMapLoader::tablemap_connection_dataAlreadyStored(CString TablemapFile
 	for (int i=0; i<_number_of_tablemaps_loaded; i++)	{
     assert(tablemap_connection_data[i].FilePath != "");
 		if (tablemap_connection_data[i].FilePath == TablemapFilePath)	{
-			write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [true]\n", TablemapFilePath);
+			write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [true]\n", TablemapFilePath);
 			return true;
 		}
 	}
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [false]\n", TablemapFilePath);
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataAlreadyStored [%s] [false]\n", TablemapFilePath);
 	return false;
 }
 
@@ -88,7 +88,7 @@ void CTableMapLoader::CheckForDuplicatedTablemaps() {
 			if	((tablemap_connection_data[i].SiteName == tablemap_connection_data[j].SiteName)
 				&& (tablemap_connection_data[i].TitleText == tablemap_connection_data[j].TitleText))
 			{
-				write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataDuplicated [%s, %s]  [true]\n", 
+				write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] tablemap_connection_dataDuplicated [%s, %s]  [true]\n", 
 					tablemap_connection_data[i].SiteName, tablemap_connection_data[i].TitleText);
 				error_message.Format("It seems you have multiple versions of the same map in your scraper folder.\n\n"\
 					"SiteName = %s\n"\
@@ -104,11 +104,11 @@ void CTableMapLoader::CheckForDuplicatedTablemaps() {
 }
 
 void CTableMapLoader::ExtractConnectionDataFromCurrentTablemap(CTablemap *cmap) {
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): %s\n", cmap->filepath());
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): %s\n", cmap->filepath());
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] number_of_tablemaps_loaded: %d\n", _number_of_tablemaps_loaded);
 	// Avoiding to store the data twice, e.g. when we load a known TM manually
 	if (tablemap_connection_dataAlreadyStored(cmap->filepath())) 	{
-		write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): already stored; early exit\n");
+		write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] ExtractConnectionDataFromCurrentTablemap(): already stored; early exit\n");
 		return;
 	}
 	tablemap_connection_data[_number_of_tablemaps_loaded].FilePath = cmap->filepath();
@@ -154,12 +154,12 @@ void CTableMapLoader::ReloadAllTablemapsIfChanged() {
     // Note: This solution might lose some game-history (reset),
     // but that is perfectly acceptable for development
     // and hot-plugging of TMs won't happen in production.
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Tablemaps changed; going to reload.\n");
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Tablemaps changed; going to reload.\n");
     p_autoconnector->Disconnect("tablemaps changed and need to be reloaded");
     ParseAllTableMapsToLoadConnectionData();
   }
   else {
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] All tablemaps unchanged; nothing to do.\n");
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] All tablemaps unchanged; nothing to do.\n");
   }
 }
 
@@ -180,26 +180,26 @@ bool TablemapMatchesWindowByTablepoints(int MapIndex, HWND window);
 // as it has to be called by the callback-function 
 // BOOL CALLBACK EnumProcTopLevelWindowList(HWND windowwnd, LPARAM lparam) 
 bool Check_TM_Against_Single_Window(int MapIndex, HWND window) { 
-	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Check_TM_Against_Single_Window(..)\n");
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Checking map [%d] and window [%d]\n", 
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Check_TM_Against_Single_Window(..)\n");
+  write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Checking map [%d] and window [%d]\n", 
     MapIndex, window);
   if (!TablemapMatchesWindowBySize(MapIndex, window)) {
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Size does not match\n");
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Size does not match\n");
     return false;
   }
   if (!TablemapMatchesWindowByTitle(MapIndex, window)) {
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Title does not match\n");
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Title does not match\n");
     return false;
   }
   if (!TablemapMatchesWindowByNegativeTitles(MapIndex, window)) {
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Megative title does not match\n");
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Megative title does not match\n");
     return false;
   }
   if (!TablemapMatchesWindowByTablepoints(MapIndex, window)) {
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Tablepoint does not match\n");
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Tablepoint does not match\n");
     return false;
   }
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Tablemap [%d] matches window [%d]\n", 
+  write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Tablemap [%d] matches window [%d]\n", 
     MapIndex, window);
   return true;
 }
@@ -211,7 +211,7 @@ bool TablemapMatchesWindowBySize(int MapIndex, HWND window) {
   if (crect.right > tablemap_connection_data[MapIndex].ClientSizeMaxX) return false;
   if (crect.bottom < tablemap_connection_data[MapIndex].ClientSizeMinY) return false;
   if (crect.bottom > tablemap_connection_data[MapIndex].ClientSizeMaxY) return false;
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Good size: (%dpx, %dpx) in clientsizemin/max\n",
+  write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Good size: (%dpx, %dpx) in clientsizemin/max\n",
     crect.right, crect.bottom,
     tablemap_connection_data[MapIndex].ClientSizeMinX, tablemap_connection_data[MapIndex].ClientSizeMinY);
   return true;
@@ -225,7 +225,7 @@ bool TablemapMatchesWindowByTitle(int MapIndex, HWND window) {
   if ((tablemap_connection_data[MapIndex].TitleText != "")
     && title.Find(tablemap_connection_data[MapIndex].TitleText) != -1) {
     // Matching non-empty title-text
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Title [%s] matches.\n", title);
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Title [%s] matches.\n", title);
     return true;
   }
   if ((tablemap_connection_data[MapIndex].TitleText == "")
@@ -236,7 +236,7 @@ bool TablemapMatchesWindowByTitle(int MapIndex, HWND window) {
     // connect to crappy ghost-windows. The existence of tablepoints
     // gets verified by the TablemapcompletenessChecker.
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20382
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Empty title [%s] matches.\n", title);
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Empty title [%s] matches.\n", title);
     return true;
   }
   // titletext din't match
@@ -244,11 +244,11 @@ bool TablemapMatchesWindowByTitle(int MapIndex, HWND window) {
   for (int i = 0; i<k_max_number_of_titletexts; i++) {
     if ((tablemap_connection_data[MapIndex].TitleText_0_9[i] != "")
       && (title.Find(tablemap_connection_data[MapIndex].TitleText_0_9[i]) != -1)) {
-      write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Title [%s] matches.\n", title);
+      write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Title [%s] matches.\n", title);
       return true;
     }
   }
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Title [%s] does not match.\n", title);
+  write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Title [%s] does not match.\n", title);
   return false;
 }
 
@@ -259,7 +259,7 @@ bool TablemapMatchesWindowByNegativeTitles(int MapIndex, HWND window) {
   CString title = text;
   if ((tablemap_connection_data[MapIndex].NegativeTitleText != "")
     && title.Find(tablemap_connection_data[MapIndex].NegativeTitleText) != -1) {
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Failure. Title [%s] matches negative text.\n", title);
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Failure. Title [%s] matches negative text.\n", title);
     return false;
   }
   // titletext din't match
@@ -267,11 +267,11 @@ bool TablemapMatchesWindowByNegativeTitles(int MapIndex, HWND window) {
   for (int i = 0; i<k_max_number_of_titletexts; i++) {
     if ((tablemap_connection_data[MapIndex].NegativeTitleText_0_9[i] != "")
       && (title.Find(tablemap_connection_data[MapIndex].NegativeTitleText_0_9[i]) != -1)) {
-      write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Failure. Title [%s] matches negative text.\n", title);
+      write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Failure. Title [%s] matches negative text.\n", title);
       return false;
     }
   }
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Success. Title [%s] does not match negative titles.\n", title);
+  write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Success. Title [%s] does not match negative titles.\n", title);
   return true;
 }
 
@@ -279,9 +279,9 @@ bool TablemapMatchesWindowByTablepoints(int MapIndex, HWND window) {
   // All tablepoints (if present must match
   CTablepointChecker tablepoint_checker;
   if (!tablepoint_checker.CheckTablepoints(window, MapIndex)) {
-    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Not all tablepoints match.\n");
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Not all tablepoints match.\n");
     return false;
   }
-  write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Window ia a match\n");
+  write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Window ia a match\n");
   return true;
 }
