@@ -1,5 +1,14 @@
 ﻿﻿v﻿12.1.4 2017-11-30
 ==================
+MAINTENANCE:
+- GUI-options: OpenHoldem will now start only the first instance visible,
+  all other windows minimized, to avoid irritating the user
+  when the autostarter opens new bot-windows.
+  {THF]
+  
+
+﻿v﻿12.1.4 2017-11-30
+==================
 BUG FIXES:
 - The new symbol bigstackchair incorrectly considered folded players.
   Thanks to Stars83 for reporting.
