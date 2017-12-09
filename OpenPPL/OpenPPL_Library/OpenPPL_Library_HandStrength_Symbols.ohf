@@ -454,6 +454,30 @@ WHEN Others RETURN HoldEm_HaveUnderPair FORCE
 WHEN isomaha RETURN Omaha_HaveUnderStraight FORCE
 WHEN Others RETURN HoldEm_HaveUnderStraight FORCE
 
+##HaveWeakBackdoorStraightDraw##
+WHEN isomaha RETURN Omaha_HaveWeakBackdoorStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakBackdoorStraightDraw FORCE
+
+##HaveWeakDoubleGutshotDraw##
+WHEN isomaha RETURN Omaha_HaveWeakDoubleGutshotDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakDoubleGutshotDraw FORCE
+
+##HaveWeakFlush##
+WHEN isomaha RETURN Omaha_HaveWeakFlush FORCE
+WHEN Others RETURN HoldEm_HaveWeakFlush FORCE
+
+##HaveWeakFlushDraw##
+WHEN isomaha RETURN Omaha_HaveWeakFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakFlushDraw FORCE
+
+##HaveWeakStraight##
+WHEN isomaha RETURN Omaha_HaveWeakStraight FORCE
+WHEN Others RETURN HoldEm_HaveWeakStraight FORCE
+
+##HaveWeakStraightDraw##
+WHEN isomaha RETURN Omaha_HaveWeakStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakStraightDraw FORCE
+
 ##PairInHand##
 WHEN isomaha RETURN Omaha_PairInHand FORCE
 WHEN Others RETURN HoldEm_PairInHand FORCE

@@ -1230,12 +1230,36 @@ OR (HigherHoleCardInPokerVal == RiverCard)
 
 ##HoldEm_HaveUnderStraight##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19504
-WHEN NOT HaveStraight RETURN false FORCE
+WHEN (nstraightfill > 0) RETURN false FORCE
 WHEN HaveNutStraight  RETURN false FORCE
 WHEN StraightOnBoard  RETURN false FORCE
 WHEN (pcbits == 0b00011) RETURN true FORCE
 WHEN (pcbits == 0b00001) RETURN true FORCE
 WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN true FORCE
+
+##Holdem_HaveWeakBackdoorStraightDraw##
+WHEN HaveBackdoorStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 2) RETURN true FORCE
+
+##Holdem_HaveWeakDoubleGutshotDraw##
+WHEN HaveDoubleGutshotDrawRETURN false FORCE
+UNFINISHED
+
+##Holdem_HaveWeakFlush##
+WHEN RETURN false FORCE
+WHEN (nsuited >= 5) RETURN true FORCE
+
+##Holdem_HaveWeakFlushDraw##
+WHEN RETURN false FORCE
+WHEN (nsuited == 4) RETURN true FORCE
+
+##Holdem_HaveWeakStraight##
+WHEN RETURN false FORCE
+WHEN (nstraightfill <= 0) RETURN true FORCE
+
+##Holdem_HaveWeakStraightDraw##
+WHEN RETURN false FORCE
+WHEN (nstraightfill == 1) RETURN true FORCE
 
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
