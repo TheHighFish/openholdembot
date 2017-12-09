@@ -7,15 +7,19 @@ BUG FIXES:
   (which is the point that matters).
   Now they also work when it is not our turn (e.g. in the debug-tab).
   Thanks to Stars83 for reporting.
+  [THF]
 - The logarithm-operator did not work due to a typo in the tokenizer.
   Thanks to Mib92 for reporting.
-
+  [THF]
+  
 MAINTENANCE:
 - GUI-options: OpenHoldem will now start only the first instance visible,
   all other windows minimized, to avoid irritating the user
   when the autostarter opens new bot-windows.
-  {THF]
- 
+  [THF]
+- Removed maldesigned OpenPPL-functions HaveAnyKindOfInsideStraightDraw
+  HaveAnyFlushDrawContributingOnlyOneCard.
+  [THF]
   
 
 ﻿v﻿12.1.4 2017-11-30
