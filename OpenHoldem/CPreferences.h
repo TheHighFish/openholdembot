@@ -110,7 +110,9 @@ enum {
   k_prefs_validator_enabled,
   k_prefs_use_auto_starter,
   k_prefs_use_auto_shutdown,
-	k_prefs_gui_start_minimized, 
+  k_prefs_gui_first_visible,
+  k_prefs_gui_all_minimized,
+  k_prefs_gui_less,
 	k_prefs_rebuy_condition_no_cards,
 	k_prefs_rebuy_condition_change_in_handnumber,
 	k_prefs_rebuy_condition_heuristic_check_for_occlusion,
@@ -293,7 +295,9 @@ class CPreferences : public CSpaceOptimizedGlobalObject {
 	// Auto-connector
 	const int autoconnector_when_to_connect() { return prefs_numerical_values[k_prefs_autoconnector_when_to_connect]; }
 	// GUI
-	const bool gui_start_minimized() { return prefs_numerical_values[k_prefs_gui_start_minimized]; }
+  const bool gui_first_visible() { return prefs_numerical_values[k_prefs_gui_first_visible]; }
+  const bool gui_all_minimized() { return prefs_numerical_values[k_prefs_gui_all_minimized]; }
+  const bool gui_less() { return prefs_numerical_values[k_prefs_gui_less]; }
 	// Rebuy
 	const bool rebuy_condition_no_cards() { return prefs_numerical_values[k_prefs_rebuy_condition_no_cards]; }
 	const bool rebuy_condition_change_in_handnumber() { return prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber]; }
