@@ -198,6 +198,7 @@
     <ClCompile Include="CFunctionCollection.cpp" />
     <ClCompile Include="COHScriptList.cpp" />
     <ClCompile Include="COHScriptObject.cpp" />
+    <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
@@ -428,6 +429,7 @@
     <ClInclude Include="CFunctionCollection.h" />
     <ClInclude Include="COHScriptList.h" />
     <ClInclude Include="COHScriptObject.h" />
+    <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc" />
