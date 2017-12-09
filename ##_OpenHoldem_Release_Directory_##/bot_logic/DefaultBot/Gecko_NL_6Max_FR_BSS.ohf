@@ -137,6 +137,9 @@
 //   * Introduced f$villain_allin and $villain_potcommitted
 //     to make the code more verbose and fixed a bug in the code
 //     that detects potcommitted villains.
+//   * Replaced f$Position_CutOff, f$Position_Button, f$Position_UTG1, 
+//     f$Position_UTG2, f$Position_Blinds, f$Position_SmallBlind, f$Position_BigBlind
+//     by OpenPPL-symbols like InCutOff.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -1990,15 +1993,6 @@ WHEN (RaisesSinceLastPlay >= 2) AND listGeckoMultipleRaisersBehindUs RETURN true
 (f$BettingAction_Single_Raiser_Before_Us && !didbetsize && call<7*bblind && f$Chart_ReRaise) ? 1 :
 (hand$AA||hand$KK||hand$QQ) ? 1 : 0
 
-##f$Position_Blinds##
-(f$Position_SmallBlind || f$Position_BigBlind)
-
-##f$Position_SmallBlind##
-(nchairsdealtright == 0)
-
-##f$Position_BigBlind##
-(nchairsdealtright == 1)
-
 ##f$BettingAction_Number_Of_Opponents_Truely_Playing##
 (`f$Bits_Opponents_Truely_Playing)      
 
@@ -2061,18 +2055,6 @@ log$SERIOUS_ERROR
 || [ InEarlyPosition2 && listGecko_OpenRaise_EP2  ] // 10%
 || [ InEarlyPosition1 && listGecko_OpenRaise_EP1  ] // 10%
 
-##f$Position_CutOff##
-(nchairsdealtleft == 1)
-
-##f$Position_Button##
-(nchairsdealtleft == 0)
-
-##f$Position_UTG1##
-(nchairsdealtleft == 3)
-
-##f$Position_UTG2##
-(nchairsdealtleft == 2)
-
 ##f$BettingAction_Hero_Did_Already_Act##
 (didrais || didcall || didchec || didbetsize)
 
@@ -2127,11 +2109,11 @@ log$SERIOUS_ERROR
 (nopponentscalling >= 3 && ncallbets<=1)
 
 ##f$Chart_MultiLimpers##
-   (f$Position_UTG1       && listGecko01)
-|| (f$Position_UTG2       && listGecko01)
-|| (f$Position_CutOff     && listGecko01)
-|| (f$Position_Button     && listGecko01)
-|| (f$Position_SmallBlind && listGecko01)
+   (InMiddlePosition2       && listGecko01)
+|| (InMiddlePosition3       && listGecko01)
+|| (InCutOff     && listGecko01)
+|| (InButton     && listGecko01)
+|| (InSmallBlind && listGecko01)
 || (f$Position_BigBlind   && listGecko01)
 
 ##f$Chart_OneLimper##
@@ -2143,15 +2125,15 @@ log$SERIOUS_ERROR
 || [ InButton && listGecko06 ]  // 30%
 
 ##f$Chart_TwoLimpers##
-   (f$Position_UTG1       && listGecko01)
-|| (f$Position_UTG2       && listGecko01)
-|| (f$Position_CutOff     && listGecko01)
-|| (f$Position_Button     && listGecko02)
-|| (f$Position_SmallBlind && listGecko01)
+   (InMiddlePosition2       && listGecko01)
+|| (InMiddlePosition3       && listGecko01)
+|| (InCutOff     && listGecko01)
+|| (InButton     && listGecko02)
+|| (InSmallBlind && listGecko01)
 || (f$Position_BigBlind   && listGecko01)
 
 ##f$Chart_CallRaise##
-   (f$Position_SmallBlind && listGecko09)
+   (InSmallBlind && listGecko09)
 || (f$Position_BigBlind   && listGecko09)
 
 ##f$real_pfr##
@@ -2176,15 +2158,15 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 
 ##f$Chart_Squeeze##
    [ f$Position_BigBlind   && listGeckoSqueeze ]
-|| [ f$Position_SmallBlind && listGeckoSqueeze ]
-|| [ f$Position_UTG2       && listGeckoSqueeze ]
+|| [ InSmallBlind && listGeckoSqueeze ]
+|| [ InMiddlePosition3       && listGeckoSqueeze ]
 
-|| [ f$Position_Button && (      dealpositionrais==3 && listGeckoSqueeze
+|| [ InButton && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze  
                               || dealpositionrais==5 && listGeckoSqueeze )] 
 
 
-|| [ f$Position_CutOff && (      dealpositionrais==3 && listGeckoSqueeze
+|| [ InCutOff && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze )] 
 						  
 ##f$villain_allin##

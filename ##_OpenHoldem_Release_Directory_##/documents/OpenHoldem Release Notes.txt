@@ -1,10 +1,21 @@
-﻿﻿v﻿12.1.4 2017-11-30
+﻿﻿v﻿12.1.5 2017-12-xx
 ==================
+BUG FIXES:
+- Since 12.1.1 nopponentscalling, CallsSinceLasstPlay and similar symbols
+  correctly considered players who called allin for less than
+  the raisers bet on previous orbits -- but only at our turn
+  (which is the point that matters).
+  Now they also work when it is not our turn (e.g. in the debug-tab).
+  Thanks to Stars83 for reporting.
+- The logarithm-operator did not work due to a typo in the tokenizer.
+  Thanks to Mib92 for reporting.
+
 MAINTENANCE:
 - GUI-options: OpenHoldem will now start only the first instance visible,
   all other windows minimized, to avoid irritating the user
   when the autostarter opens new bot-windows.
   {THF]
+ 
   
 
 ﻿v﻿12.1.4 2017-11-30
