@@ -752,94 +752,68 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 
 ##f$flop_raise_noaction##
 [ Position = First ] ? {
-
-
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
     [ f$actionpostflop_2 ] ? f$prwin>.60 :
     [ f$actionpostflop_3 ] ? f$prwin>.65 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.82 :
         [ f$ptype_lag     ] ? f$prwin2>.72 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.76 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
     [ f$actionpostflop_2 ] ? f$prwin>.60 :
     [ f$actionpostflop_3 ] ? f$prwin>.65 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.82 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.72 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.84 :
         [ f$ptype_semilag ] ? f$prwin2>.82 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.76 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
     [ f$actionpostflop_2 ] ? f$prwin>.60 :
     [ f$actionpostflop_3 ] ? f$prwin>.65 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
@@ -847,21 +821,17 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
         [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
 
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 
@@ -1876,11 +1846,8 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
 
 ##f$foldequity##
 [ f$Initiative_Nobody && nplayersplaying==2 && call==0 && f$pt_hands>50 ] ? {
-
     [ Position = First ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1891,9 +1858,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1904,9 +1869,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1917,12 +1880,8 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
-
     [ Position = Last ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1933,9 +1892,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1946,9 +1903,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1959,9 +1914,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
 0 } :
-
 0
 
 ##f$Preflop_First_In##
@@ -2062,37 +2015,27 @@ log$SERIOUS_ERROR
 
 ##f$Chart_ReRaise##
 [ InSmallBlind ] ? { // sb
-
     [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
     [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
 	0 } :
-
 [ InBigBlind ] ? { // bb
-
     [ f$logicalpositionrais==1 ] ? listGecko03 : // 04%
     [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
     [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
 	0 } :
-
 [ InMiddlePosition3 ] ? { // utg+1
-
     [ f$logicalpositionrais==3 ] ? listGecko13 : 0 } : // 04%
-
 [ InCutOff ] ? { // co
-
     [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : 0 } : // 08%
-
 [ InButton ] ? { // button
-
     [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 :       // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : 0 } : // 12%
-
 0
 
 ##f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us##
@@ -2159,12 +2102,9 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
    [ f$Position_BigBlind   && listGeckoSqueeze ]
 || [ InSmallBlind && listGeckoSqueeze ]
 || [ InMiddlePosition3       && listGeckoSqueeze ]
-
 || [ InButton && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze  
                               || dealpositionrais==5 && listGeckoSqueeze )] 
-
-
 || [ InCutOff && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze )] 
 						  
@@ -2238,7 +2178,6 @@ currentbet
 
 ##f$river_raise_wegotraised##
 [ Position = First ] ? {
-
 //  [ f$actionpostflop_1 ] ? f$prwin>.76 : // let the aggressor do the betting
     [ f$actionpostflop_2 ] ? f$prwin>.96 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2249,9 +2188,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.98 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.96 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2262,9 +2199,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.82 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2275,12 +2210,10 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 0
 
 ##f$river_call_wegotraised##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.85 :
     [ f$actionpostflop_4 ] ? f$prwin1>.90 :
@@ -2290,9 +2223,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.90 :
     [ f$actionpostflop_4 ] ? f$prwin1>.90 :
@@ -2302,9 +2233,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.90 :
     [ f$actionpostflop_4 ] ? f$prwin1>.90 :
@@ -2314,14 +2243,11 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
-
 0
 
 ##f$turn_raise_wegotraised##
 [ Position = First ] ? {
-
     [ nplayersplaying==2 ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.80 :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.85 :
@@ -2332,9 +2258,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.98 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
     [ nplayersplaying>=3 ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.80 :
     [ f$actionpostflop_2 ] ? f$prwin>.85 :
     [ f$actionpostflop_3 ] ? f$prwin>.95 :
@@ -2345,9 +2269,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.98 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.96 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2358,9 +2280,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.82 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2371,12 +2291,10 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 0
 
 ##f$turn_call_wegotraised##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.78 :
     [ f$actionpostflop_4 ] ? f$prwin1>.78 :
@@ -2386,9 +2304,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.77 :
     [ f$actionpostflop_4 ] ? f$prwin1>.79 :
@@ -2398,9 +2314,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.78 :
     [ f$actionpostflop_4 ] ? f$prwin1>.80 :
@@ -2410,7 +2324,6 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
-
 0
 
 ##f$Initiative_GotRaised##
@@ -2426,11 +2339,8 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
 
 ##f$villiantakeover##
 [ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2442,13 +2352,9 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
 [ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2459,8 +2365,7 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
     [ f$PT_Flop_AF_RaisChair>2.50 && f$PT_Flop_AF_RaisChair<=3.00 ] ? 0.40 :
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
-    [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
+    [ f$PT_Flop_AF_RaisChair>5.00                                 ] ? 0.10 : 0 } : 0 } :
 0
 
 ##f$reducewinchance_when_have_twopair##
@@ -2481,9 +2386,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
 
 ##f$AggressionFactor_Flop1##
 [ call<=0 ] ? 0 :
-
 [ call>0 && pt_hands_raischair>25 ] ? {
-
     [                    f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 0.40 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 0.35 :
@@ -2496,18 +2399,13 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Flop_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
 0
 
 ##f$AggressionFactor_Turn1##
 [ call<=0 ] ? {
-
     [ f$Initiative_Hero   ] ? 0 :
-
     [ f$Initiative_Nobody ] ? 0 :
-
     [ f$Initiative_Villian && f$pt_hands>25 ] ? {
-
                                f$pt_flopaf<=0.00 ? 0.00 :
         f$pt_flopaf>0.00 && f$pt_flopaf<=0.33 ? 0.50 :
         f$pt_flopaf>0.33 && f$pt_flopaf<=0.66 ? 0.40 :
@@ -2519,12 +2417,9 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
         f$pt_flopaf>2.50 && f$pt_flopaf<=3.00 ? 0.00 :
         f$pt_flopaf>3.00 && f$pt_flopaf<=4.00 ? 0.00 :
         f$pt_flopaf>4.00 && f$pt_flopaf<=5.00 ? 0.00 :
-        f$pt_flopaf>5.00                         ? 0.00 : 0 } : 0 } :
-
+        f$pt_flopaf>5.00                      ? 0.00 : 0 } : 0 } :
 [ call>0 && pt_hands_raischair>25 ] ? {
-
   [ !didbetsize ] ? {
-
     [                    f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>0.00 && f$PT_Turn_AF_RaisChair<=0.25 ] ? 0.50 :
     [ f$PT_Turn_AF_RaisChair>0.25 && f$PT_Turn_AF_RaisChair<=0.50 ] ? 0.40 :
@@ -2540,9 +2435,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Turn_AF_RaisChair>3.00 && f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>4.00 && f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
   [  didbetsize ] ? {
-
     [                    f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>0.00 && f$PT_Turn_AF_RaisChair<=0.25 ] ? 1.00 :
     [ f$PT_Turn_AF_RaisChair>0.25 && f$PT_Turn_AF_RaisChair<=0.50 ] ? 0.65 :
@@ -2558,18 +2451,13 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Turn_AF_RaisChair>3.00 && f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>4.00 && f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 0 } :
-
 0
 
 ##f$AggressionFactor_River1##
 [ call<=0 ] ? {
-
     [ f$Initiative_Hero   ] ? 0 :
-
     [ f$Initiative_Nobody ] ? 0 :
-
     [ f$Initiative_Villian && f$pt_hands>25 ] ? {
-
         [                        f$pt_turnaf<=0.00 ] ? 0.00 :
         [ f$pt_turnaf>0.00 && f$pt_turnaf<=0.25 ] ? 0.50 :
         [ f$pt_turnaf>0.25 && f$pt_turnaf<=0.50 ] ? 0.40 :
@@ -2585,11 +2473,8 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
         [ f$pt_turnaf>3.00 && f$pt_turnaf<=4.00 ] ? 0.00 :
         [ f$pt_turnaf>4.00 && f$pt_turnaf<=5.00 ] ? 0.00 :
         [ f$pt_turnaf>5.00                         ] ? 0.00 : 0 } : 0 } :
-
 [ call>0 && pt_hands_raischair>25 ] ? {
-
   [ !didbetsize ] ? {
-
     [                    f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>0.00 && f$PT_River_AF_RaisChair<=0.25 ] ? 0.50 :
     [ f$PT_River_AF_RaisChair>0.25 && f$PT_River_AF_RaisChair<=0.50 ] ? 0.40 :
@@ -2605,9 +2490,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_River_AF_RaisChair>3.00 && f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>4.00 && f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
   [  didbetsize ] ? {
-
     [                    f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>0.00 && f$PT_River_AF_RaisChair<=0.25 ] ? 1.00 :
     [ f$PT_River_AF_RaisChair>0.25 && f$PT_River_AF_RaisChair<=0.50 ] ? 0.65 :
@@ -2623,16 +2506,12 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_River_AF_RaisChair>3.00 && f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>4.00 && f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 0 } :
-
 0
 
 ##f$foldequity1##
 [ f$Initiative_Nobody && nplayersplaying==2 && call==0 && f$pt_hands>50 ] ? {
-
     [ Position = First ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2643,9 +2522,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2656,9 +2533,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2669,12 +2544,8 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
-
     [ Position = Last ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2685,9 +2556,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2698,9 +2567,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2711,18 +2578,13 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
 0 } :
-
 0
 
 ##f$villiantakeover1##
 [ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && Position = Last ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2734,13 +2596,9 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
 [ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && nbetsround_turn>0 && Position = Last ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2752,7 +2610,6 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
 0
 
 ##f$reducewinchance_when_have_twopair1##
