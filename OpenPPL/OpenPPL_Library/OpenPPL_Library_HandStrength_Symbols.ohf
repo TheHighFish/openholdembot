@@ -226,10 +226,6 @@ WHEN Others RETURN HoldEm_HaveFifthNutFlushDraw FORCE
 WHEN isomaha RETURN Omaha_HaveFifthOverPair FORCE
 WHEN Others RETURN HoldEm_HaveFifthOverPair FORCE
 
-##HaveAnyKindOfInsideStraightDraw##
-WHEN isomaha RETURN Omaha_HaveAnyKindOfInsideStraightDraw FORCE
-WHEN Others RETURN HoldEm_HaveAnyKindOfInsideStraightDraw FORCE
-
 ##HaveBackdoorFlushDrawContributingTwoCards##
 WHEN isomaha RETURN Omaha_HaveBackdoorFlushDrawContributingTwoCards FORCE
 WHEN Others RETURN HoldEm_HaveBackdoorFlushDrawContributingTwoCards FORCE
@@ -305,10 +301,6 @@ WHEN Others RETURN HoldEm_HaveFlushDrawContributingTwoCards FORCE
 ##HaveGoodFlushDrawContributingOnlyOneCard##
 WHEN isomaha RETURN Omaha_HaveGoodFlushDrawContributingOnlyOneCard FORCE
 WHEN Others RETURN HoldEm_HaveGoodFlushDrawContributingOnlyOneCard FORCE
-
-##HaveAnyFlushDrawContributingOnlyOneCard##
-WHEN isomaha RETURN Omaha_HaveAnyFlushDrawContributingOnlyOneCard FORCE
-WHEN Others RETURN HoldEm_HaveAnyFlushDrawContributingOnlyOneCard FORCE
 
 ##HaveFullHouse##
 WHEN isomaha RETURN Omaha_HaveFullHouse FORCE

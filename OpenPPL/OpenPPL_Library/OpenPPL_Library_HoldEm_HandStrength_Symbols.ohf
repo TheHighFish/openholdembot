@@ -375,13 +375,6 @@ HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 4)
 ##HoldEm_HaveFifthOverPair##
 ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard > FifthBestBoardCard)
 
-##HoldEm_HaveAnyKindOfInsideStraightDraw##
-// Note: This does also count straightdraws at the board,
-// where we don't contribute any card. Special care should be taken
-// in HaveInsideStraightDraw
-	 (nstraightfill <= 1)
-AND NOT HaveStraight 
-
 ##HoldEm_HaveBackdoorFlushDrawContributingTwoCards##
     IsFlop
 AND (nsuited >= 3)
@@ -625,7 +618,9 @@ WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN 
 WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN true FORCE
 
 ##HoldEm_HaveAnyFlushDrawContributingOnlyOneCard##
-WHEN ((nsuited >= 4) AND (nsuitedcommon > 2)) RETURN true FORCE
+WHEN (nsuited != 4) RETURN FALSE FORCE	
+WHEN (nsuitedcommon != 3) RETURN FALSE FORCE
+WHEN Others RETURN true FORCE
 
 ##HoldEm_HaveFullHouse##
 isfullhouse OR HaveQuads
@@ -1018,6 +1013,7 @@ WHEN HaveUnDiscountedNutStraightDraw RETURN true FORCE
 AND NOT HaveStraight
 
 ##HoldEm_HaveInsideStraightDraw##
+TODO
 HaveAnyKindOfInsideStraightDraw
 
 ##HoldEm_HaveNuts##
