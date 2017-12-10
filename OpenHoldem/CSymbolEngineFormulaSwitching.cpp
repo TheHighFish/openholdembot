@@ -17,6 +17,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineFormulaSwitching.h"
 #include "CFormulaParser.h"
+#include "..\DLLs\Debug_DLL\debug.h"
 #include "..\DLLs\Files_DLL\Files.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
@@ -41,6 +42,7 @@ void CSymbolEngineFormulaSwitching::UpdateOnConnection() {
 }
 
 void CSymbolEngineFormulaSwitching::UpdateOnHandreset() {
+  LoadNewFormulaIfNeeded();
 }
 
 void CSymbolEngineFormulaSwitching::UpdateOnNewRound() {
@@ -53,7 +55,7 @@ void CSymbolEngineFormulaSwitching::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineFormulaSwitching::ReememberFormulaForLoading(CString load_command_containing_filename) {
-  if (load_command_containing_filename == ""); {
+  if (load_command_containing_filename == "") {
     _formula_to_be_loaded = "";
     return;
   }
@@ -62,6 +64,9 @@ void CSymbolEngineFormulaSwitching::ReememberFormulaForLoading(CString load_comm
   // The filename can't contain any dots, that's why we use dollars
   // as some other symbols do. To be replaced...
   _formula_to_be_loaded.Replace("$", ".");
+  write_log(true,
+    "[CSymbolEngineFormulaSwitching] Formula to be loaded %s\n",
+    _formula_to_be_loaded);
   // To be loaded at the beginning of the next heartbeat
 }
 
@@ -69,7 +74,13 @@ void CSymbolEngineFormulaSwitching::LoadNewFormulaIfNeeded() {
   if(_formula_to_be_loaded == "") {
     return;
   }
+  write_log(true,
+    "[CSymbolEngineFormulaSwitching] Foing to load formula %s\n",
+    _formula_to_be_loaded);
   CString complete_path = BotlogicDirectory() + _formula_to_be_loaded;
+  write_log(true,
+    "[CSymbolEngineFormulaSwitching] Complete path %s\n",
+    complete_path);
   // !!!!! to do: error handling, modified flag maybe (OpenHoldemdoc)
   if (fopen(complete_path, F_OK) != 0) {
     // Using a message-box instead of silent logging, 
@@ -89,6 +100,8 @@ void CSymbolEngineFormulaSwitching::LoadNewFormulaIfNeeded() {
 bool CSymbolEngineFormulaSwitching::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "loadformula$", 12)==0 && strlen(name)>12)	{
+    write_log(true,
+      "[CSymbolEngineFormulaSwitching] accept symbol %s\n", name);
     ReememberFormulaForLoading(name);
 		*result = 0;
 		return true;

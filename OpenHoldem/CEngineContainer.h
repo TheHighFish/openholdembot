@@ -29,6 +29,7 @@ class CSymbolEngineConstants;
 class CSymbolEngineDealerchair;
 class CSymbolEngineDebug;
 class CSymbolEngineEventLogging;
+class CSymbolEngineFormulaSwitching;
 class CSymbolEngineGameType;
 class CSymbolEngineHandrank;
 class CSymbolEngineHistory;
@@ -122,6 +123,8 @@ public:
     { return p_symbol_engine_debug; }
   CSymbolEngineEventLogging *symbol_engine_event_logging()
     { return p_symbol_engine_event_logging; }
+  CSymbolEngineFormulaSwitching *symbol_engine_formula_switching()
+    { return p_symbol_engine_formula_switching; }
   CSymbolEngineGameType *symbol_engine_gametype()
     { return p_symbol_engine_gametype; }
   CSymbolEngineHandrank *symbol_engine_handrank()
@@ -197,6 +200,7 @@ private:
   CSymbolEngineDealerchair *p_symbol_engine_dealerchair;
   CSymbolEngineDebug *p_symbol_engine_debug;
   CSymbolEngineEventLogging *p_symbol_engine_event_logging;
+  CSymbolEngineFormulaSwitching *p_symbol_engine_formula_switching;
   CSymbolEngineGameType *p_symbol_engine_gametype;
   CSymbolEngineHandrank *p_symbol_engine_handrank;
   CSymbolEngineHistory *p_symbol_engine_history;
