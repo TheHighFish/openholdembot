@@ -1,5 +1,18 @@
 ﻿﻿v﻿12.1.5 2017-12-xx
 ==================
+﻿NEW STUFF:
+- Introducing new OpenPPL-symbols
+    HaveWeakBackdoorStraightDraw
+	HaveWeakDoubleGutshotDraw
+    HaveWeakFlush
+    HaveWeakFlushDraw
+    HaveWeakStraight
+    HaveWeakStraightDraw
+  They describe hands that are so weak that we don't consider them regular holdings,
+  e.g. the single-card idiot-end of a straight or a shared flush-draw at the board.
+  Special thanks to Salem for the fruitful discussions.
+  [THF]
+
 BUG FIXES:
 - Since 12.1.1 nopponentscalling, CallsSinceLasstPlay and similar symbols
   correctly considered players who called allin for less than
@@ -17,7 +30,7 @@ MAINTENANCE:
   all other windows minimized, to avoid irritating the user
   when the autostarter opens new bot-windows.
   [THF]
-- Removed maldesigned OpenPPL-functions HaveAnyKindOfInsideStraightDraw
+- Removed maldesigned OpenPPL-functions HaveAnyKindOfInsideStraightDraw and
   HaveAnyFlushDrawContributingOnlyOneCard.
   [THF]
   
