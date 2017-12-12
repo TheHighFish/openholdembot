@@ -2056,7 +2056,7 @@ log$SERIOUS_ERROR
 || (InCutOff     && listGecko01)
 || (InButton     && listGecko01)
 || (InSmallBlind && listGecko01)
-|| (f$Position_BigBlind   && listGecko01)
+|| (InBigBlind   && listGecko01)
 
 ##f$Chart_OneLimper##
    [ InSmallBlind && listGecko06 ]  // 30%
@@ -2072,11 +2072,11 @@ log$SERIOUS_ERROR
 || (InCutOff     && listGecko01)
 || (InButton     && listGecko02)
 || (InSmallBlind && listGecko01)
-|| (f$Position_BigBlind   && listGecko01)
+|| (InBigBlind   && listGecko01)
 
 ##f$Chart_CallRaise##
    (InSmallBlind && listGecko09)
-|| (f$Position_BigBlind   && listGecko09)
+|| (InBigBlind   && listGecko09)
 
 ##f$real_pfr##
 f$logicalpositionrais == 1 ? pt_pfr_raischair * 0.50 :
@@ -2099,7 +2099,7 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 || f$real_pfr> 0.30                       && listGecko13 
 
 ##f$Chart_Squeeze##
-   [ f$Position_BigBlind   && listGeckoSqueeze ]
+   [ InBigBlind   && listGeckoSqueeze ]
 || [ InSmallBlind && listGeckoSqueeze ]
 || [ InMiddlePosition3       && listGeckoSqueeze ]
 || [ InButton && (      dealpositionrais==3 && listGeckoSqueeze

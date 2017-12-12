@@ -1010,7 +1010,7 @@ AND NOT HaveStraight
 
 ##HoldEm_HaveInsideStraightDraw##
 WHEN HaveDoubleGutshotDraw Return false FORCE
-NumberOfInsideStraightDraws == 1
+WHEN (NumberOfInsideStraightDraws == 1) RETURN true FORCE
 
 ##HoldEm_HaveNuts##
 (nhandshi == 0)
