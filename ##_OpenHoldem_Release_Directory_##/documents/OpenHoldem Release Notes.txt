@@ -24,6 +24,20 @@ BUG FIXES:
 - The logarithm-operator did not work due to a typo in the tokenizer.
   Thanks to Mib92 for reporting.
   [THF]
+- After connection the counter for "handsplayed" was undefined 1 or 2
+  depending on the circumstances at the table. It is now well-defined 0
+  and only increases on handreset if the userchair is known.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+- When OpenHoldem was connected to OHReplay
+  and all frames were nearly identical
+  (e.g. 2 frames of a headsup-table with barely no action)
+  and we were cycling through the same hand over and over again
+  then it could happen that OpenHoldem missed the handreset.
+  This has now been fixed as the handreset-detector now takes
+  the replayframe-number into consideration as a 10th handreset-indicator.
+  Special thanks to ZeeZooLaa for reporting and for providing replay-frames.
+  [THF]
   
 MAINTENANCE:
 - GUI-options: OpenHoldem will now start only the first instance visible,
