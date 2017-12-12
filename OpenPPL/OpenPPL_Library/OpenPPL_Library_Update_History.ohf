@@ -207,7 +207,7 @@ WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_false
 // at the end of my turn after an autoplayer action.
 // true, all critical work is done, but code in other threads
 // (especially the debug-tab) might request these symbols.
-// Then Openholdem would temporarily display invalid info
+// Then OpenHoldem would temporarily display invalid info
 // and people would be confused.
 // To avoid countless "bug"-reports, we remember and compare
 // a heartbeat-ID and then return the new value without
