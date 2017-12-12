@@ -1013,8 +1013,7 @@ WHEN HaveUnDiscountedNutStraightDraw RETURN true FORCE
 AND NOT HaveStraight
 
 ##HoldEm_HaveInsideStraightDraw##
-TODO
-HaveAnyKindOfInsideStraightDraw
+NumberOfInsideStraightDraws == 1
 
 ##HoldEm_HaveNuts##
 (nhandshi == 0)
@@ -1238,23 +1237,48 @@ WHEN HaveBackdoorStraightDraw RETURN false FORCE
 WHEN (nstraightfill == 2) RETURN true FORCE
 
 ##Holdem_HaveWeakDoubleGutshotDraw##
-WHEN HaveDoubleGutshotDrawRETURN false FORCE
-UNFINISHED
+WHEN HaveStraight RETURN false FORCE
+WHEN HaveDoubleGutshotDraw RETURN false FORCE
+// 5-card double gutshot
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b101110100000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b010111010000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b001011101000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000101110100000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000010111010000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000001011101000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000101110100) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000010111010) == 5) RETURN true FORCE
+// 6-card double gutshot
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b110110110000000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b011011011000000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b001101101100000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000110110110000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000011011011000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000001101101100) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000110110110) == 6) RETURN true FORCE
 
 ##Holdem_HaveWeakFlush##
-WHEN RETURN false FORCE
+WHEN HaveFlush RETURN false FORCE
 WHEN (nsuited >= 5) RETURN true FORCE
 
 ##Holdem_HaveWeakFlushDraw##
-WHEN RETURN false FORCE
+WHEN HaveFlushDraw RETURN false FORCE
 WHEN (nsuited == 4) RETURN true FORCE
 
+##Holdem_HaveWeakInsideStraightDraw##
+WHEN HaveStraight RETURN false FORCE
+WHEN HaveStraightDraw RETURN false FORCE
+WHEN HaveInsideStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 1) RETURN true FORCE
+
 ##Holdem_HaveWeakStraight##
-WHEN RETURN false FORCE
+WHEN HaveStraight RETURN false FORCE
 WHEN (nstraightfill <= 0) RETURN true FORCE
 
 ##Holdem_HaveWeakStraightDraw##
-WHEN RETURN false FORCE
+WHEN HaveStraightDraw RETURN false FORCE
 WHEN (nstraightfill == 1) RETURN true FORCE
 
 ##NumberOfUnknownSuitedOvercards##
