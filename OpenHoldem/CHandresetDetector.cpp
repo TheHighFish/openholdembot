@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Detecting handresets the reliable way,
+//   requireing N seen handresetmethods within 3 heartbeats
 //
 //******************************************************************************
 
@@ -27,6 +28,7 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
+#include "CTableTitle.h"
 #include "..\CTablemap\CTablemap.h"
 
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
@@ -104,13 +106,7 @@ void CHandresetDetector::CalculateIsHandreset() {
   } else if (number_of_methods_firing >= 2) {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset found\n");
     _is_handreset_on_this_heartbeat = true;
-    ++_hands_played;
-    if (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsdealt() == 1) {
-      // Last hand (data not yet reset) was headsup
-      ++_hands_played_headsup;
-    } else {
-      _hands_played_headsup = 0;
-    }
+    UpdateHandsPlayedOnHandreset();
     ClearSeenHandResets();
   } else {
     write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] No handreset\n");
@@ -151,6 +147,8 @@ int CHandresetDetector::BitVectorFiringHandresetMethods() {
   handresetmethods_fired |= (IsHandresetByChangingBlindLevel() ? 1 : 0);
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByNewSmallBlind() ? 1 : 0 );
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByOHReplayFrameNumber() ? 1 : 0);
   // No shift-left after the last bit
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing this heartbeat: %s\n",
     IntToBinaryString(handresetmethods_fired, kNumberOfHandresetMethods));
@@ -262,6 +260,13 @@ bool CHandresetDetector::IsHandresetByChangingBlindLevel() {
   return ishandreset;
 }
 
+bool CHandresetDetector::IsHandresetByOHReplayFrameNumber() {
+  bool ishandreset = (-_ohreplay_framenumber < _last_ohreplay_framenumber);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by decreasing framenumber of OHReplay: %s\n",
+		Bool2CString(ishandreset));
+  return ishandreset;
+}
+
 bool CHandresetDetector::SmallBlindExists() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
     double players_bet = p_table_state->Player(i)->_bet.GetValue();
@@ -271,6 +276,23 @@ bool CHandresetDetector::SmallBlindExists() {
     }
   }
   return false;
+}
+
+void CHandresetDetector::UpdateHandsPlayedOnHandreset() {
+  if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
+    // We want to update the handsplayed-counter only when the user
+    // is at least seated, not on connection and similar events.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=214&t=20753
+    return;
+  }
+  ++_hands_played;
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsdealt() == 1) {
+    // Last hand (data not yet reset) was headsup
+    ++_hands_played_headsup;
+  }
+  else {
+    _hands_played_headsup = 0;
+  }
 }
 
 void CHandresetDetector::GetNewSymbolValues() {
@@ -301,6 +323,8 @@ void CHandresetDetector::GetNewSymbolValues() {
   for (int i=0; i<p_tablemap->nchairs(); ++i) {
     _balance[i] = p_table_state->Player(i)->_balance.GetValue();
   }
+  assert(p_table_title != NULL);
+  _ohreplay_framenumber = p_table_title->OHReplayFrameNumber();
 }
 
 void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
@@ -318,6 +342,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
   for (int i = 0; i < p_tablemap->nchairs(); ++i) {
     _last_balance[i] = _balance[i];
   }
+  _last_ohreplay_framenumber = _ohreplay_framenumber;
 }
 
 void CHandresetDetector::OnNewHeartbeat() {

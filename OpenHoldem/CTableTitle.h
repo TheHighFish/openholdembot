@@ -31,6 +31,9 @@ class CTableTitle : public CSpaceOptimizedGlobalObject {
   bool TitleChangedSinceLastHeartbeat();
   // for the title$xyz-symbol
   bool ContainsSubstring(CString substring);
+  int OHReplayFrameNumber() {
+    return _ohreplay_framenumber;
+  }
  public:
   // Public static for preprocessing of scraped ttlimitsX by CScraper.cpp
   static CString PreprocessTitle(CString title);
@@ -38,9 +41,13 @@ class CTableTitle : public CSpaceOptimizedGlobalObject {
   // Accessible by OpenScrape (CDlgEditSymbols)
   void SetTitle(CString new_title);
  private:
+   static void ExtractOHReplayFrameNumber(const CString *s);
+ private:
   CString _title;
   CString _preprocessed_title;
   CString _previous_title;
+ private:
+  static int _ohreplay_framenumber;
 };
 
 extern CTableTitle *p_table_title;

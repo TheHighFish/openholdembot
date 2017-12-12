@@ -7,7 +7,8 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Detecting handresets the reliable way,
+//   requireing N seen handresetmethods within 3 heartbeats
 //
 //******************************************************************************
 
@@ -15,7 +16,6 @@
 #define INC_CHANDRESETDETECTOR_H
 
 #include "CSpaceOptimizedGlobalObject.h"
-
 
 class CHandresetDetector : public CSpaceOptimizedGlobalObject {
  public:
@@ -42,7 +42,8 @@ class CHandresetDetector : public CSpaceOptimizedGlobalObject {
 	bool IsHandresetByIncreasingBalance();
   bool IsHandresetByNewSmallBlind();
   bool IsHandresetByChangingBlindLevel();
-public:
+  bool IsHandresetByOHReplayFrameNumber();
+ public:
   int hands_played() { return _hands_played; }
   int hands_played_headsup() { return _hands_played_headsup; }
  private:
@@ -53,6 +54,8 @@ public:
  private:
 	void GetNewSymbolValues();
 	void StoreOldValuesForComparisonOnNextHeartbeat();
+ private:
+  void UpdateHandsPlayedOnHandreset();
  private:
 	int dealerchair;
 	int last_dealerchair;
@@ -70,6 +73,8 @@ public:
   double _bblind;
   double _last_bblind;
   bool   _small_blind_existed_last_hand;
+  int    _ohreplay_framenumber;
+  int    _last_ohreplay_framenumber;
  private:
 	// Handnumber should be a string, as
 	//   * it may contain characters
