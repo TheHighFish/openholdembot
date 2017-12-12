@@ -7942,7 +7942,9 @@ handsplayed
 \begin_inset Text
 
 \begin_layout Plain Layout
-number of hands played this session by this OpenHoldem instance
+number of hands played this session by this OpenHoldem instance.
+ The value will be 0 after connection and increase on handreset if the userchair
+ is known.
 \end_layout
 
 \end_inset

@@ -1,4 +1,4 @@
-﻿﻿v﻿12.1.5 2017-12-xx
+﻿﻿v﻿12.1.5 2017-12-12
 ==================
 ﻿NEW STUFF:
 - Introducing new OpenPPL-symbols
@@ -6,9 +6,10 @@
 	HaveWeakDoubleGutshotDraw
     HaveWeakFlush
     HaveWeakFlushDraw
+	HaveWeakInsideStraightDraw
     HaveWeakStraight
     HaveWeakStraightDraw
-  They describe hands that are so weak that we don't consider them regular holdings,
+  They describe hands that are so weak that we don't consider them as regular holdings,
   e.g. the single-card idiot-end of a straight or a shared flush-draw at the board.
   Special thanks to Salem for the fruitful discussions.
   [THF]
@@ -31,7 +32,7 @@ BUG FIXES:
   [THF]
 - When OpenHoldem was connected to OHReplay
   and all frames were nearly identical
-  (e.g. 2 frames of a headsup-table with barely no action)
+  (e.g. 2 frames of a headsup-table with barely any action)
   and we were cycling through the same hand over and over again
   then it could happen that OpenHoldem missed the handreset.
   This has now been fixed as the handreset-detector now takes
