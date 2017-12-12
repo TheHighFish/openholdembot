@@ -19,7 +19,6 @@
 
 // CDlgSelectTable dialog
 
-
 class CDlgSelectTable : public CDialog
 {
 	DECLARE_DYNAMIC(CDlgSelectTable)
