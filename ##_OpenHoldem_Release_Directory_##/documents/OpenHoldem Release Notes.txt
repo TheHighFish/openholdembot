@@ -3,10 +3,10 @@
 ﻿NEW STUFF:
 - Introducing new OpenPPL-symbols
     HaveWeakBackdoorStraightDraw
-	HaveWeakDoubleGutshotDraw
+    HaveWeakDoubleGutshotDraw
     HaveWeakFlush
     HaveWeakFlushDraw
-	HaveWeakInsideStraightDraw
+    HaveWeakInsideStraightDraw
     HaveWeakStraight
     HaveWeakStraightDraw
   They describe hands that are so weak that we don't consider them as regular holdings,
