@@ -50,11 +50,11 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString scraper_dire
 	while (bFound) {
 		bFound = hFile.FindNextFile();
     // Formerly there has been a check /hFile.GetFilePath() != p_tablemap->filepath()) 
-    // but ig we want to reload, then everything
+    // but if we want to reload, then everything
     if (hFile.IsDots()) {
+      // Ignore link to current directory and to parent-directory
       continue;
-    }
-    else if (hFile.IsDirectory()) {
+    } else if (hFile.IsDirectory()) {
       // Traverse sub-directories recursively
       ParseAllTableMapsToLoadConnectionData(hFile.GetFilePath());
       continue;

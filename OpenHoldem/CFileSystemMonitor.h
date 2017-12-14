@@ -7,7 +7,13 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Monitorinf the scraper directory for
+//   * changed files
+//   * new files
+//   * renamed files
+//   and providing a method to check for changes.
+//   The autoconnector will then automatically 
+//   reload all tablemaps on the next attempt to connect
 //
 //******************************************************************************
 
