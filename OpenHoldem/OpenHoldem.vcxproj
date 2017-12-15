@@ -491,6 +491,7 @@
     <None Include="..\Checklist_Release_OpenPPL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
     <ClInclude Include="CAllinSlider.h" />

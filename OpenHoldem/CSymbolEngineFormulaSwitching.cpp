@@ -18,6 +18,8 @@
 #include "CSymbolEngineFormulaSwitching.h"
 #include <io.h>
 #include "CFormulaParser.h"
+#include "CFunctionCollection.h"
+#include "CPreferences.h"
 #include "..\DLLs\Debug_DLL\debug.h"
 #include "..\DLLs\Files_DLL\Files.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
@@ -43,6 +45,9 @@ void CSymbolEngineFormulaSwitching::UpdateOnConnection() {
 }
 
 void CSymbolEngineFormulaSwitching::UpdateOnHandreset() {
+  p_function_collection->Evaluate(
+    k_standard_function_names[k_hopper_function_select_formula_file],
+    preferences.log_hopper_functions());
   LoadNewFormulaIfNeeded();
 }
 
@@ -76,7 +81,7 @@ void CSymbolEngineFormulaSwitching::LoadNewFormulaIfNeeded() {
     return;
   }
   write_log(true,
-    "[CSymbolEngineFormulaSwitching] Foing to load formula %s\n",
+    "[CSymbolEngineFormulaSwitching] Going to load formula %s\n",
     _formula_to_be_loaded);
   CString complete_path = BotlogicDirectory() + _formula_to_be_loaded;
   write_log(true,
@@ -96,6 +101,11 @@ void CSymbolEngineFormulaSwitching::LoadNewFormulaIfNeeded() {
   CArchive logic_archive(&logic_file, CArchive::load);
   assert(p_formula_parser != NULL);
   p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic(logic_archive);
+  write_log_separator(true, "");
+  write_log(k_always_log_basic_information,
+    "NEW FORMULA: %s\n",
+    _formula_to_be_loaded);
+  write_log_separator(true, "");
 }
 
 bool CSymbolEngineFormulaSwitching::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
