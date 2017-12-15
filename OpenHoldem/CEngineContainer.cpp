@@ -43,6 +43,7 @@
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineDebug.h"
 #include "CSymbolEngineEventLogging.h"
+#include "CSymbolEngineFormulaSwitching.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
@@ -268,7 +269,11 @@ void CEngineContainer::CreateSymbolEngines() {
   // CHandHistoryWriter
   p_handhistory_writer = new CHandHistoryWriter;
   AddSymbolEngine(p_handhistory_writer);
+  // CSymbolEngineFormulaSwitching
+  // Very last, as it will be used extremely rarely
   InitOnStartup();
+  p_symbol_engine_formula_switching = new CSymbolEngineFormulaSwitching;
+  AddSymbolEngine(p_symbol_engine_formula_switching);
   _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
