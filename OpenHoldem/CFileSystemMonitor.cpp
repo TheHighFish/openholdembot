@@ -7,7 +7,13 @@
 //
 //******************************************************************************
 //
-// Purpose:
+// Purpose: Monitorinf the scraper directory for
+//   * changed files
+//   * new files
+//   * renamed files
+//   and providing a method to check for changes.
+//   The autoconnector will then automatically 
+//   reload all tablemaps on the next attempt to connect.
 //
 //******************************************************************************
 
@@ -22,7 +28,7 @@
 // * changed files
 // * new files
 // * renamed files
-// and sprovides a method to check for changes.
+// and provides a method to check for changes.
 // The autoconnector will then automatically 
 // reload all tablemaps on the next attempt to connect.
 //
@@ -63,9 +69,12 @@ void CFileSystemMonitor::InitMonitor() {
 	int changes_to_monitor = FILE_NOTIFY_CHANGE_FILE_NAME
 		| FILE_NOTIFY_CHANGE_SIZE
 		| FILE_NOTIFY_CHANGE_LAST_WRITE;
+  // Since OpenHoldem 13.0 we support a nested scraper-directory,
+  // even with some "official" maps for real-world-casinos.
+  const bool watch_subtree = TRUE;
 	dwChangeHandle = FindFirstChangeNotification(
 		absolute_path_to_scraper_directory,
-		FALSE,	// do not watch subtree 
+    watch_subtree,	
 		changes_to_monitor);
 	if ((dwChangeHandle == INVALID_HANDLE_VALUE) || (dwChangeHandle == NULL)) {
 		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] InitMonitor() failed.\n");
@@ -83,10 +92,10 @@ bool CFileSystemMonitor::AnyChanges() {
   }
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx
 	dwWaitStatus = WaitForMultipleObjects(
-		1,					// number of handles
-		&dwChangeHandle,	// handle
-		FALSE,				// bWaitAll - does not make a difference here
-		0);					// time to wait
+		1,                // number of handles
+		&dwChangeHandle,  // handle
+		FALSE,            // bWaitAll - does not make a difference here
+		0);               // time to wait
 	if (dwWaitStatus == WAIT_OBJECT_0) {
 		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
 		// Resetting change handle for next query
@@ -97,4 +106,3 @@ bool CFileSystemMonitor::AnyChanges() {
 	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
 	return false;
 }
-
