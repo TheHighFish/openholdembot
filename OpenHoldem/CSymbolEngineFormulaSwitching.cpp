@@ -16,6 +16,7 @@
 
 #include "stdafx.h"
 #include "CSymbolEngineFormulaSwitching.h"
+#include <io.h>
 #include "CFormulaParser.h"
 #include "..\DLLs\Debug_DLL\debug.h"
 #include "..\DLLs\Files_DLL\Files.h"
@@ -82,7 +83,7 @@ void CSymbolEngineFormulaSwitching::LoadNewFormulaIfNeeded() {
     "[CSymbolEngineFormulaSwitching] Complete path %s\n",
     complete_path);
   // !!!!! to do: error handling, modified flag maybe (OpenHoldemdoc)
-  if (fopen(complete_path, F_OK) != 0) {
+  if (_access(complete_path, F_OK) != 0) {
     // Using a message-box instead of silent logging, 
     // as this should be tested by the user at least once anyway
     CString message;
