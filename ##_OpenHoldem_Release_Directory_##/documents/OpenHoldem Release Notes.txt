@@ -1,4 +1,37 @@
-﻿﻿v﻿12.1.5 2017-12-12
+﻿﻿v﻿13.0.0 2017-12-24
+==================
+﻿NEW STUFF:
+- OpenHoldem is now able to switch bot-logic at runtime.
+  It provides a new hopper-function f$select_formula-file 
+  that gets evaluated once at handreset.
+  The loadformula$XYZ-symbols selects a formula-file, e.g.
+  
+    ##f$select_formula_file##
+	  WHEN (StackSize < 15) RETURN loadformula$push_fold$ohf FORCE
+	  WHEN issng RETURN loadformula$my_sng_bot$ohf FORCE
+	
+  The selected file will then be loaded from the bot_logic-directory.
+  This functionality could be used to load botlogic depending on game-type 
+  or to maintain several small bots for different stages of a game.
+  [THF]
+- OpenHoldem comes now with some (maybe soon some dozens)
+  "official" tablemaps for an easy out-of-the-box experience.
+  General setup-instructions for the casinos can be found in the manual
+  and every TM comes with a replay-frame for illustration.
+  The tablemap-loader and scraper-directory-monitor have been adapted
+  to work with a deeply nested scraper-directory to keep the maps organized.
+  The batch-script "Update_Tablemaps.bat" will checkout the tablemaps
+  from our source-code-repository at Github and keep you up-to-date.
+  [THF]
+- In the bit_logic-directory you will now find a small "bot"
+  tablemap_tester.ohf, that enables you to play manually with the flag-buttons
+  in order to test the autoplayer-interface of a tablemap.
+  The "bot" will show some helpful messages on startup.
+  Special thanks to Ares for the idea and for the first version of this tool.
+  [THF]
+
+  
+﻿v﻿12.1.5 2017-12-12
 ==================
 ﻿NEW STUFF:
 - Introducing new OpenPPL-symbols
