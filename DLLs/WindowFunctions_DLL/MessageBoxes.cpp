@@ -40,11 +40,9 @@ int MessageBox_Interactive(const char* Message, const char* Title, int Flags) {
 // Returns 0 as a result
 void MessageBox_OH_Script_Messages(const char* message) {
   // Preprocess message
-  const char* msgbox_prefix = "msgbox$";
   CString CS_message(message);
-  assert(CS_message.Left(strlen(msgbox_prefix)) == msgbox_prefix);
-  int length_of_parameter = CS_message.GetLength() - strlen(msgbox_prefix);
-  message = CS_message.Right(length_of_parameter);
+  assert(CS_message.Left(7) == "msgbox$");
+  CS_message.Replace("msgbox$", "");
   CS_message.Replace("_B", " ");
   CS_message.Replace("_C", ",");
   CS_message.Replace("_D", ".");
