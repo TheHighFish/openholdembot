@@ -56,6 +56,11 @@ f$manual_decision
 f$manual_decision
 
 ##f$manual_decision##
+// If no flag is pressed we beep after some seconds 
+// (when we have stable frames).
+// We don't want the default-bot to act unexpectedly
+// if the user is slow with his action.
+WHEN (flagbits <= 0) Beep FORCE
 WHEN f19 RaiseMax FORCE
 WHEN f17 RaisePot FORCE
 WHEN f16 RaiseThreeFourthPot FORCE
@@ -93,3 +98,7 @@ WHEN f1 RETURN f$show_help FORCE
 + msgbox$f12_Bbetpot_U1_U4_Nf13_Bbetpot_U1_U3_Nf14_Bbetpot_U1_U2_Nf15_Bbetpot_U2_U3_N
 + msgbox$f16_Bbetpot_U3_U4_Nf17_Bbetpot_U1_U1_Nf19_Ballin_N
 
+##f$delay##
+// If no flag is pressed then give the user some time to act
+// before we beep.
+WHEN (flagbits <= 0) RETURN 5000 FORCE
