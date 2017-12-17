@@ -25,6 +25,6 @@
 @REM https://stackoverflow.com/questions/19652678/how-to-mention-c-program-files-in-batchfile
 @REM Getting a remote directory from GitHub with SVN
 @REM https://stackoverflow.com/questions/7106012/download-a-single-folder-or-directory-from-a-github-repo
-"%ProgramFiles%\TortoiseSVN\bin\svn.exe" --force export "https://github.com/OpenHoldem/openholdembot/trunk/##_OpenHoldem_Release_Directory_##/scraper"
+"%ProgramFiles%\TortoiseSVN\bin\svn.exe" --force export "https://github.com/OpenHoldem/openholdembot/trunk/##_Tablemaps_##/scraper"
 @echo.
 @pause
