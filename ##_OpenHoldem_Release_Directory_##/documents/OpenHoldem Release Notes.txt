@@ -23,11 +23,14 @@
   The batch-script "Update_Tablemaps.bat" will checkout the tablemaps
   from our source-code-repository at Github and keep you up-to-date.
   [THF]
-- In the bit_logic-directory you will now find a small "bot"
+- In the bot_logic-directory you will now find a small "bot"
   tablemap_tester.ohf, that enables you to play manually with the flag-buttons
   in order to test the autoplayer-interface of a tablemap.
   The "bot" will show some helpful messages on startup.
   Special thanks to Ares for the idea and for the first version of this tool.
+  [THF]
+- The handnumber is now part of the "Basic Info" section of the log-file.
+  Thanks to RISA for the suggestion.
   [THF]
 
   
