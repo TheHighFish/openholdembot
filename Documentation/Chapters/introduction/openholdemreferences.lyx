@@ -104,7 +104,22 @@ status open
 
 \begin_layout Plain Layout
 
-https://sites.google.com/site/openholdempokerbot/downloads/
+https://github.com/OpenHoldem/openholdembot/releases
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+License, GPL v3:  
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.gnu.org/copyleft/gpl.html 
 \end_layout
 
 \end_inset
@@ -151,21 +166,6 @@ status collapsed
 \begin_layout Plain Layout
 
 http://www.maxinmontreal.com/forums/viewtopic.php?f=113&t=3542
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-License, GPL v3:  
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.gnu.org/copyleft/gpl.html 
 \end_layout
 
 \end_inset
