@@ -33,4 +33,5 @@ POKERTRACKER_DLL_API	void	  PT_DLL_ClearPlayerStats(int chair);
 POKERTRACKER_DLL_API	void	  PT_DLL_ClearAllPlayerStats();
 POKERTRACKER_DLL_API	CString PT_DLL_GetQuery(int stats_index, 
 												bool isomaha, bool istournament,
-												int site_id, CString player_name);
+												int site_id, CString player_name,
+                        double big_blind);

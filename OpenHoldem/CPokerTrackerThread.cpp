@@ -29,6 +29,7 @@
 #include "CSymbolEngineIsRush.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEnginePokerTracker.h"
+#include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
@@ -402,10 +403,11 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	assert(stat < PT_DLL_GetNumberOfStats());
 
 	// get query string for the requested statistic
-	CString query = PT_DLL_GetQuery(stat,
-		p_engine_container->symbol_engine_isomaha()->isomaha(),
-		p_engine_container->symbol_engine_istournament()->istournament(),
-		siteid, _player_data[m_chr].pt_name);
+  CString query = PT_DLL_GetQuery(stat,
+    p_engine_container->symbol_engine_isomaha()->isomaha(),
+    p_engine_container->symbol_engine_istournament()->istournament(),
+    siteid, _player_data[m_chr].pt_name,
+    p_engine_container->symbol_engine_tablelimits()->bblind());
 
 	// Do the query against the PT database
 	updStart = clock();
