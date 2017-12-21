@@ -33,6 +33,13 @@
   Thanks to RISA for the suggestion.
   [THF]
 
+BUG FIXES:
+- The symbols "call" and "nbetstocall" got calculated in wrong order,
+  which was not noticeable as long as the calculation got executed twice
+  (e.g. using at least 1 stable frame on my turn).
+  Thanks to Jesus who found this bug with Validator and replay-frames.
+  [THF]
+  
   
 ﻿v﻿12.1.5 2017-12-12
 ==================
