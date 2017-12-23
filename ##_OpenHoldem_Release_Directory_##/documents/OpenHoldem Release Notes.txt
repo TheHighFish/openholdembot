@@ -39,6 +39,11 @@ BUG FIXES:
   (e.g. using at least 1 stable frame on my turn).
   Thanks to Jesus who found this bug with Validator and replay-frames.
   [THF]
+- Some rules of the validator-engine were suscepticle to rounding-errors.
+  This has now been fixed by functions like IsEqual that accept some tolerance.
+  Thanks to Jesus for reporting false positives of the validator
+  and for provifing replay-frames.
+  [THF]
   
   
 ﻿v﻿12.1.5 2017-12-12
