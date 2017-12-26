@@ -42,62 +42,13 @@
 				<param name="Local" value="Chapters\introduction\WinHoldemHeritage.html.LyXconv\WinHoldemHeritage.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="A (few) Word(s) of Caution">
+				<param name="Local" value="Chapters\introduction\Caution.html.LyXconv\Caution.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="OpenHoldem References">
 				<param name="Local" value="Chapters\introduction\OpenHoldemReferences.html.LyXconv\OpenHoldemReferences.html">
 				<param name="URL" value="Chapters\introduction\OpenHoldemReferences.html.LyXconv\OpenHoldemReferences.html">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="License: GPL v3">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="License: GPL v3">
-				<param name="Local" value="Chapters\introduction\GPL_v3.htm">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Frequently Asked Questions about the GNU Licenses">
-				<param name="Local" value="Chapters\introduction\Frequently_Asked_Questions_about_the_GNU_Licenses_-_GNU_Project_-_Free_Software_Foundation.htm">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="A (few) Word(s) of caution">
-			<param name="Local" value="Chapters\words_of_caution\a_few_words_o_ caution.html.LyXconv\a_few_words_o__caution.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="A (few) Word(s) of Caution">
-				<param name="Local" value="Chapters\words_of_caution\Caution.html.LyXconv\Caution.html">
-				</OBJECT>
-		</UL>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Installation and Setup">
-			<param name="Local" value="Chapters\installation\installation_and_setup.html.LyXconv\installation_and_setup.html">
-			</OBJECT>
-		<UL>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Choosing an Operating System">
-				<param name="Local" value="Chapters\installation\ChoosingAnOperatingSystem.html.LyXconv\ChoosingAnOperatingSystem.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Configuring the Operating System">
-				<param name="Local" value="Chapters\installation\ConfiguringTheOperatingSystem.html.LyXconv\ConfiguringTheOperatingSystem.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Installing the Software">
-				<param name="Local" value="Chapters\installation\InstallingTheSoftware.html.LyXconv\InstallingTheSoftware.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="OpenHoldem Directory">
-				<param name="Local" value="Chapters\installation\OpenHoldemDirectory.html.LyXconv\OpenHoldemDirectory.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Finding a Table Map">
-				<param name="Local" value="Chapters\installation\FindingATableMap.html.LyXconv\FindingATableMap.html">
-				</OBJECT>
-			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Uninstallation">
-				<param name="Local" value="Chapters\installation\Uninstallation.html.LyXconv\Uninstallation.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -136,6 +87,49 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Favourite Failures">
 				<param name="Local" value="Chapters\favourite_failures\Favourite_Failures.html.LyXconv\favourite_failures.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Installation and Setup">
+			<param name="Local" value="Chapters\installation\installation_and_setup.html.LyXconv\installation_and_setup.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Choosing an Operating System">
+				<param name="Local" value="Chapters\installation\ChoosingAnOperatingSystem.html.LyXconv\ChoosingAnOperatingSystem.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Configuring the Operating System">
+				<param name="Local" value="Chapters\installation\ConfiguringTheOperatingSystem.html.LyXconv\ConfiguringTheOperatingSystem.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Installing the Software">
+				<param name="Local" value="Chapters\installation\InstallingTheSoftware.html.LyXconv\InstallingTheSoftware.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="OpenHoldem Directory">
+				<param name="Local" value="Chapters\installation\OpenHoldemDirectory.html.LyXconv\OpenHoldemDirectory.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Finding a Table Map">
+				<param name="Local" value="Chapters\installation\FindingATableMap.html.LyXconv\FindingATableMap.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Uninstallation">
+				<param name="Local" value="Chapters\installation\Uninstallation.html.LyXconv\Uninstallation.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="License: GPL v3">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="License: GPL v3">
+				<param name="Local" value="Chapters\License_GPL_v3\GPL_v3.htm">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Frequently Asked Questions about the GNU Licenses">
+				<param name="Local" value="Chapters\License_GPL_v3\Frequently_Asked_Questions_about_the_GNU_Licenses_-_GNU_Project_-_Free_Software_Foundation.htm">
 				</OBJECT>
 		</UL>
 	</UL>
