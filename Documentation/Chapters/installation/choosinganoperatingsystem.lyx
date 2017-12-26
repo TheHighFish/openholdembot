@@ -96,9 +96,8 @@ How much resources -- especially RAM -- do the operating system and the
  computing power.
  The author of this manual page could easily 250-table at one of his machines
  if there were no crappy casinos and no casino security).
- Being leight-weight means that you could run multiple virtual machines
- at one hardware for better stealth and/or multiple casinos at the same
- time.
+ Being light-weight means that you could run multiple virtual machines at
+ one hardware for better stealth and/or multiple casinos at the same time.
 \end_layout
 
 \begin_layout Itemize
@@ -120,8 +119,8 @@ Does your favourite casino support overlapping tables? The ability to take
 
 \begin_layout Standard
 The ability to scrape overlapping tables is only available at the more modern
- operating systems, but not at the leight-weight ones like Windows 2000
- or Windows XP.
+ operating systems, but not at the light-weight ones like Windows 2000 or
+ Windows XP.
  So each operating system has its pros and cons and unfortunately there
  is no one that combines all the positive sides.
  So let's have a look at a concrete list.
@@ -151,7 +150,7 @@ Windows XP
  still support it and and many botters prefer it for its stability and its
  small memory footprint.
  To reduce the memory usage even further many botters install minimalistic
- leight-weight versions (called e.g.
+ light-weight versions (called e.g.
  
 \begin_inset Quotes eld
 \end_inset

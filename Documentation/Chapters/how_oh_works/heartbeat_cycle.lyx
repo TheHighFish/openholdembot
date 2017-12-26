@@ -298,9 +298,6 @@ This user-defined bot-logic usually resides in a plain-text file with the
 \size normal
 \emph off
 \bar no
-\strikeout off
-\uuline off
-\uwave off
 \noun off
 \color none
 Handle spam	
@@ -319,9 +316,6 @@ Handle spam
 \size normal
 \emph off
 \bar no
-\strikeout off
-\uuline off
-\uwave off
 \noun off
 \color none
 Evaluate any i86 regions, and dismiss any popups that occlude the table.
