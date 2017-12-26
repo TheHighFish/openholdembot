@@ -349,7 +349,7 @@ status open
 
 \begin_layout Plain Layout
 
- = br 
+ = betround 
 \end_layout
 
 \begin_layout Plain Layout
@@ -404,8 +404,7 @@ status open
 
 \begin_layout Standard
 If you want to investigate in detail how OpenHoldem did choose a decision,
- you should enable the full autoplayer-trace in the preferences and have
- a look at the log-files.
+ you should lookup the full autoplayer-trace in the log-file.
 \end_layout
 
 \begin_layout Section
@@ -695,76 +694,6 @@ It is a quite common beginners mistake to setup the casino-machine in a
 \end_layout
 
 \begin_layout Section
-The user-DLL crashes immediately
-\end_layout
-
-\begin_layout Standard
-
-\emph on
-Reason: Usage of functionality, that is not yet initialized.
-\end_layout
-
-\begin_layout Standard
-Probably the most prominent example is the usage of the function 
-\begin_inset Quotes eld
-\end_inset
-
-getsym
-\begin_inset Quotes erd
-\end_inset
-
- during the initialization-phase of a 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-DLL
-\end_layout
-
-\end_inset
-
-DLL.
-\end_layout
-
-\begin_layout Standard
-
-\noun on
-double BigBlind = getsym(
-\begin_inset Quotes eld
-\end_inset
-
-bblind
-\begin_inset Quotes erd
-\end_inset
-
-);
-\end_layout
-
-\begin_layout Standard
-BigBlind is a global variable that gets initialized immediately when the
- DLL gets loaded.
- But the function getsym uses a callback-pointer that gets initialized later
- with one of the first messages from OpenHoldem to the DLL.
- So you dereference an undefined pointer and crash because of a memory-access-er
-ror.
-\end_layout
-
-\begin_layout Standard
-This error may also occur when debug messages attempt to write to a file
- that has not yet been opened for writing, or if Perl modules are not loaded
- in the correct order.
- 
-\end_layout
-
-\begin_layout Remark*
-Please note that this issue has been improved as OpenHoldem 4.x now gets
- linked to the DLL at load-time the normal way and does no longer send any
- function-pointers at run-time as WinHoldem did.
- But similar problems can still happen if load-time initializations depend
- om non-initialized data.
-\end_layout
-
-\begin_layout Section
 OpenHoldem does not load my DLL (I).
 \end_layout
 
@@ -875,27 +804,6 @@ http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx
 \end_layout
 
 \begin_layout Section
-OpenHoldem connects to all tables but one
-\end_layout
-
-\begin_layout Standard
-
-\emph on
-Reason: Not correctly disconnected.
-\end_layout
-
-\begin_layout Standard
-If OpenHoldem connects to all tables but one (despite having enough instances
- of OpenHoldem open) there is a simple reason: the auto-connector uses shared
- memory to synchronize all OpenHoldem processes.
- If one process does crash (because of a buggy user-DLL for example), it
- will no longer be able to disconnect correctly and that table (or future
- tables with the same HWND) will be marked as occupied forever.
- Close that table and open another one.
- To clear the shared memory: shutdown all bots and restart them again.
-\end_layout
-
-\begin_layout Section
 OpenHoldem checked, but didfold is true
 \end_layout
 
@@ -947,7 +855,7 @@ Some symbols only require the current gamestate to be calculated (e.g.
 
 \begin_layout Remark*
 This problem has now practically disappeared, since OpenHoldem supports
- nine different handreset-methods, but only accepts a hand-reset if multiple
+ ten different handreset-methods, but only accepts a hand-reset if multiple
  methods fire at the same time.
 \end_layout
 
