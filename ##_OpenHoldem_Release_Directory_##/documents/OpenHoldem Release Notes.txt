@@ -1,4 +1,4 @@
-﻿﻿v﻿13.0.0 2017-12-24
+﻿﻿v﻿13.0.0 2017-12-27
 ==================
 ﻿NEW STUFF:
 - OpenHoldem is now able to switch bot-logic at runtime.
