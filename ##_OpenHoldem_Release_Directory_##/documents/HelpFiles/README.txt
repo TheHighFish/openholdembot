@@ -4,7 +4,7 @@ Some people can't view them because they originate from a different computer
 and get blocked by Windows security settings, showing an error like
 "Navigation to the website was cancelled".
 If you experience this problem you can unblock the help-files:
-  * right-click on the file
+  * right-click at the file
   * click Properties
   * click Unblock
   * click Apply
