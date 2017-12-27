@@ -32,6 +32,11 @@
 - The handnumber is now part of the "Basic Info" section of the log-file.
   Thanks to RISA for the suggestion.
   [THF]
+- PokerTracjer supports now the Italian network People's Poker
+  and OpenHoldem supports it too. The sitename or network
+  in the tablemap is expected to be "Peoples".
+  Thanks to Stars83 for the notification and the code-snippet.
+  [THF]
 
 BUG FIXES:
 - The symbols "call" and "nbetstocall" got calculated in wrong order,
