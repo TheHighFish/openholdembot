@@ -77,6 +77,10 @@
 				<param name="Local" value="Chapters\how_oh_works\backup_actions.html.LyXconv\backup_actions.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Gecko, Our Default Bot">
+				<param name="Local" value="..\OpenPPL\OpenPPL_manual\Chapters\Gecko_our_default_bot.html.LyXconv\Gecko_our_default_bot.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Hopper Functions">
 				<param name="Local" value="Chapters\how_oh_works\hopper_functions.html.LyXconv\hopper_functions.html">
 				</OBJECT>

@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-12-26"/>
+<meta name="create-date" content="2017-12-28"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -268,28 +268,7 @@ This gets now prevented, as OpenHoldem checks for complete tablemnaps.
 It is a quite common beginners mistake to setup the casino-machine in a different way than the bot-machine. The casino-client will be rendered in a different way, so OpenHoldem will no longer be able to scrape the screenshots displayed by Bring. If you don’t want to install OpenHoldem on the casino-machine to check the settings, the only way to fix that problem is a careful manual walk-through (experts could clone a VM or deploy some registry-settings).
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-13"></a>The user-DLL crashes immediately
-</h2>
-<div class="Unindented">
-<i>Reason: Usage of functionality, that is not yet initialized.</i>
-</div>
-<div class="Indented">
-Probably the most prominent example is the usage of the function &ldquo;getsym&rdquo; during the initialization-phase of a <a class="IndexReference" name="entry-DLL-0" href="#index-DLL">↓</a>DLL.
-</div>
-<div class="Indented">
-<span class="versalitas">double BigBlind = getsym(&ldquo;bblind&rdquo;);</span>
-</div>
-<div class="Indented">
-BigBlind is a global variable that gets initialized immediately when the DLL gets loaded. But the function getsym uses a callback-pointer that gets initialized later with one of the first messages from OpenHoldem to the DLL. So you dereference an undefined pointer and crash because of a memory-access-error.
-</div>
-<div class="Indented">
-This error may also occur when debug messages attempt to write to a file that has not yet been opened for writing, or if Perl modules are not loaded in the correct order. 
-</div>
-<div class="Remark*">
-Please note that this issue has been improved as OpenHoldem 4.x now gets linked to the DLL at load-time the normal way and does no longer send any function-pointers at run-time as WinHoldem did. But similar problems can still happen if load-time initializations depend om non-initialized data.
-</div>
-<h2 class="Section">
-<a class="toc" name="toc-Section-14"></a>OpenHoldem does not load my DLL (I).
+<a class="toc" name="toc-Section-13"></a>OpenHoldem does not load my DLL (I).
 </h2>
 <div class="Unindented">
 <i>Reason: Missing or incorrect libraries.</i>
@@ -298,7 +277,7 @@ Please note that this issue has been improved as OpenHoldem 4.x now gets linked 
 Most DLLs use external functionality and therefore depend on supporting libraries. Most often this is msvcrt (MicroSoft Visual Studio C++ RunTime Library). Also the correct version is important. OpenHoldem requires currently Visual Studio 2010 Professional, but Perl needs 2005. Checking the dependencies of your DLL with MicroSoft Dependency Walker will help. You can downlaod this tool from <a class="FlexURL" href="http://www.dependencywalker.com/">http://www.dependencywalker.com/</a>.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-15"></a>OpenHoldem does not load my DLL (II).
+<a class="toc" name="toc-Section-14"></a>OpenHoldem does not load my DLL (II).
 </h2>
 <div class="Unindented">
 <i>Reason: Libraries not found.</i>
@@ -331,16 +310,7 @@ The directories that are listed in the PATH environment variable. Note that this
 This is the default search order for Windows XP, SafeDllSearchMode disabled. It might be different for your operating system or configuration. For details please refer to <a class="FlexURL" href="http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx">http://msdn.microsoft.com/en-us/library/ms682586(VS.85).aspx</a>.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-16"></a>OpenHoldem connects to all tables but one
-</h2>
-<div class="Unindented">
-<i>Reason: Not correctly disconnected.</i>
-</div>
-<div class="Indented">
-If OpenHoldem connects to all tables but one (despite having enough instances of OpenHoldem open) there is a simple reason: the auto-connector uses shared memory to synchronize all OpenHoldem processes. If one process does crash (because of a buggy user-DLL for example), it will no longer be able to disconnect correctly and that table (or future tables with the same HWND) will be marked as occupied forever. Close that table and open another one. To clear the shared memory: shutdown all bots and restart them again.
-</div>
-<h2 class="Section">
-<a class="toc" name="toc-Section-17"></a>OpenHoldem checked, but didfold is true
+<a class="toc" name="toc-Section-15"></a>OpenHoldem checked, but didfold is true
 </h2>
 <div class="Unindented">
 <i>Reason: TM does not recognize buttons correctly.</i>
@@ -349,7 +319,7 @@ If OpenHoldem connects to all tables but one (despite having enough instances of
 If you get a freeplay, it might be that your check-button (or a check/fold-button!) is at the same location where usually the fold-button is located. If you have a simple way to detect buttons (e.g. by colour) you probably will recognize that button as fold. So OpenHoldem — not seeing a check-button — will check by clicking &ldquo;fold&rdquo; and didfold will be true. Similar things can happen if buttons move, e.g. a call-button at the raise-position when you can only fold or call allin.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-18"></a>History symbols do not work
+<a class="toc" name="toc-Section-16"></a>History symbols do not work
 </h2>
 <div class="Unindented">
 <i>Reason: Incorrect hand-reset.</i>
@@ -358,10 +328,10 @@ If you get a freeplay, it might be that your check-button (or a check/fold-butto
 Some symbols only require the current gamestate to be calculated (e.g. dealerchair, balance, nbetstocall). Others (like didcallround1, nbetsround3 etc.) require a complete game-history and will reset at the beginning of a new hand. If they all are zero (or -1), you have probably caused an incorrect hand-reset, e.g. by temporary occlusion. You should avoid occlusion by any means.
 </div>
 <div class="Remark*">
-This problem has now practically disappeared, since OpenHoldem supports nine different handreset-methods, but only accepts a hand-reset if multiple methods fire at the same time.
+This problem has now practically disappeared, since OpenHoldem supports ten different handreset-methods, but only accepts a hand-reset if multiple methods fire at the same time.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-19"></a>When the blinds increase OpenHoldem keeps the old values
+<a class="toc" name="toc-Section-17"></a>When the blinds increase OpenHoldem keeps the old values
 </h2>
 <div class="Unindented">
 <i>Reason: tournament not recognized.</i>
@@ -388,7 +358,7 @@ scraped MTT_symbols like players_remaining.
 However in some very rare cases it might be that all methods of recognizing a tournament fail. Some casino tables don’t display helpful titles or have no titles at all. The tablemap might not provide support for optional tournament information and even the &ldquo;beautiful sum of chips&rdquo; might not fit if you connect in the middle of an MTT. The methods of detecting tournaments still get fine-tuned, so if you experience this problem please get in contact with us. Istournament-help-threat: <a class="FlexURL" href="http://www.maxinmontreal.com/forums/viewtopic.php?f=117&amp;t=16104">http://www.maxinmontreal.com/forums/viewtopic.php?f=117&amp;t=16104</a>.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-20"></a>Pokerval does not work
+<a class="toc" name="toc-Section-18"></a>Pokerval does not work
 </h2>
 <div class="Unindented">
 <i>Reason: Pokerval is a bitvector. You are probably confusing logical operations and bitwise operations.</i>
@@ -397,7 +367,7 @@ However in some very rare cases it might be that all methods of recognizing a to
 In short: boolean operations work on true/false-values; bitwise operations work on long series of 0/1-values simultaneously. Lots of wisdom has been written about both topics — too much to explain it here. If you don’t really understand what I am talking about, then you <i>really </i>should take a pause from coding and study the chapter about OH-script. There is no way around it.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-21"></a>PokerTracker does not work
+<a class="toc" name="toc-Section-19"></a>PokerTracker does not work
 </h2>
 <div class="Unindented">
 <i>Reason: Invalid Sitename in the TableMap</i>
@@ -406,7 +376,7 @@ In short: boolean operations work on true/false-values; bitwise operations work 
 OpenHoldem supports Poker Tracker functionality for a dozen different casinos. To query the correct stats OpenHoldem must know, at what casino you currently play. This happens by the TableMap symbols <i>sitename</i> and <i>network</i>. Please refer to the PokerTracker and TableMap section of this manual for a detailed explanantion what to do.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-22"></a>Quickfolding AA and other unexpected plays
+<a class="toc" name="toc-Section-20"></a>Quickfolding AA and other unexpected plays
 </h2>
 <div class="Unindented">
 <i>Reason: Unstable frames and careless coding.</i>
@@ -448,7 +418,7 @@ This way mis-scrapes will not be able to defeat your fine strategy. Instead a mi
 This failure gets now prevented too, as OpenHoldem will will execute f$prefold only if both cards are known. However: as you can see lots of things could go wrong if you are careless. Therefore it is always a good idea to keep these potential pitfalls in mind and prefer a conservative style of coding your bot.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-23"></a>OpenHoldem acts, but nothing happens (Windows 7)
+<a class="toc" name="toc-Section-21"></a>OpenHoldem acts, but nothing happens (Windows 7)
 </h2>
 <div class="Unindented">
 Some people have the problem that OpenHoldem &ldquo;does not act&rdquo; despite the log clearly shows the opposite:
