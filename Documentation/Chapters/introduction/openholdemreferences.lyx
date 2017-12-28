@@ -436,5 +436,84 @@ http://40.media.tumblr.com/tumblr_lo17fqFYal1qj5qvfo1_500.jpg
 
 \end_layout
 
+\begin_layout Subsection*
+Recommended tools
+\end_layout
+
+\begin_layout Itemize
+PokerTH, an open-source poker simulator: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.pokerth.net/download
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+DDPoker, a freeware poker simulator: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://static.ddpoker.com/download/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+GNU CoreUtils, including head and tail to handle huge logs: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://gnuwin32.sourceforge.net/packages/coreutils.htm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+GNU grep to filter log-files: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://gnuwin32.sourceforge.net/packages/grep.htm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+AutoIT, a freeware scripting language for tools like hoppers: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.autoitscript.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
