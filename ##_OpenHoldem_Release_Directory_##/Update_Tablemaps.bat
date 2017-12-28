@@ -6,7 +6,7 @@
 @echo.
 @echo This tool will download the "offical" tablemaps 
 @echo from the OpenHoldem-repository at GitHub.
-@echo It will also download one replay-frame per map
+@echo It will also download two replay-frames per map
 @echo for verification / as setup-instruction.
 @echo.
 @REM testing if SVN.exe exists
