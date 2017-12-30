@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-12-12"/>
+<meta name="create-date" content="2017-12-30"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -17,7 +17,10 @@
 This section is largely based on the information originally written by Ray Bornert (<a class="FlexURL" href="http://www.winholdem.net/help/help-formula.html#symbols">http://www.winholdem.net/help/help-formula.html#symbols</a>) and extended to include OpenHoldem-specific symbols.  
 </div>
 <div class="Indented">
-These symbols take output from the scraper engine, from Table Map parameters, and from your formula functions to derive various bits of data that are useful when instructing the OpenHoldem Autoplayer how to act. The set of symbols got extended over time - not all of them are available for all versions of OpenHoldem. This list reflects the state of the latest version. Some old WinHoldem symbols got never implemented due to lack of documentation and practical relevance. Others got replaced or removed over time. Please refer to the chapter &ldquo;Outdated Features and Incompatibilities between OpenHoldem and WinHoldem&rdquo; for more information.
+These symbols take output from the scraper engine, from Table Map parameters, and from your formula functions to derive various bits of data that are useful when instructing the OpenHoldem Autoplayer how to act. The set of symbols got extended over time — not all of them are available for all versions of OpenHoldem. This list reflects the state of the latest version. Some old WinHoldem symbols got never implemented due to lack of documentation and practical relevance. Others got replaced or removed over time. Please refer to the chapter &ldquo;Outdated Features and Incompatibilities between OpenHoldem and WinHoldem&rdquo; for more information.
+</div>
+<div class="Indented">
+As you already might have noticed some of these symbols are of rather technical nature, A set of several hundred more poker-logical symbols is included in the OpenPPL-library that gets discussed in the seeparate OpenPPL-manual. Both languages can be mixed in nearly any way however, so please read on. Here you will find some valuable symbols that you might be miss in OpenPPL.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-1"></a>General
@@ -1683,7 +1686,7 @@ Meaning
 ishipair
 </td>
 <td align="left" valign="top" style="width: 65%;">
-true when you have hi pair (0-1)
+true when you have a pair with the highest board-card or an overpaor
 </td>
 
 </tr>
@@ -1692,7 +1695,7 @@ true when you have hi pair (0-1)
 islopair
 </td>
 <td align="left" valign="top" style="width: 65%;">
-true when you have lo pair (0-1)
+true when you have a pair with the lowest board-card or an underpair
 </td>
 
 </tr>
@@ -1701,7 +1704,7 @@ true when you have lo pair (0-1)
 ismidpair
 </td>
 <td align="left" valign="top" style="width: 65%;">
-true when you have mid pair (0-1) 
+true when you have a pair that is neither hipair nor lopair
 </td>
 
 </tr>
