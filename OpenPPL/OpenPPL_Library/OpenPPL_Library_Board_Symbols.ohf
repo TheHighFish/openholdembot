@@ -263,7 +263,7 @@ nhands == nhandsti
 OneCardStraightPossible AND NOT MoreThanOneOneCardStraightPossible
 
 ##OpenEndedStraightDrawOnBoard##
-(nstraightcommon == 4 AND (BitCount((rankbitscommon >> 10) & 0x1f) < 4) AND (BitCount((rankbitscommon >> 1) & 0x1f) < 4)) ? 1 : 0
+(nstraightcommon == 4 AND (BitCount((rankbitscommon >> 10) & 0x1f) < 4) AND (BitCount((rankbitscommon >> 1) & 0x1f) < 4))
 
 ##TripsOnBoardOnFlop##
 WHEN (LowestFlopCard < 2) RETURN false FORCE
@@ -366,21 +366,23 @@ HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
   + (((RiverSuit != FirstFlopSuit) AND (RiverSuit != SecondFlopSuit) AND (RiverSuit != ThirdFlopSuit) AND (RiverSuit != TurnSuit)) ? 1 : 0)]
   
 ##SuitsOnTurn##
-(betround < turn) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
-[ SuitsOnFlop 
-  + (((TurnSuit != FirstFlopSuit) AND (TurnSuit != SecondFlopSuit) AND (TurnSuit != ThirdFlopSuit)) ? 1 : 0)]
+WHEN (betround < turn) RETURN HINT_SuitsOnBoard_Undefined_For_This_Betting_Round FORCE
+WHEN (TurnSuit == FirstFlopSuit)  RETURN SuitsOnFlop FORCE
+WHEN (TurnSuit == SecondFlopSuit) RETURN SuitsOnFlop FORCE
+WHEN (TurnSuit == ThirdFlopSuit)  RETURN SuitsOnFlop FORCE
+WHEN Others RETURN (SuitsOnFlop + 1) FORCE 
   
 ##StraightFlushPossible##
-BitCount((srankbitscommon >> 10) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 9) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 8) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 7) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 6) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 5) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 4) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 3) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 2) & 0x1f) >= 3 ? 1 :
-BitCount((srankbitscommon >> 1) & 0x1f) >= 3 ? 1 : 0
+WHEN (BitCount((srankbitscommon >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((srankbitscommon >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
 
 ##StraightOnBoard##
 (nstraightcommon >= 5)
@@ -409,28 +411,28 @@ BitCount((srankbitscommon >> 1) & 0x1f) >= 3 ? 1 : 0
 -1
 
 ##StraightPossibleOnFlop##
-(BitCount((RankBitsCommonFlop >> 10) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  9) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  8) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  7) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  6) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  5) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  4) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  3) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  2) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonFlop >>  1) & 0x1f) >= 3) ? 1 : 0
+WHEN (BitCount((RankBitsCommonFlop >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
 
 ##StraightPossibleOnTurn##
-(BitCount((RankBitsCommonTurn >> 10) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  9) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  8) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  7) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  6) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  5) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  4) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  3) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  2) & 0x1f) >= 3) ? 1 :
-(BitCount((RankBitsCommonTurn >>  1) & 0x1f) >= 3) ? 1 : 0
+WHEN (BitCount((RankBitsCommonTurn >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
 
 ##ThirdBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
