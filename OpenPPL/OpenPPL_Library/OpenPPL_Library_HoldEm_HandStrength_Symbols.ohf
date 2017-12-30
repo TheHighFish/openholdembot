@@ -1304,7 +1304,7 @@ BitCount(Srankbitsavailable >> srankhiplayer)
 ispair
 
 ##HoldEm_RunnerRunnerFlushPossibleAtRiver##
-(betround == river AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+(IsRiver AND (nsuitedcommon == 3) AND (SuitsOnFlop != 1) AND (TurnSuit == RiverSuit))
 
 ##HoldEm_SuitsInHand##
 ($$ps0 == $$ps1) ? 1 :

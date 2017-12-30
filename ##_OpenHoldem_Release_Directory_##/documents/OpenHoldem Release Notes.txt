@@ -49,6 +49,9 @@ BUG FIXES:
   Thanks to Jesus for reporting false positives of the validator
   and for providing replay-frames.
   [THF]
+- The code of RunnerRunnerFlushPossibleAtRiver contained an error.
+  Thanks to Stars83 for reporting.
+  [THF]
   
   
 ﻿v﻿12.1.5 2017-12-12
