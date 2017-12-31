@@ -95,7 +95,28 @@ OpenHoldem will execute a user-defined rebuy-script if f$rebuy evaluates to a po
 f$select_formula_file
 </td>
 <td align="left" valign="top" style="width: 75%;">
-OpenHoldem evaluates this function once per handreset and will load the formula-file that got selected by the loadformula$XYZ-symbol. .The file is expected to be in the bot_logic-directory.
+<div class="PlainVisible">
+OpenHoldem evaluates this function once per handreset and will load the formula-file that got selected by the loadformula$XYZ-symbolm . The file is expected to be in the bot_logic-directory. Example:
+</div>
+<div class="PlainVisible">
+<div class="listing">
+<pre class="listing"><div class="PlainVisible">
+##f$select_formula_file## 	  
+</div>
+
+<div class="PlainVisible">
+  WHEN (StackSize &lt; 15) RETURN loadformula$push_fold$ohf FORCE
+</div>
+
+<div class="PlainVisible">
+  WHEN issng RETURN loadformula$my_sng_bot$ohf FORCE
+</div>
+
+</pre>
+</div>
+
+</div>
+
 </td>
 
 </tr>

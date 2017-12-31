@@ -1,4 +1,4 @@
-﻿﻿v﻿13.0.0 2017-12-27
+﻿﻿v﻿13.0.0 2018-01-01
 ==================
 ﻿NEW STUFF:
 - OpenHoldem is now able to switch bot-logic at runtime.
@@ -17,7 +17,7 @@
 - OpenHoldem comes now with some (maybe soon some dozens)
   "official" tablemaps for an easy out-of-the-box experience.
   General setup-instructions for the casinos can be found in the manual
-  and every TM comes with a replay-frame for illustration.
+  and every TM comes with one or two replay-frames for illustration.
   The tablemap-loader and scraper-directory-monitor have been adapted
   to work with a deeply nested scraper-directory to keep the maps organized.
   The batch-script "Update_Tablemaps.bat" will checkout the tablemaps

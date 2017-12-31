@@ -278,8 +278,34 @@ f$select_formula_file
 
 \begin_layout Plain Layout
 OpenHoldem evaluates this function once per handreset and will load the
- formula-file that got selected by the loadformula$XYZ-symbol.
- .The file is expected to be in the bot_logic-directory.
+ formula-file that got selected by the loadformula$XYZ-symbolm .
+ The file is expected to be in the bot_logic-directory.
+ Example:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$select_formula_file## 	  
+\end_layout
+
+\begin_layout Plain Layout
+
+  WHEN (StackSize < 15) RETURN loadformula$push_fold$ohf FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+  WHEN issng RETURN loadformula$my_sng_bot$ohf FORCE
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
