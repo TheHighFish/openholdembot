@@ -42,23 +42,32 @@ CTableMapLoader::~CTableMapLoader() {
 }
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString scraper_directory) {
-	CFileFind	hFile;
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", scraper_directory);
-  tablemap_connection_data.clear();
-	_number_of_tablemaps_loaded = 0;
-	BOOL bFound = hFile.FindFile(TableMapWildcard());
+  CString wildcard;
+  wildcard.Format("%s\\*", scraper_directory);
+  CFileFind	hFile;
+	BOOL bFound = hFile.FindFile(wildcard);
 	while (bFound) {
 		bFound = hFile.FindNextFile();
     // Formerly there has been a check /hFile.GetFilePath() != p_tablemap->filepath()) 
     // but if we want to reload, then everything
+    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Looking at %s\n",
+      hFile.GetFilePath());
     if (hFile.IsDots()) {
+      write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Skipping dots\n");
       // Ignore link to current directory and to parent-directory
       continue;
     } else if (hFile.IsDirectory()) {
       // Traverse sub-directories recursively
+      write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Diving into directory\n");
       ParseAllTableMapsToLoadConnectionData(hFile.GetFilePath());
       continue;
+    } else if (hFile.GetFilePath().Right(3).MakeLower() != ".tm") {
+      // Not a tablemap
+      write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Not a tablemap\n");
+      continue;
     }
+    write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] Loading file\n");
 		int ret = p_tablemap->LoadTablemap(hFile.GetFilePath().GetString());
 		if (ret == SUCCESS)	{
 			ExtractConnectionDataFromCurrentTablemap(p_tablemap);
@@ -71,6 +80,8 @@ void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString scraper_dire
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData() {
 	write_log(preferences.debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
+  tablemap_connection_data.clear();
+  _number_of_tablemaps_loaded = 0;
 	ParseAllTableMapsToLoadConnectionData(ScraperDirectory());
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
