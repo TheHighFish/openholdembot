@@ -27,12 +27,14 @@ public:
 	void HandleAllWindows();
 	// To be called by callback-function EnumProcPotentialPopups
 	void HandlePotentialPopup(HWND potential_popup, bool hard_kill);
+public:
+  // To be used by the auto-connector (temp!!!)
+  bool WinIsOpenHoldem(HWND window);
 private:
 	// To be called by instance 0
 	void MinimizeAllOnstartup();
 private:
 	void HandleAllWindows(bool hard_kill);
-  bool WinIsOpenHoldem(HWND window);
 };
 
 extern CPopupHandler *p_popup_handler;
