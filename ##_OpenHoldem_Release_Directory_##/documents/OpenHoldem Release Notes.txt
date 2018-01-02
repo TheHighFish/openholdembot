@@ -1,4 +1,12 @@
-﻿﻿v﻿13.0.0 2018-01-01
+﻿﻿v﻿13.0.1 2018-01-xx
+==================
+BUG FIXES:
+- OpenHoldem could connect to other OpenHoldem windows
+  (e.g. by table size and title) if the tablemap was tolerant enough.
+  This gets now prevented.
+  [THF]
+
+﻿v﻿13.0.0 2018-01-01
 ==================
 ﻿NEW STUFF:
 - OpenHoldem comes now with some (maybe soon some dozens)
