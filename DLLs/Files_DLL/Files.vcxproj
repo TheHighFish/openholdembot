@@ -16,9 +16,6 @@
   <ItemGroup>
     <ClInclude Include="Files.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Files.def" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6D9F9D81-4D08-4C57-A773-4B041360D150}</ProjectGuid>
     <RootNamespace>ReferenceMouseDLL</RootNamespace>
@@ -72,7 +69,6 @@
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)files.dll</OutputFile>
-      <ModuleDefinitionFile>files.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -90,7 +86,6 @@
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)files.dll</OutputFile>
-      <ModuleDefinitionFile>files.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
