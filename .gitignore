@@ -1,5 +1,6 @@
 *.db
 *.dll
+*.exe
 *.obj
 *.ilk
 *.pfb
