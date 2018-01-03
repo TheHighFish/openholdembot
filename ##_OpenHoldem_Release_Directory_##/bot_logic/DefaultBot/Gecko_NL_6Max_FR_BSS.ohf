@@ -1783,7 +1783,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 
 ##f$effective_balance_to_call_ratio##
 WHEN (call <= 0) RETURN StackSize FORCE
-WHEN (balance <= f$stackraiser) RETURN (balance / call) FORCE
+WHEN ((balance + currentbet) <= f$stackraiser) RETURN ((balance + currentbet) / call) FORCE
 WHEN Others RETURN (f$stackraiser / call) FORCE
 
 ##f$required_balance_to_call_ratio_for_setmining##
@@ -1819,7 +1819,7 @@ WHEN [didbetsize AND (4 * call < pot)] RETURN true FORCE
 // Raises after setmining get handled be f$preflop_call_for_setmining.
    
 ##f$preflop_limp_good_hand##
-WHEN [(ncallbets<=1) >= 1] RETURN false FORCE
+WHEN [(ncallbets >= 1] RETURN false FORCE
 WHEN [BotsLastAction != None] RETURN false FORCE
 WHEN [(StillToAct >= 5) AND (handrank169 < 50)] RETURN true FORCE
 WHEN [nopponentscalling==0 AND ispair] RETURN true FORCE
@@ -1836,10 +1836,7 @@ WHEN f$preflop_limp_good_hand RETURN true FORCE
 balance_headsupchair
 
 ##f$stackraiser##
-WHEN (raischair >= 0) RETURN balance_raischair FORCE
-// Supporting WinHoldem-style blind-"raisers"
-// which seem to be used by Gecko
-WHEN IsPreflop RETURN balance_bigblindchair FORCE
+WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
 
 ##f$preflop_aggressor##
 [ nplayersround_flop>=3 && nplayersplaying==2 ]
