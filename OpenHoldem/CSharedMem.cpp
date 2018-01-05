@@ -179,7 +179,7 @@ void CSharedMem::VerifyMainMutexName() {
 	// * autoplayer actions no longer synchronized
 	// * no longer unique session ID
 	// * all bots try to write to the same log-file
-	int CRC = crc32((const unsigned char *) Preferences()->mutex_name().GetString());
+	int CRC = crc32((const unsigned char *) Preferences()->mutex_name());
 	if (CRC_of_main_mutexname == 0)	{
 		// Set the mutex
 		// We have a potential race-condition here, but can't do anything.

@@ -314,7 +314,7 @@ void CPreferences::WriteReg(const LPCTSTR registry_key, const double registry_va
 
 #define ENT CSLock lock(m_critsec);
 
-void CPreferences::SetValue(int index_of_variable, CString value) {
+void CPreferences::SetValue(int index_of_variable, LPCSTR value) {
   ENT
   //!!!!!AssertRange(index_of_variable, 0, k_prefs_last_CString_value);
   prefs_CString_values[index_of_variable] = value;

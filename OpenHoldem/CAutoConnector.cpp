@@ -45,7 +45,7 @@ CArray <STableList, STableList> g_tlist;
 
 CAutoConnector::CAutoConnector() {
 	write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] CAutoConnector()\n");
-  CString MutexName = Preferences()->mutex_name() + "AutoConnector";
+  CString MutexName = CString(Preferences()->mutex_name()) + "AutoConnector";
 	_autoconnector_mutex = new CMutex(false, MutexName);
 	set_attached_hwnd(NULL);
 }

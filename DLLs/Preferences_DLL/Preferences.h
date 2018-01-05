@@ -199,11 +199,11 @@ public:
   const int replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
   const int replay_max_frames() { return prefs_numerical_values[k_prefs_replay_max_frames]; }
   // Poker Tracker
-  const CString pt_ip_addr() { return prefs_CString_values[k_prefs_pt_ip_addr]; }
-  const CString pt_port() { return prefs_CString_values[k_prefs_pt_port]; }
-  const CString pt_dbname() { return prefs_CString_values[k_prefs_pt_dbname]; }
-  const CString pt_user() { return prefs_CString_values[k_prefs_pt_user]; }
-  const CString pt_pass() { return prefs_CString_values[k_prefs_pt_pass]; }
+  LPCSTR pt_ip_addr() { return prefs_CString_values[k_prefs_pt_ip_addr]; }
+  LPCSTR pt_port()    { return prefs_CString_values[k_prefs_pt_port]; }
+  LPCSTR pt_dbname()  { return prefs_CString_values[k_prefs_pt_dbname]; }
+  LPCSTR pt_user()    { return prefs_CString_values[k_prefs_pt_user]; }
+  LPCSTR pt_pass()    { return prefs_CString_values[k_prefs_pt_pass]; }
   //  PokerChat
   const int chat_min_delay() { return prefs_numerical_values[k_prefs_chat_min_delay]; }
   const int chat_random_delay() { return prefs_numerical_values[k_prefs_chat_random_delay]; }
@@ -297,7 +297,7 @@ public:
   const bool rebuy_condition_change_in_handnumber() { return prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber]; }
   const bool rebuy_condition_heuristic_check_for_occlusion() { return prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion]; }
   const int  rebuy_minimum_time_to_next_try() { return prefs_numerical_values[k_prefs_rebuy_minimum_time_to_next_try]; }
-  const CString rebuy_script() { return prefs_CString_values[k_prefs_rebuy_script]; }
+  LPCSTR rebuy_script() { return prefs_CString_values[k_prefs_rebuy_script]; }
   // Configuration check
   const bool configurationcheck_input_settings() { return prefs_numerical_values[k_prefs_configurationcheck_input_settings]; }
   const bool configurationcheck_font_settings() { return prefs_numerical_values[k_prefs_configurationcheck_font_settings]; }
@@ -313,14 +313,14 @@ public:
   // Popup blocker
   const int popup_blocker() { return prefs_numerical_values[k_prefs_popup_blocker]; }
   // Obscure
-  const CString window_class_name() { return prefs_CString_values[k_prefs_window_class_name]; }
-  const CString mutex_name() { return prefs_CString_values[k_prefs_mutex_name]; }
-  bool simple_window_title() { return prefs_numerical_values[k_prefs_simple_window_title]; }
-  // CFileDialog saved paths
-  const CString path_tm() { return prefs_CString_values[k_prefs_path_tm]; }
+  LPCSTR window_class_name() { return prefs_CString_values[k_prefs_window_class_name]; }
+  LPCSTR mutex_name() { return prefs_CString_values[k_prefs_mutex_name]; }
+  const bool simple_window_title() { return prefs_numerical_values[k_prefs_simple_window_title]; }
+  // CFileDialog saved paths //!!! Remove
+  LPCSTR path_tm() { return prefs_CString_values[k_prefs_path_tm]; }
 public:
   // public mutators
-  void SetValue(int index_of_variable, CString value);
+  void SetValue(int index_of_variable, LPCSTR value);
   // double has to handle ints and bools too,
   // otherwise we get an "error c2668  ambiguous call to overloaded function"
   // http://msdn.microsoft.com/en-us/library/da60x087.aspx
