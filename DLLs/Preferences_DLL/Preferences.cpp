@@ -166,6 +166,9 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] = {
 };
 
 void CPreferences::LoadPreferences() {
+#ifdef _DEBUG
+  MessageBox(0, "Loading preferences", "Info", 0);
+#endif
   InitDefaults();
   ReadPreferences();
 }
