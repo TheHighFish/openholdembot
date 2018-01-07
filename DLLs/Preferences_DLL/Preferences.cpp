@@ -157,7 +157,6 @@ const char* k_registry_keys_for_CStrings[k_prefs_last_CString_value + 1] = {
   "rebuy_script",
   "window_class_name",
   "mutex_name",
-  "path_tm",
   // Finally an empty string
   // This correspondents to k_prefs_last_numerical_value (unused)
   // It will cause an assertion if used
@@ -234,12 +233,47 @@ void CPreferences::InitDefaults(void) {
   // Doubles
   prefs_numerical_values[k_prefs_icm_prize1] = kUndefinedZero;
   // CString
-  prefs_CString_values[k_prefs_pt_ip_addr] = "127.0.0.1";
-  prefs_CString_values[k_prefs_pt_port] = "5432";
-  prefs_CString_values[k_prefs_pt_user] = "pokertracker";
-  prefs_CString_values[k_prefs_rebuy_script] = "Tools\\RebuyDemo.exe";
-  prefs_CString_values[k_prefs_window_class_name] = "OpenHoldem";
-  prefs_CString_values[k_prefs_mutex_name] = "OHAntiColl";
+  for (int i = 0; i < k_prefs_last_CString_value; ++i) {
+    prefs_CString_values[i] = DefaultStringValues(i);
+  }
+}
+
+CString CPreferences::DefaultStringValues(int index) {
+  switch (index) {
+  case k_prefs_pt_ip_addr:
+    return "127.0.0.1";
+  case k_prefs_pt_port:
+    return "5432";
+  case k_prefs_pt_dbname:
+    return "noname";
+  case k_prefs_pt_user:
+    return "pokertracker";
+  case k_prefs_pt_pass:
+    return "*** top secret ***";
+  case k_prefs_rebuy_script:
+    return "Tools\\RebuyDemo.exe";
+  case k_prefs_window_class_name:
+    return "OpenHoldem";
+  case k_prefs_mutex_name:
+    return "OHAntiColl";
+  default:
+    assert(kThisMustNotHappen);
+    return "Error in CPreferences::DefaultStringValues()";
+  }
+}
+
+CString CPreferences::NonEmptyStringValueElseDefault(int index) {
+  assert(index >= 0);
+  assert(index < k_prefs_last_CString_value);
+  if (prefs_CString_values[index] != "") {
+    // Empty values are dangerous
+    // An empty window_class_name will even crash MFC
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=257&t=21306
+	// Other empty values don't make much sense either.
+	// Therefore we restore the default here.
+    prefs_CString_values[index] = DefaultStringValues(index);
+  }
+  return prefs_CString_values[index];
 }
 
 //

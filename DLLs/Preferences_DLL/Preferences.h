@@ -165,7 +165,6 @@ enum {
   k_prefs_rebuy_script,
   k_prefs_window_class_name,
   k_prefs_mutex_name,
-  k_prefs_path_tm,
   // leave this always at the last position
   k_prefs_last_CString_value,
 };
@@ -184,7 +183,7 @@ public:
   // We keep one accessor per variable,
   // because it would be inconvenient to have only few accessors
   // and feed them with some contants at countless locations.
-
+  //
   // Autoplayer
   const int frame_delay() { return prefs_numerical_values[k_prefs_frame_delay]; }
   const int click_delay() { return prefs_numerical_values[k_prefs_click_delay]; }
@@ -194,18 +193,17 @@ public:
   const bool engage_autoplayer() { return prefs_numerical_values[k_prefs_engage_autoplayer]; }
   const bool restore_position_and_focus() { return prefs_numerical_values[k_prefs_restore_position_and_focus]; }
   const bool use_auto_replay() { return prefs_numerical_values[k_prefs_use_auto_replay]; }
-
   // Scraper
   const int scrape_delay() { return prefs_numerical_values[k_prefs_scrape_delay]; }
   // Replay Frames
   const int replay_record() { return prefs_numerical_values[k_prefs_replay_record]; }
   const int replay_max_frames() { return prefs_numerical_values[k_prefs_replay_max_frames]; }
   // Poker Tracker
-  LPCSTR pt_ip_addr() { return prefs_CString_values[k_prefs_pt_ip_addr]; }
-  LPCSTR pt_port()    { return prefs_CString_values[k_prefs_pt_port]; }
-  LPCSTR pt_dbname()  { return prefs_CString_values[k_prefs_pt_dbname]; }
-  LPCSTR pt_user()    { return prefs_CString_values[k_prefs_pt_user]; }
-  LPCSTR pt_pass()    { return prefs_CString_values[k_prefs_pt_pass]; }
+  LPCSTR pt_ip_addr() { return NonEmptyStringValueElseDefault(k_prefs_pt_ip_addr); }
+  LPCSTR pt_port()    { return NonEmptyStringValueElseDefault(k_prefs_pt_port); }
+  LPCSTR pt_dbname()  { return NonEmptyStringValueElseDefault(k_prefs_pt_dbname); }
+  LPCSTR pt_user()    { return NonEmptyStringValueElseDefault(k_prefs_pt_user); }
+  LPCSTR pt_pass()    { return NonEmptyStringValueElseDefault(k_prefs_pt_pass); }
   //  PokerChat
   const int chat_min_delay() { return prefs_numerical_values[k_prefs_chat_min_delay]; }
   const int chat_random_delay() { return prefs_numerical_values[k_prefs_chat_random_delay]; }
@@ -301,7 +299,7 @@ public:
   const bool rebuy_condition_change_in_handnumber() { return prefs_numerical_values[k_prefs_rebuy_condition_change_in_handnumber]; }
   const bool rebuy_condition_heuristic_check_for_occlusion() { return prefs_numerical_values[k_prefs_rebuy_condition_heuristic_check_for_occlusion]; }
   const int  rebuy_minimum_time_to_next_try() { return prefs_numerical_values[k_prefs_rebuy_minimum_time_to_next_try]; }
-  LPCSTR rebuy_script() { return prefs_CString_values[k_prefs_rebuy_script]; }
+  LPCSTR rebuy_script() { return NonEmptyStringValueElseDefault(k_prefs_rebuy_script); }
   // Configuration check
   const bool configurationcheck_input_settings() { return prefs_numerical_values[k_prefs_configurationcheck_input_settings]; }
   const bool configurationcheck_font_settings() { return prefs_numerical_values[k_prefs_configurationcheck_font_settings]; }
@@ -317,11 +315,9 @@ public:
   // Popup blocker
   const int popup_blocker() { return prefs_numerical_values[k_prefs_popup_blocker]; }
   // Obscure
-  LPCSTR window_class_name() { return prefs_CString_values[k_prefs_window_class_name]; }
-  LPCSTR mutex_name() { return prefs_CString_values[k_prefs_mutex_name]; }
+  LPCSTR window_class_name() { return NonEmptyStringValueElseDefault(k_prefs_window_class_name); }
+  LPCSTR mutex_name() { return NonEmptyStringValueElseDefault(k_prefs_mutex_name); }
   const bool simple_window_title() { return prefs_numerical_values[k_prefs_simple_window_title]; }
-  // CFileDialog saved paths //!!! Remove
-  LPCSTR path_tm() { return prefs_CString_values[k_prefs_path_tm]; }
 public:
   // public mutators
   void SetValue(int index_of_variable, LPCSTR value);
@@ -332,9 +328,12 @@ public:
 private:
   void CheckForOutdatedICMConfig();
 private:
+  CString DefaultStringValues(int index);
+  CString NonEmptyStringValueElseDefault(int index);
+private:
   // private variables - use public accessors and public mutators to address these
-  CString	    prefs_CString_values[k_prefs_last_CString_value];
-  double      prefs_numerical_values[k_prefs_last_numerical_value];
+  CString	prefs_CString_values[k_prefs_last_CString_value];
+  double  prefs_numerical_values[k_prefs_last_numerical_value];
 private:
   // private functions and variables - not available via accessors or mutators
   void ReadPreferences();
