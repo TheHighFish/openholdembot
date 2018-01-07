@@ -59,11 +59,11 @@ BOOL CDlgSAPrefs6::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	m_pt_ip.SetWindowText(Preferences()->pt_ip_addr()/*!!!!!!!.GetString()*/);
-	m_pt_port.SetWindowText(Preferences()->pt_port()/*.GetString()*/);
-	m_pt_user.SetWindowText(Preferences()->pt_user()/*.GetString()*/);
-	m_pt_pass.SetWindowText(Preferences()->pt_pass()/*.GetString()*/);
-	m_pt_dbname.SetWindowText(Preferences()->pt_dbname()/*.GetString()*/);
+	m_pt_ip.SetWindowText(Preferences()->pt_ip_addr());
+	m_pt_port.SetWindowText(Preferences()->pt_port());
+	m_pt_user.SetWindowText(Preferences()->pt_user());
+	m_pt_pass.SetWindowText(Preferences()->pt_pass());
+	m_pt_dbname.SetWindowText(Preferences()->pt_dbname());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
