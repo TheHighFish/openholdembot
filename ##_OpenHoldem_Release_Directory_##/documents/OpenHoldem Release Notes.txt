@@ -1,10 +1,16 @@
 ﻿﻿v﻿13.0.1 2018-01-xx
 ==================
 BUG FIXES:
-- OpenHoldem could connect to other OpenHoldem windows
-  (e.g. by table size and title) if the tablemap was tolerant enough.
-  This gets now prevented.
+- OpenHoldem could connect to other OpenHoldem windows or even to itself
+  (e.g. by table size and title) if a bad tablemap was tolerant enough.
+  This problem gets now prevented.
   [THF]
+
+MAINTENANCE:
+- Restructuring OpenHoldem and introducing Preferences.DLL
+  because we need smaller, manageable software-modules with clean interfaces. 
+  [THF]
+
 
 ﻿v﻿13.0.0 2018-01-01
 ==================
