@@ -78,7 +78,6 @@
     <ClCompile Include="..\winmgr\SizerBar.cpp" />
     <ClCompile Include="..\winmgr\WinMgr.cpp" />
     <ClCompile Include="..\winmgr\WinRect.cpp" />
-    <ClCompile Include="..\hscroll-list-box\HScrollListBox.cpp" />
     <ClCompile Include="..\CTransform\pdiff\CompareArgs.cpp" />
     <ClCompile Include="..\CTransform\CTransform.cpp" />
     <ClCompile Include="..\CTransform\hash\lookup3.cpp" />
@@ -198,6 +197,7 @@
     <ClCompile Include="CFunctionCollection.cpp" />
     <ClCompile Include="COHScriptList.cpp" />
     <ClCompile Include="COHScriptObject.cpp" />
+    <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
@@ -280,7 +280,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\winmgr\SizerBar.h" />
     <ClInclude Include="..\winmgr\WinMgr.h" />
-    <ClInclude Include="..\hscroll-list-box\HScrollListBox.h" />
     <ClInclude Include="..\pokereval\include\combinations.h" />
     <ClInclude Include="..\pokereval\include\deck.h" />
     <ClInclude Include="..\pokereval\include\deck_std.h" />
@@ -428,6 +427,8 @@
     <ClInclude Include="CFunctionCollection.h" />
     <ClInclude Include="COHScriptList.h" />
     <ClInclude Include="COHScriptObject.h" />
+    <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
+    <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc" />

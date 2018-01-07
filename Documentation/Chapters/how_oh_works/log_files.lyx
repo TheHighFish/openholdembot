@@ -79,7 +79,7 @@ Log-Files
 \end_layout
 
 \begin_layout Standard
-Sometimes the bot will take an unexpected decision, more rarely for bots
+Sometimes the bot might take an unexpected decision, more rarely for bots
  in production, but for sure regularly for bots in development.
  The reason can be mis-scrapes (Table Map or improper system settings);
  it can be bad bot-logic; it can even be a bug in OpenHoldem.
@@ -281,10 +281,6 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Graphics
 	filename images/log_simple_call_tree.JPG
 
@@ -347,7 +343,7 @@ status open
 \begin_layout Standard
 So the implementation and the evaluation of each symbol use some other symbols
  that are one level deeper indented in the autoplayer-trace.
- In practice the autoplayer-trace will get even moire detailed.
+ In practice the autoplayer-trace will get even more detailed.
  For example even a simple symbol like Balance might need the user-chair,
  the size of the big-blind and some more.
  But the principle is always the same and with a little bit experience the

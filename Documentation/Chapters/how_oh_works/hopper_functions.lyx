@@ -204,28 +204,6 @@ OpenHoldem will click the [x] in the titlebar of the table if f$close evaluates
 \begin_inset Text
 
 \begin_layout Plain Layout
-f$terminate
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-OpenHoldem will shutdown if f$terminate evaluates to true and if this instance
- is not connected to a table and not needed for popup-handling or for the
- next potential connection (version 9.0.1+ only)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 f$rematch
 \end_layout
 
@@ -262,7 +240,7 @@ OpenHoldem will click the autopost-button if f$autopost evaluates to true.
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -271,7 +249,7 @@ f$rebuy
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -280,6 +258,54 @@ OpenHoldem will execute a user-defined rebuy-script if f$rebuy evaluates
  met.
  For the details please see the chapters about automation and about the
  preferences dialog for rebuys.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+f$select_formula_file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OpenHoldem evaluates this function once per handreset and will load the
+ formula-file that got selected by the loadformula$XYZ-symbolm .
+ The file is expected to be in the bot_logic-directory.
+ Example:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$select_formula_file## 	  
+\end_layout
+
+\begin_layout Plain Layout
+
+  WHEN (StackSize < 15) RETURN loadformula$push_fold$ohf FORCE
+\end_layout
+
+\begin_layout Plain Layout
+
+  WHEN issng RETURN loadformula$my_sng_bot$ohf FORCE
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset

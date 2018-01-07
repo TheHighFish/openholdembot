@@ -89,10 +89,10 @@ Table Map
 \end_layout
 
 \begin_layout Standard
-The “scraper” directory should be where your Table Map files are stored.
- Table maps provide the OpenHoldem game state engine the instructions for
+Table maps provide the OpenHoldem game state engine the instructions for
  deriving the state of the game from the pixels on the screen.
- These files have the “.tm” extension on them.
+ These files have the “.tm” extension on them and reside in the “scraper”
+ directory where they get loaded automatically when OpenHoldem starts.
  The challenge with table maps is that every casino needs its own map.
  In some cases, you might need different maps for different game flavors.
  NL vs.
@@ -102,97 +102,26 @@ The “scraper” directory should be where your Table Map files are stored.
 \end_layout
 
 \begin_layout Standard
-The OpenHoldem project team does not provide official Table Maps for any
- casino or any Texas Hold’em game flavor.
- The reason for this is that there are thousands of casinos out there, and
- tens- or hundreds- of thousands of map combinations when you consider the
- different game flavors.
- Adding to that is the fact that casinos sometimes update their client software
- and make minor or comprehensive changes to the pixels as they are displayed
- on the screen.
- These changes most often require changes to the table map as well.
- The OpenHoldem Project development team is a group of volunteers --- we
- do not get paid for this, we have real lives and real families, and do
- this as a hobby.
- Maintaining working Table Maps would be a more than full time job, and
+Maintaining thousands of tablemaps would be a more than full time job, and
  thus instead we put the power in your hands; we provide Table Map creation
  tools and testing tools to allow you to be self-sufficient.
- An explanation of the “OpenScrape” program, which is key to this self-sufficien
-cy, will be provided in more detail later in this document.
+ If you favour a casino is not supported by any other bot or if your casino
+ changes its display slightly you don't depend on anybody else.
+ “OpenScrape” is the tool that helps you to adapt your tablemap or to create
+ a completely new one if you find a nice new casino or game-type.
+\end_layout
+
+\begin_layout Section*
+Tablemaps for simulators
 \end_layout
 
 \begin_layout Standard
-That said, there are a number of places you can find pre-created maps for
- use with OpenHoldem.
- There is a section on our forums (
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.maxinmontreal.com/forums/viewforum.php?f=280
-\end_layout
-
-\end_inset
-
-) that contains several dozen user-contributed maps.
- Some of these maps might be out of date or require special system settings.
- So they at least require some validation to ensure they are 100% correct
- before you can take them to the tables.
- Consider these maps to be a starting point for learning how maps are constructe
-d and how they work.
- 
-\end_layout
-
-\begin_layout Standard
-Most probably you will experience some problems if you fix or create your
- first map.
- Feel welcome to ask for assistance in the OpenHoldem Tablemap School (
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://www.maxinmontreal.com/forums/viewforum.php?f=117
-\end_layout
-
-\end_inset
-
-).
- There are always some friendly people who are willing to help.
- But please
-\end_layout
-
-\begin_layout Itemize
-explain as good as possible what your problem is.
-\end_layout
-
-\begin_layout Itemize
-provide some screenshots for further explanations.
-\end_layout
-
-\begin_layout Itemize
-provide the table map, so that we can see what is wrong or what needs to
- be done.
-\end_layout
-
-\begin_layout Itemize
-provide some replay-frames for critical situations.
-\end_layout
-
-\begin_layout Standard
-Helping can be a bit tough if you have to ask all day for missing information.
-\end_layout
-
-\begin_layout Section
-Offline simulators
-\end_layout
-
-\begin_layout Standard
-Although we can't provide and maintain tablemaps for all casinos out there
- OpenHoldem comes with a set of tablemaps for some offline simulators.
- They are an easy starting point for every newbie and a good tool for experience
-d users to develop and test bot-logic offline.
+Poker simulators are an easy starting point for every newbie and a good
+ tool for experienced users to develop and test bot-logic offline.
+ As an additional benefit their interface does not change, so their tablemaps
+ don't need any updates OpenHoldem comes with a set of tablemaps for some
+ offline simulators.
+ .
  OpenHoldem ManualMode seems to work out of the box at every system, but
  some of the others need special settings: e.g.
  window size or screen resolution.
@@ -259,6 +188,296 @@ www.pokerth.net/
 \end_inset
 
  
+\end_layout
+
+\begin_layout Section*
+Downloading the 
+\begin_inset Quotes eld
+\end_inset
+
+official
+\begin_inset Quotes erd
+\end_inset
+
+ tablemaps
+\end_layout
+
+\begin_layout Standard
+Since version 13 OpenHoldem provides a tablemap-distribution-service for
+ 
+\begin_inset Quotes eld
+\end_inset
+
+official
+\begin_inset Quotes erd
+\end_inset
+
+ tablemaps.
+ It requires the software: TortoiseSVN that you can get from 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://tortoisesvn.net/downloads.html
+\end_layout
+
+\end_inset
+
+.Once TortoiseSVN is installed you simply execute the batch-script 
+\begin_inset Quotes eld
+\end_inset
+
+Update_tablemaps.bat
+\begin_inset Quotes erd
+\end_inset
+
+ and the latest tablemaps will be downloaded into your scraper-directory.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/update_tablemap_script.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/official_real_world_casinos.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Please don't get fooled by this screenshot.
+ The initial tablemap-distribution-service might contain some tablemaps
+ less, but soon it will provide some dozen tablemaps for nearly all casinos
+ and game-types.
+ Our generous users make it happen.
+\end_layout
+
+\begin_layout Section*
+Using the 
+\begin_inset Quotes eld
+\end_inset
+
+official
+\begin_inset Quotes erd
+\end_inset
+
+ tablemaps
+\end_layout
+
+\begin_layout Standard
+All 
+\begin_inset Quotes eld
+\end_inset
+
+official
+\begin_inset Quotes erd
+\end_inset
+
+ tablemaps have been tested before release.
+ The following setup is recommended if you are a beginner:
+\end_layout
+
+\begin_layout Itemize
+any version of Windows should be OK, though the maps have been tested with
+ Windows 7
+\end_layout
+
+\begin_layout Itemize
+colour-depth of 24 or 32-bit is mandatory
+\end_layout
+
+\begin_layout Itemize
+any screen-resolution should be OK, though the maps have been tested at
+ 1024x768, as this resolution gets supported by nearly all machines.
+\end_layout
+
+\begin_layout Itemize
+turning font-smoothing and clear-type fonts off is recommended.
+ Some tablemaps use 
+\begin_inset Quotes eld
+\end_inset
+
+fuzzy fonts
+\begin_inset Quotes erd
+\end_inset
+
+ and accept some differences, but other tablemaps require an exact match.
+\end_layout
+
+\begin_layout Itemize
+window-style (size of window-borders and titlebar) should no longer matter
+ nowadays, as OpenHoldem cares only about the client-area of the table and
+ good casinos do the same.
+ If in doubt use the old Windows 2000 classic style.
+\end_layout
+
+\begin_layout Standard
+Furthermore we recommend the following casino settings:
+\end_layout
+
+\begin_layout Itemize
+default table-theme and background-colour, because we want you to configure
+ as less as possible
+\end_layout
+
+\begin_layout Itemize
+either default-size or mini-size (the tablemaps are able to resize the table,
+ but first they have to connect to it)
+\end_layout
+
+\begin_layout Itemize
+avatars turned off
+\end_layout
+
+\begin_layout Itemize
+animatzions turned off
+\end_layout
+
+\begin_layout Standard
+To ease the setup every real-world tablemap comes with two anonymised replay-fra
+mes (call them 
+\begin_inset Quotes eld
+\end_inset
+
+screen-shots
+\begin_inset Quotes erd
+\end_inset
+
+) that illustrate the correct setup.
+ One replay-frame before connection and resizing, the other one after connection
+ when it is heros turn postflop and some cards and the buttons are visible.
+\end_layout
+
+\begin_layout Section*
+What if my casino is not yet supported?
+\end_layout
+
+\begin_layout Standard
+If the 
+\begin_inset Quotes eld
+\end_inset
+
+official
+\begin_inset Quotes erd
+\end_inset
+
+ tablemaps do not yet support your favourite casino and gametype then chances
+ are good that you will find a map in our forum at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.maxinmontreal.com/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Images/maxinmontreal_tablemap_forums.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Our users have posted several hundred tablemaps in the forum.
+ Most probably your favourite casino and game-type is already covered.
+ We simply did not yet have the time to test all these maps and make them
+ 
+\begin_inset Quotes eld
+\end_inset
+
+official
+\begin_inset Quotes erd
+\end_inset
+
+.
+ If you find a map that makes you happy you can help us:
+\end_layout
+
+\begin_layout Itemize
+test it
+\end_layout
+
+\begin_layout Itemize
+suggest it
+\end_layout
+
+\begin_layout Itemize
+provide two replay-frames, one before connection and one when it is your
+ turn postflop (shoot them with OpenReplayShooter; this tool creates HTML-files
+ without any odentifying info, this makes anonymisation of the frames less
+ work).
+\end_layout
+
+\begin_layout Section*
+What if a tablemap does not work?
+\end_layout
+
+\begin_layout Standard
+Don't worry.
+ Fixing an existing map is often relative easy.
+ It regularly comes down to adjusting a balance-region by some pixels or
+ selecting a different colour for a font.
+ These little fixes can be done by every dedicated newby.
+ The chapter about tablemapping.explains the finer points in more depth and
+ you will find some help in the tablemap school too.
 \end_layout
 
 \end_body

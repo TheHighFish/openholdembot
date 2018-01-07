@@ -109,10 +109,10 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
   // OH-script-messagebox
   else if (memcmp(name, "msgbox$", 7)==0 && strlen(name)>7) {
     // Don't show name messagebox if in parsing-mode
+    // We might however want to show a message if we are not yet connected,
+    // e.g. in f$ini_function_pn_startup
     write_log(Preferences()->debug_alltherest(), "[CSymbolEngineVariousDataLookup] location Johnny_8\n");
-    if (p_formula_parser->IsParsing()
-        || !p_autoconnector->IsConnectedToAnything()
-	      || !p_engine_container->symbol_engine_userchair()->userchair_confirmed()) {
+    if (p_formula_parser->IsParsing()) {
 	    *result = 0;
     } else {
 	    MessageBox_OH_Script_Messages(name);

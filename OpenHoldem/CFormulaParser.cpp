@@ -675,7 +675,7 @@ void CFormulaParser::ErrorMissingAction(int token_ID) {
       error_message += "Found a user-variable.\n";
       error_message += "Correct syntax: When <condition> Set user_xyz\n";
     } else {
-      error_message += "\nFound an identifier. Probably missing operator\n";
+      error_message += "\nFound an identifier. Either missing operator or misspelled action\n";
     }
   }
   CParseErrors::Error(error_message);

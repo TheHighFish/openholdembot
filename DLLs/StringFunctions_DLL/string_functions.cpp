@@ -192,6 +192,8 @@ void RemoveOHReplayFrameNumber(CString *s) {
   if (RightCharacter(*s, 7) != '[') {
     return;
   }
+  // Title-format: #################[003141]
+  // Remove frame-number
   int new_length = s->GetLength() - 8;
   assert(new_length >= 0);
   s->Truncate(new_length);

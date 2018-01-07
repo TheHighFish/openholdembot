@@ -19,8 +19,8 @@
 
 #include "CTablemapCompletenessChecker.h"
 #include "CTablePointChecker.h"
-
 #include "..\CTablemap\CTablemapAccess.h"
+#include "..\DLLs\Files_DLL\Files.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
 
@@ -41,30 +41,48 @@ CTableMapLoader::~CTableMapLoader() {
   tablemap_connection_data.clear();
 }
 
-void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard) {
-	CFileFind	hFile;
-	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", TableMapWildcard);
-  tablemap_connection_data.clear();
-	_number_of_tablemaps_loaded = 0;
-	CString	current_path = p_tablemap->filepath();
-	BOOL bFound = hFile.FindFile(TableMapWildcard.GetString());
+void CTableMapLoader::ParseAllTableMapsToLoadConnectionData(CString scraper_directory) {
+	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData: %s\n", scraper_directory);
+  CString wildcard;
+  wildcard.Format("%s\\*", scraper_directory);
+  CFileFind	hFile;
+	BOOL bFound = hFile.FindFile(wildcard);
 	while (bFound) {
 		bFound = hFile.FindNextFile();
-		if (!hFile.IsDots() && !hFile.IsDirectory() && hFile.GetFilePath()!=current_path) {
-			int ret = p_tablemap->LoadTablemap(hFile.GetFilePath().GetString());
-			if (ret == SUCCESS)	{
-				ExtractConnectionDataFromCurrentTablemap(p_tablemap);
-        CTablemapCompletenessChecker tablemap_completeness_checker;
-        tablemap_completeness_checker.VerifyMap();
-				write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
-			}
+    // Formerly there has been a check /hFile.GetFilePath() != p_tablemap->filepath()) 
+    // but if we want to reload, then everything
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Looking at %s\n",
+      hFile.GetFilePath());
+    if (hFile.IsDots()) {
+      write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Skipping dots\n");
+      // Ignore link to current directory and to parent-directory
+      continue;
+    } else if (hFile.IsDirectory()) {
+      // Traverse sub-directories recursively
+      write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Diving into directory\n");
+      ParseAllTableMapsToLoadConnectionData(hFile.GetFilePath());
+      continue;
+    } else if (hFile.GetFilePath().Right(3).MakeLower() != ".tm") {
+      // Not a tablemap
+      write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Not a tablemap\n");
+      continue;
+    }
+    write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Loading file\n");
+		int ret = p_tablemap->LoadTablemap(hFile.GetFilePath().GetString());
+		if (ret == SUCCESS)	{
+			ExtractConnectionDataFromCurrentTablemap(p_tablemap);
+      CTablemapCompletenessChecker tablemap_completeness_checker;
+      tablemap_completeness_checker.VerifyMap();
+			write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] Number of TMs loaded: %d\n", _number_of_tablemaps_loaded);
 		}
 	}
 }
 
 void CTableMapLoader::ParseAllTableMapsToLoadConnectionData() {
 	write_log(Preferences()->debug_tablemap_loader(), "[CTablemapLoader] ParseAllTableMapsToLoadConnectionData\n");
-	ParseAllTableMapsToLoadConnectionData(TableMapWildcard());	
+  tablemap_connection_data.clear();
+  _number_of_tablemaps_loaded = 0;
+	ParseAllTableMapsToLoadConnectionData(ScraperDirectory());
 	tablemaps_in_scraper_folder_already_parsed = true;
 }
 

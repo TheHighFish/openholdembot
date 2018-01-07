@@ -31,7 +31,7 @@ class CTableMapLoader : public CSpaceOptimizedGlobalObject {
 	void ReloadAllTablemapsIfChanged();
 	CString GetTablemapPathToLoad(int tablemap_index);
  private:
-	void ParseAllTableMapsToLoadConnectionData(CString TableMapWildcard);
+	void ParseAllTableMapsToLoadConnectionData(CString scraper_directory);
 	void ParseAllTableMapsToLoadConnectionData();
 	bool tablemap_connection_dataAlreadyStored(CString TablemapFilePath);
 	void CheckForDuplicatedTablemaps();

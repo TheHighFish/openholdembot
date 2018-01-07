@@ -158,9 +158,9 @@ OR [(currentbet9 > 0) AND (currentbet9 < sblind) AND (balance9 > 0)]
 + [(currentbet9 == bblind) AND (userchair != 9) AND (bigblindchair != 9) ? 1 : 0]
 
 ##RaisesBeforeOurFirstAction##
-(BotsActionsOnThisRoundIncludingChecks > 0) ? 0 :
-(betround > preflop) ? RaisesBeforeOurFirstActionThisRoundPostflop :
-nopponentstruelyraising
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
+WHEN (betround > preflop) RETURN RaisesBeforeOurFirstActionThisRoundPostflop FORCE
+WHEN  Others RETURN nopponentstruelyraising FORCE
 
 ##RaisesSinceLastPlayOnOurSecondAction##
 // If we checked the first time the bettor sits behind us.

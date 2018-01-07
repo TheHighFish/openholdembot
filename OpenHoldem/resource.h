@@ -339,7 +339,6 @@
 #define IDC_SEARCH_ED                   1318
 #define IDC_DEBUG_POPUP_BLOCKER         1319
 #define IDC_AUTOCONNECTOR_CONNECT_ON_START 1320
-#define IDC_GUI_START_MINIMIZED         1322
 #define IDC_REBUY_CHANGE_IN_HANDNUMBER  1323
 #define IDC_REBUY_NO_CARDS              1324
 #define IDC_REBUY_HEURISTIC_OCCLUSION_CHECK 1325
@@ -439,6 +438,9 @@
 #define IDC_DEBUG_MULTIPLEXER           1421
 #define IDC_DEBUG_SYMBOL_VERIFICATION   1422
 #define IDC_TOGGLE_ALL_DEBUG            1423
+#define IDC_RADIO_GUI_FIRST_VISIBLE     1424
+#define IDC_RADIO_GUI_ALL_MINIMIZED     1425
+#define IDC_RADIO_GUI_LESS              1426
 #define IDC_ICM_1                       1121
 #define IDC_ICM_2                       1122
 #define IDC_ICM_3                       1123
@@ -554,7 +556,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         33000
-#define _APS_NEXT_CONTROL_VALUE         1424
+#define _APS_NEXT_CONTROL_VALUE         1427
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

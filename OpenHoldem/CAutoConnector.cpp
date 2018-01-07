@@ -179,8 +179,10 @@ BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) {
 		// to select windows manually will cause us lots of headaches,
 		// as the lists will be of different size 
 		// and the indexes will not match.
-		if (p_sharedmem->PokerWindowAttached(hwnd))	{
-			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Window candidate already served: [%d]\n", hwnd);
+    if (p_sharedmem->PokerWindowAttached(hwnd)) {
+      write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Window candidate already served: [%d]\n", hwnd);
+    } else if (p_popup_handler->WinIsOpenHoldem(hwnd)) {
+      write_log(Preferences()->debug_popup_blocker(), "[CAutoConnector] Window belongs to OpenHoldem\n");
 		}	else {
 			write_log(Preferences()->debug_autoconnector(), "[CAutoConnector] Adding window candidate to the list: [%d]\n", hwnd);
 			tablelisthold.hwnd = hwnd;

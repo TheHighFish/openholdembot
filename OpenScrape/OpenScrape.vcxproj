@@ -150,6 +150,7 @@
     <ClCompile Include="DialogSelectTable.cpp" />
     <ClCompile Include="DialogTableMap.cpp" />
     <ClCompile Include="global.cpp" />
+    <ClCompile Include="HScrollListBox.cpp" />
     <ClCompile Include="ListOfSymbols.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="..\OpenHoldem\NumericalFunctions.cpp" />
@@ -170,7 +171,6 @@
     <ClCompile Include="..\CTransform\pdiff\LPyramid.cpp" />
     <ClCompile Include="..\CTransform\pdiff\Metric.cpp" />
     <ClCompile Include="..\CTransform\pdiff\RGBAImage.cpp" />
-    <ClCompile Include="..\hscroll-list-box\HScrollListBox.cpp" />
     <ClCompile Include="..\CTablemap\CTablemap.cpp" />
     <ClCompile Include="..\CTablemap\CTablemapAccess.cpp" />
   </ItemGroup>
@@ -189,6 +189,7 @@
     <ClInclude Include="DialogSelectTable.h" />
     <ClInclude Include="DialogTableMap.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="HScrollListBox.h" />
     <ClInclude Include="ListOfSymbols.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="..\OpenHoldem\NumericalFunctions.h" />
@@ -206,7 +207,6 @@
     <ClInclude Include="..\CTransform\pdiff\Metric.h" />
     <ClInclude Include="..\CTransform\pdiff\RGBAImage.h" />
     <ClInclude Include="..\CTransform\hash\stdint.h" />
-    <ClInclude Include="..\hscroll-list-box\HScrollListBox.h" />
     <ClInclude Include="..\CTablemap\CTablemap.h" />
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
   </ItemGroup>

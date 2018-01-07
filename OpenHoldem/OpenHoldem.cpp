@@ -225,10 +225,10 @@ void COpenHoldemApp::FinishInitialization() {
 	assert(p_openholdem_title != NULL);
 	p_openholdem_title->UpdateTitle();
 	// The one and only window has been initialized, so show and update it
-	if (Preferences()->gui_start_minimized()) {
-		m_pMainWnd->ShowWindow(SW_MINIMIZE);
+	if (Preferences()->gui_first_visible() && (p_sessioncounter->session_id() == 0)) {
+    m_pMainWnd->ShowWindow(SW_SHOW);
 	}	else {
-		m_pMainWnd->ShowWindow(SW_SHOW);
+    m_pMainWnd->ShowWindow(SW_MINIMIZE);
 	}
 	m_pMainWnd->UpdateWindow();
 	// call DragAcceptFiles only if there's a suffix

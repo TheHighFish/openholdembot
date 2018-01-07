@@ -26,6 +26,7 @@
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CTableTitle *p_table_title = NULL;
+int CTableTitle::_ohreplay_framenumber;
 
 CTableTitle::CTableTitle() {
 #ifdef _DEBUG
@@ -51,6 +52,7 @@ void CTableTitle::UpdateTitle() {
 void CTableTitle::Clear() {
   SetTitle("");
   _previous_title = "";
+  _ohreplay_framenumber = kUndefinedZero;
 }
 
 void CTableTitle::SetTitle(CString new_title) {
@@ -82,6 +84,7 @@ CString CTableTitle::PreprocessTitle(CString title) {
   //   http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19658
   // but the latter one mainly affects balances. 
   CString result = title;
+  ExtractOHReplayFrameNumber(&result);
   RemoveOHReplayFrameNumber(&result);
   ReplaceKnownNonASCIICharacters(&result);
   WarnAboutNonASCIICharacters(&result);
@@ -104,3 +107,21 @@ bool CTableTitle::ContainsSubstring(CString substring) {
   return (_title.Find(substring) >= 0);
 }
 
+void CTableTitle::ExtractOHReplayFrameNumber(const CString *s) {
+  if (s->GetLength() < 8) {
+    return;
+  }
+  if (RightCharacter(*s) != ']') {
+    return;
+  }
+  if (RightCharacter(*s, 7) != '[') {
+    return;
+  }
+  // Title-format: #################[003141]
+  // Extract frame-number
+  int length = s->GetLength();
+  int start_pos = length - 7;
+  CString framenumber = s->Mid(start_pos);
+  framenumber.Truncate(6);
+  _ohreplay_framenumber = atoi(framenumber);
+}

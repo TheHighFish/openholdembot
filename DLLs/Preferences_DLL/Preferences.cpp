@@ -103,7 +103,9 @@ const char* k_registry_keys_for_numerical_values[k_prefs_last_numerical_value + 
   "validator_enabled",
   "use_auto_starter",
   "use_auto_shutdown",
-  "gui_start_minimized",
+  "gui_first_visible",
+  "gui_all_minimized",
+  "gui_less",
   "rebuy_condition_no_cards",
   "rebuy_condition_change_in_handnumber",
   "rebuy_condition_heuristic_check_for_occlusion",
@@ -197,6 +199,7 @@ void CPreferences::InitDefaults(void) {
   // Initialization of data that requires special values
   // Bools
   prefs_numerical_values[k_prefs_engage_autoplayer] = true;
+  prefs_numerical_values[k_prefs_gui_first_visible] = true;
   prefs_numerical_values[k_prefs_restore_position_and_focus] = false;
   prefs_numerical_values[k_prefs_use_auto_replay] = true;
   prefs_numerical_values[k_prefs_use_auto_starter] = true;

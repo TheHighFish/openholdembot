@@ -18,6 +18,7 @@
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
+#include "CHandresetDetector.h"
 #include "COHScriptObject.h"
 #include "CopenHoldemStatusbar.h"
 
@@ -236,6 +237,7 @@ void CAutoplayerTrace::LogBasicInfo(const char *action_taken) {
   // The old WinHoldem format was a complete mess
   write_log_separator(k_always_log_basic_information, "Basic Info");
   write_log(k_always_log_basic_information, "  Version:       %s\n",    VERSION_TEXT); 
+  write_log(k_always_log_basic_information, "  Handnumber:    %s\n",    p_handreset_detector->GetHandNumber());
   write_log(k_always_log_basic_information, "  Chairs:        %5d\n",   p_tablemap->nchairs());
   write_log(k_always_log_basic_information, "  Userchair:     %5d\n",   userchair);
   write_log(k_always_log_basic_information, "  Holecards:     %s\n",    player_cards.GetString());

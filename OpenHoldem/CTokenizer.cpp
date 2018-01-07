@@ -192,6 +192,7 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 	case 2:
 		if (_memicmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr;  return true; }
     if (_memicmp(TOKEN_ADDRESS, "IN", 2) == 0)     { _OpenPPL_token_ID = kTokenShankyKeywordIn;  return true; }
+    if (_memicmp(TOKEN_ADDRESS, "LN", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLog;  return true; }
 		break;
 	case 3:
 		if (_memicmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }

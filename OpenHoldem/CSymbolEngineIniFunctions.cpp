@@ -42,7 +42,6 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 
-
 // We can't evaluate ini-functions if no formula is loaded.
 // This was no problem on startup, but caused crashes
 // when we tried to load a new formula.
@@ -81,7 +80,6 @@ CSymbolEngineIniFunctions::~CSymbolEngineIniFunctions() {
 
 void CSymbolEngineIniFunctions::InitOnStartup() {
   RETURN_IF_LOADING_NEW_FORMULA
-  	
   write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::InitOnStartup()\n");
   UpdateOnConnection();
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_startup], Preferences()->log_ini_functions());
@@ -89,7 +87,6 @@ void CSymbolEngineIniFunctions::InitOnStartup() {
 
 void CSymbolEngineIniFunctions::UpdateOnConnection() {
   RETURN_IF_LOADING_NEW_FORMULA
-  	
   write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnConnection()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_connection],
     Preferences()->log_ini_functions());
@@ -98,7 +95,6 @@ void CSymbolEngineIniFunctions::UpdateOnConnection() {
 
 void CSymbolEngineIniFunctions::UpdateOnHandreset(){
   RETURN_IF_LOADING_NEW_FORMULA
-
   write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHandreset()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_handreset],
     Preferences()->log_ini_functions());
@@ -106,7 +102,6 @@ void CSymbolEngineIniFunctions::UpdateOnHandreset(){
 
 void CSymbolEngineIniFunctions::UpdateOnNewRound() {
   RETURN_IF_LOADING_NEW_FORMULA
-  	
   write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnNewRound()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_new_round],
     Preferences()->log_ini_functions());
@@ -114,7 +109,6 @@ void CSymbolEngineIniFunctions::UpdateOnNewRound() {
 
 void CSymbolEngineIniFunctions::UpdateOnMyTurn() {
   RETURN_IF_LOADING_NEW_FORMULA
-  	
   write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnMyTurn()\n");
   p_function_collection->Evaluate(k_standard_function_names[k_init_on_my_turn],
     Preferences()->log_ini_functions());
@@ -122,7 +116,6 @@ void CSymbolEngineIniFunctions::UpdateOnMyTurn() {
 
 void CSymbolEngineIniFunctions::UpdateOnHeartbeat() {
   RETURN_IF_LOADING_NEW_FORMULA
-  	
   write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHeartbeat()\n");
   write_log(Preferences()->debug_symbolengine(), "[Symbolengine] CSymbolEngineIniFunctions::UpdateOnHeartbeat() evaluating %s\n",
 	  k_standard_function_names[k_init_on_heartbeat]);

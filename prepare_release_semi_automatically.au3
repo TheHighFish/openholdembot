@@ -26,7 +26,8 @@ If ($choice = 6) Then
    ShellExecuteWait("build_manual.bat", "", "OpenPPL\OpenPPL_manual\")
    ShellExecuteWait("build_manual.bat", "", "Documentation\")
 EndIf
-
+; Build RebuyDemo.exe
+ShellExecuteWait("BuildRebuyDemo.bat", "", "RebuyDemo\")
 MsgBox(0, "Next Step", "Have a look at http://code.google.com/p/openholdembot/source/list and ask the developers, if all work is completed and remind them to update the release-notes")
 ; Open release-notes for editing
 ShellExecute($release_notes)

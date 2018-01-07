@@ -196,7 +196,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("If a game is going on, then the number of UNDEFINED cards is 52 minus the number of known cards.")
     PRECONDITION (gws("ncardsknown") > 0)
-    POSTCONDITION (gws("ncardsknown") == (52 - gws("ncardsunknown")))
+    POSTCONDITION (gws("ncardsknown") + gws("ncardsunknown") == 52)
     SYMBOLS_POSSIBLY_AFFECTED ("ncardsknown, ncardsunknown")
 END_TESTCASE
 

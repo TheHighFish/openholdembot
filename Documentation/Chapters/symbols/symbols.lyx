@@ -109,7 +109,7 @@ http://www.winholdem.net/help/help-formula.html#symbols
 These symbols take output from the scraper engine, from Table Map parameters,
  and from your formula functions to derive various bits of data that are
  useful when instructing the OpenHoldem Autoplayer how to act.
- The set of symbols got extended over time - not all of them are available
+ The set of symbols got extended over time -- not all of them are available
  for all versions of OpenHoldem.
  This list reflects the state of the latest version.
  Some old WinHoldem symbols got never implemented due to lack of documentation
@@ -124,6 +124,14 @@ Outdated Features and Incompatibilities between OpenHoldem and WinHoldem
 \end_inset
 
  for more information.
+\end_layout
+
+\begin_layout Standard
+As you already might have noticed some of these symbols are of rather technical
+ nature, A set of several hundred more poker-logical symbols is included
+ in the OpenPPL-library that gets discussed in the seeparate OpenPPL-manual.
+ Both languages can be mixed in nearly any way however, so please read on.
+ Here you will find some valuable symbols that you might be miss in OpenPPL.
 \end_layout
 
 \begin_layout Section
@@ -3779,7 +3787,7 @@ ishipair
 \begin_inset Text
 
 \begin_layout Plain Layout
-true when you have hi pair (0-1)
+true when you have a pair with the highest board-card or an overpaor
 \end_layout
 
 \end_inset
@@ -3799,7 +3807,7 @@ islopair
 \begin_inset Text
 
 \begin_layout Plain Layout
-true when you have lo pair (0-1)
+true when you have a pair with the lowest board-card or an underpair
 \end_layout
 
 \end_inset
@@ -3819,7 +3827,7 @@ ismidpair
 \begin_inset Text
 
 \begin_layout Plain Layout
-true when you have mid pair (0-1) 
+true when you have a pair that is neither hipair nor lopair
 \end_layout
 
 \end_inset
@@ -7942,7 +7950,9 @@ handsplayed
 \begin_inset Text
 
 \begin_layout Plain Layout
-number of hands played this session by this OpenHoldem instance
+number of hands played this session by this OpenHoldem instance.
+ The value will be 0 after connection and increase on handreset if the userchair
+ is known.
 \end_layout
 
 \end_inset

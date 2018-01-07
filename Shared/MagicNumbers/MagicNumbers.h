@@ -234,6 +234,7 @@ enum StandardFunctionConstants {
 	k_hopper_function_autopost,
 	k_hopper_function_close,
 	k_hopper_function_rebuy,
+  k_hopper_function_select_formula_file,
 	// Other functions
   k_standard_function_prefold,
   k_standard_function_chat,
@@ -306,6 +307,7 @@ static const char k_standard_function_names[k_number_of_standard_functions][k_ma
 	"f$autopost",
 	"f$close",
 	"f$rebuy",
+  "f$select_formula_file",
 	// Other functions
   "f$prefold",
   "f$chat",

@@ -386,6 +386,10 @@ void CFunctionCollection::CreateEmptyDefaultFunctionIfFunctionDoesNotExist(CStri
       "// f$rebuy should evaluate to the target-amount in dollars.\n"
       "// This value will be passed to the rebuy-script as a parameter.\n"
       "0\n";
+  } else if (function_name == k_standard_function_names[k_hopper_function_select_formula_file]) {
+    function_text =
+      "// Selects a formula-file that will be loaded on next hand-reset.\n"
+      "// WHEN (...) RETURN loadformula$my_winning_bot$ohf FORCE\n";
   } else if (function_name == k_standard_function_names[k_standard_function_delay]) {
     function_text = 
       "// Autoplayer-delay in milli-seconds\n"

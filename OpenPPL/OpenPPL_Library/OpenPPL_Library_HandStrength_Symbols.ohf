@@ -226,10 +226,6 @@ WHEN Others RETURN HoldEm_HaveFifthNutFlushDraw FORCE
 WHEN isomaha RETURN Omaha_HaveFifthOverPair FORCE
 WHEN Others RETURN HoldEm_HaveFifthOverPair FORCE
 
-##HaveAnyKindOfInsideStraightDraw##
-WHEN isomaha RETURN Omaha_HaveAnyKindOfInsideStraightDraw FORCE
-WHEN Others RETURN HoldEm_HaveAnyKindOfInsideStraightDraw FORCE
-
 ##HaveBackdoorFlushDrawContributingTwoCards##
 WHEN isomaha RETURN Omaha_HaveBackdoorFlushDrawContributingTwoCards FORCE
 WHEN Others RETURN HoldEm_HaveBackdoorFlushDrawContributingTwoCards FORCE
@@ -305,10 +301,6 @@ WHEN Others RETURN HoldEm_HaveFlushDrawContributingTwoCards FORCE
 ##HaveGoodFlushDrawContributingOnlyOneCard##
 WHEN isomaha RETURN Omaha_HaveGoodFlushDrawContributingOnlyOneCard FORCE
 WHEN Others RETURN HoldEm_HaveGoodFlushDrawContributingOnlyOneCard FORCE
-
-##HaveAnyFlushDrawContributingOnlyOneCard##
-WHEN isomaha RETURN Omaha_HaveAnyFlushDrawContributingOnlyOneCard FORCE
-WHEN Others RETURN HoldEm_HaveAnyFlushDrawContributingOnlyOneCard FORCE
 
 ##HaveFullHouse##
 WHEN isomaha RETURN Omaha_HaveFullHouse FORCE
@@ -453,6 +445,30 @@ WHEN Others RETURN HoldEm_HaveUnderPair FORCE
 ##HaveUnderStraight##
 WHEN isomaha RETURN Omaha_HaveUnderStraight FORCE
 WHEN Others RETURN HoldEm_HaveUnderStraight FORCE
+
+##HaveWeakBackdoorStraightDraw##
+WHEN isomaha RETURN Omaha_HaveWeakBackdoorStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakBackdoorStraightDraw FORCE
+
+##HaveWeakDoubleGutshotDraw##
+WHEN isomaha RETURN Omaha_HaveWeakDoubleGutshotDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakDoubleGutshotDraw FORCE
+
+##HaveWeakFlush##
+WHEN isomaha RETURN Omaha_HaveWeakFlush FORCE
+WHEN Others RETURN HoldEm_HaveWeakFlush FORCE
+
+##HaveWeakFlushDraw##
+WHEN isomaha RETURN Omaha_HaveWeakFlushDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakFlushDraw FORCE
+
+##HaveWeakStraight##
+WHEN isomaha RETURN Omaha_HaveWeakStraight FORCE
+WHEN Others RETURN HoldEm_HaveWeakStraight FORCE
+
+##HaveWeakStraightDraw##
+WHEN isomaha RETURN Omaha_HaveWeakStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakStraightDraw FORCE
 
 ##PairInHand##
 WHEN isomaha RETURN Omaha_PairInHand FORCE

@@ -222,9 +222,6 @@
 ##Omaha_HaveFifthOverPair##
 
 
-##Omaha_HaveAnyKindOfInsideStraightDraw##
-
-
 ##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
  
 
@@ -280,9 +277,6 @@
 
 
 ##Omaha_HaveGoodFlushDrawContributingOnlyOneCard##
-
-
-##Omaha_HaveAnyFlushDrawContributingOnlyOneCard##
 
 
 ##Omaha_HaveFullHouse##
@@ -382,6 +376,24 @@
 
 
 ##Omaha_HaveTwoPair##
+
+
+##Omaha_HaveWeakBackdoorStraightDraw##
+
+
+##Omaha_HaveWeakDoubleGutshotDraw##
+
+
+##Omaha_HaveWeakFlush##
+
+
+##Omaha_HaveWeakFlushDraw##
+
+
+##Omaha_HaveWeakStraight##
+
+
+##Omaha_HaveWeakStraightDraw##
 
 
 ##Omaha_Overcards##

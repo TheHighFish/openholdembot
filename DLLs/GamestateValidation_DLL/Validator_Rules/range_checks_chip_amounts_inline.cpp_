@@ -87,7 +87,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol pot")
     PRECONDITION (true)
-    POSTCONDITION (gws("pot") == (gws("potcommon") + gws("potplayer")))
+    POSTCONDITION (IsEqual(gws("pot"), (gws("potcommon") + gws("potplayer"))))
     SYMBOLS_POSSIBLY_AFFECTED ("pot, potcommon, potplayer")
 END_TESTCASE
 
@@ -97,7 +97,7 @@ BEGIN_TESTCASE
     HEURISTIC_RULE (false)
     REASONING ("Range check for symbol potcommon")
     PRECONDITION (true)
-    POSTCONDITION ((gws("potcommon") >= 0));
+    POSTCONDITION (IsGreaterOrEqual(gws("potcommon"), 0));
     SYMBOLS_POSSIBLY_AFFECTED ("potcommon")
 END_TESTCASE
 

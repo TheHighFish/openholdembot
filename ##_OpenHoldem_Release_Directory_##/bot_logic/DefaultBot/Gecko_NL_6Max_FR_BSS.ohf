@@ -137,6 +137,10 @@
 //   * Introduced f$villain_allin and $villain_potcommitted
 //     to make the code more verbose and fixed a bug in the code
 //     that detects potcommitted villains.
+//   * Replaced f$Position_CutOff, f$Position_Button, f$Position_UTG1, 
+//     f$Position_UTG2, f$Position_Blinds, f$Position_SmallBlind, f$Position_BigBlind
+//     by OpenPPL-symbols like InCutOff.
+//   * Removed 61 unused lists.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -748,94 +752,68 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
 
 ##f$flop_raise_noaction##
 [ Position = First ] ? {
-
-
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
     [ f$actionpostflop_2 ] ? f$prwin>.60 :
     [ f$actionpostflop_3 ] ? f$prwin>.65 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.82 :
         [ f$ptype_lag     ] ? f$prwin2>.72 : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.76 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
     [ f$actionpostflop_2 ] ? f$prwin>.60 :
     [ f$actionpostflop_3 ] ? f$prwin>.65 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.82 :
         [ f$ptype_semilag ] ? f$prwin2>.80 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.72 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
-
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.84 :
         [ f$ptype_semilag ] ? f$prwin2>.82 :
-
         [ f$ptype_lag     ] ? {
-
             [ nplayersplaying==2 ] ? f$prwin2>.76 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.55 :
     [ f$actionpostflop_2 ] ? f$prwin>.60 :
     [ f$actionpostflop_3 ] ? f$prwin>.65 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
-
     [ f$actionpostflop_6 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
@@ -843,21 +821,17 @@ IsRiver ? !didbetsizeround_flop && didcallround_turn && nbetsround_turn>0 : 0
         [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
 
     [ f$actionpostflop_7 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_8 ] ? {
-
         [ f$ptype_ubernit ] ? f$prwin2>.85 :
         [ f$ptype_nit     ] ? f$prwin2>.85 :
         [ f$ptype_tag     ] ? f$prwin2>.85 :
         [ f$ptype_semilag ] ? f$prwin2>.84 :
         [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
-
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 
@@ -1402,7 +1376,6 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_River_AF_RaisChair>3.00 && f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>4.00 && f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>5.00 ] ? 0.00 : 0 } : 0 } :
-
 0
 
 ##f$threat##
@@ -1497,7 +1470,6 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
         [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
-
 0
 
 ##f$flop_call_noaction##
@@ -1811,7 +1783,7 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 
 ##f$effective_balance_to_call_ratio##
 WHEN (call <= 0) RETURN StackSize FORCE
-WHEN (balance <= f$stackraiser) RETURN (balance / call) FORCE
+WHEN ((balance + currentbet) <= f$stackraiser) RETURN ((balance + currentbet) / call) FORCE
 WHEN Others RETURN (f$stackraiser / call) FORCE
 
 ##f$required_balance_to_call_ratio_for_setmining##
@@ -1847,7 +1819,7 @@ WHEN [didbetsize AND (4 * call < pot)] RETURN true FORCE
 // Raises after setmining get handled be f$preflop_call_for_setmining.
    
 ##f$preflop_limp_good_hand##
-WHEN [(ncallbets<=1) >= 1] RETURN false FORCE
+WHEN [(ncallbets >= 1] RETURN false FORCE
 WHEN [BotsLastAction != None] RETURN false FORCE
 WHEN [(StillToAct >= 5) AND (handrank169 < 50)] RETURN true FORCE
 WHEN [nopponentscalling==0 AND ispair] RETURN true FORCE
@@ -1864,21 +1836,15 @@ WHEN f$preflop_limp_good_hand RETURN true FORCE
 balance_headsupchair
 
 ##f$stackraiser##
-WHEN (raischair >= 0) RETURN balance_raischair FORCE
-// Supporting WinHoldem-style blind-"raisers"
-// which seem to be used by Gecko
-WHEN IsPreflop RETURN balance_bigblindchair FORCE
+WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
 
 ##f$preflop_aggressor##
 [ nplayersround_flop>=3 && nplayersplaying==2 ]
 
 ##f$foldequity##
 [ f$Initiative_Nobody && nplayersplaying==2 && call==0 && f$pt_hands>50 ] ? {
-
     [ Position = First ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1889,9 +1855,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1902,9 +1866,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1915,12 +1877,8 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
-
     [ Position = Last ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1931,9 +1889,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1944,9 +1900,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1957,9 +1911,7 @@ WHEN IsPreflop RETURN balance_bigblindchair FORCE
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
 0 } :
-
 0
 
 ##f$Preflop_First_In##
@@ -1989,15 +1941,6 @@ WHEN (RaisesSinceLastPlay >= 2) AND listGeckoMultipleRaisersBehindUs RETURN true
 ##f$Preflop_Raiser_In_Front_Of_Me##
 (f$BettingAction_Single_Raiser_Before_Us && !didbetsize && call<7*bblind && f$Chart_ReRaise) ? 1 :
 (hand$AA||hand$KK||hand$QQ) ? 1 : 0
-
-##f$Position_Blinds##
-(f$Position_SmallBlind || f$Position_BigBlind)
-
-##f$Position_SmallBlind##
-(nchairsdealtright == 0)
-
-##f$Position_BigBlind##
-(nchairsdealtright == 1)
 
 ##f$BettingAction_Number_Of_Opponents_Truely_Playing##
 (`f$Bits_Opponents_Truely_Playing)      
@@ -2061,18 +2004,6 @@ log$SERIOUS_ERROR
 || [ InEarlyPosition2 && listGecko_OpenRaise_EP2  ] // 10%
 || [ InEarlyPosition1 && listGecko_OpenRaise_EP1  ] // 10%
 
-##f$Position_CutOff##
-(nchairsdealtleft == 1)
-
-##f$Position_Button##
-(nchairsdealtleft == 0)
-
-##f$Position_UTG1##
-(nchairsdealtleft == 3)
-
-##f$Position_UTG2##
-(nchairsdealtleft == 2)
-
 ##f$BettingAction_Hero_Did_Already_Act##
 (didrais || didcall || didchec || didbetsize)
 
@@ -2081,37 +2012,27 @@ log$SERIOUS_ERROR
 
 ##f$Chart_ReRaise##
 [ InSmallBlind ] ? { // sb
-
     [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
     [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
 	0 } :
-
 [ InBigBlind ] ? { // bb
-
     [ f$logicalpositionrais==1 ] ? listGecko03 : // 04%
     [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
     [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
 	0 } :
-
 [ InMiddlePosition3 ] ? { // utg+1
-
     [ f$logicalpositionrais==3 ] ? listGecko13 : 0 } : // 04%
-
 [ InCutOff ] ? { // co
-
     [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 : 0 } : // 08%
-
 [ InButton ] ? { // button
-
     [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
     [ f$logicalpositionrais==4 ] ? listGecko14 :       // 08%
     [ f$logicalpositionrais==5 ] ? listGecko15 : 0 } : // 12%
-
 0
 
 ##f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us##
@@ -2127,12 +2048,12 @@ log$SERIOUS_ERROR
 (nopponentscalling >= 3 && ncallbets<=1)
 
 ##f$Chart_MultiLimpers##
-   (f$Position_UTG1       && listGecko01)
-|| (f$Position_UTG2       && listGecko01)
-|| (f$Position_CutOff     && listGecko01)
-|| (f$Position_Button     && listGecko01)
-|| (f$Position_SmallBlind && listGecko01)
-|| (f$Position_BigBlind   && listGecko01)
+   (InMiddlePosition2       && listGecko01)
+|| (InMiddlePosition3       && listGecko01)
+|| (InCutOff     && listGecko01)
+|| (InButton     && listGecko01)
+|| (InSmallBlind && listGecko01)
+|| (InBigBlind   && listGecko01)
 
 ##f$Chart_OneLimper##
    [ InSmallBlind && listGecko06 ]  // 30%
@@ -2143,16 +2064,16 @@ log$SERIOUS_ERROR
 || [ InButton && listGecko06 ]  // 30%
 
 ##f$Chart_TwoLimpers##
-   (f$Position_UTG1       && listGecko01)
-|| (f$Position_UTG2       && listGecko01)
-|| (f$Position_CutOff     && listGecko01)
-|| (f$Position_Button     && listGecko02)
-|| (f$Position_SmallBlind && listGecko01)
-|| (f$Position_BigBlind   && listGecko01)
+   (InMiddlePosition2       && listGecko01)
+|| (InMiddlePosition3       && listGecko01)
+|| (InCutOff     && listGecko01)
+|| (InButton     && listGecko02)
+|| (InSmallBlind && listGecko01)
+|| (InBigBlind   && listGecko01)
 
 ##f$Chart_CallRaise##
-   (f$Position_SmallBlind && listGecko09)
-|| (f$Position_BigBlind   && listGecko09)
+   (InSmallBlind && listGecko09)
+|| (InBigBlind   && listGecko09)
 
 ##f$real_pfr##
 f$logicalpositionrais == 1 ? pt_pfr_raischair * 0.50 :
@@ -2175,16 +2096,13 @@ f$logicalpositionrais == 6 ? pt_pfr_raischair * 0.50 : 0
 || f$real_pfr> 0.30                       && listGecko13 
 
 ##f$Chart_Squeeze##
-   [ f$Position_BigBlind   && listGeckoSqueeze ]
-|| [ f$Position_SmallBlind && listGeckoSqueeze ]
-|| [ f$Position_UTG2       && listGeckoSqueeze ]
-
-|| [ f$Position_Button && (      dealpositionrais==3 && listGeckoSqueeze
+   [ InBigBlind   && listGeckoSqueeze ]
+|| [ InSmallBlind && listGeckoSqueeze ]
+|| [ InMiddlePosition3       && listGeckoSqueeze ]
+|| [ InButton && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze  
                               || dealpositionrais==5 && listGeckoSqueeze )] 
-
-
-|| [ f$Position_CutOff && (      dealpositionrais==3 && listGeckoSqueeze
+|| [ InCutOff && (      dealpositionrais==3 && listGeckoSqueeze
                               || dealpositionrais==4 && listGeckoSqueeze )] 
 						  
 ##f$villain_allin##
@@ -2257,7 +2175,6 @@ currentbet
 
 ##f$river_raise_wegotraised##
 [ Position = First ] ? {
-
 //  [ f$actionpostflop_1 ] ? f$prwin>.76 : // let the aggressor do the betting
     [ f$actionpostflop_2 ] ? f$prwin>.96 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2268,9 +2185,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.98 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.96 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2281,9 +2196,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.82 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2294,12 +2207,10 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 0
 
 ##f$river_call_wegotraised##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.85 :
     [ f$actionpostflop_4 ] ? f$prwin1>.90 :
@@ -2309,9 +2220,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.90 :
     [ f$actionpostflop_4 ] ? f$prwin1>.90 :
@@ -2321,9 +2230,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.65 :
     [ f$actionpostflop_3 ] ? f$prwin1>.90 :
     [ f$actionpostflop_4 ] ? f$prwin1>.90 :
@@ -2333,14 +2240,11 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
-
 0
 
 ##f$turn_raise_wegotraised##
 [ Position = First ] ? {
-
     [ nplayersplaying==2 ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.80 :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.85 :
@@ -2351,9 +2255,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.98 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
     [ nplayersplaying>=3 ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.80 :
     [ f$actionpostflop_2 ] ? f$prwin>.85 :
     [ f$actionpostflop_3 ] ? f$prwin>.95 :
@@ -2364,9 +2266,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.98 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.96 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2377,9 +2277,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_1 ] ? f$prwin>.82 :
     [ f$actionpostflop_2 ] ? f$prwin>.90 :
     [ f$actionpostflop_3 ] ? f$prwin>.96 :
@@ -2390,12 +2288,10 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin>.97 :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
-
 0
 
 ##f$turn_call_wegotraised##
 [ Position = First ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.78 :
     [ f$actionpostflop_4 ] ? f$prwin1>.78 :
@@ -2405,9 +2301,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
-
 [ Position = Middle ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.77 :
     [ f$actionpostflop_4 ] ? f$prwin1>.79 :
@@ -2417,9 +2311,7 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
-
 [ Position = Last ] ? {
-
     [ f$actionpostflop_2 ] ? f$prwin1>.60 :
     [ f$actionpostflop_3 ] ? f$prwin1>.78 :
     [ f$actionpostflop_4 ] ? f$prwin1>.80 :
@@ -2429,7 +2321,6 @@ currentbet
     [ f$actionpostflop_8 ] ? f$prwin1>.95 :
     [ f$actionpostflop_9 ] ? f$prwin1>.95 :
     [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
-
 0
 
 ##f$Initiative_GotRaised##
@@ -2445,11 +2336,8 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
 
 ##f$villiantakeover##
 [ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2461,13 +2349,9 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
 [ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2478,8 +2362,7 @@ IsRiver ? didbetsizeround_turn && didcallround_turn && nbetsround_turn>0 : 0
     [ f$PT_Flop_AF_RaisChair>2.50 && f$PT_Flop_AF_RaisChair<=3.00 ] ? 0.40 :
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
-    [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
+    [ f$PT_Flop_AF_RaisChair>5.00                                 ] ? 0.10 : 0 } : 0 } :
 0
 
 ##f$reducewinchance_when_have_twopair##
@@ -2500,9 +2383,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
 
 ##f$AggressionFactor_Flop1##
 [ call<=0 ] ? 0 :
-
 [ call>0 && pt_hands_raischair>25 ] ? {
-
     [                    f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 0.40 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 0.35 :
@@ -2515,18 +2396,13 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Flop_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
 0
 
 ##f$AggressionFactor_Turn1##
 [ call<=0 ] ? {
-
     [ f$Initiative_Hero   ] ? 0 :
-
     [ f$Initiative_Nobody ] ? 0 :
-
     [ f$Initiative_Villian && f$pt_hands>25 ] ? {
-
                                f$pt_flopaf<=0.00 ? 0.00 :
         f$pt_flopaf>0.00 && f$pt_flopaf<=0.33 ? 0.50 :
         f$pt_flopaf>0.33 && f$pt_flopaf<=0.66 ? 0.40 :
@@ -2538,12 +2414,9 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
         f$pt_flopaf>2.50 && f$pt_flopaf<=3.00 ? 0.00 :
         f$pt_flopaf>3.00 && f$pt_flopaf<=4.00 ? 0.00 :
         f$pt_flopaf>4.00 && f$pt_flopaf<=5.00 ? 0.00 :
-        f$pt_flopaf>5.00                         ? 0.00 : 0 } : 0 } :
-
+        f$pt_flopaf>5.00                      ? 0.00 : 0 } : 0 } :
 [ call>0 && pt_hands_raischair>25 ] ? {
-
   [ !didbetsize ] ? {
-
     [                    f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>0.00 && f$PT_Turn_AF_RaisChair<=0.25 ] ? 0.50 :
     [ f$PT_Turn_AF_RaisChair>0.25 && f$PT_Turn_AF_RaisChair<=0.50 ] ? 0.40 :
@@ -2559,9 +2432,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Turn_AF_RaisChair>3.00 && f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>4.00 && f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
   [  didbetsize ] ? {
-
     [                    f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>0.00 && f$PT_Turn_AF_RaisChair<=0.25 ] ? 1.00 :
     [ f$PT_Turn_AF_RaisChair>0.25 && f$PT_Turn_AF_RaisChair<=0.50 ] ? 0.65 :
@@ -2577,18 +2448,13 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Turn_AF_RaisChair>3.00 && f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>4.00 && f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 0 } :
-
 0
 
 ##f$AggressionFactor_River1##
 [ call<=0 ] ? {
-
     [ f$Initiative_Hero   ] ? 0 :
-
     [ f$Initiative_Nobody ] ? 0 :
-
     [ f$Initiative_Villian && f$pt_hands>25 ] ? {
-
         [                        f$pt_turnaf<=0.00 ] ? 0.00 :
         [ f$pt_turnaf>0.00 && f$pt_turnaf<=0.25 ] ? 0.50 :
         [ f$pt_turnaf>0.25 && f$pt_turnaf<=0.50 ] ? 0.40 :
@@ -2604,11 +2470,8 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
         [ f$pt_turnaf>3.00 && f$pt_turnaf<=4.00 ] ? 0.00 :
         [ f$pt_turnaf>4.00 && f$pt_turnaf<=5.00 ] ? 0.00 :
         [ f$pt_turnaf>5.00                         ] ? 0.00 : 0 } : 0 } :
-
 [ call>0 && pt_hands_raischair>25 ] ? {
-
   [ !didbetsize ] ? {
-
     [                    f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>0.00 && f$PT_River_AF_RaisChair<=0.25 ] ? 0.50 :
     [ f$PT_River_AF_RaisChair>0.25 && f$PT_River_AF_RaisChair<=0.50 ] ? 0.40 :
@@ -2624,9 +2487,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_River_AF_RaisChair>3.00 && f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>4.00 && f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-
   [  didbetsize ] ? {
-
     [                    f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>0.00 && f$PT_River_AF_RaisChair<=0.25 ] ? 1.00 :
     [ f$PT_River_AF_RaisChair>0.25 && f$PT_River_AF_RaisChair<=0.50 ] ? 0.65 :
@@ -2642,16 +2503,12 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_River_AF_RaisChair>3.00 && f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>4.00 && f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 0 } :
-
 0
 
 ##f$foldequity1##
 [ f$Initiative_Nobody && nplayersplaying==2 && call==0 && f$pt_hands>50 ] ? {
-
     [ Position = First ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2662,9 +2519,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2675,9 +2530,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2688,12 +2541,8 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
-
     [ Position = Last ] ? {
-
         [ IsFlop && pot<6*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2704,9 +2553,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsTurn && pot<12*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2717,9 +2564,7 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-
         [ IsRiver && !didcallround_flop && pot<32*bblind ] ? {
-
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 && f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 && f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2730,18 +2575,13 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
             [ f$pt_wtsd>0.40 && f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 && f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
-
 0 } :
-
 0
 
 ##f$villiantakeover1##
 [ IsTurn && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && Position = Last ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2753,13 +2593,9 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
 [ IsRiver && !didcallround_preflop && nbetsround_preflop>1 && !didbetsizeround_flop && didcallround_flop && nbetsround_turn>0 && Position = Last ] ? {
-
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.50 :
-
     [ pt_hands_raischair>50 ] ? {
-
     [ f$PT_Flop_AF_RaisChair>0.00 && f$PT_Flop_AF_RaisChair<=0.33 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.33 && f$PT_Flop_AF_RaisChair<=0.66 ] ? 1.00 :
     [ f$PT_Flop_AF_RaisChair>0.66 && f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.90 :
@@ -2771,7 +2607,6 @@ IsRiver ? (f$AggressionFactor_River1+f$foldequity1+f$villiantakeover1+f$reducewi
     [ f$PT_Flop_AF_RaisChair>3.00 && f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.30 :
     [ f$PT_Flop_AF_RaisChair>4.00 && f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.20 :
     [ f$PT_Flop_AF_RaisChair>5.00                   ] ? 0.10 : 0 } : 0 } :
-
 0
 
 ##f$reducewinchance_when_have_twopair1##
@@ -3173,12 +3008,6 @@ AKs AQs AJs ATs
 AKo AQo AJo 
 KQs  
 
-##listGecko16##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  
-AKs AQs AJs ATs  
-AKo AQo AJo 
-KQs  
-
 ##listGecko06##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
@@ -3214,52 +3043,6 @@ Q9o  QTo  QJo
 J9o  JTo  
 T9o  
 
-##listGecko08##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
-K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs  
-Q6s Q7s Q8s Q9s QTs QJs  
-J7s J8s J9s JTs  
-T6s T7s T8s T9s  
-95s 96s 97s 98s  
-85s 86s 87s  
-75s 76s  
-64s 65s  
-54s  
-A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo 
-K8o  K9o  KTo  KJo  KQo  
-Q9o  QTo  QJo  
-J8o  J9o  JTo
-T9o  JTo  
-98o  
-
-##listGecko00##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
-A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
-K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs  
-Q2s Q3s Q4s Q5s Q6s Q7s Q8s Q9s QTs QJs  
-J2s J3s J4s J5s J6s J7s J8s J9s JTs  
-T2s T3s T4s T5s T6s T7s T8s T9s  
-92s 93s 94s 95s 96s 97s 98s  
-82s 83s 84s 85s 86s 87s  
-72s 73s 74s 75s 76s  
-62s 63s 64s 65s  
-52s 53s 54s  
-42s 43s  
-32s  
-A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo 
-K2o K3o  K4o  K5o  K6o  K7o  K8o  K9o  KTo  KJo  KQo  
-Q2o Q3o  Q4o  Q5o  Q6o  Q7o  Q8o  Q9o  QTo  QJo  
-J2o  J3o  J4o  J5o  J6o  J7o  J8o  J9o  JTo  
-T2o T3o T4o T5o T6o T7o T8o JTo  
-92o  93o  94o  95o  96o  97o  98o  
-82o  83o  84o  85o  86o  87o  
-72o  73o  74o  75o  76o  
-62o  63o  64o  65o  
-52o  53o  54o  
-42o  43o  
-32o 
-
 ##listGecko10##
 KK  AA  
 
@@ -3268,18 +3051,6 @@ KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22
 AQs AKs  
 AKo  
 KQs
-
-##listGecko18##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQs AKs  
-AKo  KQo  
-KQs QJs JTs
-
-##listGecko19##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AQs AKs  
-AKo  KQo  
-KQs QJs JTs T9s 98s
 
 ##listGecko99##
 QQ  KK  AA  
@@ -3292,744 +3063,6 @@ AJs AQs AKs
 KQs  
 AKo AQo 
 
-##listGecko101##
-AA  KK  QQ  
-
-##listGecko102##
-AA  KK  QQ  JJ  
-
-##listGecko103##
-AA  KK  QQ  JJ  TT  
-
-##listGecko106##
-AA  KK  QQ  JJ  TT  99  
-AKs AQs  
-AKo  
-
-##listGecko107##
-AA  KK  QQ  JJ  TT  99  
-AKs AQs AJs  
-AKo  AQo
-
-##listGecko108##
-AA  KK  QQ  JJ  TT  99  88  
-AKs AQs AJs ATs  
-AKo AQo AJo 
-KQs 
-
-##listGecko109##
-AA  KK  QQ  JJ  TT  99  88  77  66  
-AKs AQs AJs ATs  
-AKo AQo AJo 
-KQs 
-
-##listGecko110##
-AA  KK  QQ  JJ  TT  99  88  77  
-AKs AQs AJs ATs A9s A8s  
-AKo AQo AJo ATo A9o 
-KQs  
-KQo
-
-##listGecko111##
-AA  KK  QQ  JJ  TT  99  88  77  66  
-AKs AQs AJs ATs A9s A8s  
-AKo AQo AJo ATo A9o 
-KQs KJs  
-QJs   
-KQo
-
-##listGecko112##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  
-AKs AQs AJs ATs A9s A8s  
-AKo AQo AJo ATo A9o 
-KQs KJs  
-QJs   
-JTs  
-T9s  
-KQo
-
-##listGecko113##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  
-AKs AQs AJs ATs A9s A8s A7s   
-AKo AQo AJo ATo A9o A8o 
-KQs KJs  
-QJs   
-JTs  
-T9s  
-KQo
-
-##listGecko114##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s   
-AKo AQo AJo ATo A9o A8o 
-KQs KJs  
-QJs   
-JTs  
-T9s  
-98s  
-KQo
-
-##listGecko115##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s   
-AKo AQo AJo ATo A9o A8o 
-KQs KJs KTs   
-QJs QTs  
-JTs  
-T9s  
-98s  
-KQo KJo  
-
-##listGecko116##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s  
-AKo AQo AJo ATo A9o A8o A7o 
-KQs KJs KTs   
-QJs QTs  
-JTs  
-T9s  
-98s  
-87s  
-KQo  KJo  
-QJo  
-
-##listGecko117##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s  
-AKo AQo AJo ATo A9o A8o A7o A6o 
-KQs KJs KTs   
-QJs QTs  
-JTs  
-T9s  
-98s  
-87s  
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-
-##listGecko118##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s  
-AKo AQo AJo ATo A9o A8o A7o A6o A5o 
-KQs KJs KTs K9s    
-QJs QTs  
-JTs  
-T9s  
-98s  
-87s  
-76s  
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-T9o 
-
-##listGecko119##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s    
-QJs QTs Q9s  
-JTs  
-T9s  
-98s  
-87s  
-76s  
-65s  
-54s  
-43s  
-32s  
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-T9o 
-
-##listGecko120##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s     
-QJs QTs Q9s  
-JTs J9s J8s    
-T9s T8s  
-98s 97s   
-87s 86s   
-76s  
-65s  
-54s  
-43s  
-32s  
-KQo  KJo  KTo  K9o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-
-##listGecko121##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s  
-JTs J9s J8s    
-T9s T8s  
-98s 97s   
-87s 86s   
-76s 75s   
-65s 64s  
-54s 53s  
-43s 42s  
-32s  
-KQo  KJo  KTo  K9o  
-QJo  QTo  Q9o  
-JTo  J9o  J8o  
-T9o 
-
-##listGecko122##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s    
-JTs J9s J8s J7s J6s      
-T9s T8s T7s T6s   
-98s 97s 96s    
-87s 86s   
-76s 75s   
-65s 64s  
-54s 53s  
-43s 42s  
-32s  
-KQo  KJo  KTo  K9o  K8o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-98o  
-87o 
-
-##listGecko123##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
-JTs J9s J8s J7s J6s J5s J4s J3s J2s  
-T9s T8s T7s T6s  
-98s 97s 96s    
-87s 86s 85s  
-76s 75s 74s  
-65s 64s 63s  
-54s 53s 52s  
-43s 42s  
-32s  
-KQo  KJo  KTo  K9o  K8o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-98o
-87o 
-
-##listGecko124##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
-JTs J9s J8s J7s J6s J5s J4s J3s J2s  
-T9s T8s T7s T6s T5s T4s T3s T2s  
-98s 97s 96s 95s 94s 93s 92s  
-87s 86s 85s 84s 83s 82s  
-76s 75s 74s 73s 72s  
-65s 64s 63s 62s  
-54s 53s 52s  
-43s 42s  
-32s  
-AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  K4o  K3o  K2o
-QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  Q2o 
-JTo  J9o  J8o  J7o  J6o  J5o  J4o  J3o  J2o  
-T9o T8o T7o T6o T5o T4o T3o T2o 
-98o  97o  96o  95o  94o  93o  92o  
-87o 86o 85o 84o 83o 82o  
-76o 75o 74o 73o 72o  
-65o 64o 63o 62o  
-54o 53o 52o 
-43o  42o
-
-##listGecko125##
-TT  99  88  77  
-AQs AJs ATs 
-AKo AQo 
-KQs  
-QJs  
-JTs  
-
-##listGecko126##
-TT  99  88  77  66  55  
-AQs AJs ATs 
-AKo AQo AJo 
-KQs  
-QJs  
-JTs  
-
-##listGecko127##
-TT  99  88  77  66  55  
-AQs AJs ATs A9s 
-AKo AQo AJo ATo 
-KQs KJs  
-QJs   
-JTs  
-
-##listGecko128##
-TT  99  88  77  66  55  44  
-AQs AJs ATs A9s A8s  
-AKo AQo AJo ATo 
-KQs KJs  
-QJs   
-JTs  
-KQo
-
-##listGecko129##
-TT  99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s  
-AKo AQo AJo ATo A9o 
-KQs KJs  
-QJs   
-JTs  
-KQo
-
-##listGecko130##
-TT  99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s  
-AKo AQo AJo ATo A9o A8o 
-KQs KJs KTs   
-QJs   
-JTs 
-T9s  
-KQo
-
-##listGecko131##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s 
-AQo  AJo ATo A9o A8o A7o 
-KQs KJs KTs 
-QJs QTs 
-JTs 
-T9s 
-98s 
-87s 
-76s 
-KQo  KJo  KTo  
-QJo  QTo  
-
-##listGecko132##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s 
-AQo  AJo ATo A9o A8o A7o A6o A5o 
-KQs KJs KTs 
-QJs QTs 
-JTs 
-T9s 
-98s 
-87s 
-76s 
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-
-##listGecko133##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AQo  AJo ATo A9o A8o A7o A6o A5o 
-KQs KJs KTs K9s 
-QJs QTs Q9s 
-JTs J9s 
-T9s T8s 
-98s 97s 
-87s 
-76s 
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-
-##listGecko134##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o 
-KQs KJs KTs K9s 
-QJs QTs Q9s 
-JTs J9s 
-T9s T8s 
-98s 97s 
-87s 86s   
-76s 75s   
-65s 64s  
-54s 
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-
-##listGecko135##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s 
-QJs QTs Q9s 
-JTs J9s 
-T9s T8s 
-98s 97s 
-87s 86s   
-76s 75s   
-65s 64s  
-54s 
-43s 
-32s  
-KQo  KJo  KTo  K9o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-
-##listGecko136##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s K6s K5s 
-QJs QTs Q9s Q8s 
-JTs J9s J8s 
-T9s T8s T7s 
-98s 97s 96s    
-87s 86s   
-76s 75s   
-65s 64s  
-54s 53s  
-43s 42s  
-32s  
-KQo  KJo  KTo  K9o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-98o  
-87o  
-
-##listGecko137##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s    
-JTs J9s J8s J7s J6s      
-T9s T8s T7s T6s   
-98s 97s 96s    
-87s 86s   
-76s 75s   
-65s 64s  
-54s 53s  
-43s 42s  
-32s  
-KQo  KJo  KTo  K9o  K8o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-98o
-98o 
-
-##listGecko138##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
-JTs J9s J8s J7s J6s J5s J4s J3s J2s  
-T9s T8s T7s T6s  
-98s 97s 96s 95s     
-87s 86s 85s 84s   
-76s 75s 74s 73s   
-65s 64s 63s 62s   
-54s 53s 52s  
-43s 42s  
-32s  
-KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  
-QJo  QTo  Q9o  Q8o  
-JTo  J9o  J8o  
-T9o 
-98o 
-87o 
-
-##listGecko139##
-99  88  77  66  55  44  33  22  
-AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
-JTs J9s J8s J7s J6s J5s J4s J3s J2s  
-T9s T8s T7s T6s T5s T4s T3s T2s  
-98s 97s 96s 95s 94s 93s 92s  
-87s 86s 85s 84s 83s 82s  
-76s 75s 74s 73s 72s  
-65s 64s 63s 62s  
-54s 53s 52s  
-43s 42s  
-32s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  K4o  K3o  K2o
-QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  
-JTo  J9o  J8o  J7o  J6o  J5o  J4o  J3o  
-T9o T8o T7o T6o T5o T4o T3o 
-98o 97o 96o 95o  94o  93o  
-87o 86o 85o 84o  83o
-75o  57o  47o  73o  
-65o  46o  63o  
-54o  53o  
-
-##listGecko140##
-99  88  77  66  55  44  33  22  
-AJs KQs QJs JTs T9s  
-AQo  
-KQo
-
-##listGecko141##
-99  88  77  66  55  44  33  22  
-AJs ATs KQs QJs JTs T9s  
-AQo  AJo KQo  
-KQs
-
-##listGecko142##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s   
-AQo  AJo ATo 
-KQs  
-QJs  
-JTs  
-T9s
-
-##listGecko143##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s   
-AQo  AJo ATo A9o 
-KQs KJs  
-QJs   
-JTs  
-T9s  
-98s  
-KQo
-
-##listGecko144##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s   
-AQo  AJo ATo A9o A8o 
-KQs KJs  
-QJs   
-JTs  
-T9s  
-KQo
-
-##listGecko145##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s   
-AQo  AJo ATo A9o A8o 
-KQs KJs KTs   
-QJs QTs  
-JTs  
-T9s  
-KQo  KJo  
-
-##listGecko146##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s  
-AQo  AJo ATo A9o A8o A7o 
-KQs KJs KTs   
-QJs QTs  
-JTs  
-T9s  
-98s  
-87s  
-KQo  KJo  
-QJo  
-
-##listGecko147##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s A5s A4s  
-AQo  AJo ATo A9o A8o A7o A6o A5o 
-KQs KJs KTs K9s    
-QJs QTs  
-JTs  
-T9s  
-98s  
-87s  
-76s  
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-T9o 
-
-##listGecko148##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQs KJs KTs K9s    
-QJs QTs Q9s  
-JTs  
-T9s  
-98s  
-87s  
-76s  
-65s  
-54s  
-43s  
-32s  
-KQo  KJo  KTo  
-QJo  QTo  
-JTo  
-T9o 
-
-##listGecko149##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-KQs KJs KTs K9s K8s K7s     
-QJs QTs Q9s  
-JTs J9s J8s    
-T9s T8s  
-98s 97s   
-87s 86s   
-76s  
-65s  
-54s  
-43s  
-32s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQo  KJo  KTo  K9o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-
-##listGecko150##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s  
-JTs J9s J8s    
-T9s T8s  
-98s 97s   
-87s 86s   
-76s 75s   
-65s 64s  
-54s 53s  
-43s 42s  
-32s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQo  KJo  KTo  K9o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-
-##listGecko151##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s    
-JTs J9s J8s J7s J6s      
-T9s T8s T7s T6s   
-98s 97s 96s    
-87s 86s   
-76s 75s   
-65s 64s  
-54s 53s  
-43s 42s  
-32s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQo  KJo  KTo  K9o  K8o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-98o  
-87o 
-
-##listGecko152##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
-JTs J9s J8s J7s J6s J5s J4s J3s J2s  
-T9s T8s T7s T6s  
-98s 97s 96s    
-87s 86s 85s  
-76s 75s 74s  
-65s 64s 63s  
-54s 53s 52s  
-43s 42s  
-32s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQo  KJo  KTo  K9o  K8o  
-QJo  QTo  Q9o  
-JTo  J9o  
-T9o 
-98o  
-87o 
-
-##listGecko153##
-99  88  77  66  55  44  33  22  
-AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s  
-KQs KJs KTs K9s K8s K7s K6s K5s K4s K3s K2s      
-QJs QTs Q9s Q8s Q7s Q6s Q5s Q4s Q3s Q2s  
-JTs J9s J8s J7s J6s J5s J4s J3s J2s  
-T9s T8s T7s T6s T5s T4s T3s T2s  
-98s 97s 96s 95s 94s 93s 92s  
-87s 86s 85s 84s 83s 82s  
-76s 75s 74s 73s 72s  
-65s 64s 63s 62s  
-54s 53s 52s  
-43s 42s  
-32s  
-AQo  AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o 
-KQo  KJo  KTo  K9o  K8o  K7o  K5o  K6o  K4o  K3o  K2o
-QJo  QTo  Q9o  Q8o  Q7o  Q6o  Q5o  Q4o  Q3o  Q2o 
-JTo  J9o  J8o  J7o  J6o  J5o  J4o  J3o  J2o  
-T9o T8o T7o T6o T5o T4o T3o T2o 
-98o 97o 96o 95o  94o  93o  92o  
-87o 86o 85o 84o 83o 82o  
-76o 75o 74o 73o 72o  
-65o 64o 63o 62o  
-54o  53o  52o  
-43o  42o  
-
-##listGecko154##
-88  77  66  55  44  33  22  
-AJs ATs A9s A8s  
-AJo  
-KQs  
-QJs  
-JTs  
-T9s  
-98s  
-87s  
-
-##listGecko155##
-88  77  66  55  44  33  22  
-ATs A9s A8s A7s A6s   
-AJo  ATo 
-KQs  
-QJs  
-JTs  
-T9s  
-98s  
-87s  
-
-##listGecko156##
-88  77  66  55  44  33  22  
-ATs A9s A8s A7s A6s   
-AJo  ATo A9o 
-KQs KJs  
-QJs   
-JTs T9s  
-KQo
-
-##listGecko157##
-88  77  66  55  44  33  22  
-ATs A9s A8s A7s A6s   
-AJo  ATo A9o A8o 
-KQs KJs  
-QJs   
-JTs  
-T9s  
-98s  
-KQo
-
 ##listGeckoLimpMultiway##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKs KQs QJs JTs T9s 98s 87s 76s 65s  
@@ -4040,12 +3073,6 @@ AKo AQo AJo ATo
 AA  KK  QQ  JJ  TT  99  88  77  
 AKs KQs QJs JTs T9s 98s 
 AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs 
-AKo AQo AJo ATo 
-
-##listGecko302##
-AA  KK  QQ  JJ  TT  99  88  77  
-AKs KQs QJs JTs T9s 
-AQs AJs ATs A9s KJs KTs QTs 
 AKo AQo AJo ATo 
 
 ##listGecko900##

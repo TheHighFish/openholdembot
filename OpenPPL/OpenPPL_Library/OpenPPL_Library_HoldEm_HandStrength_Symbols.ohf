@@ -375,13 +375,6 @@ HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 4)
 ##HoldEm_HaveFifthOverPair##
 ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard > FifthBestBoardCard)
 
-##HoldEm_HaveAnyKindOfInsideStraightDraw##
-// Note: This does also count straightdraws at the board,
-// where we don't contribute any card. Special care should be taken
-// in HaveInsideStraightDraw
-	 (nstraightfill <= 1)
-AND NOT HaveStraight 
-
 ##HoldEm_HaveBackdoorFlushDrawContributingTwoCards##
     IsFlop
 AND (nsuited >= 3)
@@ -612,20 +605,18 @@ WHEN HaveGoodFlushDrawContributingOnlyOneCard RETURN true FORCE
 WHEN ((nsuited == 4) AND (nsuitedcommon == 2)) RETURN true FORCE
 
 ##HoldEm_HaveGoodFlushDrawContributingOnlyOneCard##
+WHEN (nsuited != 4) RETURN false FORCE	
+WHEN (nsuitedcommon != 3) RETURN false FORCE
 // The quality of flush-draws with just one card in hand
 // depends on the probability of an opponent holding a better card
 // depends on the number of opponents.
 // http://www.maxinmontreal.com/forums/viewforum.php?f=156
-WHEN (NOT HaveAnyFlushDrawContributingOnlyOneCard) RETURN false FORCE
 // Headsup: at least fifth-best
 WHEN ((nopponentsplaying = 1) AND (NumberOfUnknownSuitedOvercards <= 4)) RETURN true FORCE
 // 3-handed: at least third-best
 WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN true FORCE
 // 4-handed: at least second-best
 WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN true FORCE
-
-##HoldEm_HaveAnyFlushDrawContributingOnlyOneCard##
-WHEN ((nsuited >= 4) AND (nsuitedcommon > 2)) RETURN true FORCE
 
 ##HoldEm_HaveFullHouse##
 isfullhouse OR HaveQuads
@@ -1018,7 +1009,8 @@ WHEN HaveUnDiscountedNutStraightDraw RETURN true FORCE
 AND NOT HaveStraight
 
 ##HoldEm_HaveInsideStraightDraw##
-HaveAnyKindOfInsideStraightDraw
+WHEN HaveDoubleGutshotDraw Return false FORCE
+WHEN (NumberOfInsideStraightDraws == 1) RETURN true FORCE
 
 ##HoldEm_HaveNuts##
 (nhandshi == 0)
@@ -1230,12 +1222,61 @@ OR (HigherHoleCardInPokerVal == RiverCard)
 
 ##HoldEm_HaveUnderStraight##
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19504
-WHEN NOT HaveStraight RETURN false FORCE
+WHEN (nstraightfill > 0) RETURN false FORCE
 WHEN HaveNutStraight  RETURN false FORCE
 WHEN StraightOnBoard  RETURN false FORCE
 WHEN (pcbits == 0b00011) RETURN true FORCE
 WHEN (pcbits == 0b00001) RETURN true FORCE
 WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN true FORCE
+
+##HoldEm_HaveWeakBackdoorStraightDraw##
+WHEN HaveBackdoorStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 2) RETURN true FORCE
+
+##HoldEm_HaveWeakDoubleGutshotDraw##
+WHEN HaveStraight RETURN false FORCE
+WHEN HaveDoubleGutshotDraw RETURN false FORCE
+// 5-card double gutshot
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b101110100000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b010111010000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b001011101000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000101110100000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000010111010000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000001011101000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000101110100) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000010111010) == 5) RETURN true FORCE
+// 6-card double gutshot
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b110110110000000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b011011011000000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b001101101100000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000110110110000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000011011011000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000001101101100) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000110110110) == 6) RETURN true FORCE
+
+##HoldEm_HaveWeakFlush##
+WHEN HaveFlush RETURN false FORCE
+WHEN (nsuited >= 5) RETURN true FORCE
+
+##HoldEm_HaveWeakFlushDraw##
+WHEN HaveFlushDraw RETURN false FORCE
+WHEN (nsuited == 4) RETURN true FORCE
+
+##HoldEm_HaveWeakInsideStraightDraw##
+WHEN HaveStraight RETURN false FORCE
+WHEN HaveStraightDraw RETURN false FORCE
+WHEN HaveInsideStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 1) RETURN true FORCE
+
+##HoldEm_HaveWeakStraight##
+WHEN HaveStraight RETURN false FORCE
+WHEN (nstraightfill <= 0) RETURN true FORCE
+
+##HoldEm_HaveWeakStraightDraw##
+WHEN HaveStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 1) RETURN true FORCE
 
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
@@ -1263,7 +1304,7 @@ BitCount(Srankbitsavailable >> srankhiplayer)
 ispair
 
 ##HoldEm_RunnerRunnerFlushPossibleAtRiver##
-(betround == river AND nsuitedcommon==3 AND SuitsOnFlop!=3 AND TurnSuit==RiverSuit) ? 1:0
+(IsRiver AND (nsuitedcommon == 3) AND (SuitsOnFlop != 1) AND (TurnSuit == RiverSuit))
 
 ##HoldEm_SuitsInHand##
 ($$ps0 == $$ps1) ? 1 :

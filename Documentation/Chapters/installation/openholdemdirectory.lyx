@@ -103,7 +103,8 @@ status open
 \end_layout
 
 \begin_layout Standard
-In this directory are the following files: 
+In the OpenHoldem directoryyou will find the following files and sub-directories
+: 
 \end_layout
 
 \begin_layout Itemize
@@ -122,12 +123,23 @@ versus.bin
 
 \end_inset
 
-versus.bin --- this file is a large lookup table that is mandatory for the
- versus symbols.
+versus.bin --- this optional file is a large lookup table that is used by
+ the versus symbols.
  As the versus database is quite large and does not change it is not included
  in the archives with recent executables.
- It is available as a separate archive at our download-page and should be
- extracted to the OpenHoldem directory.
+ It is available at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/OpenHoldem/openholdembot/blob/master/versus.bin/versus.bin_for_O
+penHoldem_2007-10-13.rar?raw=true
+\end_layout
+
+\end_inset
+
+ and should be extracted to the OpenHoldem directory.
 \end_layout
 
 \begin_layout Itemize

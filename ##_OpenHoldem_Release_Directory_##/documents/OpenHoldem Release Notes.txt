@@ -1,4 +1,121 @@
-﻿﻿v﻿12.1.4 2017-11-30
+﻿﻿v﻿13.0.1 2018-01-xx
+==================
+BUG FIXES:
+- OpenHoldem could connect to other OpenHoldem windows
+  (e.g. by table size and title) if the tablemap was tolerant enough.
+  This gets now prevented.
+  [THF]
+
+﻿v﻿13.0.0 2018-01-01
+==================
+﻿NEW STUFF:
+- OpenHoldem comes now with some (maybe soon some dozens)
+  "official" tablemaps for an easy out-of-the-box experience.
+  General setup-instructions for the casinos can be found in the manual
+  and every TM comes with one or two replay-frames for illustration.
+  The tablemap-loader and scraper-directory-monitor have been adapted
+  to work with a deeply nested scraper-directory to keep the maps organized.
+  The batch-script "Update_Tablemaps.bat" will checkout the tablemaps
+  from our source-code-repository at Github and keep you up-to-date.
+  Special thanks to Darkmund and Jesus for the first "official" tablemaps.
+  [THF]
+- OpenHoldem is now able to switch bot-logic at runtime.
+  It provides a new hopper-function f$select_formula-file 
+  that gets evaluated once at handreset.
+  The loadformula$XYZ-symbols selects a formula-file, e.g.
+  
+    ##f$select_formula_file##
+	  WHEN (StackSize < 15) RETURN loadformula$push_fold$ohf FORCE
+	  WHEN issng RETURN loadformula$my_sng_bot$ohf FORCE
+	
+  The selected file will then be loaded from the bot_logic-directory.
+  This functionality could be used to load botlogic depending on game-type 
+  or to maintain several small bots for different stages of a game.
+  [THF]
+- In the bot_logic-directory you will now find a small "bot"
+  tablemap_tester.ohf, that enables you to play manually with the flag-buttons
+  in order to test the autoplayer-interface of a tablemap.
+  The "bot" will show some helpful messages on startup.
+  Special thanks to Ares for the idea and for the first version of this tool.
+  [THF]
+- The handnumber is now part of the "Basic Info" section of the log-file.
+  Thanks to RISA for the suggestion.
+  [THF]
+- PokerTracker supports now the Italian network People's Poker
+  and OpenHoldem supports it too. The sitename or network
+  in the tablemap is expected to be "Peoples".
+  Thanks to Stars83 for the information and the code-snippet.
+  [THF]
+
+BUG FIXES:
+- The symbols "call" and "nbetstocall" got calculated in wrong order,
+  which was not noticeable as long as the calculation got executed twice
+  (e.g. using at least 1 stable frame on my turn).
+  Thanks to Jesus who found this bug with Validator and replay-frames.
+  [THF]
+- Some rules of the validator-engine were susceptible to rounding-errors.
+  This has now been fixed by functions like IsEqual that accept some tolerance.
+  Thanks to Jesus for reporting false positives of the validator
+  and for providing replay-frames.
+  [THF]
+- The code of RunnerRunnerFlushPossibleAtRiver contained an error.
+  Thanks to Stars83 for reporting.
+  [THF]
+  
+  
+﻿v﻿12.1.5 2017-12-12
+==================
+﻿NEW STUFF:
+- Introducing new OpenPPL-symbols
+    HaveWeakBackdoorStraightDraw
+    HaveWeakDoubleGutshotDraw
+    HaveWeakFlush
+    HaveWeakFlushDraw
+    HaveWeakInsideStraightDraw
+    HaveWeakStraight
+    HaveWeakStraightDraw
+  They describe hands that are so weak that we don't consider them as regular holdings,
+  e.g. the single-card idiot-end of a straight or a shared flush-draw at the board.
+  Special thanks to Salem for the fruitful discussions.
+  [THF]
+
+BUG FIXES:
+- Since 12.1.1 nopponentscalling, CallsSinceLasstPlay and similar symbols
+  correctly considered players who called allin for less than
+  the raisers bet on previous orbits -- but only at our turn
+  (which is the point that matters).
+  Now they also work when it is not our turn (e.g. in the debug-tab).
+  Thanks to Stars83 for reporting.
+  [THF]
+- The logarithm-operator did not work due to a typo in the tokenizer.
+  Thanks to Mib92 for reporting.
+  [THF]
+- After connection the counter for "handsplayed" was undefined 1 or 2
+  depending on the circumstances at the table. It is now well-defined 0
+  and only increases on handreset if the userchair is known.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+- When OpenHoldem was connected to OHReplay
+  and all frames were nearly identical
+  (e.g. 2 frames of a headsup-table with barely any action)
+  and we were cycling through the same hand over and over again
+  then it could happen that OpenHoldem missed the handreset.
+  This has now been fixed as the handreset-detector now takes
+  the replayframe-number into consideration as a 10th handreset-indicator.
+  Special thanks to ZeeZooLaa for reporting and for providing replay-frames.
+  [THF]
+  
+MAINTENANCE:
+- GUI-options: OpenHoldem will now start only the first instance visible,
+  all other windows minimized, to avoid irritating the user
+  when the autostarter opens new bot-windows.
+  [THF]
+- Removed maldesigned OpenPPL-functions HaveAnyKindOfInsideStraightDraw and
+  HaveAnyFlushDrawContributingOnlyOneCard.
+  [THF]
+  
+
+﻿v﻿12.1.4 2017-11-30
 ==================
 BUG FIXES:
 - The new symbol bigstackchair incorrectly considered folded players.
