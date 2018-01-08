@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -20,10 +20,10 @@
 
 #include "ManualModeDlg.h"
 
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h""
 #include "ManualMode.h"
 #include "poker_defs.h"
-#include "debug.h"
 #include "registry.h"
 #include "EditDlg.h"
 #include "GameInfoDlg.h"
@@ -58,7 +58,7 @@ int		cc[kNumberOfCommunityCards][2] =
 
 // Player locations as a percentage of width/height
 // [chairnum][x/y]
-double	pc[k_max_number_of_players][2] = 
+double pc[kMaxNumberOfPlayers][2] = 
 	{ {.68,.11}, {.83,.21}, {.93,.47}, {.83,.73}, {.68,.83}, 
 	  {.32,.83}, {.17,.73}, {.07,.47}, {.17,.21}, {.32,.11} 
 	};
@@ -66,15 +66,17 @@ double	pc[k_max_number_of_players][2] =
 // Player bet locations relative to player locations above
 // numbers are in pixel units
 // [chairnum][x/y]
-int pcbet[k_max_number_of_players][2] = 
-	{ {-40,+53}, {-40,+37}, {-40,+0}, {-40,-20}, {-40,-40}, 
-	  {+40,-40}, {+40,-20}, {+40,+0}, {+40,+37}, {+40,+53} 
+// Chairs 2, 3, 6, 7 need special care to avoid overlap
+// by Omaha-cards
+int pcbet[kMaxNumberOfPlayers][2] = 
+	{ {-40,+53}, {-40,+37}, {-70,+0}, {-70,-20}, {-40,-40}, 
+	  {+40,-40}, {+50,-20}, {+70,+0}, {+40,+37}, {+40,+53} 
 	};
 
 // Dealer button locations relative to player locations above
 // numbers are in pixel units
 // [chairnum][x/y]
-int dbutn[k_max_number_of_players][2] = 
+int dbutn[kMaxNumberOfPlayers][2] = 
 	{ {-60,+70}, {-60,+54}, {-60,+17}, {-60,-37}, {-60,-57}, 
 	  {+60,-57}, {+60,-37}, {+60,+17}, {+60,+54}, {+60,+70} 
 	};
@@ -130,13 +132,12 @@ END_MESSAGE_MAP()
 
 // CManualModeDlg dialog
 
-CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg::IDD, pParent) 
-{
+CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg::IDD, pParent) {
+  Registry reg;
+  reg.read_reg();
+  macro_text = reg.macro;
 	// Set exception handler
-	SetUnhandledExceptionFilter(MyUnHandledExceptionFilter);
-
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 	red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
@@ -144,12 +145,10 @@ CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg
 	white_pen.CreatePen(PS_SOLID, 1, COLOR_WHITE);
 	white_dot_pen.CreatePen(PS_DOT, 1, COLOR_WHITE);
 	null_pen.CreatePen(PS_NULL, 0, COLOR_BLACK);
-
 	white_brush.CreateSolidBrush(COLOR_WHITE);
 	gray_brush.CreateSolidBrush(COLOR_GRAY);
 	red_brush.CreateSolidBrush(COLOR_RED);
 	yellow_brush.CreateSolidBrush(COLOR_YELLOW);
-
 	// big font
 	lf.lfHeight = -12;
 	lf.lfWeight = FW_NORMAL;
@@ -166,14 +165,11 @@ CManualModeDlg::CManualModeDlg(CWnd* pParent /*=NULL*/) : CDialog(CManualModeDlg
 	lf.lfPitchAndFamily = 0;
 	strcpy_s(lf.lfFaceName, 32, "Verdana");
 	cFont.CreateFontIndirect(&lf);
-
 	// small font
 	strcpy_s(lf.lfFaceName, 32, "Arial");
 	lf.lfHeight = -9;
 	cFont_sm.CreateFontIndirect(&lf);
-
 	all_cards.LoadBitmap(IDB_CARDS);
-
 	// Save startup directory
 	::GetCurrentDirectory(sizeof(startup_path) - 1, startup_path);
 }
@@ -184,21 +180,9 @@ void CManualModeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SWAG, swag);
 }
 
-BOOL CManualModeDlg::DestroyWindow() 
-{
-	Registry		reg;
-	WINDOWPLACEMENT wp;
-
-	// Save window position
-	reg.read_reg();
-	GetWindowPlacement(&wp);
-	reg.manual_x = wp.rcNormalPosition.left;
-	reg.manual_y = wp.rcNormalPosition.top;
-	reg.write_reg();
-
+BOOL CManualModeDlg::DestroyWindow() {
 	all_cards.DeleteObject();
 	cFont.DeleteObject();
-
 	return CDialog::DestroyWindow();
 }
 
@@ -288,9 +272,12 @@ void CManualModeDlg::clear_scrape_areas(void)
 	{ 
 		card[CC0+i] = CARD_NOCARD;
 	}
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{ 
-		card[P0C0+i*2] = card[P0C1+i*2] = CARD_NOCARD; 
+    SetPlayerCard(i, 0, CARD_NOCARD);
+    SetPlayerCard(i, 1, CARD_NOCARD);
+    SetPlayerCard(i, 2, CARD_NOCARD);
+    SetPlayerCard(i, 3, CARD_NOCARD);
 		seated[i] = active[i] = dealer[i] = false;
 		playerbet[i] = "0";
 		playerbalance[i] = "1000";
@@ -326,9 +313,6 @@ void CManualModeDlg::clear_scrape_areas(void)
 
 BOOL CManualModeDlg::OnInitDialog() 
 {
-	Registry	reg;
-	int			max_x, max_y;
-
 	CDialog::OnInitDialog();
 
 	// Add "About..." menu item to system menu.
@@ -355,20 +339,13 @@ BOOL CManualModeDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
-	SetWindowPos(NULL, 0, 0, MM_WIDTH, MM_HEIGHT, SWP_NOMOVE);
-
 	// Restore window location and size
-	reg.read_reg();
-	max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
-	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-	SetWindowPos(NULL, min(reg.manual_x, max_x), min(reg.manual_y, max_y), MM_WIDTH, MM_HEIGHT, SWP_NOCOPYBITS);
-
-	// Get last used macro
-	macro_text = reg.macro;
-
+	SetWindowPos(NULL, 0, 0, MM_WIDTH, MM_HEIGHT, SWP_NOCOPYBITS);
+  ResizeToClientSize(this->GetSafeHwnd(), 574, 335);
+	
 	clear_scrape_areas();
 	istournament = false;
+  isomaha = false;
 	handnumber = "1";
 	sblind = "5";
 	bblind = "10";
@@ -393,17 +370,49 @@ void CManualModeDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
+int CManualModeDlg::PlayerCardLeft(int chair, int index) {
+  RECT cr;
+  GetClientRect(&cr);
+  const int x_offset = CARDSIZEX - 14;
+  int x_position = cr.right * pc[chair][0] - CARDSIZEX - 2 + index * x_offset;
+  if (IsOmaha()) {
+    // Original positions were designed for HoldEm
+    // Shift everything one card to the left 
+    // for better centralization and less overlap
+    x_position -= x_offset;
+  }
+  if (chair == 7) {
+    // Chair 7 (9 o'clock position on the very left)
+    // needs to be shifted, otherwise one card would be invisible
+    x_position += x_offset;
+  }
+  return x_position;
+}
+
+int CManualModeDlg::PlayerCardTop(int chair) {
+  RECT cr;
+  GetClientRect(&cr);
+  return cr.bottom * pc[chair][1] - CARDSIZEY / 2 - 5;
+}
+
+bool CManualModeDlg::IsOmaha() {
+  return isomaha;
+}
+
+int CManualModeDlg::NumberOfCardsPerPlayer() {
+  if (IsOmaha()) {
+    return kNumberOfCardsPerPlayerOmaha;
+  }
+  return kNumberOfCardsPerPlayerHoldEm;
+}
+
 // If you add a minimize button to your dialog, you will need the code below
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CManualModeDlg::OnPaint() 
-{
-	CPaintDC dc(this); // device context for painting
-
-	if (IsIconic()) 
-	{
-
+void CManualModeDlg::OnPaint() {
+  CPaintDC dc(this); // device context for painting
+	if (IsIconic()) {
 		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
 		// Center icon in client rectangle
@@ -422,7 +431,6 @@ void CManualModeDlg::OnPaint()
 		CDialog::OnPaint();
 
 		RECT		cr;
-
 		// Get size of current client window
 		GetClientRect(&cr);
 
@@ -430,6 +438,34 @@ void CManualModeDlg::OnPaint()
 		CBrush* pOldBrush = dc.SelectObject(&gray_brush);
 		dc.PatBlt(cr.left, cr.top, cr.right-cr.left, cr.bottom-cr.top, PATCOPY);
 		dc.SelectObject(pOldBrush);
+
+    // Draw collection of player info
+    // Very early to avoid overwriting of other info
+    // if we play 4-card-HoldEm, which needs more space
+    for (int i = 0; i < kMaxNumberOfPlayers; ++i)
+    {
+      // We want to draw chair 6 first and 5 last
+      // due to some overlap of cards for Omaha
+      int chair = (6 + i) % kMaxNumberOfPlayers;
+      // Draw active circle
+      if (seated[chair])
+        draw_seated_active_circle(chair);
+
+      // Draw player cards      
+      for (int j = 0; j < NumberOfCardsPerPlayer(); ++j) {
+        draw_card(GetPlayerCard(chair, j), PlayerCardLeft(chair, j), PlayerCardTop(chair));
+      }
+      // Draw dealer button
+      if (dealer[chair])
+        draw_dealer_button(chair);
+
+      // Draw name and balance boxes
+      draw_name_box(chair);
+      draw_balance_box(chair);
+
+      // Draw player bet
+      draw_player_bet(chair);
+    }
 
 		// Draw button state indicators
 		draw_button_indicators();
@@ -457,44 +493,20 @@ void CManualModeDlg::OnPaint()
 		{
 			draw_card(card[CC0+i], cr.right/2 + cc[i][0] , cr.bottom/2 + cc[i][1], shift);
 		}
-
-		// Draw collection of player info
-		for (int i=0; i<k_max_number_of_players; i++) 
-		{
-			// Draw active circle
-			if (seated[i])
-				draw_seated_active_circle(i);
-				
-			// Draw player cards
-			draw_card(card[P0C0+i*2], cr.right * pc[i][0] - CARDSIZEX - 2, cr.bottom * pc[i][1] - CARDSIZEY/2 - 5);
-			draw_card(card[P0C1+i*2], cr.right * pc[i][0] + 1, cr.bottom * pc[i][1] - CARDSIZEY/2 - 5);
-			
-			// Draw dealer button
-			if (dealer[i])
-				draw_dealer_button(i);
-
-			// Draw name and balance boxes
-			draw_name_box(i);
-			draw_balance_box(i);
-
-			// Draw player bet
-			draw_player_bet(i);
-
-			// Draw title text
-			CString t;
-			if (istournament || atof(ante) > 0.001) {
-				t.Format("OpenHoldem Poker - %s%s - blinds %s/%s - ante %s",
-					(limit == LIMIT_NL ? "No Limit" : limit == LIMIT_PL ? "Pot Limit" : limit == LIMIT_FL ? "Fixed Limit" : "?L"), 
-					(istournament ? " tourney" : ""), 
-					sblind, bblind, ante);
-			}
-			else {
-				t.Format("OpenHoldem Poker - %s - blinds %s/%s",
-					(limit == LIMIT_NL ? "No Limit" : limit == LIMIT_PL ? "Pot Limit" : limit == LIMIT_FL ? "Fixed Limit" : "?L"), 
-					sblind, bblind);
-			}
-			SetWindowText(t);
+		// Draw title text
+		CString t;
+		if (istournament || atof(ante) > 0.001) {
+			t.Format("OpenHoldem Poker - %s%s - blinds %s/%s - ante %s",
+				(limit == LIMIT_NL ? "No Limit" : limit == LIMIT_PL ? "Pot Limit" : limit == LIMIT_FL ? "Fixed Limit" : "?L"), 
+				(istournament ? " tourney" : ""), 
+				sblind, bblind, ante);
 		}
+		else {
+			t.Format("OpenHoldem Poker - %s - blinds %s/%s",
+				(limit == LIMIT_NL ? "No Limit" : limit == LIMIT_PL ? "Pot Limit" : limit == LIMIT_FL ? "Fixed Limit" : "?L"), 
+				sblind, bblind);
+		}
+		SetWindowText(t);
 	}
 }
 
@@ -509,7 +521,7 @@ void CManualModeDlg::draw_button_indicators(void)
 {
 	bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
 	RECT		cr;
-
+    
 	// Get size of current client window
 	GetClientRect(&cr);
 
@@ -864,9 +876,9 @@ void CManualModeDlg::draw_center_info_box(void)
 	GetClientRect(&cr);
 
 	// Figure placement of box
-	left = cr.right/2-60;
+	left = cr.right/2-65;
 	top = 4;
-	right = cr.right/2+60;
+	right = cr.right/2+45;
 	bottom = 78;
 
 	pTempPen = (CPen*)pDC->SelectObject(&black_pen);
@@ -1335,7 +1347,7 @@ void CManualModeDlg::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 
 	// Clicked on a player card
-	else if ( click_loc>=P0C0 && click_loc<=P9C1 ) 
+	else if ( click_loc>=P0C0 && click_loc<=P9C3 ) 
 	{
 	}
 
@@ -1378,7 +1390,7 @@ void CManualModeDlg::OnLButtonDblClk(UINT nFlags, CPoint point)
 	}
 
 	// Clicked on a player card
-	else if ( click_loc>=P0C0 && click_loc<=P9C1 ) 
+	else if ( click_loc>=P0C0 && click_loc<=P9C3 ) 
 	{
 		// Sit in, sit down, set card backs
 		seated[click_chair] = true;
@@ -1436,7 +1448,7 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		gameinfo.m_gametype = limit;
 		gameinfo.m_network = network;
 		gameinfo.m_tournament = istournament;
-
+    gameinfo.m_is_omaha = isomaha;
 		if (gameinfo.DoModal() == IDOK) 
 		{
 			sblind = gameinfo.m_sblind;
@@ -1446,7 +1458,8 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			limit = gameinfo.m_gametype;
 			network = gameinfo.m_network;
 			istournament = gameinfo.m_tournament;
-			InvalidateRect(NULL, true);
+      isomaha = gameinfo.m_is_omaha;
+      InvalidateRect(NULL, true);
 		}
 	}
 
@@ -1545,7 +1558,7 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 	//////////////////////////////////////////////////////////////
 	// If we clicked on a player card popup the card/seat menu
-	else if ( click_loc>=P0C0 && click_loc<=P9C1 ) 
+	else if ( click_loc>=P0C0 && click_loc<=P9C3 ) 
 	{
 		
 		// Load the popup menu
@@ -1610,7 +1623,10 @@ void CManualModeDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 
 		// Set state of no cards item
 		mii.fState = active[click_chair] &&
-					 (card[P0C0+click_chair*2]!=CARD_NOCARD || card[P0C1+click_chair*2]!=CARD_NOCARD)
+					 (GetPlayerCard(click_chair, 0) !=CARD_NOCARD 
+             || GetPlayerCard(click_chair, 1) != CARD_NOCARD
+             || GetPlayerCard(click_chair, 2) != CARD_NOCARD
+             || GetPlayerCard(click_chair, 3) != CARD_NOCARD)
 					 ? MFS_ENABLED : MFS_DISABLED;
 		tracker->SetMenuItemInfo(19, &mii, true);
 
@@ -1656,7 +1672,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// See if we clicked on a player's name
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		// Figure placement of box
 		left = cr.right * pc[i][0] - 36;
@@ -1688,7 +1704,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// See if we clicked on a player's balance
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		t = "";
 		if (seated[i] || active[i]) 
@@ -1726,7 +1742,7 @@ void CManualModeDlg::get_click_loc(CPoint p)
 	}
 
 	// see if we clicked on a player's bet
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		t = "";
 		if (active[i]) 
@@ -1782,41 +1798,43 @@ void CManualModeDlg::get_click_loc(CPoint p)
 
 	}
 
-	// see if we clicked on a player's first card
-	for (int i=0; i<k_max_number_of_players; i++) 
-	{
-		if (p.x >= cr.right * pc[i][0] - CARDSIZEX - 2 && 
-			p.x <= cr.right * pc[i][0] - 2 &&
-			p.y >= cr.bottom * pc[i][1] - CARDSIZEY/2 - 5 &&
-			p.y <= cr.bottom * pc[i][1] + CARDSIZEY/2 - 6) 
-		{
-			click_loc = P0C0+i*2;
-			click_chair = i;
-			return;
-		}
-	}
+  // see if we clicked on the center info box
+  if (p.x >= cr.right / 2 - 65 && p.x <= cr.right / 2 + 45 &&
+    p.y >= 4 && p.y <= 78)
+  {
+    click_loc = CIB;
+    click_chair = -1;
+    return;
+  }
 
-	// see if we clicked on a player's second card
-	for (int i=0; i<k_max_number_of_players; i++) 
-	{
-		if (p.x >= cr.right * pc[i][0] + 1 && 
-			p.x <= cr.right * pc[i][0] + CARDSIZEX + 1 &&
-			p.y >= cr.bottom * pc[i][1] - CARDSIZEY/2 - 5 &&
-			p.y <= cr.bottom * pc[i][1] + CARDSIZEY/2 - 6) 
-		{
-			click_loc = P0C1+i*2;
-			click_chair = i;
-			return;
-		}
-	}
-
-	// see if we clicked on the center info box
-	if (p.x >= cr.right/2-60 && p.x <= cr.right/2+60 &&
-		p.y >= 4 &&	p.y <= 78) 
-	{
-		click_loc = CIB;
-		click_chair = -1;
-		return;
+	// See if we clicked on a player's card
+  // We draw players and cards in increasing order
+  // Due to space restrictions cards might overlap (for Omaha).
+  // Therefore we search inreversed order 
+  // to get the top-most card and avoid confusion.
+  for (int i = kMaxNumberOfPlayers - 1; i >= 0; --i) {
+    for (int j = kMaxNumberOfCardsPerPlayer - 1; j >= 0; --j)
+    {
+      if (!IsOmaha() && (j >= kNumberOfCardsPerPlayerHoldEm)) {
+        // Skip cards 0 and 3 if we are playing Hold'em
+        // It is annoying if we accidentaly set an invisible card
+        // or if a visible card is not everywhere clickable
+        continue;
+      }
+      int left = PlayerCardLeft(i, j);
+      int top = PlayerCardTop(i);
+      int right = left + CARDSIZEX - 1;
+      int bottom = top + CARDSIZEY - 1;
+      if (p.x >= left &&
+        p.x <= right &&
+        p.y >= top &&
+        p.y <= bottom)
+      {
+        click_loc = P0C0 + i * kNumberOfCardsPerPlayerOmaha + j;
+        click_chair = i;
+        return;
+      }
+    }
 	}
 
 	// see if we clicked on a button
@@ -1945,31 +1963,27 @@ void CManualModeDlg::OnASpades()	{ set_card(StdDeck_MAKE_CARD(Rank_ACE, Suit_SPA
 
 void CManualModeDlg::OnCardBacks() 
 {
-	if (card[P0C0+click_chair*2]!=CARD_NOCARD && card[P0C0+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C0+click_chair*2]);
-	}
-	if (card[P0C1+click_chair*2]!=CARD_NOCARD && card[P0C1+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C1+click_chair*2]);
-	}
-	card[P0C0+click_chair*2] = CARD_BACK; 
-	card[P0C1+click_chair*2] = CARD_BACK; 
-	InvalidateRect(NULL, true);
+  for (int j = 0; j < NumberOfCardsPerPlayer(); ++j) {
+    if (GetPlayerCard(click_chair, j != CARD_NOCARD
+      && GetPlayerCard(click_chair, j) != CARD_BACK))
+    {
+      CardMask_UNSET(used_cards, GetPlayerCard(click_chair, j));
+      SetPlayerCard(click_chair, j, CARD_BACK);
+    }
+  }
+  InvalidateRect(NULL, true);
 }
 
 void CManualModeDlg::OnNoCards() 
 {
-	if (card[P0C0+click_chair*2]!=CARD_NOCARD && card[P0C0+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C0+click_chair*2]);
-	}
-	if (card[P0C1+click_chair*2]!=CARD_NOCARD && card[P0C1+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C1+click_chair*2]);
-	}
-	card[P0C0+click_chair*2] = CARD_NOCARD; 
-	card[P0C1+click_chair*2] = CARD_NOCARD; 
+  for (int j = 0; j < NumberOfCardsPerPlayer(); ++j) {
+    if (GetPlayerCard(click_chair, j != CARD_NOCARD
+      && GetPlayerCard(click_chair, j) != CARD_BACK))
+    {
+      CardMask_UNSET(used_cards, GetPlayerCard(click_chair, j));
+      SetPlayerCard(click_chair, j, CARD_NOCARD);
+    }
+  }
 	InvalidateRect(NULL, true);
 }
 
@@ -2013,29 +2027,22 @@ void CManualModeDlg::OnSitInPlayer()
 	InvalidateRect(NULL, true);
 }
 
-void CManualModeDlg::OnDealerHere() 
-{ 
-	for (int i=0; i<k_max_number_of_players; i++) 
-	{
-		dealer[i] = false;
-	}
-	dealer[click_chair] = true;
-	InvalidateRect(NULL, true);
+void CManualModeDlg::OnDealerHere() { 
+  SetDealerPosition(click_chair);
+}
+
+void CManualModeDlg::SetDealerPosition(int chair) {
+  for (int i = 0; i<kMaxNumberOfPlayers; i++) {
+    dealer[i] = false;
+  }
+  dealer[chair] = true;
+  InvalidateRect(NULL, true);
 }
 
 void CManualModeDlg::OnFold() 
 { 
-	if (card[P0C0+click_chair*2]!=CARD_NOCARD && card[P0C0+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C0+click_chair*2]);
-	}
-	if (card[P0C1+click_chair*2]!=CARD_NOCARD && card[P0C1+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C1+click_chair*2]);
-	}
-	card[P0C0+click_chair*2] = CARD_NOCARD; 
-	card[P0C1+click_chair*2] = CARD_NOCARD; 
-	InvalidateRect(NULL, true);
+  do_fold();
+  InvalidateRect(NULL, true);
 }
 
 void CManualModeDlg::OnCall() 
@@ -2077,7 +2084,7 @@ void CManualModeDlg::OnBnClickedPminus()
 {
 	// Removing players counter-clockwise,
 	// starting with highest numbers
-	for (int i=(k_max_number_of_players - 1); i>=0; i--) 
+	for (int i=(kMaxNumberOfPlayers - 1); i>=0; i--) 
 	{
 		if (seated[i] == true) 
 		{
@@ -2091,7 +2098,7 @@ void CManualModeDlg::OnBnClickedPminus()
 
 void CManualModeDlg::OnBnClickedPplus() 
 {
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (seated[i] == false) 
 		{
@@ -2103,11 +2110,10 @@ void CManualModeDlg::OnBnClickedPplus()
 	}
 }
 
-void CManualModeDlg::OnBnClickedMacro() 
-{
+void CManualModeDlg::OnBnClickedMacro() {
 	int	chair = -1;
   int cards_seen = 0;
-  int com_card=0, dealer_pos;
+  int com_card=0;
   unsigned int c;
 
   CardMask_RESET(used_cards);
@@ -2118,26 +2124,32 @@ void CManualModeDlg::OnBnClickedMacro()
 			clear_scrape_areas();
       continue;
     }
-		switch (next_char) {
+    switch (next_char) {
       case 'N': // Button
-        dealer_pos = chair;
-        // No break
-        // Continue with code below
-      case 'P': // Player
       case 'b': // Small blind
       case 'B': // Big blind 
+      case 'P': // Player
         ++chair;
-			  seated[chair] = true;
-			  active[chair] = true;
-			  card[P0C0 + 2*chair] = CARD_BACK; 
-			  card[P0C1 + 2*chair] = CARD_BACK; 
-			  break;
+        seated[chair] = true;
+        active[chair] = true;
+        SetPlayerCard(chair, 0, CARD_BACK);
+        SetPlayerCard(chair, 1, CARD_BACK);
+        SetPlayerCard(chair, 2, CARD_BACK);
+        SetPlayerCard(chair, 3, CARD_BACK);
+        break;
+    }
+		switch (next_char) {
+      case 'N': // Button
+        SetDealerPosition(chair);
+        break;
       case 'p': // Not seated
         ++chair;
 			  seated[chair] = true;
 			  active[chair] = false;
-			  card[P0C0 + 2*chair] = CARD_NOCARD; 
-			  card[P0C1 + 2*chair] = CARD_NOCARD; 
+        SetPlayerCard(chair, 0, CARD_NOCARD);
+        SetPlayerCard(chair, 1, CARD_NOCARD);
+        SetPlayerCard(chair, 2, CARD_NOCARD);
+        SetPlayerCard(chair, 3, CARD_NOCARD);
         break;
     }
     if (chair >= 10) {
@@ -2196,11 +2208,9 @@ void CManualModeDlg::OnBnClickedMacro()
 				i++;
 			}
       if (c != CARD_NOCARD) {
-				// First 2 cards get assigned to current chair,
-				if (cards_seen == 0)	{
-					card[P0C0 + 2*chair] = c; 
-				} else if (cards_seen == 1)	{
-          card[P0C1 + 2*chair] = c; 
+        // First N cards get assigned to current chair,
+        if ((cards_seen >= 0) && (cards_seen < NumberOfCardsPerPlayer())) {
+          SetPlayerCard(chair, cards_seen, c);
         }
 				// Next 5 cards get set to common
 				else {
@@ -2237,14 +2247,14 @@ int CManualModeDlg::get_rank(char c)
 
 void CManualModeDlg::OnBnClickedDminus() 
 {
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (dealer[i] == true) 
 		{
 			dealer[i] = false;
 			if (--i < 0) 
 			{ 
-				i = k_max_number_of_players - 1; 
+				i = kMaxNumberOfPlayers - 1; 
 			}
 
 			dealer[i] = true;
@@ -2257,12 +2267,12 @@ void CManualModeDlg::OnBnClickedDminus()
 void CManualModeDlg::OnBnClickedDplus() 
 {
 	CString s;
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (dealer[i] == true) 
 		{
 			dealer[i] = false;
-			if (++i >= k_max_number_of_players)
+			if (++i >= kMaxNumberOfPlayers)
 			{ 
 				i = 0; 
 			}
@@ -2274,18 +2284,29 @@ void CManualModeDlg::OnBnClickedDplus()
 	}
 }
 
+void CManualModeDlg::SetPlayerCard(int chair, int index, int card_value) {
+  int total_index = chair * kNumberOfCardsPerPlayerOmaha + index;
+  card[total_index] = card_value;
+}
+
+int CManualModeDlg::GetPlayerCard(int chair, int index) {
+  int total_index = chair * kNumberOfCardsPerPlayerOmaha + index;
+  return card[total_index];
+}
+
 void CManualModeDlg::do_fold(void)
 {
-	if (card[P0C0+click_chair*2]!=CARD_NOCARD && card[P0C0+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C0+click_chair*2]);
-	}
-	if (card[P0C1+click_chair*2]!=CARD_NOCARD && card[P0C1+click_chair*2]!=CARD_BACK) 
-	{
-		CardMask_UNSET(used_cards, card[P0C1+click_chair*2]);
-	}
-	card[P0C0+click_chair*2] = CARD_NOCARD; 
-	card[P0C1+click_chair*2] = CARD_NOCARD; 
+  if (click_chair < 0) {
+    return;
+  }
+  for (int j = 0; j < NumberOfCardsPerPlayer(); ++j) {
+    if (GetPlayerCard(click_chair, j != CARD_NOCARD
+      && GetPlayerCard(click_chair, j) != CARD_BACK))
+    {
+      CardMask_UNSET(used_cards, GetPlayerCard(click_chair, j));
+      SetPlayerCard(click_chair, j, CARD_NOCARD);
+    }
+  }
 }
 
 void CManualModeDlg::do_call(void) 
@@ -2347,7 +2368,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 
 	if (ncommoncards_last == 0 && ncommoncards>0) 
 	{
-		for (int i=0; i<k_max_number_of_players; i++) 
+		for (int i=0; i<kMaxNumberOfPlayers; i++) 
 		{
 			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
@@ -2355,7 +2376,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 	}
 	else if (ncommoncards_last == 3 && ncommoncards>3) 
 	{
-		for (int i=0; i<k_max_number_of_players; i++) 
+		for (int i=0; i<kMaxNumberOfPlayers; i++) 
 		{
 			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
@@ -2363,7 +2384,7 @@ void CManualModeDlg::do_scrape_bets_into_pot(void)
 	}
 	else if (ncommoncards_last == 4 && ncommoncards>4) 
 	{
-		for (int i=0; i<k_max_number_of_players; i++) 
+		for (int i=0; i<kMaxNumberOfPlayers; i++) 
 		{
 			pot += atof(playerbet[i]);
 			playerbet[i] = "0";
@@ -2378,7 +2399,7 @@ double CManualModeDlg::get_current_bet(void)
 {
 	double	curbet=0;
 
-	for (int i=0; i<k_max_number_of_players; i++) 
+	for (int i=0; i<kMaxNumberOfPlayers; i++) 
 	{
 		if (atof(playerbet[i]) > curbet) 
 		{
@@ -2432,10 +2453,10 @@ int CManualModeDlg::Userchair()
 {
 	// Simplified logic:
 	// First chair (clockwise) that has cards
-	for (int i=k_first_chair; i<=k_last_chair; i++)
+	for (int i=kFirstChair; i<=kLastChair; i++)
 	{
-		if ((card[2 * i] != CARD_BACK)
-			&& (card[2 * i] != CARD_NOCARD))
+		if ((GetPlayerCard(i, 0) != CARD_BACK)
+			&& (GetPlayerCard(i, 0) != CARD_NOCARD))
 		{
 			return i;
 		}
@@ -2459,7 +2480,7 @@ bool CManualModeDlg::IsPreflop() {
 
 bool CManualModeDlg::PreflopUnraised() {
   if (!IsPreflop()) return false;
-	for (int i=k_first_chair; i<=k_last_chair; i++)	{
+	for (int i=kFirstChair; i<=kLastChair; i++)	{
 		if (atof(playerbet[i]) > atof(bblind)) return false;
 	}
 	return true;
@@ -2473,13 +2494,13 @@ bool CManualModeDlg::MyTurnPossible()
 	//   * somebody else has a higher bet
 	//   * nobody did act (all bets 0)
 	int userchair = Userchair();
-	if ((userchair < k_first_chair) || (userchair > k_last_chair))
+	if ((userchair < kFirstChair) || (userchair > kLastChair))
 	{
 		return false;
 	}
 	bool somebody_betting = false;
 	bool somebody_raising = false;
-	for (int i=k_first_chair; i<=k_last_chair; i++)
+	for (int i=kFirstChair; i<=kLastChair; i++)
 	{
 		if (atof(playerbet[i]) > 0)
 		{
@@ -2498,7 +2519,7 @@ bool CManualModeDlg::MyTurnPossible()
 double CManualModeDlg::MyBalance()
 {
 	int userchair = Userchair();
-	if ((userchair < k_first_chair) || (userchair > k_last_chair))
+	if ((userchair < kFirstChair) || (userchair > kLastChair))
 	{
 		return 0;
 	}
@@ -2513,7 +2534,7 @@ double CManualModeDlg::MyTotalBalance()
 double CManualModeDlg::MyCurrentBet()
 {
 	int userchair = Userchair();
-	if ((userchair < k_first_chair) || (userchair > k_last_chair))
+	if ((userchair < kFirstChair) || (userchair > kLastChair))
 	{
 		return 0;
 	}

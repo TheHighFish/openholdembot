@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_TOKENIZERCONSTANTS_H
 #define INC_TOKENIZERCONSTANTS_H
@@ -78,11 +78,24 @@ enum {
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
   kTokenActionReturn,
+  // Shanky command "Sitout", meaning first fold, then sitout
+  // Not really supported, we just fold
+  kTokenShankyKeywordSitOut,
   kTokenActionUserVariableToBeSet,
   // OpenPPL keyword FORCE
   kTokenKeywordForce,
   // Shanky-style delay (unsupported)
   kTokenUnsupportedDelay,
+  // Shankly style hand- and board expressions.
+  // Token gets only used for importing Shanky-PPL;
+  // the parse represents these expressions as identifiers
+  // (hand$XYZ, board$XYZ)
+  kTokenShankyKeywordHand,
+  kTokenShankyKeywordBoard,
+  // Shanky-style "In BigBlind" instead of "InBigBlind".
+  // Valid code, as Shanky analyses a character-stream,
+  // spaces stripped away ;-)
+  kTokenShankyKeywordIn,
   // Special action-constants for node-types
   // Not really tokens, but handled here for consistency
   kTokenActionRaiseByBigBlinds,
@@ -92,11 +105,10 @@ enum {
   kNumberOfTokens,
 };
 
-const int kNumberOfOpenPPLActions = 27;
+const int kNumberOfOpenPPLActions = 28;
 
 const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
-  // No longer considering
-  // * SitOut
+  // No longer considering about (OpenPPL 1.x)
   // * Leave
   // * Close
   // Because they will be handled by secondary OH-functions
@@ -126,6 +138,7 @@ const char* const kOpenPPLActionStrings[kNumberOfOpenPPLActions] = {
   "RaiseThreeFourthPot",
   "RaisePot",
   "RaiseMax",
+  "SitOut",
   "Set",
 };
 
@@ -158,13 +171,14 @@ const int kOpenPPLActionConstants[kNumberOfOpenPPLActions] = {
   kTokenActionRaiseThreeFourthPot,
   kTokenActionRaisePot,
   kTokenActionRaiseMax,
+  kTokenShankyKeywordSitOut,
   kTokenActionUserVariableToBeSet,
 };
 
 inline bool TokenIsBracketOpen(int token) {
   return ((token == kTokenBracketOpen_1)
     || (token == kTokenBracketOpen_2)
-	|| (token == kTokenBracketOpen_3));
+	  || (token == kTokenBracketOpen_3));
 }
 
 bool TokenIsUnary(int token);
@@ -182,9 +196,7 @@ inline bool TokenIsElementaryAction(int token) {
 }
 
 inline bool TokenIsOpenPPLAction(int token) {
-  // !! Looks like a duplicate, 
-  // but there might be a difference
-  return TokenIsElementaryAction(token);
+  return (TokenIsElementaryAction(token));
 }
 
 inline bool TokenIsBracketClose(int token) {
@@ -204,6 +216,9 @@ inline int IsOperatorRightAssociativ(int token) {
 
 // For debugging output
 CString TokenString(int token);
+
+// For the generation of verbose error-messages (unexpected token in bot-logic)
+CString TokenVerboseExplained(int token);
 
 // For smart display of binary numbers in debug-tab
 bool TokenEvaluatesToBinaryNumber(int token);

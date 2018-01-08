@@ -112,8 +112,10 @@ status open
 \emph on
 Tiled
 \emph default
-: this option will align all tables nicely without any overlap, so that
- OpenHoldem can see and scrape all tables clearly.
+: this option will align all tables nicely without much overlap, so that
+ OpenHoldem can usually see and scrape the tables clearly.
+ Some overlap at the borders is possible however, and Microsofts TileWindow-func
+tion will also resize ann maximized windows.
 \end_layout
 
 \begin_layout Itemize
@@ -123,9 +125,8 @@ Cascaded
 \emph default
 : this option will stack the tables with lots of overlap, but usually in
  a way that a little piece of every table is visible.
- A useful option for some crazy human multi-tablers, but not yet for OpenHoldem,
- as scraping overlapping tables does at the moment only work on some operating-s
-ystems.
+ A useful option at the operating-systems that support scraping overlapping
+ tables.
  
 \end_layout
 
@@ -148,19 +149,12 @@ Always keep position
 \end_layout
 
 \begin_layout Standard
-The first table (or the lobby if you provide a 
-\begin_inset Quotes eld
-\end_inset
-
-tablemap
-\begin_inset Quotes erd
-\end_inset
-
- for the lobby) will be moved to top-left of the screen, the second table
- will be moved to botto-right, and all further tables to the neighbourhood
- of the second one.
- Once the screen is full any additional tables will be moved to the lobby
- position, assuming that overlapping the lobby will do the least harm.
+If table-positzioning is enabled the lobby will get moved to the top left
+ of the screen (0, 0) where absolute screen coordinates equal relative window
+ coordinates.
+ This makes your hopper more robust in case other windows pop up (lost focus).
+ The lobby needs a minimalistic tablemap, just with clientsize(min/max)
+ for connection, titletext and s$islobby.
 \end_layout
 
 \end_body

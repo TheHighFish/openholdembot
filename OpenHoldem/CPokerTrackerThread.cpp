@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "StdAfx.h"
 #include "CPokerTrackerThread.h"
@@ -18,7 +18,7 @@
 #include <process.h>
 #include <comdef.h>
 #include "CAutoConnector.h"
-#include "CGameState.h"
+#include "CEngineContainer.h"
 #include "CLevDistance.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerLookUp.h"
@@ -32,11 +32,12 @@
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "..\CTablemap\CTablemap.h"
-#include "MagicNumbers.h"
+#include "CTableState.h"
+
 
 CPokerTrackerThread	*p_pokertracker_thread = NULL;
 
-SPlayerData _player_data[k_max_number_of_players];
+SPlayerData _player_data[kMaxNumberOfPlayers];
 
 
 CString CPokerTrackerThread::CreateConnectionString(
@@ -67,7 +68,9 @@ CPokerTrackerThread::CPokerTrackerThread()
 
 CPokerTrackerThread::~CPokerTrackerThread()
 {
-	StopThread();
+  // !!! Probably not needed, as we call Singleton::StopThreads()
+  // when we exit an instance and here happens a freezing
+	// StopThread();
 }
 
 void CPokerTrackerThread::StartThread()
@@ -129,8 +132,6 @@ bool CPokerTrackerThread::AllConnectionDataSpecified()
 		&& preferences.pt_user()    != ""
 		&& preferences.pt_pass()    != ""
 		&& preferences.pt_dbname()  != "");
-
-
 }
 
 void CPokerTrackerThread::Connect(void) {
@@ -158,21 +159,37 @@ void CPokerTrackerThread::Connect(void) {
 	}
 }
 
-void CPokerTrackerThread::Disconnect(void)
-{
-	if(_pgconn)
-    {
-      if (PQstatus(_pgconn) == CONNECTION_OK)
-        {
-          PQfinish(_pgconn);
-        }
+void CPokerTrackerThread::Reconnect(void) {
+  // Reconnecting after a lost network connection
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=214&t=19553
+  if (_pgconn) {
+    if (PQstatus(_pgconn) != CONNECTION_OK) {
+      PQreset(_pgconn);
+      if (PQstatus(_pgconn) == CONNECTION_OK) {
+        write_log(preferences.debug_pokertracker(), "[PokerTracker] PostgreSQL DB reconnected after bad connection\n");
+        _connected = true;
+      } else {
+        write_log(preferences.debug_pokertracker(), "[PokerTracker] ERROR reconnecting to PostgreSQL DB: %s\n\n", PQerrorMessage(_pgconn));
+        PQfinish(_pgconn);
+        _connected = false;
+        _pgconn = NULL;
+      }
     }
+  }
+}
+
+void CPokerTrackerThread::Disconnect(void) {
+	if (_pgconn) {
+    if (PQstatus(_pgconn) == CONNECTION_OK) {
+      PQfinish(_pgconn);
+      write_log(preferences.debug_pokertracker(), "[PokerTracker] Disconnected");
+    }
+  }
 	_pgconn = NULL;
 	_connected = false;
 }
 
-bool CPokerTrackerThread::IsConnected()
-{
+bool CPokerTrackerThread::IsConnected() {
   write_log(preferences.debug_pokertracker(), "[PokerTracker] connected: %s\n",
     Bool2CString(_connected));
   write_log(preferences.debug_pokertracker(), "[PokerTracker]PXStatus = %d (0 = CONNECTION_OK)\n",
@@ -201,30 +218,31 @@ bool CPokerTrackerThread::NameLooksLikeBadScrape(char *oh_scraped_name)
 	return true;
 }
 
+#define LAST_STATE state[(state_index-1)&0xff]
+
 /* Returns true if found an appropriate name in the DB for chr, or false if 
    it did not found such name.*/
 bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 {
-	char		oh_scraped_name[k_max_length_of_playername]; 
-	char		best_name[k_max_length_of_playername];
+	char		oh_scraped_name[kMaxLengthOfPlayername]; 
+	char		best_name[kMaxLengthOfPlayername];
 
-	assert(chair >= k_first_chair); 
-	assert(chair <= k_last_chair);
+	assert(chair >= kFirstChair); 
+	assert(chair <= kLastChair);
 	
-	memset(oh_scraped_name, 0, k_max_length_of_playername);
-	memset(best_name, 0, k_max_length_of_playername);
+	memset(oh_scraped_name, 0, kMaxLengthOfPlayername);
+	memset(best_name, 0, kMaxLengthOfPlayername);
 
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() chair = %i\n", chair);
 	
-	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name_known == 0)
-	{
+  assert(p_table_state != NULL);
+	if (p_table_state->Player(chair)->name() == "")	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() No name known for this chair\n");
 		return false;
 	}
 
-	if (strlen(p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name) <= k_max_length_of_playername)
-	{
-		strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+	if (p_table_state->Player(chair)->name().GetLength() <= kMaxLengthOfPlayername) 	{
+		strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_table_state->Player(chair)->name());
 	}
 
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] CheckIfNameExistsInDB() Scraped name: [%s]\n", oh_scraped_name);
@@ -261,30 +279,23 @@ bool CPokerTrackerThread::CheckIfNameExistsInDB(int chair)
 /* Returns true, if the name looks ok, but differs from the last one. */
 bool CPokerTrackerThread::CheckIfNameHasChanged(int chair)
 {
-	char		oh_scraped_name[k_max_length_of_playername]; 
-	char		best_name[k_max_length_of_playername];
+	char		oh_scraped_name[kMaxLengthOfPlayername]; 
+	char		best_name[kMaxLengthOfPlayername];
 
-	assert(chair >= k_first_chair); 
-	assert(chair <= k_last_chair);
+	assert(chair >= kFirstChair); 
+	assert(chair <= kLastChair);
 	
-	memset(oh_scraped_name, 0, k_max_length_of_playername);
-	memset(best_name, 0, k_max_length_of_playername);
+	memset(oh_scraped_name, 0, kMaxLengthOfPlayername);
+	memset(best_name, 0, kMaxLengthOfPlayername);
 	
-	if (p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name_known == 0)
-	{
-		return false;
-	}
-	strcpy_s(oh_scraped_name, k_max_length_of_playername, p_game_state->state((p_game_state->state_index()-1)&0xff)->m_player[chair].m_name);
+  //!!!!! bad code, copying to char-array
+	if (p_table_state->Player(chair)->name() == "") return false;
+	strcpy_s(oh_scraped_name, kMaxLengthOfPlayername, p_table_state->Player(chair)->name());
 
-	if (NameLooksLikeBadScrape(oh_scraped_name))
-	{
-		return false;
-	}
-
+	if (NameLooksLikeBadScrape(oh_scraped_name))return false;
 	// We already have the name, and it has not changed since we last checked, so do nothing
 	if (_player_data[chair].found 
-		&& 0 == strcmp(_player_data[chair].scraped_name, oh_scraped_name))
-	{
+		  && 0 == strcmp(_player_data[chair].scraped_name, oh_scraped_name)) {
 		return false;
 	}
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] Name changed for chair [%d] [%s] -> [%s]\n",
@@ -297,14 +308,14 @@ void CPokerTrackerThread::SetPlayerName(int chr, bool found, const char* pt_name
 {
 	_player_data[chr].found = found;
 	bool logResult = false;
-	if (0 != memcmp(_player_data[chr].pt_name, pt_name, k_max_length_of_playername) )
+	if (0 != memcmp(_player_data[chr].pt_name, pt_name, kMaxLengthOfPlayername) )
 	{
-		memcpy(_player_data[chr].pt_name, pt_name, k_max_length_of_playername);
+		memcpy(_player_data[chr].pt_name, pt_name, kMaxLengthOfPlayername);
 		logResult = true;
 	}
-	if (0 != memcmp(_player_data[chr].scraped_name, scraped_name, k_max_length_of_playername) )
+	if (0 != memcmp(_player_data[chr].scraped_name, scraped_name, kMaxLengthOfPlayername) )
 	{
-		memcpy(_player_data[chr].scraped_name, scraped_name, k_max_length_of_playername);
+		memcpy(_player_data[chr].scraped_name, scraped_name, kMaxLengthOfPlayername);
 		logResult = true;
 	}
 	if (logResult)
@@ -323,8 +334,8 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	if (!result) {
 		/*  Escalation #1: Exact name not found in DB*/
 		/*  Try query with "%" in substitution of ".". So "n.me" becomes "n%me". */
-		char pointlessname[k_max_length_of_playername + 1];
-		memset(pointlessname, 0, k_max_length_of_playername+1);
+		char pointlessname[kMaxLengthOfPlayername + 1];
+		memset(pointlessname, 0, kMaxLengthOfPlayername+1);
 		int len = (int)strlen(oh_scraped_name);
 		for (int character_position=0; character_position<len; character_position++)
 		{
@@ -342,11 +353,11 @@ bool CPokerTrackerThread::FindName(const char *oh_scraped_name, char *best_name)
 	if (!result) {
 		/*  Escalation #2:
 		/*  Try query with "%n%a%m%e%" . */
-		char likename[2 * k_max_length_of_playername + 2];
+		char likename[2 * kMaxLengthOfPlayername + 2];
 		// Attention: likename is 2 times as large as a player-name,
 		// plus 2 for % at the beginning and \0 at the end.
 		// !! There was a buffer-overflow in the past; better get rid of fixed-sized buffers
-		memset(likename, 0, 2 * k_max_length_of_playername + 2);
+		memset(likename, 0, 2 * kMaxLengthOfPlayername + 2);
 		int len = (int)strlen(oh_scraped_name);
 		likename[0]='%';
 		for (int character_position=0; character_position<len; character_position++)
@@ -375,7 +386,7 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	clock_t		updStart, updEnd;
 	int			  duration;
 
-	int sym_elapsed = p_symbol_engine_time->elapsed();
+	int sym_elapsed = p_engine_container->symbol_engine_time()->elapsed();
 
 	//No more unnecessary queries when we don't even have a siteid to check
 	int siteid = pt_lookup.GetSiteId();
@@ -385,15 +396,15 @@ double CPokerTrackerThread::UpdateStat(int m_chr, int stat)
 	if (!_connected || PQstatus(_pgconn) != CONNECTION_OK)
 		return kUndefined;
 
-	assert(m_chr >= k_first_chair);
-	assert(m_chr <= k_last_chair);
+	assert(m_chr >= kFirstChair);
+	assert(m_chr <= kLastChair);
 	assert(stat >= 0);
 	assert(stat < PT_DLL_GetNumberOfStats());
 
 	// get query string for the requested statistic
 	CString query = PT_DLL_GetQuery(stat,
-		p_symbol_engine_isomaha->isomaha(),
-		p_symbol_engine_istournament->istournament(),
+		p_engine_container->symbol_engine_isomaha()->isomaha(),
+		p_engine_container->symbol_engine_istournament()->istournament(),
 		siteid, _player_data[m_chr].pt_name);
 
 	// Do the query against the PT database
@@ -496,23 +507,9 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 	CString query;
 	query.Format("SELECT player_name FROM player WHERE player_name like '%s' AND id_site=%i",
 		query_name, siteid);
-	try
-	{
-		res = PQexec(_pgconn, query);
-	}
-	catch (_com_error &e)
-	{
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] Postgres Query error:\n");
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] \tCode = %08lx\n", e.Error());
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] \tCode meaning = %s\n", e.ErrorMessage());
-		_bstr_t bstrSource(e.Source());
-		_bstr_t bstrDescription(e.Description());
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] \tSource = %s\n", (LPCTSTR) bstrSource);
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] \tDescription = %s\n", (LPCTSTR) bstrDescription);
-		write_log(preferences.debug_pokertracker(), "[PokerTracker] \tQuery = [%s]\n", query);
-	}
+	res = PQexec(_pgconn, query);
 
-	// We got nothing, return false
+  // We got nothing, return false
 	if (PQntuples(res) == 0)
 	{
 		result = false;
@@ -527,10 +524,10 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		if (	strlen(found_name) >= k_min_name_length_to_skip_lev_dist
 			 || lev_dist <= (int)strlen(found_name) * Levenshtein_distance_matching_factor )
 		{
-			strncpy_s(best_name, k_max_length_of_playername, found_name, _TRUNCATE);
+			strncpy_s(best_name, kMaxLengthOfPlayername, found_name, _TRUNCATE);
 			// Max length names are possibly truncated so we replace the last character by %.
-			if (strlen(best_name)==(k_max_length_of_playername-1)) {
-				best_name[(k_max_length_of_playername-2)] = '%';
+			if (strlen(best_name)==(kMaxLengthOfPlayername-1)) {
+				best_name[(kMaxLengthOfPlayername-2)] = '%';
 			}
 			result = true;
 		}
@@ -556,10 +553,10 @@ bool CPokerTrackerThread::QueryName(const char * query_name, const char * scrape
 		}
 		if (bestLD != 999)
 		{
-			strncpy_s(best_name, k_max_length_of_playername, PQgetvalue(res, bestLDindex, 0), _TRUNCATE);
+			strncpy_s(best_name, kMaxLengthOfPlayername, PQgetvalue(res, bestLDindex, 0), _TRUNCATE);
 			// Max length names are possibly truncated so we replace the last character by %.
-			if (strlen(best_name)==(k_max_length_of_playername-1)) {
-				best_name[(k_max_length_of_playername-2)] = '%';
+			if (strlen(best_name)==(kMaxLengthOfPlayername-1)) {
+				best_name[(kMaxLengthOfPlayername-2)] = '%';
 			}
 			result = true;
 		}
@@ -613,8 +610,8 @@ int CPokerTrackerThread::SkipUpdateCondition(int stat, int chair)
 
 bool CPokerTrackerThread::SkipUpdateForChair(int chair)
 {
-	int userchair = p_symbol_engine_userchair->userchair();
-	bool confirmed = p_symbol_engine_userchair->userchair_confirmed();
+	int userchair = p_engine_container->symbol_engine_userchair()->userchair();
+	bool confirmed = p_engine_container->symbol_engine_userchair()->userchair_confirmed();
 	if (userchair == chair && confirmed)
 	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] GetStatsForChair for chair [%d] had been skipped. Reason: [User sits in this chair]\n", chair);
@@ -666,7 +663,8 @@ void CPokerTrackerThread::GetStatsForChair(LPVOID pParam, int chair, int sleepTi
 		
 	if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
 	{
-		if (p_autoconnector->IsConnected())
+    write_log(preferences.debug_alltherest(), "[CPokerTrackerThread] location Johnny_7\n");
+		if (p_autoconnector->IsConnectedToAnything())
 		{
 			for (int i=0; i<PT_DLL_GetNumberOfStats(); i++)
 			{
@@ -730,61 +728,59 @@ void CPokerTrackerThread::ReportUpdateComplete(int updatedCount, int chair)
 	write_log(preferences.debug_pokertracker(), "[PokerTracker] Updates for chair [%d][%s] had been completed. Total [%d] updated stats\n", chair, _player_data[chair].scraped_name, updatedCount);
 }
 
-UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
-{
+UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam) {
 	CPokerTrackerThread *pParent = static_cast<CPokerTrackerThread*>(pParam);
 	int				iteration = 0;
 	clock_t		iterStart, iterEnd;
 	int				iterDurationMS;
 
-	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0)
-	{
+	while (::WaitForSingleObject(pParent->_m_stop_thread, 0) != WAIT_OBJECT_0) {
 		iterStart = clock();
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had started\n", ++iteration);
-		if (!pParent->_connected)
-		{
+		if (!pParent->_connected)	{
 			pParent->Connect();
-		}
-	
-		double players = p_symbol_engine_active_dealt_playing->nopponentsseated() 
-			+ (p_symbol_engine_userchair->userchair_confirmed() ? 1 : 0);
+		} else if (PQstatus(pParent->_pgconn) != CONNECTION_OK) {
+      pParent->Reconnect();
+    }
+    double players = p_engine_container->symbol_engine_active_dealt_playing()->nplayersseated();
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] Players count is [%d]\n", (int)players);
-				
-		if (players < 2)
-		{
+		if (players < 2) {
+      // It looks like empty tables can cause long sleeping if we continue.
+      // Therefore we skip processing if there are too few players
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20427
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] Not enough players to justify iteration...\n");
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] For beginners: possible tablemap-problem?\n");
-			write_log(preferences.debug_pokertracker(), "[PokerTracker] Continuing anyway...\n");
+			write_log(preferences.debug_pokertracker(), "[PokerTracker] Skipping all DB-lookups...\n");
+      LightSleep(3000, pParent);
+      continue;
 		}
-
 		// Avoiding division by zero and setting sleep time
-		AdaptValueToMinMaxRange(&players, 1, k_max_number_of_players);
+		AdaptValueToMinMaxRange(&players, 1, kMaxNumberOfPlayers);
 		int sleep_time;
-		if (p_symbol_engine_isrush->isrush()) {
-			sleep_time = (int) ((double)(5 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));}
-		else {
-			sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));}
+		if (p_engine_container->symbol_engine_isrush()->isrush()) {
+			sleep_time = (int) ((double)(5 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
+    }	else {
+			sleep_time = (int) ((double)(30 * 1000) / (double)((PT_DLL_GetNumberOfStats() + 1) * players));
+    }
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] sleepTime set to %d\n", sleep_time);
 		LightSleep(sleep_time, pParent);
-		
-		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)
-		{
-			for (int chair = 0; chair < p_tablemap->nchairs(); ++chair)
-			{
+		if (pParent->_connected && PQstatus(pParent->_pgconn) == CONNECTION_OK)	{
+			for (int chair = 0; chair < p_tablemap->nchairs(); ++chair)	{
 				GetStatsForChair(pParam, chair, sleep_time);
 				/* Verify therad_stop is false */ 
-				if (LightSleep(0, pParent)) 
-					break; 
+        if (LightSleep(0, pParent)) {
+          break;
+        }
 			}
 		}
 		iterEnd = clock();
 		iterDurationMS = (int) ((double)(iterEnd - iterStart));
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] PTthread iteration [%d] had ended, duration time in ms: [%d]\n", ++iteration, iterDurationMS);
-		if ( (iterDurationMS <= 10000) && (iterDurationMS > 0) )
-		{
+		if ( (iterDurationMS <= 10000) && (iterDurationMS > 0) ) {
 			write_log(preferences.debug_pokertracker(), "[PokerTracker] sleeping [%d] ms because iteration was too quick.\n", 10000 - iterDurationMS);
-			if (LightSleep(10000 - iterDurationMS, pParent)) 
-				break; 
+      if (LightSleep(10000 - iterDurationMS, pParent)) {
+        break;
+      }
 		}
 	}
 	// Set event
@@ -795,29 +791,23 @@ UINT CPokerTrackerThread::PokertrackerThreadFunction(LPVOID pParam)
 
 /*Sleeps but wakes up on stop thread event every 250ms.
 We use this function since we never want the thread to ignore the stop_thread event while it's sleeping*/
-int	CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent)
-{
-	write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: called with sleepTime[%d]\n", sleepTime);
-
-	if (sleepTime > 0)
-	{
-		unsigned int sleepSlice = 250 ; // ms
-		unsigned int slicesNumber = sleepTime / sleepSlice ;
-		for (int i = 1; i <= slicesNumber; i++)
-		{
+bool CPokerTrackerThread::LightSleep(int sleepTime, CPokerTrackerThread *pParent) {
+  write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: called with sleepTime[%d]\n", sleepTime);
+	if (sleepTime > 0)	{
+		int sleepSlice = 250 ; // ms
+		int slicesNumber = sleepTime / sleepSlice ;
+		for (int i = 1; i <= slicesNumber; i++)	{
 			Sleep(sleepSlice);
-			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-			{
+			if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)	{
 				write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
-				return 1;
+				return true;
 			}
 		}
 		Sleep(sleepTime%sleepSlice);
 	}
-	if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)
-	{
+	if (::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0)	{
 		write_log(preferences.debug_pokertracker(), "[PokerTracker] LightSleep: _m_stop_thread signal received\n");
-		return 1;
+		return true;
 	}
-	return 0;
+	return false;
 }

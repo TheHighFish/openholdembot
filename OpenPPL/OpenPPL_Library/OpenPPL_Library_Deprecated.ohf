@@ -1,0 +1,187 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+//
+// TO BE REMOVED
+//
+
+##OpponentStacksizeHeadsUp##
+[bblind==0] ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap:
+[nopponentsplaying == NumberOfOpponentsAllin] ? HINT_All_Opponents_Allin :
+[nopponentsplaying-NumberOfOpponentsAllin > 1] ? ERROR_Game_Is_Not_HeadsUp :
+// Even "no opponents" can happen: 
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915&start=30&p=124798&view=show#p124798
+[nopponentsplaying < 1] ? ERROR_Game_Is_Not_HeadsUp :
+[(playersplayingbits & 0b0000000001) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=0 AND balance0>0] ? Stack0:
+[(playersplayingbits & 0b0000000010) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=1 AND balance1>0] ? Stack1:
+[(playersplayingbits & 0b0000000100) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=2 AND balance2>0] ? Stack2:
+[(playersplayingbits & 0b0000001000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=3 AND balance3>0] ? Stack3:
+[(playersplayingbits & 0b0000010000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=4 AND balance4>0] ? Stack4:
+[(playersplayingbits & 0b0000100000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=5 AND balance5>0] ? Stack5:
+[(playersplayingbits & 0b0001000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=6 AND balance6>0] ? Stack6:
+[(playersplayingbits & 0b0010000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=7 AND balance7>0] ? Stack7:
+[(playersplayingbits & 0b0100000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=8 AND balance8>0] ? Stack8:
+[(playersplayingbits & 0b1000000000) AND (nopponentsplaying-NumberOfOpponentsAllin==1) 
+  AND userchair!=9 AND balance9>0] ? Stack9:
+ERROR_Game_Is_Not_HeadsUp
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh##
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh##
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh##
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh##
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh##
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh##
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh##
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six  :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh##
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfBestPossibleStraight##
+BitCount(rankbitscommon & 0b111110000000000) >= 3 ? ace   :
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+-1
+
+##HighCardOfSecondBestPossibleStraight##
+(HighCardOfBestPossibleStraight == ace)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh   :
+(HighCardOfBestPossibleStraight == king)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh  :
+(HighCardOfBestPossibleStraight == queen) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh :
+(HighCardOfBestPossibleStraight == jack)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh  :
+(HighCardOfBestPossibleStraight == ten)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh   :
+(HighCardOfBestPossibleStraight == Nine)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh  :
+(HighCardOfBestPossibleStraight == Eight) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh :
+(HighCardOfBestPossibleStraight == Seven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
+(HighCardOfBestPossibleStraight == Six)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
+HINT_Such_A_Straight_Does_Not_Exist

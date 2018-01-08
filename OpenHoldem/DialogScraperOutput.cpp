@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: DialogScraperOutput.cpp : implementation file
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "DialogScraperOutput.h"
@@ -62,7 +62,7 @@ ENDGROUP()
 END_WINDOW_MAP()
 
 CDlgScraperOutput::CDlgScraperOutput(CWnd* pParent /*=NULL*/)
-		: CDialog(CDlgScraperOutput::IDD, pParent), m_winMgr(ScraperOutputFormulaMap) {
+		: CDialog(CDlgScraperOutput::IDD, pParent) {
 	in_startup = true;
 }
 
@@ -79,8 +79,7 @@ void CDlgScraperOutput::DoDataExchange(CDataExchange* pDX) {
 
 BEGIN_MESSAGE_MAP(CDlgScraperOutput, CDialog)
   // WinMgr
-	ON_REGISTERED_MESSAGE(WM_WINMGR, OnWinMgr)
-  	ON_WM_SIZE()
+ 	ON_WM_SIZE()
 	ON_LBN_SELCHANGE(IDC_REGIONLIST, &CDlgScraperOutput::OnLbnSelchangeRegionlist)
 	ON_CBN_SELCHANGE(IDC_ZOOM, &CDlgScraperOutput::OnCbnSelchangeZoom)
 	ON_WM_PAINT()
@@ -88,20 +87,10 @@ END_MESSAGE_MAP()
 
 // CDlgScraperOutput message handlers
 BOOL CDlgScraperOutput::OnInitDialog() {
-	int			max_x = 0, max_y = 0;
 	RECT		rect = {0};
 
 	in_startup = true;
   CDialog::OnInitDialog();
-
-	// Save tofit windows as current size
-	m_winMgr.InitToFitSizeFromCurrent(this);		// make tofit = current size
-	m_winMgr.CalcLayout(this);						  // recalc
-	m_winMgr.SetWindowPositions(this);				// set positions
-
-	// Create sizer bar window
-	VERIFY(m_winMgrSizerBar.Create(WS_VISIBLE|WS_CHILD, this, m_winMgr, ID_SCRAPEROUTPUT_SIZERBAR));
-
 	// Populate list box with all interesting regions
 	AddListboxItems();
 
@@ -115,12 +104,6 @@ BOOL CDlgScraperOutput::OnInitDialog() {
 	// Set dialog icon
 	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
 	this->SetIcon(hIcon, FALSE);
-
-	// Restore window location and size, precision preference
-  max_x = GetSystemMetrics(SM_CXSCREEN) - GetSystemMetrics(SM_CXICON);
-	max_y = GetSystemMetrics(SM_CYSCREEN) - GetSystemMetrics(SM_CYICON);
-	::SetWindowPos(m_hWnd, HWND_TOP, min(preferences.scraper_x(), max_x), min(preferences.scraper_y(), max_y),
-	  preferences.scraper_dx(), preferences.scraper_dy(), SWP_NOCOPYBITS);
 	m_Zoom.SetCurSel(preferences.scraper_zoom());
 	m_Zoom.GetWindowRect(&rect);
 	m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
@@ -143,12 +126,7 @@ BOOL CDlgScraperOutput::DestroyWindow() {
 
 	// Save settings to registry
 	GetWindowPlacement(&wp);
-	preferences.SetValue(k_prefs_scraper_x, wp.rcNormalPosition.left);
-	preferences.SetValue(k_prefs_scraper_y, wp.rcNormalPosition.top);
-	preferences.SetValue(k_prefs_scraper_dx, wp.rcNormalPosition.right - wp.rcNormalPosition.left);
-	preferences.SetValue(k_prefs_scraper_dy, wp.rcNormalPosition.bottom - wp.rcNormalPosition.top);
-	preferences.SetValue(k_prefs_scraper_zoom, m_Zoom.GetCurSel());
-
+  preferences.SetValue(k_prefs_scraper_zoom, m_Zoom.GetCurSel());
 	// Uncheck scraper output button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 
@@ -161,42 +139,6 @@ void CDlgScraperOutput::PostNcDestroy() {
   CDialog::PostNcDestroy();
 }
 
-LRESULT CDlgScraperOutput::OnWinMgr(WPARAM wp, LPARAM lp) {
-	NMWINMGR& nmw = *(NMWINMGR*)lp;
-	RECT		rect = {0};
-
-	if (nmw.code==NMWINMGR::GET_SIZEINFO) {
-		if (wp==(WORD)GetDlgCtrlID()) {
-			// Parent frame is requesting my size info. Report min size.
-			m_winMgr.GetMinMaxInfo(this, nmw.sizeinfo);
-			return true; // handled--important!
-		}
-	}	else if (nmw.code==NMWINMGR::SIZEBAR_MOVED) {
-		// User moved a sizer bar: call WinMgr to do it!
-		m_winMgr.MoveRect(wp, nmw.sizebar.ptMoved, this);
-		m_winMgr.SetWindowPositions(this);
-		if (!in_startup) {
-			m_Zoom.GetWindowRect(&rect);
-			m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
-			UpdateDisplay();
-		}
-		return true;
-	}
-  return false; // not handled
-}
-
-void CDlgScraperOutput::OnSize(UINT nType, int cx, int cy) {
-	RECT	rect = {0};
-
-	CDialog::OnSize(nType, cx, cy);
-  m_winMgr.CalcLayout(0, 0, cx, cy, this);
-	m_winMgr.SetWindowPositions(this);
-	if (!in_startup) {
-		m_Zoom.GetWindowRect(&rect);
-		m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
-		UpdateDisplay();
-	}
-}
 
 void CDlgScraperOutput::AddListboxItems() {
 	m_RegionList.ResetContent();

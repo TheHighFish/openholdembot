@@ -111,7 +111,8 @@ http://forum.winholdem.net/wbb/viewtopic.php?t=316
 \end_layout
 
 \begin_layout Itemize
-number of opponents on the X axis 
+number of opponents on the X axis (using f$prwin_number_of_oppoents to be
+ flexible)
 \end_layout
 
 \begin_layout Itemize
@@ -149,7 +150,7 @@ Hand Rank Table
 \begin_inset Text
 
 \begin_layout Plain Layout
-nopponents
+opponents
 \end_layout
 
 \end_inset
@@ -15796,8 +15797,8 @@ Using handrank
 \end_layout
 
 \begin_layout Standard
-The rank order of hands changes depending on the number of opponents (f$p
- function).
+The rank order of hands changes depending on the number of opponents (f$prwin_nu
+mber_of_oppoents).
 \end_layout
 
 \begin_layout Standard
@@ -15819,7 +15820,7 @@ status open
 
 \begin_layout Plain Layout
 
-|| [ betround==1 && handrank2652 <= 2652*dealposition/nplayersdealt**2 ]
+[ betround==1 && handrank2652 <= 2652*dealposition/nplayersdealt**2 ]
 \end_layout
 
 \end_inset
@@ -15839,8 +15840,7 @@ status open
 
 \begin_layout Plain Layout
 
-|| [ betround==1 && handrank2652 <= 2652*betposition/nplayersplaying**2
- ]
+[ betround==1 && handrank2652 <= 2652*betposition/nplayersplaying**2 ]
 \end_layout
 
 \end_inset

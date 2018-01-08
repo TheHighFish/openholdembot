@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // OpenHoldemView.cpp : implementation of the COpenHoldemView class
 //
@@ -22,19 +22,20 @@
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
 #include "CPreferences.h"
+#include "CCasinoInterface.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolengineAutoplayer.h"
 #include "CSymbolengineChipAmounts.h"
 #include "CSymbolengineColourCodes.h"
 #include "CSymbolengineGameType.h"
+#include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
 #include "CWhiteInfoBox.h"
-#include "MagicNumbers.h"
+
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
 
@@ -50,7 +51,8 @@ int		cc[kNumberOfCommunityCards][2] =
 
 // Player locations as a percentage of width/height
 // [nplayers][chairnum][x/y]
-double	pc[k_max_number_of_players+1][k_max_number_of_players][kNumberOfCardsPerPlayer] = {
+const int kNumberOfScreenDimensions = 2;
+double	pc[kMaxNumberOfPlayers+1][kMaxNumberOfPlayers][kNumberOfScreenDimensions] = {
   // 0 chairs
 	{ {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0} },	
   // 1 chair
@@ -135,15 +137,14 @@ COpenHoldemView::COpenHoldemView() {
 	for (int i = 0; i<kNumberOfCommunityCards; i++)
 		_card_common_last[i] = CARD_UNDEFINED;
 
-	for (int i = 0; i<k_max_number_of_players ; i++)
+	for (int i = 0; i<kMaxNumberOfPlayers ; i++)
 	{
 		_seated_last[i] = false; 
     _active_last[i] = false;
     _playername_last[i] = "";
 		_dealer_last[i] = false;
 		_playerbalance_last[i] = _playerbet_last[i] = 0.;
-		for (int j=0; j<kNumberOfCardsPerPlayer; j++)
-		{
+		for (int j=0; j<kMaxNumberOfCardsPerPlayer; j++) {
 			_card_player_last[i][j] = CARD_NOCARD;
 		}
 	}
@@ -152,6 +153,16 @@ COpenHoldemView::COpenHoldemView() {
 }
 
 COpenHoldemView::~COpenHoldemView() {
+  _black_pen.DeleteObject();
+  _green_pen.DeleteObject();
+  _red_pen.DeleteObject();
+  _blue_pen.DeleteObject();
+  _white_dot_pen.DeleteObject();
+  _null_pen.DeleteObject();
+  _white_brush.DeleteObject();
+  _gray_brush.DeleteObject();
+  _red_brush.DeleteObject();
+  _yellow_brush.DeleteObject();
 }
 
 BOOL COpenHoldemView::PreCreateWindow(CREATESTRUCT& cs) {
@@ -170,15 +181,18 @@ void COpenHoldemView::OnInitialUpdate() {
 // COpenHoldemView drawing
 void COpenHoldemView::OnDraw(CDC* pDC) {
 	UpdateDisplay(true);
+  write_log(preferences.debug_alltherest(), "[GUI] location Johnny_1\n");
 }
 
-void COpenHoldemView::OnTimer(UINT nIDEvent) {
+void COpenHoldemView::OnTimer(UINT_PTR nIDEvent) {
+  write_log(preferences.debug_timers(), "[GUI] COpenHoldemView::OnTimer()\n");
 	if (nIDEvent == DISPLAY_UPDATE_TIMER) 
 	{
 		// Only do this if we are not in the middle of a scraper/symbol update
 		if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
 		{
 			UpdateDisplay(false);
+      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_2\n");
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 		}
 	}
@@ -191,12 +205,12 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	CDC			*pDC = GetDC();
 
 	CString sym_handnumber = p_handreset_detector->GetHandNumber();
-	double  sym_bblind = p_symbol_engine_tablelimits->bblind();
-	double  sym_sblind = p_symbol_engine_tablelimits->sblind();
-	double  sym_ante = p_symbol_engine_tablelimits->ante();
-	int     sym_lim = p_symbol_engine_gametype->gametype();
-	bool    sym_istournament = p_symbol_engine_istournament->istournament();
-	double  sym_pot = p_symbol_engine_chip_amounts->pot();
+	double  sym_bblind = p_engine_container->symbol_engine_tablelimits()->bblind();
+	double  sym_sblind = p_engine_container->symbol_engine_tablelimits()->sblind();
+	double  sym_ante = p_engine_container->symbol_engine_tablelimits()->ante();
+	int     sym_lim = p_engine_container->symbol_engine_gametype()->gametype();
+	bool    sym_istournament = p_engine_container->symbol_engine_istournament()->istournament();
+	double  sym_pot = p_engine_container->symbol_engine_chip_amounts()->pot();
 
 	// Get size of current client window
 	GetClientRect(&_client_rect);
@@ -248,7 +262,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		update_it = true;
 	}
 
-  if ((p_symbol_engine_autoplayer->ismyturn()) || update_it || update_all) 
+  if ((p_engine_container->symbol_engine_autoplayer()->ismyturn()) || update_it || update_all) 
 	{
 		assert(p_white_info_box != NULL);
     p_white_info_box->Draw(_client_rect, _logfont, pDC,
@@ -262,8 +276,8 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 	// Draw common cards
 	for (int i=0; i<kNumberOfCommunityCards; i++) 
 	{
-    Card *p_card = &p_table_state->_common_cards[i];
-    int card_value = p_table_state->_common_cards[i].GetValue();
+    Card *p_card = p_table_state->CommonCards(i);
+    int card_value = p_table_state->CommonCards(i)->GetValue();
 		if (_card_common_last[i] != card_value || update_all) 
 		{
 			_card_common_last[i] = card_value;
@@ -276,51 +290,58 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		}
 	}
   // Draw collection of player info
-	for (int i=0; i<p_tablemap->nchairs(); i++) 	{
+	for (int i=0; i<p_tablemap->nchairs(); i++)
+  {
 		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
-		if (_seated_last[i] != p_table_state->_players[i]._seated 
-        || _active_last[i] != p_table_state->_players[i]._active) 	{
-			_seated_last[i] = p_table_state->_players[i]._seated;
-			_active_last[i] = p_table_state->_players[i]._active;
+		if (_seated_last[i] != p_table_state->Player(i)->seated() 
+        || _active_last[i] != p_table_state->Player(i)->active()) 	{
+			_seated_last[i] = p_table_state->Player(i)->seated();
+			_active_last[i] = p_table_state->Player(i)->active();
 			update_it = true;
 		}
-    if (_card_player_last[i][0] != p_table_state->_players[i]._hole_cards[0].GetValue()
-        || _card_player_last[i][1] != p_table_state->_players[i]._hole_cards[1].GetValue()) 		{
-			_card_player_last[i][0] = p_table_state->_players[i]._hole_cards[0].GetValue();
-			_card_player_last[i][1] = p_table_state->_players[i]._hole_cards[1].GetValue();
+    if (_card_player_last[i][0] != p_table_state->Player(i)->hole_cards(0)->GetValue()
+        || _card_player_last[i][1] != p_table_state->Player(i)->hole_cards(1)->GetValue()
+        || _card_player_last[i][2] != p_table_state->Player(i)->hole_cards(2)->GetValue()
+        || _card_player_last[i][3] != p_table_state->Player(i)->hole_cards(3)->GetValue()) {
+			_card_player_last[i][0] = p_table_state->Player(i)->hole_cards(0)->GetValue();
+			_card_player_last[i][1] = p_table_state->Player(i)->hole_cards(1)->GetValue();
+      _card_player_last[i][2] = p_table_state->Player(i)->hole_cards(2)->GetValue();
+      _card_player_last[i][3] = p_table_state->Player(i)->hole_cards(3)->GetValue();
 			update_it = true;
 		}
-		if (_dealer_last[i] != p_table_state->_players[i]._dealer) {
-			_dealer_last[i] = p_table_state->_players[i]._dealer;
+		if (_dealer_last[i] != p_table_state->Player(i)->dealer()) {
+			_dealer_last[i] = p_table_state->Player(i)->dealer();
 			update_it = true;
 		}
-		if (_playername_last[i] != p_table_state->_players[i]._name) {
-			_playername_last[i] = p_table_state->_players[i]._name;
+		if (_playername_last[i] != p_table_state->Player(i)->name()) {
+			_playername_last[i] = p_table_state->Player(i)->name();
 			update_it = true;
 		}
-		if (_playerbalance_last[i] != p_table_state->_players[i]._balance) {
-			_playerbalance_last[i] = p_table_state->_players[i]._balance;
+		if (_playerbalance_last[i] != p_table_state->Player(i)->_balance.GetValue()) {
+			_playerbalance_last[i] = p_table_state->Player(i)->_balance.GetValue();
 			update_it = true;
 		}
-		if (_playerbet_last[i] != p_table_state->_players[i]._bet) 
+		if (_playerbet_last[i] != p_table_state->Player(i)->_bet.GetValue()) 
 		{
-			_playerbet_last[i] = p_table_state->_players[i]._bet;
+			_playerbet_last[i] = p_table_state->Player(i)->_bet.GetValue();
 			update_it = true;
 		}
 
 		if (update_it || update_all) {
 			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
-			if (p_table_state->_players[i]._seated) 	{
+			if (p_table_state->Player(i)->seated()) 	{
 				DrawSeatedActiveCircle(i);
 				// Draw cards first, because we want the name 
 				// to occlude the cards and not the other way.
 				DrawPlayerCards(i);
 				DrawNameBox(i);
 				DrawBalanceBox(i);
-        DrawColourCodes(i);
+        // !! Disabled, as it gets rarely used
+        // and doesn't fit well to the Omaha cards.
+        // DrawColourCodes(i);
 			}
 			// Drawing a bet, even if no player seated.
 			// The player might have left the table, 
@@ -331,7 +352,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		// At some casinos the dealer can be at an empty seat.
 		// Therefore we draw the dealer-button anyway, inependent of "seated" and "active".
 		// Draw it at the very last, as we want to have it at the top of the cards.
-		if (p_table_state->_players[i]._dealer) {
+		if (p_table_state->Player(i)->dealer()) {
 			DrawDealerButton(i);
 		}
 	}
@@ -341,109 +362,96 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 }
 
 void COpenHoldemView::DrawButtonIndicators(void) {
-	bool		fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
-	bool		autopost_drawn, sitin_drawn, sitout_drawn, leave_drawn, prefold_drawn = false;
+	bool fold_drawn, call_drawn, check_drawn, raise_drawn, allin_drawn;
+	bool autopost_drawn, sitin_drawn, sitout_drawn, leave_drawn, prefold_drawn;
 
 	autopost_drawn = sitin_drawn = sitout_drawn = leave_drawn = prefold_drawn = false;
 	fold_drawn = call_drawn = check_drawn = raise_drawn = allin_drawn = false;
 
-	for (int i=0; i<k_max_number_of_players; i++) 
-	{
-		// Draw "on" buttons
-		if (p_scraper->GetButtonState(i)) 
-		{
-			if (p_string_match->IsStringFold(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'F', _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
-				fold_drawn = true;
-			}
-			else if (p_string_match->IsStringCall(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'C', _client_rect.right-67, _client_rect.bottom-16, _client_rect.right-53, _client_rect.bottom-2);
-				call_drawn = true;
-			}
-			else if (p_string_match->IsStringCheck(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'K', _client_rect.right-50, _client_rect.bottom-16, _client_rect.right-36, _client_rect.bottom-2);
-				check_drawn = true;
-			}
-			else if (p_string_match->IsStringRaise(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'R', _client_rect.right-33, _client_rect.bottom-16, _client_rect.right-19, _client_rect.bottom-2);
-				raise_drawn = true;
-			}
-			else if (p_string_match->IsStringAllin(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'A', _client_rect.right-16, _client_rect.bottom-16, _client_rect.right-2, _client_rect.bottom-2);
-				allin_drawn = true;
-			}
-			else if (p_string_match->IsStringAutopost(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'T', _client_rect.left+2,  _client_rect.bottom-16, _client_rect.left+16, _client_rect.bottom-2);
-				autopost_drawn = true;
-			}
-			else if (p_string_match->IsStringSitin(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'I', _client_rect.left+19, _client_rect.bottom-16, _client_rect.left+33, _client_rect.bottom-2);
-				sitin_drawn = true;
-			}
-			else if (p_string_match->IsStringSitout(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'O', _client_rect.left+36, _client_rect.bottom-16, _client_rect.left+50, _client_rect.bottom-2);
-				sitout_drawn = true;
-			}
-			else if (p_string_match->IsStringLeave(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'L', _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
-				leave_drawn = true;
-			}
-			else if (p_string_match->IsStringPrefold(p_table_state->_SCI._button_label[i])) 
-			{
-				DrawSpecificButtonIndicator(i, 'P', _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
-				prefold_drawn = true;
-			}
-		}
+  // Draw "on" buttons
+  assert(p_casino_interface != NULL);
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_fold)->IsClickable()) {
+    DrawSpecificButtonIndicator('F', true, _client_rect.right - 84, _client_rect.bottom - 16, _client_rect.right - 70, _client_rect.bottom - 2);
+    fold_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_call)->IsClickable()) {
+    DrawSpecificButtonIndicator('C', true, _client_rect.right - 67, _client_rect.bottom - 16, _client_rect.right - 53, _client_rect.bottom - 2);
+    call_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable()) {
+    DrawSpecificButtonIndicator('K', true, _client_rect.right - 50, _client_rect.bottom - 16, _client_rect.right - 36, _client_rect.bottom - 2);
+    check_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()) {
+    DrawSpecificButtonIndicator('R', true, _client_rect.right - 33, _client_rect.bottom - 16, _client_rect.right - 19, _client_rect.bottom - 2);
+    raise_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable()) {
+    DrawSpecificButtonIndicator('A', true, _client_rect.right - 16, _client_rect.bottom - 16, _client_rect.right - 2, _client_rect.bottom - 2);
+    allin_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_autopost)->IsClickable()) {
+    DrawSpecificButtonIndicator('T', true, _client_rect.left + 2, _client_rect.bottom - 16, _client_rect.left + 16, _client_rect.bottom - 2);
+    autopost_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_sitin)->IsClickable()) {
+    DrawSpecificButtonIndicator('I', true, _client_rect.left + 19, _client_rect.bottom - 16, _client_rect.left + 33, _client_rect.bottom - 2);
+    sitin_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_sitout)->IsClickable()) {
+    DrawSpecificButtonIndicator('O', true, _client_rect.left + 36, _client_rect.bottom - 16, _client_rect.left + 50, _client_rect.bottom - 2);
+    sitout_drawn = true;
+  }
+  if (p_casino_interface->LogicalAutoplayerButton(k_hopper_function_leave)->IsClickable()) {
+    DrawSpecificButtonIndicator('L', true, _client_rect.left + 53, _client_rect.bottom - 16, _client_rect.left + 67, _client_rect.bottom - 2);
+    leave_drawn = true;
+  }
+	if (p_casino_interface->LogicalAutoplayerButton(k_standard_function_prefold)->IsClickable()) {
+		DrawSpecificButtonIndicator('P', true, _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
+		prefold_drawn = true;
 	}
-
+  // !! To do: rematch
+  
 	// Draw "off" buttons
-	if (!fold_drawn) 
-		DrawSpecificButtonIndicator(-1, 'F', _client_rect.right-84, _client_rect.bottom-16, _client_rect.right-70, _client_rect.bottom-2);
-
-	if (!call_drawn) 
-		DrawSpecificButtonIndicator(-1, 'C', _client_rect.right-67, _client_rect.bottom-16, _client_rect.right-53, _client_rect.bottom-2);
-
-	if (!check_drawn)
-		DrawSpecificButtonIndicator(-1, 'K', _client_rect.right-50, _client_rect.bottom-16, _client_rect.right-36, _client_rect.bottom-2);
-
-	if (!raise_drawn)
-		DrawSpecificButtonIndicator(-1, 'R', _client_rect.right-33, _client_rect.bottom-16, _client_rect.right-19, _client_rect.bottom-2);
-
-	if (!allin_drawn)
-		DrawSpecificButtonIndicator(-1, 'A', _client_rect.right-16, _client_rect.bottom-16, _client_rect.right-2, _client_rect.bottom-2);
-
-	if (!autopost_drawn) 
-		DrawSpecificButtonIndicator(-1, 'T', _client_rect.left+2,  _client_rect.bottom-16, _client_rect.left+16, _client_rect.bottom-2);
-
-	if (!sitin_drawn) 
-		DrawSpecificButtonIndicator(-1, 'I', _client_rect.left+19, _client_rect.bottom-16, _client_rect.left+33, _client_rect.bottom-2);
-
-	if (!sitout_drawn)
-		DrawSpecificButtonIndicator(-1, 'O', _client_rect.left+36, _client_rect.bottom-16, _client_rect.left+50, _client_rect.bottom-2);
-
-	if (!leave_drawn)
-		DrawSpecificButtonIndicator(-1, 'L', _client_rect.left+53, _client_rect.bottom-16, _client_rect.left+67, _client_rect.bottom-2);
-
-	if (!prefold_drawn)
-		DrawSpecificButtonIndicator(-1, 'P', _client_rect.left+70, _client_rect.bottom-16, _client_rect.left+84, _client_rect.bottom-2);
+  if (!fold_drawn) {
+    DrawSpecificButtonIndicator('F', false, _client_rect.right - 84, _client_rect.bottom - 16, _client_rect.right - 70, _client_rect.bottom - 2);
+  }
+  if (!call_drawn) {
+    DrawSpecificButtonIndicator('C', false, _client_rect.right - 67, _client_rect.bottom - 16, _client_rect.right - 53, _client_rect.bottom - 2);
+  }
+  if (!check_drawn) {
+    DrawSpecificButtonIndicator('K', false, _client_rect.right - 50, _client_rect.bottom - 16, _client_rect.right - 36, _client_rect.bottom - 2);
+  }
+  if (!raise_drawn) {
+    DrawSpecificButtonIndicator('R', false, _client_rect.right - 33, _client_rect.bottom - 16, _client_rect.right - 19, _client_rect.bottom - 2);
+  }
+  if (!allin_drawn) {
+    DrawSpecificButtonIndicator('A', false, _client_rect.right - 16, _client_rect.bottom - 16, _client_rect.right - 2, _client_rect.bottom - 2);
+  }
+  if (!autopost_drawn) {
+    DrawSpecificButtonIndicator('T', false, _client_rect.left + 2, _client_rect.bottom - 16, _client_rect.left + 16, _client_rect.bottom - 2);
+  }
+  if (!sitin_drawn) {
+    DrawSpecificButtonIndicator('I', false, _client_rect.left + 19, _client_rect.bottom - 16, _client_rect.left + 33, _client_rect.bottom - 2);
+  }
+  if (!sitout_drawn) {
+    DrawSpecificButtonIndicator('O', false, _client_rect.left + 36, _client_rect.bottom - 16, _client_rect.left + 50, _client_rect.bottom - 2);
+  }
+  if (!leave_drawn) {
+    DrawSpecificButtonIndicator('L', false, _client_rect.left + 53, _client_rect.bottom - 16, _client_rect.left + 67, _client_rect.bottom - 2);
+  }
+  if (!prefold_drawn) {
+    DrawSpecificButtonIndicator('P', false, _client_rect.left + 70, _client_rect.bottom - 16, _client_rect.left + 84, _client_rect.bottom - 2);
+  }
 }
 
-void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, 
+void COpenHoldemView::DrawSpecificButtonIndicator(const char ch, const bool on_off, const int left, 
 												  const int top, const int right, const int bottom) {
 	CPen		*pTempPen = NULL, oldpen;
-	CBrush		*pTempBrush = NULL, oldbrush;
+	CBrush	*pTempBrush = NULL, oldbrush;
 	RECT		rect = {0};
 	CFont		*oldfont = NULL, cFont;
-	CString		t = "";
+	CString	t = "";
 	CDC			*pDC = GetDC();
 
 	// Set font basics
@@ -455,102 +463,73 @@ void COpenHoldemView::DrawSpecificButtonIndicator(const int button_num, const ch
 	// Background color
 	pDC->SetBkColor(COLOR_GRAY);
 
-	if (button_num == kUndefined) 
-	{
+	if (on_off == false) {
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 		pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
 		pDC->SetTextColor(COLOR_WHITE);
-	}
-	else 
-	{
-		if (p_scraper->GetButtonState(button_num)) 
-		{
-			if (ch=='F') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_red_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_RED);
-			}
-			else if (ch=='C') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_blue_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_BLUE);
-			}
-			else if (ch=='K') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_blue_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_BLUE);
-			}
-			else if (ch=='R') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_green_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_GREEN);
-			}
-			else if (ch=='A') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_BLACK);
-			}
-			else if (ch=='T') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_BLUE);
-			}
-			else if (ch=='I') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_GREEN);
-			}
-			else if (ch=='O') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_YELLOW);
-			}
-			else if (ch=='L') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_RED);
-			}
-			else if (ch=='P') 
-			{
-				pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
-				pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-				pDC->SetTextColor(COLOR_BLACK);
-			}
-		}
-		else 
-		{
+	}	else {
+		if (ch == 'F') {
+			pTempPen = (CPen*)pDC->SelectObject(&_red_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_RED);
+		}	else if (ch == 'C') {
+			pTempPen = (CPen*)pDC->SelectObject(&_blue_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_BLUE);
+		}	else if (ch == 'K') {
+			pTempPen = (CPen*)pDC->SelectObject(&_blue_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_BLUE);
+		}	else if (ch == 'R') {
+			pTempPen = (CPen*)pDC->SelectObject(&_green_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_GREEN);
+		}	else if (ch == 'A') {
+			pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_BLACK);
+		} else if (ch == 'T') {
+			pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_BLUE);
+		}	else if (ch == 'I') {
+			pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_GREEN);
+		}	else if (ch == 'O') {
+			pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_YELLOW);
+		}	else if (ch == 'L') {
+			pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_RED);
+		} else if (ch == 'P') {
+			pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+			pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
+			pDC->SetTextColor(COLOR_BLACK);
+		}	else {
+      // Formerly unreachable code,
+      // can now only happen if we add new buttons,
+      // but don't handle them here properly.
 			pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 			pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
 			pDC->SetTextColor(COLOR_WHITE);
 		}
 	}
-
-	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
-	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
-
-	pDC->SetBkMode(OPAQUE);
+  oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
+	oldbrush.FromHandle((HBRUSH)pTempBrush);		// Save old brush
+  pDC->SetBkMode(OPAQUE);
 	pDC->Rectangle(left, top, right, bottom);
-
-	// Set rectangle
+  // Set rectangle
 	rect.left = left;
 	rect.top = top;
 	rect.right = right;
 	rect.bottom = bottom;
-
-	t.Format("%c", ch);
+  t.Format("%c", ch);
 	pDC->SetBkMode(TRANSPARENT);
 	pDC->DrawText(t.GetString(), t.GetLength(), &rect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
-
-	// Restore original pen and brush
+  // Restore original pen and brush
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);
 	pDC->SelectObject(oldfont);
@@ -576,12 +555,9 @@ void COpenHoldemView::DrawSeatedActiveCircle(const int chair) {
 	pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 
-	if (p_scraper_access->IsPlayerActive(chair))
-	{
+	if (p_table_state->Player(chair)->active()) {
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
-	}
-	else 
-	{
+	}	else {
 		pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
 	}
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
@@ -741,78 +717,60 @@ void COpenHoldemView::DrawNameBox(const int chair) {
 	int			left = 0, top = 0, right = 0, bottom = 0;
 	CDC			*pDC = GetDC();
 	static RECT	name_rect_last[10] = {0};
-
-	// Background color
+  // Background color
 	pDC->SetBkColor(COLOR_GRAY);
-
-	// Figure placement of box
+  // Figure placement of box
 	left = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] - 36;
 	top = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 15;
 	right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 35;
 	bottom = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] + 30;
-
-	// Set font basics
+  // Set font basics
 	_logfont.lfHeight = -12;
 	_logfont.lfWeight = FW_NORMAL;
 	cFont.CreateFontIndirect(&_logfont);
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
-
-	if (p_scraper_access->IsPlayerSeated(chair) 
-		|| p_scraper_access->IsPlayerActive(chair)) 
-		/*|| (p_tablemap->r$pXseated_index[chair] == kUndefined && p_tablemap->r$uXseated_index[chair] == kUndefined &&
-		|| p_tablemap->r$pXactive_index[chair] == kUndefined && p_tablemap->r$uXactive_index[chair] == kUndefined)*/  
-	{
-
-		pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
+  if (p_table_state->Player(chair)->seated() || p_table_state->Player(chair)->active()) {
+    pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
-
-		// Calc rectangle size for text
+    // Calc rectangle size for text
 		textrect.left = 0;
 		textrect.top = 0;
 		textrect.right = 0;
 		textrect.bottom = 0;
-		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
-      p_table_state->_players[chair]._name.GetLength(), &textrect, DT_CALCRECT);
-
-		// Figure out placement of rectangle
+		pDC->DrawText(p_table_state->Player(chair)->name().GetString(), 
+      p_table_state->Player(chair)->name().GetLength(), &textrect, DT_CALCRECT);
+    // Figure out placement of rectangle
 		drawrect.left = left < (left+(right-left)/2)-textrect.right/2-3 ? left : (left+(right-left)/2)-textrect.right/2-3;
 		drawrect.top = top;
 		drawrect.right = right > (left+(right-left)/2)+textrect.right/2+3 ? right : (left+(right-left)/2)+textrect.right/2+3;
 		drawrect.bottom = bottom;
-
-		// Invalidate everything if the name has decreased in width
-		if (name_rect_last[chair].right - name_rect_last[chair].left != drawrect.right - drawrect.left) 
-		{
+    // Invalidate everything if the name has decreased in width
+		if (name_rect_last[chair].right - name_rect_last[chair].left != drawrect.right - drawrect.left) {
 			InvalidateRect(NULL, true);
 		}
-
-		// Draw it
+    // Draw it
 		pDC->SetBkMode(OPAQUE);
 		pDC->Rectangle(drawrect.left, drawrect.top, drawrect.right, drawrect.bottom);
 		pDC->SetBkMode(TRANSPARENT);
-		pDC->DrawText(p_table_state->_players[chair]._name.GetString(), 
-      p_table_state->_players[chair]._name.GetLength(), &drawrect,
+		pDC->DrawText(p_table_state->Player(chair)->name().GetString(), 
+      p_table_state->Player(chair)->name().GetLength(), &drawrect,
 			DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 		name_rect_last[chair].left = drawrect.left;
 		name_rect_last[chair].top = drawrect.top;
 		name_rect_last[chair].right = drawrect.right;
 		name_rect_last[chair].bottom = drawrect.bottom;
-	}
-	else 
-	{
+	} else {
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 		pTempBrush = (CBrush*)pDC->SelectObject(&_gray_brush);
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
-
-		pDC->SetBkMode(OPAQUE);
+    pDC->SetBkMode(OPAQUE);
 		pDC->Rectangle(left, top, right, bottom);
 	}
-
-	// Restore original pen and brush
+  // Restore original pen and brush
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);
 	pDC->SelectObject(oldfont);
@@ -842,18 +800,17 @@ void COpenHoldemView::DrawBalanceBox(const int chair) {
 	cFont.CreateFontIndirect(&_logfont);
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
-  if (p_scraper_access->IsPlayerSeated(chair) 
-		  || p_scraper_access->IsPlayerActive(chair)) 	{
+  if (p_table_state->Player(chair)->seated() || p_table_state->Player(chair)->active()) 	{
     pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 		oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 		pTempBrush = (CBrush*)pDC->SelectObject(&_white_brush);
 		oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
 		// Format Text
-		if (p_table_state->_players[chair]._active) 	{
-			t = Number2CString(p_table_state->_players[chair]._balance);
+		if (p_table_state->Player(chair)->active()) 	{
+			t = Number2CString(p_table_state->Player(chair)->_balance.GetValue());
 		}	else {
-			t.Format("Out (%s)", Number2CString(p_table_state->_players[chair]._balance));
+			t.Format("Out (%s)", Number2CString(p_table_state->Player(chair)->_balance.GetValue()));
 		}
 	}	else {
 		pTempPen = (CPen*)pDC->SelectObject(&_white_dot_pen);
@@ -927,9 +884,9 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 	oldfont = pDC->SelectObject(&cFont);
 	pDC->SetTextColor(COLOR_BLACK);
   // Format text
-	if (p_table_state->_players[chair]._bet != 0) 
+	if (p_table_state->Player(chair)->_bet.GetValue() != 0) 
 	{
-		t = Number2CString(p_table_state->_players[chair]._bet);
+		t = Number2CString(p_table_state->Player(chair)->_bet.GetValue());
 	}
 	else 	{
 		t = "";
@@ -972,7 +929,7 @@ void COpenHoldemView::DrawPlayerBet(const int chair) {
 }
 
 void COpenHoldemView::DrawPlayerCards(const int chair) {
-	if (!p_scraper_access->IsPlayerActive(chair))	{
+	if (!p_table_state->Player(chair)->active())	{
 		// Forget about inactive players, they have no cards.
 		// Don't draw them to point out the mistake faster
 		// for newbies with bad tablemaps.
@@ -980,24 +937,32 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
 	}
 	// Get size of current client window
 	GetClientRect(&_client_rect);
-	// Draw player cards (first)
-  Card *player_card_0 = &p_table_state->_players[chair]._hole_cards[0];
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing card 0 of player %i: [%s]\n",
-    chair, player_card_0->ToString());
-  int pos_x_right  = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 5;
-  int pos_x_left   = pos_x_right - CARDSIZEX;
-  int pos_y_top    = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY/2;
+  // Calculate fixed y-position
+  int pos_y_top = _client_rect.bottom * pc[p_tablemap->nchairs()][chair][1] - CARDSIZEY / 2;
   int pos_y_bottom = pos_y_top + CARDSIZEY - 1;
-	DrawCard(player_card_0, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
-  // Draw player cards (second)
-  Card *player_card_1 = &p_table_state->_players[chair]._hole_cards[1];
-  pos_x_right = pos_x_right + CARDSIZEX - 9; 
-  pos_x_left  = pos_x_right - CARDSIZEX;
-	DrawCard(player_card_1, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom,	true);
+  // x-offset between two cards, with some overlap due ti space restrictions
+  int x_offset_to_next_card = CARDSIZEX - 10;
+  // Calculate starting position for first card
+  int first_pos_x_right = _client_rect.right * pc[p_tablemap->nchairs()][chair][0] + 7;
+  if (p_engine_container->symbol_engine_isomaha()->isomaha()) {
+    // Original positions were designed for HoldEm.
+    // If we play Omaha, then move everything one card to the left
+    // for better centralization.
+    first_pos_x_right -= x_offset_to_next_card;
+  }
+  int number_of_cards = NumberOfCardsPerPlayer();
+  write_log(preferences.debug_alltherest(), "[GUI] Drawing %d player cards for chair %d\n", 
+    number_of_cards, chair);
+  for (int i = 0; i < number_of_cards; ++i) {
+    Card *player_card_N = p_table_state->Player(chair)->hole_cards(i);
+    int pos_x_right = first_pos_x_right + i * x_offset_to_next_card;
+    int pos_x_left = pos_x_right - CARDSIZEX;
+    DrawCard(player_card_N, pos_x_left, pos_y_top, pos_x_right, pos_y_bottom, true);
+  }
 }
 
 void COpenHoldemView::DrawColourCodes(const int chair) {
-  if (p_symbol_engine_colourcodes == 0) {
+  if (p_engine_container->symbol_engine_colourcodes() == 0) {
     // Not yet initialized
     return;
   }
@@ -1017,7 +982,7 @@ void COpenHoldemView::DrawColourCodes(const int chair) {
 	CBrush	*pTempBrush = NULL, oldbrush;
   pTempPen = (CPen*)pDC->SelectObject(&_black_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
-  COLORREF colour_code = p_symbol_engine_colourcodes->ColourCodeToDisplay(chair);
+  COLORREF colour_code = p_engine_container->symbol_engine_colourcodes()->ColourCodeToDisplay(chair);
   CBrush mybrush(colour_code);
 	pTempBrush = (CBrush*)pDC->SelectObject(mybrush); 
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush

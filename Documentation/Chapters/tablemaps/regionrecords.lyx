@@ -158,10 +158,6 @@ The majority of the right side of the Table Map Editor window is used to
 \end_layout
 
 \begin_layout Standard
-
-\end_layout
-
-\begin_layout Standard
 Starting at the top, there is a rectangle group box.
  This group box allows you to define the extents (left, right, top, bottom)
  of the region record’s bounding rectangle.
@@ -394,7 +390,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-!!!
+http://www.w3schools.com/colors/colors_names.asp
 \end_layout
 
 \end_inset
@@ -453,7 +449,7 @@ N (none)
 \begin_layout Plain Layout
 This is used for those regions that do not need a transform as their only
  purpose is to describe a rectangle for use by the scraper engine.
- An example is button location (i0button - i9button) which informs the Autoplaye
+ An example is button location (i0button - iFbutton) which informs the Autoplaye
 r engine of the allowed rectangle for mouse clicks.
  
 \end_layout
@@ -775,30 +771,6 @@ igits.
 \begin_inset Text
 
 \begin_layout Plain Layout
-c0istournament
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Used to identify if this table is a tournament game.
- Any transform can be used equally well with this region.
- If the result from this region’s transform is anything besides blank (empty
- string) then this region is considered to represent a tournament game.
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 c0smallblind 
 \end_layout
 
@@ -942,7 +914,7 @@ Identifies the region on the casino table where the limit information can
 \begin_inset Text
 
 \begin_layout Plain Layout
-i0button - i9button
+i0button - i9button, iAbutton - iFbutton
 \end_layout
 
 \end_inset
@@ -952,7 +924,7 @@ i0button - i9button
 
 \begin_layout Plain Layout
 Specifies the rectangular area in which the Autoplayer can click the mouse
- for each button 0-9.
+ for each of the 16 buttons.
 \end_layout
 
 \end_inset
@@ -963,7 +935,7 @@ Specifies the rectangular area in which the Autoplayer can click the mouse
 \begin_inset Text
 
 \begin_layout Plain Layout
-i0label - i9label
+i0label - i9label, iAlabel - iFlabel
 \end_layout
 
 \end_inset
@@ -972,10 +944,8 @@ i0label - i9label
 \begin_inset Text
 
 \begin_layout Plain Layout
-Specifies the action that should be associated with buttons 0-9.
- By default, and if not overridden here, button 0 will be interpreted as
- the fold button, 1 as the call button, 2 as the raise button and 3 as the
- allin button.
+Specifies the action that should be associated with buttons the 16 buttons.
+ There are no defauls, so every button needs a label.
  
 \end_layout
 
@@ -1007,7 +977,7 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will
 \begin_inset Text
 
 \begin_layout Plain Layout
-i0labelY - i9labelY Where Y = 0 - 9.
+i0state - i9state, iAstate - iFstate
 \end_layout
 
 \end_inset
@@ -1016,35 +986,7 @@ i0labelY - i9labelY Where Y = 0 - 9.
 \begin_inset Text
 
 \begin_layout Plain Layout
-As an adjunct to the iXlabel regions, the iXlabelY region definitions allow
- the specification of an alternative location with alternate properties,
- such as color, for any button.
- The specification of these regions is exactly as that of the iXlabel regions
- with an addition of a numeric (0 - 9) suffix.
- The iXlabel regions are searched first, then the iXlabelY regions.
- The first region that resolves to a text value will stop any subsequent
- evaluations.
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-i0state - i9state
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Specifies whether the button0 - button9 is live and available to be clicked.
+Specifies whether the corresponding button is live and available to be clicked.
  The best transformation is hash or color.
  If the leftmost characters of the result from this region’s transform are
  either “true”, "on", "yes", "checked" or "lit" then the button will be
@@ -1071,7 +1013,7 @@ i3edit
 \begin_inset Text
 
 \begin_layout Plain Layout
-Specifies the rectangular region that can be used for entering a SWAG bet.
+Specifies the rectangular region that can be used for entering a betsize.
  
 \end_layout
 
@@ -1083,7 +1025,7 @@ Specifies the rectangular region that can be used for entering a SWAG bet.
 \begin_inset Text
 
 \begin_layout Plain Layout
-i86button, i860button - i869button
+i860button - i869button
 \end_layout
 
 \end_inset
@@ -1107,7 +1049,7 @@ Similar to the i0button - i9button regions, however these regions are intended
 \begin_inset Text
 
 \begin_layout Plain Layout
-i86state, i860state - i869state
+i860state - i869state
 \end_layout
 
 \end_inset
@@ -1124,14 +1066,6 @@ The corresponding state regions for the i86button, i860button - i869button
  seen as available to be clicked.
  If any other result is returned, such as "false", then the button will
  be seen as not available to be clicked.
- Results are case-insensitive.
- p0active - p9active Used to determine if a player is active (sitting in)
- or not (sitting out).
- Any transform can be used equally well with this region.
- If the leftmost characters of the result from this region’s transform are
- either “true” or “active”, then the region is considered to be active.
- If any other result is returned, such as "false", "inactive", "out" or
- "away", then the chair is not considered to be active.
  Results are case-insensitive.
  
 \end_layout
@@ -1280,21 +1214,26 @@ mtt_smallest_stack
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-p0balance - p9balance
+p0active - p9active
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Used to identify a player's balance.
- It only makes sense to use a text transform for these regions.
+Used to determine if a player is active (sitting in) or not (sitting out).
+ Any transform can be used equally well with this region.
+ If the leftmost characters of the result from this region’s transform are
+ either “true” or “active”, then the region is considered to be active.
+ If any other result is returned, such as "false", "inactive", "out" or
+ "away", then the chair is not considered to be active.
+ Results are case-insensitive.
  
 \end_layout
 
@@ -1302,7 +1241,7 @@ Used to identify a player's balance.
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1311,11 +1250,33 @@ p0bet - p9bet
 
 \end_inset
 </cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 Used to identify a player's bet.
+ It only makes sense to use a text transform for these regions.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+p0balance - p9balance
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Used to identify a player's balance.
  It only makes sense to use a text transform for these regions.
  
 \end_layout
@@ -1422,7 +1383,32 @@ p0cardface0nocard - p9cardface1nocard
 \begin_inset Text
 
 \begin_layout Plain Layout
-!!!
+The nocard-regions determine if a player holds no card at all, no card-faces
+ and no cardbacks.
+ They got introduced for two reasons:
+\end_layout
+
+\begin_layout Itemize
+performance, because often the costly scraping of cardfaces can be avoided
+\end_layout
+
+\begin_layout Itemize
+better error-detection, because now all three possibilities (no cards, card-face
+s and card-backs can be explicitly scraped instead of implicitly returning
+ 
+\begin_inset Quotes eld
+\end_inset
+
+no card
+\begin_inset Quotes erd
+\end_inset
+
+ if the other two fail).
+ 
+\end_layout
+
+\begin_layout Plain Layout
+The best transformation is probably hash.
 \end_layout
 
 \end_inset
@@ -1662,6 +1648,33 @@ Step 1 : Ensure that the poker site uses static landings for all of the
 </cell>
 </row>
 <row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+tablepoint0 - tablepoint9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These optional regions can be used to distinguish casinos and tables that
+ can't be recognized by usual means, i.e.
+ by tablesize and titletexts only.
+ Tablepoints are usually colour-transforms that get placed at identifying
+ regions of the table.
+ In case tablepoints get used OpenHoldem will regularly check them again
+ and reconnect with a different tablemap in case of a changing table-theme
+ (final table in MTTs).
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
 <cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -1686,12 +1699,6 @@ These are alternatives to the p0active-p9active regions, and are used for
  If any other result is returned, such as "false", "inactive", "out" or
  "away", then the chair is not considered to be active.
  Results are case-insensitive.
- ubalance, u0balance - u9balance These are alternatives to the p0balance-p9balan
-ce regions, and are used for the player's seat.
- They are typically used when the player's seat changes appearance when
- it is the player's action, to avoid misscrapes due to change in color/size,
- whatever.
- It only makes sense to use a text transform for these regions.
  
 \end_layout
 

@@ -1,11 +1,11 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Part of the modular handhistory-generator.
 //   Not really a symbol-engine but it is convenient
@@ -16,7 +16,7 @@
 //   at appropriate moments to disk, both for
 //   real hand-histories and for the summary in the logs.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CHandHistoryWriter.h"
@@ -26,7 +26,7 @@
 #include "CPreferences.h"
 #include "CScraper.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
+
 
 CHandHistoryWriter *p_handhistory_writer = NULL;
 
@@ -48,29 +48,29 @@ CHandHistoryWriter::~CHandHistoryWriter() {
 void CHandHistoryWriter::InitOnStartup() {
 }
 
-void CHandHistoryWriter::ResetOnConnection() {
+void CHandHistoryWriter::UpdateOnConnection() {
 }
 
-void CHandHistoryWriter::ResetOnHandreset() {
+void CHandHistoryWriter::UpdateOnHandreset() {
   //write_log(true, "######## Test ################\n");
   WriteHistory();
 }
 
-void CHandHistoryWriter::ResetOnNewRound() {
+void CHandHistoryWriter::UpdateOnNewRound() {
 }
 
-void CHandHistoryWriter::ResetOnMyTurn() {
+void CHandHistoryWriter::UpdateOnMyTurn() {
   WriteHistory();
 }
 
-void CHandHistoryWriter::ResetOnHeartbeat() {
+void CHandHistoryWriter::UpdateOnHeartbeat() {
 }
 
 void CHandHistoryWriter::AddMessage(CString message) {
-  return;
   assert(_lines_collected < kMaxLines);
   _handhistory_data[_lines_collected] = message;
   ++_lines_collected;
+  return;
 }
 
 void CHandHistoryWriter::PostsSmallBlind(int chair) {
@@ -99,15 +99,15 @@ void CHandHistoryWriter::WinsUncontested(int chair) {
 
 CString CHandHistoryWriter::PlayerName(int chair) {
   assert(chair >= 0);
-  assert(chair <= k_last_chair);
-  return p_table_state->_players[chair]._name;
+  assert(chair <= kLastChair);
+  return p_table_state->Player(chair)->name();
 }
 
 // Should be called
 // * when a hand is over
 // * when it is my turn (summary in the log)
 void CHandHistoryWriter::WriteHistory() {
-  return;
+  return; //!!
   write_log_separator(true, "Summary (might be not accurate)");
   for (int i=0; i<_lines_collected; ++i) {
     write_log(true, (char*)(LPCTSTR)_handhistory_data[i]); 
@@ -116,7 +116,7 @@ void CHandHistoryWriter::WriteHistory() {
   _lines_collected = 0;
 }
 
-bool CHandHistoryWriter::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CHandHistoryWriter::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // No symbols provided
 	return false;
 }

@@ -1,0 +1,34 @@
+##f$Default_notes##
+//*****************************************************************************
+//
+// OpenPPL default bot
+//   This bot-logic will be executed on undefined situations
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 12.0.0 or later
+//
+//*****************************************************************************
+
+##DefaultPreflop##
+WHEN isomaha Fold FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Preflop FORCE
+
+##DefaultFlop##
+WHEN isomaha Fold FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Flop FORCE
+
+##DefaultTurn##
+WHEN isomaha Fold FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Turn FORCE
+
+##DefaultRiver##
+WHEN isomaha Fold FORCE
+WHEN Others RETURN Gecko_6Max_FR_NL_BSS_River FORCE

@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-03-18"/>
+<meta name="create-date" content="2017-01-18"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -128,7 +128,7 @@ In the Table Map (.tm) file, these records will be preceded with the characters 
 r$&lt;name&gt; &lt;left&gt; &lt;top&gt; &lt;right&gt; &lt;bottom&gt; &lt;color&gt; &lt;radius&gt; &lt;transform&gt;
 </div>
 <div class="Indented">
-&lt;name&gt; is the name of the record (see table below) &lt;left&gt;, &lt;top&gt;, &lt;right&gt; and &lt;bottom&gt; are integer values within the casino table, where the upper left corner of the client area is considered to be 0, 0 &lt;color&gt; is a 1-8 character hexadecimal number in the form AABBGGRR (Microsoft Window’s COLORREF format (<a class="FlexURL" href="!!!">!!!</a>)). The usage of the color value is dependent on the transform selected. &lt;radius&gt; is an RGB color distance. &lt;transform&gt; describes the engine algorithm that should be used to interpret the pixels in the region. 
+&lt;name&gt; is the name of the record (see table below) &lt;left&gt;, &lt;top&gt;, &lt;right&gt; and &lt;bottom&gt; are integer values within the casino table, where the upper left corner of the client area is considered to be 0, 0 &lt;color&gt; is a 1-8 character hexadecimal number in the form AABBGGRR (Microsoft Window’s COLORREF format (<a class="FlexURL" href="http://www.w3schools.com/colors/colors_names.asp">http://www.w3schools.com/colors/colors_names.asp</a>)). The usage of the color value is dependent on the transform selected. &lt;radius&gt; is an RGB color distance. &lt;transform&gt; describes the engine algorithm that should be used to interpret the pixels in the region. 
 </div>
 <h3 class="Subsection">
 <a class="toc" name="toc-Subsection-5"></a>Valid Transforms And Their Desciption
@@ -149,7 +149,7 @@ Description
 N (none)
 </td>
 <td align="left" valign="top" style="width: 85%;">
-This is used for those regions that do not need a transform as their only purpose is to describe a rectangle for use by the scraper engine. An example is button location (i0button - i9button) which informs the Autoplayer engine of the allowed rectangle for mouse clicks. 
+This is used for those regions that do not need a transform as their only purpose is to describe a rectangle for use by the scraper engine. An example is button location (i0button - iFbutton) which informs the Autoplayer engine of the allowed rectangle for mouse clicks. 
 </td>
 
 </tr>
@@ -268,15 +268,6 @@ Ten regions to specify where the game state engine should find the current handn
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-c0istournament
-</td>
-<td align="left" valign="top" style="width: 85%;">
-Used to identify if this table is a tournament game. Any transform can be used equally well with this region. If the result from this region’s transform is anything besides blank (empty string) then this region is considered to represent a tournament game. 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 15%;">
 c0smallblind 
 </td>
 <td align="left" valign="top" style="width: 85%;">
@@ -331,16 +322,16 @@ Identifies the region on the casino table where the limit information can be fou
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i0button - i9button
+i0button - i9button, iAbutton - iFbutton
 </td>
 <td align="left" valign="top" style="width: 85%;">
-Specifies the rectangular area in which the Autoplayer can click the mouse for each button 0-9.
+Specifies the rectangular area in which the Autoplayer can click the mouse for each of the 16 buttons.
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i0label - i9label
+i0label - i9label, iAlabel - iFlabel
 </td>
 <td align="left" valign="top" style="width: 85%;">
 <div class="PlainVisible">
@@ -350,7 +341,7 @@ i0label - i9label
 
 </div>
 <div class="PlainVisible">
-Specifies the action that should be associated with buttons 0-9. By default, and if not overridden here, button 0 will be interpreted as the fold button, 1 as the call button, 2 as the raise button and 3 as the allin button. <br/>
+Specifies the action that should be associated with buttons the 16 buttons. There are no defauls, so every button needs a label. <br/>
 The return value from the transformation of this region (hash or text) will determine how the scraper engine interprets the button. All values are changed to lowercase and have spaces and ’-’ removed. Only the leftmost characters will be tested "allin", "a11in", "allln", "a111n", "aiiin" : button is seen as the allin button "raise", "ra1se", "ralse", "bet" : button is seen as the raise button "call", "caii", "ca11" : button is seen as the call button "check" : button is seen as the check button "fold", "fo1d", "foid" : button is seen as the fold button "autopost", "aut0p0st" : button is seen as the autopost button "sitin", "s1t1n" : button is seen as the sitin button "sitout", "s1tout", "sit0ut", "s1t0ut" : button is seen as the sitout button "leave" : button is seen as the leave button "prefold" : button is seen as the prefold button <br/>
 Examples: "All-In" will be recognized as allin; "Auto-post blinds" will be recognized as autopost 
 </div>
@@ -360,19 +351,10 @@ Examples: "All-In" will be recognized as allin; "Auto-post blinds" will be recog
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i0labelY - i9labelY Where Y = 0 - 9.
+i0state - i9state, iAstate - iFstate
 </td>
 <td align="left" valign="top" style="width: 85%;">
-As an adjunct to the iXlabel regions, the iXlabelY region definitions allow the specification of an alternative location with alternate properties, such as color, for any button. The specification of these regions is exactly as that of the iXlabel regions with an addition of a numeric (0 - 9) suffix. The iXlabel regions are searched first, then the iXlabelY regions. The first region that resolves to a text value will stop any subsequent evaluations. 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 15%;">
-i0state - i9state
-</td>
-<td align="left" valign="top" style="width: 85%;">
-Specifies whether the button0 - button9 is live and available to be clicked. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive.
+Specifies whether the corresponding button is live and available to be clicked. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive.
 </td>
 
 </tr>
@@ -381,13 +363,13 @@ Specifies whether the button0 - button9 is live and available to be clicked. The
 i3edit
 </td>
 <td align="left" valign="top" style="width: 85%;">
-Specifies the rectangular region that can be used for entering a SWAG bet. 
+Specifies the rectangular region that can be used for entering a betsize. 
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i86button, i860button - i869button
+i860button - i869button
 </td>
 <td align="left" valign="top" style="width: 85%;">
 Similar to the i0button - i9button regions, however these regions are intended to be used to combat spam/popups that could occlude the poker window. If the corresponding state region returns true, the Autoplayer will try to click in this region to dismiss the spam/popup. 
@@ -396,10 +378,10 @@ Similar to the i0button - i9button regions, however these regions are intended t
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-i86state, i860state - i869state
+i860state - i869state
 </td>
 <td align="left" valign="top" style="width: 85%;">
-The corresponding state regions for the i86button, i860button - i869button regions above. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive. p0active - p9active Used to determine if a player is active (sitting in) or not (sitting out). Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. 
+The corresponding state regions for the i86button, i860button - i869button regions above. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive. 
 </td>
 
 </tr>
@@ -468,10 +450,10 @@ mtt_smallest_stack
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
-p0balance - p9balance
+p0active - p9active
 </td>
 <td align="left" valign="top" style="width: 85%;">
-Used to identify a player’s balance. It only makes sense to use a text transform for these regions. 
+Used to determine if a player is active (sitting in) or not (sitting out). Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. 
 </td>
 
 </tr>
@@ -481,6 +463,15 @@ p0bet - p9bet
 </td>
 <td align="left" valign="top" style="width: 85%;">
 Used to identify a player’s bet. It only makes sense to use a text transform for these regions. 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+p0balance - p9balance
+</td>
+<td align="left" valign="top" style="width: 85%;">
+Used to identify a player’s balance. It only makes sense to use a text transform for these regions. 
 </td>
 
 </tr>
@@ -516,7 +507,22 @@ The second card for seats 0-9; represents the entire card. The best transformati
 p0cardface0nocard - p9cardface1nocard
 </td>
 <td align="left" valign="top" style="width: 85%;">
-!!!
+<div class="PlainVisible">
+The nocard-regions determine if a player holds no card at all, no card-faces and no cardbacks. They got introduced for two reasons:
+</div>
+<ul>
+<li>
+performance, because often the costly scraping of cardfaces can be avoided
+</li>
+<li>
+better error-detection, because now all three possibilities (no cards, card-faces and card-backs can be explicitly scraped instead of implicitly returning &ldquo;no card&rdquo; if the other two fail). 
+</li>
+
+</ul>
+<div class="PlainVisible">
+The best transformation is probably hash.
+</div>
+
 </td>
 
 </tr>
@@ -601,10 +607,19 @@ Step 1 : Ensure that the poker site uses static landings for all of the chip st
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 15%;">
+tablepoint0 - tablepoint9
+</td>
+<td align="left" valign="top" style="width: 85%;">
+These optional regions can be used to distinguish casinos and tables that can’t be recognized by usual means, i.e. by tablesize and titletexts only. Tablepoints are usually colour-transforms that get placed at identifying regions of the table. In case tablepoints get used OpenHoldem will regularly check them again and reconnect with a different tablemap in case of a changing table-theme (final table in MTTs).
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
 u0active - u9active
 </td>
 <td align="left" valign="top" style="width: 85%;">
-These are alternatives to the p0active-p9active regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. ubalance, u0balance - u9balance These are alternatives to the p0balance-p9balance regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. It only makes sense to use a text transform for these regions. 
+These are alternatives to the p0active-p9active regions, and are used for the player’s seat. They are typically used when the player’s seat changes appearance when it is the player’s action, to avoid misscrapes due to change in color/size, whatever. Any transform can be used equally well with this region. If the leftmost characters of the result from this region’s transform are either “true” or “active”, then the region is considered to be active. If any other result is returned, such as "false", "inactive", "out" or "away", then the chair is not considered to be active. Results are case-insensitive. 
 </td>
 
 </tr>
@@ -676,10 +691,6 @@ These regions are alternatives to the p0seated-p9seated regions, and are used fo
 
 </div>
 
-<hr class="footer"/>
-<div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-03-18T15:16:18.578000</span>
-</div>
 </div>
 </body>
 </html>

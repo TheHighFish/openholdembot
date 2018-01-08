@@ -1,15 +1,16 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
-// Purpose:
+// Purpose: versus-symbols, winning probability against hand-lists.
+//   HoldEm only, not Omaha.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineVersus.h"
@@ -18,26 +19,26 @@
 #include <fcntl.h>
 #include "CardFunctions.h"
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "inlines/eval.h"
-#include "CFilenames.h"
 #include "CFunctionCollection.h"
+#include "CParseErrors.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "COHScriptList.h"
 
-CSymbolEngineVersus *p_symbol_engine_versus = NULL;
+const int kNTotal = 1712304;
 
 CSymbolEngineVersus::CSymbolEngineVersus() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_userchair != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
   // Check versus.bin
-  _sopen_s(&_versus_fh, p_filenames->VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
+  _sopen_s(&_versus_fh, VersusPath(), _O_RDONLY | _O_BINARY, _SH_DENYWR, NULL);
 	if (_versus_fh == kUndefined) {
 		// We do no longer warn directly, 
 		// but only when versus symbols get used without the file.
@@ -53,19 +54,19 @@ CSymbolEngineVersus::~CSymbolEngineVersus() {
 void CSymbolEngineVersus::InitOnStartup() {
 }
 
-void CSymbolEngineVersus::ResetOnConnection() {
+void CSymbolEngineVersus::UpdateOnConnection() {
 }
 
-void CSymbolEngineVersus::ResetOnHandreset() {
+void CSymbolEngineVersus::UpdateOnHandreset() {
 }
 
-void CSymbolEngineVersus::ResetOnNewRound() {
+void CSymbolEngineVersus::UpdateOnNewRound() {
 }
 
-void CSymbolEngineVersus::ResetOnMyTurn() {
+void CSymbolEngineVersus::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineVersus::ResetOnHeartbeat() {
+void CSymbolEngineVersus::UpdateOnHeartbeat() {
   GetCounts();
 }
 
@@ -93,7 +94,7 @@ void CSymbolEngineVersus::DoCalc(const CardMask plCards, const CardMask oppCards
 
 bool CSymbolEngineVersus::CheckForLoadedVersusBin() {
 	if (_versus_bin_not_loaded)	{
-		OH_MessageBox_Error_Warning("Impossible to use versus-symbols.\n"
+		MessageBox_Error_Warning("Impossible to use versus-symbols.\n"
 			"Versus.bin not loaded and probably not installed.\n"
 			"Please download this file from our download page:\n"
       "https://sites.google.com/site/openholdempokerbot/downloads", 
@@ -126,18 +127,16 @@ bool CSymbolEngineVersus::GetCounts() {
 	int				listnum = 0;
 	
 	int betround = p_betround_calculator->betround();
-	int sym_userchair = p_symbol_engine_userchair->userchair();
-
-	for (int i=0; i<kNumberOfCardsPerPlayer; i++) {
-    card_player[i] = p_table_state->_players[sym_userchair]._hole_cards[i].GetValue();
+	for (int i=0; i<kNumberOfCardsPerPlayerHoldEm; i++) {
+    card_player[i] = p_table_state->User()->hole_cards(i)->GetValue();
   }
 	for (int i=0; i<kNumberOfCommunityCards; i++) {
-    card_common[i] = p_table_state->_common_cards[i].GetValue();
+    card_common[i] = p_table_state->CommonCards(i)->GetValue();
   }
   // Get the lock
 	CSLock lock(m_critsec);
   ClearWinTieLosData();
-	if (!p_symbol_engine_userchair->userchair_confirmed()) return false;
+	if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed()) return false;
 
   if (!p_table_state->User()->HasKnownCards()) return false;
 
@@ -179,24 +178,24 @@ bool CSymbolEngineVersus::GetCounts() {
 				  memcpy(&lostemp, &byte[4], sizeof(unsigned int));
 
 				  _nwin += wintemp;
-				  _ntie += 1712304 - wintemp - lostemp;
+				  _ntie += kNTotal - wintemp - lostemp;
 				  _nlos += lostemp;
 				  _nhands = _nhands + 1;
 
 				  if (wintemp<lostemp) {
 					  _nhandshi = _nhandshi + 1;
 					  nhiwin += wintemp;
-					  nhitie += 1712304 - wintemp - lostemp;
+					  nhitie += kNTotal - wintemp - lostemp;
 					  nhilos += lostemp;
 				  } else if (wintemp>lostemp) {
 					  _nhandslo = _nhandslo + 1;
 					  nlowin += wintemp;
-					  nlotie += 1712304 - wintemp - lostemp;
+					  nlotie += kNTotal - wintemp - lostemp;
 					  nlolos += lostemp;
 				  } else {
 					  _nhandsti = _nhandsti + 1;
 					  ntiwin += wintemp;
-					  ntitie += 1712304 - wintemp - lostemp;
+					  ntitie += kNTotal - wintemp - lostemp;
 					  ntilos += lostemp;
 				  }
 
@@ -209,7 +208,8 @@ bool CSymbolEngineVersus::GetCounts() {
 					  c1rank = temprank;
 				  }
 				  _n_win_against_hand[i][j] = wintemp;
-          _n_tie_against_hand[i][j] = tietemp;
+				  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=21301
+          _n_tie_against_hand[i][j] = kNTotal - wintemp - lostemp;
           _n_los_against_hand[i][j] = lostemp;
 			  }
 		  }
@@ -392,7 +392,7 @@ bool CSymbolEngineVersus::GetCounts() {
 void CSymbolEngineVersus::ErrorInvalidSymbol(CString name) {
   CString message;
   message.Format("Not a valid versus-symbol: %s", name);
-  OH_MessageBox_Formula_Error(message, "Error");
+  CParseErrors::MessageBox_Formula_Error(message, "Error");
 }
 
 bool CSymbolEngineVersus::EvaluateVersusHandListSymbol(const char *name, double *result, bool log /* = false */) {
@@ -510,7 +510,7 @@ bool CSymbolEngineVersus::EvaluateVersusMultiplexSymbol(const char *name, double
   return EvaluateVersusHandListSymbol(vs_list, result, log);
 }
 
-bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineVersus::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "vs$", 3) != 0) {
     // Not a versus symbol
@@ -576,7 +576,7 @@ bool CSymbolEngineVersus::EvaluateSymbol(const char *name, double *result, bool 
     bool valid_symbol = EvaluateVersusMultiplexSymbol(name, result, log);
     return valid_symbol;
   } else if (isdigit(name[3])) {
-    OH_MessageBox_Formula_Error(
+    CParseErrors::MessageBox_Formula_Error(
       "Old style versus-list format, like vs$123$win.\n"
       "No longer valid, as we do no longer have 1000 lists,\n"
       "but arbitrary many named lists.\n"

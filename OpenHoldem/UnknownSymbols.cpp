@@ -1,22 +1,22 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Warning about unknown (erroneaous) and outdated symbols
 //   Is not able to care about wrong function names; this has to be handled
 //   by CFormula::WarnAboutOutdatedConcepts().
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "UnknownSymbols.h"
-
-#include "OH_MessageBox.h"
+#include "CParseErrors.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 char *title_outdated_symbol = "ERROR: outdated symbol";
 
@@ -174,6 +174,10 @@ char *outdated_symbol_originaldealposition =
   "because there was no longer any need for it\n"
   "after making dealposition persistent.\n";
 
+char *outdated_symbols_didswag =
+  "The symbols \"didswag\" and \"didswagroundN\" got renamed\n"
+  "to \"didbetsize\" and \"didbetsizeroundN\".\n";
+
 char *outdated_symbol_ac_aggressor =
   "The symbol \"originaldealposition\" got removed from the code base\n"
   "because it provided the same functionality as \"raischair\".\n";
@@ -203,158 +207,162 @@ bool IsOutdatedSymbol(CString symbol) {
   switch (first_character) {
     case 'a':
       if (symbol == "ac_aggressor ") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_ac_aggressor, title_outdated_symbol);
+        CParseErrors::MessageBox_Formula_Error(outdated_symbol_ac_aggressor, title_outdated_symbol);
 	    return true;
       }
       if ((symbol == "allidelay") || (symbol == "activemethod")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
 	    return true;
       }
     case 'b':
       if (symbol == "br") {
-	    OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	    CParseErrors::MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
 	    return true;
       }
       if (symbol == "bankroll") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
 	      return true;
       } 
     case 'c': 
       if (symbol == "chair") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "callshort") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_callshort_raisshort, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_callshort_raisshort, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "clocks") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_clocks, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_clocks, title_outdated_symbol);
 	      return true;
       }
     case 'd':
       if (symbol == "defcon") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
 	      return true;
       } 
     case 'e':
       if (symbol == "elapsed1970") {
-	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
 	      return true;
       }
     case 'f':
       if (symbol.Left(7) == "friends") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_friends, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_friends, title_outdated_symbol);
 	      return true;
       }
     case 'h':
       if (symbol == "handrank") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_handrank, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_handrank, title_outdated_symbol);
 	      return true;
       }
     case 'i': 
       if ((symbol == "islistcall") || (symbol == "islistrais") 
 	        || (symbol == "islistalli") || (symbol == "isemptylistcall") 
 	        || (symbol == "isemptylistrais") || (symbol == "isemptylistalli")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
 	      return true;
       }
       if (symbol.Left(6) == "islist") {
-        OH_MessageBox_Formula_Error(outdated_symbols_islist_symbols, title_outdated_symbol);
+        CParseErrors::MessageBox_Formula_Error(outdated_symbols_islist_symbols, title_outdated_symbol);
         return true;
       }
       if ((symbol == "isbring") || (symbol == "ismanual")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_isbring_ismanual, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_isbring_ismanual, title_outdated_symbol);
 	      return true;
       }
       if ((symbol == "isfiveofakind") || (symbol == "isaggmode") 
 	       || (symbol == "isdefmode")) {
-	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
 	      return true;
       }
     case 'm':
       if (symbol.Left(3) == "mh_") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_handstrength, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_handstrength, title_outdated_symbol);
 	      return true;
       }
     case 'n':
       if ((symbol == "nlistmax") || (symbol == "nlistmin")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_lists, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "nopponents") {
-        OH_MessageBox_Formula_Error(outdated_symbol_nopponents, title_outdated_symbol);
+        CParseErrors::MessageBox_Formula_Error(outdated_symbol_nopponents, title_outdated_symbol);
         return true;
       }
       if (symbol == "nopponentsmax") {
-	      OH_MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_various_symbols, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "nopponentsraising") {
-        OH_MessageBox_Formula_Error(outdated_symbol_nopponentsraising, title_outdated_symbol);
+        CParseErrors::MessageBox_Formula_Error(outdated_symbol_nopponentsraising, title_outdated_symbol);
         return true;
       }
       if (symbol == "ncommoncardspresent") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_ncommoncardspresent, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_ncommoncardspresent, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "nclockspersecond") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_clocks, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_clocks, title_outdated_symbol);
 	      return true;
       }
       if ((symbol == "ncps") || (symbol == "nflopc")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
 	      return true;
       }
       if (symbol.Left(8) == "nfriends") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_friends, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_friends, title_outdated_symbol);
 	      return true;
       }
     case 'o':
       if (symbol == "originaldealposition") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_originaldealposition, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_originaldealposition, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "oppdealt") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_br_ncps_nflopc_chair, title_outdated_symbol);
 	      return true;
       }
     case 'p':
       if (symbol.Left(3) == "ptt") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_ptt, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_ptt, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "potdelay") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
 	      return true;
       }
     case 'r':
       if (symbol == "raisshort") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_callshort_raisshort, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_callshort_raisshort, title_outdated_symbol);
 	      return true;
       }
       if (// Attention: "randomround" is valid
 	      // Only randomround1..rnadomround4 are outdated
 	      (symbol.GetLength() == 12) && (symbol.Left(11) == "randomround")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_randomround, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_randomround, title_outdated_symbol);
 	      return true;
       }
       if ((symbol.Left(4) == "run$") || (symbol.Left(4) == "ron$")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_runron, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_runron, title_outdated_symbol);
 	      return true;
       }
       if (symbol == "rake") {
-	      OH_MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_bankroll_rake_defcon, title_outdated_symbol);
 	      return true;
       } 
     case 's': 
       if ((symbol == "swagdelay") || (symbol == "swagtextmethod")) {
-	      OH_MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_tablemap, title_outdated_symbol);
+	      return true;
+      }
+      if (symbol.Left(7) == "didswag") {
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbols_didswag, title_outdated_symbol);
 	      return true;
       }
     case 'N':
       if (symbol == "NIT") {
-	      OH_MessageBox_Formula_Error(outdated_symbol_NIT, title_outdated_symbol);
+	      CParseErrors::MessageBox_Formula_Error(outdated_symbol_NIT, title_outdated_symbol);
 	      return true;
       }
     default: 
@@ -369,12 +377,12 @@ void WarnAboutUnknownSymbol(CString symbol) {
   if (symbol == "") {
     CString error_message = CString("Empty symbol in CGrammar::EvaluateSymbol()\n")
       + CString("This is most probably an incorrect lookup from a DLL.\n");
-    OH_MessageBox_Formula_Error(error_message, title_unknown_symbol);
+    CParseErrors::MessageBox_Formula_Error(error_message, title_unknown_symbol);
     return;
   }
   // Unknown symbol -- general warning
   CString error_message = CString("Unknown symbol in CGrammar::EvaluateSymbol(): \"")
     + symbol + CString("\"\nThis is most probably a typo in the symbols name.\n")
   + CString("Please check your formula and your DLL.");
-  OH_MessageBox_Formula_Error(error_message, title_unknown_symbol);
+  CParseErrors::MessageBox_Formula_Error(error_message, title_unknown_symbol);
 }

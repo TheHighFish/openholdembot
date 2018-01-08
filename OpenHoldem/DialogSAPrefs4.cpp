@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs4.cpp : implementation file
 //
@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs4.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 // CDlgSAPrefs4 dialog
 
@@ -68,7 +68,7 @@ void CDlgSAPrefs4::OnOK()
 
 	m_ScrapeDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<MIN_SCRAPEDELAY || strtoul(text.GetString(), 0, 10)>MAX_SCRAPEDELAY) {
-		OH_MessageBox_Interactive("Invalid Scrape Delay", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Scrape Delay", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_scrape_delay, strtoul(text.GetString(), 0, 10));

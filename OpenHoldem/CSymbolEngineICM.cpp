@@ -1,34 +1,31 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 /*
 	   Author	:	spud
 	   Date		:	2007-MAR-08
-
 	  Notation: P(i,n)=probability that player i finishes in nth place
 	  P(w|z)=probability that w occurs given that z occurs
 	  I=i's stack
 	  T=SUM[I]
-
 	  P(i,1)=I/T
 	  P(i,n)=SUM(j!=i)[P(j,1)*P(i,n|j,1)]
-
 	  ICM assumes that P(i,n|j,1) = (P(i,n-1) in a game where j has been removed)
 */
 
 #include "stdafx.h"
 #include "CSymbolEngineICM.h"
-
+#include "CEngineContainer.h"
 #include "CFunctionCollection.h"
 #include "CPreferences.h"
 #include "CScraper.h"
@@ -39,22 +36,21 @@
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEnginePokerAction.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
-#include "OH_MessageBox.h"
 
-CSymbolEngineICM *p_symbol_engine_icm = NULL;
+
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CSymbolEngineICM::CSymbolEngineICM() {
   // The values of some symbol-engines depend on other engines.
-	// As the engines get later called in the order of initialization
-	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_blinds != NULL);
-  assert(p_symbol_engine_chip_amounts != NULL);
-  assert(p_symbol_engine_dealerchair != NULL);
-  assert(p_symbol_engine_userchair != NULL);
+  // As the engines get later called in the order of initialization
+  // we assure correct ordering by checking if they are initialized.
+  assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_blinds() != NULL);
+  assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+  assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
 }
 
 CSymbolEngineICM::~CSymbolEngineICM() {
@@ -63,19 +59,19 @@ CSymbolEngineICM::~CSymbolEngineICM() {
 void CSymbolEngineICM::InitOnStartup() {
 }
 
-void CSymbolEngineICM::ResetOnConnection() {
+void CSymbolEngineICM::UpdateOnConnection() {
 }
 
-void CSymbolEngineICM::ResetOnHandreset() {
+void CSymbolEngineICM::UpdateOnHandreset() {
 }
 
-void CSymbolEngineICM::ResetOnNewRound() {
+void CSymbolEngineICM::UpdateOnNewRound() {
 }
 
-void CSymbolEngineICM::ResetOnMyTurn() {
+void CSymbolEngineICM::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineICM::ResetOnHeartbeat() {
+void CSymbolEngineICM::UpdateOnHeartbeat() {
 }
 
 double P(int i, int n, double *s, int N)
@@ -113,95 +109,115 @@ double P(int i, int n, double *s, int N)
 
 int CSymbolEngineICM::GetChairFromDealPos(const char* name)
 {
-	int	sym_playersseatedbits =	p_symbol_engine_active_dealt_playing->playersseatedbits();
-	int	sym_nplayersseated =	p_symbol_engine_active_dealt_playing->nplayersseated();
-	int	sym_dealerchair =		p_symbol_engine_dealerchair->dealerchair();
-	int	sym_nplayersblind =		p_symbol_engine_blinds->nplayersblind();
-	int	chair = -1, sb_offset = 1, hu_offset = 0, eb_offset = 1;
-
-	if (sym_playersseatedbits&k_exponents[sym_dealerchair])
-		eb_offset = 0;
-		
-	// if 2 players posted blinds, no sb_offset
-	if (sym_nplayersblind == 2)
-		sb_offset = 0;
-
-	else if (sym_nplayersblind < 2)
-	{
-		for (int i=sym_dealerchair+1; i<=sym_dealerchair+p_tablemap->nchairs(); i++)
-		{
-			int next_chair = i%p_tablemap->nchairs();
-			double p_bet = p_table_state->_players[next_chair]._bet;
-
-			if (p_bet > 0 && p_bet <= p_symbol_engine_tablelimits->sblind())
-				sb_offset = 0;
-		}
-	}
-
-	// If only 2 players active, we are HU.
-	if (sym_nplayersseated == 2 && eb_offset == 0)
-	{
-		sb_offset = 0;
-		hu_offset = 1;
-	}
-	// If empty button reset other possible offsets
-	if (eb_offset == 1)
-	{
-		sb_offset = 0;
-		hu_offset = 0;
-	}
-
-	if (sym_nplayersseated > 0)
-	{
-		int dealPos = -1;
+	int	sym_nplayersseated =	p_engine_container->symbol_engine_active_dealt_playing()->nplayersseated();
+	int	sym_dealerchair =		p_engine_container->symbol_engine_dealerchair()->dealerchair();
+	int nchairs =               p_tablemap->nchairs();
+	int	chair = -1;
 
 		if (strcmp(name,"SB")==0)
 		{
-			if (sb_offset == 0) dealPos = 1 - eb_offset - hu_offset;
+			if (sym_nplayersseated==2)
+			{
+				chair = sym_dealerchair;
+			}
+			else if (sym_nplayersseated>=3)
+			{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==1)
+					chair = i;
+			}
+		    }
 		}
 		else if (strcmp(name,"BB")==0)
-			dealPos = 2 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG")==0)
-			dealPos = 3 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG1")==0)
-			dealPos = 4 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG2")==0)
-			dealPos = 5 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG3")==0)
-			dealPos = 6 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG4")==0)
-			dealPos = 7 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG5")==0)
-			dealPos = 8 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"UTG6")==0)
-			dealPos = 9 - eb_offset - sb_offset - hu_offset;
-		else if (strcmp(name,"D")==0)
 		{
-			if (eb_offset == 0) dealPos = 0;
-		}
-		else if (strcmp(name,"CO")==0)
-			dealPos = sym_nplayersseated - 1 - eb_offset;
-
-		if (dealPos >= 0)
-		{
-			chair = sym_dealerchair;
-			while (dealPos >= ( eb_offset == 0 ? 1 : 0 ))
+			if (sym_nplayersseated==2)
 			{
-				chair = (chair + 1) % k_max_number_of_players;
-				if (IsBitSet(sym_playersseatedbits, chair))
-					dealPos--;
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==1)
+					chair = i;
+			}
+		    }
+			else if (sym_nplayersseated>=3)
+			{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==2)
+					chair = i;
+			}
 			}
 		}
-	}
+		
+		else if ((strcmp(name,"UTG")==0) && (sym_nplayersseated >=10)){
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-7))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG1")==0) && (sym_nplayersseated >=9))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-6))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG2")==0) && (sym_nplayersseated >=8))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-5))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG3")==0) && (sym_nplayersseated >=7))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-4))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG4")==0) && (sym_nplayersseated >=6))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-3))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG5")==0) && (sym_nplayersseated >=5))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-2))
+					chair = i;
+			}
+		}
+		else if ((strcmp(name,"UTG6")==0) && (sym_nplayersseated >=4))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-1))
+					chair = i;
+			}
+		}
+		else if (strcmp(name,"D")==0)
+		{
+                 chair = sym_dealerchair;
+		}
+		else if ((strcmp(name,"CO")==0) && (sym_nplayersseated >=4))
+		{
+			for(int i =0; i<=nchairs; i++){
+				if(p_engine_container->symbol_engine_poker_action()->DealPosition(i)==(sym_nplayersseated-1))
+					chair = i;
+			}
+		}
 
 	return chair;
-}
+
+	}
+
+
+
 
 double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB, int player)
 {
 	double ICM = 0.0;
 
-	int			sym_opponentsseatedbits = p_symbol_engine_active_dealt_playing->opponentsseatedbits();
+	int			sym_opponentsseatedbits = p_engine_container->symbol_engine_active_dealt_playing()->opponentsseatedbits();
 
 	for (int i=0; i<playerNB; ++i) {
     write_log(preferences.debug_icm(),
@@ -217,7 +233,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	{
 		int place = 0;
 
-		for (int i = 0; i < k_max_number_of_players; i++)
+		for (int i = 0; i < kMaxNumberOfPlayers; i++)
 		{
 			if (IsBitSet(sym_opponentsseatedbits, i))
 			{
@@ -241,24 +257,24 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	return ICM;
 }
 
-bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineICM::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // Fast exit on other symbols
-  int	sym_userchair = p_symbol_engine_userchair->userchair();
+  int	sym_userchair = p_engine_container->symbol_engine_userchair()->userchair();
   if (memcmp(name, "icm", 3) != 0) return false;
 	if (sym_userchair == kUndefined) {
 		*result = 0.0;
     return true;
 	}
 
-  double		prizes[k_max_number_of_players] = {0};
-	double		stacks[k_max_number_of_players] = {0};
+  double		prizes[kMaxNumberOfPlayers] = {0};
+  double		stacks[kMaxNumberOfPlayers] = {0};
 
   int number_of_icm_prizes = k_icm_prize9 - k_icm_prize1 + 1;
   double sum_of_prizes = 0.0;
   for (int i=0; i<number_of_icm_prizes; ++i) {
     int function_name_index = k_icm_prize1 + i;
     prizes[i] = p_function_collection->Evaluate(
-      k_standard_function_names[function_name_index]);
+      k_standard_function_names[function_name_index], preferences.log_icm_functions());
     sum_of_prizes += prizes[i];
   }
   // Sanity check: sum of prizes should be ~1.00
@@ -267,33 +283,33 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
     error_message.Format("Incorrect f$icm_prizeX-functions.\n"
       "The sum of all values should be in the range (0..1].\n"
       "Current value: %.3f", sum_of_prizes);
-    OH_MessageBox_Error_Warning(error_message);
+    MessageBox_Error_Warning(error_message);
     *result = 0.0;
     return true;
   }
 
-	int			sym_opponentsplayingbits = p_symbol_engine_active_dealt_playing->opponentsplayingbits();
-	int			sym_nopponentsplaying = p_symbol_engine_active_dealt_playing->nopponentsplaying();
-	int			sym_nplayersseated = p_symbol_engine_active_dealt_playing->nplayersseated();
-	int			sym_playersseatedbits = p_symbol_engine_active_dealt_playing->playersseatedbits();
-	double	sym_pot = p_symbol_engine_chip_amounts->pot();
-	double	sym_call = p_symbol_engine_chip_amounts->call();
-	double	sym_currentbet[k_max_number_of_players]={0};
+	int		sym_opponentsplayingbits = p_engine_container->symbol_engine_active_dealt_playing()->opponentsplayingbits();
+	int		sym_nopponentsplaying = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying();
+	int		sym_nplayersseated = p_engine_container->symbol_engine_active_dealt_playing()->nplayersseated();
+	int		sym_playersseatedbits = p_engine_container->symbol_engine_active_dealt_playing()->playersseatedbits();
+	double	sym_pot = p_engine_container->symbol_engine_chip_amounts()->pot();
+	double	sym_call = p_engine_container->symbol_engine_chip_amounts()->call();
+	double	sym_currentbet[kMaxNumberOfPlayers]={0};
 
-	for (int i = 0; i < k_max_number_of_players; i++)
+	for (int i = 0; i < kMaxNumberOfPlayers; i++)
 	{
 		if (IsBitSet(sym_playersseatedbits, i))
 		{
-			stacks[i] = p_table_state->_players[i]._balance;
-			sym_currentbet[i] = p_symbol_engine_chip_amounts->currentbet(i);
+			stacks[i] = p_table_state->Player(i)->_balance.GetValue();
+			sym_currentbet[i] = p_table_state->Player(i)->_bet.GetValue();
 		}
 	}
 
 	if (strncmp(name,"icm_fold",8)==0)
 	{
-		double to_split = p_symbol_engine_chip_amounts->potcommon();
+		double to_split = p_engine_container->symbol_engine_chip_amounts()->potcommon();
 
-		for (int i = 0; i < k_max_number_of_players; i++)
+		for (int i = 0; i < kMaxNumberOfPlayers; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += sym_currentbet[i];
@@ -303,7 +319,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 
 		double win = to_split / sym_nopponentsplaying;
 
-		for (int i = 0; i < k_max_number_of_players; i++)
+		for (int i = 0; i < kMaxNumberOfPlayers; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 				stacks[i] += win;
@@ -318,7 +334,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (int i = 0; i < k_max_number_of_players; i++)
+			for (int i = 0; i < kMaxNumberOfPlayers; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) && 
 					myTotalBet < sym_currentbet[i])
@@ -340,7 +356,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 
 		stacks[sym_userchair] -= mycall;
 
-		for (int i = 0; i < k_max_number_of_players; i++)
+		for (int i = 0; i < kMaxNumberOfPlayers; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -357,7 +373,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		{
 			double myTotalBet = sym_currentbet[sym_userchair] + stacks[sym_userchair];
 
-			for (int i = 0; i < k_max_number_of_players; i++)
+			for (int i = 0; i < kMaxNumberOfPlayers; i++)
 			{
 				if (IsBitSet(sym_opponentsplayingbits, i) 
 					&& myTotalBet < sym_currentbet[i])
@@ -372,7 +388,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		sym_pot += min(sym_call, stacks[sym_userchair]);
 		win = sym_pot / (sym_nopponentsplaying +1);
 		stacks[sym_userchair] += win;
-		for (int i = 0; i < k_max_number_of_players; i++)
+		for (int i = 0; i < kMaxNumberOfPlayers; i++)
 		{
 			if (IsBitSet(sym_opponentsplayingbits, i))
 			{
@@ -386,16 +402,15 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		if (isdigit(name[11]))
 		{
 			//assume callers are n smallest stacks
-			bool callers[k_max_number_of_players] = {0};
-			int ncallers = min(name[11]-'0', sym_nopponentsplaying);
-
-
-			for (int i = 0; i < ncallers; i++)
+			bool callers[kMaxNumberOfPlayers] = {0};
+			int ncallers = min(RightDigitCharacterToNumber(name), sym_nopponentsplaying);
+      
+      for (int i = 0; i < ncallers; i++)
 			{
 				int jsmallest = -1;
 				double smalleststack = DBL_MAX;
 
-				for (int j = 0; j < k_max_number_of_players; j++)
+				for (int j = 0; j < kMaxNumberOfPlayers; j++)
 				{
 					if (IsBitSet(sym_opponentsplayingbits, j))
 					{
@@ -421,7 +436,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(name + 11);
+			int oppChair = GetChairFromDealPos(name.Mid(11));
 			if (oppChair == kUndefined || oppChair == sym_userchair) {
 				*result = kUndefined;
 				return true;
@@ -443,11 +458,11 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		if (isdigit(name[12]))
 		{
 			//assume callers are n biggest stacks
-			int ncallers = min(name[12]-'0', sym_nopponentsplaying);
+			int ncallers = min(RightDigitCharacterToNumber(name), sym_nopponentsplaying);
 
 			if (ncallers > 0)
 			{
-				bool callers[k_max_number_of_players] = {0};
+				bool callers[kMaxNumberOfPlayers] = {0};
 				int *biggest =(int *) calloc(ncallers, sizeof(int));
 				double *sidepots = (double *)calloc(ncallers, sizeof(double));
 				double mybet = 0.;
@@ -459,7 +474,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 					int jbiggest = -1;
 					double biggeststack = 0.;
 
-					for (int j = 0; j < k_max_number_of_players; j++)
+					for (int j = 0; j < kMaxNumberOfPlayers; j++)
 					{
 						if (IsBitSet(sym_opponentsplayingbits, j))
 						{
@@ -505,7 +520,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		else
 		{
 			//assume only one particular caller
-			int oppChair = GetChairFromDealPos(name + 12);
+			int oppChair = GetChairFromDealPos(name.Mid(12));
 			if (oppChair == kUndefined || oppChair == sym_userchair) {
 				*result = kUndefined;
 				return true;
@@ -525,7 +540,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 	else if (strncmp(name,"icm_allitie",11)==0)
 	{
 		//assume only one particular caller
-		int oppChair = GetChairFromDealPos(name + 11);
+		int oppChair = GetChairFromDealPos(name.Mid(11));
 		if (oppChair == kUndefined || oppChair == sym_userchair) {
 			*result = kUndefined;
 			return true;
@@ -539,11 +554,11 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 
 	else if(strcmp(name,"icm")==0)
 	{
-		for (int i = 0; i < k_max_number_of_players; i++)
+		for (int i = 0; i < kMaxNumberOfPlayers; i++)
 		{
 			if (IsBitSet(sym_playersseatedbits, i))
 			{
-				stacks[i] = p_symbol_engine_chip_amounts->stacks_at_hand_start(i);
+				stacks[i] = p_engine_container->symbol_engine_chip_amounts()->stacks_at_hand_start(i);
 			}
 	   }
 	}
@@ -554,7 +569,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const char *name, double *result, bool log
 		return false;
 	} 
 
-	*result = EquityICM(stacks, prizes, k_max_number_of_players, sym_userchair);
+	*result = EquityICM(stacks, prizes, kMaxNumberOfPlayers, sym_userchair);
 	return true;
 }
 
@@ -574,9 +589,8 @@ CString CSymbolEngineICM::SymbolsProvided() {
     "icm_allitieUTG2 icm_allitieUTG3 icm_allitieUTG4 icm_allitieUTG5 "
     "icm_allitieUTG6 icm_allitieCO icm_allitieD "
     // Losing allin against a particular opponent
-    "icm_allilosSB icm_allilosBB icm_allilosUTG icm_allilosUTG1 "
-    "icm_allilosUTG2 icm_allilosUTG3 icm_allilosUTG4 icm_allilosUTG5 "
-    "icm_allilosUTG6 icm_allilosCO icm_allilosD ";
+    "icm_alliloseSB icm_alliloseBB icm_alliloseUTG icm_alliloseUTG1 "
+    "icm_alliloseUTG2 icm_alliloseUTG3 icm_alliloseUTG4 icm_alliloseUTG5 "
+    "icm_alliloseUTG6 icm_alliloseCO icm_alliloseD ";
   return result;
 }
-

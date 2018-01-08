@@ -1,15 +1,16 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
-// Purpose:
+// Purpose: versus-symbols, winning probability against hand-lists.
+//   HoldEm only, not Omaha.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CSYMBOLENGINEVERSUS_H
 #define INC_CSYMBOLENGINEVERSUS_H
@@ -30,14 +31,14 @@ class CSymbolEngineVersus: public CVirtualSymbolEngine {
  public:
   // Mandatory reset-functions
   void InitOnStartup();
-  void ResetOnConnection();
-  void ResetOnHandreset();
-  void ResetOnNewRound();
-  void ResetOnMyTurn();
-  void ResetOnHeartbeat();
+  void UpdateOnConnection();
+  void UpdateOnHandreset();
+  void UpdateOnNewRound();
+  void UpdateOnMyTurn();
+  void UpdateOnHeartbeat();
  public:
   // Public accessors
-  bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  bool EvaluateSymbol(const CString name, double *result, bool log = false);
   bool EvaluateVersusHandListSymbol(const char *name, double *result, bool log = false);
   bool EvaluateVersusMultiplexSymbol(const char *name, double *result, bool log = false);
   CString SymbolsProvided();
@@ -72,11 +73,8 @@ private:
   int _n_tie_against_hand[kNumberOfCardsPerDeck][kNumberOfCardsPerDeck];
   int _n_los_against_hand[kNumberOfCardsPerDeck][kNumberOfCardsPerDeck];
  private:
-  
-  int card_player[kNumberOfCardsPerPlayer];
+  int card_player[kMaxNumberOfCardsPerPlayer];
   int card_common[kNumberOfCommunityCards];
 };
-
-extern CSymbolEngineVersus *p_symbol_engine_versus;
 
 #endif INC_CSYMBOLENGINEVERSUS_H

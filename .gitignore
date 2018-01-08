@@ -1,0 +1,36 @@
+*.db
+*.dll
+*.exe
+*.obj
+*.ilk
+*.pfb
+*.pdb
+*.exp
+*.jar
+*.lyx~
+*.lyx#
+*.user
+*.log
+*.tlog
+*.pch
+*.ipch
+*.manifest
+*.lastbuildstate
+*.opendb
+*.sdf
+*.suo
+*.vspx
+..bfg-report
+Debug
+DLLs/DLL_Template
+Documentation/OpenHoldem_Manual.chm
+Documentation/Chapters/titlepage/images/Temp
+Documentation/Chapters/titlepage/original_images
+OpenHoldem/Release - Optimized
+Release
+Release - Optimized
+scintilla/bin
+\.vs/OpenHoldem/v14/.suo
+\.vs/
+
+

@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -35,12 +35,10 @@ class CMainFrame : public CFrameWnd {
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnGroupregionsBytype();
 	afx_msg void OnGroupregionsByname();
-	afx_msg void OnViewUngroupregions();
 	afx_msg void OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditDuplicateregion(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateGroupregionsBytype(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateGroupregionsByname(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateViewUngroupregions(CCmdUI *pCmdUI);
 	void SaveBmpPbits(void);
 	DECLARE_MESSAGE_MAP()
 

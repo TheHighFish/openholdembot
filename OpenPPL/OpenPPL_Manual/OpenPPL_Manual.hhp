@@ -1,7 +1,7 @@
 [OPTIONS]
 Compatibility=1.1 or later
 Compiled file=OpenPPL_Manual.chm
-Contents file=Table of Contents.hhc
+Contents file=OpenPPL_Manual.hhc
 Default Font=10
 Default topic=Titlepage\TitlePage.htm
 Display compile progress=No

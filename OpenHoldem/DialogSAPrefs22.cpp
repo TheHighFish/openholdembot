@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs22.cpp : implementation file
 //
@@ -37,7 +37,6 @@ CDlgSAPrefs22::~CDlgSAPrefs22()
 void CDlgSAPrefs22::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-
 	DDX_Control(pDX, IDC_RADIO_POPUP_DISABLED, _popup_disabled);
 	DDX_Control(pDX, IDC_RADIO_POPUP_MINIMIZE, _popup_minimize);
 	DDX_Control(pDX, IDC_RADIO_POPUP_KILL, _popup_kill);

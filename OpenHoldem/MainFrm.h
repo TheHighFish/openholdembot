@@ -2,11 +2,11 @@
 #define INC_MAINFRM_H
 
 #include "..\CTablemap\CTablemap.h"
-#include "..\CCritSec\CCritSec.h"
+#include "..\Shared\CCritSec\CCritSec.h"
 
-#define		HWND_CHECK_TIMER				1
-#define		ENABLE_BUTTONS_TIMER			2
-#define		UPDATE_STATUS_BAR_TIMER			3
+#define HWND_CHECK_TIMER				1
+#define ENABLE_BUTTONS_TIMER    2
+#define UPDATE_STATUS_BAR_TIMER 3
 
 class CMainFrame : public CFrameWnd 
 {
@@ -21,15 +21,12 @@ protected: // create from serialization only
 	afx_msg void OnEditForceuserchair();
 	afx_msg void OnEditViewLog();
 	afx_msg void OnEditTagLog();
+  afx_msg void OnEditClearLog();
 	afx_msg void OnScraperOutput();
 	afx_msg void OnViewShootreplayframe();
   afx_msg void OnManualMode();
 	afx_msg void OnEditPreferences();
-	afx_msg void OnFileLoadOpenPPL();
 	afx_msg void OnFileLoadTableMap();
-	afx_msg void OnDllLoad();
-	afx_msg void OnBnClickedRedCircle();
-	afx_msg void OnBnClickedGreenCircle();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnUpdateStatus(CCmdUI *pCmdUI);
 	afx_msg void OnAutoplayer();
@@ -40,47 +37,29 @@ protected: // create from serialization only
 	afx_msg void OnUpdateMenuFileOpen(CCmdUI* pCmdUI);
   afx_msg void OnUpdateMenuFileEdit(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMenuFileLoadProfile(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuDllLoad(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateDllLoadspecificfile(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewMainToolbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewStatusbar(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateViewShootreplayframe(CCmdUI *pCmdUI);
   afx_msg void OnUpdateViewScraperOutput(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditForceuserchair(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateMenuPerlReloadFormula(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlCheckSyntax(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlEditMainFormula(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlLoad(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMenuPerlLoadSpecificFormula(CCmdUI* pCmdUI);
 
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnDllLoadspecificfile();
-	afx_msg void OnPerlLoadFormula();
-	afx_msg void OnPerlLoadSpecificFormula();
-	afx_msg void OnPerlEditMainFormula();
-	afx_msg void OnPerlCheckSyntax();
-	afx_msg void OnPerlReloadFormula();
 	afx_msg void OnHelpProblemSolver();
 public:
 	afx_msg void OnHelp();
 	afx_msg void OnHelpOpenPPL();
 	afx_msg void OnHelpForums();
-
 public:
-  void StartTimer();
-  void KillTimer();
-
+  void KillTimers();
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~CMainFrame();
 	virtual BOOL DestroyWindow();
-	void	OpenHelpFile(CString windows_help_file_chm);
 	CString	_exec_filename;
-
 public:
 	// public accessors
 	const bool wait_cursor() { return _wait_cursor; }
-
 public:
 	void DisableButtonsOnConnect();
 	void EnableButtonsOnDisconnect();

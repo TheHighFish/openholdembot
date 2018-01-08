@@ -1,16 +1,15 @@
-//********************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//********************************************************************************
+//*******************************************************************************
 //
 // Purpose:
 //
-//********************************************************************************
-
+//*******************************************************************************
 
 #include "StdAfx.h"
 #include "CTablemap.h"
@@ -18,15 +17,17 @@
 #include <assert.h>
 #include <Math.h>
 #include "../CTransform/CTransform.h"
-#include "../OpenHoldem/OH_MessageBox.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 #ifdef OPENHOLDEM_PROGRAM
-#include "../OpenHoldem/debug.h"
+#include "../DLLs/Debug_DLL/debug.h"
 #include "../OpenHoldem/CPreferences.h"
 #endif
 
 #ifdef OPENSCRAPE_PROGRAM
 #include "../OpenScrape/debug.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 #endif
 
 CTablemap			*p_tablemap = NULL;
@@ -37,6 +38,20 @@ CTablemap::CTablemap(void) {
 
 CTablemap::~CTablemap(void) {
 	ClearTablemap();
+}
+
+bool CTablemap::SupportsOmaha() {
+  // Checkling for more cards than necessary for HoldEm
+  // Checking player0 which exists in every tablemap.
+  if (ItemExists("p0cardface2")) {
+    // Additional card-faces supported
+    return true;
+  }
+  if (ItemExists("p0cardface2rank")) {
+    // Additional card-ranks (and suits) supported
+    return true;
+  }
+  return false;
 }
 
 int CTablemap::GetTMSymbol(CString name, int default)
@@ -57,8 +72,16 @@ int CTablemap::GetTMSymbol(CString name, int default)
 		// not found
 		return default;
 	}
+  //!!!!!! Here sometimes problem, it seems to point into nirvana
+  // maybe fixed in 11.1.0
+#ifdef OPENHOLDEM_PROGRAM
+  write_log(preferences.debug_alltherest(), "[CTablemap] location Johnny_S\n");
+#endif
 	CString value = it->second.text.GetString();
 	CString s = value.MakeLower();
+#ifdef OPENHOLDEM_PROGRAM
+  write_log(preferences.debug_alltherest(), "[CTablemap] location Johnny_T\n");
+#endif
 	// "sgl click" and "single", "dbl click" and "double"
 	// are inconsistent naming, but can now be used interchangeably
 	// as the named constants have the same value
@@ -91,6 +114,24 @@ CString CTablemap::GetTMSymbol(CString name)
 	SMapCI it = _s$.find(name); 
 	if (it==_s$.end()) return "";
 	return it->second.text.GetString();
+}
+
+void CTablemap::GetTMRegion(const CString name, RECT *region) {
+  RMapCI it = _r$.find(name);
+  if (it == _r$.end()) {
+#ifdef OPENHOLDEM_PROGRAM
+   write_log(preferences.debug_tablemap_loader(), "[CTablemap] Could not find region %s\n", name);
+#endif
+    region->bottom = kUndefined;
+    region->left = kUndefined;
+    region->right = kUndefined;
+    region->top = kUndefined;
+  } else {
+    region->bottom = it->second.bottom;
+    region->left = it->second.left;
+    region->right = it->second.right;
+    region->top = it->second.top;
+  }
 }
 
 #define ENT CSLock lock(m_critsec);
@@ -143,6 +184,7 @@ void CTablemap::ClearTablemap() {
 	_valid = false;
 	_filepath = "";
 	_filename = "";
+  _nchairs = kUndefinedZero;
 	_z$.clear();
 	_s$.clear();
 	_r$.clear();
@@ -159,11 +201,40 @@ void CTablemap::ClearTablemap() {
 	ClearIMap();
 }
 
-void CTablemap::WarnAboutGeneralTableMapError(int error_code, int line)
+void CTablemap::WarnAboutGeneralTableMapError(int line, int error_code)
 {
 	CString error;
-	error.Format("Error code: %d  line: %d", error_code, line);
-	OH_MessageBox_Error_Warning(error, "Table map load error");
+	error.Format("Error code: %d  line: %d\n", error_code, line);
+  switch (error_code) {
+  case ERR_EOF:
+    error += "Unexpected end of file";
+    break;
+  case ERR_SYNTAX:					  
+    error += "Syntax error";
+    break;
+  case ERR_VERSION:					  
+    error += "Unsupported file version";
+    break;
+  case ERR_NOTMASTER:				  
+    error += "Not a master file";
+    break;
+  case ERR_HASH_COLL:				  
+    error += "Hash collision";
+    break;
+  case ERR_REGION_SIZE:				
+    error += "Invalid region size";
+    break;
+  case ERR_UNK_LN_TYPE:				
+    error += "Unknown line type";
+    break;
+  case ERR_INV_HASH_TYPE:			
+    error += "Invalid hash type";
+    break;
+  case ERR_INCOMPLETEMASTER:  
+    error += "Incomplete master file";
+    break;
+  }
+	MessageBox_Error_Warning(error, "Table map load error");
 }
 
 bool CTablemap::ItemExists(CString name) {
@@ -196,14 +267,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] Loadtablemap: %s\n", _fname);
 #endif
-
 	CString		strLine = "", strLineType = "", token = "", s = "", e = "", hexval = "", t = "";
 	CString		MaxFontGroup = "", MaxHashGroup = "";
 	int			  pos = 0, x = 0, y = 0;
-
 	MaxFontGroup.Format("%d", k_max_number_of_font_groups_in_tablemap);
 	MaxHashGroup.Format("%d", k_max_number_of_hash_groups_in_tablemap);
-
 	// temp
 	STablemapSize      hold_size;
 	STablemapSymbol    hold_symbol;
@@ -212,37 +280,29 @@ int CTablemap::LoadTablemap(const CString _fname) {
 	STablemapHashPoint hold_hash_point;
 	STablemapHashValue hold_hash_value;
 	STablemapImage		 hold_image;
-
 	// Clean up the global.profile structure
 	ClearTablemap();
-
 	CSLock lock(m_critsec);
-	
   assert(_fname != "");
 	_filename = _fname;
 	_filepath = _fname;
 	// Open the selected file
 	CFile cfFile(_filename, CFile::modeRead | CFile::shareDenyNone);
-
 	// Load its contents into a CArchive
 	CArchive ar (&cfFile, CArchive::load);
-
 	// Read the first line of the CArchive into strLine
 	strLine = "";
 	int linenum = 1;
-
 	// Failed, so quit
 	if (!ar.ReadString(strLine))
 	{
 		WarnAboutGeneralTableMapError(linenum, ERR_EOF);
 		return ERR_EOF;
 	}
-
 	// skip any blank lines
 	while (strLine.GetLength() == 0) 
 	{
 		linenum++;
-
 		// Failed, so quit
 		if (!ar.ReadString(strLine)) 
 		{
@@ -250,7 +310,6 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			return ERR_EOF;
 		}
 	}
-	
 	//
 	// Validate file version (always first line).
 	// It should always be version 2.
@@ -270,45 +329,36 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			"\n"
 			"To avoid costly mis-scrapes and crashes OpenHoldem will terminate now.\n",
 			_filename);
-
-		OH_MessageBox_Error_Warning(error_message, "Table map load error");
+		MessageBox_Error_Warning(error_message, "Table map load error");
 		PostQuitMessage(1);
 		return ERR_VERSION;
 	}
-
-	// Repeat while there are lines in the file left to process
+  // Repeat while there are lines in the file left to process
 	do {
 		// Trim the line
 		strLine.Trim();
-
 		// If the line is empty, skip it
 		if (strLine.GetLength() == 0)
 			continue;
-
 		// Extract the line type
 		pos=0;
 		strLineType = strLine.Tokenize(" \t", pos);
-
 		// Skip comment lines
 		if (strLineType.Left(2) == "//")
 			continue;
-
 		// Skip version lines
-		if (strLineType == VER_WINSCRAPE ||
-				strLineType == VER_OPENHOLDEM_1 ||
+		if (strLineType == VER_OPENHOLDEM_1 ||
 				strLineType == VER_OPENHOLDEM_2 ||
 				strLineType == VER_OPENSCRAPE_1 ||
 				strLineType == VER_OPENSCRAPE_2) 
 		{
 			continue;
 		}
-
 		// Handle z$ lines (sizes)
 		if (strLineType.Left(2) == "z$") 
 		{
 			// name
 			hold_size.name = strLineType.Mid(2);
-
 			// width
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
@@ -316,9 +366,7 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}
-
 			hold_size.width = atol(token.GetString());
-
 			// height
 			token = strLine.Tokenize(" \t", pos);
 			if (token.GetLength()==0)
@@ -326,40 +374,38 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}
-
 			hold_size.height = atol(token.GetString());
-
 			if (!z$_insert(hold_size))
 			{
 				ZMapCI z_iter = _z$.find(hold_size.name);
-
 				if (z_iter != _z$.end())
 				{
 					t.Format("'%s' skipped, as this size record already exists.\nYou have to fix that tablemap.", strLine);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding size record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding size record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding size record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding size record");			
 				}
 			}
 		}
-
 		// Handle s$ lines (symbols/string)
 		else if (strLineType.Left(2) == "s$") 
 		{
 			// name
 			hold_symbol.name = strLineType.Mid(2);
-
 			// text
 			hold_symbol.text = strLine.Mid(strLineType.GetLength());
 			hold_symbol.text.Trim();
-			if (hold_symbol.text.GetLength()==0)
+			if ((hold_symbol.text.GetLength() == 0) && (hold_symbol.name != "titletext"))
 			{
+        // Symbols must be non-empty.
+        // With the single exception of an empty main title-tedt,
+        // supported since version 11.0.1
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=124&t=20382
 				WarnAboutGeneralTableMapError(linenum, ERR_SYNTAX);
 				return ERR_SYNTAX;
 			}
-
 			// Skip _s$hXtype lines
 			if (strLineType.Left(3) == "s$h" && strLineType.Mid(4,4) == "type")
 			{
@@ -379,11 +425,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 					if (s_iter != _s$.end())
 					{
 						t.Format("'%s' skipped, as this string/symbol record already exists.\nYou have to fix that tablemap.", strLine);
-						OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding string/symbol record");			
+						MessageBox_Error_Warning(t.GetString(), "ERROR adding string/symbol record");			
 					}
 					else
 					{
-						OH_MessageBox_Error_Warning(strLine, "ERROR adding string/symbol record");			
+						MessageBox_Error_Warning(strLine, "ERROR adding string/symbol record");			
 					}
 				}
 			}
@@ -474,11 +520,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				if (r_iter != _r$.end())
 				{
 					t.Format("'%s' skipped, as this region record already exists.\nYou have to fix that tablemap.", strLine);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding region record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding region record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding region record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding region record");			
 				}
 			}
 		}
@@ -496,11 +542,10 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			// New style t$ records (font groups 0..k_max_number_of_font_groups_in_tablemap)
 			t = strLineType[3];
 			hold_font.ch = t[0];
-			font_group = strLineType[1] - '0';
+			font_group = DigitCharacterToNumber(strLineType[1]);
 
-			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap)
-			{
-				OH_MessageBox_Error_Warning(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]");
+			if (font_group < 0 || font_group >= k_max_number_of_font_groups_in_tablemap) {
+				MessageBox_Error_Warning(strLine, "Invalid font group\nFont groups have to be in the range [0..k_max_number_of_font_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -521,11 +566,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as this character already exists in group %d as '%c'.\nYou have to fix that tablemap.",
 						strLine, font_group, t_iter->second.ch);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding font record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding font record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding font record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding font record");			
 				}
 			}
 		}
@@ -537,12 +582,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				 strLineType[2] == '$') 
 		{
 			// number
-			token = strLineType[1];
-			int hashpoint_group = atol(token);
+			int hashpoint_group = DigitCharacterToNumber(strLineType[1]);
 			if (hashpoint_group < 0 || hashpoint_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
 
-				OH_MessageBox_Error_Warning(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..k_max_number_of_hashpoint_groups_in_tablemap]");
+				MessageBox_Error_Warning(strLine, "Invalid hash point group\nHash point groups have to be in the range [0..k_max_number_of_hashpoint_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -574,11 +618,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as hash point (%d, %d) already exists in group %d.\nYou have to fix that tablemap.", 
 						strLine, hold_hash_point.x, hold_hash_point.y, hashpoint_group);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding hash point record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding hash point record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding hash point record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding hash point record");			
 				}
 			}
 		}
@@ -590,10 +634,10 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				 strLineType[2] == '$') 
 		{
 			// number
-			int hash_group = strLineType[1] - '0';
+			int hash_group = DigitCharacterToNumber(strLineType[1]);
 			if (hash_group < 0 || hash_group >= k_max_number_of_hash_groups_in_tablemap)
 			{
-				OH_MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");
+				MessageBox_Error_Warning(strLine, "Invalid hash group\nHash groups have to be in the range [0..k_max_number_of_hash_groups_in_tablemap]");
 				return ERR_SYNTAX;
 			}
 
@@ -618,11 +662,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as hash %08x already exists in group %d.\nYou have to fix that tablemap.", 
 						strLine, hold_hash_value.hash, hash_group);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding hash record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding hash record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding hash record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding hash record");			
 				}
 
 			}
@@ -705,11 +749,11 @@ int CTablemap::LoadTablemap(const CString _fname) {
 				{
 					t.Format("'%s' skipped, as image already exists as '%s', with identical width, height and pixels.\nYou have to fix that tablemap.", 
 						strLineType, i_iter->second.name);
-					OH_MessageBox_Error_Warning(t.GetString(), "ERROR adding image record");			
+					MessageBox_Error_Warning(t.GetString(), "ERROR adding image record");			
 				}
 				else
 				{
-					OH_MessageBox_Error_Warning(strLine, "ERROR adding image record");			
+					MessageBox_Error_Warning(strLine, "ERROR adding image record");			
 				}
 			}
 			// Delete images later, when they are no longer needed,
@@ -725,16 +769,14 @@ int CTablemap::LoadTablemap(const CString _fname) {
 			error.Format("Unknown Line Type.\n"
 				"Some line in your tablemap is completely wrong\n"
 				"and can't be processed at all:\n%s", strLine);
-			OH_MessageBox_Error_Warning(error, "TABLEMAP ERROR");
+			MessageBox_Error_Warning(error, "TABLEMAP ERROR");
 			return ERR_UNK_LN_TYPE;
 		}
 
 		linenum++;
-	}
-	while (ar.ReadString(strLine));
-
+	} while (ar.ReadString(strLine));
+  InitNChairs();
 	_valid = true;
-
 	return SUCCESS;
 }
 
@@ -766,7 +808,7 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	ar.WriteString("\r\n");
 
 	// Date/Time
-	s.Format("// %s\r\n", get_time(nowtime)); ar.WriteString(s);
+  //!!!s.Format("// %s\r\n", get_time(nowtime)); ar.WriteString(s);
 	ar.WriteString("// 32 bits per pixel\r\n");
 	ar.WriteString("\r\n");
 
@@ -868,13 +910,23 @@ int CTablemap::SaveTablemap(CArchive& ar, const char *version_text)
 	return SUCCESS;	
 }
 
+void CTablemap::ErrorHashCollision(CString name1, CString name2) {
+  CString message;
+  message.Format("%s%s%s%s%s%s%s",
+    "Hash collision:\n\n", 
+		name1, " and ", name2, "\n\n",
+    "This looks like a naming conflict.\n",
+    "Please remove or rename the duplicate items.\n");
+  MessageBox_Error_Warning(message, "Hash collision");
+}
+
 int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 {
 #ifdef OPENHOLDEM_PROGRAM
 	write_log(preferences.debug_tablemap_loader(), "[CTablemap] UpdateHashes\n");
 #endif	
 
-	CString					e = "", s = "";
+	CString					s = "";
 	uint32_t				pixels[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0}, filtered_pix[MAX_HASH_WIDTH*MAX_HASH_HEIGHT] = {0};
 	int						pixcount = 0;
 	bool					all_i$_found = false, this_i$_found = false;
@@ -889,7 +941,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 	// Get number of records of each type in this table map
 	if (_i$.begin()==_i$.end()) 
 	{
-		OH_MessageBox_Error_Warning("No images found - cannot create hashes.", "Table Map Error");
+		MessageBox_Error_Warning("No images found - cannot create hashes.", "Table Map Error");
 		return ERR_NOTMASTER;
 	}
 
@@ -926,7 +978,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 		logpath.Format("%s\\hash creation log.txt", startup_path);
 		if (fopen_s(&fp, logpath.GetString(), "a")==0)
 		{
-			get_now_time(timebuf);
+			//!!!get_now_time(timebuf);
 			fprintf(fp, "<%s>\nCreating _hashes\n", timebuf);
 			fprintf(fp, "Hashes with no matching image:\n");
 
@@ -942,7 +994,7 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 			fclose(fp);
 		}
 
-		OH_MessageBox_Error_Warning("Could not complete hash creation, due to missing images.\n"\
+		MessageBox_Error_Warning("Could not complete hash creation, due to missing images.\n"\
 				   "Please see the \"hash creation log.txt\" file for details.", 
 				   "Hash Creation Error");
 	}
@@ -1003,10 +1055,8 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 					{
 						if (hold_hash_value.hash == new_hashes[i].GetAt(j).hash) 
 						{
-							e.Format("Hash collision:\n	<%s> and <%s>\n\nTalk to an OpenHoldem developer, please.", 
-								i_iter->second.name.GetString(), 
+							ErrorHashCollision(i_iter->second.name.GetString(), 
 								new_hashes[i].GetAt(j).name.GetString()); 
-							OH_MessageBox_Error_Warning(e, "Hash collision");
 							return ERR_HASH_COLL;
 						}
 					}
@@ -1029,8 +1079,9 @@ int CTablemap::UpdateHashes(const HWND hwnd, const char *startup_path)
 		{
 			if (!h$_insert(i, new_hashes[i].GetAt(j)))
 			{
+        CString e;
 				e.Format("Hash record: %d %s %08x", i, new_hashes[i].GetAt(j).name, new_hashes[i].GetAt(j).hash);
-				OH_MessageBox_Error_Warning(e, "ERROR adding hash value record: " + hold_hash_value.name);	
+				MessageBox_Error_Warning(e, "ERROR adding hash value record: " + hold_hash_value.name);	
 			}
 		}
 	}
@@ -1140,3 +1191,19 @@ uint32_t CTablemap::CreateI$Index(const CString name, const int width, const int
 
 	return index;
 }
+
+void CTablemap::InitNChairs() {
+  // Previously this lookup-code was in the accessor nchairs()
+  // but sometimes we got a crash related to string-operations
+  // (3rd-party-code) somewhere deep inside GetTMSymbol().
+  // As we didn't find the reason we now avoid these string operations#
+  // and pre-compute nchairs once.
+  int n = GetTMSymbol("nchairs", kMaxNumberOfPlayers);
+  if (n >= 2 && n <= kMaxNumberOfPlayers) {
+    _nchairs = n;
+  } else {
+    _nchairs = kMaxNumberOfPlayers;
+  }
+}
+
+ 

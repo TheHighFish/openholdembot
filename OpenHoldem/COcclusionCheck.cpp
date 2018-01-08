@@ -1,26 +1,27 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // Heuristic occlusion-check for rebuy.
 
 #include "stdafx.h"
 #include "COcclusionCheck.h"
 
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CSCraper.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CTableState.h"
-#include "debug.h"
+
 
 COcclusionCheck *p_occlusioncheck = NULL;
 
@@ -33,7 +34,7 @@ COcclusionCheck::~COcclusionCheck()
 
 bool COcclusionCheck::UserChairKnown()
 {
-	if (p_symbol_engine_userchair->userchair_confirmed())
+	if (p_engine_container->symbol_engine_userchair()->userchair_confirmed())
 	{
 		return true;
 	}
@@ -46,9 +47,9 @@ bool COcclusionCheck::UserChairKnown()
 
 bool COcclusionCheck::UserBalanceNonZero()
 {
-	int userchair = p_symbol_engine_userchair->userchair();
+	int userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	if (UserChairKnown() 
-		&& (p_table_state->User()->_balance > 0))
+		&& (p_table_state->User()->_balance.GetValue() > 0))
 	{
 		return true;
 	}
@@ -59,20 +60,14 @@ bool COcclusionCheck::UserBalanceNonZero()
 	}
 }
 
-bool COcclusionCheck::UserNameKnown()
-{	
-	int Userchair = p_symbol_engine_userchair->userchair();
-	if ((Userchair < 0) || (Userchair > 9))
-	{
+bool COcclusionCheck::UserNameKnown() {	
+	int Userchair = p_engine_container->symbol_engine_userchair()->userchair();
+	if ((Userchair < 0) || (Userchair > 9))	{
 		write_log(preferences.debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false; chair out of range\n");
 		return false;
-	}
-  else if (UserChairKnown() && (p_table_state->User()->_name != ""))
-	{	
+	} else if (UserChairKnown() && (p_table_state->User()->name() != ""))	{	
 		return true;
-	}
-	else
-	{
+	}	else {
 		write_log(preferences.debug_occlusionchecker(), "[COcclusionCheck] UserNameKnown: false\n");
 		return false;
 	}
@@ -80,10 +75,10 @@ bool COcclusionCheck::UserNameKnown()
 
 bool COcclusionCheck::AnyOpponentNameKnown()
 {
-	int Userchair = p_symbol_engine_userchair->userchair();
+	int Userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	for (int i=0; i<=9; i++)
 	{
-    if ((i != Userchair) && (p_table_state->_players[i]._name != ""))
+    if ((i != Userchair) && (p_table_state->Player(i)->name() != ""))
 		{
 			return true;
 		}
@@ -94,10 +89,10 @@ bool COcclusionCheck::AnyOpponentNameKnown()
 
 bool COcclusionCheck::AnyApponentBalanceNonZero()
 {
-	int Userchair = p_symbol_engine_userchair->userchair();
+	int Userchair = p_engine_container->symbol_engine_userchair()->userchair();
 	for (int i=0; i<=9; i++)
 	{
-		if ((i != Userchair) && (p_table_state->_players[i]._balance > 0))
+		if ((i != Userchair) && (p_table_state->Player(i)->_balance.GetValue() > 0))
 		{
 			return true;
 		}

@@ -1,184 +1,378 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Various chair symbols, ecept dealerchair, userchair and raischair,
 //   which are of special importance and get handled by other symbol-engines.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineChairs.h"
 
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
+#include "CSymbolEngineChecksBetsFolds.h"
+#include "CSymbolEngineHistory.h"
 #include "CSymbolEnginePokerAction.h"
+#include "CSymbolEnginePositions.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
 #include "..\CTablemap\CTablemap.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
-CSymbolEngineChairs *p_symbol_engine_chairs = NULL;
+enum {
+  // offset from the dealer, counter-clockwise
+  kOffsetDealer = 0,
+  kOffsetCutoff,
+  kOffsetMP3,
+  kOffsetMP2,
+  kOffsetMP1,
+  kOffsetEP3,
+  kOffsetEP2,
+  kOffsetEP1,
+  // No offsets for SB, BB and UTG.
+  // They get calculated clockwise.
+};
 
 CSymbolEngineChairs::CSymbolEngineChairs() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_poker_action != NULL);
-  assert(p_symbol_engine_userchair != NULL);
-  assert(p_symbol_engine_tablelimits != NULL);
+  assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_checks_bets_folds() != NULL);
+  assert(p_engine_container->symbol_engine_poker_action() != NULL);
+  assert(p_engine_container->symbol_engine_positions() != NULL);
+  assert(p_engine_container->symbol_engine_userchair() != NULL);
+  assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+  // Also using p_engine_container->symbol_engine_history()->DidAct()
+// but that's no real dependency, as it is from the past
 }
 
 CSymbolEngineChairs::~CSymbolEngineChairs() {
 }
 
 void CSymbolEngineChairs::InitOnStartup() {
-  ResetOnConnection();
+  UpdateOnConnection();
 }
 
-void CSymbolEngineChairs::ResetOnConnection() {
+void CSymbolEngineChairs::UpdateOnConnection() {
   _nchairs = p_tablemap->nchairs();
-  ResetOnHandreset();
+  UpdateOnHandreset();
 }
 
-void CSymbolEngineChairs::ResetOnHandreset() {
-  ResetOnNewRound();
+void CSymbolEngineChairs::UpdateOnHandreset() {
+  _missing_smallblind = false;
+  _missing_smallblind_calculated = false;
 }
 
-void CSymbolEngineChairs::ResetOnNewRound() {
-  _opponent_headsup_chair = kUndefined;
-  _smallblind_chair = kUndefined;
-  _bigblind_chair = kUndefined;
-  _cutoff_chair = kUndefined;
-  _firstcaller_chair = kUndefined;
-  _lastcaller_chair = kUndefined;
-  _firstraiser_chair = kUndefined;
+void CSymbolEngineChairs::UpdateOnNewRound() {
 }
 
-void CSymbolEngineChairs::ResetOnMyTurn() {
-  // Only well-defined at my turn and requires userchair for calculation.
-  // But it seems some "casinos" like test-suite can break that condition.
-  // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=17915#p124550
-  //assert(p_symbol_engine_userchair->userchair_confirmed());
-  CalculateOpponentHeadsupChair();
-  CalculateSmallBlindChair();
-  CalculateBigBlindChair();
-  CalculateCutOffChair();
-  CalculateCallerChairs();
-  CalculateFirstRaiserChair();
-}
-
-void CSymbolEngineChairs::ResetOnHeartbeat() {
-}
-
-void CSymbolEngineChairs::CalculateOpponentHeadsupChair(){
-  _opponent_headsup_chair = kUndefined;
-	if (p_symbol_engine_active_dealt_playing->nopponentsplaying() > 1) return;
-	for (int i = 0; i < k_max_number_of_players; ++i)	{
-		if (IsBitSet(p_symbol_engine_active_dealt_playing->opponentsplayingbits(), i)) {
-      _opponent_headsup_chair = i;
-      return;
-    }
-	}
-}
-
-void CSymbolEngineChairs::CalculateSmallBlindChair() {
-  _smallblind_chair = GetChairByDealposition(1);
-}
-
-void CSymbolEngineChairs::CalculateBigBlindChair() {
-  _bigblind_chair = GetChairByDealposition(2);
-}
-
-void CSymbolEngineChairs::CalculateCutOffChair() {
-  int cutoff_dealposition = p_symbol_engine_active_dealt_playing->nplayersdealt() - 1;
-  _cutoff_chair = GetChairByDealposition(cutoff_dealposition);
-}
-
-void CSymbolEngineChairs::CalculateCallerChairs() {
-  _firstcaller_chair = kUndefined;
-  _lastcaller_chair = kUndefined;
-  double last_raisers_bet = p_table_state->User()->_bet;
-  if ((p_betround_calculator->betround() == kBetroundPreflop) 
-      && (last_raisers_bet < p_symbol_engine_tablelimits->bblind())) {
-    // Avoid problems with so-called "blind-raisers"
-    last_raisers_bet = p_symbol_engine_tablelimits->bblind();
-  }
-  for (int i=1; i<_nchairs; ++i) {
-    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
-    double next_bet = p_table_state->_players[next_chair]._bet;
-    if ((next_bet == last_raisers_bet) && (next_bet > 0)) {
-      // We have a caller, at least the temporary last one
-      _lastcaller_chair = next_chair;
-      if (_firstcaller_chair == kUndefined) {
-        // We found the first caller
-        _firstcaller_chair = next_chair;
-      } 
-    } else if (next_bet > last_raisers_bet) {
-      // New raiser found (necessary for potential new last_caller)
-      last_raisers_bet = next_bet; 
-    }
+void CSymbolEngineChairs::UpdateOnMyTurn() {
+  if (!_missing_smallblind_calculated) {
+    CalculateMissingSmallBlind();
   }
 }
 
-void CSymbolEngineChairs::CalculateFirstRaiserChair() {
-  _firstraiser_chair = kUndefined;
-  double users_bet = p_table_state->User()->_bet;
-  for (int i=1; i<_nchairs; ++i) {
-    int next_chair = (p_symbol_engine_userchair->userchair() + i) % _nchairs;
-    double next_bet = p_table_state->_players[next_chair]._bet;
-    if ((next_bet > users_bet) && (next_bet > p_symbol_engine_tablelimits->bblind())) {
-      _firstraiser_chair = next_chair; 
-      return;
-    }
-  }
+void CSymbolEngineChairs::UpdateOnHeartbeat() {
 }
 
-int CSymbolEngineChairs::GetChairByDealposition(int dealposition) {
-  for (int i=0; i<_nchairs; ++i) {
-    if (p_symbol_engine_poker_action->DealPosition(i) == dealposition) {
+int CSymbolEngineChairs::HeadsupChair() {
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying() != 1) {
+    return kUndefined;
+  }
+  for (int i = 0; i < _nchairs; ++i) {
+    if (IsBitSet(p_engine_container->symbol_engine_active_dealt_playing()->opponentsplayingbits(), i)) {
+      return i;
+    }
+  }
+  assert(kThisMustNotHappen);
+  return kUndefined;
+
+}
+
+int CSymbolEngineChairs::ChairByDealposition(int dealposition) {
+  for (int i = 0; i < _nchairs; ++i) {
+    if (p_engine_container->symbol_engine_poker_action()->DealPosition(i) == dealposition) {
       return i;
     }
   }
   return kUndefined;
 }
 
-bool CSymbolEngineChairs::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
-  if (memcmp(name, "opponent_chair_headsup", 22)==0) {
-		*result = _opponent_headsup_chair;  
+int CSymbolEngineChairs::NBlindsAtTheTable() {
+  if (MissingSmallBlind()) {
+    return 1;
+  }
+  return 2;
+}
+
+int CSymbolEngineChairs::ChairByLogicalPosition(int offset_from_dealer) {
+  assert(offset_from_dealer >= kOffsetDealer);
+  assert(offset_from_dealer <= kOffsetEP1);
+  int dealposition = p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() - offset_from_dealer;
+  if (dealposition <= NBlindsAtTheTable()) {
+    // This is a blind poster
+    // His position can't be looked up counter-clockwise from the dealer
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20921
+    return kUndefined;
+  }
+  // Regular position
+  return ChairByDealposition(dealposition);
+}
+
+int CSymbolEngineChairs::UTGChair() {
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() <= 2) {
+    // Headsup
+    return kUndefined;
+  }
+  if (MissingSmallBlind()) {
+    // BB got dealt first, UTG 2nd
+    return ChairByDealposition(2);
+  }
+  // Normal case: player behind BB
+  return ChairByDealposition(3);
+}
+
+int CSymbolEngineChairs::SmallStackChair() {
+  int result = kUndefined;
+  int nchairs = p_tablemap->nchairs();
+  int userchair = p_engine_container->symbol_engine_userchair()->userchair();
+  // Init with huge number that we will never see in practice
+  double smallest_stack = 999999999999;
+  for (int i = 0; i < nchairs; ++i) {
+    if (i == userchair) {
+      // not an opponent
+      continue;
+    }
+    if (!p_table_state->Player(i)->HasAnyCards()) {
+      // Not seated, not dealt or folded
+      continue;
+    }
+    if (p_table_state->Player(i)->stack() < smallest_stack) {
+      smallest_stack = p_table_state->Player(i)->stack();
+      result = i;
+    }
+  }
+  return result;
+}
+
+int CSymbolEngineChairs::BigStackChair() {
+  int result = kUndefined;
+  int nchairs = p_tablemap->nchairs();
+  int userchair = p_engine_container->symbol_engine_userchair()->userchair();
+  double biggest_stack = 0.0;
+  for (int i = 0; i < nchairs; ++i) {
+    if (i == userchair) {
+      // not an opponent
+      continue;
+    }
+    if (!p_table_state->Player(i)->HasAnyCards()) {
+      // Not seated, not dealt or folded
+      continue;
+    }
+    if (p_table_state->Player(i)->stack() > biggest_stack) {
+      biggest_stack = p_table_state->Player(i)->stack();
+      result = i;
+    }
+  }
+  return result;
+}
+
+int CSymbolEngineChairs::SmallBlindChair() {
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() < 2) {
+    return kUndefined;
+  }
+  // Headsup
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() == 2) {
+    return ChairByDealposition(2);
+  }
+  if (MissingSmallBlind()) {
+    return kUndefined;
+  }
+  return ChairByDealposition(1);
+}
+
+int CSymbolEngineChairs::BigBlindChair() {
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() < 2) {
+    return kUndefined;
+  }
+  // Headsup
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() == 2) {
+    return ChairByDealposition(1);
+  }
+  if (MissingSmallBlind()) {
+    return ChairByDealposition(1);
+  }
+  return ChairByDealposition(2);
+}
+
+bool CSymbolEngineChairs::MissingSmallBlind() {
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nplayersseated() < 2) {
+    return false;
+  }
+  if (p_betround_calculator->betround() > kBetroundPreflop) {
+    // Gets initialized at our first action preflop
+    return _missing_smallblind;
+  }
+  if (p_engine_container->symbol_engine_history()->DidAct()) {
+    return _missing_smallblind;
+  }
+  // Not yet initialized
+  return CalculateMissingSmallBlind();
+}
+
+int CSymbolEngineChairs::CalculateMissingSmallBlind() {
+  // True, if SB is missing, false otherwise
+  // Should be called at our first action preflop only.
+  assert(!_missing_smallblind_calculated);
+  if (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsdealt() <= 0) {
+    return false;
+  }
+  int dealposition1_chair = ChairByDealposition(1);
+  assert(dealposition1_chair >= 0);
+  double currentbet_of_dealposition1_chair = p_table_state->Player(dealposition1_chair)->_bet.GetValue();
+  assert(currentbet_of_dealposition1_chair >= 0);
+  if (currentbet_of_dealposition1_chair == p_engine_container->symbol_engine_tablelimits()->sblind()) {
+    // Small blind found
+    return false;
+  }
+  // If we are NOT the Second player to be dealt and see a bet 
+  // of 1 big blind left to the dealer, then it is the big blind (SB missing)
+  int dealposition = p_engine_container->symbol_engine_positions()->dealposition();
+  double bblind = p_engine_container->symbol_engine_tablelimits()->bblind();
+  if ((dealposition != 2) && (currentbet_of_dealposition1_chair == bblind)) {
+    return true;
+  }
+  // Problematic is only the case when I am in "big blind" (Second player to be dealt)
+  // * if bet of DealPosition1Chair > 1 bblind then SB raised and is present
+  // * if bet = 1 big blind and players "behind me" did act, then SB is present and limped
+  // * if bet = 1 big blind and players behind me still to act, then SB is missing
+  if ((dealposition == 2) && (currentbet_of_dealposition1_chair > bblind)) {
+    return false;
+  }
+  // Case 2 and 3: precondition: bet = 1 big blind
+  if ((dealposition == 2) && PlayersBehindDealPosition2ChairDidAct()) {
+    // Everybody acted, small blind limping
+    return false;
+  }
+  if ((dealposition == 2) && !PlayersBehindDealPosition2ChairDidAct()) {
+    // First orbit not yet finished
+    // person with 1 bb must be the big-blind, small blind is missing
+    return true;
+  }
+  if (currentbet_of_dealposition1_chair <= 0) {
+    // Bad input, assume the normal case
+    return false;
+  }
+  // All cases should be handled
+  // Can still be reached in simulations with bad input
+  return false;
+}
+
+bool CSymbolEngineChairs::PlayersBehindDealPosition2ChairDidAct() {
+  // Needed for detection of missing small blind.
+  // First checking for folded players,
+  // because lots of newbies won't scrape-players correctly and mix everything up.
+  // This affects calculation of small blind, big blind,
+  // all positions and finally lots of other things...
+  assert(p_betround_calculator->betround() == kBetroundPreflop);
+  if (p_engine_container->symbol_engine_checks_bets_folds()->nopponentsfolded() > 0) {
+    return true;
+  }
+  for (int i = 0; i < _nchairs; ++i) {
+    if (p_table_state->Player(i)->HasAnyCards()
+      && (p_table_state->Player(i)->_bet.GetValue() == 0.0)) {
+      // Playing, but not yet acted
+      return false;
+    }
+  }
+  // Everybody acted
+  return true;
+}
+
+bool CSymbolEngineChairs::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
+  if (name == "missingsmallblind") {
+    *result = MissingSmallBlind();
+    return true;
+  }
+  if (RightCharacter(name) != 'r') {
+    // Not a chair symbol
+    return false;
+  }
+  if (name == "headsupchair") {
+    *result = HeadsupChair();
 		return true;
-	} else if (memcmp(name, "smallblind_chair", 16)==0) {
-		*result = _smallblind_chair;
-		return true;
-	} else if (memcmp(name, "bigblind_chair", 14)==0) {
-		*result = _bigblind_chair;
-		return true;
-	} else if (memcmp(name, "cutoff_chair", 12)==0) {
-		*result = _cutoff_chair;
-		return true;
-	} else if (memcmp(name, "firstcaller_chair", 17)==0) {
-		*result = _firstcaller_chair;
-		return true;
-	} else if (memcmp(name, "lastcaller_chair", 16)==0) {
-		*result = _lastcaller_chair;
-		return true;
-	} else if (memcmp(name, "firstraiser_chair", 17)==0) {
-		*result = _firstraiser_chair;
-		return true;
-	}
+	} 
+  // Dealerchair gets handled by CSymbolEngineDealerChair
+  if (name == "cutoffchair") {
+    *result = ChairByLogicalPosition(kOffsetCutoff);
+    return true;
+  }
+  if (name == "mp3chair") {
+    *result = ChairByLogicalPosition(kOffsetMP3);
+    return true;
+  }
+  if (name == "mp2chair") {
+    *result = ChairByLogicalPosition(kOffsetMP2);
+    return true;
+  }
+  if (name == "mp1chair") {
+    *result = ChairByLogicalPosition(kOffsetMP1);
+    return true;
+  }
+  if (name == "ep3chair") {
+    *result = ChairByLogicalPosition(kOffsetEP3);
+    return true;
+  }
+  if (name == "ep2chair") {
+    *result = ChairByLogicalPosition(kOffsetEP2);
+    return true;
+  }
+  if (name == "ep1chair") {
+    *result = ChairByLogicalPosition(kOffsetEP1);
+    return true;
+  }
+  if (name == "utgchair") {
+    *result = UTGChair();
+    return true;
+  }
+  if (name == "smallblindchair") {
+    *result = SmallBlindChair();
+    return true;
+  }
+  if (name == "bigblindchair") {
+    *result = BigBlindChair();
+    return true;
+  }
+  if (name == "smallstackchair") {
+    *result = SmallStackChair();
+    return true;
+  }
+  if (name == "bigstackchair") {
+    *result = BigStackChair();
+    return true;
+  }
   // Symbol of a different symbol-engine
 	return false;
 }
 
 CString CSymbolEngineChairs::SymbolsProvided() {
-  return "opponent_chair_headsup smallblind_chair bigblind_chair "
-    "cutoff_chair firstcaller_chair lastcaller_chair firstraiser_chair ";
+  return "headsupchair "
+    "smallblindchair bigblindchair "
+  	"cutoffchair "
+	  "ep3chair ep2chair ep1chair "
+	  "mp3chair mp2chair mp1chair "
+    "missingsmallblind "
+    "smallstackchair bigstackchair ";
 }
 

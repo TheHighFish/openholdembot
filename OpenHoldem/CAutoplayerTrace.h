@@ -1,28 +1,29 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CAUTOPLAYER_TRACE_H
 #define INC_CAUTOPLAYER_TRACE_H
 
 #include <map>
+#include "CSpaceOptimizedGlobalObject.h"
 
-class CAutoplayerTrace {
+class CAutoplayerTrace : public CSpaceOptimizedGlobalObject {
  public:
    CAutoplayerTrace();
    ~CAutoplayerTrace();
  public:
   void Clear();
-  void Add(CString symbol, double value);
+  void Add(CString symbol, double value, bool undefined = false);
   // Logging function, value currently unknown
   // Returning index (line number in log)
   int  Add(CString symbol); 
@@ -36,6 +37,7 @@ class CAutoplayerTrace {
   CString BestAction();
  private:
   void LogBasicInfo(const char *action_taken);
+  void LogPlayers();
   void LogSecondaryAction(const char *action_taken);
   void LogAutoPlayerTrace();
   bool SymbolNeedsToBeLogged(CString name);

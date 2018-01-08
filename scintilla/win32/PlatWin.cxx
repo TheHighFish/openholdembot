@@ -68,7 +68,10 @@ typedef BOOL (WINAPI *AlphaBlendSig)(HDC, int, int, int, int, HDC, int, int, int
 
 static CRITICAL_SECTION crPlatformLock;
 static HINSTANCE hinstPlatformRes = 0;
-static bool onNT = false;
+// Setting onNT to always true to get rid of the deprecated GetVersionEx
+// Windows 95/98 is out of use and no longer supported,
+// neither by OpenHoldem nor by our compiler (VS 2015)
+static bool onNT = true;
 static HMODULE hDLLImage = 0;
 static AlphaBlendSig AlphaBlendFn = 0;
 
@@ -2161,9 +2164,6 @@ int Platform::Clamp(int val, int minVal, int maxVal) {
 }
 
 void Platform_Initialise(void *hInstance) {
-	OSVERSIONINFO osv = {sizeof(OSVERSIONINFO),0,0,0,0,TEXT("")};
-	::GetVersionEx(&osv);
-	onNT = osv.dwPlatformId == VER_PLATFORM_WIN32_NT;
 	::InitializeCriticalSection(&crPlatformLock);
 	hinstPlatformRes = reinterpret_cast<HINSTANCE>(hInstance);
 	// This may be called from DllMain, in which case the call to LoadLibrary

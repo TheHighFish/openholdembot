@@ -1,24 +1,23 @@
-//******************************************************************************* 
+//****************************************************************************** 
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************* 
+//****************************************************************************** 
 //
 // Purpose:
 //
-//******************************************************************************* 
+//****************************************************************************** 
 
 #ifndef INC_CTABLELIMITS_H
 #define INC_CTABLELIMITS_H
 
-#include "MagicNumbers.h"
 #include "CVirtualSymbolEngine.h"
 
-#define BIG_BLIND p_symbol_engine_tablelimits->bblind()
-#define SMALL_BLIND p_symbol_engine_tablelimits->sblind()
+#define BIG_BLIND p_engine_container->symbol_engine_tablelimits()->bblind()
+#define SMALL_BLIND p_engine_container->symbol_engine_tablelimits()->sblind()
 
 struct STableLimit {
 	double sblind;
@@ -35,14 +34,14 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
 	// public mutators
  public:
 	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
+	void UpdateOnConnection();
+	void UpdateOnHandreset();
+	void UpdateOnNewRound();
+	void UpdateOnMyTurn();
+	void UpdateOnHeartbeat();
 	void CalcTableLimits();
  public:
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided();
  public:
   // public accessors, formerly part of the symbol-structure.
@@ -52,7 +51,8 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
 	double ante();
 	double bet(int betround);
 	double bet(); // for current betting round
-  double buyin();
+	double buyin();
+	double prizepool();
  private:
   bool TableLimitsNeedToBeComputed();
  public:
@@ -84,7 +84,5 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
  private:
 	double _ante;
 };
-
-extern CSymbolEngineTableLimits *p_symbol_engine_tablelimits;
 
 #endif // INC_CTABLELIMITS_H

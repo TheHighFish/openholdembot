@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-04-02"/>
+<meta name="create-date" content="2017-05-26"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -32,9 +32,6 @@ to identify certain players by their preflop-position use the postfixes <i>small
 <li>
 besides of that you can use <i>firstcaller, lastcaller </i>and<i> firstraiser</i>. They work for the current orbit only.
 </li>
-<li>
-by <i>chair number</i>, e.g <i>pt_icon0</i>..<i>pt_icon9</i>: this is more complex and less convenient than both methods above, but you get the ability to build any advanced stat on your own as long as you are able to identify the chair of your villain.
-</li>
 
 </ul>
 <h2 class="Section-">
@@ -48,42 +45,24 @@ You need to use the prefix &ldquo;pt_&rdquo;.
 Then add the symbol name.
 </li>
 <li>
-Finally add one of those postfix: <ul>
+Finally add a chair number or one of the many postfixes described in the chapter about the multiplexer-engine. The list gets extended over time, here are some examples:<ul>
 <li>
-_raischair
+_smallblindchair
 </li>
 <li>
-_headsup
+_dealerchair
 </li>
 <li>
-_smallblind
+_firstcallerchair
 </li>
 <li>
-_bigblind
+_lastraiserchair
 </li>
 <li>
-_dealer
+_userchair
 </li>
 <li>
-_cutoff
-</li>
-<li>
-_firstcaller
-</li>
-<li>
-_lastcaller
-</li>
-<li>
-_firstraiser
-</li>
-<li>
-_dealer
-</li>
-<li>
-_user
-</li>
-<li>
-the chair number between 0 and 9
+_headsupchair
 </li>
 
 </ul>
@@ -102,15 +81,6 @@ Symbol
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Meaning
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-icon
-</td>
-<td align="left" valign="top" style="width: 65%;">
-Poker Tracker auto-rate icon code
 </td>
 
 </tr>
@@ -170,7 +140,7 @@ Poker Tracker total aggression
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-aggr_factor_without_preflop
+total_af 
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker total aggression excluding preflop
@@ -179,19 +149,10 @@ Poker Tracker total aggression excluding preflop
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-fold_to_3bet
+postflop_fold_to_3bet 
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker total folded while facing 3bet excluding preflop
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-4bet
-</td>
-<td align="left" valign="top" style="width: 65%;">
-Poker Tracker Overall 4B
 </td>
 
 </tr>
@@ -224,7 +185,7 @@ Poker Tracker preflop aggression factor
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-preflop_rfi
+rfi
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker pre-flop raise first in
@@ -233,7 +194,7 @@ Poker Tracker pre-flop raise first in
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-preflop_3bet
+3bet
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker 3bet preflop
@@ -242,7 +203,7 @@ Poker Tracker 3bet preflop
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-preflop_fold_to_3bet
+fold_to_3bet
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker folded while facing 3bet preflop after raising
@@ -260,7 +221,7 @@ Poker Tracker pre-flop called raise
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-preflop_attempt_steal
+steal_attempt
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker attempt to steal blinds
@@ -269,7 +230,7 @@ Poker Tracker attempt to steal blinds
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-big_blind_fold_to_steal
+bb_fold_to_steal 
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker folded big blind to steal
@@ -278,7 +239,7 @@ Poker Tracker folded big blind to steal
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-small_blind_fold_to_steal
+sb_fold_to_steal
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker folded small blind to steal
@@ -287,7 +248,7 @@ Poker Tracker folded small blind to steal
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-preflop_3bet_vs_steal
+3bet_vs_steal
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker 3bet vs. steal
@@ -296,7 +257,7 @@ Poker Tracker 3bet vs. steal
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-big_blind_3bet_vs_steal
+bb_3bet_vs_steal
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker BB 3bet vs. steal
@@ -305,7 +266,7 @@ Poker Tracker BB 3bet vs. steal
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-small_blind_3bet_vs_steal
+sb_3bet_vs_steal
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker SB 3bet vs. steal
@@ -314,7 +275,7 @@ Poker Tracker SB 3bet vs. steal
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-preflop_4bet
+4bet
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker Preflop 4B
@@ -323,7 +284,7 @@ Poker Tracker Preflop 4B
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-preflop_fold_to_4bet
+fold_to_4bet
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker Preflop fold to 4B
@@ -332,7 +293,7 @@ Poker Tracker Preflop fold to 4B
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-fold_vs_resteal
+fold_to_resteal
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tacker Preflop fold when faced 3bet after attempt to steal blinds
@@ -368,7 +329,7 @@ Poker Tracker saw flop
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-flop_aggr_factor
+flop_af
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker flop aggression factor
@@ -404,15 +365,6 @@ Poker Tracker raise flop cbet
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-flop_fold_to_3bet
-</td>
-<td align="left" valign="top" style="width: 65%;">
-Poker Tracker folded while facing 3bet flop
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
 flop_checkraise
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -426,6 +378,24 @@ flop_donkbet
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker donk bet flop
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+flop_afq 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Flop Aggression frequency 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+flop_float
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Bet IP flop vs missed cbet 
 </td>
 
 </tr>
@@ -458,7 +428,7 @@ Poker Tracker saw turn
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-turn_aggr_factor
+turn_af
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker turn aggression factor
@@ -485,15 +455,6 @@ Poker Tracker folded while facing cbet turn
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-turn_fold_to_3bet
-</td>
-<td align="left" valign="top" style="width: 65%;">
-Poker Tracker folded while facing 3bet turn
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
 turn_checkraise
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -507,6 +468,15 @@ turn_checkcall
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker turn Check-Call
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+turn_afq 
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Turn Aggression frequency
 </td>
 
 </tr>
@@ -539,19 +509,10 @@ Poker Tracker saw river
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-river_aggr_factor
+river_af
 </td>
 <td align="left" valign="top" style="width: 65%;">
 Poker Tracker river aggression factor
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-river_fold_to_3bet
-</td>
-<td align="left" valign="top" style="width: 65%;">
-Poker Tracker folded while facing 3bet river
 </td>
 
 </tr>
@@ -573,15 +534,20 @@ Poker Tracker river bet
 </td>
 
 </tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+river_afq
+</td>
+<td align="left" valign="top" style="width: 65%;">
+River Aggression frequency
+</td>
+
+</tr>
 
 </table>
 
 </div>
 
-<hr class="footer"/>
-<div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-04-02T17:27:12.189000</span>
-</div>
 </div>
 </body>
 </html>

@@ -1,18 +1,16 @@
+#pragma once
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
 // Purpose:
 //
 //******************************************************************************
-
-#ifndef INC_POKERTRACKERQUERYDEFINITIONS_H
-#define INC_POKERTRACKERQUERYDEFINITION_H
 
 #ifdef POKERTRACKER_DLL_EXPORTS
 #define POKERTRACKER_DLL_API extern "C" __declspec(dllexport)
@@ -21,20 +19,6 @@
 #endif
 
 #include "atlstr.h"
-
-const int kNumberOfPokerTrackerPostfixes = 10;
-const char* const kPokerTrackerPostfixes[kNumberOfPokerTrackerPostfixes] = {
-  "_raischair",
-  "_headsup",
-  "_smallblind",
-  "_bigblind",
-  "_dealer",
-  "_cutoff",
-  "_user",
-  "_firstraiser",
-  "_firstcaller",
-  "_lastcaller"
-};
 
 POKERTRACKER_DLL_API	int		  PT_DLL_GetNumberOfStats();
 POKERTRACKER_DLL_API	CString PT_DLL_GetDescription(int stats_index);
@@ -50,5 +34,3 @@ POKERTRACKER_DLL_API	void	  PT_DLL_ClearAllPlayerStats();
 POKERTRACKER_DLL_API	CString PT_DLL_GetQuery(int stats_index, 
 												bool isomaha, bool istournament,
 												int site_id, CString player_name);
-
-#endif INC_POKERTRACKERQUERYDEFINITION_H

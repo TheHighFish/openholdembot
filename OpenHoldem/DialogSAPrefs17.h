@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_DIALOGSAPREFS17_H
 #define INC_DIALOGSAPREFS1_H
@@ -37,7 +37,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CButton m_ConfigurationInputSettings_Button;
-	CButton m_ConfigurationThemeSettings_Button;
 	CButton m_ConfigurationFontSettings_Button;
 	virtual BOOL OnInitDialog();
 

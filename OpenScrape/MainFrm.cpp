@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -26,6 +26,7 @@
 #include "DialogCopyRegion.h"
 #include "DialogSelectTable.h"
 #include "global.h"
+#include "ListOfSymbols.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
@@ -60,10 +61,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnUpdateEditDuplicateregion)
 	ON_COMMAND(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnGroupregionsBytype)
 	ON_COMMAND(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnGroupregionsByname)
-	ON_COMMAND(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnViewUngroupregions)
 	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnUpdateGroupregionsBytype)
 	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnUpdateGroupregionsByname)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnUpdateViewUngroupregions)
 END_MESSAGE_MAP()
 
 static UINT openscrape_indicators[] =
@@ -81,8 +80,6 @@ static UINT openscrape_indicators[] =
 /////////////////////////////////////////////////////
 
 CMainFrame::CMainFrame() {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	// Save startup directory
   ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309%28v=vs.85%29.aspx
@@ -141,13 +138,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-
-	// Set toolbar button status
-	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-
 	// Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
-
 	return 0;
 }
 
@@ -359,11 +351,11 @@ void CMainFrame::OnEditDuplicateregion()
 	}
 
 	// Add them to the dialog
-	for (int i=0; i<num_r$strings; i++)
+	for (int i=0; i<list_of_regions.size(); i++)
 	{
-		bool add_it = (strstr(r$strings[i], target.GetString())!=NULL);
+		bool add_it = (strstr(list_of_regions[i], target.GetString())!=NULL);
 
-		CString s = r$strings[i];
+		CString s = list_of_regions[i];
 		for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 		{
 			if (r_iter->second.name == s)  
@@ -371,7 +363,7 @@ void CMainFrame::OnEditDuplicateregion()
 		}
 
 		if (add_it)
-			dlgcopyregion.candidates.Add(r$strings[i]);
+			dlgcopyregion.candidates.Add(list_of_regions[i]);
 	}
 
 	// Show dialog if there are any strings left to add
@@ -429,14 +421,18 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
-
+  if (!pDoc) {
+    return;
+  }
+  if (!pView) {
+    return;
+  }
 	if (nIDEvent == BLINKER_TIMER) 
 	{
 		pDoc->blink_on = !pDoc->blink_on;
 		pView->blink_rect();
 
 	}
-
 	CFrameWnd::OnTimer(nIDEvent);
 }
 
@@ -696,20 +692,6 @@ void CMainFrame::OnGroupregionsByname()
 	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
 }
 
-void CMainFrame::OnViewUngroupregions()
-{
-	Registry		reg;
-	reg.read_reg();
-	reg.region_grouping = UNGROUPED;
-	reg.write_reg();
-
-	theApp.m_TableMapDlg->region_grouping = UNGROUPED;
-	theApp.m_TableMapDlg->UngroupRegions();
-
-	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetTypeNode("Regions");
-	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
-}
-
 void CMainFrame::OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI)
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
@@ -758,11 +740,6 @@ void CMainFrame::OnUpdateGroupregionsBytype(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateGroupregionsByname(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==BY_NAME);
-}
-
-void CMainFrame::OnUpdateViewUngroupregions(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==UNGROUPED);
 }
 
 void CMainFrame::SaveBmpPbits(void)
@@ -822,7 +799,6 @@ void CMainFrame::SaveBmpPbits(void)
 	DeleteDC(hdcScreen);
 }
 
-// TODO!! Why here? Used by auto-connector
 CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 

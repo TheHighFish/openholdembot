@@ -1,87 +1,85 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 
 #include <assert.h>
+#include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEngineUserchair.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
-#include "NumericalFunctions.h"
 
-CSymbolEngineActiveDealtPlaying *p_symbol_engine_active_dealt_playing = NULL;
 
 CSymbolEngineActiveDealtPlaying::CSymbolEngineActiveDealtPlaying()
 {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_dealerchair != NULL);
-	assert(p_symbol_engine_tablelimits != NULL);
-	assert(p_symbol_engine_userchair != NULL);
+	assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+	assert(p_engine_container->symbol_engine_tablelimits() != NULL);
+	assert(p_engine_container->symbol_engine_userchair() != NULL);
 }
 
 CSymbolEngineActiveDealtPlaying::~CSymbolEngineActiveDealtPlaying()
 {}
 
-void CSymbolEngineActiveDealtPlaying::InitOnStartup()
-{
-	ResetOnConnection();
+void CSymbolEngineActiveDealtPlaying::InitOnStartup() {
+	UpdateOnConnection();
 }
 
-void CSymbolEngineActiveDealtPlaying::ResetOnConnection()
-{
+void CSymbolEngineActiveDealtPlaying::UpdateOnConnection() {
 	_playersactivebits  = 0;
 	_playersplayingbits = 0;
 	_playersdealtbits   = 0;
 	_playersseatedbits  = 0;
+  _playersallinbits   = 0;
   _maxnplayersdealt   = 0;   
 }
 
-void CSymbolEngineActiveDealtPlaying::ResetOnHandreset()
-{
+void CSymbolEngineActiveDealtPlaying::UpdateOnHandreset() {
 	_playersdealtbits   = 0;
 	_playersactivebits  = 0;
 	_playersplayingbits = 0;
 	_playersseatedbits  = 0;
 }
 
-void CSymbolEngineActiveDealtPlaying::ResetOnNewRound()
+void CSymbolEngineActiveDealtPlaying::UpdateOnNewRound()
 {}
 
-void CSymbolEngineActiveDealtPlaying::ResetOnMyTurn()
+void CSymbolEngineActiveDealtPlaying::UpdateOnMyTurn()
 {}
 
-void CSymbolEngineActiveDealtPlaying::ResetOnHeartbeat() {
+void CSymbolEngineActiveDealtPlaying::UpdateOnHeartbeat() {
 	CalculateActiveBits();
 	CalculatePlayingBits();
 	CalculateDealtBits();
 	CalculateSeatedBits();
+  CalculateAllinBits();
 }
 
 void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 {
 	_playersactivebits  = 0;
-	for (int i=0; i<k_max_number_of_players; i++)
+	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
-		if (p_scraper_access->IsPlayerActive(i))
+		if (p_table_state->Player(i)->active())
 		{
 			_playersactivebits |= (1<<i);			
 		}
@@ -90,8 +88,8 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 
 void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	_playersplayingbits = 0;
-	for (int i=0; i<k_max_number_of_players; ++i)	{
-    if (p_table_state->_players[i].HasAnyCards()) {
+	for (int i=0; i<kMaxNumberOfPlayers; ++i)	{
+    if (p_table_state->Player(i)->HasAnyCards()) {
 			_playersplayingbits |= (1<<i);			
 		}
 	}
@@ -99,12 +97,27 @@ void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 
 void CSymbolEngineActiveDealtPlaying::CalculateSeatedBits() {
 	_playersseatedbits = 0;
-	for (int i=0; i<k_max_number_of_players; i++)	{
-		if (p_table_state->_players[i]._seated)	{
+	for (int i=0; i<kMaxNumberOfPlayers; i++)	{
+		if (p_table_state->Player(i)->seated())	{
 			_playersseatedbits |= 1<<i;			
 		}
 	}
 	AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);
+}
+
+void CSymbolEngineActiveDealtPlaying::CalculateAllinBits() {
+  _playersallinbits = 0;
+  // First: simply check for all players with no balance
+  for (int i = 0; i<kMaxNumberOfPlayers; i++) {
+    if (p_table_state->Player(i)->IsAllin()) {
+      _playersallinbits |= 1 << i;
+    }
+  }
+  AssertRange(_playersseatedbits, 0, k_bits_all_ten_players_1_111_111_111);
+}
+
+int CSymbolEngineActiveDealtPlaying::userchairbit() { 
+  return 1 << p_engine_container->symbol_engine_userchair()->userchair(); 
 }
 
 void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
@@ -115,12 +128,18 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
 		int chair_to_consider = (DEALER_CHAIR + i + 1) % p_tablemap->nchairs();
 		bool this_player_got_dealt = false;
+    // Players with cards are always "dealt",
+    // independent of the rest of following complicated logic,
+    // which might fail, especially in case of GIGO.
+    if (p_table_state->Player(chair_to_consider)->HasAnyCards()) {
+      this_player_got_dealt = true;
+    }
 		// First we search the blinds only, 
 		// i.e. players with a positive bet.
 		// We don't consider players who are only "active",
 		// i.e. players who sat out but came back.
-		if ((number_of_blind_posters_found < k_usual_number_of_blind_posters) && ! big_blind_found) {
-			double bet = p_table_state->_players[chair_to_consider]._bet;
+		if ((number_of_blind_posters_found < kUsualNumberOfBlindPosters) && ! big_blind_found) {
+			double bet = p_table_state->Player(chair_to_consider)->_bet.GetValue();
 			if (bet > 0) {
         write_log(preferences.debug_symbolengine(),
           "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is a blind poster\n",
@@ -128,7 +147,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 				number_of_blind_posters_found++;
 				this_player_got_dealt = true;
 			}
-			if ((bet == BIG_BLIND) || (number_of_blind_posters_found == k_usual_number_of_blind_posters)) {
+			if ((bet == BIG_BLIND) || (number_of_blind_posters_found == kUsualNumberOfBlindPosters)) {
 				// big blind might be allin for less than 1 bb
 				// or small blind might be missing.
 				// But we catch both cases, as long as not both happen
@@ -143,7 +162,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		// We do so, until we reach somebody who has cards.
 		// After this player we look for cards only,
 		// because there can be no quick folds after him.
-		else if (p_table_state->_players[chair_to_consider].HasAnyCards()) {
+		else if (p_table_state->Player(chair_to_consider)->HasAnyCards()) {
       // Player with cards found
       write_log(preferences.debug_symbolengine(),
         "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i holds cards, therefore dealt\n",
@@ -155,7 +174,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
       if (first_non_blind_with_cards_found == false) {
         // Not yet anybody with cards outside the blinds found
         // Consider active players as dealt with fast folds.
-			  if (p_scraper_access->IsPlayerActive(chair_to_consider)) {
+			  if (p_table_state->Player(chair_to_consider)->active()) {
           write_log(preferences.debug_symbolengine(),
             "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is active after the blinds, probably dealt and fast fold\n",
             chair_to_consider);
@@ -177,7 +196,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
   }
 }
 
-bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
+bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
 {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
 	if (memcmp(name, "nopponents", 10)==0)

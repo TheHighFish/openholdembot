@@ -123,17 +123,14 @@ void XYZToLAB(float x, float y, float z, float &L, float &A, float &B)
 	B = 200.0f * (f[1] - f[2]);
 }
 
-bool Yee_Compare(CompareArgs &args)
-{
+bool Yee_Compare(CompareArgs &args) {
 	if ((args.ImgA->Get_Width() != args.ImgB->Get_Width()) ||
 		(args.ImgA->Get_Height() != args.ImgB->Get_Height())) {
-//		args.ErrorStr = "Image dimensions do not match\n";
+    // args.ErrorStr = "Image dimensions do not match\n";
 		args.PixelsFailed = 0xffffffff;
 		return false;
 	}
-	
-	unsigned int i, dim;
-	dim = args.ImgA->Get_Width() * args.ImgA->Get_Height();
+	int dim = args.ImgA->Get_Width() * args.ImgA->Get_Height();
 	bool identical = true;
 	for (int i = 0; i < dim; i++) {
 		if (args.ImgA->Get(i) != args.ImgB->Get(i)) {
@@ -142,11 +139,10 @@ bool Yee_Compare(CompareArgs &args)
 		}
 	}
 	if (identical) {
-//		args.ErrorStr = "Images are binary identical\n";
+    // args.ErrorStr = "Images are binary identical\n";
 		args.PixelsFailed = 0;
 		return true;
 	}
-	
 	// assuming colorspaces are in Adobe RGB (1998) convert to XYZ
 	float *aX = new float[dim];
 	float *aY = new float[dim];
@@ -170,7 +166,7 @@ bool Yee_Compare(CompareArgs &args)
 	for (y = 0; y < h; y++) {
 		for (x = 0; x < w; x++) {
 			float r, g, b, l;
-			i = x + y * w;
+			int i = x + y * w;
 			r = powf(args.ImgA->Get_Red(i) / 255.0f, args.Gamma);
 			g = powf(args.ImgA->Get_Green(i) / 255.0f, args.Gamma);
 			b = powf(args.ImgA->Get_Blue(i) / 255.0f, args.Gamma);						

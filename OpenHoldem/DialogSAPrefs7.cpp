@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs7.cpp : implementation file
 //
@@ -42,6 +42,10 @@ void CDlgSAPrefs7::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ICM_3, m_ICM3);
 	DDX_Control(pDX, IDC_ICM_4, m_ICM4);
 	DDX_Control(pDX, IDC_ICM_5, m_ICM5);
+  DDX_Control(pDX, IDC_ICM_6, m_ICM6);
+  DDX_Control(pDX, IDC_ICM_7, m_ICM7);
+  DDX_Control(pDX, IDC_ICM_8, m_ICM8);
+  DDX_Control(pDX, IDC_ICM_9, m_ICM9);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs7, CDialog)

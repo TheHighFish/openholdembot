@@ -172,7 +172,7 @@ Valid symbol records
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="22" columns="2">
+<lyxtabular version="3" rows="24" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -186,7 +186,7 @@ Symbol record
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -206,7 +206,7 @@ titletext, titletext0 - titletext9
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -231,7 +231,7 @@ When the “Green Circle Button” is pressed, OpenHoldem will look through
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -256,7 +256,7 @@ ttlimits, ttlimits0 - ttlimits9
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -324,7 +324,7 @@ c0limits, c0limits0-c0limits9
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -350,7 +350,7 @@ sitename
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -377,7 +377,7 @@ network
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -540,7 +540,7 @@ nchairs
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -557,36 +557,12 @@ The number of chairs that this Table Map supports.
 \begin_inset Text
 
 \begin_layout Plain Layout
-chairconfig
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Legacy support of WinScrape's symbol.
- OpenHoldem does not adjust its display layout based on the value of this
- symbol like WinHoldem, and thus this is not used in the OpenHoldem engine
- anywhere.
- 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 allinconfirmationmethod
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -630,7 +606,7 @@ allin
 \begin_inset Quotes erd
 \end_inset
 
-), then lick 
+), then click 
 \begin_inset Quotes eld
 \end_inset
 
@@ -649,17 +625,17 @@ raise
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagtextmethod 
+betsizeinterpretationmethod 
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 Used by the Autoplayer to determine how to enter the f$betsize amount into
- the swag entry box on the casino window.
+ the betsize entry box on the casino window.
  This is necessary, as bets and raises get interpreted differently by different
  casinos.
  
@@ -714,7 +690,7 @@ As an example let us assume, that you are short-stacked in a SNG.
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -751,7 +727,7 @@ t0type - t3type
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -780,12 +756,12 @@ The possible values for these symbols are "fuzzy", "plain", or a specific
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagselectionmethod 
+betsizeselectionmethod 
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -794,25 +770,25 @@ New Symbol in version 2.0; previously, this was a global preference set from
 \end_layout
 
 \begin_layout Plain Layout
-This symbol instructs the Autoplayer how to take the first action in a SWAG
+This symbol instructs the Autoplayer how to take the first action in a betsize
  sequence.
- A SWAG sequence always consists of: 
+ A betsize sequence always consists of: 
 \end_layout
 
 \begin_layout Enumerate
-select the text in the SWAG box 
+select the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-delete the text in the SWAG box 
+delete the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-confirm the SWAG bet amount.
+confirm the betsize bet amount.
  
 \end_layout
 
@@ -822,28 +798,28 @@ Valid values for this Symbol are available in a drop down control and are:
 \end_layout
 
 \begin_layout Itemize
-"Sgl Click" – Single left click on the SWAG box to select the existing text
- 
+"Sgl Click" – Single left click on the betsize box to select the existing
+ text 
 \end_layout
 
 \begin_layout Itemize
-"Dbl Click" – Double left click on the SWAG box to select the existing text
- 
+"Dbl Click" – Double left click on the betsize box to select the existing
+ text 
 \end_layout
 
 \begin_layout Itemize
-Triple Click' – Triple left click on the SWAG box to select the existing
+Triple Click' – Triple left click on the betsize box to select the existing
  text
 \end_layout
 
 \begin_layout Itemize
-"Click Drag" – Left click on the leftmost pixel of the SWAG box, drag to
- the rightmost pixel of the SWAG box, and then release the left mouse button
- to select the existing text 
+"Click Drag" – Left click on the leftmost pixel of the betsize box, drag
+ to the rightmost pixel of the betsize box, and then release the left mouse
+ button to select the existing text 
 \end_layout
 
 \begin_layout Itemize
-"Nothing" – Skip the text selection step of the SWAG action 
+"Nothing" – Skip the text selection step of the betsize action 
 \end_layout
 
 \begin_layout Plain Layout
@@ -858,56 +834,56 @@ Default: None, must be explicitly specified
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagdeletionmethod
+betsizedeletionmethod
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 New Symbol in version 2.0; previously, this was a global preference set from
  the OpenHoldem preferences GUI.
  This symbol instructs the Autoplayer how to take the second action in a
- SWAG sequence.
- A SWAG sequence always consists of: 
+ betsize sequence.
+ A betsize sequence always consists of: 
 \end_layout
 
 \begin_layout Enumerate
-select the text in the SWAG box 
+select the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-delete the text in the SWAG box 
+delete the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-confirm the SWAG bet amount.
+confirm the betsize bet amount.
  
 \end_layout
 
 \begin_layout Plain Layout
-Valid values for this Symbol are available in a drop down control and are:
+Valid values for this symbol are available in a drop down control and are:
  
 \end_layout
 
 \begin_layout Itemize
-"Delete" – Press the “Delete” key to delete the selected text in the SWAG
+"Delete" – Press the “Delete” key to delete the selected text in the betsize
  box 
 \end_layout
 
 \begin_layout Itemize
 "Backspace" – Press the “Backspace” key to delete the selected text in the
- SWAG box 
+ betsize box 
 \end_layout
 
 \begin_layout Itemize
-"Nothing" – Skip the text deletion step of the SWAG action 
+"Nothing" – Skip the text deletion step of the betsize action 
 \end_layout
 
 \begin_layout Plain Layout
@@ -922,36 +898,36 @@ Default: None, must be explicitly specified
 \begin_inset Text
 
 \begin_layout Plain Layout
-swagconfirmationmethod
+betsizeconfirmationmethod
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 New Symbol in version 2.0; previously, this was a global preference set from
  the OpenHoldem preferences GUI.
  This symbol instructs the Autoplayer how to take the fourth action in a
- SWAG sequence.
- A SWAG sequence always consists of: 
+ betsize sequence.
+ A betsize sequence always consists of: 
 \end_layout
 
 \begin_layout Enumerate
-select the text in the SWAG box 
+select the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-delete the text in the SWAG box 
+delete the text in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-enter the new bet in the SWAG box 
+enter the new bet in the betsize box 
 \end_layout
 
 \begin_layout Enumerate
-confirm the SWAG bet amount.
+confirm the betsize bet amount.
  
 \end_layout
 
@@ -961,15 +937,15 @@ Valid values for this Symbol are available in a drop down control and are:
 \end_layout
 
 \begin_layout Itemize
-"Enter" – Press the “Enter” key to confirm the SWAG bet entry 
+"Enter" – Press the “Enter” key to confirm the betsize bet entry 
 \end_layout
 
 \begin_layout Itemize
-"Click Bet" – Click the “Bet” button to confirm the SWAG bet entry 
+"Click Bet" – Click the “Bet” button to confirm the betsize bet entry 
 \end_layout
 
 \begin_layout Itemize
-"Nothing" – Skip the bet confirmation step of the SWAG action
+"Nothing" – Skip the bet confirmation step of the betsize action
 \end_layout
 
 \begin_layout Plain Layout
@@ -989,7 +965,7 @@ buttonclickmethod
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1024,12 +1000,64 @@ Default: "Single"
 \begin_inset Text
 
 \begin_layout Plain Layout
-s$handnumber_min_expected_digits
+betpotmethod
 \end_layout
 
 \end_inset
 </cell>
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Some casinos require additional input to confirm betpot actions.
+ Valid options:
+\end_layout
+
+\begin_layout Itemize
+None
+\end_layout
+
+\begin_layout Itemize
+Raise -- click the raise-button after having clicked a betpot button.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+use_comma_instead_of_dot
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Some casinos require the use of the “comma” as a decimal separator rather
+ than the “dot”.
+ This setting will instruct OpenHoldems autoplayer to use a comma if needed.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+handnumber_min_expected_digits
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1045,12 +1073,12 @@ r to reduce the risk of bad scrapes and incorrect handresets.
 \begin_inset Text
 
 \begin_layout Plain Layout
-s$handnumber_min_expected_digits
+handnumber_min_expected_digits
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1066,23 +1094,32 @@ r to reduce the risk of bad scrapes and incorrect handresets.
 \begin_inset Text
 
 \begin_layout Plain Layout
-balancenumbersonly 
+cardscrapemethod
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout Plain Layout
-This Symbol instructs the screen scraper that all characters besides numbers
- (0-9 and dot/decimal separator) are stripped from the text transform result
- for balance regions.
- This is useful for those casinos that include spurious/changing alphanumeric
- information in their balance boxes.
- Setting this string to "True" or "Yes" will enable balance cleansing, any
- other value or the absence of this Symbol will result in no balance cleansing.
- 
+\begin_layout Itemize
+Default: scraping first cardbacks, then nocard, then cardfaces (or ranks
+ + suits).
+ Works for most casinos, optimal performance and also serves the case where
+ cards and cardbacks are at different locations
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+1
+\begin_inset Quotes erd
+\end_inset
+
+: scraping first card-faces, then cardbacks, finally nocard.
+ This method is necessary at casinos that display additional cardbacks also
+ for players that hold face-cards.
 \end_layout
 
 \end_inset
@@ -1098,7 +1135,7 @@ chipscrapemethod
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1123,11 +1160,37 @@ This Symbol instructs the “chip stack counter” within the screen scraper
 </cell>
 </row>
 <row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+islobby
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+If this symbol exists and is non-zero OpenHoldem will know that it is connected
+ to a lobby window (for table.positioning and shutdown-handling).
+ The tablemap-completeness checker will be turned off and the OH-script-symbol
+ islobby will become true.
+ Lobby-windows will always be positioned at the top-left of the screen where
+ absolute coordinates equal relative window-coordinates to make hoppers
+ more robust in case of lost focus.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-Scraperdll
+ispopup
 \end_layout
 
 \end_inset
@@ -1136,18 +1199,13 @@ Scraperdll
 \begin_inset Text
 
 \begin_layout Plain Layout
-This Symbol instructs OpenHoldem to load a user-supplied external scraper
- override DLL when this Table Map is used.
- This external DLL can be used to override the results of the internal scraper
- engine.
- This DLL is called immediately after the internal scraper engine finishes
- its pass every heartbeat, at which point the current state of the internal
- screen scraper is passed to the DLL for inspection and modification.
- A reference scraper DLL is provided in the source code as a starting point.
- An obvious use of this would be to hook or inject the target casino client
- to retrieve better state information than that which could be collected
- using the built-in pixel-based screen scraper.
- 
+If this symbol exists and is non-zero OpenHoldem will know that it is connected
+ to a popup window.
+ The tablemap-completeness checker and the table-positioner will be be turned
+ off and the OH-script-symbol ispopup will become true.
+ This feature can be used to connect OpenHoldem to known popup-windows with
+ a minimalistic tablemap and then click confirmation-buttons with the i86x-regio
+ns or do other simple hopper-tasks.
 \end_layout
 
 \end_inset

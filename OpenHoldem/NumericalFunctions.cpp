@@ -1,18 +1,18 @@
-//********************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//********************************************************************************
+//*******************************************************************************
 //
 // Purpose:
 //
-//********************************************************************************
+//*******************************************************************************
 
 #include "stdafx.h"
-#include "NumericalFunctions.h"
+
 
 // Deals with floating points, ints, hex and binary
 double StringToNumber(CString number) {
@@ -31,6 +31,20 @@ double StringToNumber(CString number) {
   } else {
     // Decimal number, either int or floating point
     return atof(number);
+  }
+}
+
+char HexadecimalChar(int i) {
+  assert(i >= 0);
+  assert(i <= 35);
+  if (i < 10) {
+    return ('0' + i);
+  }
+  else if (i <= 35) {
+    return ('A' + i - 10);
+  }
+  else {
+    return '#';
   }
 }
 

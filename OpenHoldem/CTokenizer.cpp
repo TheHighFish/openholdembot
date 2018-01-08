@@ -1,38 +1,42 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CTokenizer.h"
 
 #include "assert.h"
 #include "CardFunctions.h"
+#include "CDebugTab.h"
+#include "CFormulaparser.h"
+#include "COHScriptObject.h"
 #include "CParseErrors.h"
 #include "CPreferences.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "TokenizerConstants.h"
 
 // Global vars to be used by static accessors
-int line_absolute = 1;
 int line_relative = 1;
-const int kMaxSizeOfToken = 256;
+const int kMaxSizeOfToken = 1024;
 char last_token_string[kMaxSizeOfToken];
-char* input_buffer;
-int  _token_start_pointer;
+char* input_buffer = NULL;
+int  _token_start_pointer = kUndefined;
+const char kEmptyBuffer[2] = "\n";
+COHScriptObject* _currently_tokenized_function_or_list = NULL;
 
 #define NEXT_CHARACTER        input_buffer[_token_end_pointer+1]
 #define SECOND_NEXT_CHARACTER input_buffer[_token_end_pointer+2]
 #define SIZE_OF_TOKEN         (_token_end_pointer - _token_start_pointer)
 #define TOKEN_ADDRESS         &input_buffer[_token_start_pointer]
-#define SKIP_NEXT_CHARACTER   _token_end_pointer++;
 
 CTokenizer::CTokenizer() {
   InitNewParse();
@@ -42,8 +46,32 @@ CTokenizer::~CTokenizer() {
 }
 
 void CTokenizer::InitNewParse() {
-  line_absolute = 1;
+  _currently_tokenized_function_or_list = NULL;
+  SetInputBuffer(kEmptyBuffer);
 	InitVars();
+}
+
+void CTokenizer::SetInputFunction(COHScriptObject* function_or_list_to_be_parsed) {
+  _currently_tokenized_function_or_list = function_or_list_to_be_parsed;
+  if (function_or_list_to_be_parsed != NULL) {
+    SetInputBuffer(function_or_list_to_be_parsed->function_text());
+  } else {
+    SetInputBuffer(kEmptyBuffer);
+  }
+}
+
+void CTokenizer::SetInputBufferByDebugTab(const char* expression_to_be_parsed, int line) {
+  SetInputBuffer(expression_to_be_parsed);
+  // line_relative must be assigned after SetInputBuffer()
+  // because SetInputBuffer() sets it also!
+  line_relative = line;
+  assert(p_debug_tab != NULL);
+  _currently_tokenized_function_or_list = p_debug_tab;
+}
+
+void CTokenizer::SetInputBuffer(const char* next_formula_to_be_parsed) {
+  input_buffer = (char*)next_formula_to_be_parsed;
+  InitVars();
 }
 
 void CTokenizer::InitVars() {
@@ -60,28 +88,20 @@ void CTokenizer::InitVars() {
 
 char CTokenizer::CURRENT_CHARACTER() {     
   char next_char = input_buffer[_token_end_pointer];
-  if ((next_char < 0) || (next_char > 0xFF)) {
-    // Invalid character, usuallz unicode, copy-pasted from a web-page,
+  if (!isascii(next_char)) {
+    ErrorInvalidCharacter(next_char);
+    // Invalid character, usually unicode, copy-pasted from a web-page,
     // and or non-ASCII-characters in a comment.
     // No longer throwing an error, trying to handle it gracefully.
-    //
-	  // Advance _token_end_pointer to avoid multiple errors for the same char.
-	  ++_token_end_pointer;
-    // Returning kTokenEndOfFunction was the old way to stop processing.
-    // Now returning a space.
-    return ' ';
+    // Returning kTokenEndOfFunction stops processing
+    // and avoids too much error messages.
+    ++_token_end_pointer;
+    return kTokenEndOfFunction;
   }
   return next_char;
 }
 
-void CTokenizer::SetInput(const char* next_formula_to_be_parsed)
-{
-	input_buffer = (char*) next_formula_to_be_parsed;
-	InitVars();
-}
-
-int CTokenizer::GetToken()
-{
+int CTokenizer::GetToken() {
 	// Like lookahead, but accepting the token
 	int next_token = LookAhead();
   if (_additional_percentage_operator_pushed_back) {
@@ -92,13 +112,11 @@ int CTokenizer::GetToken()
 	return next_token;
 }
 
-int CTokenizer::LookAhead(bool expect_action /*= false */)
-{
+int CTokenizer::LookAhead(bool expect_action /*= false */) {
   if (_additional_percentage_operator_pushed_back) {
     return kTokenOperatorPercentage;
   }
-	if (!_last_token_pushed_back)
-	{
+	if (!_last_token_pushed_back)	{
 		_last_token = ScanForNextToken();
 	}
 	// Not yet accepted: treat it like "pushed back"
@@ -112,10 +130,8 @@ int CTokenizer::LookAhead(bool expect_action /*= false */)
 	return _last_token;
 }
 
-inline bool IsOperatorCharacter(char c)
-{
-	switch (c)
-	{
+inline bool IsOperatorCharacter(char c) {
+	switch (c) {
 	case '+':
 	case '-':
 	case '*':
@@ -136,10 +152,8 @@ inline bool IsOperatorCharacter(char c)
 	}
 }
 
-inline bool IsBracket(char c)
-{
-	switch (c)
-	{
+inline bool IsBracket(char c) {
+	switch (c) {
 	case '(':
 	case '[':
 	case '{':
@@ -150,8 +164,7 @@ inline bool IsBracket(char c)
 	}
 }
 
-bool CTokenizer::IsBinaryMinus()
-{
+bool CTokenizer::IsBinaryMinus() {
 	// We need to distinguishing binary and unary minusses (negative numbers)
 	// Binary ones can only happen in certain circumstances
 	return ((_last_token == kTokenIdentifier)
@@ -175,10 +188,11 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
   // as actions can also appear as part of expressions like
   //   WHEN BotsLastAction = Raise...
   // and some others like Bet and Call are also OH-script symbols (bet, call)
-	switch (SIZE_OF_TOKEN)
-	{
+	switch (SIZE_OF_TOKEN) {
 	case 2:
 		if (_memicmp(TOKEN_ADDRESS, "OR", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLogicalOr;  return true; }
+    if (_memicmp(TOKEN_ADDRESS, "IN", 2) == 0)     { _OpenPPL_token_ID = kTokenShankyKeywordIn;  return true; }
+    if (_memicmp(TOKEN_ADDRESS, "LN", 2) == 0)     { _OpenPPL_token_ID = kTokenOperatorLog;  return true; }
 		break;
 	case 3:
 		if (_memicmp(TOKEN_ADDRESS, "NOT", 3) == 0)    { _OpenPPL_token_ID = kTokenOperatorLogicalNot; return true; }
@@ -194,11 +208,13 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 			_OpenPPL_token_ID = kTokenOperatorConditionalWhen; 
 			return true; 
 		}
+    if (_memicmp(TOKEN_ADDRESS, "HAND", 4) == 0)    { _OpenPPL_token_ID = kTokenShankyKeywordHand; return true; }
 		break;
 	case 5:
 		if (_memicmp(TOKEN_ADDRESS, "BITOR", 5) == 0)   { _OpenPPL_token_ID = kTokenOperatorBinaryOr; return true; }
 		if (_memicmp(TOKEN_ADDRESS, "DELAY", 5) == 0)   { _OpenPPL_token_ID = kTokenUnsupportedDelay; return true; }
     if (_memicmp(TOKEN_ADDRESS, "FORCE", 5) == 0)   { _OpenPPL_token_ID = kTokenKeywordForce;     return true; }
+    if (_memicmp(TOKEN_ADDRESS, "BOARD", 5) == 0)   { _OpenPPL_token_ID = kTokenShankyKeywordBoard; return true; }
 		break;
 	case 6:
 		if (_memicmp(TOKEN_ADDRESS, "RETURN", 6) == 0)  { _OpenPPL_token_ID = kTokenActionReturn;      return true; }
@@ -206,9 +222,22 @@ bool CTokenizer::IsTokenOpenPPLKeyword() {
 		if (_memicmp(TOKEN_ADDRESS, "BITXOR", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryXOr; return true; }
 		if (_memicmp(TOKEN_ADDRESS, "BITNOT", 6) == 0)  { _OpenPPL_token_ID = kTokenOperatorBinaryNot; return true; }
 		break;
+  case 8:
+    if (_memicmp(TOKEN_ADDRESS, "BITCOUNT", 8) == 0) { _OpenPPL_token_ID = kTokenOperatorBitCount; return true; }
 	default: return false;
 	}
 	return false;
+}
+
+int CTokenizer::ProperEqualityOperatorForOpenPPLOrShankyPPL() {
+  // Equality, either = or ==
+  // If a function got imported from Shanky PPL
+  // then we have to do rounding, as Shanky PPL works with integers only
+  assert(_currently_tokenized_function_or_list != NULL);
+  if (_currently_tokenized_function_or_list->ImportedFromShankyPPL()) {
+    return kTokenOperatorApproximatellyEqual;
+  }
+  return kTokenOperatorEquality;;
 }
 
 // Some macros for tokenizing operators
@@ -252,10 +281,9 @@ StartOfScanForNextToken:
     // [\r][\n]Line break
     if ((CURRENT_CHARACTER() == '\n')
 	      || (CURRENT_CHARACTER() == '\r')) {
-      line_absolute++;
       line_relative++;
     }
-    SKIP_NEXT_CHARACTER
+    SkipNextCharacter();
   }
   // Set start of next token at position after space
   _token_start_pointer = _token_end_pointer;
@@ -280,11 +308,14 @@ StartOfScanForNextToken:
   // * 0xCE
   else if (isdigit(CURRENT_CHARACTER()) || (CURRENT_CHARACTER() == '.')) {
     // Special case suited and offsuited hands like 72o or 54s
+    // also Shanky-style hand = 98suited
     if (IsCardRankCharacter(NEXT_CHARACTER)) {
       char third_character_lowercase = tolower(SECOND_NEXT_CHARACTER);
 	    if ((third_character_lowercase == 's')
           || (third_character_lowercase == 'o')) {
-        _token_end_pointer += 3;
+        while (isalnum(CURRENT_CHARACTER())) {
+          ++_token_end_pointer;
+        }
         return kTokenCards;
       }
     }
@@ -342,9 +373,9 @@ NegativeNumber:
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorGreater)
 		case '`':
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorBitCount)
-		case '=': // Equality, either = or ==
-			IF_NEXT_CHARACTER_RETURN_OPERATOR('=', kTokenOperatorEquality)
-			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorEquality)
+		case '=': 
+      IF_NEXT_CHARACTER_RETURN_OPERATOR('=', ProperEqualityOperatorForOpenPPLOrShankyPPL())
+			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(ProperEqualityOperatorForOpenPPLOrShankyPPL())
 		case '!': 
 			IF_NEXT_CHARACTER_RETURN_OPERATOR('=', kTokenOperatorNotEqual)
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorLogicalNot)
@@ -354,6 +385,25 @@ NegativeNumber:
 			if (_inside_OpenPPL_function) {
 				RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPercentage);
 			}
+      assert(p_formula_parser != NULL);
+      if (p_formula_parser->IsParsingDebugTab()) {
+        // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19973&p=140389#p140389
+        MessageBox_Error_Warning("Operator % in debug-tab detected.\n"
+          "\n"
+          "This opertor can mean\n"
+          "  * modulo (OH-script)\n"
+          "  * percentage (OpenPPL)\n"
+          "\n"
+          "Its meaning gets usually detected by function context\n"
+          "(WHEN-condition), but this is not possible in the debug-tab.\n"
+          "\n"
+          "Defaulting to percentage.\n"
+          "\n"
+          "If you want to use modulo-operations in the debug-tab\n"
+          "then please choose the operator MOD.",
+          "Warning");
+        RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorPercentage);
+      }
 			RETURN_DEFAULT_SINGLE_CHARACTER_OPERATOR(kTokenOperatorModulo);
 		case '&': 
 			IF_NEXT_CHARACTER_RETURN_OPERATOR('&', kTokenOperatorLogicalAnd)
@@ -403,7 +453,6 @@ NegativeNumber:
 	}
 	// [\0] End of string = end of function
 	else if (CURRENT_CHARACTER() == '\0') {
-		line_absolute++; 
 		return kTokenEndOfFunction;
 	}
   // Do not advance the input pointer,
@@ -426,59 +475,58 @@ char* CTokenizer::GetTokenString() {
 	return last_token_string;
 }
 
-char* CTokenizer::RemainingInput()
-{
-	return TOKEN_ADDRESS;
+void CTokenizer::ErrorInvalidCharacter(char invalid_char) {
+  CString message;
+  message.Format("Illegal character: \"%c\"\n"
+    "\n"
+    "Non-standard-characters like \"extended ASCII \""
+    "can cause all kinds of unbelievable troubles, "
+    "like getting interpreted by system-libraries as multi-byte Unicode, "
+    "thus eating up extra characters of the input, including line-endings, "
+    "thus causing line-info in the logs to be wrong.\n"
+    "\n"
+    "Therefore OH-script and OpenPPL (like most other programming languages) "
+    "are restricted to standard ASCII on purpose.\n",
+    invalid_char);
+  CParseErrors::Error(message);
 }
 
-void CTokenizer::SkipToEndOfLine()
-{
-	while (CURRENT_CHARACTER() != '\n')
-	{
-		SKIP_NEXT_CHARACTER
+inline void CTokenizer::SkipNextCharacter() {
+  if (!isascii(NEXT_CHARACTER)) {
+    ErrorInvalidCharacter(NEXT_CHARACTER);
+  }
+  _token_end_pointer++;
+}
+
+void CTokenizer::SkipToEndOfLine() {
+	while (CURRENT_CHARACTER() != '\n')	{
+		SkipNextCharacter();
 	}
 	// And skip the end of line too
-	SKIP_NEXT_CHARACTER
-  line_absolute++;
+	SkipNextCharacter();
   line_relative++;
 }
 
-void CTokenizer::SkipToEndOfMultiLineComment()
-{
+void CTokenizer::SkipToEndOfMultiLineComment() {
 	while (((CURRENT_CHARACTER() != '*') || (NEXT_CHARACTER != '/'))
-		&& (CURRENT_CHARACTER() != '\0'))
-	{
+		  && (CURRENT_CHARACTER() != '\0'))	{
     if (CURRENT_CHARACTER() == '\n') {
-      line_absolute++;
       line_relative++;
     }
-		SKIP_NEXT_CHARACTER
+		SkipNextCharacter();
 	}
-	if (CURRENT_CHARACTER() == '\0')
-	{
+	if (CURRENT_CHARACTER() == '\0') {
 		CParseErrors::Error("End of function reached while looking for end of comment.\n"
       "/*\n"
       "  Every multi-line comment needs to be terminated\n"
       "  by a star and a slash.\n"
       "*/\n");
-		SKIP_NEXT_CHARACTER
-	}
-	else
-	{
+		SkipNextCharacter();
+	}	else	{
 		// Skip the remaining "*/"
-		SKIP_NEXT_CHARACTER
-		SKIP_NEXT_CHARACTER
+		SkipNextCharacter();
+		SkipNextCharacter();
 	}
-}
-
-int CTokenizer::LineAbsolute()
-{
-	return line_absolute;
-}
-
-int CTokenizer::LineRelative()
-{
-	return line_relative;
 }
 
 void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
@@ -491,7 +539,10 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
       // Action expected and something action-like found
       // Now check for exact match, because especially
       // "bet" and "call" mean something different for OH-script
-      if (token_string != kOpenPPLActionStrings[i]) {
+      // Only warn if parsing openPPL, not Shanky-PPL,
+      // because we auto-correct cases for Shanly-PPL.
+      if (!_currently_tokenized_function_or_list->ImportedFromShankyPPL() 
+        && (token_string != kOpenPPLActionStrings[i])) {
         CString error_message;
         error_message.Format(
           "Found identifier \"%s\"\n"
@@ -505,4 +556,26 @@ void CTokenizer::CheckTokenForOpenPPLAction(int *token) {
       return;
     }
   }
+}
+
+CString CTokenizer::InputFile() {
+  assert(_currently_tokenized_function_or_list != NULL);
+  return _currently_tokenized_function_or_list->GetPath();
+}
+
+CString CTokenizer::CurrentFunctionName() {
+  return _currently_tokenized_function_or_list->name();
+}
+
+int CTokenizer::LineAbsolute() {
+  assert(_currently_tokenized_function_or_list != NULL);
+  return (_currently_tokenized_function_or_list->StartingLine() + LineRelative());
+}
+
+int CTokenizer::LineRelative() {
+  return line_relative;
+}
+
+char* CTokenizer::RemainingInput() {
+  return TOKEN_ADDRESS;
 }

@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // CDlgSAPrefs19.cpp : implementation file
 //
@@ -59,7 +59,7 @@ BOOL CDlgSAPrefs19::OnInitDialog()
 
 void CDlgSAPrefs19::OnOK()
 {
-	preferences.SetValue(k_prefs_handhistory_generator_enable, _handhistory_generator_enable_Button.GetCheck() == true);
+	preferences.SetValue(k_prefs_handhistory_generator_enable, _handhistory_generator_enable_Button.GetCheck() == BST_CHECKED ? true : false);
 
 	CSAPrefsSubDlg::OnOK();
 }

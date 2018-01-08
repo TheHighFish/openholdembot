@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "COpenHoldemHopperCommunication.h"
@@ -62,7 +62,7 @@ LRESULT COpenHoldemHopperCommunication::OnConnectMessage(WPARAM, LPARAM hwnd)
 LRESULT COpenHoldemHopperCommunication::OnDisconnectMessage(WPARAM, LPARAM)
 {
 	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8003: OnDisconnectMessage\n");
-	p_autoconnector->Disconnect();
+	p_autoconnector->Disconnect("disconnected by hopper");
 	return true;
 }
 
@@ -78,7 +78,7 @@ LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_
 {
 	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8005: OnSetFlagMessage\n");
 	int _flag_to_set = int(flag_to_set);
-	if ((_flag_to_set < 0) || (_flag_to_set >= k_number_of_flags))
+	if ((_flag_to_set < 0) || (_flag_to_set >= kNumberOfFlags))
 	{
 		return false;
 	}
@@ -91,11 +91,11 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 {
 	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8006: OnResetFlagMessage\n");
 	int _flag_to_reset = int(flag_to_reset);
-	if ((_flag_to_reset < 0) || (_flag_to_reset >= k_number_of_flags))
+	if ((_flag_to_reset < 0) || (_flag_to_reset >= kNumberOfFlags))
 	{
 		return false;
 	}
-	p_flags_toolbar->SetFlag(_flag_to_reset, true);
+	p_flags_toolbar->SetFlag(_flag_to_reset, false);
 	return true;
 }
 
@@ -105,7 +105,7 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
-	if (p_function_collection->Title() == "" 
+	if (p_function_collection->FormulaName() == "" 
 		|| p_formula_parser->IsParsing()
 		|| p_tablemap_loader->NumberOfTableMapsLoaded() < 1)
 	{

@@ -1,0 +1,243 @@
+##2011-06-13 21:34:01##
+
+##notes##
+//
+//  A very simple formula
+//    for a nearly empty Perl bot.
+//
+//  2008.03.09 by THF
+//
+
+##dll##
+
+
+##bankroll##
+0.000000
+
+##defcon##
+0.000000
+
+##rake##
+0.000000
+
+##nit##
+1000
+
+##f$alli##
+pl_alli
+
+##f$swag##
+pl_swag
+
+##f$srai##
+0  
+
+##f$rais##
+//  Default is no raises ;)
+0
+
+##f$call##
+//  Redirect "call" to "pl_call"
+pl_call
+
+##f$prefold##
+//  Default is: do not prefold
+0 // || !islist101 || !$22
+
+##f$rebuy##
+
+
+##f$delay##
+
+
+##f$chat##
+
+
+##f$P##
+(nopponentsplaying==0) ? 0 : //zero if no opponents
+(br>1)? nopponentsplaying : //just use actual opponents post-flop
+(handsplayed<10)? nopponentsplaying : //fallback until floppct becomes reliable
+(nopponentscalling+nopponentsraising+nopponentschecking*floppct+0.49)<1 ?
+1 : //this should never happen, but .....
+nopponentscalling+nopponentsraising+nopponentschecking*floppct+0.49 //make an estimate for opponents who have still to act
+
+##f$play##
+//  Redirect "play" to "pl_play"
+pl_play
+
+##f$test##
+
+
+##f$debug##
+
+          0.0000 = sblind
+          0.0000 = bblind
+          0.0000 = nplayersactive
+          0.0000 = f$alli
+          0.0000 = f$call
+          0.0000 = f$swag
+          0.0000 = currentbet
+          0.0000 = balance	
+          0.0000 = pot
+          0.0000 = potcommon
+          0.0000 = chair
+          0.0000 = didswaground1
+          0.0000 = ismidpair
+          0.0000 = islopair
+          0.0000 = nhandslo
+          0.0000 = nhandshi
+          0.0000 = call
+          0.0000 = randomround
+          0.0000 = ishandup
+          
+
+##list601##
+AKs AQs AJs ATs
+KQs KJs KTs
+QJs QTs
+JTs
+AK AQ AJ
+KQ KJ
+AA KK QQ JJ TT 99 88 77 66 55
+
+// betting round: preflop
+// conditions: any
+// description: AA and KK - never fold preflop
+
+##list100##
+AA KK
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from SB
+
+##list101##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs 66 KQs 
+AJ AT A9s KJs A8s KQ KTs 55 KJ A9 A7s QJs K9s KTo 
+A6s QTs A8 A5s A4s A7 K8s QJ A3s K9 Q9s 44 QT JTs 
+K7s A5 A6 A2s A4 K6s Q8s K8 J9s A3 K5s Q9 JT K7 A2 
+K4s 33 22 Q7s T9s K6 Q8 J8s K3s Q6s J9 K2s K5 Q5s J7s T8s K4
+98s 97s 87s 86s 76s 75s Q7 T7s T6s T5s Q5s Q4s Q3s Q2s J6s J5s J4s J3s J2s
+
+// betting round: preflop
+// conditions: facing SB raise
+// description: Call or reraise from BB
+
+##list102##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs 66 KQs 
+AJ AT A9s KJs A8s KQ KTs 55 KJ A9 A7s QJs K9s KTo 
+A6s QTs A8 A5s A4s A7 K8s QJ A3s K9 Q9s 44 QT JTs 
+K7s A5 A6 A2s K6s Q8s K8 J9s K5s Q9 JT K7 
+K4s 33 22 Q7s T9s K6 J8s K3s Q6s J9 K2s K5 Q5s J7s T8s K4 Q4s
+98s 97s 87s 
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from UTG (9-man)
+
+##list103##
+AA KK QQ JJ TT AK AKs
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from UTG+1 (9-man)
+
+##list104##
+AA KK QQ JJ TT 99 AK AKs AQs
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from UTG+2 (9-man)
+
+##list105##
+AA KK QQ JJ TT 99 88 AK AKs AQs AQ AJs KQs
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from mid1 (9-man)
+
+##list106##
+AA KK QQ JJ TT 99 88 77 66 AK AKs AQs AQ AJs KQs AJ KQ
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from mid2 (9-man)
+
+##list107##
+AA KK QQ JJ TT 99 88 77 66 55 AK AKs AQs AQ AJs KQs AJ KQ ATs AT 
+A9s KJs KJ QJs 
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from cutoff (9-man)
+
+##list108##
+AA KK QQ JJ TT 99 88 77 66 55 AK AKs AQs AQ AJs KQs AJ KQ ATs AT 
+A9s A8s KJs KJ QJs QJ KTs QTs JTs
+
+// betting round: preflop
+// conditions: 1st to act
+// description: Raise from button (9-man)
+
+##list109##
+// betting round: preflop
+// conditions: multiple limpers (>2)
+// description: shove on top of multiple limpers
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AKs AQs AJs ATs A9s A8s KQs KJs KTs QJs QTs JTs T9s 
+KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  9A  
+
+##list110##
+AA KK QQ
+
+##list111##
+AA KK QQ JJ TT 99 88 AKs AK AQs AJs AJ ATs A9s A8s KQs KJs
+
+##list903##
+AA KK QQ JJ TT AKs 
+
+##list905##
+AA KK QQ JJ TT 99 AKs AQs AJs AK AQ KQs 
+
+##list908##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs KQs 
+KJs KTs QJs 
+
+##list911##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs KQs 
+AJ AT A9s KJs A8s KQ KTs QJs K9s QTs
+
+##list915##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs 66 KQs 
+AJ AT A9s KJs A8s KQ KTs KJ A7s QJs K9s 
+A6s QTs A5s QJ Q9s JTs 
+
+##list928##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs 66 KQs 
+AJ AT A9s KJs A8s KQ KTs 55 KJ A9 A7s QJs K9s KTo 
+A6s QTs A8 A5s A4s A7 K8s QJ A3s K9 Q9s QT JTs 
+K7s A2s K6s Q8s J9s K5s JT  
+K4s Q7s T9s J8s K3s Q6s J7s T8s 98s  
+
+##list936##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs 66 KQs 
+AJ AT A9s KJs A8s KQ KTs 55 KJ A9 A7s QJs K9s KTo 
+A6s QTs A8 A5s A4s A7 K8s QJ A3s K9 Q9s 44 QT JTs 
+K7s A5 A6 A2s K6s Q8s K8 J9s K5s Q9 JT K7 
+K4s 33 22 Q7s T9s K6 J8s K3s Q6s J9 K2s K5 Q5s J7s T8s K4 Q4s
+98s 97s 87s 
+
+##list950##
+AA KK QQ JJ TT 99 88 AKs 77 AQs AJs AK AQ ATs 66 KQs 
+AJ AT A9s KJs A8s KQ KTs 55 KJ A9 A7s QJs K9s KTo 
+A6s QTs A8 A5s A4s A7 K8s QJ A3s K9 Q9s 44 QT JTs 
+K7s A5 A6 A2s A4 K6s Q8s K8 J9s A3 K5s Q9 JT K7 A2 
+K4s 33 22 Q7s T9s K6 Q8 J8s K3s Q6s J9 K2s K5 Q5s J7s T8s K4
+98s 97s 87s 86s 76s 75s Q7 T7s T6s T5s Q5s Q4s Q3s Q2s J6s J5s J4s J3s J2s 
+
+##f$evrais##
+0  
+
+##f$evcall##
+0 
+

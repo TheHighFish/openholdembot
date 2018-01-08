@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs2.cpp : implementation file
 //
@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs2.h"
 #include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 
 // CDlgSAPrefs2 dialog
@@ -49,8 +49,8 @@ void CDlgSAPrefs2::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SWAGDELAY3, m_SwagDelay3);
 	DDX_Control(pDX, IDC_SWAGDELAY3_SPIN, m_SwagDelay3_Spin);
 	DDX_Control(pDX, IDC_AUTOPLAYER_UPON_CONNECTION, m_Autoplayer_Upon_Connection);
+	DDX_Control(pDX, IDC_RESTORE_POSITION_AND_FOCUS, m_Restore_Position_And_Focus);
 	DDX_Control(pDX, IDC_USE_AUTO_REPLAY, m_Use_Auto_Replay);
-	DDX_Control(pDX, IDC_SWAGUSECOMMA, m_SwagUseComma);
 }
 
 BEGIN_MESSAGE_MAP(CDlgSAPrefs2, CSAPrefsSubDlg)
@@ -97,8 +97,8 @@ BOOL CDlgSAPrefs2::OnInitDialog()
 	m_SwagDelay3_Spin.SetBuddy(&m_SwagDelay3);
 
 	m_Autoplayer_Upon_Connection.SetCheck(preferences.engage_autoplayer() ? BST_CHECKED : BST_UNCHECKED);
+	m_Restore_Position_And_Focus.SetCheck(preferences.restore_position_and_focus() ? BST_CHECKED : BST_UNCHECKED);
 	m_Use_Auto_Replay.SetCheck(preferences.use_auto_replay() ? BST_CHECKED : BST_UNCHECKED);
-	m_SwagUseComma.SetCheck(preferences.swag_use_comma() ? BST_CHECKED : BST_UNCHECKED);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -111,7 +111,7 @@ void CDlgSAPrefs2::OnOK()
 	m_FrameDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_FRAMEDELAY)
 	{
-		OH_MessageBox_Interactive("Invalid Frame Delay", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Frame Delay", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_frame_delay, strtoul(text.GetString(), 0, 10));
@@ -119,7 +119,7 @@ void CDlgSAPrefs2::OnOK()
 	m_ClickDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_CLICKDELAY)
 	{
-		OH_MessageBox_Error_Warning("Invalid Click Delay");
+		MessageBox_Error_Warning("Invalid Click Delay");
 		return;
 	}
 	preferences.SetValue(k_prefs_click_delay, strtoul(text.GetString(), 0, 10));
@@ -127,7 +127,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay1.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY1)
 	{
-		OH_MessageBox_Interactive("Invalid Swag Delay (Select to Delete)", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Betsize Delay (Select to Delete)", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_swag_delay_1, strtoul(text.GetString(), 0, 10));
@@ -135,7 +135,7 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay2.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY2)
 	{
-		OH_MessageBox_Interactive("Invalid Swag Delay (Delete to Entry)", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Betsize Delay (Delete to Entry)", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_swag_delay_2, strtoul(text.GetString(), 0, 10));
@@ -143,14 +143,14 @@ void CDlgSAPrefs2::OnOK()
 	m_SwagDelay3.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)>MAX_SWAGDELAY3) 
 	{
-		OH_MessageBox_Interactive("Invalid Swag Delay (Entry to Confirm)", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid Betsize Delay (Entry to Confirm)", "ERROR", MB_OK);
 		return;
 	}
 	preferences.SetValue(k_prefs_swag_delay_3, strtoul(text.GetString(), 0, 10));
 
 	preferences.SetValue(k_prefs_engage_autoplayer, m_Autoplayer_Upon_Connection.GetCheck()==BST_CHECKED ? true : false);
+	preferences.SetValue(k_prefs_restore_position_and_focus, m_Restore_Position_And_Focus.GetCheck()==BST_CHECKED ? true : false);
 	preferences.SetValue(k_prefs_use_auto_replay, m_Use_Auto_Replay.GetCheck()==BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_swag_use_comma, m_SwagUseComma.GetCheck()==BST_CHECKED ? true : false);
 	
 	CSAPrefsSubDlg::OnOK();
 }

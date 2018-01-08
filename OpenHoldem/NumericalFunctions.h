@@ -1,15 +1,15 @@
-//********************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//********************************************************************************
+//*******************************************************************************
 //
 // Purpose:
 //
-//********************************************************************************
+//*******************************************************************************
 
 #ifndef INC_NUMERICALFUNCTIONS_H
 #define INC_NUMERICALFUNCTIONS_H
@@ -18,6 +18,11 @@
 
 // Deals with floating points, ints, hex and binary
 double StringToNumber(CString number);
+
+// Turns an integer into a hex-char 0..9, A..F
+// Works up to 35: 0..9, A..Z
+// Used for indexing more than 10 autoplayer buttons
+char HexadecimalChar(int i);
 
 inline void SwapDoubles(double *first, double *second) {
   double temp = *first;

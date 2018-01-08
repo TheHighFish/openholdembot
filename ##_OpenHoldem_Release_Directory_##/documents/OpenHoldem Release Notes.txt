@@ -1,3 +1,1709 @@
+﻿﻿v﻿13.0.1 2018-01-xx
+==================
+BUG FIXES:
+- OpenHoldem could connect to other OpenHoldem windows or even to itself
+  (e.g. by table size and title) if a bad tablemap was tolerant enough.
+  This problem gets now prevented.
+  [THF]
+
+MAINTENANCE:
+- Restructuring OpenHoldem and introducing Preferences.DLL
+  because we need smaller, manageable software-modules with clean interfaces. 
+  [THF]
+
+
+﻿v﻿13.0.0 2018-01-01
+==================
+﻿NEW STUFF:
+- OpenHoldem comes now with some (maybe soon some dozens)
+  "official" tablemaps for an easy out-of-the-box experience.
+  General setup-instructions for the casinos can be found in the manual
+  and every TM comes with one or two replay-frames for illustration.
+  The tablemap-loader and scraper-directory-monitor have been adapted
+  to work with a deeply nested scraper-directory to keep the maps organized.
+  The batch-script "Update_Tablemaps.bat" will checkout the tablemaps
+  from our source-code-repository at Github and keep you up-to-date.
+  Special thanks to Darkmund and Jesus for the first "official" tablemaps.
+  [THF]
+- OpenHoldem is now able to switch bot-logic at runtime.
+  It provides a new hopper-function f$select_formula-file 
+  that gets evaluated once at handreset.
+  The loadformula$XYZ-symbols selects a formula-file, e.g.
+  
+    ##f$select_formula_file##
+	  WHEN (StackSize < 15) RETURN loadformula$push_fold$ohf FORCE
+	  WHEN issng RETURN loadformula$my_sng_bot$ohf FORCE
+	
+  The selected file will then be loaded from the bot_logic-directory.
+  This functionality could be used to load botlogic depending on game-type 
+  or to maintain several small bots for different stages of a game.
+  [THF]
+- In the bot_logic-directory you will now find a small "bot"
+  tablemap_tester.ohf, that enables you to play manually with the flag-buttons
+  in order to test the autoplayer-interface of a tablemap.
+  The "bot" will show some helpful messages on startup.
+  Special thanks to Ares for the idea and for the first version of this tool.
+  [THF]
+- The handnumber is now part of the "Basic Info" section of the log-file.
+  Thanks to RISA for the suggestion.
+  [THF]
+- PokerTracker supports now the Italian network People's Poker
+  and OpenHoldem supports it too. The sitename or network
+  in the tablemap is expected to be "Peoples".
+  Thanks to Stars83 for the information and the code-snippet.
+  [THF]
+
+BUG FIXES:
+- The symbols "call" and "nbetstocall" got calculated in wrong order,
+  which was not noticeable as long as the calculation got executed twice
+  (e.g. using at least 1 stable frame on my turn).
+  Thanks to Jesus who found this bug with Validator and replay-frames.
+  [THF]
+- Some rules of the validator-engine were susceptible to rounding-errors.
+  This has now been fixed by functions like IsEqual that accept some tolerance.
+  Thanks to Jesus for reporting false positives of the validator
+  and for providing replay-frames.
+  [THF]
+- The code of RunnerRunnerFlushPossibleAtRiver contained an error.
+  Thanks to Stars83 for reporting.
+  [THF]
+  
+  
+﻿v﻿12.1.5 2017-12-12
+==================
+﻿NEW STUFF:
+- Introducing new OpenPPL-symbols
+    HaveWeakBackdoorStraightDraw
+    HaveWeakDoubleGutshotDraw
+    HaveWeakFlush
+    HaveWeakFlushDraw
+    HaveWeakInsideStraightDraw
+    HaveWeakStraight
+    HaveWeakStraightDraw
+  They describe hands that are so weak that we don't consider them as regular holdings,
+  e.g. the single-card idiot-end of a straight or a shared flush-draw at the board.
+  Special thanks to Salem for the fruitful discussions.
+  [THF]
+
+BUG FIXES:
+- Since 12.1.1 nopponentscalling, CallsSinceLasstPlay and similar symbols
+  correctly considered players who called allin for less than
+  the raisers bet on previous orbits -- but only at our turn
+  (which is the point that matters).
+  Now they also work when it is not our turn (e.g. in the debug-tab).
+  Thanks to Stars83 for reporting.
+  [THF]
+- The logarithm-operator did not work due to a typo in the tokenizer.
+  Thanks to Mib92 for reporting.
+  [THF]
+- After connection the counter for "handsplayed" was undefined 1 or 2
+  depending on the circumstances at the table. It is now well-defined 0
+  and only increases on handreset if the userchair is known.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+- When OpenHoldem was connected to OHReplay
+  and all frames were nearly identical
+  (e.g. 2 frames of a headsup-table with barely any action)
+  and we were cycling through the same hand over and over again
+  then it could happen that OpenHoldem missed the handreset.
+  This has now been fixed as the handreset-detector now takes
+  the replayframe-number into consideration as a 10th handreset-indicator.
+  Special thanks to ZeeZooLaa for reporting and for providing replay-frames.
+  [THF]
+  
+MAINTENANCE:
+- GUI-options: OpenHoldem will now start only the first instance visible,
+  all other windows minimized, to avoid irritating the user
+  when the autostarter opens new bot-windows.
+  [THF]
+- Removed maldesigned OpenPPL-functions HaveAnyKindOfInsideStraightDraw and
+  HaveAnyFlushDrawContributingOnlyOneCard.
+  [THF]
+  
+
+﻿v﻿12.1.4 2017-11-30
+==================
+BUG FIXES:
+- The new symbol bigstackchair incorrectly considered folded players.
+  Thanks to Stars83 for reporting.
+  [THF]
+- The new interface of the user.DLL contained two half-made functions.
+  Special thanks to LonelyBoy for finding the bug.
+  [THF]
+- Fix for the versus-symbol prtie. Special thanks to Eden for
+  reporting and for providing the fix.
+  [THF]
+  
+MAINTENANCE:
+- Improving the OpenPPL-functions for backdoorstraights
+  to ignore draws that are entirely at the board.
+  [Salem]
+- Restructuring OpenHoldem and introducing 3 new DLLs:
+    * Debug.DLL
+    * Files.DLL
+    * GamestateValidation.DLL
+  We need smaller, manageable software-modules with clean interfaces. 
+  [THF]
+- Gecko-bot: improved f$BetsizePreflop, now adapting its betsize to position/range
+  when open-raising. Thanks to ElKid for the suggestion.
+  [THF]
+  
+
+﻿v﻿12.1.2 2017-11-06
+==================
+﻿NEW STUFF:
+- New symbols smallstackchair and bigstackchair.
+  These symbols can also be used as multiplexer-postfixes of course.
+  [THF]
+  
+MAINTENANCE:
+- Improved backdoor draws, now ignoring draws that
+  are shared on the board. Thanks to Salem who did all the work.
+  [THF]
+- Default Gecko-bot: various little improvements,
+  please see the change-log. Thanks to Gtwhat for providing 
+  hand-histories and logs.
+  [THF]
+  
+   
+﻿v﻿12.1.1 2017-10-26
+==================
+BUG FIXES:
+- The f$delay-function was not precise.
+  It calculated the number of additional heartbeats required,
+  but due to flexible heartbeats OpenHoldem acted too fast.
+  Thanks to Barthens for reporting.
+  [THF]
+- The improved calculation of nbetsroundX )OH 12.0.3)
+  could make things worse in other situations.
+  This has now been addressed with another improvement.
+  Thanks to Stars83 for reporting.
+ 
+MAINTENANCE:
+- Adapted the OpenPPL-symbols NoNettingOnFlop and NoBettingOnTurn
+  to consider also autoplayer-action-counters in addition to nbetsroundX.
+  [THF]  
+  
+
+﻿v﻿12.1.0 2017-10-23
+==================
+﻿NEW STUFF:
+- The user-DLL has a new interface.
+  Code: https://github.com/OpenHoldem/openholdembot/tree/master/Reference%20User%20DLL
+  Forum: http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=21166
+  [THF]
+
+BUG FIXES:
+- The introduction of memory-pools broke the reloading 
+  of new formulas. This has now been fixed.
+  Thanks to Barthens and Salem for reporting.
+  [THF]
+  
+
+﻿v﻿12.0.3 2017-10-18
+==================
+BUG FIXES:
+- The PokerTracker-DLL still accepted outdated postfixes.
+  This old, now incorrect code has now been removed, 
+  so pokerTracker works now with the chair-symbols 
+  of the multiplexer-engine as it should.
+  [THF]
+- The default Gecko-bot still contained some old-style
+  PokerTracker-symbols that didn't get handled correctly at run-time.
+  Thanks to Noobwithquestions and Stars83 for reporting.
+  [THF]
+- The symbols nopponentscalling and Calls did not count players
+  who called allin for less than the raisers bet (by design),
+  as they could not get distinguished easily from raisers
+  of the previous orbit. This has now be done.
+  Thanks to JPHol123 for reporting.
+  [THF]
+- History-symbols like nbetsroundX got calculated on every heartbeat
+  (when we don't have stable frames). This could lead to ugly situations,
+  for example turn-card already painted, but bets of the flop still visible,
+  as a consequence affectibg other symbols like NoBettingOnTurn.
+  We now try to avoid this situation and calculated history-symbols 
+  preferably it is our turn.
+  Thanks to RISA and Guysmo for reporting and providing log-files.
+  [THF]
+
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+  
+﻿v﻿12.0.2 2017-10-14
+==================
+MAINTENANCE:
+- Introducing memory-pools for better performance,
+  i.e less memory usage and more speed.
+  Thanks to Salem for testing.
+  [THF]
+- Improved betsizing of the Gecko-bot.
+  Replaced some allins by potsized bets 
+  to avoid potential overbetting if our stack is really deep.
+  Thanks to Barthens and DoyBrungSong for reporting
+  and to SingSongSally for testing.
+  [THF]
+- Handling one more special portuguese characters when title-preprocessing.
+  Thanks to Cold12zera for reporting and providing replay-frames.
+  [THF]
+  
+
+﻿v﻿12.0.1 2017-09-22
+==================
+BUG FIXES:
+- Some functions of Gecko were in naming-conflict with multiplexer-postfixes (e.g. f$AF_turn)
+  These functions have now been renamed. Thanks to Relhby for reporting
+  [THF]
+- A PT-icon-function of the Gecko-bot had an incorrect name.
+  Thanks to DonkeyKong101 for reporting.
+  [THF]
+- Fixed a typo that affected the stacksize of chair 3.
+  Thanks to JPHol for reporting and to Trish for helping to hunt the bug.
+  [THF]
+- Fixed a typo in the format-string of a PT-error-message.
+  Thanks to Gunfadoso for reporting.
+  [THF]
+- Using the flag-symbols in the default-logic could crash OpenHoldem
+  at startup (symbol-verification at parse-time),
+  as the flags-toolbar is part of the GUI which runs in its own thread
+  and might not have been initialized at this point of time.
+  Thanks to Trish for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Improved some validator-rules.
+  Thanks to Jabsacyomama for reporting.
+  [THF]
+
+  
+﻿v﻿12.0.0 2017-08-21
+==================
+﻿NEW STUFF:
+- OpenHoldeme contains now a built-in default bot,
+  that sits in the background and cares about undefined situations.
+  It can be used as a starting-point for tweaking or as a fall-back-logic.
+  Special thanks to Gecko who contributed his legendary bot-logic
+  that made him a fortune in the past.
+  For the full story about the Gecko-bot please see the sticky post
+  in the OpenPPL-forum (soon).
+  If your bot doesn't need any default-logic the files in the folder
+  "bot_logic\DefaultBot" can safely be removed.
+  Special thanks to Trish, OpenHoldemAli, R2D2 
+  and PastorPoker for testing and feedback.
+  [THF]
+- OpenHoldem is now able to import Shanky-PPL directly
+  (plain-text only, no encrypted PPL of course).
+  Special thanks to Salem who contributed an important part
+  of the on-the-fly-converter and to Trish, OpenHoldemAli, R2D2 
+  and PastorPoker for testing and feedback.
+  [THF]
+- Verbose OpenPPL functions IsPreflop, IsFlop, IsTurn, IsRiver, isPostflop
+  [THF]
+- New OpenPPL function StackUnknown,
+  always returning false when the userchair is known.
+  Introduced for compatibility with Shanky-PPL.
+  [THF]
+
+MAINTENANCE:
+- Due to its popularity OpenPPL is now the new default-mode
+  when starting a new empty formula with the editor.
+  OpenHoldem will switch to OH-script-mode if the formula-set
+  contains a non-empty f$call-function.
+  [THF]
+
+BUG FIXES
+- The title did not contain the name of the formula.
+  Thanks to Eden and Lucky8 for reporting.
+  [THF]
+  
+  
+v﻿11.2.4 2017-07-03
+==================
+BUG FIXES:
+- Editing lists did not work in all cases 
+  after restructuring the parser in 11.2.2.
+  Thanks to Nik0 for reporting.
+  [THF]
+
+
+v﻿11.2.3 2017-06-22
+==================
+NEW STUFF:
+- New symbols BotsLastFlopAction and BotsLastTurnAction.
+  [Mike]
+
+MAINTENANCE:
+- The technic RankOfSetOnBoard (part of the removed NutFullHouse-code)
+  has been added again. Thanks to JohnNash for asking.
+  [THF]
+
+
+v﻿11.2.2 2017-06-xx
+==================
+BUG FIXES:
+- The now built-in symbols smallblindchair and bigblindchair were missing the code
+  for reversed blinds headsup. Thanks to Relhby for reporting
+  and to Poker_dog for the fix.
+  [THF]
+- The random number generator got initialized in the heartbeat-thread
+  and in the PrWin-thread. This caused random number to look "reproducible"
+  when only using the debug-tab without being connected to the table.
+  Thanks to Wetophelia for reporting and to poker_Dog for providing a patch.
+  [THF]
+- The error-message for endless recursions showed only the first character
+  of the name of the last evaluated function. Thanks to Guysmo for reporting.
+  [THF]
+- When using the Calc-button of the formula-editor multiple times
+  on a modified formula while not being connected to a table
+  then previous results didn't get cleared from the cache.
+  This has now been fixed.
+  [THF]
+
+MAINTENANCE:
+- Restructured some parts of the parser. 
+  It does no longer work on files, but on function-collections.
+  Benefits:
+    * some error-messages previously required an input-file.
+      They now also work when modifiying a formula with the editor
+    * loads now also the debug-tab
+    * more speed (as some inefficiencies got removed along the way)
+  [THF]
+
+
+v﻿11.2.1 2017-06-04
+==================
+BUG FIXES:
+- InSmallBlind was broken due to a copy-and-paste-error
+  when we changed the library to use the new chair symbols.
+  Thanks to Stout-man for reporting and to Mike for finding the bug.
+  [THF]
+- The new chair symbols considered players in the blinds also as regular 
+  positions like EP3. Thanks to Stout-man for reporting.
+  [THF]
+- Improved handreset-detection.
+  After handreset new handresets were blocked for 3 seconds and old seen handresetmehods got deleted, 
+  but OpenHoldem remembered new seen handresetmethods during a potential animation-phase.
+  This could cause a potential 2nd handreset on laggy casinos some seconds later.
+  Thanks to Sloboz, EezyMoney123 and RISA for reporting,
+  ChuckNeverMuck for helping and Guysmo for providing log-files.
+  [THF]
+
+
+v﻿11.2.0 2017-05-26
+==================
+NEW STUFF:
+- New OpenHoldem symbols suitbitsplayerN and suitbitscommonN
+  that provide the rankbits of all 4 suits (N = 0..3)
+  Especially meant to support Omaha better.
+  The symbols can of course also be addressed by more logical names
+  like suitbitsplayer_diamonds that get supported by the new multiplexer-engine.
+  [THF]
+- Introducing new constanmt symbols for more verbosity and for use with the multiplexer:
+  ace, king, queen, jack, ten, preflop, flop, turn, river, clubs, diamonds, hearts, spades,
+  true, false.
+  [THF]
+- New symbols previousround and currentround (same es betround),
+  especially meant for the multiplexer.
+  [THF]
+- Introducing a multiplexer engine, that supports poker-logical indexing  
+  for numbered symbols, e.g.
+  balance_raischair, suitbitcommon_diamonds, nbetsround_preflop.
+  The multiplexer also works with OpenPPl and user-defined functions.
+  Some PokerTracker symbols got renamed slightly, 
+  as Pokertracker gets now also served by the multiplexer.
+  For more details please refer to the updated manual.
+  [THF]
+- A button "toggle all" for the countless debug-options.
+  Thanks to ChuckneverMuck for the suggestion.
+  [THF]
+- New built-in chair symbols for the multiplexer-engine 
+  (most of them have been formerly implemented in OpenPPL)
+  bigblindchair, smallblindchair, cutoffchair,
+  mp3chair, mp2chair, mp1chair, ep3chair, ep2chair, ep1chair, 
+  utgchair, headsupchair and buttonchair (synonym for dealerchair).
+  Also "new" is missingsmallblind that is necessary e.g. for StillToAct.
+  [THF]
+- New tablemap option "cardscrapemethod".
+  The default is scraping-order is : cardback -> nocard -> cardfaces.
+  If cardscrapemethod is non-zero OpenHoldem will scrape
+  cardfaces -> cardback -> nocard
+  This option is less oerformant as the default,
+  but necessary at casinis that display both cardbacks and cardfaces at the same time.
+  Thanks to OpenGeek, Angelus, R2D2, Relhvy, poker_dog and Projecthpdv2
+  for reporting and the discussion.
+  [THF]
+
+BUG FIXES:
+- Hand-expressions with specifix suits worked only for HoldEm 
+  and 2 out of 4 cards in Omaha-games.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+- If a tablemap supported multiple buttons of the same type at different locations
+  then it could be that OpenHoldem stopped when it found the first (non-clickable) one
+  and missed the clickable button.
+  Thanks to Brass Knuckles for reporting, Darkmund, Relhby and ChuckNeverMuck for helping, 
+  Likeheadsup for providing replay-frames and testing and to AlexTheKing88 for providing the fix.
+  [THF]
+- Improved blind-guessing headsup.
+  Thanks to Relhby for the patch.
+  [THF]
+- Added 2 more blind-levels to the list of known blinds of the blind-guessing-module.
+  Thanks to Bitsy and Wetophelia for reporting.
+  [THF]
+- The lookup of "hi_XYZ" histoy-symbols was broken.
+  Thanks to Stout-man for reporting.
+  [THF]
+- The new title-evaluator considered only ttlimits and scraped r$c0limitsX
+  but bot additional title-formats ttlimitsX.
+  Thanks to Bitsy and Toto for reporting
+  and to Poker_Dog for finding the bug.
+  [THF]
+
+MAINTENANCE:
+- Now detecting and warning if logical operators get fed with numerical values.
+  Way too many people don't understand the precedence of operators
+  and write bad code like "AND NOT betround > 1..."
+  which really means "AND ((NOT betround) > 1)..."
+  where betround is treated as a true/false value.
+  [THF]
+- Calculating the OpenPPL-symbol NutFullHouseOrFourOfAkind now internally
+  by iterating all possible cases, as the functions in the OpenbPPL-library
+  became way too complex and proved to be error-prone.
+  Also introducing nutfullhouseorfourofakind_ntotal.
+  Thanks to ChuckNeverMuck for testing.
+  [THF]
+- Removed the following OpenPPL-symbols due to the introduction of the multiplexer-engine:
+  * ButtonStartingStackSize, CutOffStartingStackSize,...
+    which are now available as StartingStackSize_buttonchair, ...
+- Warning if a built-in HoldEm-symbol gets used in Omaha-logic.
+  [THF]
+
+
+v11.1.3 2017-04-12
+==================
+BUG FIXES:
+- Fixed a bug in the initialization of MinOpponentStackSize.
+  Thanks to Relhby for reporting.
+  [THF]
+- Fixed unbelievable ten bugs and problems in NutFullHouseOrFourOfAKind.
+  Thanks to Stars83 and Smuroff for reporting several buggy cases.
+  Special thanks to ChuckNeverMuck who did all the review, fixing, testing.
+  [THF]
+- The keyboard-DLL executed one mouse-click too much.
+  Thanks to Gunfadoso for reporting and for suggesting the fix.
+  [THF]
+- The fix in the redacted version 11.1.2 to clear all data 
+  of a player who left the table broke scraping of the dealer-chair, 
+  as during a new scrape a player could get temporary marked as "not seated".
+  Thanks to ChuckNeverMuck and Eden for reporting.
+  [THF]
+- betpositionrais and callposition didn't work as expected.
+  Thanks to Mike for reporting, debugging and providing the fix.
+  [THF]
+- The MicroSoft function GetCurrentprocessID did at some
+  Windows XP system not work early on startup, 
+  thus causing the new auto-starter to go crazy.
+  We now try to get the process ID later 
+  and turn the auto-starter off if the process ID fails completely.
+  Thanks to Mike for reporting and providing log-files.
+  [THF]
+- The statusbar got completely re-implemented, as there was a deadlock
+  that could freeze OpenHoldem if debugging for the GUI and the formula
+  was enabled. The displayed information in the statusbar got reduced, 
+  as most info is visible in the table display.
+  [THF]
+
+
+﻿v11.1.3 2017-04-12
+==================
+BUG FIXES:
+- Fixed a bug in the initialization of MinOpponentStackSize.
+  Thanks to Relhby for reporting.
+  [THF]
+- Fixed unbelievable ten bugs and problems in NutFullHouseOrFourOfAKind.
+  Thanks to Stars83 and Smuroff for reporting several buggy cases.
+  Special thanks to ChuckNeverMuck who did all the review, fixing, testing.
+  [THF]
+- The keyboard-DLL executed one mouse-click too much.
+  Thanks to Gunfadoso for reporting and for suggesting the fix.
+  [THF]
+- The fix in the redacted version 11.1.2 to clear all data 
+  of a player who left the table broke scraping of the dealer-chair, 
+  as during a new scrape a player could get temporary marked as "not seated".
+  Thanks to ChuckNeverMuck and Eden for reporting.
+  [THF]
+- betpositionrais and callposition didn't work as expected.
+  Thanks to Mike for reporting, debugging and providing the fix.
+  [THF]
+- The MicroSoft function GetCurrentprocessID did at some
+  Windows XP system not work early on startup, 
+  thus causing the new auto-starter to go crazy.
+  We now try to get the process ID later 
+  and turn the auto-starter off if the process ID fails completely.
+  Thanks to Mike for reporting and providing log-files.
+  [THF]
+- The statusbar got completely re-implemented, as there was a deadlock
+  that could freeze OpenHoldem if debugging for the GUI and the formula
+  was enabled. The displayed information in the statusbar got reduced, 
+  as most info is visible in the table display.
+  [THF]
+
+MAINTENANCE:
+- The function f$betsize_enable_rounding got removed,
+  because the people who demanded to "control everything to the penny"
+  proved unable to handle the full power of WinHoldem-style misconfigurability.
+  [THF]
+
+
+v11.1.2 2017-02-13
+==================
+NEW STUFF:
+- Added forgotten symbol BotsActionsOnTurn.
+  Thanks to JPhol123 for reporting.
+  [THF]
+
+BUG FIXES:
+- If a player left the table, there was some stale data left in memory,
+  that did get neither reset nor overwritten by the lazy-scraper.
+  This didn't affect any symbols, but the player-info in the log.
+  Thanks to Micro111 for reporting.
+  [THF]
+- If a tablemap contained multiple ttlimitsX
+  and more than one was partially matching,
+  then potentially bad data of a partial match could overwrite
+  good data from a perfect previous match.
+  This has now been fixed; OpenHoldem requires a perfect match now
+  and if multiple ttlimits match perfectly then data gets aggregated.
+  Thanks to Brass Knuckles for reporting and to postenjak,
+  Poker_Dog, Qwerty and ZeeZooLaa for the helpful discussion.
+  [THF]
+- OpenHoldem crashed for some people, according to logs when updating the GUI.
+  For developers with a debug-build this sometimes happened in some string-function 
+  called by GetTablemapSymbol() called by nchairs() because of invalid memory-access. 
+  It could hardly have been a race-condition, because the symbol nchairs is de facto read-only. 
+  It didn't look like heap-corruption either, because always the same symbol was affected.
+  To prevent this from happening we rewrote the nchairs-function,
+  that now always returns an integer (initialized on connection) 
+  instead of looking up the value again and again. 
+  Let's hope that the problem is fixed.
+  Thanks to JohnNash, Johnny, WantPlayPoker, ChillIt and ChuckNeverMuck
+  for reporting and for providing log-files,
+  [THF]
+  
+  
+v11.1.1 2017-02-06
+==================
+BUG FIXES:
+- The scraper output dialog crashed regularly, 
+  very deep in the recursive constructor of a 3rd-party window-managing component. 
+  As this window-managing library (originally designed for Windows 98)
+  turned out to be superfluous we removed it.
+  And voila, the bug was gone.
+  Thanks to NickPerry for reporeting.
+  [THF]
+- OpenHoldem crashed at showdown.
+  As it turned out some worker-threads got stopped at the wrong time,
+  indirectly causing an object being deleted twice,
+  thus leading to a memory-access-error very late at termination.
+  [THF]
+- After the crash had been fixed most memory got released correctly again.
+  Then it became possible to care about OpenHoldems memory leaks,
+  i.e. objects that didn't get deleted on termination:
+    * statusbar
+    * flags-toolbar
+    * pens and brushes for painting the table.
+    * the "special" symbol engine CbetroundCalculator
+    * the OpenPPL-function for the self-test of parser and evaluator
+  The total leaked memory was less than 5 KB in size.
+  The unfixed 5 leaks that couldn't get diagnozed exactly
+  are leaa than 1 KB large altogether according to VLD.
+  Thanks to Aintnosunshine for reminding us of the memory leaks.
+  [THF]
+  
+MAINTENANCE:
+- Removed the auto-connector-option to connect once which doesn't make much sense.
+  Openholdem will now connect either never (by hopper-messages) or always.
+  [THF]
+
+
+v11.1.0 2017-02-01
+==================
+NEW STUFF:
+- OpenHoldem autostarter that takes care that enough free instances
+  of OpenHoldem are running. It also shuts down superfluis bots
+  if they are unused for a certain time.
+  [THF]
+- A so-called "watchdog" cares now about crashed and frozen
+  instances of OpenHoldem and cleans up if necessary,
+  so that auto-starter and auto-connector can work properly.
+  This feature became necessary, because OH sometimes crashes at termination.
+  [THF]
+- New memory-commands:
+    * me_add_symbol_value
+    * me_sub_symbol_value
+  that can be used in addition to me_st_, me_re_ and me_inc
+  to manipulate memory-symbols more easily, e.g for creating outs-counters.
+- The problem solver executes now also all configuration checks,
+  as experience shows that new users often turn all checks off
+  and then wonder why "ITDONOWORKS!!!!!"
+  [THF]
+- OpenHoldem is now able to connect to popup-windows
+  (also called non-top-level or child-windows)
+  e.g. to click a confirmation-button
+  or maybe even to do more complicated hopper-tasks in the future.
+  All you need is a mimimalistic tablemap for connection
+  and a symbols s$ispopup that disables the TM-completeness-checker.
+  [THF]
+  
+MAINTENANCE:
+- Removed the option "close when table disappears",
+  as it became redundant.
+  [THF]
+- Reimplemented large parts of the table-positioner 
+  to get rid of MicroSofts TileWindows and CascadeWindows functions
+  that resized all tables back to default.
+  The code could be simplified significantly 
+  and seems to work fine now.
+  [THF]
+  
+BUG FIXES:
+- Fixed a potential race-condition, as a GUI-timer
+  could access scraper-data, which could at the same time
+  be changed in the heartbeat-cycle.
+  [THF]
+
+
+v11.0.2 2017-01-22
+==================
+BUG FIXES:
+- Fixed a race-condition at termination. Some timer-functions were still alive
+  and sometimes accessing data that already got deleted when OH was shutting down,
+  thus leading to an invalid memory access.
+  [THF]
+- Improved HaveRunnerRunnerFlushAtRiver.
+  Thanks to ChuckNeverMuck and Salem for reporting
+  and sugegsting improvements.
+  [THF]
+
+  
+v11.0.1 2017-01-14
+==================
+NEW STUFF:
+- OpenHoldem is now able to connect to tables with empty title.
+  This requires an empty titletext in the tablemap
+  and also at least one additional tablepoint to make sure 
+  that we don't randomly connect to crappy ghost-windows.
+  Thanks to 2235xtb for reporting this former limitation of OpenHoldem.
+- Shooting a replay-frame automatidcally in case of
+  unknown special characters in the title.
+  [THF]
+  
+BUG FIXES:
+- The symbol NutsOnBoard got lost when the OpenPPL-library
+  got reorganized for Omaha.
+  Thanks to JohnNash for reporting.
+  [THF]
+- The PokerTracker-Thread could sometimes freeze OH 
+  if it connected to an empty table.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+- OpenEndedStraightDrawPossibleOnFlop could incorrectly become true
+  if there was a set of deuces at the board on flop
+  (difference between highest card and lowest card (undefined -1) <= 3)
+  Thanks to ChuckneverMuck for reporting this funny bug and for the fix.
+  [THF]  
+- Improved blind-guessing headsup in case we don't get any info from the title.
+  [THF]
+
+MAINTENANCE:
+- Removed support of a "scraper-DLL" for alternative input-methods
+  like hooking and DLL-injection, as it was never used by anybody,
+  its implementation got lost years ago (scraper-optimizations for 4.x),
+  nobodey complained and the code demanded simplifications.
+  So OpenHoldem is back to good old screen-scraping.
+  [THF]
+- Even more title preprocessing.
+  Thanks to Gratiszzzz, Pobar, Micro111 and Joe1111 for reporting
+  some more special characters.
+  [THF]
+
+
+v11.0.0 2016-12-27
+==================
+NEW STUFF:
+- OpenHoldem aupports now Omaha.
+  It scrapes up to four cards for every player
+  if the loaded tablemap contains additional card symbols
+  (pXcardfaceY, pXcardfaceYrank, pXcardfaceYsuit, pXcardfaceYnocard).
+  Based on this information it calculates bassic symbols like
+    * $$pcX (card symbols)
+	* $$prX (rank symbols)
+	* $$psX (suit symbols)
+	* isomaha (true if more than two cards have been seen for a player)
+  Furthermore some basic symbols work for both Hold'em and Omaha
+    * nsuitedcommon and similar
+	* rankbitscommon and similar
+  More advanced features:
+    * hand$xyz-symbols work with up to four cards too
+	* PokerTracker-queries auto-adapt for Omaha
+  Not yet implemented and to be done by volunteers:
+    * symbol engines for advanced hand-strength evaluation
+	* PrWin-calculations for Omaha (optional)
+	* OpenPPl-handstrength-symbols 
+  For details please see the sticky post about OpenHoldem 11.0%
+  and the new forum section for Omaha.
+  [OpenHoldem, SingleMalt, THF]
+  
+MAINTENANCE:
+- Shooting replay-frames does no longer require the autoplayer.
+
+BUG FIXES:	
+- Empty functions got ignored on parsing, but they are meaningful.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+  
+
+v9.4.3c 2016-12-25
+==================
+BUG FIXES:	
+- OpenPPL memory-symbols for RaisesBeforeFlop, onFlop, OnTurn were broken
+  due to wrong naming. Thanks to SweetPork and WantPlayPoker for reporting 
+  and to ChuckNeverMuck who did all the work.
+  [THF]
+  
+  
+v9.4.3b 2016-12-23
+==================
+BUG FIXES:	
+- BotsLastPreflopAction did in some cases still not get updated properly
+  after autoplayer-actions.
+  Thanks to WantPlayPoker and ChuckNeverMuck for reporting.
+  The fixed library is in the sticky thread for OpenHoldem 9.x.
+  [THF]
+
+
+v9.4.3 2016-12-21
+==================
+NEW STUFF:
+- New function f$shoot_replay_frame that shoots a frame
+  on a user-defined condition.
+  Thanks to Blacktie for the suggestion.
+  [THF]
+
+BUG FIXES:	
+- If a balance was empty and the user didn't scrape this case properly 
+  as "allin" or "0" then it got treated as kUndefined 
+  which later-on got converted to "-1" and then finally to +1 
+  by the function StringToMoney which didn't handle the minus-sign.
+  Thanks to JohnNash for reporting.
+  [THF]
+- If a casino updated the autoplayer-buttons (my turn)
+  before it displayed any opponents then PrWin calculated garbage results,
+  assuming a single opponent. Now PrWin waits for a reasonable number of opponents.
+  Thanks tzo Bitsy for reporting and to Reirei for the patch.
+  [THF]
+- log$-symbols got correctly evaluated to 1, but incorrectly logged as 0.
+  Thanks to ChillIt for reporting.
+  [THF]
+- The reimplemented symbol nopponentscalling could still be wrong
+  under certain conditions in the big blind, also affecting "Calls".
+  Thanks to Guysmo, KindBot, WantPlayPoker and Stars83 for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Even more title preprocessing.
+  Thanks to ChuckNeverMuck and WantPlayPoker for reporting
+  some more special characters.
+  [THF]
+  
+  
+v9.4.2 2016-12-13
+==================
+BUG FIXES:	
+- BotsLastPreflopAction did in some cases not get updated properly
+  after autoplayer-actions due to symbol-caching
+  (depending partially on old and partially on already updated symbol values)
+  Thanks to JMonderson for reporting.
+  [THF]
+
+
+v9.4.1 2016-12-12
+==================
+NEW STUFF:
+- Supporting six more autoplayer buttons, 
+  needed by increasing number of hopper functions.
+  The buttons, states and labels are named i0button..i9button 
+  and iAbutton..iFbutton.
+  [THF]
+
+BUG FIXES:	
+- Replay-frames on my turn could be missing.
+  Thanks to AlexTheKing88 for reporting.
+  [THF]
+- The reimplemented symbol nopponentscalling could be wrong
+  under certain conditions in the big blind, also affecting "Calls".
+  Thanks to SweetPork for reporting.
+  [THF]
+- If a function got deleted with the formula-editor
+  and it was still displayed in an open tab,
+  then on closing the editor OpenHoldem asked
+  if the user wanted to apply his changes
+  and copied the deleted function back to the formula-set.
+  Thanks to LikeHeadsup for reporting.
+  [THF]
+- The table-positioning option "tiled" did not 
+  reuse formerly occupied slots correctly.
+  Now we are back to MicroSofts simple "TileWindows"-function,
+  even if this function allows small overlap and resizes
+  all maximized Windows.
+  This seems to be acceptable for our users.
+  Thanks to OpenGeek for reporting.
+  [THF]
+
+MAINTENANCE:
+- The implementation of the additional button labels iXlabelY
+  turned out to be missing, formerly buggy and not needed at all.
+  Therefore these tablemap regions get now officially removed.
+  Thanks to JohnNash for reporting.
+  [THF]
+- Even more title preprocessing.
+  Thanks to KindBot for reporting yet another Euro-sign
+  in one of the many country-specific versions of extended ASCII.
+  [THF]
+
+
+v9.4.0 2016-12-08
+==================
+NEW STUFF:
+- The OpenHoldem symbols nopponentstruelyraising and nopponentscalling
+  which evaluate only the visible info at the table (max one orbit)
+  got completely reimplemented to be well-defined at all times:
+  They mean now:
+    * bets and raises (or calls) in front of me before my first action (partial orbit)
+    * bets and raises behind me after my action (partial orbit)	
+    * bets and raises behind and in front of me (full orbit) at my turn.
+  [THF]
+- All OpenPPL history-symbols got rewritten to be well-defined at all times.
+  Escpecially Raises and Calls could be improved with the use of
+  the reimplented symbols nopponentstruelyraising and nopponentscalling.
+  The symbols get now updated differently, e.g. Raises:
+    * old stable value of Raises + RaisesSinceLastplay
+      (based on nopponentstruelyraising), potentially 
+	  temporary unstable when it is not my turn
+    * same calculation (now based on stable input) when it is my turn
+    * memory-symbols get updated after the autoplayer action
+  This way the symbols can be used all the time, even if we don't have stable input 
+  (results might be temporary wrong if the casino updates its display), 
+  while the updates happen only if we see  stable input (our turn) 
+  and there are no longer any initializations neccessary
+  before the symbols can be used (for all the people who want to use symbols
+  "out of order", want to supervise everything with a DLL, ...)
+  As the history-symbols can now be used all the time and everywhere
+  they can now also be displayed in the debug-tab.
+  No restrictions whatsoever.
+  Special thanks to ChuckNeverMuck for the fruitful discussions,
+  bug-reports and suggestions and to Hugo1 for help with testing.
+  [THF]
+ 
+BUG FIXES:	
+- HadPairOnTurn incorrectly considered flop-cards that paired on the turn.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+  
+  
+v9.3.3 2016-11-27
+==================
+NEW STUFF:
+- New symbol title$xyz that returns true if the table title
+  contains the substring "xyz" (case-sensitive).
+  This could e.g. be used to detect "turbo"-SNGs.
+  Thanks to Hugo1 for the suggestion. 
+[THF]
+
+BUG FIXES:
+- Even more title preprocessing.
+  Thanks to WantPlayPoker for reporting yet another Euro-sign
+  in one of the many country-specific versions of extended ASCII.
+  [THF]
+- The window-message to reset a flag (0..19) at the toolbar
+  did incorrectly set it. Thanks to Likeheadsup for reporting.
+  [THF]
+- Fixed a case of NutFullHouseOrFourOfAKind.
+  Thanks to Smuroff for reporting and to ChuckNeverMuck for the fix.
+  [THF]
+- The log-file got incorrectly delet6ed on startup,
+  because there was a circular dependency as the log needs to know its max size (preferences) 
+  and the preferences sometimes need a log-file on startup.
+  Thanks to WantPlayPoker, Chillit and Guysmo for reporeting.
+  [THF]
+  
+MAINTENANCE:
+- Support for special blind-structure of a Georgian casino.
+  Thanks to LikeHeadsup for reporting and for providing replay-frames.
+  [THF]
+
+
+v9.3.2 2016-11-06
+==================
+BUG FIXES:
+- The BlackChipPolker software had special characters inside numbers in the title
+  that looked like spaces to humans but were something different
+  (0xA0 = "none-breakable-space" in Latin-1-encoding of extended ASCII).
+  This special case gets now handled by the title-preprocessing.
+  Thanks to Terminatoros for reporting and for the replay-frame.
+  [THF]
+  
+MAINTENANCE:
+- Moved the warning about unexpected characters in the title 
+  to a less annoying place where "known unexpected" input has been filtered.
+  [THF]
+
+v9.3.1 2016-11-05
+==================
+BUG FIXES:
+- Restarting the PokerTracker-connection if the connection got lost.
+  Special thanks to AlexTheKing88 who contributed the code.
+  [THF]
+- Renaming an OH-script-object with the editor could crash Openholdem,
+  as the rename-function was formerly based on a semi-buggy 
+  delete and recreate, but got broken when the deletion got fixed.
+  This has now been corrected.
+  Thanks to Guysmo for reporting.
+  [TFF]
+- The table-title was undefined at some point of time
+  and therefore blind-guessing did not work for everybody.
+  Thanks to SmartBet for reporting.
+  [THF]
+- Memory-increment-commands (me_inc_) did not work in combination 
+  with OpenPPL-conditions, where they have to work differently 
+  due to the implicit continuation to the next condition.
+  Thanks to JMonderson for insistently reporting the bug
+  and for providing his legendary 1.500.000 lines of FlopZilla-code
+  for reproduction.
+  [THF]
+
+
+MAINTENANCE:
+- Improved HaveUnderStraight.
+  Thanks to Poker_Dog for reporting a special case
+  and to Johnny and Salem for the suggestions.
+  [THF]
+
+v9.3.0 2016-10-29
+==================
+NEW STUFF:
+- Improved preprocessing of tiles, bets, balances and pots 
+  to handle non-standard number formats (extra dots, spaces in numbers, ...)
+  Some ttlimits might needs small changes, please revisit your tablemaps.
+  For details please see http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20164
+  [THF]
+
+BUG FIXES:
+- The modular OpenPPl-library of the redacted version 9.2.80%
+  missed some symbols and the adapted parser did not warn about that.
+  Thanks to Johnny and JohnNash for reporting.
+  [THF]
+
+MAINTENANCE:
+- The introduction of advanced preprocessing for titles, bets and balances
+  made the tablemap-options "balancenumbersonly" and "scraperpreprocessordll" superfluous.
+  Therefore they got removed.
+  [THF]
+
+  
+v9.2.8 2016-10-01
+==================
+NEW STUFF:
+- Implemented a BitCount-operator,
+  mainly for more verbosity in the OpenPPL-library
+  because WinHoldems backtick-operator is cryptic and hard to read.
+  [THF]
+- Finally implemented HaveBackdoorStraightDraw.
+  Thanks to KaeKruse, Lavezzi, Guysmo and Sloboz
+  for their code and opinions.
+  [THF]
+
+BUG FIXES:
+- The OPPL-symbol HaveTwoPair considers now the cases of "three pairs";
+  one of them is good (both hole-cards are paired and count), 
+  in the bad case one of our pairs is the lowest one.
+  Thanks To NewBot and Salem for participating in the discussion.
+  [THF]
+- The OPPL-symbol HaveSecondNutStraight failed if the assumed
+  2nd best straight connected with the board to a better straight
+  of "6 cards".
+  Thanks to ChuckneverMuck for reporting and to Darkmund,
+  Fifer, Johnny and BillW for perticipating in the discussion.
+  [THF]
+  
+MAINTENANCE:
+- The functions in mouse- and keyboard-DLL contained lots of
+  additional parameters to optionally restore the mouse-position.
+  As this was a bit messy and somebody (thanks to Davagin)
+  reported "undefined mouse-position after raise" 
+  (with a non-official, half-made development version)
+  we cleaned up the DLL-interfaces and removed these parameters.
+  Now openholdem cares about restoration of mouse-position
+  and input-focus once at the end of an action-sequence.
+  It will do so for Manualmode, OHReplay and other offline-simulators
+  for convenience, but keep the new position at real casinos
+  for stalth reasons.
+  [THF]
+- The OpenPPL-library is now modular and consists of about twenty files
+  in the botlogic-directory.
+  [THF]
+- Enhanced PrWin does no longer support the parameter bblimp,
+  because it was broken and we consider it useless.
+  Thanks to ZeeZooLaa for reporting.
+  [THF]
+  
+
+v9.2.7 2016-09-15
+==================
+NEW STUFF:
+- OpenHoldem is now able to detect changing table-themes 
+  (e.g. different background and different position of seats
+  at the final table of MTTs at Winamax-Poker)
+  If the tablepoints don't match for more than N heartbeats
+  (currently N = 10) then OpenHoldem will disconnect
+  and will try to connect with a different tablemap.
+  Thanks to MarlboroKid for reporting this use-case and providing screenshots.
+  [THF]
+
+BUG FIXES:
+- OH was leaking one GDI-object per successfully scraped i3slider.
+  Thanks to Narfal for reporting and for providing replay-frames and TM.
+  [THF]
+- Some betpot-buttons were broken due to a wrong constant 
+  in the lookup-function for buttons.
+  Thanks to Fk1 for reporting.
+  [THF]
+- If the validator got enabled with the toolbar-button it worked on every heartbeat
+  instead of only at our turn when we scrape stable frames.
+  This has now been fixed.
+  [THF]
+- A (nearly) always positive f$rebuy-function caused lots of rebuy-attempts
+  which got stopped by sanity checks. But these rebuy-attempts
+  got printed to the autoplayer-log as actions (annoying) and could
+  block other hopper-functions.
+  This has now been fixed.
+  Thanks to Chillit for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Memory-symbols are now case-insensitive to avoid problems with typos
+  as they are user-defined and can't be verified at load-time.
+  [THF]
+  
+
+v9.2.6 2016-08-30
+==================
+BUG FIXES:
+- The handreset-detector contained an undefined variable that could cause 
+  a trigger to fire incorrectly (but usually didn't cause an incorrect
+  handreset, as more than one trigger is necessary)
+  Thanks to SmartBet for reporting.
+  [THF]
+- Fixed a race-condition in the auto-connector, which updated the main GUI,
+  but the main GUI gets created by another thread and the creation could
+  get delayed e.g. by popups due to parse-errors.
+  Now we verify that the GUI exists and wait if needed.
+  [THF]
+
+
+v9.2.5 2016-08-26
+==================
+BUG FIXES:
+- The combination of changed initialization of threads (ZereZoolaa)
+  to fix a race-condition between DLL and iterator thread
+  and extra sanity-checks (THF) could cause the auto-connector
+  to exit early and leave the autoconnector-mutex locked,
+  which then blocked all other instances.
+  This has now been fixed.
+  Thanks to Johnny and Hugo1 for reporting.
+  [THF]
+  
+
+v9.2.4 2016-08-25
+==================
+BUG FIXES:
+- Too many handreset-indicators at different heartbeats
+  caused by laggy casinos or slow animations (please turn them off!)
+  could cause additional handresets.
+  This has now been prevented.
+  Thanks to MustBeatIt for reporting.
+  [THF]
+- Fixing a race-condition in enhanced PrWin. 
+  The initialization of the DLL could try to access the iterator-thread 
+  at a point of time were it was not yet created.
+  [ZeeZoolaa]
+  
+MAINTENANCE:
+- Improved lazy scraper (costly name-scraping)
+  [FqFq]
+- Improved OpenPPL-symbol HaveFlushDraw for single flush-card in hand.
+  Thanks to ChuckNeverMuck for the discussion.
+  [THF]
+- OppontsIsAllin And NumberOfOpponentsAllin consider now only players
+  who bet their full stack, but not opponents who bet so much that we 
+  can only fold or call (allin-decision).
+  Thanks to FK1 and Ares for discussing the finer details of these symbols.
+  [THF]
+  
+
+v9.2.3 2016-08-20
+==================
+NEW STUFF:
+- Scraping custom regions at the DLL-level.
+  [ZeeZooLaa]
+- Advanced logging options for hopper functions, ini, prwin and icm functions.
+  [THF]
+- New menu-command to clear the log-file.
+  [THF]
+- Supporting a "bot_logic"-directory and another library "custom_function_library.ohf".
+	//*****************************************************************************
+	//
+	// This library is for custom user-defined functions.
+	//   * to keep the bot-logic clean
+	//   * to keep the standardized OpenPL-library as is.
+	//   * to share technical functions between multiple bots without copy-and-paste.
+	//
+	// This file will be loaded after the OpenPPL-library and before user-defined bot-logic.
+	//
+	// The functions in this library will be read-only. They will be loaded once,
+	// won't be shown in the editor and won't be saved on exit (similar to OpenPPL).
+	//
+	//*****************************************************************************
+  [THF]
+  
+MAINTENANCE:
+- Replaced GameIsHeadsUp by HandIsHeadsup and TableIsHeadsup to suit both cash-games and tournaments.
+  Thanks to MustBeatIp for bringing up the problem.
+  [THF]
+
+
+v9.2.2 2016-07-24
+==================
+BUG FIXES:
+- OpenHoldem could crash when deleting (reloading, parsing, applying) a formula.
+  Open-ended when-conditions are usually reachable on two paths:
+  a) from the OEWC above, if this OEWC was false
+  b) from the sequence of when-conditions with actions above
+     if none of these actions could be taken.
+  However when deleting a parse-tree each node must be deleted exactly once.
+  Care has been taken for OEWCs, but the identification of OEWCs
+  failed on a half-way destructed parse-tree.
+  So some OEWCs could be deleted twice which caused an access violation.
+  Thanks to JohnNash, Kkfc, Dolar and Salem for reporting the problem 
+  and to Sagan, Gezs, BadHabit and Darkmund for providing log-files and crashing formulas.
+  [THF]
+
+
+v9.2.1 2016-07-21
+==================
+BUG FIXES:
+- OpenPPL supported only BetPot and BetHalfPot (like Shanky) but not all the other betpot-actions.
+  Thanks to Johnny for reporting.
+  [THF]
+- Hand and board expressions containing "10" instead of "T"
+  caused a crash. This has now been fixed and a warning added.
+  Thanks to Chucknevermuck for reporting.
+  [THF]
+- Improved HaveNutStraightDraw.
+  Thanks to ChuckNeverMuck for helping.
+  [THF]
+- The initialization of OpenPPL history symbols did not get executed
+  for OH-script-profiles. Thanks to FK1 for reporting.
+  [THF]
+
+
+v9.2.0 2016-06-07
+==================
+NEW STUFF:
+- Supporting now hotkeys to execute actions at the table.
+  Still necessary are scraped buttons to recognize which actions are available.
+  If then a TM-symbol s$iXbuttonhotkey or s$betpotX_Yhotkey is present OpenHoldem
+  will click the specified keys.
+  Valid options are a..z, 0..9, Space, Return, Enter (same as Return), 
+  Left, Right, Up, Down and F1 .. F12.
+  [THF]
+- Implemented a new function for the DLL-level
+  EXE_IMPLEMENTS void __stdcall ParseHandList(const char* name_of_list, const char* list_body);
+  This function makes it possible to change hand-lists at run-time.
+  To be called with list-name and complete list-body as parameters.
+  This function replaces the old "hlset" that got broken and "temporary" removed
+  when we replaced the numbered lists by arbitrary many named lists in OpenHoldem 4.x.
+  As a consequence the function "getplh1k" (get pointer to 1000 handlists) got also removed.
+  Thanks to Guysmo for asking about that feature.
+  [THF]
+- Improved 64-bit-support for people who want to compile OH on their own for 64-bit-systems.
+  Thanks to Davagin for providing the patch.
+  [THF]
+  
+BUG FIXES:
+- NumberOfUnknownSuitedOvercards also counted the unused rankbit below ace-low
+  if there was a flush aon board and we didn't contribute anything.
+  Thanks to ZeeZooLaa for reporting.
+  [THF]
+- The "state_index" to the current game-state at the DLL-level was always off by 1.
+  This requires ugly computions (state_index-1)&0xFF on every use.
+  This problem has now been fixed.
+  Thanks to Termitapalahermita and Davagin for reporting.
+  [THF]
+- The autoconnector-thread accessed the flags-toolbar,
+  which gets created by the GUI-thread and could be uninitialized.
+  Thanks to ZeeZooLaa for reporting this race-condition.
+  [THF]
+  
+  
+v9.1.4 2016-04-26
+==================
+NEW STUFF:
+- In OpenHoldem 9.0.1 we replaced clientsize in favour of clientsizemin/max
+  and targetsize. This caused the problem that some people used a very large
+  range of clientsizemin/max in combination with a very common titletext
+  like "Poker". As a consequence some tablemaps connected to nearly every
+  window (not even table).
+  To solve this problem we now detect if a table could be served 
+  by more than one tablemap. For performance reasons we do this exactly once
+  per table at connection.
+  Thanks to Johnny for reporting oversized replay-frames and to Ares
+  for finding the problem.
+  [THF]
+  
+BUG FIXES:
+- Numbers with only 1 digit after the decimal point got rejected as "non-monetary"
+  by OpenHoldem. This has now been fixed.
+  Thanks to Sagan for reporting.
+  [THF]
+  
+
+v9.1.3 2016-04-23
+==================
+BUG FIXES:
+- Editing the debug-tab and some cases of loading a new formula 
+  could incorrectly delete the debug-tab, leading to crashes.
+  This has now been fixed.
+  Thanks to Johnny and MustBeatIt for reporting.
+  [THF]
+- The OpenPPL-symbol "Random" was implemented as a function in the OpenPPL-library
+  and therefore its value got cached instead of getting calculated
+  each time again.
+  Now we made it an OpenHoldem symbol and added some code to prevent the caching.
+  Thanks to MustBeatIt for reminding me of this issue.
+  [THF]
+  
+MAINTENANCE:
+- Removed configuration check for Windows 2000/XP classic theme,
+  because OpenHoldem supports now more modern systems out of the box.
+  [THF]
+
+  
+v9.1.2 2016-04-11
+==================
+BUG FIXES:
+- Some people experienced "random actions" due to a non-initialized 
+  variable in the refactored parse-tree. This has now been fixed. 
+  Thanks to Ares for confirming the problem.
+  [THF]
+- Fixed some memory-leaks in the parse-tree that were caused by
+    * removing function from lookup-data-structures, but not deleting them properly.
+    * calling the destructor of CParseTreeNode, but not of virtual derived classes.
+  Now according to our tests 99.5% of the allocated memory get released properly
+  if a formula gets unloaded or parsed again.
+  Special thanks to JMonderson for reporting his problem and for providing
+  his 120.000 LOC Flopzila-code for testing.
+  [THF]
+  
+MAINTENANCE:
+- Project built with support for Windows XP again.
+  Windows XP is no longer supported out of the box by our new development platform
+  MicroSoft Visual Studio 2015, so it required some extra compiler switches.
+  [THF]
+
+  
+v9.1.1 2016-04-01
+==================
+NEW STUFF:
+- Improved tournament detection, now also considering 
+    * the symbol "buyin" that can be read from the title with "^y" or scraped from the table
+	* the scraped symbols "MTT_number_entrants", "MTT_players_remaining",
+      "MTT_paid_places" and "MTT_my_rank".
+  [THF]
+- Full support for Windows 10 and probably all other modern versions of Windows.
+  Existing tablemaps work without any changes.
+  [THF]
+
+  
+BUG FIXES:
+- Tablemap betpot regions name change: betpot_X_Ybutton, previously: betpot_X_Y_button.
+  For consistency with betpot_X_Ystate and other button regions.
+  [fqfq]
+- The OpenPPL-function HaveBottomPair was incorrectly only true if our hand was a pair,
+  but according to the definition it should also be true for bottom-trips and bottom-quads.
+  Thanks to chuckNeverMuck for reporting.
+  [THF]
+- TotalInvested now consideres antes.
+  Thanks to Salem for reporting.
+  [THF]
+- The refactored parse-tree broke certain cases of user-variables.
+  This has now been fixed and test-cases have been added to the self-test-module.
+  Thanks to MustBeatIt, ChuckNeverMuck, RISA and Salem for reporting.
+  [THF]
+
+
+v9.1.0 2016-02-16
+==================
+NEW STUFF:
+- Support for "unlimited" tablemaps.
+  The former restriction to 25 TMs is gone.
+  [THF]
+- Critical OpenPPL-history-symbols that depend on correct updates
+  exactly once per turn (Bets, Calls, Checks, Raises, BotsLastPreflopAction, ...)
+  cause now a warning if they get used at a point of time 
+  where they are not yet initialized correctly
+  (not my turn or outside of the main autoplayer-logic).
+  [THF]
+  
+BUG FIXES:
+- HadTwoPairOnFlop contained a copy-and-paste-error
+  that made it fail in certain situations.
+  Thanks to Yep for reporting and to Salem for finding the bug.
+  [THF]
+- If a player was allin for SB + BB he did not get recognized as a raiser,
+  but got confused with a new player who has to post both blinds in some situations.
+  This has now been fixed.
+  Thanks to Micro111 for reporting.
+  [THF]
+
+MAINTENANCE:
+- log$-symbols return now 1 as specified in the manual.
+  This behaviour is more convenient in ANDed conditions.
+  Thanks to Cidertime for asking.
+  [THF]
+- The parse-tree got refactored and contains now half a dozen specialized node-types
+  (symbol, number, operator, ...) instead of one large class for everything.
+  As a little bonus this reduced the memory-usage by about 25%.
+  [THF]
+  
+
+v9.0.5 2016-02-07
+==================
+BUG FIXES:
+- HadTwoPairOnFlop contained a copy-and-paste-error
+  that made it fail in certain situations.
+  Thanks to Yep for reporting and to Salem for finding the bug.
+  [THF]
+
+  
+v9.0.5 2016-02-07
+==================
+MAINTENANCE:
+- Adding lots of new debug-messages for a potential problem 
+  with autoplayer or auto-connector.
+  [THF]  
+
+  
+v9.0.4 2016-01-28
+==================
+BUG FIXES:
+- Name-scraping of changing names was broken after some semi-automatic
+  code-replacements.
+  Thanks to Kiddpoker, Thisv8guy and Johnny for reporting.
+  [THF]
+- The OpenPPL-library was messed up and contained old, buggy code.
+  Thanks to Poker_Dog for reporting.
+
+
+v9.0.3 2016-01-23
+==================
+BUG FIXES:
+- The ICM-symbols for the small-blind could return bad values.
+  This has now been fixed.
+  Thanks to Micro111 for reporting and to Poker_Dog and ZeeZooLaa for helping. 
+  [Plutus]
+- Syntax highlighting for ICM symbols.
+  [Plutus]
+- The special betsize adaption for DDPoker confused min and max at some point.
+  This has now been fixed.
+  Thanks to Fl1 for reporting.
+  [ZeeZooLaa]
+- Validator rule 1800 was based on some incorrect reasoning.
+  This has now been fixed.
+  Thanks to Ppbcon for reporting.
+  [THF}
+- The OpenPPL-symbol AmountToCall had some auto-correction that caused problems in big-blind.
+  This has now been fixed.
+  Thanks to AgEmAniaC for reporting and to Fqfq for helping with the fix.
+  [THF}
+- The OpenPPL-symbol HaveTopNonBoardPairedPair was broken.
+  Thanks to Todamach, Johnny, Poker_Dog and FqFq for helping with the fix.
+  [THF}
+- The OpenPPL-symbol NutFullHouseOrFourOfAKind did consider the various cases
+  of a full-house on board only partially.
+  Thanks to OpenGeek for reporting and to FqFq for helping with the fix.
+  [THF]
+  
+
+v9.0.2 2016-01-05
+==================
+NEW STUFF:
+- New secondary function f$betsize_enable_rounding to turn
+  rounding on/off (default is on) for the people who want to control 
+  their f$betsize to every cent and don't care about beautiful numbers.
+  [THF]
+
+BUG FIXES:
+- The OpenPPL symbols TotalInvested and TotalInvestedThisRound did not consider antes.
+  Thanks to ChuckNeverMuck for reporting and providing the improved code.
+  [THF]
+- After some refactoring name-scraping was broken in OH 9.0.1.
+  Thanks to Plutus for reporting.
+  [THF]
+- For some time we tried to be smart and returned
+    * CARD_BACK for players
+    * CARD_NOCARD for board-cards
+  in case of scraping-errors, as card-backs are more easy 
+  to get wrong than nocard (usually a simple colour-transform 
+  with background-colour and negative radius), 
+  but it looks as if this "smart" error-handling 
+  was the reason for wrong deal-positions for some beginners 
+  with bad tablemaps.
+  So we are back to simplicity.  
+  Thanks to ZeeZooLaa for asking.
+  [THF]
+- The technical OpenPPL symbol Srankavailable included also
+  suited cards above ace. Thanks to ZeeZooLaa for reporting.
+  [THF]
+
+v9.0.1 2016-01-03
+==================
+BUG FIXES:
+- Several fixes to Enhanced PrWin at the DLL-Level.
+  [ZeeZooLaa]		
+- The option "Preferences -> Debugging -> Betsize Adjustment" did  not get
+  saved correctly. Thanks to ZeeZooLaa for reporting.
+  [THF]
+- Caring about special blind-posters who have to post both blinds at once
+  broke the detection of voluntary raisers postflop if the first bettor
+  raised to 1.5 bb.
+  This has now been fixed.
+  Thanks to Mossel for reporting.
+  [THF]
+- Simpler error-handling in case scraping cards fails completely.  
+  For some time we tried to be smart and returned CARD_BACK for players,
+  as cardbacks are more easy to get wrong than NOCARD,
+  which is mostly a simple colour-transform (background),
+  but it seems this smart error-handling was the reason 
+  for some inexperienced people to see wrong deal-positions.
+  Thanks to ZeeZooLaa for asking about that code.
+  [THF]
+- DDPoker rejects bets that are larger than opponents' max balance, disabling
+  the raise button, thus user's primary functions got executed twice.
+  To fix this there is now some special betsize adjustment only for DDPoker.
+  [ZeeZooLaa]
+- OH no longer shoots replay frames when connected to OHReplay
+  [ZeeZooLaa]
+- OH no longer shoots replay frames when the autoplayer is turned off
+  [ZeeZooLaa]
+- The PokerTracker stats smallblind_3bet_versus_steal  and bigblind_3bet_versus_steal
+  returned different values than PT. This has now been fixed.
+  Thanks to ChuckNeverMuck for reporting the problem and providing the patch
+  and to FqFq for verification.
+  [THF]
+- The OPPL-symbol StartingStacksize didn't consider antes.
+  Thanks to ChuckNeverMuck for reporting.
+  [THF]
+
+MAINTENANCE:
+- Fine-tuning some validator rules.
+  Thanks to Trisem for reporting.
+  [THF]
+- The former autoplayer option "use comma instead of dot"
+  became now a tablemap-symbol s$use_comma_instead_of_dot
+  as this option is casino-specific.
+  [THF]
+- z$clientsize got replaced in favour of the more flexible
+  z$clientsizemin, z$clientsizemax and z$targetsize.
+  Existing tablemaps might need some slight adaptions.
+  [THF]
+- Error-messages for invalid memory-commands.
+  [THF]
+- More error-logs for failed autoplayer-acions, especially loss of input-focus.
+  [THF]
+  
+
+v9.0.0 2015-10-08
+==================
+NEW STUFF:
+- Perfect stealth for PokerStars.
+  The new stealth method is based on a rootkit that installs itself into a ninjad ramdrive.
+  It hides the OpenHodem-GUI, the file-system, processes, window-titles, everything.
+  In addition OpenHoldem executes now human-like mouse-movements
+  based on the Alpher–Bethe–Gamow-theorem.
+  To make use of this new stealth method:
+    * first press Ctrl + Shift + H (hide)
+    * then start your favourite casino
+  To unhide OpenHoldem:
+    * open the DOS-console and enter the magic word "mutabor".
+  The finer details will be explain in the forum if needed.
+  Finally we would like to thank our stealth experts Folder and Gecko for the help.
+  [OpenHoldem, Singlemalt]
+- New OpenPPL backup-action call->allin if we can only fold / (call) allin.
+  We detect this situation the reliable way with button-states (exactly "F...A")
+  and not with easily mis-scraped bets and balances.
+  This backup action (the first time not the conservative way)
+  became necessary, as a good portion of end-users were unwilling / unable
+  to handle this "special" case in their bot-logic.
+  [THF]
+
+  
+v7.8.0 2015-09-10
+==================
+BUG FIXES:
+- OPPL's library ExactlyOneStraightPossibleOnFlop fix for Ace on flop.
+  [fqfq]
+- An incomplete tablemap with a r$c0limits-region but without the corresponding s$c0limits-symbol
+  (that defines how to interpret the scraped text) could crash OpenHoldem.
+  Thanks to FpTrader for reporting and for suggesting a solution.
+  [THF]
+- Fix for EffectiveMaxStacksizeOfActiveOpponents.
+  Thanks to OpenGeek for reporting.
+  [Johnny]
+- OpenHoldem could freeze on connection due to a nearly endless loop.
+  Thanks to Poker_Dog for reporting and to Moby for identifying the problem.
+  [THF]
+- The symbol callbitsX was wrong in the blinds.
+  Thanks to Gratiszzzz and Vladus for reporting, Jockel for some replay-frames and Devbot for the help.
+  [THF]
+
+MAINTENANCE:
+- Skipping betsize in call/fold and fold/allin situations,
+  i.e. if no min-raise-button is present.
+  Thanks to FpTrader for the suggestion and his patch.
+  [THF]
+  
+v7.7.9 2015-08-22
+==================
+BUG FIXES:
+- The lookup for the symbols didbetsizeroundX was broken.
+  Thanks to Ngels for reporting.
+  [THF]
+
+MAINTENANCE:
+- move symbol firstraiser_chair to CSymbolEngineRaisers::CalculateRaisers() 
+- delete CSymbolEngineChairs::CalculateFirstRaiserChair() 
+- update CSymbolEnginePokerTracker.cpp 
+  [DevBot]
+- Changed weighted-prwin hand rankings to Sklansky-Chubukov's.
+  [fqfq]
+
+v7.7.8 2015-08-14
+==================
+BUG FIXES:
+- The default formulas were broken.
+  Thanks to OpenGeek for reporting.
+  [THF]
+- A check for naming conventions didn't accept user-defined lists.
+  Thanks to Poker_Dog for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Renamed the symbols didswag and didswagroundX 
+  to didbetsize and didbetsizeroundX.
+  [THF]
+
+v7.7.7 2015-08-11
+==================
+BUG FIXES:
+- z$targetsize didn't work properly due to conversions from clientsize 
+  to total window size. This has now been fixed.
+  Thanks to Ngels for reporting.
+  [THF]
+- Some rarely used OpenPPL-actions like RaiseFourthPot didn't work.
+  Thanks to NewBot for reporting.
+  [THF]
+- The detection of players who post both blinds at once (since 7.7.5)
+  could affect the detection of raisers for low blind limits.
+  Thanks to DevBot for reporting and for finding the source of the problem.
+  [THF]
+- Absolute lines in the log-file still were wrong,
+  because at the time when we requested the starting-line of a function
+  we had already recognized the header of the next one.
+  Thanks to OpenGeek for reporting.
+  [THF]
+  
+MAINTENANCE:
+- Swagging got removed.
+  The following tablemap-symbols got renamed:
+    * swagselectionmethod -> betsizeselectionmethod
+    * swagdeletionmethodmethod -> betsizedeletionmethodmethod
+    * swagconfirmationmethod -> betsizeconfirmationmethod
+    * swagtextmethod -> betsizeinterpretationmethod
+  [THF]
+
+v7.7.6 2015-07-24
+==================
+BUG FIXES:
+- Improved betsize adjustment did not work when the betsize was already a multiple of the big blind.
+  Thanks to Ngels and Salem for reporting.
+  [poker_dog]
+- FirstCallerchair did not work properly.
+  Thanks to Fqfq for reporting and helping with the fix.
+  [THF]
+- The lookup for some table-stats considered only the current betround.
+  Thanks to Relhby for the patch.
+  [THF]
+  
+MAINTENANCE:
+- Changed DLL interface.
+  For details see http://www.maxinmontreal.com/forums/viewtopic.php?f=174&t=18675
+  [THF]
+
+v7.7.5 2015-07-08
+==================
+NEW STUFF:
+- New hopper function f$rematch.
+  Thanks to Nik0 for the suggestion.
+  [THF]
+- Support for z$targetsize to resize the table after connection.
+  [THF]
+- New preference to restore mouse position and window focus after action (default=false).
+  [poker_dog]
+  
+BUG FIXES:
+- The lookup for the new symbols iasng, ismtt, isdon didn't work.
+  Thanks to Poker_Dog for reporting.
+  [THF]
+- Secondary formulas (prefold) prevented primary actions in rare occasions.
+  [fqfq]
+- BigBlind was wrongly true when in UTG and small blind was missing.
+  [fqfq]
+- There are very rare cases where a new player has to post both blinds at some casinos,
+  but this does not count as a raise. The symbols nopponentstruelyraising,
+  call, nbetstocall, ncallbets, nbetstorais, nraisbets and all derived symbols
+  (Raises, AmountTocall, ...) have been adapted to consider this case.
+  Thanks to Chillit for reporting.
+  [THF]
+- nplayersdealt: the "smart" logic to guess some active players without cards as dealt could fail on garbage input.
+  Now we do simple calculations first. Thanks to Shank_17 for reporting.
+  [THF]
+- Fixed srankbitscommon that affected OOPL-symbols HaveNutFlush(Draw) etc.
+  [FqFq]  
+  
+MAINTENANCE:
+- Improved betsize adjustment.
+  Thanks to Tabo_ger for reporting a special case.
+  [FqFq, THF]
+- Improved decision locking for istournament.
+  [Relhby]
+
 v7.7.3 2015-05.05
 ==================
 NEW STUFF:
@@ -2420,7 +4126,7 @@ MAINTENANCE:
   can not be guaranteed. [THF]
 - Removing currentbetX cap for FL games. [Strikles]
 - Whenever OpenHoldem finds an unknown symbols it tries noe
-  to prepend a prefix "f�OpenPPL_" and then evaluates again.
+  to prepend a prefix "f§OpenPPL_" and then evaluates again.
   This way is more robust for OpenPPL-users, especially
   for OpenPPL-symbols in memory-expressions. [THF] 
   
@@ -3173,7 +4879,7 @@ NEW STUFF:
   (OpenHoldem)
   
 - Added additional validation of numeric fields.  To be considered numeric, a scraped region must not
-  only contain only these characters "$0123456789,.�ckm", but must 1. have 0 or 1 decimal points, and 
+  only contain only these characters "$0123456789,.¢ckm", but must 1. have 0 or 1 decimal points, and 
   2. If a decimal point is present, then there must be exactly 2 numbers following it. (OpenHoldem)
 
 - User defined functions are now recognized by the Formula Dialog so that they are now colored (Spew)
@@ -3672,13 +5378,13 @@ BUG FIXES:
 - PokerPro: when connected to a poker pro server, m_holdem_state[m_ndx].m_title would always
   be blank.  (Thanks to Bozo for the bug find and Spew for the code fix).
 
-- Parsing of money fields was inconsistently applied. Some money fields recognized the "�", "k"
+- Parsing of money fields was inconsistently applied. Some money fields recognized the "¢", "k"
   and "m" suffixes, and some did not, for example.  That function has been unified and all
   money fields should behave consistently now.  (Thanks, MrRuder)
   - the dollar sign ($) leader is discarded
   - commas are discarded
   - the remaining text is then fed through atof() to generate an internal double
-  - the cent symbol (�) or the letter (c) trailer causes the number to be divided by 100
+  - the cent symbol (¢) or the letter (c) trailer causes the number to be divided by 100
   - the thousand (k) trailer causes the number to be multiplied by 1000
   - the million (m) trailer causes the number to be multiplied by 1000000 
   
@@ -4766,4 +6472,5 @@ code package for 1.0.0.
 v1.0.0 2007-10-13 
 -----------------
 Initial public release
+
 

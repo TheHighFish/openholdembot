@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -36,9 +36,11 @@ public:
 	CComboBox m_GameType;
 	CComboBox m_Network;
 	CButton m_Tournament;
+  CButton m_HoldemOmaha;
 
 	CString	m_sblind, m_bblind, m_bigbet, m_ante, m_network;
 	int		m_gametype;
+  bool  m_is_omaha;
 	bool	m_tournament;
 
 protected:

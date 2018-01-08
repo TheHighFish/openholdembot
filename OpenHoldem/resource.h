@@ -9,13 +9,10 @@
 #define IDCLEAR5                        7
 #define IDD_ABOUTBOX                    100
 #define IDR_MAINFRAME                   128
-#define ID_INDICATOR_STATUS_COMCARDS    129
 #define IDI_ICON1                       130
-#define ID_INDICATOR_STATUS_PRWIN       130
-#define ID_INDICATOR_STATUS_NOPP        131
-#define ID_INDICATOR_STATUS_ACTION      132
-#define ID_INDICATOR_STATUS_NIT         133
-#define ID_INDICATOR_STATUS_POKERHAND   134
+#define ID_INDICATOR_STATUS_PRWIN       131
+#define ID_INDICATOR_STATUS_DUMMY       132
+#define ID_INDICATOR_STATUS_ACTION      133
 #define ID_INDICATOR_STATUS_HANDRANK    135
 #define IDD_DIALOG1                     136
 #define IDD_RENAME                      136
@@ -101,7 +98,6 @@
 #define IDC_CLICKDELAY_SPIN             1043
 #define IDC_COMBO2                      1052
 #define IDC_DEBUGLEVEL_PT               1052
-#define IDC_DLLNAME                     1055
 #define IDC_TEXTSELECTION               1059
 #define IDC_TEXTDELETION                1060
 #define IDC_BETCONFIRMATION             1061
@@ -139,18 +135,11 @@
 #define IDC_PT_PASS                     1103
 #define IDC_PT_DBNAME                   1104
 #define IDC_PT_DBNAME2                  1105
-#define IDC_ICM_1                       1110
-#define IDC_ICM_2                       1111
-#define IDC_ICM_3                       1112
-#define IDC_ICM_4                       1113
-#define IDC_CHECK1                      1114
-#define IDC_AUTOPLAYER_UPON_CONNECTION  1114
-#define IDC_ICM_5                       1114
+#define IDC_CHECK1                      1106
+#define IDC_AUTOPLAYER_UPON_CONNECTION  1107
 #define IDC_CHECK2                      1115
 #define IDC_CHECK3                      1116
-#define IDC_SWAGUSECOMMA                1116
 #define IDC_CHECK4                      1117
-#define IDC_SWAGUSECOMMA2               1117
 #define IDC_CHECK5                      1118
 #define IDC_CHECK6                      1119
 #define IDC_CHECK7                      1120
@@ -350,8 +339,6 @@
 #define IDC_SEARCH_ED                   1318
 #define IDC_DEBUG_POPUP_BLOCKER         1319
 #define IDC_AUTOCONNECTOR_CONNECT_ON_START 1320
-#define IDC_AUTOCONNECTOR_CLOSE_WHEN_TABLE_DISAPPEARS 1321
-#define IDC_GUI_START_MINIMIZED         1322
 #define IDC_REBUY_CHANGE_IN_HANDNUMBER  1323
 #define IDC_REBUY_NO_CARDS              1324
 #define IDC_REBUY_HEURISTIC_OCCLUSION_CHECK 1325
@@ -363,17 +350,15 @@
 #define IDC_STATIC_REBUY_SCRIPT         1329
 #define IDC_REBUY_EDIT_SCRIPT           1330
 #define IDC_REBUY_EDIT_MINIMUM_DELAY_SPIN 1331
-#define IDC_RADIO_AUTOCONNECTOR_3       1333
-#define IDC_RADIO_AUTOCONNECTOR_4       1334
-#define IDC_RADIO3                      1335
-#define IDC_RADIO_AUTOCONNECTOR_5       1335
+#define IDC_RADIO_AUTOCONNECTOR_3       1332
+#define IDC_RADIO3                      1333
+#define IDC_RADIO_AUTOCONNECTOR_5       1334
 #define IDC_RADIO_SCRAPE_ALWAYS         1335
 #define IDC_SCROLLBAR1                  1336
 #define IDC_SPIN1                       1337
 #define IDC_CONFIGURATION_DISABLE_LESS_CRITICAL_CHECKS 1338
 #define IDC_RECONNECT_TIME_SPIN         1339
 #define IDC_CONFIGURATION_INPUT_SETTINGS 1340
-#define IDC_CONFIGURATION_THEME_SETTINGS 1341
 #define IDC_CONFIGURATION_FONT_SETTINGS 1342
 #define IDC_DEBUG_PRWIN                 1343
 #define IDC_DEBUG_ICM                   1344
@@ -404,9 +389,6 @@
 #define IDC_RADIO5                      1369
 #define IDC_DEBUG_FILESYSTEM_MONITOR    1370
 #define IDC_DEBUG_TABLE_POSITIONER      1371
-#define IDC_ENABLE_ERROR_LOGGiNG        1372
-#define IDC_ENABLE_DLL_LOGGiNG          1373
-#define IDC_LOG_BASIC_INFO              1374
 #define IDC_DEBUG_TABLEMAP_LOADER       1375
 #define IDC_DEBUG_ISTOURNAMENT          1376
 #define IDC_DEBUG_GUI                   1377
@@ -436,7 +418,38 @@
 #define IDC_DEBUG_TOKENIZER             1401
 #define IDC_DEBUG_MEMORY_USAGE          1402
 #define IDC_DEBUG_ALLIN_ADJUSTMENT      1403
-#define IDC_USE_AUTO_REPLAY				1404
+#define IDC_ENABLE_DELAY_LOGGiNG        1404
+#define IDC_USE_AUTO_REPLAY				      1405
+#define IDC_RESTORE_POSITION_AND_FOCUS	1406
+#define IDC_LOG_DELAY_FUNCTION          1407
+#define IDC_LOG_HOPPER_FUNCTIONS        1408
+#define IDC_LOG_ICM_FUNCTIONS           1409
+#define IDC_LOG_INI_FUNCTIONS           1410
+#define IDC_LOG_PRWIN_FUNCTIONS         1411
+#define IDC_DEBUG_TABLEPOINTS           1412
+#define IDC_DEBUG_SHAREDMEM             1413
+#define IDC_DEBUG_SINGLETONS            1414  
+#define IDC_DEBUG_AUTOSTARTER           1415 
+#define IDC_DEBUG_WATCHDOG              1416 
+#define IDC_DEBUG_TIMERS                1417
+#define IDC_USE_AUTO_STARTER            1418
+#define IDC_USE_AUTO_SHUTDOWN           1419
+#define IDC_DEBUG_NUTFULLHOUSE          1420
+#define IDC_DEBUG_MULTIPLEXER           1421
+#define IDC_DEBUG_SYMBOL_VERIFICATION   1422
+#define IDC_TOGGLE_ALL_DEBUG            1423
+#define IDC_RADIO_GUI_FIRST_VISIBLE     1424
+#define IDC_RADIO_GUI_ALL_MINIMIZED     1425
+#define IDC_RADIO_GUI_LESS              1426
+#define IDC_ICM_1                       1121
+#define IDC_ICM_2                       1122
+#define IDC_ICM_3                       1123
+#define IDC_ICM_4                       1124
+#define IDC_ICM_5                       1125
+#define IDC_ICM_6                       1126
+#define IDC_ICM_7                       1127
+#define IDC_ICM_8                       1128
+#define IDC_ICM_9                       1129
 #define IDC_SCINCTRL                    2000
 #define ID_EDIT_FORMULA                 32771
 #define ID_EDIT_PREFERENCES             32772
@@ -473,7 +486,6 @@
 #define ID_FORMULA_TOOLBAR_SETTINGS     32863
 #define ID_MAIN_TOOLBAR_AUTOPLAYER      32872
 #define ID_MAIN_TOOLBAR_FORMULA         32876
-#define ID_DLL_LOAD                     32878
 #define ID_FORMULA_TOOLBAR_EQUAL_LEFT   32886
 #define ID_FORMULA_TOOLBAR_EQUAL_RIGHT  32887
 #define ID_EDIT_REDO32888               32888
@@ -494,7 +506,6 @@
 #define ID_DEBUG_ONLYWHEnit             32918
 #define ID_MAIN_TOOLBAR_SCRAPER_OUTPUT  32920
 #define ID_VIEW_SCRAPEROUTPUT           32921
-#define ID_DLL_LOADSPECIFICFILE         32922
 #define ID_FORMULA_TOOLBAR_HANDLIST     32923
 #define ID_EDIT_HANDLIST                32924
 #define ID_FORMULA_EDIT_HANDLIST        32925
@@ -537,15 +548,15 @@
 #define ID_FILE_LOAD_OPENPPL            32994
 #define ID_EDIT_VIEWLOG                 32997
 #define ID_EDIT_TAGLOG                  32998
-#define ID_INDICATOR_STATUS_PLCARDS     61191
+#define ID_EDIT_CLEARLOG                32999
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        189
-#define _APS_NEXT_COMMAND_VALUE         32999
-#define _APS_NEXT_CONTROL_VALUE         1405
+#define _APS_NEXT_COMMAND_VALUE         33000
+#define _APS_NEXT_CONTROL_VALUE         1427
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

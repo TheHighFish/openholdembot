@@ -1,20 +1,21 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CPLAYER_H
 #define INC_CPLAYER_H
 
 #include "Card.h"
+#include "CScrapedMoney.h"
 
 class CPlayer {
  public:
@@ -28,13 +29,48 @@ class CPlayer {
  public:
   void CheckPlayerCardsForConsistency();
   CString Cards();
+  CString CardsAsHTML();
  public:
+  bool IsAllin();
+  // Having to post both blinds at once happens at some casinos
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18948
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18948
+  // This does not count as raising.
+  bool PostingBothBlinds();
+ public:
+  // Public accessors
+  CString name()       { return _name; }
+  int     colourcode() { return _colourcode; }
+ public:
+  // Public accessors
+  Card* hole_cards(int index);
+ public:
+  // Public accessors
+  bool seated() { return _seated; }
+  bool active() { return _active; }
+  bool dealer() { return _dealer; }
+ public:
+  // Public setters (must only be used by CScraper)
+  void set_name(CString new_name)         { _name = new_name; }
+  void set_colourcode(int new_colourcode) { _colourcode = new_colourcode; }
+ public:
+  // Public setters (must only be used by CScraper)
+  void set_seated(bool is_seated);
+  void set_active(bool is_active) { _active = is_active; }
+  void set_dealer(bool is_dealer) { _dealer = is_dealer; }
+ public:
+  // For the log-file
+  CString DataDump();
+ public:
+  double stack() { return (_balance.GetValue() + _bet.GetValue()); }
+ public:
+  CScrapedMoney _balance;
+  CScrapedMoney _bet;
+ private:
   CString _name;
-  double  _balance;
-  double  _bet;
-  Card    _hole_cards[kNumberOfCardsPerPlayer];
+  Card    _hole_cards[kMaxNumberOfCardsPerPlayer];
   int     _colourcode;
-public:
+ private:
   bool _seated;
   bool _active;
   bool _dealer;

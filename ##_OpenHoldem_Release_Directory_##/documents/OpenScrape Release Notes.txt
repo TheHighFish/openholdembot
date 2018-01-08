@@ -1,3 +1,98 @@
+﻿v﻿12.0.3 2017-10-18
+==================
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+
+v11.2.0 2017-05-26
+==================
+BUG FIXES:
+- OpenScrapes title-evaluator used the original title
+  instead of the preprocessed title.
+  Thanks to Trish for reporting.
+  [THF]
+
+v11.1.0 2017-02-01
+==================
+NEW STUFF:
+- Support for popup-handling and the symbol "ispopup"
+  [THF]
+
+
+v11.0.2 2017-01-22
+==================
+BUG FIXES:
+- It was not possible to edit the tablemap symbols 
+  "titletext", "!titletext", "ttlimits" and "c0limits" because 
+  the  rewritten list of symbols was incomplete.
+  Thanks to Chillit for reporting and to ChuckNeverMuck 
+  for finding the reason of the problem.
+  [THF]
+
+v11.0.1 2017-01-14
+==================
+BUG FIXES:
+- Due to a rewritten list of symbols that missed a small piece of code
+  it was only possible to edit and clone symbols, but not to create new ones.
+  Thanks to Chillit for reporting.
+  [THF]
+
+v11.0.0 2016-12-26
+==================
+NEW STUFF:
+- Support for Omaha.
+  OpenScrape provides now additional symbols for the 3rd and 4th card,
+  named pXcardface2 and pXcardface3 (where X = 0..9 is the player)
+  pXcardfaceYrank (Y = 0..3 for the cards), pXcardfaceYsuit 
+  and pXcardfaceYnocard.
+  The region-cloner got also adapted to support two more cards.
+  If a tablemap supports both game-types at once,
+  then it is expected that cards 0 and 1 scrape the cards for Hold'em.
+  [OpenHoldem, SingleMalt, THF]
+  
+
+v9.3.0 2016-10-29
+=================
+NEW STUFF:
+- Improved preprocessing of tiles, bets, balances and pots 
+  to handle non-standard number formats (extra dots, spaces in numbers, ...)
+  Some ttlimits might need small changes, please revisit your tablemaps.
+  For details please see http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=20164
+  [THF]
+MAINTENANCE:
+- The introduction of advanced preprocessing for titles, bets and balances
+  made the tablemap-options "balancenumbersonly" and "scraperpreprocessordll" superfluous.
+  Therefore they got removed.
+  [THF]
+  
+
+v9.2.1 2016-07-21
+==================
+NEW stuff:
+- Support for betpot-buttons and hotkeys.
+  [THF]
+
+v9.1.0 2016-02-16
+==================
+BUG FIXES:
+- One array was two elements too large and contained uninitialized data.
+  This caused annoying error-messages when new regions got added.
+  Thanks to Micro111 for reporting.
+  [THF]
+
+v7.7.5 2015-07-08
+==================
+NEW stuff:
+- Support for z$targetsize to resize the table after connection.
+  [THF]
+- Handling numbers with commas in the title-string.
+  [THF]
+
 v7.6.0 2015-02.26
 ==================
 NEW stuff:
