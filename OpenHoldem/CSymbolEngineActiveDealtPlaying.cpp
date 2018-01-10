@@ -45,19 +45,16 @@ void CSymbolEngineActiveDealtPlaying::InitOnStartup() {
 }
 
 void CSymbolEngineActiveDealtPlaying::UpdateOnConnection() {
-	_playersactivebits  = 0;
-	_playersplayingbits = 0;
-	_playersdealtbits   = 0;
-	_playersseatedbits  = 0;
-  _playersallinbits   = 0;
+  UpdateOnHandreset();
   _maxnplayersdealt   = 0;   
 }
 
 void CSymbolEngineActiveDealtPlaying::UpdateOnHandreset() {
-	_playersdealtbits   = 0;
-	_playersactivebits  = 0;
-	_playersplayingbits = 0;
-	_playersseatedbits  = 0;
+  _playersactivebits = 0;
+  _playersplayingbits = 0;
+  _playersdealtbits = 0;
+  _playersseatedbits = 0;
+  _playersallinbits = 0;
 }
 
 void CSymbolEngineActiveDealtPlaying::UpdateOnNewRound()
@@ -217,6 +214,10 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const CString name, double 
 		{
 			*result = nopponentsplaying();
 		}
+    else if (memcmp(name, "nopponentsallin", 15) == 0 && strlen(name) == 15)
+    {
+      *result = nopponentsallin();
+    }
 		else
 		{
 			// Invalid symbol
@@ -243,6 +244,10 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const CString name, double 
 		{
 			*result = nplayersplaying();
 		}
+    else if (memcmp(name, "nplayersallin", 13) == 0 && strlen(name) == 13)
+    {
+      *result = nplayersallin();
+    }
 		else
 		{
 			// Invalid symbol
@@ -269,6 +274,10 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const CString name, double 
 		{
 			*result = playersplayingbits();
 		}
+    else if (memcmp(name, "playersallinbits", 16) == 0 && strlen(name) == 16)
+    {
+      *result = playersallinbits();
+    }
 		else
 		{
 			// Invalid symbol
@@ -295,6 +304,10 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const CString name, double 
 		{
 			*result = opponentsplayingbits();
 		}
+    else if (memcmp(name, "opponentsallinbits", 18) == 0 && strlen(name) == 18)
+    {
+      *result = opponentsallinbits();
+    }
 		else
 		{
 			// Invalid symbol
@@ -311,9 +324,9 @@ bool CSymbolEngineActiveDealtPlaying::EvaluateSymbol(const CString name, double 
 }
 
 CString CSymbolEngineActiveDealtPlaying::SymbolsProvided() {
-  return "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying "
-    "nplayersseated nplayersactive nplayersdealt nplayersplaying "
-    "playersseatedbits playersactivebits playersdealtbits playersplayingbits "
-    "opponentsseatedbits opponentsactivebits opponentsdealtbits opponentsplayingbits "
+  return "nopponentsseated nopponentsactive nopponentsdealt nopponentsplaying nopponentsallin "
+    "nplayersseated nplayersactive nplayersdealt nplayersplaying nplayersallin "
+    "playersseatedbits playersactivebits playersdealtbits playersplayingbits playersallinbits "
+    "opponentsseatedbits opponentsactivebits opponentsdealtbits opponentsplayingbits opponentsallinbits "
     "maxnplayersdealt ";
 }

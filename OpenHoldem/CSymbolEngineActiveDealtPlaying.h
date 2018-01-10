@@ -33,6 +33,7 @@ class CSymbolEngineActiveDealtPlaying: public CVirtualSymbolEngine {
  public:
 	// Public accessors
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
+ public:
 	int playersactivebits()		{ return _playersactivebits & playersseatedbits(); }
 	int opponentsactivebits()	{ return (playersactivebits() & ~userchairbit());}
 	int nplayersactive()		  { return bitcount(playersactivebits()); }
@@ -42,7 +43,7 @@ class CSymbolEngineActiveDealtPlaying: public CVirtualSymbolEngine {
 	int opponentsplayingbits()	{ return (playersplayingbits() & ~userchairbit());}
 	int nplayersplaying()		    { return bitcount(playersplayingbits()); }
 	int nopponentsplaying()	  	{ return bitcount(opponentsplayingbits()); }
-public:
+ public:
 	int playersdealtbits()		{ return _playersdealtbits; }
 	int opponentsdealtbits()	{ return (_playersdealtbits & ~userchairbit());}
 	int nplayersdealt()			  { return bitcount(playersdealtbits()); }
@@ -54,6 +55,9 @@ public:
 	int nopponentsseated()		{ return bitcount(opponentsseatedbits()); }
  public:
   int playersallinbits()    { return _playersallinbits; }
+  int opponentsallinbits()  { return (_playersallinbits & ~userchairbit()); }
+  int nplayersallin()       { return bitcount(playersallinbits()); }
+  int nopponentsallin()     { return bitcount(opponentsallinbits()); }
  public:
 	// Especially useful for the case when we are only interested in opponents
 	// and calculate that value from players, subtracting the userchair.
