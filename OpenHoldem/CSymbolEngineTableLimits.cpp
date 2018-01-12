@@ -262,6 +262,27 @@ double CSymbolEngineTableLimits::buyin() {
   return kUndefinedZero;
 }
 
+double CSymbolEngineTableLimits::prizepool() {
+	if (p_table_state->_s_limit_info.prizepool() > 0) {
+		return p_table_state->_s_limit_info.prizepool();
+	} else if (p_table_state->_s_limit_info.prizepoolmultiplier() > 0) {
+		return p_table_state->_s_limit_info.prizepoolmultiplier() * buyin();
+	}
+	//Instead of 2, Do I create kMinimumPrizePoolMultiplier?
+	return buyin() * 2;
+}
+
+double CSymbolEngineTableLimits::prizepoolmultiplier() {
+	if (p_table_state->_s_limit_info.prizepoolmultiplier() > 0) {
+		return p_table_state->_s_limit_info.prizepoolmultiplier();
+	//If (prizepool > 0), buyin never could be 0.
+	} else if (p_table_state->_s_limit_info.prizepool() > 0) {
+		return p_table_state->_s_limit_info.prizepool() / buyin();		
+	}
+	//Instead of 2, Do I create kMinimumPrizePoolMultiplier?
+	return 2;
+}
+
 double CSymbolEngineTableLimits::bet(int betround) {
 	assert(betround >= kBetroundPreflop);
 	assert(betround <= kBetroundRiver);
@@ -300,6 +321,10 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const CString name, double *result
 		*result = ante();
 	}	else if (memcmp(name, "buyin", 5)==0 && strlen(name)==5) {
 		*result = buyin();
+	}	else if (memcmp(name, "prizepool", 9) == 0 && strlen(name) == 9) {
+		*result = prizepool();
+	}	else if (memcmp(name, "prizepoolmultiplier", 19) == 0 && strlen(name) == 19) {
+		*result = prizepoolmultiplier();
   }	else {
 		// Symbol of a different symbol-engine
 		return false;
@@ -309,7 +334,7 @@ bool CSymbolEngineTableLimits::EvaluateSymbol(const CString name, double *result
 }
 
 CString CSymbolEngineTableLimits::SymbolsProvided() {
-  CString list = "bet bblind sblind ante buyin ";
+  CString list = "bet bblind sblind ante buyin prizepool prizepoolmultiplier ";
   list += RangeOfSymbols("bet%i", kBetroundPreflop, kBetroundRiver);
   return list;
 }

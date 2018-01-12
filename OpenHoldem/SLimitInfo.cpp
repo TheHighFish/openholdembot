@@ -31,6 +31,8 @@ void CLimitInfo::Reset() {
   _bb_BB.Reset();
   _limit = kUndefinedZero;
   _buyin.Reset();
+  _prizepool.Reset();
+  _prizepoolmultiplier.Reset();
   _is_final_table = false;
 }
 
