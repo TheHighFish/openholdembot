@@ -5,6 +5,9 @@ BUG FIXES:
   (e.g. by table size and title) if a bad tablemap was tolerant enough.
   This problem gets now prevented.
   [THF]
+- Oponentisallin?
+
+thanks to Bob and Lucky8 for reporting, ...
 
 MAINTENANCE:
 - Restructuring OpenHoldem and introducing Preferences.DLL
