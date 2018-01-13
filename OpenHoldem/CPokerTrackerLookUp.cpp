@@ -38,7 +38,7 @@ CPokerTrackerLookup::CPokerTrackerLookup() {
 	_pt4_siteid.insert(std::pair<CString, int> ("enet", 2500));
 	_pt4_siteid.insert(std::pair<CString, int> ("barriere", 2600));
 	// 2700 not (yet) supported, whatever it is
-	_pt4_siteid.insert(std::pair<CString, int> ("peoples", 2600));
+	_pt4_siteid.insert(std::pair<CString, int> ("peoples", 2800));
 }
 
 CPokerTrackerLookup::~CPokerTrackerLookup() {
