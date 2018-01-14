@@ -5,9 +5,13 @@ BUG FIXES:
   (e.g. by table size and title) if a bad tablemap was tolerant enough.
   This problem gets now prevented.
   [THF]
-- Oponentisallin?
-
-thanks to Bob and Lucky8 for reporting, ...
+- The new HaveWeakInsideStraightDraw didn't work die to a missing technical function.
+  Thanks to DonkeyKong for reporting.
+  [THF]
+- The OpenPPL-OponentIsAllin still calculated this info on its own
+  instead of using the improved internal symbol opponentsallinbits.
+  Thanks to Bob and Lucky8 for reporting problems with this symbol.
+  [THF]
 
 MAINTENANCE:
 - Restructuring OpenHoldem and introducing Preferences.DLL
