@@ -462,6 +462,10 @@ WHEN Others RETURN HoldEm_HaveWeakFlush FORCE
 WHEN isomaha RETURN Omaha_HaveWeakFlushDraw FORCE
 WHEN Others RETURN HoldEm_HaveWeakFlushDraw FORCE
 
+##HaveWeakInsideStraightDraw##
+WHEN isomaha RETURN Omaha_HaveWeakInsideStraightDraw FORCE
+WHEN Others RETURN HoldEm_HaveWeakInsideStraightDraw FORCE
+
 ##HaveWeakStraight##
 WHEN isomaha RETURN Omaha_HaveWeakStraight FORCE
 WHEN Others RETURN HoldEm_HaveWeakStraight FORCE
