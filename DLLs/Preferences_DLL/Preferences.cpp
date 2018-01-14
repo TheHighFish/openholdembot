@@ -273,7 +273,6 @@ CString CPreferences::NonEmptyStringValueElseDefault(int index) {
     // Therefore we restore the default here.
     prefs_CString_values[index] = DefaultStringValues(index);
   }
-  MessageBox(0, prefs_CString_values[index], "Preferences returning string", 0); //!!!!
   return prefs_CString_values[index];
 }
 
