@@ -265,14 +265,15 @@ CString CPreferences::DefaultStringValues(int index) {
 CString CPreferences::NonEmptyStringValueElseDefault(int index) {
   assert(index >= 0);
   assert(index < k_prefs_last_CString_value);
-  if (prefs_CString_values[index] != "") {
+  if (prefs_CString_values[index] == "") {
     // Empty values are dangerous
     // An empty window_class_name will even crash MFC
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=257&t=21306
-	// Other empty values don't make much sense either.
-	// Therefore we restore the default here.
+	  // Other empty values don't make much sense either.
+    // Therefore we restore the default here.
     prefs_CString_values[index] = DefaultStringValues(index);
   }
+  MessageBox(0, prefs_CString_values[index], "Preferences returning string", 0); //!!!!
   return prefs_CString_values[index];
 }
 
