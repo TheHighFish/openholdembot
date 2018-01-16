@@ -472,7 +472,7 @@ pt_hands_headsupchair
 //   6 = BU
 //   5 = CO
 //   4 = MP3
-//   2 = MP2 (or more early on FR-games)
+//   3 = MP2 (or more early on FR-games)
 WHEN (dealpositionrais == 1) RETURN 1 FORCE
 WHEN (dealpositionrais == 2) RETURN 2 FORCE
 WHEN (dealpositionrais == (nplayersplaying - 0)) RETURN 6 FORCE
@@ -1932,10 +1932,10 @@ WHEN (RaisesSinceLastPlay >= 2) AND listGeckoMultipleRaisersBehindUs RETURN true
 || [ InMiddlePosition3 && listGecko02  ] // 15%
 || [ InMiddlePosition2 && listGecko01  ] // 10%
 // Extended to full-ring, not original Gecko
-|| [ InMiddlePosition1 && listGecko_OpenRaise_MP1 ] // 10%
-|| [ InEarlyPosition3 && listGecko_OpenRaise_EP3  ] // 10%
-|| [ InEarlyPosition2 && listGecko_OpenRaise_EP2  ] // 10%
-|| [ InEarlyPosition1 && listGecko_OpenRaise_EP1  ] // 10%
+|| [ InMiddlePosition1 && listGecko_OpenRaise_MP1 ] // 9%
+|| [ InEarlyPosition3 && listGecko_OpenRaise_EP3  ] // 7%
+|| [ InEarlyPosition2 && listGecko_OpenRaise_EP2  ] // 6%
+|| [ InEarlyPosition1 && listGecko_OpenRaise_EP1  ] // 5%
 
 ##f$BettingAction_Hero_Did_Already_Act##
 (didrais || didcall || didchec || didbetsize)
