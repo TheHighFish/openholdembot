@@ -38,7 +38,9 @@ class CLimitInfo {
   double	ante()           { return _ante.GetValue(); }
 	int		  limit()          { return _limit; }
   CString	handnumber()     { return _handnumber; }
-  double  buyin ()         { return _buyin.GetValue(); }
+  double  buyin()         { return _buyin.GetValue(); }
+  double  prizepool()         { return _prizepool.GetValue(); }
+  double  prizepoolmultiplier()         { return _prizepoolmultiplier.GetValue(); }
   bool    is_final_table() { return _is_final_table; }
  protected:
   // FL / PL / NL
@@ -54,7 +56,9 @@ class CLimitInfo {
 	CScrapedMoney	_ante;
 	CScrapedMoney	_sb_bb;
 	CScrapedMoney	_bb_BB;
-  CScrapedMoney _buyin;
+    CScrapedMoney   _buyin;
+	CScrapedMoney   _prizepool;
+	CScrapedMoney   _prizepoolmultiplier;
 };
 
 #endif // INC_SLIMITINFO_H

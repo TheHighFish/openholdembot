@@ -31,8 +31,8 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
  public:
 	CSymbolEngineTableLimits();
 	~CSymbolEngineTableLimits();
-	// public mutators
  public:
+	// public mutators
 	void InitOnStartup();
 	void UpdateOnConnection();
 	void UpdateOnHandreset();
@@ -44,18 +44,19 @@ class CSymbolEngineTableLimits: public CVirtualSymbolEngine {
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided();
  public:
-  // public accessors, formerly part of the symbol-structure.
+	// public accessors, formerly part of the symbol-structure.
 	double sblind();
 	double bblind();
 	double bigbet();
 	double ante();
 	double bet(int betround);
 	double bet(); // for current betting round
-  double buyin();
+	double buyin();
+	double prizepool();
+	double prizepoolmultiplier();
+// private functions
  private:
   bool TableLimitsNeedToBeComputed();
- public:
-	// private functions
  private:
 	void AutoLockBlinds();
 	void AutoLockBlindsForCurrentHand();
