@@ -166,6 +166,8 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   double new_sb_bb = kUndefined;
   double new_bb_BB = kUndefined;
   double new_buyin = kUndefined;
+  double new_prizepool = kUndefined;
+  double new_prizepoolmultiplier = kUndefined;
   //
   int     place_in_ttlimits_format = 0, place_in_title = 0;
   CString token = "", skip_str = "", number_type = "";
@@ -212,7 +214,9 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^b" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^B" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^a" ||
-      ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^y" ||
+	  ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^y" ||
+	  ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^p" ||
+	  ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^P" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^v" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^V") {
       number_type = ttlimits_format.Mid(place_in_ttlimits_format, 2);
@@ -248,10 +252,19 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
         _results_for_openscrape.Append("^V (bb_BB)\t= " + temp + "\r\n");
         new_bb_BB = number;
       }
-      else if (number_type == "^y") {
+	      else if (number_type == "^y") {
         _results_for_openscrape.Append("^y (buyin)\t= " + temp + "\r\n");
         new_buyin = number;
       }
+		 else if (number_type == "^p") {
+		_results_for_openscrape.Append("^p (prizepool)\t= " + temp + "\r\n");
+		new_prizepool = number;
+	  }
+		 else if (number_type == "^P") {
+			 _results_for_openscrape.Append("^P (prizepoolmultiplier)\t= " + temp + "\r\n");
+			 new_prizepoolmultiplier = number;
+	  }
+
     }
     // Skip all chars up to string following the ^*
     else if (ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^*") {
@@ -404,7 +417,13 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
     p_table_state->_s_limit_info._bb_BB.SetValue(new_bb_BB);
   }
   if (p_table_state->_s_limit_info.buyin() <= kUndefinedZero) {
-    p_table_state->_s_limit_info._buyin.SetValue(new_buyin);
+	  p_table_state->_s_limit_info._buyin.SetValue(new_buyin);
+  }
+  if (p_table_state->_s_limit_info.prizepool() <= kUndefinedZero) {
+	  p_table_state->_s_limit_info._prizepool.SetValue(new_prizepool);
+  }
+  if (p_table_state->_s_limit_info.prizepoolmultiplier() <= kUndefinedZero) {
+	  p_table_state->_s_limit_info._prizepoolmultiplier.SetValue(new_prizepoolmultiplier);
   }
   write_log(preferences.debug_scraper(),
     "[CTransform] parsed title string\n");
@@ -426,6 +445,12 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   write_log(preferences.debug_scraper(),
     "[CTransform] buyin = %d\n",
     p_table_state->_s_limit_info.buyin());
+  write_log(preferences.debug_scraper(),
+	  "[CTransform] prizepool = %d\n",
+	  p_table_state->_s_limit_info.prizepool());
+  write_log(preferences.debug_scraper(),
+	  "[CTransform] prizepoolmultiplier = %d\n",
+	  p_table_state->_s_limit_info.prizepoolmultiplier());
 #endif
   return true;
 }
