@@ -1,5 +1,14 @@
 ﻿﻿v﻿13.0.1 2018-01-xx
 ==================
+NEW STUFF:
+- New symbols "prizepool" and "prizepoolmultiplier",
+  which can be either read from the titlestring (s$ttlimits)
+  or from the table (r$c0limits and s$c0limits).
+  All you need is "^p" for prizepool and "^P" for 
+  prizepoolmultiplier at the appropriate places,
+  either in s$ttlimits or s$c0limits.
+  [Salem]
+
 BUG FIXES:
 - OpenHoldem could connect to other OpenHoldem windows or even to itself
   (e.g. by table size and title) if a bad tablemap was tolerant enough.

@@ -268,7 +268,7 @@ double CSymbolEngineTableLimits::prizepool() {
 	} else if (p_table_state->_s_limit_info.prizepoolmultiplier() > 0) {
 		return p_table_state->_s_limit_info.prizepoolmultiplier() * buyin();
 	}
-	//Instead of 2, Do I create kMinimumPrizePoolMultiplier?
+	//2 is the minimum prize-pool multiplier.
 	return buyin() * 2;
 }
 
@@ -279,7 +279,7 @@ double CSymbolEngineTableLimits::prizepoolmultiplier() {
 	} else if (p_table_state->_s_limit_info.prizepool() > 0) {
 		return p_table_state->_s_limit_info.prizepool() / buyin();		
 	}
-	//Instead of 2, Do I create kMinimumPrizePoolMultiplier?
+	//2 is the minimum prize-pool multiplier.
 	return 2;
 }
 
