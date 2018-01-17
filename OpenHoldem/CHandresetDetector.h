@@ -25,7 +25,7 @@ class CHandresetDetector : public CSpaceOptimizedGlobalObject {
 	// OnNewHeartbeat(): to be called on every new heartbeat
 	// BEFORE IsHandreset() gets called.
 	void OnNewHeartbeat();
-	bool IsHandreset()		{ return _is_handreset_on_this_heartbeat; }
+	bool IsHandreset() { return _is_handreset_on_this_heartbeat; }
  public:
 	// Only for output in the log
 	CString GetHandNumber();

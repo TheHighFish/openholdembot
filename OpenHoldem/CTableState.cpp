@@ -96,12 +96,28 @@ int CTableState::NumberOfCommunityCards() {
   for (int i = 0; i < kNumberOfCommunityCards; ++i) {
     if (_common_cards[i].IsKnownCard()) {
       ++result;
-    }
-    else {
+    } else {
       break;
     }
   }
   return result;
+}
+
+bool CTableState::ShowdownCardsVisible() {
+  for (int i = 0; i < kMaxNumberOfPlayers; ++i) {
+    if (&_players[i] == User()) {
+      // user-cards, probably no showdown
+      continue;
+    }
+    if (_players[i].HasKnownCards()) {
+      // Opoonent with visible cards, usually showdown.
+      // Might also be a poker-simulatpr sh owing all players face-cards
+      // Might also be new user-chair after table-change in MTT, ...
+      // but thenwe had a handreset, all OK.
+      return false;
+    }
+  }
+  return false;
 }
 
 CTableTitle *CTableState::TableTitle() {
