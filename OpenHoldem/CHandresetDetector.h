@@ -38,11 +38,14 @@ class CHandresetDetector : public CSpaceOptimizedGlobalObject {
 	bool IsHandresetByHandNumber();
 	bool IsHandresetByCommunityCards();
 	bool IsHandresetByPotsize();
-	bool IsHandresetByNopponentsplaying();
+	bool IsHandresetByIncreasingNumberOfOpponentsPlaying();
 	bool IsHandresetByIncreasingBalance();
   bool IsHandresetByNewSmallBlind();
   bool IsHandresetByChangingBlindLevel();
   bool IsHandresetByOHReplayFrameNumber();
+  bool IsHandresetByVisibleAntes();
+  bool IsHandresetByDisappearingShowdownCards();
+  bool IsHandresetByButtonsAfterFold();
  public:
   int hands_played() { return _hands_played; }
   int hands_played_headsup() { return _hands_played_headsup; }

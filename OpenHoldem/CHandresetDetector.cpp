@@ -140,7 +140,7 @@ int CHandresetDetector::BitVectorFiringHandresetMethods() {
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByPotsize() ? 1 : 0);
   handresetmethods_fired <<= 1;
-  handresetmethods_fired |= (IsHandresetByNopponentsplaying() ? 1 : 0);
+  handresetmethods_fired |= (IsHandresetByIncreasingNumberOfOpponentsPlaying() ? 1 : 0);
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByIncreasingBalance() ? 1 : 0);
   handresetmethods_fired <<= 1;
@@ -149,6 +149,13 @@ int CHandresetDetector::BitVectorFiringHandresetMethods() {
   handresetmethods_fired |= (IsHandresetByNewSmallBlind() ? 1 : 0 );
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByOHReplayFrameNumber() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByVisibleAntes() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByDisappearingShowdownCards() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByButtonsAfterFold() ? 1 : 0);
+
   // No shift-left after the last bit
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Methods firing this heartbeat: %s\n",
     IntToBinaryString(handresetmethods_fired, kNumberOfHandresetMethods));
@@ -220,7 +227,7 @@ bool CHandresetDetector::IsHandresetByPotsize() {
   return ishandreset;
 }
 
-bool CHandresetDetector::IsHandresetByNopponentsplaying() {
+bool CHandresetDetector::IsHandresetByIncreasingNumberOfOpponentsPlaying() {
   bool ishandreset = (_nopponentsplaying > _last_nopponentsplaying)
     && (_community_cards == 0);
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by nopponentsplaying: %s\n",
@@ -265,6 +272,18 @@ bool CHandresetDetector::IsHandresetByOHReplayFrameNumber() {
   write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by decreasing framenumber of OHReplay: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
+}
+
+bool CHandresetDetector::IsHandresetByVisibleAntes() {
+  return false;
+}
+
+bool CHandresetDetector::IsHandresetByDisappearingShowdownCards() {
+  return false;
+}
+
+bool CHandresetDetector::IsHandresetByButtonsAfterFold() {
+  return false;
 }
 
 bool CHandresetDetector::SmallBlindExists() {
