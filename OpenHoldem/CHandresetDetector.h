@@ -78,6 +78,8 @@ class CHandresetDetector : public CSpaceOptimizedGlobalObject {
   bool   _small_blind_existed_last_hand;
   int    _ohreplay_framenumber;
   int    _last_ohreplay_framenumber;
+  bool   _showdown_cards_visible;
+  bool   _last_showdown_cards_visible;
  private:
 	// Handnumber should be a string, as
 	//   * it may contain characters

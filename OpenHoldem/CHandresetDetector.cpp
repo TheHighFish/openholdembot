@@ -56,6 +56,8 @@ CHandresetDetector::CHandresetDetector() {
   _bblind = kUndefinedZero;
   _last_bblind = kUndefinedZero;
   _small_blind_existed_last_hand = false;
+  _showdown_cards_visible = false;
+  _last_showdown_cards_visible = false;
   for (int i = 0; i<kMaxNumberOfCardsPerPlayer; i++) {
     playercards[i] = CARD_NOCARD;
     last_playercards[i] = CARD_NOCARD;  
@@ -279,7 +281,10 @@ bool CHandresetDetector::IsHandresetByVisibleAntes() {
 }
 
 bool CHandresetDetector::IsHandresetByDisappearingShowdownCards() {
-  return false;
+  bool ishandreset = (_small_blind_existed_last_hand && !_showdown_cards_visible);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by disappearing showdown cards: %s\n",
+    Bool2CString(ishandreset));
+  return ishandreset;
 }
 
 bool CHandresetDetector::IsHandresetByButtonsAfterFold() {
@@ -332,6 +337,7 @@ void CHandresetDetector::GetNewSymbolValues() {
   _community_cards = p_table_state->NumberOfCommunityCards();
   _nopponentsplaying = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying();
   _bblind = p_engine_container->symbol_engine_tablelimits()->bblind();
+  _showdown_cards_visible = p_table_state->ShowdownCardsVisible();
 	for (int i=0; i<kMaxNumberOfCardsPerPlayer; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->User()->hole_cards(i)->GetValue();
@@ -355,6 +361,7 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
   _last_nopponentsplaying = _nopponentsplaying;
   _last_bblind = _bblind;
   _small_blind_existed_last_hand = SmallBlindExists();
+  _last_showdown_cards_visible = _showdown_cards_visible;
 	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
 		last_playercards[i] = playercards[i];
 	}
