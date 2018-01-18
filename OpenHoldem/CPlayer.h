@@ -37,6 +37,7 @@ class CPlayer {
   // http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18948
   // This does not count as raising.
   bool PostingBothBlinds();
+  bool PostingAnte();
  public:
   // Public accessors
   CString name()       { return _name; }

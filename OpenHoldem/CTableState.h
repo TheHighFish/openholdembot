@@ -48,6 +48,7 @@ class CTableState {
   int  NumberOfCommunityCards();
   // For CHandresetDetector
   bool ShowdownCardsVisible();
+  bool AntesVisible();
  public:
   CTableTitle *TableTitle();
  public:
