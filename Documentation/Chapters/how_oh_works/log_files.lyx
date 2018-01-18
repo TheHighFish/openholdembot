@@ -236,7 +236,7 @@ Autoplayer Trace
 \begin_layout Standard
 If you want to go into detail the most useful part of the log is clearly
  the autoplayer-trace.
- It helps ypu to investigateö the entire evaluation that caused a decision.
+ It helps you to investigateö the entire evaluation that caused a decision.
  Let's assume we have a f$alli-function that looks like that: 
 \begin_inset listings
 inline false
@@ -309,7 +309,7 @@ Each function that is one level indented got called by the next function
  one and just considers the winning percentage (the built-in symbol prwin),
  f$HaveSuperDuperDraw uses the OpenPPL-symbols HaveStraightDraw and HaveFlushDra
 w, whereas f$PoorHeroIsPotCommitted uses Balance and Pot.
- Then the autoplayer-trace could look like that:
+ Then the autoplayer-trace could look like this:
 \end_layout
 
 \begin_layout Standard
@@ -663,7 +663,7 @@ Raise
 
 \end_inset
 
-Altogether 25 named action-constants -- too much to mention them here.
+Altogether 25 named action-constants -- too many to mention them here.
  But they are in the OpenPPL-library which is a plain-text-file.
  Feel welcome to have a look -- there are many interesting things to discover.
 \end_layout
@@ -771,7 +771,7 @@ Autoplayer Actions
 \end_layout
 
 \begin_layout Standard
-After the OpenPPL-decision got calculated OpenHoldem translates it to OH-script
+After the OpenPPL-decision gets calculated OpenHoldem translates it to OH-script
  autoplayer-actions (plural because of backup-actions) and thereafter the
  autoplayer works the normal way.
  That's why you can see some OH-script autoplayer-functions at the end of
