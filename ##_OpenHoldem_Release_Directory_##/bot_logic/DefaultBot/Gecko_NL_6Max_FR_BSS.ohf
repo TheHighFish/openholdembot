@@ -1793,7 +1793,7 @@ WHEN [didbetsize AND (4 * call < pot)] RETURN true FORCE
 // Raises after setmining get handled be f$preflop_call_for_setmining.
    
 ##f$preflop_limp_good_hand##
-WHEN [ncallbets >= 1] RETURN false FORCE
+WHEN [ncallbets > 1] RETURN false FORCE
 WHEN [BotsLastAction != None] RETURN false FORCE
 WHEN [(StillToAct >= 5) AND (handrank169 < 50)] RETURN true FORCE
 WHEN [nopponentscalling==0 AND ispair] RETURN true FORCE
