@@ -17,39 +17,43 @@
 #include "CEngineContainer.h"
 #include "CPreferences.h"
 #include "CScraper.h"
+#include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
 
 
-CSymbolEngineDealerchair::CSymbolEngineDealerchair()
-{
+CSymbolEngineDealerchair::CSymbolEngineDealerchair() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	//
 	// This engine does not use any other engines.
+  //
+  // This engine also might use CSymbolEngineTableLimits, but
+  //   * only very rarely if we have to detect the dealer by the SB-chair
+  //   * the small-blind is (more or less( constant
+  //   * that symbol-engine gets initialized later
+  // so we omit the check for initialization here.
 }
 
 CSymbolEngineDealerchair::~CSymbolEngineDealerchair()
 {}
 
-void CSymbolEngineDealerchair::InitOnStartup()
-{
+void CSymbolEngineDealerchair::InitOnStartup() {
 	UpdateOnConnection();
 }
 
-void CSymbolEngineDealerchair::UpdateOnConnection()
-{
+void CSymbolEngineDealerchair::UpdateOnConnection() {
 	_dealerchair = kUndefined;
 }
 
-void CSymbolEngineDealerchair::UpdateOnHandreset()
-{}
+void CSymbolEngineDealerchair::UpdateOnHandreset() {
+}
 
-void CSymbolEngineDealerchair::UpdateOnNewRound()
-{}
+void CSymbolEngineDealerchair::UpdateOnNewRound() {
+}
 
-void CSymbolEngineDealerchair::UpdateOnMyTurn()
-{}
+void CSymbolEngineDealerchair::UpdateOnMyTurn() {
+}
 
 void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
 	write_log(preferences.debug_symbolengine(), "nchairs: %d\n", 
@@ -61,21 +65,45 @@ void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
 			break;
 		}
 	}
+  // No dealer-button found.
+  // Maybe temporary occluded, maybe completely bad tablemap
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=21454
+  // Try to find the smallblind
+  int smallblindchair = SmallBlindChair();
+  if (smallblindchair >= 0) {
+    _dealerchair = RightHandActiveChair(smallblindchair);
+  }
 	// Otherwise: do nothing and keep the dealer as is.
-	// Dealer-button probably just temporary occluded.
 	// Do not reset, as this might cause a hand-reset.
 }
 
-bool CSymbolEngineDealerchair::EvaluateSymbol(const CString name, double *result, bool log /* = false */)
-{
+int CSymbolEngineDealerchair::SmallBlindChair() {
+  for (int i = 0; i < p_tablemap->nchairs(); i++) {
+    if (p_table_state->Player(i)->_bet.GetValue() == p_engine_container->symbol_engine_tablelimits()->sblind()) {
+      return i;
+    }
+  }
+  return kUndefined;
+}
+
+int CSymbolEngineDealerchair::RightHandActiveChair(int chair) {
+  for (int i = (p_tablemap->nchairs() - 1); i >= 0; --i) {
+    int next_chair = chair + i;
+    next_chair %= p_tablemap->nchairs();
+    if (p_table_state->Player(next_chair)->active()) {
+      return next_chair;
+    }
+  }
+  return kUndefined;
+}
+
+bool CSymbolEngineDealerchair::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (name == "dealerchair")	
-	{
+	if (name == "dealerchair")	{
 		*result = p_engine_container->symbol_engine_dealerchair()->dealerchair();
 		return true;
 	}
-  if (name == "buttonchair")
-  {
+  if (name == "buttonchair") {
     *result = p_engine_container->symbol_engine_dealerchair()->dealerchair();
     return true;
   }
