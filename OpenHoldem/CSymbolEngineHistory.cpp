@@ -354,6 +354,13 @@ bool CSymbolEngineHistory::DidAct(int betround) {
   return false;
 }
 
+bool CSymbolEngineHistory::DidFoldThisHand() {
+  return (didfold(kBetroundPreflop)
+    || didfold(kBetroundFlop)
+    || didfold(kBetroundTurn)
+    || didfold(kBetroundRiver));
+}
+
 CString CSymbolEngineHistory::SymbolsProvided() {
   CString list = "didchec didcall didrais didbetsize didfold didalli "
     "nplayersround nbetsround prevaction ";

@@ -42,6 +42,8 @@ class CSymbolEngineHistory: public CVirtualSymbolEngine {
 	bool DidAct();	
 	bool DidAct(int betround);
 	bool DidActThisHand()	{	return DidAct(kBetroundPreflop); }
+  // For the handreset-detector
+  bool DidFoldThisHand();
  public:
 	int nplayersround(int betround)		{ return _nplayersround[betround]; }
 	int botslastaction(int betround)	{ return _botslastaction[betround]; }
