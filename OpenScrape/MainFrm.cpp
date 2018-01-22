@@ -517,11 +517,24 @@ void CMainFrame::OnViewRefresh()
 	}
 }
 
+void CMainFrame::CheckIfOHReplayRunning() {
+  // Just a quick and dirty test if a process named "OHReplay.exe" exists.
+  // Even some experienced botters didn't know what OHReplay
+  // and these buttons are good for.
+  //!!!!
+  return;
+  {
+    MessageBox("Unable to switch to preious / next replay-frame.\n"
+      "Not connected to OHReplay\n",
+      "Warning", 0);
+  }
+}
+
 void CMainFrame::OnViewPrev()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect;
-
+  CheckIfOHReplayRunning();
 	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
 		// bring attached window to front
@@ -596,7 +609,7 @@ void CMainFrame::OnViewNext()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect;
-
+  CheckIfOHReplayRunning();
 	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
 		// bring attached window to front

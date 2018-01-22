@@ -56,6 +56,7 @@ class CMainFrame : public CFrameWnd {
 	void ResizeWindow(COpenScrapeDoc *pDoc);
 	void BringOpenScrapeBackToFront();
 	void SetTablemapSizeIfUnknown(int size_x, int size_y);
+  void CheckIfOHReplayRunning();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
