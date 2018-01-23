@@ -8404,7 +8404,7 @@ The symbol will be evaluated to 1.
 \end_layout
 
 \begin_layout Standard
-For example if you have the following f$rais-formula,
+For example if you have the following f$raise-formula,
 \end_layout
 
 \begin_layout Standard
@@ -8414,7 +8414,7 @@ status open
 
 \begin_layout Plain Layout
 
-##f$rais##
+##f$raise##
 \end_layout
 
 \begin_layout Plain Layout

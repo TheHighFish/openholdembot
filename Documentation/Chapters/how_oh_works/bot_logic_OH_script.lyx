@@ -98,7 +98,7 @@ shall I go allin?
 \begin_inset Quotes erd
 \end_inset
 
- --- f$alli (boolean, interpreting 0 as false and everything else as true)
+ --- f$allin (boolean, interpreting 0 as false and everything else as true)
 \end_layout
 
 \begin_layout Itemize
@@ -135,7 +135,7 @@ shall I (min-)raise
 \begin_inset Quotes erd
 \end_inset
 
- --- f$rais (mainly for Fixed Limit; boolean)
+ --- f$raise (mainly for Fixed Limit; boolean)
 \end_layout
 
 \begin_layout Itemize
@@ -326,7 +326,7 @@ dll$betsize
 
 \begin_layout Plain Layout
 
-##f$rais##
+##f$raise##
 \end_layout
 
 \begin_layout Plain Layout

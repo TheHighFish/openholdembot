@@ -122,12 +122,12 @@ Else if the
 status open
 
 \begin_layout Plain Layout
-f$alli
+f$allin
 \end_layout
 
 \end_inset
 
-f$alli function evaluates to non-zero, and an all-in control is present
+f$allin function evaluates to non-zero, and an all-in control is present
  (slider/betsize box/allin-button), then move all-in .
 \end_layout
 
@@ -159,12 +159,12 @@ Else if the
 status open
 
 \begin_layout Plain Layout
-f$rais
+f$raise
 \end_layout
 
 \end_inset
 
-f$rais function evaluates to non-zero, and the Raise button is present,
+f$raise function evaluates to non-zero, and the Raise button is present,
  then click the Raise button 
 \end_layout
 

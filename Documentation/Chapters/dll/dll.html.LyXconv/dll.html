@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2014-12-28"/>
+<meta name="create-date" content="2018-01-23"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -31,11 +31,11 @@ The OpenHoldem to DLL interface is small and clean. OpenHoldem exports the follo
 <div class="Indented">
 <div class="listing">
 <pre class="listing">// Functions exported by OpenHoldem 
-extern "C" __declspec(dllimport) double __stdcall GetSymbolFromDll(const int chair, const char* name, bool&amp; iserr); 
-extern "C" __declspec(dllimport) void __stdcall SendChatMessageFomDll(const char *msg); 
+extern "C" __declspec(dllimport) double __stdcall GetSymbol(const char* name); 
+extern "C" __declspec(dllimport) void __stdcall SendChatMessage(const char *msg); 
 extern "C" __declspec(dllimport) void* __stdcall GetPhl1kFromDll(); 
-extern "C" __declspec(dllimport) void* __stdcall GetPrw1326FromDll(); 
-extern "C" __declspec(dllimport) void __stdcall WriteLogFromDll(char* fmt, ...); extern "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll();
+extern "C" __declspec(dllimport) void* __stdcall GetPrw1326(); 
+extern "C" __declspec(dllimport) void __stdcall WriteLog(char* fmt, ...); extern "C" __declspec(dllexport) char* __stdcall GetHandnumberFromDll();
 </pre>
 </div>
 
@@ -53,19 +53,6 @@ And the DLL will export a function too, namely
 <div class="Indented">
 Again linking happens at load-time, so the DLL-interface is ready for cooperation right from the start. Contrary to WinHoldem and early versions of OpenHoldem no function-pointer get exchanged at run-time, so a very error-prone mechanism could get removed.
 </div>
-<div class="Indented">
-OpenHoldem will send or request information from the DLL when needed, and it is up to the DLL’s author to process these requests. The exported library function process_message is used for this interface and has the following prototype:
-</div>
-<div class="Indented">
-<div class="listing">
-<pre class="listing">USERDLL_API double process_message (const char* pmessage, const void* param);
-</pre>
-</div>
-
-</div>
-<div class="Indented">
-The various messages that can be passed in the “pmessage” parameter are as follows: pmessage meaning and parameters state 
-</div>
 <h4 class="Subsubsection">
 <a class="toc" name="toc-Subsubsection-1"></a>Game-States
 </h4>
@@ -76,7 +63,7 @@ Each scrape cycle, OpenHoldem will send the current game state to the DLL. As th
 <a class="toc" name="toc-Subsubsection-2"></a>Querying dll$-Symbols
 </h4>
 <div class="Unindented">
-Any symbol that begins with the characters “dll$” is interpreted by the OpenHoldem parser as requiring a call to the loaded User DLL in order to determine its value. The “query” message is the mechanism for requesting the value of this symbol. Any symbol name can be created for use by your User DLL, as long as it begins with “dll$”, and your DLL code knows how to handle it. So, for example, if the OpenHoldem decision engine encounters a symbol called “dll$kill_phil” in the evaluation of the “f$alli” function, then a synchronous call will be made to the User DLL to provide the value of dll$kill_phil in order to complete the evaluation of f$alli. The evaluation of f$alli will block until your DLL handles this request and provides a result. The name of the symbol (in this case, “dll$kill_phil”) is provided in the “param” parameter, and should be cast to a (const char*). A simple example of how to process this message is provided in the Reference User DLL source code. 
+Any symbol that begins with the characters “dll$” is interpreted by the OpenHoldem parser as requiring a call to the loaded User DLL in order to determine its value. The “query” message is the mechanism for requesting the value of this symbol. Any symbol name can be created for use by your User DLL, as long as it begins with “dll$”, and your DLL code knows how to handle it. So, for example, if the OpenHoldem decision engine encounters a symbol called “dll$kill_phil” in the evaluation of the “f$allin” function, then a synchronous call will be made to the User DLL to provide the value of dll$kill_phil in order to complete the evaluation of f$allin. The evaluation of f$allin will block until your DLL handles this request and provides a result. The name of the symbol (in this case, “dll$kill_phil”) is provided in the “param” parameter, and should be cast to a (const char*). A simple example of how to process this message is provided in the Reference User DLL source code. 
 </div>
 <h4 class="Subsubsection">
 <a class="toc" name="toc-Subsubsection-3"></a>load and unload Messages
@@ -123,10 +110,10 @@ To override all OH-Script processing, simply instruct each primary function to o
 </div>
 <div class="Indented">
 <div class="listing">
-<pre class="listing">##f$alli##
+<pre class="listing">##f$allin##
 dll$alli
 ​
-##f$rais##
+##f$raise##
 dll$rais
 </pre>
 </div>
@@ -256,10 +243,6 @@ In short: dll$iswait will be only needed if you do very time-consuming computati
 A User DLL also has the ability to send the request "cmd$recalc", which will force OpenHoldem to recompute the versus tables and restart the Iterator thread.
 </div>
 
-<hr class="footer"/>
-<div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2014-12-28T22:25:51.375000</span>
-</div>
 </div>
 </body>
 </html>

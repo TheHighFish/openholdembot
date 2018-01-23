@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2018-01-17"/>
+<meta name="create-date" content="2018-01-23"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -56,8 +56,8 @@ As you can see in this example the bot-logic decided to call, but there was no b
 <a class="toc" name="toc-Subsection--2"></a>Autoplayer Trace
 </h3>
 <div class="Unindented">
-If you want to go into detail the most useful part of the log is clearly the autoplayer-trace. It helps you to investigateö the entire evaluation that caused a decision. Let’s assume we have a f$alli-function that looks like that: <div class="listing">
-<pre class="listing">##f$alli##
+If you want to go into detail the most useful part of the log is clearly the autoplayer-trace. It helps you to investigateö the entire evaluation that caused a decision. Let’s assume we have a f$allin-function that looks like that: <div class="listing">
+<pre class="listing">##f$allin##
    f$HaveUnbeatableMonster
 OR f$HaveSuperDuperDraw
 OR f$PoorHeroIsPotCommitted
@@ -66,7 +66,7 @@ OR f$PoorHeroIsPotCommitted
 
 </div>
 <div class="Indented">
-On evaluation of f$alli OpenHoldem will look up the three user-defined functions (f$HaveUnbeatableMonster, ...), evaluate them and combine their return-values to a final result. This leads to a simplified call-tree:
+On evaluation of f$allin OpenHoldem will look up the three user-defined functions (f$HaveUnbeatableMonster, ...), evaluate them and combine their return-values to a final result. This leads to a simplified call-tree:
 </div>
 <div class="Indented">
 <div class="float">
@@ -219,7 +219,7 @@ After the OpenPPL-decision gets calculated OpenHoldem translates it to OH-script
 <div class="Indented">
 <div class="listing">
 <pre class="listing">f$betsize = 880.000 [cached] 
-f$rais = 1.000 [cached] 
+f$raise = 1.000 [cached] 
 f$call = 1.000 [cached] 
 f$check = 1.000 [cached]
 f$allin_on_betsize_balance_ratio = 0.000 [Line 5/1864]

@@ -223,10 +223,10 @@ Any symbol that begins with the characters “dll$” is interpreted by the
  Any symbol name can be created for use by your User DLL, as long as it
  begins with “dll$”, and your DLL code knows how to handle it.
  So, for example, if the OpenHoldem decision engine encounters a symbol
- called “dll$kill_phil” in the evaluation of the “f$alli” function, then
+ called “dll$kill_phil” in the evaluation of the “f$allin” function, then
  a synchronous call will be made to the User DLL to provide the value of
- dll$kill_phil in order to complete the evaluation of f$alli.
- The evaluation of f$alli will block until your DLL handles this request
+ dll$kill_phil in order to complete the evaluation of f$allin.
+ The evaluation of f$allin will block until your DLL handles this request
  and provides a result.
  The name of the symbol (in this case, “dll$kill_phil”) is provided in the
  “param” parameter, and should be cast to a (const char*).
@@ -340,7 +340,7 @@ status open
 
 \begin_layout Plain Layout
 
-##f$alli##
+##f$allin##
 \end_layout
 
 \begin_layout Plain Layout
@@ -354,7 +354,7 @@ dll$alli
 
 \begin_layout Plain Layout
 
-##f$rais##
+##f$raise##
 \end_layout
 
 \begin_layout Plain Layout

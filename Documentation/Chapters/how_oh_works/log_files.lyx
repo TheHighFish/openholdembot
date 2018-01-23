@@ -237,14 +237,14 @@ Autoplayer Trace
 If you want to go into detail the most useful part of the log is clearly
  the autoplayer-trace.
  It helps you to investigateö the entire evaluation that caused a decision.
- Let's assume we have a f$alli-function that looks like that: 
+ Let's assume we have a f$allin-function that looks like that: 
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-##f$alli##
+##f$allin##
 \end_layout
 
 \begin_layout Plain Layout
@@ -268,7 +268,7 @@ OR f$PoorHeroIsPotCommitted
 \end_layout
 
 \begin_layout Standard
-On evaluation of f$alli OpenHoldem will look up the three user-defined functions
+On evaluation of f$allin OpenHoldem will look up the three user-defined functions
  (f$HaveUnbeatableMonster, ...), evaluate them and combine their return-values
  to a final result.
  This leads to a simplified call-tree:
@@ -813,7 +813,7 @@ f$betsize = 880.000 [cached]
 
 \begin_layout Plain Layout
 
-f$rais = 1.000 [cached] 
+f$raise = 1.000 [cached] 
 \end_layout
 
 \begin_layout Plain Layout
