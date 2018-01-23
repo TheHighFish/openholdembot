@@ -25,7 +25,7 @@ class CHandresetDetector : public CSpaceOptimizedGlobalObject {
 	// OnNewHeartbeat(): to be called on every new heartbeat
 	// BEFORE IsHandreset() gets called.
 	void OnNewHeartbeat();
-	bool IsHandreset()		{ return _is_handreset_on_this_heartbeat; }
+	bool IsHandreset() { return _is_handreset_on_this_heartbeat; }
  public:
 	// Only for output in the log
 	CString GetHandNumber();
@@ -38,11 +38,14 @@ class CHandresetDetector : public CSpaceOptimizedGlobalObject {
 	bool IsHandresetByHandNumber();
 	bool IsHandresetByCommunityCards();
 	bool IsHandresetByPotsize();
-	bool IsHandresetByNopponentsplaying();
+	bool IsHandresetByIncreasingNumberOfOpponentsPlaying();
 	bool IsHandresetByIncreasingBalance();
   bool IsHandresetByNewSmallBlind();
   bool IsHandresetByChangingBlindLevel();
   bool IsHandresetByOHReplayFrameNumber();
+  bool IsHandresetByVisibleAntes();
+  bool IsHandresetByDisappearingShowdownCards();
+  bool IsHandresetByButtonsAfterFold();
  public:
   int hands_played() { return _hands_played; }
   int hands_played_headsup() { return _hands_played_headsup; }
@@ -75,6 +78,12 @@ class CHandresetDetector : public CSpaceOptimizedGlobalObject {
   bool   _small_blind_existed_last_hand;
   int    _ohreplay_framenumber;
   int    _last_ohreplay_framenumber;
+  bool   _showdown_cards_visible;
+  bool   _last_showdown_cards_visible;
+  bool   _antes_visible;
+  bool   _last_antes_visible;
+  bool   _buttons_visible;
+  bool   _last_buttons_visible;
  private:
 	// Handnumber should be a string, as
 	//   * it may contain characters

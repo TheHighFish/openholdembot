@@ -19,7 +19,6 @@
 
 #include "CEngineContainer.h"
 #include "CSymbolEngineUserchair.h"
-
 #include "CSymbolEngineActiveDealtPlaying.h"
 
 CTableState *p_table_state = NULL;
@@ -37,7 +36,7 @@ void CTableState::Reset() {
     _common_cards[i].ClearValue();
   }
   for (int i=0; i<kNumberOfPlayerEntries; ++i) {
-    _players[i].Reset();
+    Player(i)->Reset();
   }
   for (int i=0; i<kMaxNumberOfPots; ++i) {
     _pot[i].Reset();
@@ -96,12 +95,40 @@ int CTableState::NumberOfCommunityCards() {
   for (int i = 0; i < kNumberOfCommunityCards; ++i) {
     if (_common_cards[i].IsKnownCard()) {
       ++result;
-    }
-    else {
+    } else {
       break;
     }
   }
   return result;
+}
+
+bool CTableState::ShowdownCardsVisible() {
+  for (int i = 0; i < kMaxNumberOfPlayers; ++i) {
+    if (&_players[i] == User()) {
+      // user-cards, probably no showdown
+      continue;
+    }
+    if (Player(i)->HasKnownCards()) {
+      // Opoonent with visible cards, usually showdown.
+      // Might also be a poker-simulatpr sh owing all players face-cards
+      // Might also be new user-chair after table-change in MTT, ...
+      // but thenwe had a handreset, all OK.
+      return false;
+    }
+  }
+  return false;
+}
+
+bool CTableState::AntesVisible() {
+  int number_of_players_posting_ante = 0;
+  for (int i = 0; i < kMaxNumberOfPlayers; ++i) {
+    if (Player(i)->PostingAnte()) {
+      ++number_of_players_posting_ante;
+    }
+  }
+  // Be conservatibe, aboid scraping errors
+  // Require more than one player with a tiny bet
+  return (number_of_players_posting_ante > 1);
 }
 
 CTableTitle *CTableState::TableTitle() {

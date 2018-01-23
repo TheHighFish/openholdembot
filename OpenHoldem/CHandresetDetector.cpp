@@ -23,6 +23,7 @@
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
+#include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineTableLimits.h"
 #include "CSymbolEngineTime.h"
@@ -56,6 +57,10 @@ CHandresetDetector::CHandresetDetector() {
   _bblind = kUndefinedZero;
   _last_bblind = kUndefinedZero;
   _small_blind_existed_last_hand = false;
+  _showdown_cards_visible = false;
+  _last_showdown_cards_visible = false;
+  _buttons_visible = false;
+  _last_buttons_visible = false;
   for (int i = 0; i<kMaxNumberOfCardsPerPlayer; i++) {
     playercards[i] = CARD_NOCARD;
     last_playercards[i] = CARD_NOCARD;  
@@ -140,7 +145,7 @@ int CHandresetDetector::BitVectorFiringHandresetMethods() {
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByPotsize() ? 1 : 0);
   handresetmethods_fired <<= 1;
-  handresetmethods_fired |= (IsHandresetByNopponentsplaying() ? 1 : 0);
+  handresetmethods_fired |= (IsHandresetByIncreasingNumberOfOpponentsPlaying() ? 1 : 0);
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByIncreasingBalance() ? 1 : 0);
   handresetmethods_fired <<= 1;
@@ -149,6 +154,13 @@ int CHandresetDetector::BitVectorFiringHandresetMethods() {
   handresetmethods_fired |= (IsHandresetByNewSmallBlind() ? 1 : 0 );
   handresetmethods_fired <<= 1;
   handresetmethods_fired |= (IsHandresetByOHReplayFrameNumber() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByVisibleAntes() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByDisappearingShowdownCards() ? 1 : 0);
+  handresetmethods_fired <<= 1;
+  handresetmethods_fired |= (IsHandresetByButtonsAfterFold() ? 1 : 0);
+
   // No shift-left after the last bit
   write_log(Preferences()->debug_handreset_detector(), "[CHandresetDetector] Methods firing this heartbeat: %s\n",
     IntToBinaryString(handresetmethods_fired, kNumberOfHandresetMethods));
@@ -220,7 +232,7 @@ bool CHandresetDetector::IsHandresetByPotsize() {
   return ishandreset;
 }
 
-bool CHandresetDetector::IsHandresetByNopponentsplaying() {
+bool CHandresetDetector::IsHandresetByIncreasingNumberOfOpponentsPlaying() {
   bool ishandreset = (_nopponentsplaying > _last_nopponentsplaying)
     && (_community_cards == 0);
   write_log(Preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by nopponentsplaying: %s\n",
@@ -265,6 +277,28 @@ bool CHandresetDetector::IsHandresetByOHReplayFrameNumber() {
   write_log(Preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by decreasing framenumber of OHReplay: %s\n",
 		Bool2CString(ishandreset));
   return ishandreset;
+}
+
+bool CHandresetDetector::IsHandresetByVisibleAntes() {
+  bool ishandreset = (_antes_visible && !_last_antes_visible);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by visible antes: %s\n",
+    Bool2CString(ishandreset));
+  return ishandreset;
+}
+
+bool CHandresetDetector::IsHandresetByDisappearingShowdownCards() {
+  bool ishandreset = (_last_showdown_cards_visible && !_showdown_cards_visible);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by disappearing showdown cards: %s\n",
+    Bool2CString(ishandreset));
+  return ishandreset;
+}
+
+bool CHandresetDetector::IsHandresetByButtonsAfterFold() {
+  bool ishandreset = (p_engine_container->symbol_engine_history()->DidFoldThisHand()
+    && _buttons_visible && !_last_buttons_visible);
+  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by autoplayer-buttons after fold: %s\n",
+    Bool2CString(ishandreset));
+  return false;
 }
 
 bool CHandresetDetector::SmallBlindExists() {
@@ -313,6 +347,9 @@ void CHandresetDetector::GetNewSymbolValues() {
   _community_cards = p_table_state->NumberOfCommunityCards();
   _nopponentsplaying = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying();
   _bblind = p_engine_container->symbol_engine_tablelimits()->bblind();
+  _showdown_cards_visible = p_table_state->ShowdownCardsVisible();
+  _antes_visible = p_table_state->AntesVisible();
+  _buttons_visible = p_casino_interface->IsMyTurn();
 	for (int i=0; i<kMaxNumberOfCardsPerPlayer; i++) {
 		if ((userchair >= 0) && (userchair < p_tablemap->nchairs())) {
       playercards[i] = p_table_state->User()->hole_cards(i)->GetValue();
@@ -336,6 +373,9 @@ void CHandresetDetector::StoreOldValuesForComparisonOnNextHeartbeat() {
   _last_nopponentsplaying = _nopponentsplaying;
   _last_bblind = _bblind;
   _small_blind_existed_last_hand = SmallBlindExists();
+  _last_showdown_cards_visible = _showdown_cards_visible;
+  _last_antes_visible = _antes_visible;
+  _last_buttons_visible = _buttons_visible;
 	for (int i=0; i<NumberOfCardsPerPlayer(); i++) {
 		last_playercards[i] = playercards[i];
 	}

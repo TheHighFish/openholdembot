@@ -144,6 +144,30 @@ bool CPlayer::PostingBothBlinds() {
     && IsApproximatellyEqual(bet_in_cents, both_blinds_in_cents));
 }
 
+bool CPlayer::PostingAnte() {
+  if (p_betround_calculator->betround() > kBetroundPreflop) {
+    // No ante posters postflop
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19043
+    return false;
+  }
+  if (IsAllin()) {
+    // A person who is allin for SB + BB can't be new at the table, 
+    // therefore not posting antes.
+    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19414
+    return false;
+  }
+  if (_bet.GetValue() <= 0) {
+    return false;
+  }
+  if (_bet.GetValue() >= p_engine_container->symbol_engine_tablelimits()->sblind()) {
+    // Assuming the ante is smaller as the small blind
+    // There are exceptions, but we use this function 
+    // only as one of many handreset-methods.
+    return false;
+  }
+  return true;
+}
+
 void CPlayer::set_seated(bool is_seated) { 
   if ((is_seated == false)) {
     // Change from seated to non-seated

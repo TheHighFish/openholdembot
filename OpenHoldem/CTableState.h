@@ -46,6 +46,9 @@ class CTableState {
   Card *TurnCard();
   Card *RiverCard();
   int  NumberOfCommunityCards();
+  // For CHandresetDetector
+  bool ShowdownCardsVisible();
+  bool AntesVisible();
  public:
   CTableTitle *TableTitle();
  public:
