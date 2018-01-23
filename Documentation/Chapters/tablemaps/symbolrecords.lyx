@@ -266,12 +266,67 @@ These symbols are intended to provide a format string that is used to parse
  The syntax usage of the format string is very much like the standard C-language
  format strings for scanf and printf.
  The placeholders use the caret character as the indicator and have the
- following meanings: ^h hand number ^d dummy integer (read chars 0-9 only)
- ^f dummy float (read chars 0-9 including decimal '.') ^s sblind ^b bblind
- ^B bigbet ^a ante ^v sb or bb depending on limit type ^V bb or BB depending
- on limit type ^* skip all text up to the literal character following the
- * ^R roman numeral as in "Level VIII" as typically seen in SNGs ^L limit
- indicator 
+ following meanings: 
+\end_layout
+
+\begin_layout Plain Layout
+^h hand number 
+\end_layout
+
+\begin_layout Plain Layout
+^d dummy integer (read chars 0-9 only) 
+\end_layout
+
+\begin_layout Plain Layout
+^f dummy float (read chars 0-9 including decimal '.') 
+\end_layout
+
+\begin_layout Plain Layout
+^s sblind 
+\end_layout
+
+\begin_layout Plain Layout
+^b bblind 
+\end_layout
+
+\begin_layout Plain Layout
+^B bigbet 
+\end_layout
+
+\begin_layout Plain Layout
+^a ante 
+\end_layout
+
+\begin_layout Plain Layout
+^v sb or bb depending on limit type 
+\end_layout
+
+\begin_layout Plain Layout
+^V bb or BB depending on limit type 
+\end_layout
+
+\begin_layout Plain Layout
+^* skip all text up to the literal character following the * 
+\end_layout
+
+\begin_layout Plain Layout
+^R roman numeral as in "Level VIII" as typically seen in SNGs 
+\end_layout
+
+\begin_layout Plain Layout
+^y buyin
+\end_layout
+
+\begin_layout Plain Layout
+^z prizepool
+\end_layout
+
+\begin_layout Plain Layout
+^Z prizepool-multiplier
+\end_layout
+
+\begin_layout Plain Layout
+^L limit indicator 
 \end_layout
 
 \begin_layout Plain Layout

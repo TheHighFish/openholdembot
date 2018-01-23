@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-28"/>
+<meta name="create-date" content="2018-01-23"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -100,7 +100,67 @@ ttlimits, ttlimits0 - ttlimits9
 
 </div>
 <div class="PlainVisible">
-These symbols are intended to provide a format string that is used to parse the window’s titlebar text, and extract sblind, bblind, bigbet, ante and game type information. The syntax usage of the format string is very much like the standard C-language format strings for scanf and printf. The placeholders use the caret character as the indicator and have the following meanings: ^h hand number ^d dummy integer (read chars 0-9 only) ^f dummy float (read chars 0-9 including decimal ’.’) ^s sblind ^b bblind ^B bigbet ^a ante ^v sb or bb depending on limit type ^V bb or BB depending on limit type ^* skip all text up to the literal character following the * ^R roman numeral as in "Level VIII" as typically seen in SNGs ^L limit indicator <br/>
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+These symbols are intended to provide a format string that is used to parse the window’s titlebar text, and extract sblind, bblind, bigbet, ante and game type information. The syntax usage of the format string is very much like the standard C-language format strings for scanf and printf. The placeholders use the caret character as the indicator and have the following meanings: <br/>
+^h hand number <br/>
+^d dummy integer (read chars 0-9 only) <br/>
+^f dummy float (read chars 0-9 including decimal ’.’) <br/>
+^s sblind <br/>
+^b bblind <br/>
+^B bigbet <br/>
+^a ante <br/>
+^v sb or bb depending on limit type <br/>
+^V bb or BB depending on limit type <br/>
+^* skip all text up to the literal character following the * <br/>
+^R roman numeral as in "Level VIII" as typically seen in SNGs <br/>
+^y buyin<br/>
+^z prizepool<br/>
+^Z prizepool-multiplier<br/>
+^L limit indicator <br/>
 For the integer and float numerics, the scanner will automatically accept and skip a leading dollar sign “$” or leading/trailing cent sign “¢” (ascii 162 hex a2). In the case of the cent sign the target number will be divided by 100. The scanner will also recognize the standard trailing metric unit multipliers of “k” and “m” (1000 and 1000000 respectively). <br/>
 The following case-insensitive strings are recognized for the ^L limit indicator: no limit, no-limit, nolimit, nl pot limit, pot-limit, potlimit, pl fixed limit, fixed-limit, fixedlimit, fl, limit <br/>
 As an example, this title bar text "NL SNG Level VI 25/50 (2)" could be parsed with this format string "^L SNG Level ^R ^s/^b (^a)" to result in the sblind, bblind and game type being recognized. <br/>
