@@ -1,10 +1,10 @@
-﻿﻿v﻿13.0.1 2018-01-xx
+﻿﻿v﻿13.0.1 2018-01-23
 ==================
 NEW STUFF:
 - New symbols "prizepool" and "prizepoolmultiplier",
   which can be either read from the titlestring (s$ttlimits)
   or from the table (r$c0limits and s$c0limits).
-  All you need is "^p" for prizepool and "^P" for 
+  All you need is "^z" for prizepool and "^Z" for 
   prizepoolmultiplier at the appropriate places,
   either in s$ttlimits or s$c0limits.
   [Salem]
