@@ -36,7 +36,8 @@ class CSymbolEngineDealerchair: public CVirtualSymbolEngine {
   inline int dealerchair()			{ return _dealerchair; }
   CString SymbolsProvided();
  private:
-  void CalculateDealerChair();
+  int SmallBlindChair();
+  int RightHandActiveChair(int chair);
  private:
   int _dealerchair;
 };
