@@ -17,7 +17,7 @@
 
 #include "CFunction.h"
 #include "CMemoryPool.h"
-#include "CPreferences.h"
+
 #include "TokenizerConstants.h"
 
 CParseTreeNode::CParseTreeNode(int relative_line_number) {
@@ -132,6 +132,6 @@ CString CParseTreeNode::Serialize() {
 
 void* CParseTreeNode::operator new(size_t size) {
   assert(PMemoryPoolParser() != NULL);
-  write_log(preferences.debug_memory_usage(), "[CParseTreeNode] Allocating %i bytes\n", size);
+  write_log(Preferences()->debug_memory_usage(), "[CParseTreeNode] Allocating %i bytes\n", size);
   return PMemoryPoolParser()->Allocate(size);
 }

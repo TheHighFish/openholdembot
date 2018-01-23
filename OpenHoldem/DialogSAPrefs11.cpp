@@ -19,7 +19,7 @@
 
 #include <limits.h>
 #include "SAPrefsSubDlg.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 #define MAX_MAX_LOG 1000000
@@ -52,17 +52,17 @@ BOOL CDlgSAPrefs11::OnInitDialog() {
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	m_LogHopperFunctions.SetCheck(preferences.log_hopper_functions() ? BST_CHECKED : BST_UNCHECKED);
-	m_LogICMFunctions.SetCheck(preferences.log_icm_functions() ? BST_CHECKED : BST_UNCHECKED);
-	m_LogPrwinFunctions.SetCheck(preferences.log_prwin_functions() ? BST_CHECKED : BST_UNCHECKED);
-  m_LogIniFunctions.SetCheck(preferences.log_ini_functions() ? BST_CHECKED : BST_UNCHECKED);
-  m_LogDelayFunction.SetCheck(preferences.log_delay_function() ? BST_CHECKED : BST_UNCHECKED);
+	m_LogHopperFunctions.SetCheck(Preferences()->log_hopper_functions() ? BST_CHECKED : BST_UNCHECKED);
+	m_LogICMFunctions.SetCheck(Preferences()->log_icm_functions() ? BST_CHECKED : BST_UNCHECKED);
+	m_LogPrwinFunctions.SetCheck(Preferences()->log_prwin_functions() ? BST_CHECKED : BST_UNCHECKED);
+  m_LogIniFunctions.SetCheck(Preferences()->log_ini_functions() ? BST_CHECKED : BST_UNCHECKED);
+  m_LogDelayFunction.SetCheck(Preferences()->log_delay_function() ? BST_CHECKED : BST_UNCHECKED);
 
-	text.Format("%d", preferences.log_max_logsize());
-	text.Format("%d", preferences.log_max_logsize());
+	text.Format("%d", Preferences()->log_max_logsize());
+	text.Format("%d", Preferences()->log_max_logsize());
 	m_MaximumLogSize.SetWindowText(text);
 	m_MaximumLogSize_Spin.SetRange(0, 999);
-	m_MaximumLogSize_Spin.SetPos(preferences.log_max_logsize());
+	m_MaximumLogSize_Spin.SetPos(Preferences()->log_max_logsize());
 	m_MaximumLogSize_Spin.SetBuddy(&m_MaximumLogSize);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -73,14 +73,14 @@ BOOL CDlgSAPrefs11::OnInitDialog() {
 void CDlgSAPrefs11::OnOK() {
 	CString			text = "";
 
-	preferences.SetValue(k_prefs_log_hopper_functions, m_LogHopperFunctions.GetCheck()==BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_log_icm_functions, m_LogICMFunctions.GetCheck()==BST_CHECKED ? true : false);
-  preferences.SetValue(k_prefs_log_prwin_functions, m_LogPrwinFunctions.GetCheck()==BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_log_ini_functions, m_LogIniFunctions.GetCheck()==BST_CHECKED ? true : false);
-  preferences.SetValue(k_prefs_log_delay_function, m_LogDelayFunction.GetCheck() == BST_CHECKED ? true : false);
+	Preferences()->SetValue(k_prefs_log_hopper_functions, m_LogHopperFunctions.GetCheck()==BST_CHECKED ? true : false);
+	Preferences()->SetValue(k_prefs_log_icm_functions, m_LogICMFunctions.GetCheck()==BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_log_prwin_functions, m_LogPrwinFunctions.GetCheck()==BST_CHECKED ? true : false);
+	Preferences()->SetValue(k_prefs_log_ini_functions, m_LogIniFunctions.GetCheck()==BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_log_delay_function, m_LogDelayFunction.GetCheck() == BST_CHECKED ? true : false);
 
 	m_MaximumLogSize.GetWindowText(text);
-	preferences.SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));
+	Preferences()->SetValue(k_prefs_log_max_logsize, strtoul(text.GetString(), NULL, 10));
 	
 	CSAPrefsSubDlg::OnOK();
 }

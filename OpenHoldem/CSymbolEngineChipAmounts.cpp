@@ -16,7 +16,7 @@
 
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
@@ -169,7 +169,7 @@ void CSymbolEngineChipAmounts::CalculateAmountsToCallToRaise() {
 	} else {
 		_call = 0;
 	}
-  write_log(preferences.debug_symbolengine(),
+  write_log(Preferences()->debug_symbolengine(),
     "[CSymbolEngineChipAmounts] call = %.2f\n", _call);
   // In case we are covered consider only the effective amount to call,
   // but only if our balance is reasonable.
@@ -220,7 +220,7 @@ double CSymbolEngineChipAmounts::Largestbet() {
       // Does not count as largest bet
       // and there must be a regular big blind,
       // so we can safely skip
-      write_log(preferences.debug_symbolengine(),
+      write_log(Preferences()->debug_symbolengine(),
         "[CSymbolEngineChipAmounts] LargestBet() ignoring player %i, who posts both blinds\n",
         i);
       continue;

@@ -27,7 +27,7 @@
 #include "CSymbolEngineICM.h"
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSymbolEngineTableLimits.h"
 #include "..\CTablemap\CTablemap.h"
@@ -220,7 +220,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	int			sym_opponentsseatedbits = p_engine_container->symbol_engine_active_dealt_playing()->opponentsseatedbits();
 
 	for (int i=0; i<playerNB; ++i) {
-    write_log(preferences.debug_icm(),
+    write_log(Preferences()->debug_icm(),
       "[CSymbolEngineICM] player %d  stack = %1.2f \n", i, stacks[i]);
 	}
 
@@ -248,7 +248,7 @@ double CSymbolEngineICM::EquityICM(double *stacks, double *prizes, int playerNB,
 	int i = 0;
 	while (i < playerNB && prizes[i] > 0.) {
 		double p = P(player, i + 1, stacks, playerNB);
-		write_log(preferences.debug_icm(),
+		write_log(Preferences()->debug_icm(),
       "[CSymbolEngineICM] prob place %d = %1.4f \n", i + 1, p);
 		ICM += prizes[i] * p;
 		i++;
@@ -274,7 +274,7 @@ bool CSymbolEngineICM::EvaluateSymbol(const CString name, double *result, bool l
   for (int i=0; i<number_of_icm_prizes; ++i) {
     int function_name_index = k_icm_prize1 + i;
     prizes[i] = p_function_collection->Evaluate(
-      k_standard_function_names[function_name_index], preferences.log_icm_functions());
+      k_standard_function_names[function_name_index], Preferences()->log_icm_functions());
     sum_of_prizes += prizes[i];
   }
   // Sanity check: sum of prizes should be ~1.00

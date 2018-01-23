@@ -17,7 +17,7 @@
 #include <assert.h>
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineDealerchair.h"
@@ -138,7 +138,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		if ((number_of_blind_posters_found < kUsualNumberOfBlindPosters) && ! big_blind_found) {
 			double bet = p_table_state->Player(chair_to_consider)->_bet.GetValue();
 			if (bet > 0) {
-        write_log(preferences.debug_symbolengine(),
+        write_log(Preferences()->debug_symbolengine(),
           "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is a blind poster\n",
           chair_to_consider);
 				number_of_blind_posters_found++;
@@ -161,7 +161,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 		// because there can be no quick folds after him.
 		else if (p_table_state->Player(chair_to_consider)->HasAnyCards()) {
       // Player with cards found
-      write_log(preferences.debug_symbolengine(),
+      write_log(Preferences()->debug_symbolengine(),
         "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i holds cards, therefore dealt\n",
         chair_to_consider);
 			this_player_got_dealt = true;
@@ -172,7 +172,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
         // Not yet anybody with cards outside the blinds found
         // Consider active players as dealt with fast folds.
 			  if (p_table_state->Player(chair_to_consider)->active()) {
-          write_log(preferences.debug_symbolengine(),
+          write_log(Preferences()->debug_symbolengine(),
             "[CSymbolEngineActiveDealtPlaying] CalculateDealtBits() chair %i is active after the blinds, probably dealt and fast fold\n",
             chair_to_consider);
 				  this_player_got_dealt = true;    
@@ -184,7 +184,7 @@ void CSymbolEngineActiveDealtPlaying::CalculateDealtBits() {
 			AssertRange(_playersdealtbits, 0, k_bits_all_ten_players_1_111_111_111);
 		}
 	}
-  write_log(preferences.debug_symbolengine(),
+  write_log(Preferences()->debug_symbolengine(),
     // _playersdealtbits once as decimal, once as 4-digit hexadecimal
     "[CSymbolEngineActiveDealtPlaying] playersdealtbits = %i = %#4x\n",
     _playersdealtbits, _playersdealtbits);

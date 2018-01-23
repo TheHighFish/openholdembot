@@ -20,7 +20,7 @@
 #include "CFunctionCollection.h"
 #include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -43,7 +43,7 @@ CParseTreeTerminalNodeUserVariable::~CParseTreeTerminalNodeUserVariable() {
 
 double CParseTreeTerminalNodeUserVariable::Evaluate(bool log /* = false */){
   CString name = _terminal_name;
-  write_log(preferences.debug_formula(), 
+  write_log(Preferences()->debug_formula(), 
     "[CParseTreeTerminalNode] Evaluating node type %i %s\n", 
 		_node_type, name);
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);

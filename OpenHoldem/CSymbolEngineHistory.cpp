@@ -16,7 +16,7 @@
 
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineTableLimits.h"
@@ -87,7 +87,7 @@ void CSymbolEngineHistory::UpdateOnConnection() {
 }
 
 void CSymbolEngineHistory::UpdateOnHandreset() {
-  write_log(preferences.debug_symbolengine(),
+  write_log(Preferences()->debug_symbolengine(),
     "[SymbolEngineHistory] Update on handreset\n");
   _prevaction = k_prevaction_undefined;
 	// Element 0 is unused
@@ -205,7 +205,7 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code) {
 void CSymbolEngineHistory::CalculateHistory() {
   // Collect symbol if ismyturn.
   // Per definition we need to get the value at last myturn in betround N.
-  write_log(preferences.debug_symbolengine(),
+  write_log(Preferences()->debug_symbolengine(),
     "[SymbolEngineHistory] Update on my turn\n");
   int	betround = p_betround_calculator->betround();
   for (int i = 0; i<k_hist_sym_count; ++i) {
@@ -235,12 +235,12 @@ void CSymbolEngineHistory::CalculateHistory() {
 		maxbet /= bet;
 		_nbetsround[BETROUND] = MAX(_nbetsround[BETROUND], maxbet);	
 	}	else {
-		write_log(preferences.debug_symbolengine(), "[SymbolEngineHistory] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
+		write_log(Preferences()->debug_symbolengine(), "[SymbolEngineHistory] CSymbolEngineHistory::CalculateHistory() Skipping calculation of nbetsround due to unknown min-bet\n");
 	}
 }
 
 double CSymbolEngineHistory::HistorySymbol(const CString sym, const int round) {
-  write_log(preferences.debug_symbolengine(),
+  write_log(Preferences()->debug_symbolengine(),
     "[SymbolEngineHistory] Looking up %s for round %i\n", sym, round);
 	for (int i=0; i<k_hist_sym_count; i++)	{
 		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{

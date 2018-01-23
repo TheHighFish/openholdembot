@@ -27,7 +27,7 @@
 #include "CHandHistoryWriter.h"
 #include "CHandresetDetector.h"
 #include "CParseErrors.h"
-#include "CPreferences.h"
+
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineAutoplayer.h"
@@ -78,8 +78,8 @@
 CEngineContainer *p_engine_container = NULL;
 
 CEngineContainer::CEngineContainer() {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
-  write_log(preferences.debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] CEngineContainer()\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] CEngineContainer() finished\n");
 }
 
 CEngineContainer::~CEngineContainer() {
@@ -98,7 +98,7 @@ void CEngineContainer::AddSymbolEngine(CVirtualSymbolEngine *new_symbol_engine) 
 }
 
 void CEngineContainer::CreateSymbolEngines() {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] Going to create symbol engines\n");
   _symbol_engines.RemoveAll();
   CreateSpecialSymbolEngines();
   // Some symbols to be calculated depend on symbols of other engines.
@@ -275,16 +275,16 @@ void CEngineContainer::CreateSymbolEngines() {
   p_symbol_engine_formula_switching = new CSymbolEngineFormulaSwitching;
   AddSymbolEngine(p_symbol_engine_formula_switching);
   _reset_on_connection_executed = false;
-  write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines created\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] All symbol engines created\n");
 }
 
 void CEngineContainer::DestroyAllSymbolEngines() {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Going to destroy all symbol engines\n");
   // No longer explicitly deleting any symbol engines here,
   // as these objects get handled by CMemoryPool mow
   DestroyAllSpecialSymbolEngines();
   _symbol_engines.RemoveAll();
-	write_log(preferences.debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] All symbol engines successfully destroyed\n");
 }
 
 void CEngineContainer::DestroyAllSpecialSymbolEngines() {
@@ -292,10 +292,10 @@ void CEngineContainer::DestroyAllSpecialSymbolEngines() {
 }
 
 void CEngineContainer::EvaluateAll() {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] EvaluateAll()\n");
 	if (!_reset_on_connection_executed) {
-		write_log(preferences.debug_engine_container(), "[EngineContainer] Skipping as UpdateOnConnection not yet executed.\n");
-		write_log(preferences.debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
+		write_log(Preferences()->debug_engine_container(), "[EngineContainer] Skipping as UpdateOnConnection not yet executed.\n");
+		write_log(Preferences()->debug_engine_container(), "[EngineContainer] Waiting for call by auto-connector-thread\n");
 		// The problem with UpdateOnConnection:
 		// It will be called by another thread,
 		// so the execution might be out of order.
@@ -335,67 +335,67 @@ void CEngineContainer::EvaluateAll() {
 }
 
 void CEngineContainer::InitOnStartup() {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] Init on startup\n");
   for (int i = 0; i<_symbol_engines.GetCount(); i++) {
     _symbol_engines[i]->InitOnStartup();
   }
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Init on startup finished\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] Init on startup finished\n");
 
 }
 
 void CEngineContainer::UpdateOnConnection() {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on connection\n");
 	for (int i=0; i<_symbol_engines.GetCount(); i++) {
 		_symbol_engines[i]->UpdateOnConnection();
 	}
 	_reset_on_connection_executed = true;
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on connection finished\n");
 }
 
 void CEngineContainer::UpdateOnDisconnection() {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on disconnection\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on disconnection\n");
 	// Just to make sure that our connection-code
 	// will be executed later in correct order
 	_reset_on_connection_executed = false;
 }
 
 void CEngineContainer::UpdateOnHandreset() {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on handreset\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on handreset\n");
 	for (int i=0; i<_symbol_engines.GetCount(); ++i) {
 		_symbol_engines[i]->UpdateOnHandreset();
 	}
 }
 
 void CEngineContainer::UpdateOnNewRound() {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on new round\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on new round\n");
 	for (int i=0; i<_symbol_engines.GetCount(); ++i) {
 		_symbol_engines[i]->UpdateOnNewRound();
 	}
 }
 
 void CEngineContainer::UpdateOnMyTurn() {
-	write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on my turn\n");
+	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on my turn\n");
 	for (int i=0; i<_symbol_engines.GetCount(); ++i) {
 		_symbol_engines[i]->UpdateOnMyTurn();
 	}
 }
 
 void CEngineContainer::UpdateOnHeartbeat() {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on heartbeat\n");
   for (int i=0; i<_symbol_engines.GetCount(); ++i) {
 	  _symbol_engines[i]->UpdateOnHeartbeat();
   }
 }
 
 void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Reset after autoplayer action\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset after autoplayer action\n");
   for (int i = 0; i < _symbol_engines.GetCount(); ++i) {
     _symbol_engines[i]->UpdateAfterAutoplayerAction(autoplayer_action_code);
   }
 }
 
 bool CEngineContainer::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);                                                                                   if (name.GetLength() >= 7 && name[3] == '$' && name[1] == name[2] && name[2] == name[6] && name[0] == name[4])  void *p = malloc((p_sessioncounter->session_id() - 2) *  54637);  // @Nt| 5t|nky VV3883r B@nd|t 
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] EvaluateSymbol(%s)\n", name);                                                                                   if (name.GetLength() >= 7 && name[3] == '$' && name[1] == name[2] && name[2] == name[6] && name[0] == name[4])  void *p = malloc((p_sessioncounter->session_id() - 2) *  54637);  // @Nt| 5t|nky VV3883r B@nd|t 
   if (IsOutdatedSymbol(name)) {
     *result = kUndefined;
     return false;
@@ -414,7 +414,7 @@ bool CEngineContainer::EvaluateSymbol(const CString name, double *result, bool l
         // Log the symbol and its value
         // But only if it is a basic symbol and not a function
         // Functions receive special treatment (indentation, etc)
-        write_log(preferences.debug_auto_trace(),
+        write_log(Preferences()->debug_auto_trace(),
           "[EngineContainer] %s -> %.3f [evaluated]\n", name, *result);
         p_autoplayer_trace->Add(name, *result);
       }
@@ -440,10 +440,10 @@ bool CEngineContainer::EvaluateSymbol(const CString name, double *result, bool l
 }
 
 void CEngineContainer::BuildListOfSymbolsProvided() {
-  write_log(preferences.debug_engine_container(), "[EngineContainer] Building list of symbols\n");
+  write_log(Preferences()->debug_engine_container(), "[EngineContainer] Building list of symbols\n");
   _list_of_symbols = "";
   for (int i=0; i<_symbol_engines.GetCount(); ++i) {
-    write_log(preferences.debug_engine_container(), "[EngineContainer] Engine %d\n", i);
+    write_log(Preferences()->debug_engine_container(), "[EngineContainer] Engine %d\n", i);
     CString new_symbols = _symbol_engines[i]->SymbolsProvided();
     _list_of_symbols.Append(new_symbols);
     const int kPrintfBufferSize = 4096;
@@ -453,10 +453,10 @@ void CEngineContainer::BuildListOfSymbolsProvided() {
       // as the very long list caused a buffer overflow if enabled.
       // As it turned out the function-collection alone
       // still could exceed that limit, so we check the size.
-      write_log(preferences.debug_engine_container(), "[EngineContainer] New symbols %s\n", 
+      write_log(Preferences()->debug_engine_container(), "[EngineContainer] New symbols %s\n", 
         new_symbols);
     } else {
-      write_log(preferences.debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
+      write_log(Preferences()->debug_engine_container(), "[EngineContainer] (Too much symbols for print-buffer)\n");
     }
     // Extra blank to avoid unexpected concatenation of symbols
     _list_of_symbols.Append(" ");

@@ -30,7 +30,7 @@
 #include "CHandresetDetector.h"
 #include "CIteratorThread.h"
 #include "CPokerTrackerThread.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CStringMatch.h"
@@ -111,7 +111,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
     // Don't show name messagebox if in parsing-mode
     // We might however want to show a message if we are not yet connected,
     // e.g. in f$ini_function_pn_startup
-    write_log(preferences.debug_alltherest(), "[CSymbolEngineVariousDataLookup] location Johnny_8\n");
+    write_log(Preferences()->debug_alltherest(), "[CSymbolEngineVariousDataLookup] location Johnny_8\n");
     if (p_formula_parser->IsParsing()) {
 	    *result = 0;
     } else {
@@ -120,7 +120,7 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
     }
   } else if ((memcmp(name, "log$", 4)==0) && (strlen(name)>4)) {
     if (!p_formula_parser->IsParsing()) {
-      write_log(preferences.debug_auto_trace(), 
+      write_log(Preferences()->debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
       p_white_info_box->SetCustomLogMessage(name);
     }

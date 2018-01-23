@@ -18,7 +18,7 @@
 
 #include "CEngineContainer.h"
 #include "CFunctionCollection.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"

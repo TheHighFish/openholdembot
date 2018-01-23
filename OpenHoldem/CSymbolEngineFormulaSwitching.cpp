@@ -19,7 +19,6 @@
 #include <io.h>
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
-#include "CPreferences.h"
 #include "..\DLLs\Debug_DLL\debug.h"
 #include "..\DLLs\Files_DLL\Files.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
@@ -47,7 +46,7 @@ void CSymbolEngineFormulaSwitching::UpdateOnConnection() {
 void CSymbolEngineFormulaSwitching::UpdateOnHandreset() {
   p_function_collection->Evaluate(
     k_standard_function_names[k_hopper_function_select_formula_file],
-    preferences.log_hopper_functions());
+    Preferences()->log_hopper_functions());
   LoadNewFormulaIfNeeded();
 }
 

@@ -35,7 +35,6 @@
     <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPopupHandler.cpp" />
-    <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
     <ClCompile Include="CScrapedMoney.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
@@ -237,7 +236,6 @@
     <ClInclude Include="CParseTreeTerminalNodeuserVariable.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPopupHandler.h" />
-    <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
     <ClInclude Include="CScrapedMoney.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />

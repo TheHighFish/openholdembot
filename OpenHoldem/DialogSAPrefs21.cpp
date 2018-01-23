@@ -18,7 +18,7 @@
 #include "DialogSAPrefs21.h"
 
 #include "SAPrefsSubDlg.h"
-#include "CPreferences.h"
+
 
 // CDlgSAPrefs21 dialog
 
@@ -49,11 +49,11 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs21::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	if (preferences.table_positioner_options() == k_position_tables_tiled)
+	if (Preferences()->table_positioner_options() == k_position_tables_tiled)
 	{
 		_position_tables_tiled_button.SetCheck(true);
 	}
-	else if (preferences.table_positioner_options() == k_position_tables_cascaded)
+	else if (Preferences()->table_positioner_options() == k_position_tables_cascaded)
 	{
 		_position_tables_cascaded_button.SetCheck(true);
 	}
@@ -62,7 +62,7 @@ BOOL CDlgSAPrefs21::OnInitDialog()
 		// Default: k_lazy_scraping_always
 		_position_tables_never_button.SetCheck(true);
 	}
-	_position_always_keep_position.SetCheck(preferences.table_positioner_always_keep_position());
+	_position_always_keep_position.SetCheck(Preferences()->table_positioner_always_keep_position());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -73,18 +73,18 @@ void CDlgSAPrefs21::OnOK()
 
 	if (_position_tables_tiled_button.GetCheck())
 	{
-		preferences.SetValue(k_prefs_table_positioner_options, k_position_tables_tiled);
+		Preferences()->SetValue(k_prefs_table_positioner_options, k_position_tables_tiled);
 	}
 	else if (_position_tables_cascaded_button.GetCheck())
 	{
-		preferences.SetValue(k_prefs_table_positioner_options, k_position_tables_cascaded);
+		Preferences()->SetValue(k_prefs_table_positioner_options, k_position_tables_cascaded);
 	}
 	else
 	{
 		// Default: k_lazy_scraping_never
-		preferences.SetValue(k_prefs_table_positioner_options, k_position_tables_never);
+		Preferences()->SetValue(k_prefs_table_positioner_options, k_position_tables_never);
 	}
-	preferences.SetValue(k_prefs_table_positioner_always_keep_position, _position_always_keep_position.GetCheck());
+	Preferences()->SetValue(k_prefs_table_positioner_always_keep_position, _position_always_keep_position.GetCheck());
 
 	CSAPrefsSubDlg::OnOK();
 }

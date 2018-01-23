@@ -20,7 +20,7 @@
 #include "CFunctionCollection.h"
 #include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -46,12 +46,12 @@ void CParseTreeTerminalNodeNumber::MakeConstant(double value) {
 }
 
 double CParseTreeTerminalNodeNumber::Evaluate(bool log /* = false */){
- write_log(preferences.debug_formula(), 
+ write_log(Preferences()->debug_formula(), 
     "[CParseTreeTerminalNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
 	if (_node_type == kTokenNumber)	{
-		write_log(preferences.debug_formula(), 
+		write_log(Preferences()->debug_formula(), 
       "[CParseTreeTerminalNode] Number evaluates to %6.3f\n",
 			_constant_value);
 		return _constant_value;

@@ -16,7 +16,7 @@
 
 #include "CBetroundCalculator.h"
 #include "CCasinoInterface.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CStringMatch.h"
 #include "CTableState.h"
@@ -68,7 +68,7 @@ bool CSymbolEngineUserchair::IsNotShowdown() {
 
 void CSymbolEngineUserchair::CalculateUserChair() {
 	if (userchair_confirmed() && p_table_state->User()->HasKnownCards()) {
-		write_log(preferences.debug_symbolengine(),
+		write_log(Preferences()->debug_symbolengine(),
 			"[CSymbolEngineUserchair] CalculateUserChair() Known cards for known chair. Keeping userchair as is\n");
 	}	else {
 		// Either not confirmed or no known cards when it is my turn
@@ -77,13 +77,13 @@ void CSymbolEngineUserchair::CalculateUserChair() {
 		{
 			if (p_table_state->Player(i)->HasKnownCards() && IsNotShowdown()) {
 				_userchair = i;
-				write_log(preferences.debug_symbolengine(),
+				write_log(Preferences()->debug_symbolengine(),
 					"[CSymbolEngineUserchair] CalculateUserChair() Setting userchair to %d\n",
 					_userchair);
 				return;
 			}
 		}
-		write_log(preferences.debug_symbolengine(),
+		write_log(Preferences()->debug_symbolengine(),
 			"[CSymbolEngineUserchair] CalculateUserChair() Userchair not found, because no cards found. Keeping as is\n");
 	}
 }

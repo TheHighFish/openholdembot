@@ -14,7 +14,7 @@
 #include "stdafx.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
 
-#include "CPreferences.h"
+
 #include "CStringHashtableTemplate.h"
 
 CSymbolEngineOpenPPLUserVariables::CSymbolEngineOpenPPLUserVariables() {
@@ -33,7 +33,7 @@ void CSymbolEngineOpenPPLUserVariables::UpdateOnConnection() {
 void CSymbolEngineOpenPPLUserVariables::UpdateOnHandreset() {
   // All user-variables are for the current hand only 
   // and get deleted on hand-reset.
-  write_log(preferences.debug_symbolengine_open_ppl(),
+  write_log(Preferences()->debug_symbolengine_open_ppl(),
     "[CSymbolEngineOpenPPLUserVariables] Deleting all user variables on hand-reset\n");
   _user_variables.clear();
 }
@@ -48,7 +48,7 @@ void CSymbolEngineOpenPPLUserVariables::UpdateOnHeartbeat() {
 }
 
 void CSymbolEngineOpenPPLUserVariables::Set(CString symbol) {
-  write_log(preferences.debug_symbolengine_open_ppl(),
+  write_log(Preferences()->debug_symbolengine_open_ppl(),
     "[CSymbolEngineOpenPPLUserVariables] Setting user-variable %s\n", symbol);
   _user_variables[symbol] = true;
 }
@@ -65,12 +65,12 @@ bool CSymbolEngineOpenPPLUserVariables::EvaluateSymbol(const CString name, doubl
   }
   // Try to look it up
   if (_user_variables[name]) {
-    write_log(preferences.debug_symbolengine_open_ppl(),
+    write_log(Preferences()->debug_symbolengine_open_ppl(),
       "[CSymbolEngineOpenPPLUserVariables] user-variable exists: %s\n", name);
     *result = double(true);
     return true;
   }
-  write_log(preferences.debug_symbolengine_open_ppl(),
+  write_log(Preferences()->debug_symbolengine_open_ppl(),
     "[CSymbolEngineOpenPPLUserVariables] user-variable does not exist: %s\n", name);
   *result = double(false);
   return true;

@@ -15,7 +15,7 @@
 #define INC_MEMORYLOGGING_H
 
 
-#include "CPreferences.h"
+
 
 // Logs memory-usage if enabled at debugging-preferences
 // Message should not contain a new-line (otherwise log-file messed up)
@@ -24,7 +24,7 @@ void LogMemoryUsage(char *message);
 // Macro to log size of allocated objects
 // especially menat for the parse-tree which uses way too much space.
 #define LOG_SIZE_OF_OBJECT(object, message) \
-  write_log(preferences.debug_memory_usage(), "[MemoryLogging] %s: %i\n", \
+  write_log(Preferences()->debug_memory_usage(), "[MemoryLogging] %s: %i\n", \
     message, sizeof(object));
 
 #endif INC_MEMORYLOGGING_H

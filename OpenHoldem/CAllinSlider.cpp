@@ -18,7 +18,7 @@
 #include "CAutoplayerTrace.h"
 #include "CBetsizeInputBox.h"
 #include "CCasinoInterface.h"
-#include "CPreferences.h"
+
 #include "../CTablemap/CTablemap.h"
 #include "OpenHoldem.h"
 
@@ -43,12 +43,12 @@ void CAllinSlider::ResetHandlePosition() {
 
 bool CAllinSlider::SlideAllin() {
   if (!SlideAllinPossible()) {
-   write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
+   write_log(Preferences()->debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (i3handle or i3slider are not defined in the tablemap)\n");
     return false;
   }
- write_log(preferences.debug_autoplayer(), "[AllinSlider] Starting DoSlider...\n");
+ write_log(Preferences()->debug_autoplayer(), "[AllinSlider] Starting DoSlider...\n");
   if ((_position.x == kUndefined) || (_position.y == kUndefined)) {
-   write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
+   write_log(Preferences()->debug_autoplayer(), "[AllinSlider] ...ending DoSlider early (handle not found - i3handle must use a transform that resolves to either 'handle' or 'true')\n");
     return false;
   }
   // Click and drag handle
@@ -59,18 +59,18 @@ bool CAllinSlider::SlideAllin() {
   drag_region.right = _position.x + (_i3_slider.right - _i3_slider.left);
   drag_region.bottom = drag_region.top;
 
-  write_log(preferences.debug_autoplayer(), "[AllinSlider] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
+  write_log(Preferences()->debug_autoplayer(), "[AllinSlider] Slider : Calling mouse.dll to jam from %d,%d to %d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
   // Not really (0, 0), but (-1, -1), out of the screen
   POINT	point_null = { kUndefined, kUndefined };
   (theApp._dll_mouse_click_drag) (p_autoconnector->attached_hwnd(), drag_region);
 
-  write_log(preferences.debug_autoplayer(), "[AllinSlider] Sleeping %d ms\n.", preferences.swag_delay_3());
-  Sleep(preferences.swag_delay_3());
+  write_log(Preferences()->debug_autoplayer(), "[AllinSlider] Sleeping %d ms\n.", Preferences()->swag_delay_3());
+  Sleep(Preferences()->swag_delay_3());
 
   // Click confirmation button 
   p_casino_interface->_betsize_input_box.Confirm();
-  write_log(preferences.debug_autoplayer(), "[AllinSlider] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
-  write_log(preferences.debug_autoplayer(), "[AllinSlider] ...ending DoSlider.\n");
+  write_log(Preferences()->debug_autoplayer(), "[AllinSlider] Jam complete: %d,%d,%d,%d\n", drag_region.left, drag_region.top, drag_region.right, drag_region.bottom);
+  write_log(Preferences()->debug_autoplayer(), "[AllinSlider] ...ending DoSlider.\n");
   return true;
 }
 

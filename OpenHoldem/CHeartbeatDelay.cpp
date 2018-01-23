@@ -18,7 +18,7 @@
 #include "CCasinoInterface.h"
 #include "CEngineContainer.h"
 #include "CHandresetDetector.h"
-#include "CPreferences.h"
+
 #include "CSessionCounter.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineCasino.h"
@@ -35,7 +35,7 @@ CHeartbeatDelay::~CHeartbeatDelay(){
 }
 
 void CHeartbeatDelay::FlexibleSleep() {
-  double default_heartbeat_delay = preferences.scrape_delay();
+  double default_heartbeat_delay = Preferences()->scrape_delay();
   double sleeping_factor = SleepingFactor();
   if (p_engine_container->symbol_engine_casino()->ConnectedToManualMode()) {
     // Don't become too laggy at ManualMode,
@@ -44,14 +44,14 @@ void CHeartbeatDelay::FlexibleSleep() {
     sleeping_factor = MIN(sleeping_factor, 2);
   }
   double modified_heartbeat_delay = default_heartbeat_delay * sleeping_factor;
-  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] default delay   %.3f ms.\n", default_heartbeat_delay);
-  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] sleeping factor %.3f .\n", sleeping_factor);
-  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] modified delay  %.3f ms.\n", modified_heartbeat_delay);
+  write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] default delay   %.3f ms.\n", default_heartbeat_delay);
+  write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] sleeping factor %.3f .\n", sleeping_factor);
+  write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] modified delay  %.3f ms.\n", modified_heartbeat_delay);
   Sleep(modified_heartbeat_delay);
 }
 
 double CHeartbeatDelay::SleepingFactor() {
-  write_log(preferences.debug_alltherest(), "[CHeartbeatDelay] location Johnny_A\n");
+  write_log(Preferences()->debug_alltherest(), "[CHeartbeatDelay] location Johnny_A\n");
   if (!p_autoconnector->IsConnectedToAnything()) {
     // Keep heartbeat_delay as is
     // We want fast auto-connects 

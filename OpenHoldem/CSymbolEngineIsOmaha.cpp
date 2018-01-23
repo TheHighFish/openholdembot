@@ -17,7 +17,7 @@
 
 #include <assert.h>
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "..\CTablemap\CTablemap.h"
 #include "CTableState.h"
@@ -67,21 +67,21 @@ void CSymbolEngineIsOmaha::UpdateOnMyTurn() {
 
 void CSymbolEngineIsOmaha::UpdateOnHeartbeat() {
   if (_isomaha) {
-    write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] Already Omaha\n");
+    write_log(Preferences()->debug_symbolengine(), "[CSymbolEngineIsOmaha] Already Omaha\n");
     return;
   }
   if (!p_tablemap->SupportsOmaha()) {
-    write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] Omaha not supported by tablemap\n");
+    write_log(Preferences()->debug_symbolengine(), "[CSymbolEngineIsOmaha] Omaha not supported by tablemap\n");
     return;
   }
   // Checking the two "additional" cards
   if (p_table_state->User()->hole_cards(2)->IsKnownCard()
     && p_table_state->User()->hole_cards(3)->IsKnownCard()) {
-    write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] Found Omaha hole-cards\n");
+    write_log(Preferences()->debug_symbolengine(), "[CSymbolEngineIsOmaha] Found Omaha hole-cards\n");
     _isomaha = true;
     return;
   }
-  write_log(preferences.debug_symbolengine(), "[CSymbolEngineIsOmaha] No indications for Omaha found\n");
+  write_log(Preferences()->debug_symbolengine(), "[CSymbolEngineIsOmaha] No indications for Omaha found\n");
 }
 
 bool CSymbolEngineIsOmaha::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {

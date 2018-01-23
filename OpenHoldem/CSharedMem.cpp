@@ -15,7 +15,7 @@
 #include "stdafx.h"
 #include "CSharedMem.h"
 
-#include "CPreferences.h"
+
 #include "crc32hash.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineRandom.h"
@@ -66,11 +66,11 @@ CSharedMem::CSharedMem() {
 }
 
 CSharedMem::~CSharedMem() {
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] Terminating %d\n", p_sessioncounter->session_id());
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] Terminating %d\n", p_sessioncounter->session_id());
 }
 
 void CSharedMem::AquireOwnProcessID() {
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] Aquiring own process IG\n");
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] Aquiring own process IG\n");
   assert(p_sessioncounter != NULL);
   AssertRange(p_sessioncounter->session_id(), 0, MAX_SESSION_IDS - 1);
   int my_PID = GetCurrentProcessId();
@@ -115,15 +115,15 @@ void CSharedMem::MarkPokerWindowAsAttached(HWND Window) {
 void CSharedMem::RememberTimeOfLastFailedAttemptToConnect() {
 	ENT;
 	time(&last_failed_attempt_to_connect);
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Set last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
+	write_log(Preferences()->debug_autoconnector(), "[CSharedMem] Set last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
 	session_ID_of_last_instance_that_failed_to_connect = p_sessioncounter->session_id();
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Instance %d failed to connect\n", session_ID_of_last_instance_that_failed_to_connect);
+	write_log(Preferences()->debug_autoconnector(), "[CSharedMem] Instance %d failed to connect\n", session_ID_of_last_instance_that_failed_to_connect);
 }
 
 time_t CSharedMem::GetTimeOfLastFailedAttemptToConnect() {
 	ENT;
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Get last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
-	write_log(preferences.debug_autoconnector(), "[CSharedMem] Stored by failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
+	write_log(Preferences()->debug_autoconnector(), "[CSharedMem] Get last_failed_attempt_to_connect %d\n", last_failed_attempt_to_connect);
+	write_log(Preferences()->debug_autoconnector(), "[CSharedMem] Stored by failed session ID: %d\n", session_ID_of_last_instance_that_failed_to_connect);
 	return last_failed_attempt_to_connect;
 }
 
@@ -148,16 +148,16 @@ HWND *CSharedMem::GetDenseListOfConnectedPokerWindows() {
 }
 
 void CSharedMem::CreateDenseListOfConnectedPokerWindows() {
-	write_log(preferences.debug_table_positioner(), "[CSharedMem] CreateDenseListOfConnectedPokerWindows()\n");
+	write_log(Preferences()->debug_table_positioner(), "[CSharedMem] CreateDenseListOfConnectedPokerWindows()\n");
 	int size_of_list = 0;
 	for (int i=0; i<MAX_SESSION_IDS; i++)	{
 		if (attached_poker_windows[i] != NULL) {
-			write_log(preferences.debug_table_positioner(), "[CSharedMem] First HWND: %i\n", attached_poker_windows[i]);
+			write_log(Preferences()->debug_table_positioner(), "[CSharedMem] First HWND: %i\n", attached_poker_windows[i]);
 			dense_list_of_attached_poker_windows[size_of_list] = attached_poker_windows[i];
 			size_of_list++;
 		}
 	}
-	write_log(preferences.debug_table_positioner(), "[CSharedMem] Total tables %i\n", size_of_list);
+	write_log(Preferences()->debug_table_positioner(), "[CSharedMem] Total tables %i\n", size_of_list);
 	// Only at the very end update the size of the list.
 	// This helps to avoid potential race-conditions,
 	// if another application uses the list at the same time,
@@ -179,7 +179,7 @@ void CSharedMem::VerifyMainMutexName() {
 	// * autoplayer actions no longer synchronized
 	// * no longer unique session ID
 	// * all bots try to write to the same log-file
-	int CRC = crc32((const unsigned char *) preferences.mutex_name().GetString());
+	int CRC = crc32((const unsigned char *) Preferences()->mutex_name());
 	if (CRC_of_main_mutexname == 0)	{
 		// Set the mutex
 		// We have a potential race-condition here, but can't do anything.
@@ -226,37 +226,37 @@ int CSharedMem::LowestConnectedSessionID() {
 
 int CSharedMem::LowestUnconnectedSessionID() {
   Dump();
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] LowestUnconnectedSessionID()\n");
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] LowestUnconnectedSessionID()\n");
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] == 0) {
       // ID not used (bot probably terminated)
-      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i not runing\n", i);
+      write_log(Preferences()->debug_sharedmem(), "[CSharedMem] ID %i not runing\n", i);
       continue;
     }
     if (attached_poker_windows[i] == NULL) {
-      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i not connected\n", i);
+      write_log(Preferences()->debug_sharedmem(), "[CSharedMem] ID %i not connected\n", i);
       return i;
     }
     if (!IsWindow(attached_poker_windows[i])) {
-      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i connected to not a window\n", i);
+      write_log(Preferences()->debug_sharedmem(), "[CSharedMem] ID %i connected to not a window\n", i);
       return i;
     }
   }
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] LowestUnconnectedSessionID not found\n");
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] LowestUnconnectedSessionID not found\n");
   return kUndefined;
 }
 
 int CSharedMem::NBotsPresent() {
   Dump();
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] NBotsPresent()\n");
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] NBotsPresent()\n");
   int result = 0;
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
     if (openholdem_PIDs[i] != 0) {
-      write_log(preferences.debug_sharedmem(), "[CSharedMem] ID %i running\n", i);
+      write_log(Preferences()->debug_sharedmem(), "[CSharedMem] ID %i running\n", i);
       ++result;
     }
   }
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] NBotsPresent: %i\n", result);
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] NBotsPresent: %i\n", result);
   return result;
 }
 
@@ -299,7 +299,7 @@ bool CSharedMem::IsDeadOpenHoldemProcess(int open_holdem_iD) {
   if (isProcessRunning(openholdem_PIDs[open_holdem_iD])) {
     return false;
   }
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] Dead process %d %d detected\n",
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] Dead process %d %d detected\n",
     open_holdem_iD, openholdem_PIDs[open_holdem_iD]);
   return true;
 }
@@ -312,16 +312,16 @@ void CSharedMem::CleanUpProcessMemory(int open_holdem_iD) {
 }
 
 void CSharedMem::Dump() {
-  if (!preferences.debug_sharedmem()) {
+  if (!Preferences()->debug_sharedmem()) {
     return;
   }
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] last failed attempt to connect: %d\n", last_failed_attempt_to_connect);
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] failed session ID %d\n", session_ID_of_last_instance_that_failed_to_connect);
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] CRC of main mutex name %d\n", CRC_of_main_mutexname);
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] size of dense list %d\n", size_of_dense_list_of_attached_poker_windows);
-  write_log(preferences.debug_sharedmem(), "[CSharedMem] ID  OpenHoldem-PID     poker-table\n");
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] last failed attempt to connect: %d\n", last_failed_attempt_to_connect);
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] failed session ID %d\n", session_ID_of_last_instance_that_failed_to_connect);
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] CRC of main mutex name %d\n", CRC_of_main_mutexname);
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] size of dense list %d\n", size_of_dense_list_of_attached_poker_windows);
+  write_log(Preferences()->debug_sharedmem(), "[CSharedMem] ID  OpenHoldem-PID     poker-table\n");
   for (int i = 0; i < MAX_SESSION_IDS; ++i) {
-    write_log(preferences.debug_sharedmem(), "[CSharedMem] %2d %15d %15d\n", 
+    write_log(Preferences()->debug_sharedmem(), "[CSharedMem] %2d %15d %15d\n", 
       i, openholdem_PIDs[i], attached_poker_windows[i]);
   }
 }

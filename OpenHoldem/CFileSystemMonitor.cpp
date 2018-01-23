@@ -20,7 +20,7 @@
 #include "StdAfx.h"
 #include "CFileSystemMonitor.h"
 
-#include "CPreferences.h"
+
 #include "OpenHoldem.h"
 #include "Shlwapi.h"
 
@@ -40,9 +40,9 @@
 CFileSystemMonitor *p_filesystem_monitor = NULL;
 
 CFileSystemMonitor::CFileSystemMonitor() {
-	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] executing constructor.)\n");
+	write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] executing constructor.)\n");
 	absolute_path_to_scraper_directory = ScraperDirectory();
-	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper folder: %s\n", 
+	write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper folder: %s\n", 
 		absolute_path_to_scraper_directory);
 	// Create directory in case it does not exist (mainly debug sessions).
 	CreateDirectory(absolute_path_to_scraper_directory, NULL);
@@ -62,7 +62,7 @@ void CFileSystemMonitor::InitMonitor() {
     // Network mapped drives are unsupported
     // and can lead to crashes.
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=17677&p=122925#p122925
-    write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Unsupported network mapped drive\n");
+    write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] Unsupported network mapped drive\n");
     _scraper_directory_on_a_network_drive = true;
     return;
   }
@@ -77,8 +77,8 @@ void CFileSystemMonitor::InitMonitor() {
     watch_subtree,	
 		changes_to_monitor);
 	if ((dwChangeHandle == INVALID_HANDLE_VALUE) || (dwChangeHandle == NULL)) {
-		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] InitMonitor() failed.\n");
-		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Going to terminate...\n");
+		write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] InitMonitor() failed.\n");
+		write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] Going to terminate...\n");
 		ExitProcess(GetLastError()); 
 	}
 }
@@ -86,8 +86,8 @@ void CFileSystemMonitor::InitMonitor() {
 bool CFileSystemMonitor::AnyChanges() {
   if (_scraper_directory_on_a_network_drive) {
     // Network mapped drives are unsupported
-    write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Unsupported network mapped drive\n");
-    write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Treating as \"no changes\"\n");
+    write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] Unsupported network mapped drive\n");
+    write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] Treating as \"no changes\"\n");
     return false;
   }
 	// http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx
@@ -97,12 +97,12 @@ bool CFileSystemMonitor::AnyChanges() {
 		FALSE,            // bWaitAll - does not make a difference here
 		0);               // time to wait
 	if (dwWaitStatus == WAIT_OBJECT_0) {
-		write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
+		write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] Scraper directoy changed.\n");
 		// Resetting change handle for next query
 		// http://msdn.microsoft.com/en-us/library/windows/desktop/aa365261%28v=vs.85%29.aspx
 		FindNextChangeNotification(dwChangeHandle);
 		return true;
 	}
-	write_log(preferences.debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
+	write_log(Preferences()->debug_filesystem_monitor(), "[CFileSystemMonitor] No changes in scraper directoy.\n");
 	return false;
 }

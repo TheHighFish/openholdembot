@@ -18,7 +18,7 @@
 #include "DialogSAPrefs18.h"
 
 #include "SAPrefsSubDlg.h"
-#include "CPreferences.h"
+
 
 // CDlgSAPrefs18 dialog
 
@@ -48,11 +48,11 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs18::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	if (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_myturn)
+	if (Preferences()->lazy_scraping_when_to_scrape() == k_lazy_scraping_myturn)
 	{
 		_scrape_when_my_turn_button.SetCheck(true);
 	}
-	else if (preferences.lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
+	else if (Preferences()->lazy_scraping_when_to_scrape() == k_lazy_scraping_cards)
 	{
 		_scrape_when_cards_button.SetCheck(true);
 	}
@@ -70,16 +70,16 @@ void CDlgSAPrefs18::OnOK()
 
 	if (_scrape_when_cards_button.GetCheck())
 	{
-		preferences.SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_cards);
+		Preferences()->SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_cards);
 	}
 	else if (_scrape_when_my_turn_button.GetCheck())
 	{
-		preferences.SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_myturn);
+		Preferences()->SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_myturn);
 	}
 	else
 	{
 		// Default: k_lazy_scraping_always
-		preferences.SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_always);
+		Preferences()->SetValue(k_prefs_lazy_scraping_when_to_scrape, k_lazy_scraping_always);
 	}
 	CSAPrefsSubDlg::OnOK();
 }

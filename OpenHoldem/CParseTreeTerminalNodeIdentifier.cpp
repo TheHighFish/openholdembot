@@ -20,7 +20,7 @@
 #include "CFunctionCollection.h"
 #include "CMemoryPool.h"
 #include "CParserSymbolTable.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -44,7 +44,7 @@ CParseTreeTerminalNodeIdentifier::~CParseTreeTerminalNodeIdentifier() {
 }
 
 double CParseTreeTerminalNodeIdentifier::Evaluate(bool log /* = false */){
- write_log(preferences.debug_formula(), 
+ write_log(Preferences()->debug_formula(), 
     "[CParseTreeTerminalNode] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
@@ -55,7 +55,7 @@ double CParseTreeTerminalNodeIdentifier::Evaluate(bool log /* = false */){
     assert(_third_sibbling  == NULL);
 		assert(_terminal_name != "");
 		double value = EvaluateIdentifier(_terminal_name, log);
-		write_log(preferences.debug_formula(), 
+		write_log(Preferences()->debug_formula(), 
       "[CParseTreeTerminalNode] Identifier %s evaluates to %.3f\n", 
       _terminal_name, value);
     // In case of f$-functions the line changed inbetween,

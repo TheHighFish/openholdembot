@@ -21,7 +21,7 @@
 #include "CEngineContainer.h"
 #include "CHandresetDetector.h"
 #include "CHeartbeatThread.h"
-#include "CPreferences.h"
+
 #include "CCasinoInterface.h"
 #include "CScraper.h"
 #include "CStringMatch.h"
@@ -181,18 +181,18 @@ void COpenHoldemView::OnInitialUpdate() {
 // COpenHoldemView drawing
 void COpenHoldemView::OnDraw(CDC* pDC) {
 	UpdateDisplay(true);
-  write_log(preferences.debug_alltherest(), "[GUI] location Johnny_1\n");
+  write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_1\n");
 }
 
 void COpenHoldemView::OnTimer(UINT_PTR nIDEvent) {
-  write_log(preferences.debug_timers(), "[GUI] COpenHoldemView::OnTimer()\n");
+  write_log(Preferences()->debug_timers(), "[GUI] COpenHoldemView::OnTimer()\n");
 	if (nIDEvent == DISPLAY_UPDATE_TIMER) 
 	{
 		// Only do this if we are not in the middle of a scraper/symbol update
 		if (TryEnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress))
 		{
 			UpdateDisplay(false);
-      write_log(preferences.debug_alltherest(), "[GUI] location Johnny_2\n");
+      write_log(Preferences()->debug_alltherest(), "[GUI] location Johnny_2\n");
 			LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 		}
 	}
@@ -281,7 +281,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		if (_card_common_last[i] != card_value || update_all) 
 		{
 			_card_common_last[i] = card_value;
-			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
+			write_log(Preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Drawing common card %i: [%s]\n",
         i, p_card->ToString());
 			DrawCard(p_card,
 					  _client_rect.right/2 + cc[i][0], _client_rect.bottom/2 + cc[i][1],
@@ -292,7 +292,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
   // Draw collection of player info
 	for (int i=0; i<p_tablemap->nchairs(); i++)
   {
-		write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
+		write_log(Preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() checking changes for chair %i\n", i);
 		// Figure out if we need to redraw this seat
 		update_it = false;
 		if (_seated_last[i] != p_table_state->Player(i)->seated() 
@@ -330,7 +330,7 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 		}
 
 		if (update_it || update_all) {
-			write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
+			write_log(Preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() updating chair %i\n", i);
 			// Draw active circle
 			if (p_table_state->Player(i)->seated()) 	{
 				DrawSeatedActiveCircle(i);
@@ -356,9 +356,9 @@ void COpenHoldemView::UpdateDisplay(const bool update_all) {
 			DrawDealerButton(i);
 		}
 	}
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
+	write_log(Preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() Update finished\n");
 	ReleaseDC(pDC);
-	write_log(preferences.debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
+	write_log(Preferences()->debug_gui(), "[GUI] COpenHoldemView::UpdateDisplay() DC released\n");
 }
 
 void COpenHoldemView::DrawButtonIndicators(void) {
@@ -951,7 +951,7 @@ void COpenHoldemView::DrawPlayerCards(const int chair) {
     first_pos_x_right -= x_offset_to_next_card;
   }
   int number_of_cards = NumberOfCardsPerPlayer();
-  write_log(preferences.debug_alltherest(), "[GUI] Drawing %d player cards for chair %d\n", 
+  write_log(Preferences()->debug_alltherest(), "[GUI] Drawing %d player cards for chair %d\n", 
     number_of_cards, chair);
   for (int i = 0; i < number_of_cards; ++i) {
     Card *player_card_N = p_table_state->Player(chair)->hole_cards(i);

@@ -16,7 +16,7 @@
 
 #include "CAutoplayer.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineReplayFrameController.h"
@@ -44,10 +44,10 @@ void CValidator::Validate() {
     //   * because then it matters most
     return;
   }
-	if (preferences.validator_enabled()
+	if (Preferences()->validator_enabled()
 		  // Manually enabled via toolbar?
 		  || (_enabled_manually)) {
-    bool success = ValidateGamestate(preferences.validator_use_heuristic_rules(),
+    bool success = ValidateGamestate(Preferences()->validator_use_heuristic_rules(),
       p_engine_container->symbol_engine_istournament()->istournament(),
       p_engine_container->symbol_engine_versus()->VersusBinLoaded());
     if (success) {
@@ -55,10 +55,10 @@ void CValidator::Validate() {
     }
   }
   // Failed consistence-checks
-  if (preferences.validator_shoot_replayframe_on_error()) {
+  if (Preferences()->validator_shoot_replayframe_on_error()) {
     p_engine_container->symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
   }
-  if (preferences.validator_stop_on_error()) {
+  if (Preferences()->validator_stop_on_error()) {
     assert(p_autoplayer != nullptr);
     p_autoplayer->EngageAutoplayer(false);
   }

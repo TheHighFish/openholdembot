@@ -19,7 +19,7 @@
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "COpenHoldemTitle.h"
-#include "CPreferences.h"
+
 #include "CTableMaploader.h"
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -36,7 +36,7 @@ END_MESSAGE_MAP()
 
 LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 {
-	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8001: OnSetWindowText\n"); 
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8001: OnSetWindowText\n"); 
 	if (p_openholdem_title == NULL)	return false;
 	if (title) 
 	{
@@ -54,14 +54,14 @@ LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 
 LRESULT COpenHoldemHopperCommunication::OnConnectMessage(WPARAM, LPARAM hwnd)
 {
-	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8002: OnConnectMessage\n");
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8002: OnConnectMessage\n");
 	return p_autoconnector->Connect((HWND)hwnd);
 }
 
 
 LRESULT COpenHoldemHopperCommunication::OnDisconnectMessage(WPARAM, LPARAM)
 {
-	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8003: OnDisconnectMessage\n");
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8003: OnDisconnectMessage\n");
 	p_autoconnector->Disconnect("disconnected by hopper");
 	return true;
 }
@@ -69,14 +69,14 @@ LRESULT COpenHoldemHopperCommunication::OnDisconnectMessage(WPARAM, LPARAM)
 
 LRESULT COpenHoldemHopperCommunication::OnConnectedHwndMessage(WPARAM, LPARAM)
 {
-	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8004: OnConnectedHwndMessage\n");
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8004: OnConnectedHwndMessage\n");
 	return (LRESULT) p_autoconnector->attached_hwnd();
 }
 
 
 LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_set)
 {
-	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8005: OnSetFlagMessage\n");
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8005: OnSetFlagMessage\n");
 	int _flag_to_set = int(flag_to_set);
 	if ((_flag_to_set < 0) || (_flag_to_set >= kNumberOfFlags))
 	{
@@ -89,7 +89,7 @@ LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_
 
 LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_to_reset)
 {
-	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8006: OnResetFlagMessage\n");
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8006: OnResetFlagMessage\n");
 	int _flag_to_reset = int(flag_to_reset);
 	if ((_flag_to_reset < 0) || (_flag_to_reset >= kNumberOfFlags))
 	{
@@ -101,7 +101,7 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 
 LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 {
-	write_log(preferences.debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8007: OnIsReadyMessage\n");
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8007: OnIsReadyMessage\n");
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
@@ -109,7 +109,7 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 		|| p_formula_parser->IsParsing()
 		|| p_tablemap_loader->NumberOfTableMapsLoaded() < 1)
 	{
-		write_log(preferences.debug_hopper_messages(), 
+		write_log(Preferences()->debug_hopper_messages(), 
 			"[COpenHoldemHopperCommunication] OnIsReadyMessage() not ready\n");
 		return 0;
 	}
@@ -118,13 +118,13 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	// 2 = ready, but already connected
 	else if (p_autoconnector->attached_hwnd() == NULL)
 	{
-		write_log(preferences.debug_hopper_messages(), 
+		write_log(Preferences()->debug_hopper_messages(), 
 			"[COpenHoldemHopperCommunication] OnIsReadyMessage() ready\n");
 		return 1;
 	}
 	else
 	{
-		write_log(preferences.debug_hopper_messages(), 
+		write_log(Preferences()->debug_hopper_messages(), 
 			"[COpenHoldemHopperCommunication] OnIsReadyMessage() already connected\n");
 		return 2;
 	}

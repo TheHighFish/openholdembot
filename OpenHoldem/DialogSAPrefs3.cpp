@@ -18,7 +18,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs3.h"
-#include "CPreferences.h"
+
 
 // CDlgSAPrefs3 dialog
 

@@ -125,7 +125,7 @@ void CMemoryPool::ReleaseAll() {
 }
 
 void CMemoryPool::AlignNextMemoryBlock() {
-  // Align ,e,ory-addresses to multiples of 4 or 8
+  // Align memory-addresses to multiples of 4 or 8
   const int alignment = 4;
   int mis_alignment = _bytes_used_in_current_block % alignment;
   assert(mis_alignment >= 0);

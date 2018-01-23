@@ -23,7 +23,7 @@
 #include "CParserSymbolTable.h"
 #include "CParseTreeTerminalNode.h"
 #include "CParseTreeTerminalNodeIdentifier.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineMemorySymbols.h"
 #include "CSymbolEngineOpenPPLUserVariables.h"
@@ -59,7 +59,7 @@ void CParseTreeTerminalNodeBetsizeAction::MakeRaiseByPercentagedPotsizeAction(
 }
 
 double CParseTreeTerminalNodeBetsizeAction::Evaluate(bool log /* = false */) {
- write_log(preferences.debug_formula(), 
+ write_log(Preferences()->debug_formula(), 
     "[CParseTreeTerminalNodeBetsizeAction] Evaluating node type %i %s\n", 
 		_node_type, TokenString(_node_type));
   p_autoplayer_trace->SetLastEvaluatedRelativeLineNumber(_relative_line_number);
@@ -76,7 +76,7 @@ double CParseTreeTerminalNodeBetsizeAction::Evaluate(bool log /* = false */) {
     double raise_by_amount_in_bblinds = _first_sibbling->Evaluate(log);
     double final_betsize_in_bblinds = p_engine_container->symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
-    write_log(preferences.debug_formula(), 
+    write_log(Preferences()->debug_formula(), 
       "[CParseTreeTerminalNodeBetsizeAction] raiseby = %.2f ncallbets = %.2f final = %.2f\n",
       raise_by_amount_in_bblinds,
       p_engine_container->symbol_engine_chip_amounts()->ncallbets(),
@@ -94,7 +94,7 @@ double CParseTreeTerminalNodeBetsizeAction::Evaluate(bool log /* = false */) {
 			* pot_size_after_call_in_big_blinds;
     double final_betsize_in_bblinds = p_engine_container->symbol_engine_chip_amounts()->ncallbets()
       + raise_by_amount_in_bblinds;
-    write_log(preferences.debug_formula(), 
+    write_log(Preferences()->debug_formula(), 
       "[CParseTreeTerminalNodeBetsizeAction] raiseby percentage = %.2f pot after call = %.2f raiseby = %.2f final = %.2f\n",
       raise_by_percentage,
       pot_size_after_call_in_big_blinds,

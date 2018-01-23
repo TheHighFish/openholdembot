@@ -15,7 +15,7 @@
 #include "CSymbolEngineDealerchair.h"
 
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CTableState.h"
 
@@ -52,11 +52,11 @@ void CSymbolEngineDealerchair::UpdateOnMyTurn()
 {}
 
 void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
-	write_log(preferences.debug_symbolengine(), "nchairs: %d\n", 
+	write_log(Preferences()->debug_symbolengine(), "nchairs: %d\n", 
 		p_tablemap->nchairs());
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
 		if (p_table_state->Player(i)->dealer())	{
-			write_log(preferences.debug_symbolengine(), "Setting dealerchair to %d\n", i);
+			write_log(Preferences()->debug_symbolengine(), "Setting dealerchair to %d\n", i);
 			_dealerchair = i;					
 			break;
 		}

@@ -16,7 +16,7 @@
 #include "stdafx.h"
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs15.h"
-#include "CPreferences.h"
+
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 // CDlgSAPrefs15 dialog
@@ -44,20 +44,20 @@ END_MESSAGE_MAP()
 // CDlgSAPrefs15 message handlers
 BOOL CDlgSAPrefs15::OnInitDialog() {
 	CSAPrefsSubDlg::OnInitDialog();
-  _gui_first_visible.SetCheck(preferences.gui_first_visible());
-  _gui_all_minimized.SetCheck(preferences.gui_all_minimized());
-  _gui_less.SetCheck(preferences.gui_less());
+  _gui_first_visible.SetCheck(Preferences()->gui_first_visible());
+  _gui_all_minimized.SetCheck(Preferences()->gui_all_minimized());
+  _gui_less.SetCheck(Preferences()->gui_less());
   _gui_less.EnableWindow(false);
-	m_disable_msgbox.SetCheck(preferences.disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
+	m_disable_msgbox.SetCheck(Preferences()->disable_msgbox() ? BST_CHECKED : BST_UNCHECKED);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CDlgSAPrefs15::OnOK() {
-	preferences.SetValue(k_prefs_gui_first_visible, _gui_first_visible.GetCheck() == BST_CHECKED ? true : false);
-  preferences.SetValue(k_prefs_gui_all_minimized, _gui_all_minimized.GetCheck() == BST_CHECKED ? true : false);
-  preferences.SetValue(k_prefs_gui_less, _gui_less.GetCheck() == BST_CHECKED ? true : false);
-	preferences.SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck() == BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_gui_first_visible, _gui_first_visible.GetCheck() == BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_gui_all_minimized, _gui_all_minimized.GetCheck() == BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_gui_less, _gui_less.GetCheck() == BST_CHECKED ? true : false);
+  Preferences()->SetValue(k_prefs_disable_msgbox, m_disable_msgbox.GetCheck() == BST_CHECKED ? true : false);
 	CSAPrefsSubDlg::OnOK();
 }
 

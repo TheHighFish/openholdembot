@@ -27,7 +27,7 @@
 #include "COpenHoldemStarter.h"
 #include "COpenHoldemStatusbar.h"
 #include "COpenHoldemTitle.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineChipAmounts.h"
@@ -76,7 +76,7 @@ CHeartbeatThread::~CHeartbeatThread() {
 
 void CHeartbeatThread::StartThread() {
 	// Start thread
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Starting heartbeat thread\n");
+	write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] Starting heartbeat thread\n");
     assert(this != NULL);
 	AfxBeginThread(HeartbeatThreadFunction, this);
 }
@@ -90,11 +90,11 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 
 	while (true) {
 		_heartbeat_counter++;
-		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Starting next cycle\n");
+		write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] Starting next cycle\n");
 		// Check event for stop thread
 		if(::WaitForSingleObject(pParent->_m_stop_thread, 0) == WAIT_OBJECT_0) {
 			// Set event
-      write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Ending heartbeat thread\n");
+      write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] Ending heartbeat thread\n");
       LogMemoryUsage("Hc");
 			::SetEvent(pParent->_m_wait_thread);
 			AfxEndThread(0);
@@ -104,7 +104,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
 		p_tablemap_loader->ReloadAllTablemapsIfChanged();
     LogMemoryUsage("H2");
     assert(p_autoconnector != NULL);
-    write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_B\n");
+    write_log(Preferences()->debug_alltherest(), "[CHeartbeatThread] location Johnny_B\n");
     if (p_autoconnector->IsConnectedToGoneWindow()) {
       LogMemoryUsage("H3");
       p_autoconnector->Disconnect("table disappeared");
@@ -118,7 +118,7 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     // We want one fast scrape immediately after connection
     // without any heartbeat-sleeping.
     LogMemoryUsage("H5");
-    write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_C\n");
+    write_log(Preferences()->debug_alltherest(), "[CHeartbeatThread] location Johnny_C\n");
 		if (p_autoconnector->IsConnectedToExistingWindow()) {
       if (tablepoint_checker.TablepointsMismatchedTheLastNHeartbeats()) {
         LogMemoryUsage("H6");
@@ -131,17 +131,17 @@ UINT CHeartbeatThread::HeartbeatThreadFunction(LPVOID pParam) {
     assert(p_watchdog != NULL);
     LogMemoryUsage("H8");
     p_watchdog->HandleCrashedAndFrozenProcesses();
-    if (preferences.use_auto_starter()) {
+    if (Preferences()->use_auto_starter()) {
       LogMemoryUsage("H9");
       _openholdem_starter.StartNewInstanceIfNeeded();
     }
     LogMemoryUsage("Ha");
-    if (preferences.use_auto_shutdown()) {
+    if (Preferences()->use_auto_shutdown()) {
       _openholdem_starter.CloseThisInstanceIfNoLongerNeeded();
     }
     LogMemoryUsage("Hb");
     _heartbeat_delay.FlexibleSleep();
-		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
+		write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] Heartbeat cycle ended\n");
     LogMemoryUsage("End of heartbeat cycle");
 	}
 }
@@ -154,7 +154,7 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Scrape window
   p_table_title->UpdateTitle();
-  write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
+  write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoScrape.\n");
   p_lazyscraper->DoScrape();
   // We must not check if the scrape of the table changed, because:
   //   * some symbol-engines must be evaluated no matter what
@@ -173,31 +173,31 @@ void CHeartbeatThread::ScrapeEvaluateAct() {
   
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// OH-Validator
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling Validator.\n");
+	write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] Calling Validator.\n");
   p_validator->Validate();
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Autoplayer
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
+	write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] autoplayer_engaged(): %s\n", 
 		Bool2CString(p_autoplayer->autoplayer_engaged()));
-	write_log(preferences.debug_heartbeat(), "[HeartBeatThread] p_engine_container->symbol_engine_userchair()->userchair()_confirmed(): %s\n", 
+	write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] p_engine_container->symbol_engine_userchair()->userchair()_confirmed(): %s\n", 
 		Bool2CString(p_engine_container->symbol_engine_userchair()->userchair_confirmed()));
 	// If autoplayer is engaged, we know our chair, and the DLL hasn't told us to wait, then go do it!
 	if (p_autoplayer->autoplayer_engaged()) {
-		write_log(preferences.debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
+		write_log(Preferences()->debug_heartbeat(), "[HeartBeatThread] Calling DoAutoplayer.\n");
 		p_autoplayer->DoAutoplayer();
 	}
 }
 
 void CHeartbeatThread::AutoConnect() {
-  write_log(preferences.debug_alltherest(), "[CHeartbeatThread] location Johnny_D\n");
+  write_log(Preferences()->debug_alltherest(), "[CHeartbeatThread] location Johnny_D\n");
 	assert(!p_autoconnector->IsConnectedToAnything());
-	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) {
+	if (Preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Permanent) {
 		if (p_autoconnector->SecondsSinceLastFailedAttemptToConnect() > 1 /* seconds */) {
-			write_log(preferences.debug_autoconnector(), "[CHeartbeatThread] going to call Connect()\n");
+			write_log(Preferences()->debug_autoconnector(), "[CHeartbeatThread] going to call Connect()\n");
 			p_autoconnector->Connect(NULL);
 		}	else {
-			write_log(preferences.debug_autoconnector(), "[CHeartbeatThread] Reconnection blocked. Other instance failed previously.\n");
+			write_log(Preferences()->debug_autoconnector(), "[CHeartbeatThread] Reconnection blocked. Other instance failed previously.\n");
 		}
 	}
 }

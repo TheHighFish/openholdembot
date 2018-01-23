@@ -17,7 +17,7 @@
 #include <assert.h>
 #include "BetpotCalculations.h"
 #include "CFunctionCollection.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolengineGameType.h"
 #include "CSymbolEngineIsTournament.h"
@@ -35,13 +35,13 @@ bool ChangeBetsizeToAllin(double amount_to_raise_to) {
     p_function_collection->EvaluateAutoplayerFunction(k_standard_function_allin_on_betsize_balance_ratio);
   // Enabled?
   if (critical_betsize_to_balance_ratio <= 0.0) {
-    write_log(preferences.debug_allin_adjustment(),
+    write_log(Preferences()->debug_allin_adjustment(),
       "[AllinAdjustment] Disabled (<= 0.00)\n");
     return false;
   }
   // Safety measure: good balance?
   if (p_table_state->User()->_balance.GetValue() <= 0.0) {
-    write_log(preferences.debug_allin_adjustment(),
+    write_log(Preferences()->debug_allin_adjustment(),
       "[AllinAdjustment] Cancelled due to bad users balance\n");
     return false;
   }
@@ -52,16 +52,16 @@ bool ChangeBetsizeToAllin(double amount_to_raise_to) {
   // then we alreadz should be allin or something is wrong.
   // Act conservatively here
   if (p_table_state->User()->_bet.GetValue() >= critical_betsize) {
-    write_log(preferences.debug_allin_adjustment(),
+    write_log(Preferences()->debug_allin_adjustment(),
       "[AllinAdjustment] Cancelled as we already should be allin if input was right.\n");
     return false;
   }
   if (amount_to_raise_to >= critical_betsize) {
-    write_log(preferences.debug_allin_adjustment(),
+    write_log(Preferences()->debug_allin_adjustment(),
       "[AllinAdjustment] Changing betsize %.2f to allin\n", amount_to_raise_to);
     return true;
   } else {
-    write_log(preferences.debug_allin_adjustment(),
+    write_log(Preferences()->debug_allin_adjustment(),
       "[AllinAdjustment] Not changing betsize %.2f to allin\n", amount_to_raise_to);
     return false;
   }

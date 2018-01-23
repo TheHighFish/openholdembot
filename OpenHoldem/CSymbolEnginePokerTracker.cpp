@@ -21,7 +21,7 @@
 #include "CParseTreeTerminalNodeEndOfFunction.h"
 #include "..\PokerTracker_Query_Definitions\pokertracker_query_definitions.h"
 #include "CPokerTrackerThread.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineCallers.h"
 #include "CSymbolEngineChairs.h"
 #include "CSymbolengineDealerchair.h"
@@ -102,7 +102,7 @@ void CSymbolEnginePokerTracker::CheckForChangedPlayersOncePerHeartbeatAndSymbolL
 void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound) {
 	assert(chair >= kFirstChair); 
 	assert(chair <= kLastChair);
-	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
+	write_log(Preferences()->debug_pokertracker(), "[CSymbolEnginePokerTracker] ClearSeatStats() for chair %i\n", chair);
 	PT_DLL_ClearPlayerStats(chair);
 	if (clearNameAndFound) {
 		_player_data[chair].found = false;
@@ -113,7 +113,7 @@ void CSymbolEnginePokerTracker::ClearSeatStats(int chair, bool clearNameAndFound
 }
 
 void CSymbolEnginePokerTracker::ClearAllStatsOfChangedPlayers() {
-	write_log(preferences.debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
+	write_log(Preferences()->debug_pokertracker(), "[CSymbolEnginePokerTracker] Executing ClearAllStatsOfChangedPlayers()\n");
 	for (int i=0; i<kMaxNumberOfPlayers; i++)
 	{
 		if (p_pokertracker_thread->CheckIfNameHasChanged(i))
@@ -181,7 +181,7 @@ bool CSymbolEnginePokerTracker::EvaluateSymbol(const CString name, double *resul
 			// Symbol-lookup happens, because of Formula-validation.
 			// Not a problem, if we do not yet have a DB-connection.
 			// Don't throw a warning here.
-      write_log(preferences.debug_pokertracker(), "[PokerTracker] Not yet seated or formula parsing.\n");
+      write_log(Preferences()->debug_pokertracker(), "[PokerTracker] Not yet seated or formula parsing.\n");
 		} else {
 			// We are seated and playing, use a PT-symbol,
       // but are noit connected to a database

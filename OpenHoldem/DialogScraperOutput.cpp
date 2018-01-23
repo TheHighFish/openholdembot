@@ -16,7 +16,7 @@
 
 #include "CFlagsToolbar.h"
 #include "CHeartbeatThread.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "..\CTransform\CTransform.h"
 #include "MainFrm.h"
@@ -104,7 +104,7 @@ BOOL CDlgScraperOutput::OnInitDialog() {
 	// Set dialog icon
 	HICON hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
 	this->SetIcon(hIcon, FALSE);
-	m_Zoom.SetCurSel(preferences.scraper_zoom());
+	m_Zoom.SetCurSel(Preferences()->scraper_zoom());
 	m_Zoom.GetWindowRect(&rect);
 	m_Zoom.SetWindowPos(NULL, 0, 0, rect.right-rect.left, 9999, SWP_NOMOVE);
 
@@ -126,7 +126,7 @@ BOOL CDlgScraperOutput::DestroyWindow() {
 
 	// Save settings to registry
 	GetWindowPlacement(&wp);
-  preferences.SetValue(k_prefs_scraper_zoom, m_Zoom.GetCurSel());
+  Preferences()->SetValue(k_prefs_scraper_zoom, m_Zoom.GetCurSel());
 	// Uncheck scraper output button on main toolbar
 	p_flags_toolbar->CheckButton(ID_MAIN_TOOLBAR_SCRAPER_OUTPUT, false);
 

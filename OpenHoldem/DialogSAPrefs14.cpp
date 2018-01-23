@@ -18,7 +18,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs14.h"
-#include "CPreferences.h"
+
 
 
 // DialogSAPrefs14 dialog
@@ -55,7 +55,7 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (preferences.autoconnector_when_to_connect() == k_AutoConnector_Connect_Never)
+	if (Preferences()->autoconnector_when_to_connect() == k_AutoConnector_Connect_Never)
 	{
 		_autoconnector_connect_never.SetCheck(true);
 	}
@@ -70,9 +70,9 @@ BOOL CDlgSAPrefs14::OnInitDialog()
 
 void CDlgSAPrefs14::OnOK() {
 	if (bool(_autoconnector_connect_never.GetCheck()) == true) {
-		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
+		Preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Never);
 	}	else { // _autoconnector_connect_permanent.GetCheck() == BST_CHECKED 
-		preferences.SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
+		Preferences()->SetValue(k_prefs_autoconnector_when_to_connect, k_AutoConnector_Connect_Permanent);
 	}
 	CSAPrefsSubDlg::OnOK();
 }

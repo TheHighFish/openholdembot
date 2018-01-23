@@ -24,7 +24,7 @@
 #include "CFunctionCollection.h"
 #include "CHandresetDetector.h"
 #include "CMyMutex.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
 #include "CSessionCounter.h"
 #include "CSymbolEngineCasino.h"
@@ -88,7 +88,7 @@ bool CCasinoInterface::TableLostFocus() {
 }
 
 void CCasinoInterface::ClickRect(RECT rect) {
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
     rect.left, rect.top, rect.right, rect.bottom);
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1);
   p_engine_container->symbol_engine_time()->UpdateOnAutoPlayerAction();
@@ -119,8 +119,8 @@ bool CCasinoInterface::CloseWindow() {
 	close_region.left   = table_size.right - 18;
 	close_region.right  = table_size.right -  6;
 	
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] f$close is true.\n");
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] preparing to execute f$close.\n");
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] f$close is true.\n");
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] preparing to execute f$close.\n");
 	ClickRect(close_region);
 
 	return true;
@@ -140,10 +140,10 @@ bool CCasinoInterface::EnterChatMessage(CString &message) {
 	POINT			cur_pos = {0};
 
 	if (!p_tablemap_access->GetTableMapRect("chatbox", &rect_chatbox)) {
-		write_log(preferences.debug_autoplayer(), "[CasinoInterface] Can't chat. No region defined.\n");
+		write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Can't chat. No region defined.\n");
 		return false;
 	}
-	write_log(preferences.debug_autoplayer(), "[CasinoInterface] Sending chat-message: %s\n", message);
+	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Sending chat-message: %s\n", message);
 	(theApp._dll_keyboard_sendstring) (p_autoconnector->attached_hwnd(), rect_chatbox, message, false);
 
 	// Clear old chat_message to allow new ones.
@@ -158,7 +158,7 @@ int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
     + LogicalAutoplayerButton(k_autoplayer_function_check)->IsClickable()
     + LogicalAutoplayerButton(k_autoplayer_function_raise)->IsClickable()
     + LogicalAutoplayerButton(k_autoplayer_function_allin)->IsClickable();
-  write_log(preferences.debug_autoplayer(), "[CasinoInterface] %i autoplayer buttons visible.\n", result);
+  write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] %i autoplayer buttons visible.\n", result);
   return result;
 }
 
@@ -167,16 +167,16 @@ bool CCasinoInterface::HandleInterfacebuttonsI86(void) {
     if (p_casino_interface->_technical_i86X_spam_buttons[i].IsClickable()) {
       CMyMutex mutex;
       if (!mutex.IsLocked()) return false;
-     write_log(preferences.debug_autoplayer(), "[CasinoInterface] Clicking i86X (%d) button.\n", i);
+     write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Clicking i86X (%d) button.\n", i);
       return p_casino_interface->_technical_i86X_spam_buttons[i].Click();
     }
   }
- write_log(preferences.debug_autoplayer(), "[CasinoInterface] No interface button (i86X) to be handled.\n");
+ write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] No interface button (i86X) to be handled.\n");
   return false;
 }
 
 bool CCasinoInterface::EnterBetsizeForAllin() {
-  write_log(preferences.debug_autoplayer(), "[CasinoInterface] Going to enter betsize allin\n");
+  write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Going to enter betsize allin\n");
 	double betsize_for_allin = p_table_state->User()->_bet.GetValue()
 	  + p_table_state->User()->_balance.GetValue(); 
   return EnterBetsize(betsize_for_allin);

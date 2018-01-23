@@ -20,7 +20,7 @@
 #include "Card.h"
 #include "CBetroundCalculator.h"
 #include "CEngineContainer.h"
-#include "CPreferences.h"
+
 #include "CSymbolEngineCards.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolEngineUserchair.h"
@@ -117,7 +117,7 @@ void CSymbolEngineNutFullhouseOrFourOfAKind::CalculateNutFullhouseOrFourOfAKind(
   if (p_betround_calculator->betround() < kBetroundFlop) {
     // Preflop or something else
     // No fullhouse possible
-    write_log(preferences.debug_nutfullhouse(),
+    write_log(Preferences()->debug_nutfullhouse(),
       "[CSymbolEngineNutFullhouseOrFourOfAKind] Not yet flop. no fullhouse possible\n");
     return;
   }
@@ -157,20 +157,20 @@ void CSymbolEngineNutFullhouseOrFourOfAKind::CalculateNutFullhouseOrFourOfAKind(
   CardMask_OR(all_cards, player_cards, board_cards);
   int n_all_cards = n_player_cards + n_board_cards;
   handstrength_player = Handstrength(all_cards, n_all_cards);
-  write_log(preferences.debug_nutfullhouse(),
+  write_log(Preferences()->debug_nutfullhouse(),
     "[CSymbolEngineNutFullhouseOrFourOfAKind] Player strength: %x\n", 
     handstrength_player);
   if (IsFullhouseOrFourOfAKind(handstrength_player)) {
     // We hold the best hand ATM, as far as we know
     _nutfullhouseorfourofakind = kNutFullhouseOrFourOfAKind_WeHaveTheNuts;
-    write_log(preferences.debug_nutfullhouse(),
+    write_log(Preferences()->debug_nutfullhouse(),
       "[CSymbolEngineNutFullhouseOrFourOfAKind] Player has fullhouse or quads\n");
     // Remeber the fullhouse or quads 
     // in case this hand can't be found by the enumaeration
     // because no opponent can hold a hand of the same strength.
     _list_all_fullhouses[handstrength_player] = true;
   } else {
-    write_log(preferences.debug_nutfullhouse(),
+    write_log(Preferences()->debug_nutfullhouse(),
       "[CSymbolEngineNutFullhouseOrFourOfAKind] Player has NOT fullhouse or quads\n");
     assert(_nutfullhouseorfourofakind == kNutFullhouseOrFourOfAKind_NoFullHouseAtAll);
     return;
@@ -206,24 +206,24 @@ void CSymbolEngineNutFullhouseOrFourOfAKind::CalculateNutFullhouseOrFourOfAKind(
       int n_eval_cards = n_board_cards + 2;
       handstrength_enumerated = Handstrength(eval_cards, n_eval_cards);
       // Output cards used for evaluation
-      write_log(preferences.debug_nutfullhouse(),
+      write_log(Preferences()->debug_nutfullhouse(),
         "[CSymbolEngineNutFullhouseOrFourOfAKind] Evaluating %s\n",
         StdDeck_maskString(eval_cards));
       // Remove card for next iteration
       CardMask_UNSET(opponent_cards, second_player_card);
       CardMask_UNSET(used_cards, second_player_card);
       if (!IsFullhouseOrFourOfAKind(handstrength_enumerated)) {
-        write_log(preferences.debug_nutfullhouse(),
+        write_log(Preferences()->debug_nutfullhouse(),
           "[CSymbolEngineNutFullhouseOrFourOfAKind] NOT fullhouse or quads\n");
         continue;
       }
-      write_log(preferences.debug_nutfullhouse(),
+      write_log(Preferences()->debug_nutfullhouse(),
         "[CSymbolEngineNutFullhouseOrFourOfAKind] Hand strength %x\n", 
         handstrength_enumerated);
       _list_all_fullhouses[handstrength_enumerated] = true;
       if (handstrength_enumerated > handstrength_player) {
         // A valid fullhouse pr four of a kind that beats us
-        write_log(preferences.debug_nutfullhouse(),
+        write_log(Preferences()->debug_nutfullhouse(),
           "[CSymbolEngineNutFullhouseOrFourOfAKind] Fullhouse (or quads) better than ours\n");
         _list_better_fullhouses[handstrength_enumerated] = true;
       }
@@ -232,10 +232,10 @@ void CSymbolEngineNutFullhouseOrFourOfAKind::CalculateNutFullhouseOrFourOfAKind(
   // Return 1 if we hold the nuts, i.e. 0 better fullhouses / quads
   _nutfullhouseorfourofakind = _list_better_fullhouses.size() + 1;
   _nutfullhouseorfourofakind_total_count = _list_all_fullhouses.size();
-  write_log(preferences.debug_nutfullhouse(),
+  write_log(Preferences()->debug_nutfullhouse(),
     "[CSymbolEngineNutFullhouseOrFourOfAKind] nutfullhouseorfourofakind: %i\n",
     _nutfullhouseorfourofakind);
-  write_log(preferences.debug_nutfullhouse(),
+  write_log(Preferences()->debug_nutfullhouse(),
     "[CSymbolEngineNutFullhouseOrFourOfAKind] total count: %i\n",
     _nutfullhouseorfourofakind_total_count);
 }
