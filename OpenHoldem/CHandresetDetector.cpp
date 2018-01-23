@@ -281,14 +281,14 @@ bool CHandresetDetector::IsHandresetByOHReplayFrameNumber() {
 
 bool CHandresetDetector::IsHandresetByVisibleAntes() {
   bool ishandreset = (_antes_visible && !_last_antes_visible);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by visible antes: %s\n",
+  write_log(Preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by visible antes: %s\n",
     Bool2CString(ishandreset));
   return ishandreset;
 }
 
 bool CHandresetDetector::IsHandresetByDisappearingShowdownCards() {
   bool ishandreset = (_last_showdown_cards_visible && !_showdown_cards_visible);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by disappearing showdown cards: %s\n",
+  write_log(Preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by disappearing showdown cards: %s\n",
     Bool2CString(ishandreset));
   return ishandreset;
 }
@@ -296,7 +296,7 @@ bool CHandresetDetector::IsHandresetByDisappearingShowdownCards() {
 bool CHandresetDetector::IsHandresetByButtonsAfterFold() {
   bool ishandreset = (p_engine_container->symbol_engine_history()->DidFoldThisHand()
     && _buttons_visible && !_last_buttons_visible);
-  write_log(preferences.debug_handreset_detector(), "[CHandresetDetector] Handreset by autoplayer-buttons after fold: %s\n",
+  write_log(Preferences()->debug_handreset_detector(), "[CHandresetDetector] Handreset by autoplayer-buttons after fold: %s\n",
     Bool2CString(ishandreset));
   return false;
 }
