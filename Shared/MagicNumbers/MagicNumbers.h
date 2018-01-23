@@ -286,7 +286,7 @@ const int k_max_length_of_standard_function_names = 32 + 1;
 static const char k_standard_function_names[k_number_of_standard_functions][k_max_length_of_standard_function_names] = {
 	// Primary autoplayer-functions
 	"f$beep",
-	"f$alli",
+	"f$allin",
 	"f$betpot_2_1",
 	"f$betpot_1_1",
 	"f$betpot_3_4",
@@ -295,7 +295,7 @@ static const char k_standard_function_names[k_number_of_standard_functions][k_ma
 	"f$betpot_1_3",
 	"f$betpot_1_4",
 	"f$betsize",
-	"f$rais",
+	"f$raise",
 	"f$call",
 	"f$check",
 	"f$fold",

@@ -1,4 +1,18 @@
-﻿﻿v﻿13.0.1 2018-01-23
+﻿﻿v﻿13.0.2 2018-02-xx
+==================
+NEW STUFF:
+- handreset-detector
+- detection of the dealerchair
+
+MAINTENANCE:
+- The OH-script autoplayer-functions f$alli and f$rais 
+  got renamed to f$allin and f$raise
+  This renaming affects The OH-script-users only,
+  OpenPPL-users are not affected.
+  [THF]
+  
+
+﻿v﻿13.0.1 2018-01-23
 ==================
 NEW STUFF:
 - New symbols "prizepool" and "prizepoolmultiplier",

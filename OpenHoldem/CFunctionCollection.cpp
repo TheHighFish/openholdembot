@@ -72,6 +72,14 @@ void CFunctionCollection::DeleteAll(bool delete_read_only_library_functions, boo
 }
 
 bool CFunctionCollection::CheckForOutdatedFunction(CString name) {
+  if (name == "f$alli") {
+    CParseErrors::Error("f$alli got replaced by f$allin.\n");
+    return true;
+  }
+  if (name == "f$rais") {
+    CParseErrors::Error("f$rais got replaced by f$raise.\n");
+    return true;
+  }
   if (name  == "f$play") {
     CParseErrors::Error("f$play got replaced\n"
       "by f$sitin, f$sitout, f$leave.\n");
