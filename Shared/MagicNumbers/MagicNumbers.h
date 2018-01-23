@@ -563,12 +563,6 @@ const int k_number_of_different_cardranks = 13;
 // The old code did it differently (4 for the current round)
 const int k_storage_index_for_current_round = 0;
 
-// Functions names, both user-defined and standard, e.g. "f$alli"
-const int k_max_size_of_function_name = 256;
-
-// Player history struct
-const int k_assumed_max_number_of_actions_per_player_and_round = 8;
-
 // PrWin
 const int k_number_of_pocketcard_combinations_without_order = 1326;
 
