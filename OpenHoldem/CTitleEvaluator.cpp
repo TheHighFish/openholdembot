@@ -214,9 +214,9 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^b" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^B" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^a" ||
-	  ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^y" ||
-	  ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^p" ||
-	  ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^P" ||
+      ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^y" ||
+      ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^z" ||
+      ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^Z" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^v" ||
       ttlimits_format.Mid(place_in_ttlimits_format, 2) == "^V") {
       number_type = ttlimits_format.Mid(place_in_ttlimits_format, 2);
@@ -256,12 +256,12 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
         _results_for_openscrape.Append("^y (buyin)\t= " + temp + "\r\n");
         new_buyin = number;
       }
-		 else if (number_type == "^p") {
-		_results_for_openscrape.Append("^p (prizepool)\t= " + temp + "\r\n");
+		 else if (number_type == "^z") {
+		_results_for_openscrape.Append("^z (prizepool)\t= " + temp + "\r\n");
 		new_prizepool = number;
 	  }
-		 else if (number_type == "^P") {
-			 _results_for_openscrape.Append("^P (prizepoolmultiplier)\t= " + temp + "\r\n");
+		 else if (number_type == "^Z") {
+			 _results_for_openscrape.Append("^Z (prizepoolmultiplier)\t= " + temp + "\r\n");
 			 new_prizepoolmultiplier = number;
 	  }
 
@@ -445,10 +445,10 @@ bool CTitleEvaluator::ProcessTitle(CString title, CString ttlimits_format) {
   write_log(Preferences()->debug_scraper(),
     "[CTransform] buyin = %d\n",
     p_table_state->_s_limit_info.buyin());
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
 	  "[CTransform] prizepool = %d\n",
 	  p_table_state->_s_limit_info.prizepool());
-  write_log(preferences.debug_scraper(),
+  write_log(Preferences()->debug_scraper(),
 	  "[CTransform] prizepoolmultiplier = %d\n",
 	  p_table_state->_s_limit_info.prizepoolmultiplier());
 #endif

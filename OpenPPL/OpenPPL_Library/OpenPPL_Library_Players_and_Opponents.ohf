@@ -91,13 +91,8 @@ OpponentsLeft
 ##OpponentsAtTable##
 nopponentsseated
 
-##NumberOfOpponentsAllin##
-(Opponents>1 OR (Opponents==1 AND AmountToCall<StackSize))? Opponents_SumAllinBits:
-(Opponents==1 AND AmountToCall==StackSize)? 1:
-0
-   
 ##OpponentIsAllin##
-noppponentsallin > 0
+nopponentsallin > 0
 
 ##OpponentsLeft##
 // Does also consider players who are allin 
