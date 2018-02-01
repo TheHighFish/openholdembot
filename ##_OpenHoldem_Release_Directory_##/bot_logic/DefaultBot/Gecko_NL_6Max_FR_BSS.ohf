@@ -425,45 +425,40 @@ OR (rankbits & 0b0000000000011110)==0b0000000000011110  // 432A
 [ NOT PairOnBoard AND nsuitedcommon<=2 AND nstraightcommon<=2 ]
 
 ##f$flop_call##
-[ f$Odds_and_Outs          ] ? 1 :
-[ f$Initiative_Hero        ] ? f$flop_call_initiative   :
-[ f$Initiative_Villian     ] ? f$flop_call_noinitiative :
-[ f$Initiative_Nobody      ] ? f$flop_call_noaction     :
-0
+WHEN f$Odds_and_Outs      RETURN true FORCE
+WHEN f$Initiative_Hero    RETURN f$flop_call_initiative FORCE
+WHEN f$Initiative_Villian RETURN f$flop_call_noinitiative FORCE
+WHEN f$Initiative_Nobody  RETURN f$flop_call_noaction FORCE
 
 ##f$turn_call##
-[ f$Odds_and_Outs          ] ? 1 :
-[ f$Initiative_Hero        ] ? f$turn_call_initiative   :
-[ f$Initiative_Villian     ] ? f$turn_call_noinitiative :
-[ f$Initiative_Nobody      ] ? f$turn_call_noaction     : 
-[ f$Initiative_GotRaised   ] ? f$turn_call_wegotraised  :
-0
+WHEN f$Odds_and_Outs        RETURN true FORCE
+WHEN f$Initiative_Hero      RETURN f$turn_call_initiative FORCE
+WHEN f$Initiative_Villian   RETURN f$turn_call_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$turn_call_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$turn_call_wegotraised FORCE
 
 ##f$river_call##
-[ f$Initiative_Hero       ] ? f$river_call_initiative   :
-[ f$Initiative_Villian    ] ? f$river_call_noinitiative :
-[ f$Initiative_Nobody     ] ? f$river_call_noaction     : 
-[ f$Initiative_GotRaised  ] ? f$river_call_wegotraised  :
-0
+WHEN f$Initiative_Hero      RETURN f$river_call_initiative FORCE
+WHEN f$Initiative_Villian   RETURN f$river_call_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$river_call_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$river_call_wegotraised FORCE
 
 ##f$flop_raise##
-[ f$Initiative_Hero    ] ? f$flop_raise_initiative   :
-[ f$Initiative_Villian ] ? f$flop_raise_noinitiative :
-[ f$Initiative_Nobody  ] ? f$flop_raise_noaction     : 0
+WHEN f$Initiative_Hero    RETURN f$flop_raise_initiative FORCE
+WHEN f$Initiative_Villian RETURN f$flop_raise_noinitiative FORCE
+WHEN f$Initiative_Nobody  RETURN f$flop_raise_noaction FORCE
 
 ##f$turn_raise##
-[ f$Initiative_Hero      ] ? f$turn_raise_initiative   :
-[ f$Initiative_Villian   ] ? f$turn_raise_noinitiative :
-[ f$Initiative_Nobody    ] ? f$turn_raise_noaction     : 
-[ f$Initiative_GotRaised ] ? f$turn_raise_wegotraised  :
-0
+WHEN f$Initiative_Hero      RETURN f$turn_raise_initiative FORCE
+WHEN f$Initiative_Villian   RETURN f$turn_raise_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$turn_raise_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$turn_raise_wegotraised FORCE
 
 ##f$river_raise##
-[ f$Initiative_Hero      ] ? f$river_raise_initiative   :
-[ f$Initiative_Villian   ] ? f$river_raise_noinitiative :
-[ f$Initiative_Nobody    ] ? f$river_raise_noaction     : 
-[ f$Initiative_GotRaised ] ? f$river_raise_wegotraised  :
-0
+WHEN f$Initiative_Hero      RETURN f$river_raise_initiative FORCE
+WHEN f$Initiative_Villian   RETURN f$river_raise_noinitiative FORCE
+WHEN f$Initiative_Nobody    RETURN f$river_raise_noaction FORCE
+WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
 
 ##f$logicalpositionrais##
 // Return values
@@ -490,13 +485,15 @@ IsRiver AND nbetsround_turn>0 AND NOT didcallround_turn ? 1 : 0
 IsPreflop ? nbetsround_preflop<=1 :
 IsFlop ? nbetsround_preflop<=1 :
 IsTurn ? nbetsround_flop<=0 :
-IsRiver ? nbetsround_turn<=0 : 0
+IsRiver ? nbetsround_turn<=0 : 
+false
 
 ##f$Initiative_Villian##
 IsPreflop ? didcallround_preflop AND nbetsround_preflop>1 :
 IsFlop ? didcallround_preflop AND nbetsround_preflop>1 :
 IsTurn ? NOT didbetsizeround_flop AND didcallround_flop AND nbetsround_flop>0 :
-IsRiver ? NOT didbetsizeround_flop AND didcallround_turn AND nbetsround_turn>0 : 0
+IsRiver ? NOT didbetsizeround_flop AND didcallround_turn AND nbetsround_turn>0 : 
+false
 
 ##f$prwin##
 [prwin+(prtie/2)]**(1+f$threat)
