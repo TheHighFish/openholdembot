@@ -1201,6 +1201,15 @@ HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecond
 rankbitscommon & ConstAllRanksWithoutAceLow
 
 ##HoldEm_HaveTwoPair##
+// Both our cards must pair the board,
+// the hand-strenght might even be better, e.g. a full-house.
+WHEN PairInHand RETURN false FORCE
+WHEN NOT FirstHoleCardPairsTheBoard RETURN false FORCE
+WHEN NOT SecondHoleCardPairsTheBoard RETURN false FORCE
+// Check for higher pairs on board that devalue our "three pairs"
+WHEN RankOfTopPairOnBoard > rankloplayer RETURN false FORCE
+WHEN Others RETURN true FORCE
+
 BitCount(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2
 
 ##HoldEm_HaveUnderPair##

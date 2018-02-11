@@ -63,6 +63,22 @@
 //
 //*****************************************************************************
 
+##FirstHoleCardPairsTheBoard##
+WHEN (RankOfFirstHoleCard <= 0) RETURN false FOERCE
+WHEN (RankOfFirstHoleCard == FirstFlopCard) RETURN true FORCE
+WHEN (RankOfFirstHoleCard == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfFirstHoleCard == ThirdFlopCard) RETURN true FORCE
+WHEN (RankOfFirstHoleCard == TurnCard) RETURN true FORCE
+WHEN (RankOfFirstHoleCard == RiverCard) RETURN true FORCE
+
+##SecondHoleCardPairsTheBoard##
+WHEN (RankOfSecondHoleCard <= 0) RETURN false FOERCE
+WHEN (RankOfSecondHoleCard == FirstFlopCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == ThirdFlopCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == TurnCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == RiverCard) RETURN true FORCE
+
 ##HighCardOfCommonStraight##
 WHEN board$AKQJT RETURN ace FORCE
 WHEN board$KQJT9 RETURN king FORCE
