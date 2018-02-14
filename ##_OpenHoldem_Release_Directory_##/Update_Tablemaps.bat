@@ -6,7 +6,7 @@
 @echo.
 @echo This tool will download the "offical" tablemaps 
 @echo from the OpenHoldem-repository at GitHub.
-@echo It will also download two replay-frames per map
+@echo It will also download a replay-frame per map
 @echo for verification / as setup-instruction.
 @echo.
 @REM testing if SVN.exe exists
@@ -17,6 +17,19 @@
 @IF %ERRORLEVEL% NEQ 0 (
    @echo Required software: TortoiseSVN
    @echo https://tortoisesvn.net/downloads.html
+   @echo.
+   @pause
+   @exit
+)
+@REM Check if working-directory == OpenHoldem directory
+@REM smart people are able to run this script from the wtong directory
+@REM and wonder why they don't get see any tablemaps
+@REM http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=21580
+@IF NOT EXIST "Update_Tablemaps.bat" (
+   @echo ERROR
+   @echo Working directory seems to be not an OpenHoldem directory.
+   @echo Don't know where to save the tablemaps.
+   @echo Please simply double-click the script or run it from the OpenHoldem folder.
    @echo.
    @pause
    @exit
