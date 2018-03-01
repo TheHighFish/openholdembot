@@ -141,7 +141,7 @@ WHEN Others SET me_st_MemBotsLastFlopAction_None
 WHEN Others SET me_st_MemBotsLastTurnAction_None
 // Reset starting chips and stacksize once at the beginning of the session
 WHEN (handsplayed <= 1) SET me_st_MemStartingChips_0
-WHEN (handsplayed <= 1) SET me_st_MemStartingChips_0
+WHEN (handsplayed <= 1) SET me_st_MemStartingStackSize_0
 // Execute UpdateMemorySymbolsOnNewRound unconditionally, but don't do anything
 WHEN UpdateMemorySymbolsOnNewRound
 

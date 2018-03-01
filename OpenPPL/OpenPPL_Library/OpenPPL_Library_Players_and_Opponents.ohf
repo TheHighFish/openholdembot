@@ -94,6 +94,9 @@ nopponentsseated
 ##OpponentIsAllin##
 nopponentsallin > 0
 
+##NumberOfOpponentsAllin##
+nopponentsallin 
+
 ##OpponentsLeft##
 // Does also consider players who are allin 
 // (contrary to Shankys, who consider players allin in this round, but not from previous rounds).

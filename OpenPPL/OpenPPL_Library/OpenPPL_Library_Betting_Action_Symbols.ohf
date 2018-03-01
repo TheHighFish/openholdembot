@@ -77,7 +77,8 @@ raischair
 ((playersactivebits >> bigblindchair & 1) == 0)
 
 ##SmallBlindSittingOut##
-(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+// No error if smallblind chair is unknown, it may be nissing.
+(smallblindchair < 0) ? false :
 ((playersactivebits >> smallblindchair & 1) == 0)
 
 ##OpponentsLeftSittingOut##
