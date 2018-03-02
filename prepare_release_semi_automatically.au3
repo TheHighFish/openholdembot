@@ -12,6 +12,7 @@ Local $pre_created_release_dir  = "##_OpenHoldem_Release_Directory_##"
 Local $new_openholdem_dir       = "OpenHoldem_12.x.y"
 Local $new_bot_logic_dir        = $new_openholdem_dir & "\bot_logic"
 Local $new_openppl_library_dir  = $new_bot_logic_dir  & "\OpenPPL_Library"
+Local $new_default_bot_dir      = $new_bot_logic_dir  & "\DefaultBot"
 Local $new_vmware_keyboard_dir  = $new_openholdem_dir & "\Keyboard_DLL_VmWare_Unity_Mode"
 Local $new_tools_dir            = $new_openholdem_dir & "\tools"
 Local $binary_dir               = "Release"
@@ -69,6 +70,10 @@ FileDelete($new_openholdem_dir & "\*.exp")
 FileDelete($new_openholdem_dir & "\*.pdb")
 ; Add the OpenPPL-library
 CopyNeededFile($openppl_library_dir, $new_openppl_library_dir, "*.ohf")
+; Set default-bot and OpenPPL-library as read-only.
+; Some people were smart enough to edit it and then wondered why it did no longer work.
+FileSetAttrib($new_openppl_library_dir, "+R", 1)
+FileSetAttrib($new_default_bot_dir, "+R", 1)
 ; Remove replay-direcoty (if existent), logs and other private data
 DirRemove($new_openholdem_dir & "\Replay")
 FileDelete($new_openholdem_dir & "\logs\*.*")
