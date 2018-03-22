@@ -190,14 +190,14 @@ _lastraiserchair
 \end_layout
 
 \begin_layout Itemize
-_userchair
-\end_layout
-
-\begin_layout Itemize
 _headsupchair
 \end_layout
 
 \end_deeper
+\begin_layout Remark*
+PokerTracker stats for the userchair are excluded for performance reasons.
+\end_layout
+
 \begin_layout Section*
 General
 \begin_inset space ~
