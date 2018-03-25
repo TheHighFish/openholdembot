@@ -506,14 +506,14 @@ false
         [ nplayersplaying<=2 ] ? 1 :
 //          [ f$fold2cbet_veel OR f$fold2cbet_normal ] ? {
 //            [ f$stackopponent< 30*bblind ] ? {
-//                [ rankhicommon==13 OR rankhicommon==14 ] ? f$prwin>0 :
+//                [ KingPresentOnFlop OR AcePresentOnFlop ] ? f$prwin>0 :
 //                [ f$prwin>0.65                         ] ? 1         : 0 } :
 //            [ f$stackopponent>=30*bblind ] ? {
 //                [ f$pt_flopaf<4  ] ? f$prwin>0.00 :
 //                [ f$pt_flopaf>=4 ] ? f$prwin>0.00 AND f$prwin<.92 : 0 } : 0 } :
 //          [ f$fold2cbet_weinig ] ? {
 //              [ f$pt_flopaf<4  ] ? {
-//                  [ rankhicommon==13 OR rankhicommon==14 ] ? f$prwin>0 :
+//                  [ KingPresentOnFlop OR AcePresentOnFlop ] ? f$prwin>0 :
 //                  [ f$prwin>0.65                         ] ? 1         : 0 } :
 //              [ f$pt_flopaf>=4 ] ? f$prwin>0.65 AND f$prwin<.92 : 0 } : 0 } :
         [ nplayersplaying==3 ] ? 1            :
@@ -920,9 +920,9 @@ WHEN Others
             [ didcallround_preflop AND nbetsround_preflop>1 AND nbetsround_preflop<=5 ] ? f$prwin>0 : // donkbet and 2nd barrel turn
             [ f$AggressionFactor_Turn2<=3.00 ] ? {
                 [ f$draws>1   ] ? 1 :
-                [ f$prwin>.70 AND NOT(ismidpair AND rankhicommon==14 AND NOT PairOnBoard) ] ? 1 : 0 } :
-            [ f$AggressionFactor_Turn2>3.00 AND NOT(ismidpair AND rankhicommon==14 AND NOT PairOnBoard) ] ? f$prwin>.70 AND f$prwin<.80 : 0 } : // only barrel value oop
-        [ nplayersplaying>=2 AND nplayersround_flop>=3 AND NOT(ismidpair AND rankhicommon==14 AND NOT PairOnBoard) ] ? f$prwin>.74 : 0 } :
+                [ f$prwin>.70 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? 1 : 0 } :
+            [ f$AggressionFactor_Turn2>3.00 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? f$prwin>.70 AND f$prwin<.80 : 0 } : // only barrel value oop
+        [ nplayersplaying>=2 AND nplayersround_flop>=3 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? f$prwin>.74 : 0 } :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
     [ f$actionpostflop_4 ] ? f$prwin>.80 : // check push allin
@@ -946,9 +946,9 @@ WHEN Others
 [ Position = Last ] ? {
     [ f$actionpostflop_1 ] ? {
         [ nplayersplaying==2 AND nplayersround_flop==2 ] ? {
-             [ f$prwin<0.72 AND NOT (ismidpair AND rankhicommon==14 AND NOT PairOnBoard) AND ranklocommon<10 AND nbetsround_preflop<7 AND nbetsround_flop<15 AND NOT PairOnBoard ] ? 1 :
+             [ f$prwin<0.72 AND NOT (ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) AND ranklocommon<10 AND nbetsround_preflop<7 AND nbetsround_flop<15 AND NOT PairOnBoard ] ? 1 :
              [ f$prwin>=0.78 ] ? 1 : 0 } :
-        [ nplayersplaying>=2 AND nplayersround_flop>=3 AND ranklocommon<10 AND NOT (ismidpair AND rankhicommon==14 AND NOT PairOnBoard) ] ? f$prwin>0.65 : 0 } :
+        [ nplayersplaying>=2 AND nplayersround_flop>=3 AND ranklocommon<10 AND NOT (ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? f$prwin>0.65 : 0 } :
     [ f$actionpostflop_2 ] ? f$prwin>.80 :
     [ f$actionpostflop_3 ] ? f$prwin>.80 :
     [ f$actionpostflop_4 ] ? f$prwin>.85 :
@@ -2007,14 +2007,15 @@ OR (InBigBlind   AND listGecko01)
 OR (InBigBlind   AND listGecko09)
 
 ##f$Chart_Squeeze##
+// !!! Potentially incomplete FR
    [ InBigBlind   AND listGeckoSqueeze ]
 OR [ InSmallBlind AND listGeckoSqueeze ]
-OR [ InMiddlePosition3       AND listGeckoSqueeze ]
-OR [ InButton AND (      dealpositionrais==3 AND listGeckoSqueeze
-                              OR dealpositionrais==4 AND listGeckoSqueeze  
-                              OR dealpositionrais==5 AND listGeckoSqueeze )] 
-OR [ InCutOff AND (      dealpositionrais==3 AND listGeckoSqueeze
-                              OR dealpositionrais==4 AND listGeckoSqueeze )] 
+OR [ InMiddlePosition3 AND listGeckoSqueeze ]
+OR [ InButton AND (   dealpositionrais==3 AND listGeckoSqueeze
+                   OR dealpositionrais==4 AND listGeckoSqueeze  
+                   OR dealpositionrais==5 AND listGeckoSqueeze )] 
+OR [ InCutOff AND (   dealpositionrais==3 AND listGeckoSqueeze
+                   OR dealpositionrais==4 AND listGeckoSqueeze )] 
 						  
 ##f$villain_allin##
 WHEN (nopponentsplaying > 1) RETURN false FORCE
@@ -2291,7 +2292,7 @@ WHEN (f$pt_icon_raischair==10) RETURN true FORCE
 ##f$ptype_nit##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN (f$pt_icon_raischair==1)  RETURN true FORCE
+WHEN (f$pt_icon_raischair==2)  RETURN true FORCE
 WHEN (f$pt_icon_raischair==6)  RETURN true FORCE
 WHEN (f$pt_icon_raischair==11) RETURN true FORCE
 
