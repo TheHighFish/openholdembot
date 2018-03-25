@@ -359,8 +359,7 @@ Stack9
 
 // !!!! Move to separate file Technical Betsizee!
 
-##MyTotalMoney##
-balance + currentbet
+
 
 ##EffectiveBetsizeInDollars0##
 WHEN (currentbet0 <= MyTotalMoney) RETURN currentbet0 FORCE
@@ -416,4 +415,4 @@ WHEN Others RETURN MyTotalMoney FORCE
 + EffectiveBetsizeInDollars9
 
 ##EffectivePotSize##
-EffectivePotSizeInDollars * BigBlindSize
+(BigBlindSize > 0) ?`(EffectivePotSizeInDollars / BigBlindSize) : EffectivePotSizeInDollars 
