@@ -1793,7 +1793,7 @@ WHEN [didbetsize AND (4 * AmountToCall < EffectivePotSize)] RETURN true FORCE
 ##f$preflop_limp_good_hand##
 WHEN [ncallbets > 1] RETURN false FORCE
 WHEN [BotsLastAction != None] RETURN false FORCE
-WHEN [(StillToAct >= 5) AND (handrank169 < 50)] RETURN true FORCE
+WHEN [InSmallBlind AND (handrank169 < 50)] RETURN true FORCE
 WHEN [nopponentscalling==0 AND ispair] RETURN true FORCE
 WHEN [nopponentscalling==1 AND listGeckoLimpAgainstOneOpponent] RETURN true FORCE
 WHEN [nopponentscalling>=2 AND (listGeckoLimpMultiway)] RETURN true FORCE
