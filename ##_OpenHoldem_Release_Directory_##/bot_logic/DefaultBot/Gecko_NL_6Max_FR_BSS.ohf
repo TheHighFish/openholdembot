@@ -189,6 +189,7 @@
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
 //   * Improved f$BetsizePreflop, now adapting its betsize to position/range
 //     when open-raising.
+//   * Simplified f$PotOdds which assumed there was always at least 1 bb to call.
 //
 //*****************************************************************************
 //
@@ -269,8 +270,9 @@ WHEN [call<=0.001] RETURN true FORCE
 WHEN [IsPreflop AND (hand$AA OR hand$KK)] RETURN true FORCE
 
 ##f$call_minbets##
-[ IsPostflop AND call<=bblind AND nbetsround_preflop>1 AND f$prwin>.15 ] ? 1 :
-[ IsPostflop AND call<=bblind AND pot>6*bblind AND f$prwin>.50  ] ? 1 : 0
+WHEN IsPreflop RETURN false FORCE
+WHEN {call<=bblind AND nbetsround_preflop>1 AND (f$prwin > 0.15)] RETURN true FORCE 
+WHEN [call<=bblind AND (EffectivePotSize > 6) AND (f$prwin > 0.50)] RETURN true FORCE
 
 ##f$call_potcommitted##
 [ IsPostflop AND f$committed ] 
@@ -1224,8 +1226,7 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 [ f$nOuts/46 ]
 
 ##f$PotOdds##
-call==0 ? [ (bet/(pot+f$ImpliedOdds))  ] :
-call>0  ? [ (call/(pot+f$ImpliedOdds)) ] : 0
+[call / (EffectivePotSizeInDollars + f$ImpliedOdds)]
     
 ##f$ImpliedOdds##
 IsFlop ? ((nopponentsbetting*.50)*bet4*1.5) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4*1.25) : 
@@ -1780,12 +1781,12 @@ WHEN Others
 // Different balance-to-call-ratios get handled by f$required_balance_to_call_ratio_for_setmining.
 // "Setmining"-range also contains some premium-hands
 WHEN (f$effective_balance_to_call_ratio < f$required_balance_to_call_ratio_for_setmining) RETURN false FORCE
-WHEN (call > 0.50 * pot) RETURN false FORCE
+WHEN (AmountToCall > 0.50 * EffectivePotSize) RETURN false FORCE
 WHEN listGeckoSetMining RETURN true FORCE
 
 ##f$preflop_call_reraise##
 // Call any min-reraise
-WHEN [didbetsize AND (4 * call < pot)] RETURN true FORCE
+WHEN [didbetsize AND (4 * AmountToCall < EffectivePotSize)] RETURN true FORCE
 // With premium hands we make action.
 // Raises after setmining get handled be f$preflop_call_for_setmining.
    
@@ -1812,7 +1813,7 @@ WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
 ##f$foldequity##
 [ f$Initiative_Nobody AND nplayersplaying==2 AND call==0 AND f$pt_hands>50 ] ? {
     [ Position = First ] ? {
-        [ IsFlop AND pot<6*bblind ] ? {
+        [ IsFlop AND EffectivePotSize < 6 ] ? {
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 AND f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 AND f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1823,7 +1824,7 @@ WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
             [ f$pt_wtsd>0.40 AND f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 AND f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-        [ IsTurn AND pot<12*bblind ] ? {
+        [ IsTurn AND EffectivePotSize < 12 ] ? {
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 AND f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 AND f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1834,7 +1835,7 @@ WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
             [ f$pt_wtsd>0.40 AND f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 AND f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-        [ IsRiver AND NOT didcallround_flop AND pot<32*bblind ] ? {
+        [ IsRiver AND NOT didcallround_flop AND EffectivePotSize < 32 ] ? {
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 AND f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 AND f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1846,7 +1847,7 @@ WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
             [ f$pt_wtsd>0.50 AND f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } : 0 } :
     [ Position = Last ] ? {
-        [ IsFlop AND pot<6*bblind ] ? {
+        [ IsFlop AND EffectivePotSize < 6 ] ? {
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 AND f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 AND f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1857,7 +1858,7 @@ WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
             [ f$pt_wtsd>0.40 AND f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 AND f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-        [ IsTurn AND pot<12*bblind ] ? {
+        [ IsTurn AND EffectivePotSize < 12 ] ? {
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 AND f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 AND f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -1868,7 +1869,7 @@ WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
             [ f$pt_wtsd>0.40 AND f$pt_wtsd<=0.50 ] ?  0.30 :
             [ f$pt_wtsd>0.50 AND f$pt_wtsd<=0.70 ] ?  0.40 :
             [ f$pt_wtsd>0.70                       ] ?  0.50 : 0 } :
-        [ IsRiver AND NOT didcallround_flop AND pot<32*bblind ] ? {
+        [ IsRiver AND NOT didcallround_flop AND EffectivePotSize < 32 ] ? {
             [                      f$pt_wtsd<=0.00 ] ?  0.00 :
             [ f$pt_wtsd>0.00 AND f$pt_wtsd<=0.10 ] ? -0.50 :
             [ f$pt_wtsd>0.10 AND f$pt_wtsd<=0.15 ] ? -0.30 :
@@ -2024,30 +2025,30 @@ WHEN (nopponentsplaying > 1) RETURN false FORCE
 WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
 							  
 ##f$committed##
-[ call*10<pot ] ? f$prwin>.30 :
-[ call*9 <pot ] ? f$prwin>.40 :
-[ call*8 <pot ] ? f$prwin>.50 :
-[ call*7 <pot ] ? f$prwin>.60 :
-[ call*6 <pot ] ? f$prwin>.75 :
-[ call*5 <pot ] ? f$prwin>.80 :
-[ call*4 <pot ] ? f$prwin>.85 :
-[ call*3 <pot ] ? f$prwin>.95 :
+[ AmountToCall*10 < EffectivePotSize ] ? f$prwin>.30 :
+[ AmountToCall*9  < EffectivePotSize ] ? f$prwin>.40 :
+[ AmountToCall*8  < EffectivePotSize ] ? f$prwin>.50 :
+[ AmountToCall*7  < EffectivePotSize ] ? f$prwin>.60 :
+[ AmountToCall*6  < EffectivePotSize ] ? f$prwin>.75 :
+[ AmountToCall*5  < EffectivePotSize ] ? f$prwin>.80 :
+[ AmountToCall*4  < EffectivePotSizet ] ? f$prwin>.85 :
+[ AmountToCall*3  < EffectivePotSize ] ? f$prwin>.95 :
 [ nplayersplaying==2 ] ? {
-    [ f$prwin>0.65 AND f$prwin<=0.70 ] ? (balance*7<pot) :
-    [ f$prwin>0.70 AND f$prwin<=0.75 ] ? (balance*6<pot) :
-    [ f$prwin>0.75 AND f$prwin<=0.80 ] ? (balance*5<pot) :
-    [ f$prwin>0.80 AND f$prwin<=0.85 ] ? (balance*4<pot) :
-    [ f$prwin>0.85 AND f$prwin<=0.90 ] ? (balance*3<pot) :
-    [ f$prwin>0.90                  ] ? (balance*3<pot) :
+    [ f$prwin>0.65 AND f$prwin<=0.70 ] ? (balance*7<EffectivePotSizeInDollars) :
+    [ f$prwin>0.70 AND f$prwin<=0.75 ] ? (balance*6<EffectivePotSizeInDollars) :
+    [ f$prwin>0.75 AND f$prwin<=0.80 ] ? (balance*5<EffectivePotSizeInDollars) :
+    [ f$prwin>0.80 AND f$prwin<=0.85 ] ? (balance*4<EffectivePotSizeInDollars) :
+    [ f$prwin>0.85 AND f$prwin<=0.90 ] ? (balance*3<EffectivePotSizeInDollars) :
+    [ f$prwin>0.90                  ] ? (balance*3<EffectivePotSizeInDollars) :
     [ (f$villain_allin OR f$villain_potcommitted) ] ? {
-        [ f$prwin>0.68 AND f$prwin<=0.72 ] ? (call*7.0<pot) :
-        [ f$prwin>0.72 AND f$prwin<=0.76 ] ? (call*6.0<pot) :
-        [ f$prwin>0.76 AND f$prwin<=0.80 ] ? (call*4.0<pot) :
-        [ f$prwin>0.78 AND f$prwin<=0.82 ] ? (call*3.5<pot) :
-        [ f$prwin>0.82 AND f$prwin<=0.86 ] ? (call*3.0<pot) :
-        [ f$prwin>0.86 AND f$prwin<=0.90 ] ? (call*2.5<pot) : 
-        [ f$prwin>0.90 AND f$prwin<=0.96 ] ? (call*2.0<pot) : 
-        [ f$prwin>0.96                  ] ? (call*1.0<pot) : 0 } : 0 } :
+        [ f$prwin>0.68 AND f$prwin<=0.72 ] ? (AmountToCall*7.0 < EffectivePotSize) :
+        [ f$prwin>0.72 AND f$prwin<=0.76 ] ? (AmountToCall*6.0 < EffectivePotSize) :
+        [ f$prwin>0.76 AND f$prwin<=0.80 ] ? (AmountToCall*4.0 < EffectivePotSize) :
+        [ f$prwin>0.78 AND f$prwin<=0.82 ] ? (AmountToCall*3.5 < EffectivePotSize) :
+        [ f$prwin>0.82 AND f$prwin<=0.86 ] ? (AmountToCall*3.0 < EffectivePotSize) :
+        [ f$prwin>0.86 AND f$prwin<=0.90 ] ? (AmountToCall*2.5 < EffectivePotSize) : 
+        [ f$prwin>0.90 AND f$prwin<=0.96 ] ? (AmountToCall*2.0 < EffectivePotSize) : 
+        [ f$prwin>0.96                   ] ? (AmountToCall*1.0 < EffectivePotSize) : 0 } : 0 } :
 0
 
 ##f$actionpostflop_1##

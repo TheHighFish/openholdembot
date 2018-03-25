@@ -230,7 +230,7 @@ StartingStackSize_ep2chair < MinStillToActStackSizeAfterEarlyPosition2 ?
 ##CalculateMaxOpponentStackSize##
 WHEN (nopponentsseated <= 0) RETURN 0 FORCE
 WHEN (bblind <= 0) RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE
-WHEN (balance_rank0 == (balance + currentbet)) RETURN (balance_rank1 / bblind) FORCE
+WHEN (balance_rank0 == (MyTotalMoney)) RETURN (balance_rank1 / bblind) FORCE
 WHEN Others RETURN (balance_rank0 / bblind) FORCE
 
 ##CalculateMinOpponentStackSize##
@@ -238,23 +238,23 @@ WHEN Others RETURN (balance_rank0 / bblind) FORCE
 (bblind <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
 [ 1 / bblind *
 [ nplayersdealt == 10 ?
-    (balance_rank9 == (balance + currentbet) ? balance_rank8 : balance_rank9) :
+    (balance_rank9 == (MyTotalMoney) ? balance_rank8 : balance_rank9) :
   nplayersdealt == 9 ?
-    (balance_rank8 == (balance + currentbet) ? balance_rank7 : balance_rank8) :
+    (balance_rank8 == (MyTotalMoney) ? balance_rank7 : balance_rank8) :
   nplayersdealt == 8 ?
-    (balance_rank7 == (balance + currentbet) ? balance_rank6 : balance_rank7) :
+    (balance_rank7 == (MyTotalMoney) ? balance_rank6 : balance_rank7) :
   nplayersdealt == 7 ?
-    (balance_rank6 == (balance + currentbet) ? balance_rank5 : balance_rank6) :
+    (balance_rank6 == (MyTotalMoney) ? balance_rank5 : balance_rank6) :
   nplayersdealt == 6 ?
-    (balance_rank5 == (balance + currentbet) ? balance_rank4 : balance_rank5) :
+    (balance_rank5 == (MyTotalMoney) ? balance_rank4 : balance_rank5) :
   nplayersdealt == 5 ?
-    (balance_rank4 == (balance + currentbet) ? balance_rank3 : balance_rank4) :
+    (balance_rank4 == (MyTotalMoney) ? balance_rank3 : balance_rank4) :
   nplayersdealt == 4 ?
-    (balance_rank3 == (balance + currentbet) ? balance_rank2 : balance_rank3) :
+    (balance_rank3 == (MyTotalMoney) ? balance_rank2 : balance_rank3) :
   nplayersdealt == 3 ?
-    (balance_rank2 == (balance + currentbet) ? balance_rank1 : balance_rank2) :
+    (balance_rank2 == (MyTotalMoney) ? balance_rank1 : balance_rank2) :
   nplayersdealt == 2 ?
-    (balance_rank1 == (balance + currentbet) ? balance_rank0 : balance_rank1) :
+    (balance_rank1 == (MyTotalMoney) ? balance_rank0 : balance_rank1) :
 ERROR_No_Opponents_Detected__Check_Your_TableMap]]
 
 ##Stack0##
@@ -350,3 +350,70 @@ Stack8
 
 ##StackSize9##
 Stack9
+
+
+
+
+
+
+
+// !!!! Move to separate file Technical Betsizee!
+
+##MyTotalMoney##
+balance + currentbet
+
+##EffectiveBetsizeInDollars0##
+WHEN (currentbet0 <= MyTotalMoney) RETURN currentbet0 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars1##
+WHEN (currentbet1 <= MyTotalMoney) RETURN currentbet1 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars2##
+WHEN (currentbet2 <= MyTotalMoney) RETURN currentbet2 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars3##
+WHEN (currentbet3 <= MyTotalMoney) RETURN currentbet3 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars4##
+WHEN (currentbet4 <= MyTotalMoney) RETURN currentbet4 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars5##
+WHEN (currentbet5 <= MyTotalMoney) RETURN currentbet5 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars6##
+WHEN (currentbet6 <= MyTotalMoney) RETURN currentbet6 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars7##
+WHEN (currentbet7 <= MyTotalMoney) RETURN currentbet7 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars8##
+WHEN (currentbet8 <= MyTotalMoney) RETURN currentbet8 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars9##
+WHEN (currentbet9 <= MyTotalMoney) RETURN currentbet9 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectivePotSizeInDollars##
+  potcommon
++ EffectiveBetsizeInDollars0
++ EffectiveBetsizeInDollars1
++ EffectiveBetsizeInDollars2
++ EffectiveBetsizeInDollars3
++ EffectiveBetsizeInDollars4
++ EffectiveBetsizeInDollars5
++ EffectiveBetsizeInDollars6
++ EffectiveBetsizeInDollars7
++ EffectiveBetsizeInDollars8
++ EffectiveBetsizeInDollars9
+
+##EffectivePotSize##
+EffectivePotSizeInDollars * BigBlindSize

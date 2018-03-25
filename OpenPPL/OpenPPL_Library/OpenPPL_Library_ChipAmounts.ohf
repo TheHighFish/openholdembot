@@ -106,7 +106,10 @@ isfl ? bet : currentbet
 (call <= balance) ? call : balance
 
 ##MaximumPossibleBetsizeInDollars##
-(balance + currentbet)
+MyTotalMoney
+
+##MyTotalMoney##
+balance + currentbet
 
 ##SidePotInDollars##
 // Money in the side-pot, i.e. the money we don't compete for.
