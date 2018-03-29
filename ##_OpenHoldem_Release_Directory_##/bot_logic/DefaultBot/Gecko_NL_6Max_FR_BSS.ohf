@@ -339,14 +339,14 @@ false
 [ Position = First ] ? {
     [ f$actionpostflop_1 ] ? {
         [ nplayersplaying<=2 ] ? 1 :
-//          [ f$fold2cbet_veel OR f$fold2cbet_normal ] ? {
+//          [ f$fold2cbet_high OR f$fold2cbet_normal ] ? {
 //            [ f$stackopponent< 30*bblind ] ? {
 //                [ KingPresentOnFlop OR AcePresentOnFlop ] ? f$prwin>0 :
 //                [ f$prwin>0.65                         ] ? 1         : 0 } :
 //            [ f$stackopponent>=30*bblind ] ? {
 //                [ f$pt_flopaf<4  ] ? f$prwin>0.00 :
 //                [ f$pt_flopaf>=4 ] ? f$prwin>0.00 AND f$prwin<.92 : 0 } : 0 } :
-//          [ f$fold2cbet_weinig ] ? {
+//          [ f$fold2cbet_low ] ? {
 //              [ f$pt_flopaf<4  ] ? {
 //                  [ KingPresentOnFlop OR AcePresentOnFlop ] ? f$prwin>0 :
 //                  [ f$prwin>0.65                         ] ? 1         : 0 } :
@@ -361,27 +361,27 @@ false
     [ f$actionpostflop_4 ] ? f$prwin>0.76 :
     [ f$actionpostflop_5 ] ? f$prwin>0.77 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.78 :
-        [ f$ptype_lag     ] ? {
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.72 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.78 : 0 } : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.78 :
-        [ f$ptype_lag     ] ? {
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.76 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.78 : 0 } : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.77 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.77 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
 // ---------------------------------------------
@@ -401,23 +401,23 @@ false
     [ f$actionpostflop_4 ] ? f$prwin>.78 :
     [ f$actionpostflop_5 ] ? f$prwin>.78 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.78 :
-        [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.78 :
-        [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.80 :
-        [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
 // ---------------------------------------------------
@@ -444,23 +444,23 @@ false
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.83 :
-        [ f$ptype_tag     ] ? f$prwin2>.79 :
-        [ f$ptype_semilag ] ? f$prwin2>.78 :
-        [ f$ptype_lag     ] ? f$prwin2>.77 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.83 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.79 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.77 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.83 :
-        [ f$ptype_tag     ] ? f$prwin2>.79 :
-        [ f$ptype_semilag ] ? f$prwin2>.78 :
-        [ f$ptype_lag     ] ? f$prwin2>.77 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.83 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.79 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.77 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.83 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.78:
-        [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.83 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.78:
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
 0
@@ -483,27 +483,27 @@ false
         [ f$prwin>0.75 AND f$prwin<0.95    ] ? 1 : 0 } :
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.82 :
-        [ f$ptype_lag     ] ? {
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.80 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.82 :
-        [ f$ptype_semilag ] ? f$prwin2>.80 :
-        [ f$ptype_lag     ] ? {
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.78 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.82 :
-        [ f$ptype_semilag ] ? f$prwin2>.80 :
-        [ f$ptype_lag     ] ? {
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.78 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin>.80 :
@@ -515,23 +515,23 @@ false
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.82 :
-        [ f$ptype_semilag ] ? f$prwin2>.80 :
-        [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.82 :
-        [ f$ptype_semilag ] ? f$prwin2>.80 :
-        [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.82 :
-        [ f$ptype_semilag ] ? f$prwin2>.80 :
-        [ f$ptype_lag     ] ? f$prwin2>.78 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin>.80 :
     [ f$actionpostflop_10] ? f$prwin>.80 : 0 } :
 [ Position = Last ] ? {
@@ -549,23 +549,23 @@ false
         [ f$prwin>0.75 AND f$prwin<0.90 ] ? 1 : 0 } :
     [ f$actionpostflop_5 ] ? f$prwin>.80 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.82 :
-        [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.82 :
-        [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.83 :
-        [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.83 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin>.85 :
     [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
 0
@@ -578,23 +578,23 @@ false
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.82 :
-        [ f$ptype_lag     ] ? f$prwin2>.72 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.72 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.84 :
-        [ f$ptype_lag     ] ? f$prwin2>.76 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.76 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.84 :
-        [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
@@ -604,27 +604,27 @@ false
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.82 :
-        [ f$ptype_semilag ] ? f$prwin2>.80 :
-        [ f$ptype_lag     ] ? {
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.72 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.84 :
-        [ f$ptype_semilag ] ? f$prwin2>.82 :
-        [ f$ptype_lag     ] ? {
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.84 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.76 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.84 :
-        [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
@@ -634,24 +634,24 @@ false
     [ f$actionpostflop_4 ] ? f$prwin>.80 :
     [ f$actionpostflop_5 ] ? f$prwin>.92 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.82 :
-        [ f$ptype_lag     ] ? f$prwin2>.80 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
 
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.84 :
-        [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.85 :
-        [ f$ptype_tag     ] ? f$prwin2>.85 :
-        [ f$ptype_semilag ] ? f$prwin2>.84 :
-        [ f$ptype_lag     ] ? f$prwin2>.82 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
     [ f$actionpostflop_9 ] ? f$nuts      :
     [ f$actionpostflop_10] ? f$nuts      : 0 } :
 0
@@ -687,7 +687,7 @@ WHEN NOT didbetsize
    WHEN Others RaiseBy (4 * BetSize) FORCE
 WHEN Others
    WHEN (nbetsround_preflop <= 1) RaiseBy (4 * BetSize) FORCE
-   WHEN f$ptype_lag RaiseBy (2 * BetSize) FORCE
+   WHEN f$ptype_raise_contibet_very_high RaiseBy (2 * BetSize) FORCE
    // Formerly RaiseMax.
    WHEN Others RaisePot FORCE
            
@@ -1208,23 +1208,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.80 :
-        [ f$ptype_nit     ] ? f$prwin2>.78 :
-        [ f$ptype_tag     ] ? f$prwin2>.75 :
-        [ f$ptype_semilag ] ? f$prwin2>.72 :
-        [ f$ptype_lag     ] ? f$prwin2>.70 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.75 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.72 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.70 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.84 :
-        [ f$ptype_nit     ] ? f$prwin2>.80 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.84 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 [ Position = Middle ] ? {
@@ -1233,23 +1233,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.82 :
-        [ f$ptype_nit     ] ? f$prwin2>.80 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.75 :
-        [ f$ptype_lag     ] ? f$prwin2>.72 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.75 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.72 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 [ Position = Last ] ? {
@@ -1258,23 +1258,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.80 :
-        [ f$ptype_nit     ] ? f$prwin2>.78 :
-        [ f$ptype_tag     ] ? f$prwin2>.75 :
-        [ f$ptype_semilag ] ? f$prwin2>.72 :
-        [ f$ptype_lag     ] ? f$prwin2>.70 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.75 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.72 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.70 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.78 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.79 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.79 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 0
@@ -1286,23 +1286,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 [ Position = Middle ] ? {
@@ -1311,23 +1311,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 [ Position = Last ] ? {
@@ -1336,23 +1336,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.70 :
     [ f$actionpostflop_5 ] ? f$prwin1>.80 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 0
@@ -1364,23 +1364,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 [ Position = Middle ] ? {
@@ -1389,23 +1389,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 [ Position = Last ] ? {
@@ -1414,23 +1414,23 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
     [ f$actionpostflop_4 ] ? f$prwin1>.65 :
     [ f$actionpostflop_5 ] ? f$prwin1>.70 :
     [ f$actionpostflop_6 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_7 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_8 ] ? {
-        [ f$ptype_ubernit ] ? f$prwin2>.85 :
-        [ f$ptype_nit     ] ? f$prwin2>.82 :
-        [ f$ptype_tag     ] ? f$prwin2>.80 :
-        [ f$ptype_semilag ] ? f$prwin2>.77 :
-        [ f$ptype_lag     ] ? f$prwin2>.74 : 0 } :
+        [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
+        [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
+        [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
+        [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
+        [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
     [ f$actionpostflop_9 ] ? f$prwin1>.82 :
     [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
 0
@@ -2160,25 +2160,25 @@ pt_turn_af_headsupchair * pt_wtsd_headsupchair * 4
 //
 //*****************************************************************************
 
-##f$ptype_ubernit##
+##f$ptype_raise_contibet_very_low##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
 WHEN pt_flop_raise_cbet_raischair < 6 RETURN TRUE FORCE
 
-##f$ptype_nit##
+##f$ptype_raise_contibet_low##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
 WHEN ptype_ubernit RETURN false FORCE
 WHEN pt_flop_raise_cbet_raischair < !2 RETURN TRUE FORCE
 
-##f$ptype_tag##
+##f$ptype_raise_contibet_normal##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
 WHEN ptype_ubernit RETURN false FORCE
 WHEN ptype_nit RETURN false FORCE
 WHEN pt_flop_raise_cbet_raischair < !8 RETURN TRUE FORCE
 
-##f$ptype_semilag##
+##f$ptype_raise_contibet_high##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
 WHEN ptype_ubernit RETURN false FORCE
@@ -2186,20 +2186,20 @@ WHEN ptype_nit RETURN false FORCE
 WHEN ptype_tag RETURN false FORCE
 WHEN pt_flop_raise_cbet_raischair < 24 RETURN TRUE FORCE
 
-##f$ptype_lag##
+##f$ptype_raise_contibet_very_high##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
 WHEN pt_flop_raise_cbet_raischair >= 24 RETURN TRUE FORCE
 
 ##f$fold2cbet_normal##
-WHEN f$fold2cbet_veel RETURN false FORCE
-WHEN f$fold2cbet_weinig RETURN false FORCE
+WHEN f$fold2cbet_high RETURN false FORCE
+WHEN f$fold2cbet_low RETURN false FORCE
 WHEN Others RETURN true FORCE
 
-##f$fold2cbet_veel##
+##f$fold2cbet_high##
 WHEN pt_flop_fold_to_cbet0 > 0.60 RETURN true FORCE
 
-##f$fold2cbet_weinig##
+##f$fold2cbet_low##
 WHEN pt_flop_fold_to_cbet0 < 0.40 RETURN true FORCE
 
 //*****************************************************************************

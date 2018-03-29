@@ -35,7 +35,7 @@
 //       despite it should return how much) and distributed it to f$preflop..f$river  
 //     - moved rule for strong set to f$flop_turn_raise_strong_set
 //     - renamed f$swag (unsupported) to f$best_netsize
-//   * Replaced ##nit## 1000 by f$prwin_number_of_iterations 50.000
+//   * Replaced #### 1000 by f$prwin_number_of_iterations 50.000
 //     for more precise simulations
 //   * Renamed f$P to f$prwin_number_of_opponents
 //   * Removed unused default formulas (dll, defcon, f$debug, ...)
@@ -155,6 +155,14 @@
 //   * Removed the unused functions f$real_pfr, f$realpfr_range and f$preflop_aggressor
 //   * removed the pT-icon-functions which encoded a combination of
 //     pt_flop_raise_cbetX and pt_flop_fold_to_cbetX.
+//   * Renamed some opponent-modelling functions:
+//       f$fold2cbet_veel   -> f$fold2cbet_high
+//       f$fold2cbet_weinig -> f$fold2cbet_low
+//       f$ptype_ubernit    -> f$ptype_raise_contibet_very_low
+//       f$ptype_nit        -> f$ptype_raise_contibet_low
+//       f$ptype_tag        -> f$ptype_raise_contibet_normal
+//       f$ptype_semilag    -> f$ptype_raise_contibet_high
+//       f$ptype_lag        -> f$ptype_raise_contibet_very_high
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
