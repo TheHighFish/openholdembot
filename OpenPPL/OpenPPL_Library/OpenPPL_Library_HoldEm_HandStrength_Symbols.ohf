@@ -1210,8 +1210,6 @@ WHEN NOT SecondHoleCardPairsTheBoard RETURN false FORCE
 WHEN RankOfTopPairOnBoard > rankloplayer RETURN false FORCE
 WHEN Others RETURN true FORCE
 
-BitCount(rankbitsplayer & RankbitsCommonWithoutAceLow) == 2
-
 ##HoldEm_HaveUnderPair##
 [ ispair AND rankhiplayer<ranklocommon ]
 

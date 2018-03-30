@@ -106,7 +106,7 @@ WHEN [IsPreflop AND (hand$AA OR hand$KK)] RETURN true FORCE
 
 ##f$call_minbets##
 WHEN IsPreflop RETURN false FORCE
-WHEN {call<=bblind AND nbetsround_preflop>1 AND (f$prwin > 0.15)] RETURN true FORCE 
+WHEN [call<=bblind AND nbetsround_preflop>1 AND (f$prwin > 0.15)] RETURN true FORCE 
 WHEN [call<=bblind AND (EffectivePotSize > 6) AND (f$prwin > 0.50)] RETURN true FORCE
 
 ##f$call_potcommitted##
@@ -247,7 +247,7 @@ OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveFlushDraw AND FlushPossible AND r
 (nstraightfill==1 AND NOT FlushPossible) OR
 (istwopair AND NOT PairOnBoard) OR
 (isonepair AND NOT FlushPossible AND NOT StraightPossible AND NOT PairOnBoard) OR
-(NOT TwoPairOnBoard AND FlushPossible AND HaveFlushDraw AND (srankloplayer>6ORsrankhiplayer>6) AND NOT PairOnBoard) OR
+(NOT TwoPairOnBoard AND FlushPossible AND HaveFlushDraw AND (srankloplayer>6 OR srankhiplayer>6) AND NOT PairOnBoard) OR
 (NOT TwoPairOnBoard AND nstraight==4 AND nstraightcommon==3 AND NOT PairOnBoard) OR
 (NOT TwoPairOnBoard AND nstraight==3 AND nstraightcommon==2 AND StraightPossible AND NOT PairOnBoard) OR
 (f$wheeldraw AND NOT PairOnBoard)) ? 1 :
@@ -1867,7 +1867,7 @@ WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
 [ AmountToCall*7  < EffectivePotSize ] ? f$prwin>.60 :
 [ AmountToCall*6  < EffectivePotSize ] ? f$prwin>.75 :
 [ AmountToCall*5  < EffectivePotSize ] ? f$prwin>.80 :
-[ AmountToCall*4  < EffectivePotSizet ] ? f$prwin>.85 :
+[ AmountToCall*4  < EffectivePotSize ] ? f$prwin>.85 :
 [ AmountToCall*3  < EffectivePotSize ] ? f$prwin>.95 :
 [ nplayersplaying==2 ] ? {
     [ f$prwin>0.65 AND f$prwin<=0.70 ] ? (balance*7<EffectivePotSizeInDollars) :
@@ -1903,13 +1903,13 @@ WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
 [ NOT didbetsize AND (call>(potcommon*1.2)) AND NOT f$actionpostflop_2 ]
 
 ##f$actionpostflop_6##
-[ (didbetsizeORdidcall) AND currentbet<=potcommon AND call<=currentbet ]
+[ (didbetsize OR didcall) AND currentbet<=potcommon AND call<=currentbet ]
 
 ##f$actionpostflop_7##
-[ (didbetsizeORdidcall) AND (currentbet<=potcommon) AND (call>currentbet) AND (call<=(currentbet*3.5)) ]
+[ (didbetsize OR didcall) AND (currentbet<=potcommon) AND (call>currentbet) AND (call<=(currentbet*3.5)) ]
 
 ##f$actionpostflop_8##
-[ (didbetsizeORdidcall) AND (currentbet<=potcommon) AND (call>(currentbet*3.5)) ]
+[ (didbetsize OR didcall) AND (currentbet<=potcommon) AND (call>(currentbet*3.5)) ]
 
 ##f$actionpostflop_9##
 [ didbetsize AND (currentbet>potcommon) AND (currentbet<=potcommon*3) ]
@@ -2163,33 +2163,33 @@ pt_turn_af_headsupchair * pt_wtsd_headsupchair * 4
 ##f$ptype_raise_contibet_very_low##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN pt_flop_raise_cbet_raischair < 6 RETURN TRUE FORCE
+WHEN pt_flop_raise_cbet_raischair < 6 RETURN true FORCE
 
 ##f$ptype_raise_contibet_low##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN ptype_ubernit RETURN false FORCE
-WHEN pt_flop_raise_cbet_raischair < !2 RETURN TRUE FORCE
+WHEN f$ptype_raise_contibet_very_low RETURN false FORCE
+WHEN pt_flop_raise_cbet_raischair < 12 RETURN true FORCE
 
 ##f$ptype_raise_contibet_normal##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN ptype_ubernit RETURN false FORCE
-WHEN ptype_nit RETURN false FORCE
-WHEN pt_flop_raise_cbet_raischair < !8 RETURN TRUE FORCE
+WHEN f$ptype_raise_contibet_very_low RETURN false FORCE
+WHEN f$ptype_raise_contibet_low RETURN false FORCE
+WHEN pt_flop_raise_cbet_raischair < 18 RETURN true FORCE
 
 ##f$ptype_raise_contibet_high##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN ptype_ubernit RETURN false FORCE
-WHEN ptype_nit RETURN false FORCE
-WHEN ptype_tag RETURN false FORCE
-WHEN pt_flop_raise_cbet_raischair < 24 RETURN TRUE FORCE
+WHEN f$ptype_raise_contibet_very_low RETURN false FORCE
+WHEN f$ptype_raise_contibet_low RETURN false FORCE
+WHEN f$ptype_raise_contibet_normal RETURN false FORCE
+WHEN pt_flop_raise_cbet_raischair < 24 RETURN true FORCE
 
 ##f$ptype_raise_contibet_very_high##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
 // PT AUTORATE ICONS
-WHEN pt_flop_raise_cbet_raischair >= 24 RETURN TRUE FORCE
+WHEN pt_flop_raise_cbet_raischair >= 24 RETURN true FORCE
 
 ##f$fold2cbet_normal##
 WHEN f$fold2cbet_high RETURN false FORCE
