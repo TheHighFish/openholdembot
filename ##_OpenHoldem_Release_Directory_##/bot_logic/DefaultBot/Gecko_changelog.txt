@@ -163,6 +163,8 @@
 //       f$ptype_tag        -> f$ptype_raise_contibet_normal
 //       f$ptype_semilag    -> f$ptype_raise_contibet_high
 //       f$ptype_lag        -> f$ptype_raise_contibet_very_high
+//   * Moved AA, KK,QQ from f$Preflop_Raiser_In_Front_Of_me to 
+//     new f$Preflop_Raise_Monster
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.

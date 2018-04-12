@@ -163,6 +163,7 @@ WHEN (Others            AND NOT listGecko01)  RETURN true FORCE
 OR f$Preflop_Raise_After_One_Limper
 OR f$Preflop_Raise_After_Two_Limpers
 OR f$Preflop_Raise_After_Three_Limpers
+OR f$Preflop_Raise_Monster
 OR f$Preflop_Raiser_In_Front_Of_Me
 OR f$Preflop_Raiser_And_Callers_In_Front_Of_Me
 OR f$Preflop_Multiple_Raisers
@@ -1742,9 +1743,14 @@ WHEN (RaisesSinceLastPlay >= 2) AND listGeckoMultipleRaisersBehindUs RETURN true
 ##f$Preflop_Raise_After_One_Limper##
 (f$BettingAction_One_Limper AND f$Chart_OneLimper) ? 1 : 0
 
+##f$Preflop_Raise_Monster##
+WHEN (hand$AA OR hand$KK OR hand$QQ) RETURN true FORCE
+
 ##f$Preflop_Raiser_In_Front_Of_Me##
-(f$BettingAction_Single_Raiser_Before_Us AND NOT didbetsize AND call<7*bblind AND f$Chart_ReRaise) ? 1 :
-(hand$AAORhand$KKORhand$QQ) ? 1 : 0
+WHEN NOT f$BettingAction_Single_Raiser_Before_Us RETURN false FORCE
+WHEN didbetsize RETURN false FORCE
+WHEN (AmountToCall >= 7) RETURN false FORCE
+WHEN f$Chart_ReRaise RETURN true FORCE
 
 ##f$BettingAction_Number_Of_Opponents_Truely_Playing##
 (nopponentsplaying - nopponentsallin)   
