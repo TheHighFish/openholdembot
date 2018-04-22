@@ -31,6 +31,7 @@ CString ListOfSymbols() {
   list += RangeOfSymbols("ttlimits%i", 0, 9);
   list += RangeOfSymbols("c0limits%i", 0, 9);
   list += RangeOfSymbols("i%ibuttonhotkey", 0, 9);
+  list += RangeOfSymbols("i%ibuttondefaultlabel", 0, 9);
   list += RangeOfSymbols("t%itype", 0, 3);
   list += "allinconfirmationmethod ";
   list += "betpotmethod ";

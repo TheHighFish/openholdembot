@@ -32,6 +32,8 @@ void CAutoplayerButton::SetTechnicalName(const CString name) {
   _technical_name = name;
   CString hotkey_name = name + "hotkey";
   _hotkey.SetName(hotkey_name);
+
+  _default_label = p_tablemap->GetTMSymbol(_technical_name + "defaultlabel").MakeLower();
 }
 
 void CAutoplayerButton::Reset() {
@@ -40,7 +42,7 @@ void CAutoplayerButton::Reset() {
   _button_type = kUndefined;
   SetClickable(false);
 }
-  
+
 bool CAutoplayerButton::Click() {
   if (_clickable) {
     // Try to send a hotkey first, if specified in tablemap
@@ -185,11 +187,33 @@ void CAutoplayerButton::PrecomputeButtonType() {
     _button_type = k_hopper_function_rematch;
   } else if (IsLabelPrefold()) { 
     _button_type = k_standard_function_prefold;
-  } else if (_label == "") {
-    // Clear button
-    _button_type = kUndefined;
   } else {
-    write_log(Preferences()->debug_autoplayer(), 
-      "[CasinoInterface] WARNING! Unknown button type %s\n", _label);
+    /* No or wrongly scraped value, apply default label, if any */
+    if (_default_label == "allin" || _default_label == "max") {
+      _button_type = k_autoplayer_function_allin;
+    } else if (_default_label == "raise" || _default_label == "bet") {
+      _button_type = k_autoplayer_function_raise;
+    } else if (_default_label == "call") {
+      _button_type = k_autoplayer_function_call;
+    } else if (_default_label == "check") {
+      _button_type = k_autoplayer_function_check;
+    } else if (_default_label == "fold") {
+      _button_type = k_autoplayer_function_fold;
+    } else if (_default_label == "autopost") {
+      _button_type = k_hopper_function_autopost;
+    } else if (_default_label == "sitin") {
+      _button_type = k_hopper_function_sitin;
+    } else if (_default_label == "sitout") {
+      _button_type = k_hopper_function_sitout;
+    } else if (_default_label == "leave") {
+      _button_type = k_hopper_function_leave;
+    } else if (_default_label == "rematch") {
+      _button_type = k_hopper_function_rematch;
+    } else if (_default_label == "prefold") {
+      _button_type = k_standard_function_prefold;
+    } else {
+      _button_type = kUndefined;
+      write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] WARNING! Unknown button type [%s] [%s]\n", _label, _default_label);
+    }
   }
 }
