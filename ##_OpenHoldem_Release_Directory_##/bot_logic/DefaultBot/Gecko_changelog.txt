@@ -165,6 +165,9 @@
 //       f$ptype_lag        -> f$ptype_raise_contibet_very_high
 //   * Moved AA, KK,QQ from f$Preflop_Raiser_In_Front_Of_me to 
 //     new f$Preflop_Raise_Monster
+//   * Replaced ` (backtick) by more verbose "BitCount"-operator
+//     and finally removed this code completely, as counting bits 
+//     was used to detect GaveThirdNutFlushDraw and similar.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.

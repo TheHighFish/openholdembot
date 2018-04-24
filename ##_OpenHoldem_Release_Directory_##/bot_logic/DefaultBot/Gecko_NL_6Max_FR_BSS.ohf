@@ -216,22 +216,22 @@ pt_hands_headsupchair
 
 ##f$draws##
    (NOT TwoPairOnBoard AND HaveFlushDraw AND nsuitedcommon==2 AND nstraight==4 AND NOT StraightPossible AND NOT f$wheeldraw AND NOT PairOnBoard) 
-OR (NOT TwoPairOnBoard AND HaveFlushDraw AND FlushPossible AND nstraight==4 AND NOT f$wheeldraw AND `((~srankbits&0x7fff)>>srankhiplayer)<=3 AND NOT StraightPossible AND NOT PairOnBoard) 
+OR (NOT TwoPairOnBoard AND HaveFlushDraw AND FlushPossible AND nstraight==4 AND NOT f$wheeldraw AND (NumberOfUnknownSuitedOvercards<=3) AND NOT StraightPossible AND NOT PairOnBoard) 
 OR (IsFlop AND NOT TwoPairOnBoard AND HaveFlushDraw AND nsuitedcommon==2 AND nstraight==4 AND NOT f$wheeldraw AND NOT StraightPossible AND PairOnBoard) 
-OR (IsFlop AND NOT TwoPairOnBoard AND HaveFlushDraw AND FlushPossible AND nstraight==4 AND NOT f$wheeldraw AND `((~srankbits&0x7fff)>>srankhiplayer)<=3 AND NOT StraightPossible AND PairOnBoard) ? 4 :
-   ((NOT TwoPairOnBoard AND HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==0 AND nsuitedcommon==2 AND NOT PairOnBoard) 
+OR (IsFlop AND NOT TwoPairOnBoard AND HaveFlushDraw AND FlushPossible AND nstraight==4 AND NOT f$wheeldraw AND (NumberOfUnknownSuitedOvercards<=3) AND NOT StraightPossible AND PairOnBoard) ? 4 :
+   ((NOT TwoPairOnBoard AND HaveNutFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard) 
 OR (NOT TwoPairOnBoard AND rankloplayer>rankhicommon AND NOT StraightPossible AND NOT PairOnBoard AND HaveFlushDraw AND nsuitedcommon==2) 
 OR(NOT TwoPairOnBoard AND hand$AA AND FlushPossible AND HaveFlushDraw AND NOT PairOnBoard) 
 OR (NOT TwoPairOnBoard AND nstraight==4 AND nstraight>nstraightcommon AND NOT f$wheeldraw AND ishipair AND NOT FlushPossible AND NOT PairOnBoard AND (pokervalcommon < onepair)) 
 OR(HaveFlushDraw AND nsuited>nsuitedcommon AND ishipair AND NOT PairOnBoard)) ? 3 :
-   ((NOT TwoPairOnBoard AND HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==0 AND FlushPossible AND NOT PairOnBoard) 
-OR (NOT TwoPairOnBoard AND HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==0 AND FlushPossible AND nrankedcommon<3) 
+   ((NOT TwoPairOnBoard AND HaveNutFlushDraw AND FlushPossible AND NOT PairOnBoard) 
+OR (NOT TwoPairOnBoard AND HaveNutFlushDraw AND FlushPossible AND nrankedcommon<3) 
 OR (NOT TwoPairOnBoard AND nstraight==4 AND nstraight>nstraightcommon AND NOT f$wheeldraw AND ismidpair AND nrankedcommon<3 AND NOT FlushPossible AND (pokervalcommon < onepair)) 
 OR (NOT TwoPairOnBoard AND HaveFlushDraw AND nsuited>nsuitedcommon AND ismidpair AND nrankedcommon<3 AND (pokervalcommon < onepair)) 
-OR (NOT TwoPairOnBoard AND HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==1 AND nrankedcommon<3) 
-OR (NOT TwoPairOnBoard AND HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==0 AND nsuitedcommon==2 AND nrankedcommon<3) 
-OR (NOT TwoPairOnBoard AND HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==0 AND nsuitedcommon==2 AND nrankedcommon<3) 
-OR (NOT TwoPairOnBoard AND HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==2 AND nrankedcommon<3) 
+OR (NOT TwoPairOnBoard AND HaveSecondNutFlushDraw AND nrankedcommon<3) 
+OR (NOT TwoPairOnBoard AND HaveNutFlushDraw AND nsuitedcommon==2 AND nrankedcommon<3) 
+OR (NOT TwoPairOnBoard AND HaveNutFlushDraw AND nsuitedcommon==2 AND nrankedcommon<3) 
+OR (NOT TwoPairOnBoard AND HaveThirdNutFlushDraw AND nrankedcommon<3) 
 OR (NOT TwoPairOnBoard AND HaveFlushDraw AND nsuitedcommon==2 AND nrankedcommon<3) 
 OR (isthreeofakind AND NOT IsRiver AND NOT PairOnBoard) 
 OR (rankloplayer>rankhicommon AND NOT IsRiver AND f$safeboard AND isonepair AND NOT ispair) 
@@ -1025,12 +1025,12 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 (IsFlop AND nsuitedcommon==2 AND HaveFlushDraw AND PairOnBoard                                    ? 8 : 0) +
 (IsTurn AND nsuitedcommon==2 AND HaveFlushDraw AND NOT PairOnBoard                                    ? 9 : 0) +
 (IsTurn AND nsuitedcommon==2 AND HaveFlushDraw AND PairOnBoard                                    ? 9 : 0) +
-(HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==2 AND FlushPossible AND NOT PairOnBoard ? 7 : 0) + 
-(HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==2 AND FlushPossible AND PairOnBoard ? 5 : 0) + 
-(HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==1 AND FlushPossible AND NOT PairOnBoard ? 8 : 0) + 
-(HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==1 AND FlushPossible AND PairOnBoard ? 6 : 0) + 
-(HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==0 AND FlushPossible AND NOT PairOnBoard ? 9 : 0) + 
-(HaveFlushDraw AND `((~srankbits&0x7fff)>>srankhiplayer)==0 AND FlushPossible AND PairOnBoard ? 7 : 0) + 
+(HaveThirdNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 7 : 0) + 
+(HaveThirdNutFlushDraw AND FlushPossible AND PairOnBoard ? 5 : 0) + 
+(HaveSecondNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 8 : 0) + 
+(HaveSecondNutFlushDraw AND FlushPossible AND PairOnBoard ? 6 : 0) + 
+(HaveNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 9 : 0) + 
+(HaveNutFlushDraw AND FlushPossible AND PairOnBoard ? 7 : 0) + 
 (IsFlop AND rankloplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair                                                                                                             ? 6 : 0) +
 (IsFlop AND rankhiplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair AND NOT(rankloplayer>rankhicommon)                                                                              ? 3 : 0) +
 (IsTurn AND rankloplayer>rankhicommon AND nbetsround_flop<3 AND nplayersplaying==2 AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND NOT PairOnBoard AND NOT(isonepair AND NOT PairOnBoard) ? 6 : 0) +
