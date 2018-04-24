@@ -52,9 +52,9 @@ const int kStringsEqual = 0;
 const int kNumberOfBetrounds = 4;
 const int kBetroundCurrent	 = 0;
 const int kBetroundPreflop	 = 1;
-const int kBetroundFlop		   = 2;
+const int kBetroundFlop	     = 2;
 const int kBetroundTurn	     = 3;
-const int kBetroundRiver	   = 4;
+const int kBetroundRiver     = 4;
 
 // Aztoplayer FCKRA-bits
 const int kMyTurnBitsFold = 0x01;
@@ -120,19 +120,19 @@ const int k_min_buttons_needed_for_my_turn = 2;
 const int k_my_turn_bits_fold_call_raise = 0x07;
 
 // button codes
-const int k_button_i3		  = 3;
-const int k_button_fold		= 10;
-const int k_button_allin	= 11;
-const int k_button_raise	= 12;
-const int k_button_call		= 13;
-const int k_button_check	= 14;
-const int k_button_sitin	= 20;
-const int k_button_sitout	= 21;
-const int k_button_leave	= 22;
-const int k_button_i86    = 86; 
-const int k_button_rematch  = 23;
-const int k_button_prefold	= 24;
-const int k_button_autopost	= 25;
+const int k_button_i3        = 3;
+const int k_button_fold      = 10;
+const int k_button_allin     = 11;
+const int k_button_raise     = 12;
+const int k_button_call      = 13;
+const int k_button_check     = 14;
+const int k_button_sitin     = 20;
+const int k_button_sitout    = 21;
+const int k_button_leave     = 22;
+const int k_button_i86       = 86; 
+const int k_button_rematch   = 23;
+const int k_button_prefold   = 24;
+const int k_button_autopost  = 25;
 const int k_button_undefined = -1;
 
 const int k_double_click_delay = 100; // ms
@@ -579,45 +579,6 @@ const int  kMaxLogSymbolsForWhiteBox = 1;
 
 // For string handling
 const int kOneCharacterExtraForTerminatingNull = 1;
-
-// static or inline
-// to avoid multiple definitions
-// https://stackoverflow.com/questions/6964819/function-already-defined-error-in-c
-static int DefaultButtonNumber(int button_code) {
-  /*
-  Returns the default button number by definition
-  (ignoring label overrides)
-
-  0 - fold button
-  1 - call button
-  2 - raise button
-  3 - allin button.
-  */
-  // i3button
-  if (button_code == k_button_i3) {
-    return button_code;
-  }
-  if ((button_code >= k_button_i86 * k_max_number_of_i86X_buttons) && (button_code < k_button_i86*k_max_number_of_i86X_buttons + k_max_number_of_i86X_buttons))
-    return button_code;
-  int button_number = k_button_undefined;
-  switch (button_code) {
-  case k_button_fold:
-    button_number = 0;
-    break;
-  case k_button_call:
-    button_number = 1;
-    break;
-  case k_button_raise:
-    button_number = 2;
-    break;
-  case k_button_allin:
-    button_number = 3;
-    break;
-  default:
-    break;
-  }
-  return button_number;
-}
 
 // Function to access the name of the action constants.
 // As fold is negative we can no longer use the constants 

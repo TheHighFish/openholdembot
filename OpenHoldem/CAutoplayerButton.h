@@ -22,14 +22,12 @@ class CAutoplayerButton {
  public:
   CAutoplayerButton();
   ~CAutoplayerButton();
- public:
+
   void SetTechnicalName(const CString name);
   void Reset();
   bool Click();
-  bool IsClickable() { 
-    return _clickable; 
-  }
- public:
+  bool IsClickable() { return _clickable; }
+
   bool IsAllin()    { return _button_type == k_autoplayer_function_allin; }
   bool IsRaise()    { return _button_type == k_autoplayer_function_raise; }
   bool IsCall()     { return _button_type == k_autoplayer_function_call; }
@@ -41,16 +39,18 @@ class CAutoplayerButton {
   bool IsLeave()    { return _button_type == k_hopper_function_leave; }
   bool IsRematch()  { return _button_type == k_hopper_function_rematch; }
   bool IsPrefold()  { return _button_type == k_standard_function_prefold; }
- public:
+
   bool IsButtonType(int autoplayer_function_code) { return _button_type == autoplayer_function_code; }
+
  protected:
   // To be used by the scraper
   void SetClickable(bool clickable);
   // Same as above, but to be used with input like "true", "yes", "on", ...
   void SetState(const CString state);
   void SetLabel(const CString label);
- protected:
+
   CCasinoHotkey _hotkey;
+
  private:
   // The button-type of iX-buttons depends on the scraped label.
   // BetPot-buttons don't have a label, they get identified by ID
@@ -69,12 +69,13 @@ class CAutoplayerButton {
   bool IsLabelLeave();
   bool IsLabelRematch();
   bool IsLabelPrefold();
- private:
+
   void PrecomputeButtonType();
- private:
+
   bool _clickable;
   // label = logical name, e.g. "raise"
   CString _label;
+  CString _default_label;
   // technical name = tablemap-object, e.g. "i3button"
   CString _technical_name;
   int _button_type;

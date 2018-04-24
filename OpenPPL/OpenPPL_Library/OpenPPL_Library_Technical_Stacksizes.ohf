@@ -415,4 +415,4 @@ WHEN Others RETURN MyTotalMoney FORCE
 + EffectiveBetsizeInDollars9
 
 ##EffectivePotSize##
-(BigBlindSize > 0) ?`(EffectivePotSizeInDollars / BigBlindSize) : EffectivePotSizeInDollars 
+(BigBlindSize > 0) ? (EffectivePotSizeInDollars / BigBlindSize) : EffectivePotSizeInDollars 
