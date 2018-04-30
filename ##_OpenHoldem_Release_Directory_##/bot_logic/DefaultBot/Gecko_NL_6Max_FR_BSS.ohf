@@ -1768,31 +1768,15 @@ OR [ InEarlyPosition1 AND listGecko_OpenRaise_EP1  ] // 5%
 ((Raises == 1) AND (Calls == 0))
 
 ##f$Chart_ReRaise##
-[ InBigBlind ] ? { 
-    [ raischair==smallblindchair ] ? listGecko03 : // 04%
-    [ raischair==mp2chair ]        ? listGecko13 : // 04%
-    [ raischair==mp3chair ]        ? listGecko14 : // 08%
-    [ raischair==cutoffchair ]     ? listGecko15 : // 12%
-    [ raischair==dealerchair ]     ? listGecko02 : // 15%
-	false } :
-[ InSmallBlind ] ? { 
-    [ raischair==mp2chair ]    ? listGecko13 : // 04%
-    [ raischair==mp3chair ]    ? listGecko14 : // 08%
-    [ raischair==cutoffchair ] ? listGecko15 : // 12%
-    [ raischair==dealerchair ] ? listGecko02 : // 15%
-	false } :
-[ InButton ] ? {
-    [ raischair==mp2chair ] ? listGecko13 :    // 04%
-    [ raischair==mp3chair ]    ? listGecko14 : // 08%
-    [ raischair==cutoffchair ] ? listGecko15 : // 12%
-	false } :
-[ InCutOff ] ? { 
-    [ raischair==mp2chair ] ? listGecko13 : // 04%
-    [ raischair==mp3chair ] ? listGecko14 : // 08%
-	false } :
-[ InMiddlePosition3 ] ? {
-    [ raischair==3 ] ? listGecko13 : // 04%
-	false } :
+[ raischair==smallblindchair ] ? listGecko_3bet_vs_SmallBlind : 
+[ raischair==dealerchair ]     ? listGecko_3bet_vs_Dealer : 
+[ raischair==cutoffchair ]     ? listGecko_3bet_vs_CutOff : 
+[ raischair==mp3chair ]        ? listGecko_3bet_vs_MP3 : 
+[ raischair==mp2chair ]        ? listGecko_3bet_vs_MP2 : 
+[ raischair==mp1chair ]        ? listGecko_3bet_vs_MP1 : 
+[ raischair==ep3chair ]        ? listGecko_3bet_vs_EP3 : 
+[ raischair==ep2chair ]        ? listGecko_3bet_vs_EP2 : 
+[ raischair==ep1chair ]        ? listGecko_3bet_vs_EP1 :
 false
 
 ##f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us##
@@ -2284,22 +2268,6 @@ KK  AA  QQ
 AKs  
 AKo
 
-##listGecko13##
-KK  AA  QQ  JJ  TT  
-AKs  
-AKo
-
-##listGecko14##
-KK  AA  QQ  JJ  TT  99  88  
-AKs AQs  
-AKo
-
-##listGecko15##
-KK  AA  QQ  JJ  TT  99  88  77  
-AKs AQs AJs ATs  
-AKo AQo AJo 
-KQs  
-
 ##listGecko06##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
@@ -2422,3 +2390,50 @@ TT  JJ  QQ  KK  AA
 AQS AKS 
 KQS
 AQo AKo
+
+##listGecko_3bet_vs_SmallBlind##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
+KJs KQs  
+QTs QJs  
+JTs  
+T9s  
+98s  
+ATo  AJo AQo AKo 
+KQo 
+
+##listGecko_3bet_vs_Dealer##
+22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+A9s ATs AJs AQs AKs  
+KTs KJs KQs  
+QJs  
+JTs  
+T9s  
+98s  
+ATo  AJo AQo AKo 
+KJo  KQo  
+
+##listGecko_3bet_vs_CutOff##
+KK  AA  QQ  JJ  TT  99  88  77  
+AKs AQs AJs ATs  
+AKo AQo AJo 
+KQs
+
+##listGecko_3bet_vs_MP3##
+KK  AA  QQ  JJ  TT  99  88  
+AKs AQs  
+AKo
+
+##listGecko_3bet_vs_MP2##
+KK  AA  QQ  JJ  TT  
+AKs  
+AKo
+
+##listGecko_3bet_vs_MP1##
+
+##listGecko_3bet_vs_MP3##
+
+##listGecko_3bet_vs_EP2##
+
+##EistGecko_3bet_vs_MP1##
+
