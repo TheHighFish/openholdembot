@@ -298,21 +298,6 @@ WHEN f$Initiative_Villian   RETURN f$river_raise_noinitiative FORCE
 WHEN f$Initiative_Nobody    RETURN f$river_raise_noaction FORCE
 WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
 
-##f$logicalpositionrais##
-// Return values
-//   1 = SB
-//   2 = BB
-//   6 = BU
-//   5 = CO
-//   4 = MP3
-//   3 = MP2 (or more early on FR-games)
-WHEN (dealpositionrais == 1) RETURN 1 FORCE
-WHEN (dealpositionrais == 2) RETURN 2 FORCE
-WHEN (dealpositionrais == (nplayersplaying - 0)) RETURN 6 FORCE
-WHEN (dealpositionrais == (nplayersplaying - 1)) RETURN 5 FORCE
-WHEN (dealpositionrais == (nplayersplaying - 2)) RETURN 4 FORCE
-WHEN Others RETURN 3 FORCE
-
 ##f$Initiative_Hero##
 IsPreflop AND nbetsround_preflop>1 AND NOT didcallround_preflop ? 1 :
 IsFlop AND nbetsround_preflop>1 AND NOT didcallround_preflop ? 1 :
@@ -1783,29 +1768,32 @@ OR [ InEarlyPosition1 AND listGecko_OpenRaise_EP1  ] // 5%
 ((Raises == 1) AND (Calls == 0))
 
 ##f$Chart_ReRaise##
-[ InSmallBlind ] ? { // sb
-    [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
-    [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
-    [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
-    [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
-	0 } :
-[ InBigBlind ] ? { // bb
-    [ f$logicalpositionrais==1 ] ? listGecko03 : // 04%
-    [ f$logicalpositionrais==3 ] ? listGecko13 : // 04%
-    [ f$logicalpositionrais==4 ] ? listGecko14 : // 08%
-    [ f$logicalpositionrais==5 ] ? listGecko15 : // 12%
-    [ f$logicalpositionrais==6 ] ? listGecko02 : // 15%
-	0 } :
-[ InMiddlePosition3 ] ? { // utg+1
-    [ f$logicalpositionrais==3 ] ? listGecko13 : 0 } : // 04%
-[ InCutOff ] ? { // co
-    [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
-    [ f$logicalpositionrais==4 ] ? listGecko14 : 0 } : // 08%
-[ InButton ] ? { // button
-    [ f$logicalpositionrais==3 ] ? listGecko13 :       // 04%
-    [ f$logicalpositionrais==4 ] ? listGecko14 :       // 08%
-    [ f$logicalpositionrais==5 ] ? listGecko15 : 0 } : // 12%
-0
+[ InBigBlind ] ? { 
+    [ raischair==smallblindchair ] ? listGecko03 : // 04%
+    [ raischair==mp2chair ]        ? listGecko13 : // 04%
+    [ raischair==mp3chair ]        ? listGecko14 : // 08%
+    [ raischair==cutoffchair ]     ? listGecko15 : // 12%
+    [ raischair==dealerchair ]     ? listGecko02 : // 15%
+	false } :
+[ InSmallBlind ] ? { 
+    [ raischair==mp2chair ]    ? listGecko13 : // 04%
+    [ raischair==mp3chair ]    ? listGecko14 : // 08%
+    [ raischair==cutoffchair ] ? listGecko15 : // 12%
+    [ raischair==dealerchair ] ? listGecko02 : // 15%
+	false } :
+[ InButton ] ? {
+    [ raischair==mp2chair ] ? listGecko13 :    // 04%
+    [ raischair==mp3chair ]    ? listGecko14 : // 08%
+    [ raischair==cutoffchair ] ? listGecko15 : // 12%
+	false } :
+[ InCutOff ] ? { 
+    [ raischair==mp2chair ] ? listGecko13 : // 04%
+    [ raischair==mp3chair ] ? listGecko14 : // 08%
+	false } :
+[ InMiddlePosition3 ] ? {
+    [ raischair==3 ] ? listGecko13 : // 04%
+	false } :
+false
 
 ##f$BettingAction_One_Raiser_And_Callers_In_Front_Of_Us##
 ((Raises == 1) AND (Calls >= 1))

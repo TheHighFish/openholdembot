@@ -168,6 +168,8 @@
 //   * Replaced ` (backtick) by more verbose "BitCount"-operator
 //     and finally removed this code completely, as counting bits 
 //     was used to detect GaveThirdNutFlushDraw and similar.
+//   * Removed f$logicalpositionrais in facour of expressions like
+//     raischair == cutoffchair.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
