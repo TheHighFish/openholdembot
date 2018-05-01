@@ -24,7 +24,7 @@
 //*****************************************************************************
 //
 // For the technical and logical changes please refer to the file
-//   Gecko_changekig.txt
+//   Gecko_changelog.txt
 //
 //*****************************************************************************
 //
@@ -2444,7 +2444,7 @@ AA  KK  QQ  JJ
 AKs
 AKo
 
-##EistGecko_3bet_vs_EP1##
+##listGecko_3bet_vs_EP1##
 AA KK QQ 
 AKs
 AKo
