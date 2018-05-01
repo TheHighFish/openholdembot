@@ -2187,12 +2187,12 @@ WHEN pt_flop_fold_to_cbet0 < 0.40 RETURN true FORCE
 //*****************************************************************************
 
 ##listGecko01##
-66  77  88  99  TT  JJ  QQ  KK  AA  
+66  77  88  99  TT  JJ  QQ  AA  KK  
 ATs AJs AQs AKs KQs QJs JTs  
 AJo  AQo AKo
 
 ##listGecko02##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A9s ATs AJs AQs AKs  
 KTs KJs KQs  
 QJs  
@@ -2203,7 +2203,7 @@ ATo  AJo AQo AKo
 KJo  KQo  
 
 ##listGecko03##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
 KJs KQs  
 QTs QJs  
@@ -2214,7 +2214,7 @@ ATo  AJo AQo AKo
 KQo 
 
 ##listGecko04##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A5s A6s A7s A8s A9s ATs AJs AQs AKs  
 K9s KTs KJs KQs  
 Q9s QTs QJs  
@@ -2230,7 +2230,7 @@ QTo  QJo
 JTo 
 
 ##listGecko05##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
 K8s K9s KTs KJs KQs  
 Q9s QTs QJs  
@@ -2261,15 +2261,15 @@ AKo
 AA  KK  QQ  
 
 ##listGecko11##
-KK  AA  QQ  
+AA  KK  QQ  
 
 ##listGecko12##
-KK  AA  QQ  
+AA  KK  QQ  
 AKs  
 AKo
 
 ##listGecko06##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
 K7s K8s K9s KTs KJs KQs  
 Q8s Q9s QTs QJs  
@@ -2286,7 +2286,7 @@ QTo  QJo
 JTo 
 
 ##listGecko07##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
 K7s K8s K9s KTs KJs KQs  
 Q8s Q9s QTs QJs  
@@ -2304,21 +2304,21 @@ J9o  JTo
 T9o  
 
 ##listGecko10##
-KK  AA  
+AA  KK  
 
 ##listGeckoSetMining##
-KK  AA  QQ  JJ  TT  99  88  77  66  55  44  33  22  
+AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQs AKs  
 AKo  
 KQs
 
 ##listGecko99##
-QQ  KK  AA  
+QQ  AA  KK  
 AKs  
 AKo
 
 ##listGecko09##
-88  99  TT  JJ  QQ  KK  AA  
+88  99  TT  JJ  QQ  AA  KK  
 AJs AQs AKs  
 KQs  
 AKo AQo 
@@ -2336,7 +2336,7 @@ AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs
 AKo AQo AJo ATo 
 
 ##listGecko900##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
 K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs  
 Q2s Q3s Q4s Q5s Q6s Q7s Q8s Q9s QTs QJs  
@@ -2361,7 +2361,7 @@ T7o  T8o  T9o
 ##listGecko_OpenRaise_MP1##
 // Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
 // which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
-88  99  TT  JJ  QQ  KK  AA
+88  99  TT  JJ  QQ  AA  KK
 A9s ATs AJs AQs AKs 
 KTs KJs KQs
 QJs
@@ -2370,7 +2370,7 @@ AJo AQo AKo
 ##listGecko_OpenRaise_EP3##
 // Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
 // which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
-88  99  TT  JJ  QQ  KK  AA
+88  99  TT  JJ  QQ  AA  KK
 ATS AJS AQS AKS 
 KTS KJS KQS
 QJs
@@ -2379,20 +2379,20 @@ AQo AKo
 ##listGecko_OpenRaise_EP2##
 // Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
 // which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
-88  99  TT  JJ  QQ  KK  AA
+88  99  TT  JJ  QQ  AA  KK
 ATS AJS AQS AKS 
 KJS KQS
 AQo AKo 
 
 ##listGecko_OpenRaise_EP1##
 // List for EP1 made up on my own ;-)
-TT  JJ  QQ  KK  AA
+TT  JJ  QQ  AA  KK
 AQS AKS 
 KQS
 AQo AKo
 
 ##listGecko_3bet_vs_SmallBlind##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
 KJs KQs  
 QTs QJs  
@@ -2403,7 +2403,7 @@ ATo  AJo AQo AKo
 KQo 
 
 ##listGecko_3bet_vs_Dealer##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  KK  AA  
+22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A9s ATs AJs AQs AKs  
 KTs KJs KQs  
 QJs  
@@ -2414,26 +2414,37 @@ ATo  AJo AQo AKo
 KJo  KQo  
 
 ##listGecko_3bet_vs_CutOff##
-KK  AA  QQ  JJ  TT  99  88  77  
+AA  KK  QQ  JJ  TT  99  88  77  
 AKs AQs AJs ATs  
 AKo AQo AJo 
 KQs
 
 ##listGecko_3bet_vs_MP3##
-KK  AA  QQ  JJ  TT  99  88  
+AA  KK  QQ  JJ  TT  99  88  
 AKs AQs  
 AKo
 
 ##listGecko_3bet_vs_MP2##
-KK  AA  QQ  JJ  TT  
-AKs  
+AA  KK  QQ  JJ  TT  99
+AKs AQs 
 AKo
 
 ##listGecko_3bet_vs_MP1##
+AA  KK  QQ  JJ  TT  99
+AKs AQs
+AKo
 
 ##listGecko_3bet_vs_MP3##
+AA  KK  QQ  JJ  TT
+AKs 
+AKo
 
 ##listGecko_3bet_vs_EP2##
+AA  KK  QQ  JJ
+AKs
+AKo
 
 ##EistGecko_3bet_vs_MP1##
-
+AA KK QQ 
+AKs
+AKo
