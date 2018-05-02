@@ -7,6 +7,7 @@ NEW STUFF:
 - Improved dealerchair-detection.
   If no button can be found Openholdem searches for the small-blind;
   if no small blind can be found it takes the last known value.
+  Thanks to Anon for reporting problems with unknown dealerchair in case of bad tablemap.
   [THF]
 - Improved handreset-detector.
   OpenHoldem supports now 3 more handreset-methods:
@@ -16,6 +17,11 @@ NEW STUFF:
   and OpenHoldem will execute a handreset, when multiple triggers
   happen within N heartbeats.
   [THF]
+  
+BUG FIXES:
+- OpenHoldem 13.0.1 by accident required some MicroSoft debug-DLLs.
+  This has now been fixed.
+  [Nik0]
 
 MAINTENANCE:
 - The OH-script autoplayer-functions f$alli and f$rais 
