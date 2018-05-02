@@ -1,4 +1,12 @@
-﻿v﻿12.0.3 2017-10-18
+﻿v﻿13.0.2 2017-05-02
+==================
+NEW STUFF:
+- Support for s§iXbuttondefaultlabel.
+  For details please refer to the manual.
+  [Nik0]
+  
+
+v﻿12.0.3 2017-10-18
 ==================
 MAINTENANCE:
 - Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 

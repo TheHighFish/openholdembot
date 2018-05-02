@@ -1,8 +1,21 @@
-﻿﻿v﻿13.0.2 2018-02-xx
+﻿﻿v﻿13.0.2 2018-05-02
 ==================
 NEW STUFF:
-- handreset-detector
-- detection of the dealerchair
+- Support for s§iXbuttondefaultlabel.
+  For details please refer to the manual.
+  [Nik0]
+- Improved dealerchair-detection.
+  If no button can be found Openholdem searches for the small-blind;
+  if no small blind can be found it takes the last known value.
+  [THF]
+- Improved handreset-detector.
+  OpenHoldem supports now 3 more handreset-methods:
+    * visible antes
+	* disappearing showdown-cards of opponents
+	* visible autoplayer-buttons after fold
+  and OpenHoldem will execute a handreset, when multiple triggers
+  happen within N heartbeats.
+  [THF]
 
 MAINTENANCE:
 - The OH-script autoplayer-functions f$alli and f$rais 
