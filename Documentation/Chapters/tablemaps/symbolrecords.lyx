@@ -172,7 +172,7 @@ Valid symbol records
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="24" columns="2">
+<lyxtabular version="3" rows="25" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="25text%">
 <column alignment="left" valignment="top" width="75text%">
@@ -1241,7 +1241,7 @@ If this symbol exists and is non-zero OpenHoldem will know that it is connected
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1250,7 +1250,7 @@ ispopup
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1261,6 +1261,73 @@ If this symbol exists and is non-zero OpenHoldem will know that it is connected
  This feature can be used to connect OpenHoldem to known popup-windows with
  a minimalistic tablemap and then click confirmation-buttons with the i86x-regio
 ns or do other simple hopper-tasks.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+iXbuttondefaultlabe
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional default label for button X.
+ The default label gets used when the button-text can't get scraped.
+ X = 0..9, A..F.
+ Supported values are:
+\end_layout
+
+\begin_layout Itemize
+allin
+\end_layout
+
+\begin_layout Itemize
+raise
+\end_layout
+
+\begin_layout Itemize
+call
+\end_layout
+
+\begin_layout Itemize
+check
+\end_layout
+
+\begin_layout Itemize
+fold
+\end_layout
+
+\begin_layout Itemize
+autopost
+\end_layout
+
+\begin_layout Itemize
+sitin
+\end_layout
+
+\begin_layout Itemize
+sitout
+\end_layout
+
+\begin_layout Itemize
+leave
+\end_layout
+
+\begin_layout Itemize
+rematch
+\end_layout
+
+\begin_layout Itemize
+prefold
 \end_layout
 
 \end_inset
