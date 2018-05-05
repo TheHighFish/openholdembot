@@ -1,0 +1,1222 @@
+##Termita_Notes##
+//////////////////////////////////////////////////////////////////
+// Description:
+//
+// A full Ring Bodog Beginners SitnGo Profile based on the Tetre  
+// Framework with additional changes contributed by:
+//
+//                           xiquetete 
+//
+//
+// Table: Full Ring
+// Turbo: Unknown
+// Target: Unknown... depends on how much extra work you put in
+//
+// You MUST Uncomment line 104, 105, 106, or 107 to represent
+// the poker room you play at. <It determines the early game>
+// Lines 121-122 will also allow you to turn on additional aggression
+// Recommendations... create a better Heads Up play
+//
+// Categories of Hands in this profile
+//
+// Category 1: AA, KK
+// Category 2: QQ, AKs, AK, JJ
+// Category 3: AQs, AQ, TT, 99
+// Category 4: AJs, KQs, 88, 77
+// Category 5: AJ, ATs, AT, KQ, KJs, 66, 55
+// Category 6: A9s-A2s, KJ, KTs, QJs, QTs, JTs, 44, 33, 22
+// Category 7: A9-A2, KT, QJ, QT, JT, T9s, 98s, 87s, 76s, 65s, 54s
+// Category 8: K9s, K9, K8s, Q9s, Q8s, J9s, T8s, T9, 97s, 98, 86s, 
+//             87, 75s, 76, 64s
+//
+//////////////////////////////////////////////////////////////////
+
+##Termita_SNG_Preflop##
+// Standard Tetre HouseKeeping:
+// DO NOT EDIT
+// Generic Variables
+When BotsLastAction = None SET user_BLA_None
+When BotsLastAction = None SET user_True
+
+// Version Identifier
+When user_BLA_None SET user_Bodog_FullRing_Beginners_SNG_V01_005
+
+// DO NOT EDIT
+// Poker Site Identification
+When user_BLA_None SET user_Site_Bodog
+
+
+// Post Bubble Aggression Uncomment to play aggresively default is passive
+// When user_BLA_None Set user_Aggressive_Post_Bubble
+
+
+// Aggression Factor 
+// You MAY have the bot play a more aggressive game by uncommenting
+// ONE or MORE of the lines below:
+//
+// Factor 1: Play AA and KK even within Multi-Way Pots
+// Factor 2: Play ATC from the Small Blind with 2 or more callers
+//           and a StackSize > 12 <but you can restrict it>
+//(remove the // to enable the feature)
+//
+// When user_BLA_None Set user_Aggression_Factor_1
+// When user_BLA_None Set user_Aggression_Factor_2
+
+//
+// NO OTHER USER OPTION CAN BE SET PAST THIS LINE
+// However, you can change the handgroups as required
+//
+// ////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// Default setting for Post Bubble if Aggressive is not set
+// ////////////////////////////////////////////////////////////////
+When user_BLA_None And NOT (user_Aggressive_Post_Bubble) SET user_Tame_Post_Bubble
+
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// Table Type Variables
+// <Messing with these is bound to cause problems...caveat emptor>
+//////////////////////////////////////////////////////////////////
+When user_BLA_None And OpponentsAtTable > 5 SET user_FullRing
+When user_BLA_None And OpponentsAtTable = 1 SET user_HeadsUp
+
+When user_BLA_None And user_Aggressive_Post_Bubble And OpponentsAtTable = 5 SET user_Bubble
+When user_BLA_None And user_Aggressive_Post_Bubble And OpponentsAtTable < 5 And NOT (user_HeadsUp) SET user_InTheMoney
+When user_BLA_None And user_Tame_Post_Bubble And OpponentsAtTable = 2 SET user_InTheMoney
+When user_BLA_None And user_Tame_Post_Bubble And NOT (user_FullRing OR user_InTheMoney OR user_HeadsUp) SET user_Bubble
+
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// Game State by Room Variables
+//
+// Note: You "can" edit this if you want to become more involved
+// before the "bingo" rounds are over... Edit at own risk
+//////////////////////////////////////////////////////////////////
+// @Trish Options for other popular rooms and turbo format required
+When user_BLA_None And user_FullRing And 
+ NOT (user_Site_iPoker OR user_Site_UB OR user_Site_Bodog OR user_Site_Cake) 	Set user_Site_Generic
+When user_BLA_None And user_FullRing And user_Site_iPoker And BigBlindSize <= 60 	Set user_GameState_Early
+When user_BLA_None And user_FullRing And user_Site_UB And BigBlindSize <= 30 		Set user_GameState_Early
+When user_BLA_None And user_FullRing And user_Site_Cake And BigBlindSize <= 50 		Set user_GameState_Early
+When user_BLA_None And user_FullRing And user_Site_Bodog And BigBlindSize <= 60 	Set user_GameState_Early
+When user_BLA_None And user_FullRing And user_Site_Generic And BigBlindSize <= 60 SET user_GameState_Early
+When user_BLA_None And user_FullRing And NOT (user_GameState_Early) SET user_GameState_Middle
+
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// Table Position Variables
+// Standard Definitions
+//////////////////////////////////////////////////////////////////
+When user_BLA_None And StillToAct = 9							Set user_EP1
+When user_BLA_None And StillToAct = 8							Set user_EP2
+When user_BLA_None And StillToAct = 7							Set user_EP3
+When user_BLA_None And StillToAct = 6 							Set user_MP1
+When user_BLA_None And StillToAct = 5 							Set user_MP2
+When user_BLA_None And StillToAct = 4							Set user_MP3
+When user_BLA_None And StillToAct = 3 							Set user_Cutoff
+When user_BLA_None And StillToAct = 2 							Set user_Button
+When user_BLA_None And InSmallBlind 							Set user_SBlind
+When user_BLA_None And InBigBlind 								Set user_BBlind
+
+// Grouping variables for Full Ring Play
+When user_BLA_None And user_FullRing 
+ And (user_Cutoff OR user_MP3)									Set user_MP
+When user_BLA_None And user_FullRing 
+ And (user_EP1 OR user_EP2 OR user_EP3 OR user_MP1 OR user_MP2) SET user_EP
+
+
+//////////////////////////////////////////////////////////////////
+// Variables Organized by Game Play 
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+// Section 1 - Regular Full Ring Play Variables
+//////////////////////////////////////////////////////////////////
+When user_BLA_None And user_FullRing And StackSize < 2 			Set user_Stack_FullRing_0_2
+When user_BLA_None And user_FullRing And StackSize < 5 			Set user_Stack_FullRing_0_5
+When user_BLA_None And user_FullRing And (StackSize >= 5 
+ And StackSize <= 11) 											Set user_Stack_FullRing_5_12
+When user_BLA_None And user_FullRing And StackSize >= 12		Set user_Stack_FullRing_12P
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// Bubble Variables
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+// Section 2 - On the Bubble Play Variables
+//////////////////////////////////////////////////////////////////
+When user_BLA_None And user_Bubble And StackSize >= 10 					Set user_Bubble_Stack_10P
+When user_BLA_None And user_Bubble And StackSize >= 8 And StackSize <= 9	Set user_Bubble_Stack_8_9
+When user_BLA_None And user_Bubble And StackSize >= 6 And StackSize <= 7	Set user_Bubble_Stack_6_8
+When user_BLA_None And user_Bubble And StackSize >= 4 And StackSize <= 5	Set user_Bubble_Stack_4_6
+When user_BLA_None And user_Bubble And StackSize >= 2 And StackSize <= 3	Set user_Bubble_Stack_2_4
+When user_BLA_None And user_Bubble And StackSize < 2					Set user_Bubble_Stack_0_2
+When user_BLA_None And user_Bubble And OpponentsWithHigherStack = 0 	Set user_Bubble_BigStack
+When user_BLA_None And user_Bubble And OpponentsWithLowerStack = 0 		Set user_Bubble_SmallStack
+When user_BLA_None And user_Bubble 
+ And NOT (user_Bubble_BigStack OR user_Bubble_SmallStack)				Set user_Bubble_MiddleStack
+When user_BLA_None And user_Bubble 
+ And MaxStillToActStackSize > 100% StackSize 							Set user_Bubble_We_Are_Covered
+
+
+//////////////////////////////////////////////////////////////////
+// Section 3 - In The Money Play Variables $$$$$$
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// In The Money Stack Size Variables (Relevant Stack Calculated)
+// HSS = Hero Stack Size
+// VSS = Villan Stack Size
+// RSS = Relevant Stack Size
+//////////////////////////////////////////////////////////////////
+When user_BLA_None And user_InTheMoney And StackSize >= 10 				Set user_InTheMoney_HSS_10P
+When user_BLA_None And user_InTheMoney 
+ And StackSize >= 8 And StackSize < 10 								Set user_InTheMoney_HSS_8_9
+When user_BLA_None And user_InTheMoney 
+ And StackSize >= 6 And StackSize <= 7 								Set user_InTheMoney_HSS_6_8
+When user_BLA_None And user_InTheMoney 
+ And StackSize >= 4 And StackSize <= 5									Set user_InTheMoney_HSS_4_6
+When user_BLA_None And user_InTheMoney 
+ And StackSize >= 2 And StackSize <= 3									Set user_InTheMoney_HSS_2_4
+When user_BLA_None And user_InTheMoney And StackSize < 2				Set user_InTheMoney_HSS_0_2
+
+// Sub Variables - Large, Medium, or Small Stack
+When user_BLA_None And user_InTheMoney 
+ And OpponentsWithHigherStack = 0 										Set user_InTheMoney_BigStack
+When user_BLA_None And user_InTheMoney 
+ And OpponentsWithLowerStack = 0 										Set user_InTheMoney_SmallStack
+When user_BLA_None And user_InTheMoney 
+ And NOT (user_InTheMoney_BigStack OR user_InTheMoney_SmallStack) 		Set user_InTheMoney_MiddleStack
+
+
+//////////////////////////////////////////////////////////////////
+// Section 4 - Heads Up Play Variables
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// Heads Up Stack Size Variables (Relevant Stack Calculated)
+// HSS = Hero Stack Size
+// VSS = Villan Stack Size
+// RSS = Relevant Stack Size
+//////////////////////////////////////////////////////////////////
+When user_BLA_None And user_HeadsUp And StackSize <= 8					Set user_HeadsUp_HSS_0_8
+When user_BLA_None And user_HeadsUp 
+ And StackSize >= 8 And StackSize <= 12								Set user_HeadsUp_HSS_8_12
+When user_BLA_None And user_HeadsUp And StackSize >= 12 				Set user_HeadsUp_HSS_12P
+
+When user_BLA_None And user_HeadsUp And MaxOpponentStackSize <= 8		Set user_HeadsUp_VSS_0_8
+When user_BLA_None And user_HeadsUp And 
+ MaxOpponentStackSize >= 8 And MaxOpponentStackSize <= 12				Set user_HeadsUp_VSS_8_12
+When user_BLA_None And user_HeadsUp And MaxOpponentStackSize >= 12 		Set user_HeadsUp_VSS_12P
+
+When user_BLA_None And user_HeadsUp 
+ And (user_HeadsUp_HSS_0_8 OR user_HeadsUp_VSS_0_8)					Set user_HeadsUp_RSS_0_8
+When user_BLA_None And user_HeadsUp 
+ And (user_HeadsUp_HSS_8_12 OR user_HeadsUp_VSS_8_12) 
+ And NOT (user_HeadsUp_RSS_0_8)										Set user_HeadsUp_RSS_8_12
+When user_BLA_None And user_HeadsUp 
+ And (user_HeadsUp_HSS_12P OR user_HeadsUp_VSS_12P) 
+ And NOT (user_HeadsUp_RSS_0_8 OR user_HeadsUp_RSS_8_12)				Set user_HeadsUp_RSS_12P
+
+
+When user_BLA_None And user_HeadsUp And StackSize < 2					Set user_HeadsUp_HSS_0_2
+When user_BLA_None And user_HeadsUp 
+ And StackSize >= 2 And StackSize <= 3									Set user_HeadsUp_HSS_2_4
+When user_BLA_None And user_HeadsUp 
+ And StackSize >= 4 And StackSize <= 12								Set user_HeadsUp_HSS_4_12
+ 
+When user_BLA_None And user_HeadsUp And MaxOpponentStackSize < 2		Set user_HeadsUp_VSS_0_2
+When user_BLA_None And user_HeadsUp 
+ And MaxOpponentStackSize >= 2 And MaxOpponentStackSize <= 3 			Set user_HeadsUp_VSS_2_4
+When user_BLA_None And user_HeadsUp 
+ And MaxOpponentStackSize >= 4 And MaxOpponentStackSize <= 12			Set user_HeadsUp_VSS_4_12
+
+When user_BLA_None And user_HeadsUp 
+ And (user_HeadsUp_HSS_0_2 OR user_HeadsUp_VSS_0_2)					Set user_HeadsUp_RSS_0_2
+When user_BLA_None And user_HeadsUp 
+ And (user_HeadsUp_HSS_2_4 OR user_HeadsUp_VSS_2_4) 
+ And NOT (user_HeadsUp_RSS_0_2)										Set user_HeadsUp_RSS_2_4
+When user_BLA_None And user_HeadsUp 
+ And (user_HeadsUp_HSS_4_12 OR user_HeadsUp_VSS_4_12) 
+ And NOT (user_HeadsUp_RSS_0_2 OR user_HeadsUp_RSS_2_4)				Set user_HeadsUp_RSS_4_12
+
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// Villan Variables
+//////////////////////////////////////////////////////////////////
+When OpponentIsAllin 													Set user_Opponent_ALL_IN
+
+// Early Raiser warning - Used in PostFlop
+When user_BLA_None And Raises = 1 And LastRaiserPosition >= 6 SET userEarlyRaiser
+
+//////////////////////////////////////////////////////////////////
+//
+// OK, Lets Play the Game
+//
+//////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+// Pot Commited
+// If we are more than 1/3 stack into the pot, we are committed
+// If we get to < 2 BB at any stage except headsup, we shove if
+// in a blind
+//////////////////////////////////////////////////////////////////
+// Personally, I don't think 1/3 of the stack really commits us, we
+// are a bot afterall, and able to come back from small stacks
+// Section 1 - Generic Rule 
+// When TotalInvested > 33% StackSize
+// When user_True RaiseMax Force
+
+//////////////////////////////////////////////////////////////////
+// Heads Up Play
+//////////////////////////////////////////////////////////////////
+// In the Small Blind
+// 1. When either stack < 8BB push ATC @Trish Change this
+// 2. When either stack 8-12 BB Push Category 8 or better
+// 3, When more than 12 BB RaiseBy 3 for Category 8 or better and call
+//   with category 5 or better
+When user_HeadsUp And user_SBlind
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat1 RaiseMax Force
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat2 Call Force
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat3 Call Force
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat4 Call Force
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat5 Call Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat1 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat2 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat3 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat4 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat5 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat6 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat7 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And listHUCat8 RaiseBy 3 Force
+ When user_HeadsUp_RSS_8_12 And listHUCat1 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat2 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat3 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat4 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat5 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat6 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat7 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat8 RaiseMax Force
+ When user_HeadsUp_RSS_0_8 RaiseMax Force
+
+// In the Big Blind and Small Blind Limps
+// 1. With either stack less than 8 BB push ATC @Trish change this
+// 2. With either stack 8-12 BB Push Category 7 or better
+// 3. With either stack > 12BB RaiseBy 4 with Category 6 or better and
+//   call with Category 4 or better
+When user_HeadsUp And user_BBlind
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat1 RaiseMax Force
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat2 Call Force
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat3 Call Force
+ When BotsLastAction = Raise And user_HeadsUp_RSS_12P And listHUCat4 Call Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 0 And listHUCat1 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 0 And listHUCat2 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 0 And listHUCat3 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 0 And listHUCat4 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 0 And listHUCat5 RaiseBy 3 Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 0 And listHUCat6 RaiseBy 3 Force
+ When user_HeadsUp_RSS_8_12 And listHUCat1 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat2 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat3 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat4 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat5 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat6 RaiseMax Force
+ When user_HeadsUp_RSS_8_12 And listHUCat7 RaiseMax Force
+ When user_HeadsUp_RSS_0_8 RaiseMax Force 
+
+// In the Big Blind and Small Blind Raises
+// I can't remember the ruleset, but you can re-create it from code if need be
+When user_HeadsUp And user_BBlind
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall > 3 And listHUCat1 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall > 3 And listHUCat2 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall > 3 And listHUCat3 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall > 3 And listHUCat4 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall > 3 And listHUCat5 RaiseMax Force
+
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall <= 3 And listHUCat1 SET user_RaiseQuad 
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall <= 3 And listHUCat2 SET user_RaiseQuad 
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall <= 3 And listHUCat3 SET user_RaiseQuad 
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall <= 3 And listHUCat4 SET user_RaiseQuad 
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall <= 3 And listHUCat5 SET user_RaiseQuad 
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall <= 3 And listHUCat6 Call Force
+ When user_BLA_None And user_HeadsUp_RSS_12P And Raises = 1 And AmountToCall <= 3 And listHUCat7 Call Force
+
+ When user_BLA_None And user_HeadsUp_RSS_4_12 And Raises = 1 And listHUCat1 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_4_12 And Raises = 1 And listHUCat2 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_4_12 And Raises = 1 And listHUCat3 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_4_12 And Raises = 1 And listHUCat4 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_4_12 And Raises = 1 And listHUCat5 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_4_12 And Raises = 1 And listHUCat6 RaiseMax Force
+
+ When user_BLA_None And user_HeadsUp_RSS_2_4 And Raises = 1 And listHUCat1 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_2_4 And Raises = 1 And listHUCat2 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_2_4 And Raises = 1 And listHUCat3 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_2_4 And Raises = 1 And listHUCat4 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_2_4 And Raises = 1 And listHUCat5 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_2_4 And Raises = 1 And listHUCat6 RaiseMax Force
+ When user_BLA_None And user_HeadsUp_RSS_2_4 And Raises = 1 And listHUCat7 RaiseMax Force
+
+ When user_BLA_None And user_HeadsUp_RSS_0_2 RaiseMax Force
+
+
+//////////////////////////////////////////////////////////////////
+//InTheMoney 3Way Play
+//////////////////////////////////////////////////////////////////
+// Aggression Factor Override
+// You can add additional lines with additional Hand Groups as required
+//
+When user_InTheMoney And user_Opponent_ALL_IN And user_Aggression_Factor_1
+ When listITMCat1 Call Force
+
+//Regular processing of Opponent All In with 2 or more in the pot
+When user_InTheMoney And user_Opponent_ALL_IN 
+ // Get out of the way if 2 Opponents want to clash
+ When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
+
+// Short Stack Shoving
+When user_InTheMoney And (user_SBlind OR user_BBlind)
+ // shove with microstack in a blind
+ When user_InTheMoney_Stack_0_2 RaiseMax Force
+
+
+When user_InTheMoney And user_InTheMoney_BigStack And user_Opponent_ALL_IN
+ // When we are in the Big Blind
+ When user_BBlind And AmountToCall < 2 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat5 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat6 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat7 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat8 Call Force
+
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat5 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat6 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat7 Call Force
+
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat5 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat6 Call Force
+
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat5 Call Force
+
+ When user_BBlind And AmountToCall >= 8 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 8 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 8 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 8 And listITMCat4 Call Force
+
+ // When we are NOT in the Big Blind
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat5 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat6 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat7 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat5 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat6 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat5 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat4 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 8 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 8 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 8 And listITMCat3 Call Force
+ 
+
+When user_InTheMoney And user_InTheMoney_MiddleStack And user_Opponent_ALL_IN
+ When user_BBlind And AmountToCall < 2 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat5 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat6 Call Force
+
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat5 Call Force
+
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat4 Call Force
+
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat3 Call Force
+ 
+ When user_BBlind And AmountToCall >= 8 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 8 And listITMCat2 Call Force
+
+ // When we are NOT in the Big Blind
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat5 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat4 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat3 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat2 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 8 And listITMCat1 Call Force
+
+When user_InTheMoney And user_InTheMoney_SmallStack And user_Opponent_ALL_IN
+ // When we are in the Big Blind
+ When user_BBlind And AmountToCall < 2 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat5 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat6 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat7 Call Force
+ When user_BBlind And AmountToCall < 2 And listITMCat8 Call Force
+
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat5 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat6 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listITMCat7 Call Force
+
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat5 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listITMCat6 Call Force
+
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat4 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listITMCat5 Call Force
+
+ When user_BBlind And AmountToCall >= 8 And listITMCat1 Call Force
+ When user_BBlind And AmountToCall >= 8 And listITMCat2 Call Force
+ When user_BBlind And AmountToCall >= 8 And listITMCat3 Call Force
+ When user_BBlind And AmountToCall >= 8 And listITMCat4 Call Force
+
+ // When we are NOT in the Big Blind
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat5 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat6 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listITMCat7 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat5 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listITMCat6 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listITMCat5 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listITMCat4 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 8 And listITMCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 8 And listITMCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 8 And listITMCat3 Call Force
+ 
+// Process the Not Opponent is All in scenario now
+// NOTE: Due to an issue with MaxStillToActStackSize, this code is using the values
+//      from OpponentsWithHigherStack and OpponentsWithLowerStack to determine 
+//      what to do. Since MiddleStack does not know the size of the next opponent
+//      the "safer range" of shoving into a larger stack is used
+// Tetre - V_009 06/10/2011
+When user_InTheMoney And NOT (user_Opponent_ALL_IN)
+ When user_InTheMoney_BigStack And listITMCat1 RaiseMax Force
+ When user_InTheMoney_BigStack And listITMCat2 RaiseMax Force
+ When user_InTheMoney_BigStack And listITMCat3 RaiseMax Force
+ When user_InTheMoney_BigStack And listITMCat4 RaiseMax Force
+ When user_InTheMoney_BigStack And listITMCat5 RaiseMax Force
+ When user_InTheMoney_BigStack And listITMCat6 RaiseMax Force
+ When user_InTheMoney_BigStack And listITMCat7 RaiseMax Force
+ When user_InTheMoney_BigStack And listITMCat8 RaiseMax Force
+
+ When user_InTheMoney_SmallStack And listITMCat1 RaiseMax Force
+ When user_InTheMoney_SmallStack And listITMCat2 RaiseMax Force
+ When user_InTheMoney_SmallStack And listITMCat3 RaiseMax Force
+ When user_InTheMoney_SmallStack And listITMCat4 RaiseMax Force
+ When user_InTheMoney_SmallStack And listITMCat5 RaiseMax Force
+ When user_InTheMoney_SmallStack And listITMCat6 RaiseMax Force
+ When user_InTheMoney_SmallStack And listITMCat7 RaiseMax Force
+ When user_InTheMoney_SmallStack And listITMCat8 RaiseMax Force
+
+ When user_InTheMoney_MiddleStack And listITMCat1 RaiseMax Force
+ When user_InTheMoney_MiddleStack And listITMCat2 RaiseMax Force
+ When user_InTheMoney_MiddleStack And listITMCat3 RaiseMax Force
+ When user_InTheMoney_MiddleStack And listITMCat4 RaiseMax Force
+ When user_InTheMoney_MiddleStack And listITMCat5 RaiseMax Force
+ When user_InTheMoney_MiddleStack And listITMCat6 RaiseMax Force
+ When user_InTheMoney_MiddleStack And listITMCat7 RaiseMax Force
+// when user_InTheMoney_MiddleStack and listITMCat8 RaiseMax Force
+
+
+//////////////////////////////////////////////////////////////////
+// Bubble Play - 
+//////////////////////////////////////////////////////////////////
+// Aggression Factor Override
+// You can add additional lines with additional Hand Groups as required
+//
+When user_Bubble And user_Opponent_ALL_IN And user_Aggression_Factor_1
+ When listBubbleCat1 Call Force
+
+// Regular processing of Opponent All In with 2 or more in the pot
+When user_Bubble And user_Opponent_ALL_IN 
+ // Get out of the way if 2 Opponents want to clash
+ When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
+
+When user_Bubble And (user_SBlind OR user_BBlind)
+ When user_Bubble_Stack_0_2 RaiseMax Force
+
+// Now Play based on StackSize 
+//////////////////////////////////////////////////////////////////
+// Bubble Play - Biggest Stack
+//////////////////////////////////////////////////////////////////
+When user_Bubble And user_Bubble_BigStack And user_Opponent_ALL_IN
+ // Get out of the way if 2 Opponents want to clash
+ When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
+
+ // When we are in the big Blind
+ When user_BBlind And AmountToCall < 2 Call Force
+
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat4 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat5 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat6 Call Force
+
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat4 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat5 Call Force
+
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat4 Call Force
+
+ When user_BBlind And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat3 Call Force
+
+ When user_BBlind And AmountToCall >= 10 And listBubbleCat1 Call Force
+
+ // When we are NOT in the Big Blind
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat5 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat6 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat5 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat4 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat3 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat2 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 10 And listBubbleCat1 Call Force
+
+//////////////////////////////////////////////////////////////////
+// Bubble Play - One of the Middle Stacks
+//////////////////////////////////////////////////////////////////
+When user_Bubble And user_Bubble_MiddleStack And user_Opponent_ALL_IN
+
+ // When we are in the Big Blind
+ When user_BBlind And AmountToCall < 2 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall < 2 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall < 2 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall < 2 And listBubbleCat4 Call Force
+ When user_BBlind And AmountToCall < 2 And listBubbleCat5 Call Force
+
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat4 Call Force
+
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat3 Call Force
+
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat2 Call Force
+
+ When user_BBlind And AmountToCall >= 8 And listBubbleCat1 Call Force
+
+ // When we are NOT in the Big Blind
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat4 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat3 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat2 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 6 And listBubbleCat1 Call Force
+
+
+//////////////////////////////////////////////////////////////////
+// Bubble Play - Small Stack
+//////////////////////////////////////////////////////////////////
+When user_Bubble And user_Bubble_SmallStack And user_Opponent_ALL_IN
+
+ // When we are in the big Blind
+ When user_BBlind And AmountToCall < 2 Call Force
+
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat4 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat5 Call Force
+ When user_BBlind And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat6 Call Force
+
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat4 Call Force
+ When user_BBlind And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat5 Call Force
+
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat3 Call Force
+ When user_BBlind And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat4 Call Force
+
+ When user_BBlind And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat1 Call Force
+ When user_BBlind And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat2 Call Force
+ When user_BBlind And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat3 Call Force
+
+ When user_BBlind And AmountToCall >= 10 And listBubbleCat1 Call Force
+
+ // When we are NOT in the Big Blind
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat5 Call Force
+ When NOT (user_BBlind) And AmountToCall < 2 And listBubbleCat6 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat4 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 2 And AmountToCall < 4 And listBubbleCat5 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat3 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 4 And AmountToCall < 6 And listBubbleCat4 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat2 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 6 And AmountToCall < 8 And listBubbleCat3 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat1 Call Force
+ When NOT (user_BBlind) And AmountToCall >= 8 And AmountToCall < 10 And listBubbleCat2 Call Force
+
+ When NOT (user_BBlind) And AmountToCall >= 10 And listBubbleCat1 Call Force
+
+//  Now process regular Bets and hands
+When user_Bubble And NOT (user_Opponent_ALL_IN)
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And MaxStillToActStackSize < 100% StackSize And listBubbleCat1 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And MaxStillToActStackSize < 100% StackSize And listBubbleCat2 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat3 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat4 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat5 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat6 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat7 RaiseMax Force
+
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And listBubbleCat1 RaiseMax Force
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And listBubbleCat2 RaiseMax Force
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat3 RaiseMax Force
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat4 RaiseMax Force
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat5 RaiseMax Force
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat6 RaiseMax Force
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat7 RaiseMax Force
+ When (user_Button OR user_SBlind) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat8 RaiseMax Force
+
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And user_Bubble_We_Are_Covered And listBubbleCat1 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And user_Bubble_We_Are_Covered And listBubbleCat2 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat3 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat4 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat5 RaiseMax Force
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat6 RaiseMax Force 
+ When (user_MP2 OR user_MP3 OR user_Cutoff) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat7 RaiseMax Force
+
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And listBubbleCat1 RaiseMax Force
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And listBubbleCat2 RaiseMax Force
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat3 RaiseMax Force
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat4 RaiseMax Force
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat5 RaiseMax Force
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat6 RaiseMax Force
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat7 RaiseMax Force
+ When (user_Button OR user_SBlind) And user_Bubble_We_Are_Covered And Raises = 0 And Calls = 0 And listBubbleCat8 RaiseMax Force
+
+ When user_BBlind And listBubbleCat1 RaiseMax Force
+ When user_BBlind And listBubbleCat2 RaiseMax Force
+
+
+//////////////////////////////////////////////////////////////////
+//
+// Middle Game - Process the All In Factors First
+//////////////////////////////////////////////////////////////////
+// Call all in within a multi-way pot. Add additional lines as required
+//
+When user_GameState_Middle And user_Opponent_ALL_IN And user_Aggression_Factor_1
+ When user_BLA_None And listCat1 Call Force
+
+//////////////////////////////////////////////////////////////////
+// Middle Game Play - Blinds > Early blind values and Opponents = Full Ring
+//////////////////////////////////////////////////////////////////
+When user_GameState_Middle And user_Opponent_ALL_IN
+ // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
+ When BotsLastAction = Raise And AmountToCall <= 1 Call Force
+ // Get out of the multi-way all in
+ When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
+
+When user_GameState_Middle And (user_SBlind OR user_BBlind)
+ When user_Stack_FullRing_0_2 RaiseMax Force
+
+When user_GameState_Middle And user_Stack_FullRing_12P 
+ When BotsLastAction = Raise And listCat1 RaiseMax Force
+ When BotsLastAction = Raise And listCat2 RaiseMax Force
+ When BotsLastAction = Raise Fold Force
+
+ When user_BLA_None And listCat1 RaiseBy 3 Force
+ When user_BLA_None And listCat2 RaiseBy 3 Force
+ When user_BLA_None And listCat3 RaiseBy 3 Force
+
+ When user_BLA_None And listCat4 And Raises = 0 And Calls >= 0 RaiseBy 3 Force
+
+ When user_BLA_None And listCat4 And Raises = 0 And Calls = 0 And user_EP RaiseBy 3 Force
+ When user_BLA_None And listCat5 And Raises = 0 And Calls = 0 And user_EP RaiseBy 3 Force
+
+ When user_BLA_None And listCat4 And Raises = 0 And Calls = 0 And (user_MP) RaiseBy 3 Force
+ When user_BLA_None And listCat5 And Raises = 0 And Calls = 0 And (user_MP) RaiseBy 3 Force
+ When user_BLA_None And listCat6 And Raises = 0 And Calls = 0 And (user_MP) RaiseBy 3 Force
+
+ When user_BLA_None And listCat4 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseBy 3 Force
+ When user_BLA_None And listCat5 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseBy 3 Force
+ When user_BLA_None And listCat6 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseBy 3 Force
+ When user_BLA_None And listCat7 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseBy 3 Force
+
+When user_GameState_Middle And user_Stack_FullRing_5_12
+ When listCat1 RaiseMax Force
+ When listCat2 RaiseMax Force
+ When listCat3 RaiseMax Force
+ When listCat4 RaiseMax Force
+ When listCat5 And Raises = 0 And Calls >= 0 RaiseMax Force
+
+ When listCat5 And Raises = 0 And Calls = 0 And user_EP RaiseMax Force
+ When listCat6 And Raises = 0 And Calls = 0 And user_EP RaiseMax Force
+
+ When listCat5 And Raises = 0 And Calls = 0 And (user_MP) RaiseMax Force
+ When listCat6 And Raises = 0 And Calls = 0 And (user_MP) RaiseMax Force
+ When listCat7 And Raises = 0 And Calls = 0 And (user_MP) RaiseMax Force
+
+ When listCat5 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseMax Force
+ When listCat6 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseMax Force
+ When listCat7 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseMax Force 
+ When listCat8 And Raises = 0 And Calls = 0 And (user_Button OR user_SBlind) RaiseMax Force
+
+When user_GameState_Middle And user_Stack_FullRing_0_5
+ When listCat1 RaiseMax Force
+ When listCat2 RaiseMax Force
+ When listCat3 RaiseMax Force
+ When listCat4 RaiseMax Force
+ When listCat5 RaiseMax Force
+ When listCat6 And Raises = 0 And Calls >= 0 RaiseMax Force
+
+ When listCat7 And Raises = 0 And Calls = 0 RaiseMax Force
+
+ When listCat8 And Raises = 0 And Calls = 0 And NOT (user_EP) RaiseMax Force
+
+
+//////////////////////////////////////////////////////////////////
+// Early Game Play
+//////////////////////////////////////////////////////////////////
+When user_GameState_Early And user_Opponent_ALL_IN And user_Aggression_Factor_1
+ When user_BLA_None And listCat1 Call Force
+
+When user_GameState_Early And user_Opponent_ALL_IN
+ // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
+ When BotsLastAction = Raise And AmountToCall <= 1 Call Force
+ // Get out of the multi-way all in
+ When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
+
+When user_GameState_Early And (user_SBlind OR user_BBlind)
+ When user_Stack_FullRing_0_2 RaiseMax Force
+
+When user_GameState_Early And listCat1
+ When BotsLastAction = Raise RaiseMax Force
+ When BotsLastAction = None RaiseBy 3 Force
+
+When user_GameState_Early And listCat2
+ When BotsLastAction = Raise RaiseMax Force
+ When BotsLastAction = None RaiseBy 3 Force
+
+When user_GameState_Early And listCat3
+ When BotsLastAction = Raise Fold Force
+ When BotsLastAction = None And (user_Cutoff OR user_Button) RaiseBy 3 Force
+
+When user_GameState_Early And listCat4
+ When BotsLastAction = Raise Fold Force
+ When BotsLastAction = None And (user_Cutoff OR user_Button) RaiseBy 3 Force
+
+
+
+//////////////////////////////////////////////////////////////////
+//  Aggression Factor 2 - Call in Small Blind when 2 or more callers
+//
+//  If you see that you bleed too many chips, tighten up the range
+//  starting with the last line, and working your way up
+//
+//////////////////////////////////////////////////////////////////
+When user_Aggression_Factor_2 And user_SBlind And Raises = 0 And Calls >= 2 And StackSize > 12
+ When listCat3 Call Force
+ When listCat4 Call Force
+ When listCat5 Call Force
+ When listCat6 Call Force
+ When listCat7 Call Force
+ When listCat8 Call Force
+ // this statement will Call with ATC <Any Two Cards> @Trish change this
+ When user_True Call Force
+
+//////////////////////////////////////////////////////////////////
+// Betting: user_RaiseQuad - Raise to 4 times the small 
+// Raisers Raise. Sometimes they want a cheap flop
+//////////////////////////////////////////////////////////////////
+When user_RaiseQuad 
+ When AmountToCall <= 1 RaiseBy 4 Force
+ When AmountToCall <= 2 RaiseBy 8 Force
+ When AmountToCall <= 3 RaiseBy 12 Force
+
+When Others
+ When user_BBlind And Raises = 0 SET user_BigBlind_We_Limped
+ When Others Fold Force
+
+
+
+##Termita_SNG_Flop##
+Gecko_6Max_FR_NL_BSS_Flop
+
+##Termita_SNG_Turn##
+Gecko_6Max_FR_NL_BSS_Turn
+
+##Termita_SNG_River##
+Gecko_6Max_FR_NL_BSS_River
+ 
+ 
+// Standard Lists
+##listCat1##
+AA KK
+
+##listCat2##
+AA KK QQ JJ
+AKs
+AKo
+
+##listCat3##
+AA KK QQ JJ TT 99
+AKs AQs 
+AKo AQo
+
+##listCat4##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs
+KQs
+AKo AQo
+
+##listCat5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs
+KQs KJs
+AKo AQo AJo ATo 
+KQo 
+
+##listCat6##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo 
+KQo KJo
+
+##listCat7##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs T9s 98s 87s 76s 65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listCat8##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s 
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s 97s 
+87s 86s 
+76s 
+65s 64s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o
+QJo QTo 
+JTo T9o 98o 87o 76o 
+
+// Bubble Lists
+##listBubbleCat1##
+AA KK
+
+##listBubbleCat2##
+AA KK QQ JJ
+AKs
+AKo
+
+##listBubbleCat3##
+AA KK QQ JJ TT 99
+AKs AQs 
+AKo AQo
+
+##listBubbleCat4##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs
+KQs
+AKo AQo
+
+##listBubbleCat5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs
+KQs KJs
+AKo AQo AJo ATo 
+KQo 
+
+##listBubbleCat6##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo 
+KQo KJo
+
+##listBubbleCat7##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs T9s 98s 87s 76s 65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listBubbleCat8##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s 
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s 97s 
+87s 86s 
+76s 
+65s 64s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o
+QJo QTo 
+JTo T9o 98o 87o 76o 
+
+// ITM Lists
+##listITMCat1##
+AA KK
+
+##listITMCat2##
+AA KK QQ JJ
+AKs
+AKo
+
+##listITMCat3##
+AA KK QQ JJ TT 99
+AKs AQs 
+AKo AQo
+
+##listITMCat4##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs
+KQs
+AKo AQo
+
+##listITMCat5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs
+KQs KJs
+AKo AQo AJo ATo 
+KQo 
+
+##listITMCat6##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo 
+KQo KJo
+
+##listITMCat7##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs T9s 98s 87s 76s 65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listITMCat8##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s 
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s 97s 
+87s 86s 
+76s 
+65s 64s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o
+QJo QTo 
+JTo T9o 98o 87o 76o 
+
+// HU Lists
+##listHUCat1##
+AA KK
+
+##listHUCat2##
+AA KK QQ JJ
+AKs
+AKo
+
+##listHUCat3##
+AA KK QQ JJ TT 99
+AKs AQs 
+AKo AQo
+
+##listHUCat4##
+AA KK QQ JJ TT 99 88 77
+AKs AQs AJs
+KQs
+AKo AQo
+
+##listHUCat5##
+AA KK QQ JJ TT 99 88 77 66 55
+AKs AQs AJs ATs
+KQs KJs
+AKo AQo AJo ATo 
+KQo 
+
+##listHUCat6##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs 
+AKo AQo AJo ATo 
+KQo KJo
+
+##listHUCat7##
+KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs
+QJs QTs
+JTs T9s 98s 87s 76s 65s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo
+QJo QTo 
+JTo
+
+##listHUCat8##
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
+KQs KJs KTs K9s K8s 
+QJs QTs Q9s Q8s 
+JTs J9s  
+T9s T8s 
+98s 97s 
+87s 86s 
+76s 
+65s 64s 54s
+AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
+KQo KJo KTo K9o
+QJo QTo 
+JTo T9o 98o 87o 76o 
