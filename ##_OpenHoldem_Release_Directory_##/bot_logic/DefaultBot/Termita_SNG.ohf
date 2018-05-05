@@ -13,7 +13,7 @@
 // Authors:
 // ========
 //   * Tetre
-//   * Xiquetete aka Termitapalahermita
+//   * Termitapalahermita aka Xiquetete
 //   * Trish
 //
 //////////////////////////////////////////////////////////////////
@@ -31,25 +31,28 @@
 //   * introduced configuration frunctions that replace user-variables
 //   * Added automatic detection of poker-site
 //   * removed support for no longer existing sites Ultimate Bet and Cake.
-//  * replaced user_Tame_Post_Bubble by function Tame_Post_Bubble
+//   * replaced user_Tame_Post_Bubble by function Tame_Post_Bubble
 //
-//////////////////////////////////////////////////////////////////
-
 //////////////////////////////////////////////////////////////////
 //
 // Configuration section
+// Set the functions below to true or false 
+// in order to adapt the playing-logic easily.
 //
 //////////////////////////////////////////////////////////////////
 
 ##Option_Play_AA_KK_Multiway##
+// Default: false
 false
   
 ##Option_Limp_Any_Two_In_SmallBlind##
-//  Play ATC from the mall Blind with 2 or more callers
-//  and a StackSize > 12 <but you can restrict it>
+// Play ATC from the mall Blind with 2 or more callers
+// and a StackSize > 12 <but you can restrict it>
+// Default: false
 false 
 
 ##Option_Aggressive_Post_Bubble##
+// Default: false
 false
 
 //////////////////////////////////////////////////////////////////
@@ -62,20 +65,17 @@ false
 // Poker Site Identification
 When sitename$Bodog  SET user_Site_Bodog
 When sitename$IPoker SET user_Site_IPoker
-
-// Standard Tetre HouseKeeping:
-// DO NOT EDIT
+//
 // Generic Variables
 When BotsLastAction = None SET user_BLA_None
 When BotsLastAction = None SET user_True
-
-//////////////////////////////////////////////////////////////////
-// DO NOT EDIT
+//
 // Table Type Variables
-// <Messing with these is bound to cause problems...caveat emptor>
-//////////////////////////////////////////////////////////////////
 When user_BLA_None And OpponentsAtTable > 5 SET user_FullRing
 When user_BLA_None And OpponentsAtTable = 1 SET user_HeadsUp
+
+
+
 
 When user_BLA_None And Option_Aggressive_Post_Bubble And OpponentsAtTable = 5 SET user_Bubble
 When user_BLA_None And Option_Aggressive_Post_Bubble And OpponentsAtTable < 5 And NOT (user_HeadsUp) SET user_InTheMoney
@@ -102,7 +102,6 @@ When user_BLA_None And user_FullRing
  And (InCutOff OR InMiddlePosition3)									Set user_MP
 When user_BLA_None And user_FullRing 
  And (InEarlyPosition1 OR InEarlyPosition2 OR InEarlyPosition3 OR InMiddlePosition1 OR InMiddlePosition2) SET user_EP
-
 
 //////////////////////////////////////////////////////////////////
 // Variables Organized by Game Play 
