@@ -27,45 +27,47 @@
 //   * replaced user-variables like user_CutOff by OpenPPL
 //     position-symbols like InCutOff.
 //   * replaced version identifier by comment
+//   * replaced user_Opponent_ALL_IN by OpponentIsAllin
+//   * introduced configuration frunctions that replace user-variables
+//   * Added automatic detection of poker-site
+//   * removed support for no longer existing sites Ultimate Bet and Cake.
+//  * replaced user_Tame_Post_Bubble by function Tame_Post_Bubble
+//
+//////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////
+//
+// Configuration section
+//
+//////////////////////////////////////////////////////////////////
+
+##Configuration_Play_AA_KK_Multiway##
+false
+  
+##Configuration_Limp_Any_Two_In_SmallBlind##
+//  Play ATC from the mall Blind with 2 or more callers
+//  and a StackSize > 12 <but you can restrict it>
+false 
+
+##Configuration_Aggressive_Post_Bubble##
+false
+
+//////////////////////////////////////////////////////////////////
+//
+// Playing logic preflop
 //
 //////////////////////////////////////////////////////////////////
 
 ##Termita_SNG_Preflop##
+// Poker Site Identification
+When sitename$Bodog  SET user_Site_Bodog
+When sitename$IPoker SET user_Site_IPoker
+
 // Standard Tetre HouseKeeping:
 // DO NOT EDIT
 // Generic Variables
 When BotsLastAction = None SET user_BLA_None
 When BotsLastAction = None SET user_True
-
-// Poker Site Identification
-When user_BLA_None SET user_Site_Bodog
-
-
-// Post Bubble Aggression Uncomment to play aggresively default is passive
-// When user_BLA_None Set user_Aggressive_Post_Bubble
-
-
-// Aggression Factor 
-// You MAY have the bot play a more aggressive game by uncommenting
-// ONE or MORE of the lines below:
-//
-// Factor 1: Play AA and KK even within Multi-Way Pots
-// Factor 2: Play ATC from the Small Blind with 2 or more callers
-//           and a StackSize > 12 <but you can restrict it>
-//(remove the // to enable the feature)
-//
-// When user_BLA_None Set user_Aggression_Factor_1
-// When user_BLA_None Set user_Aggression_Factor_2
-
-//
-// NO OTHER USER OPTION CAN BE SET PAST THIS LINE
-// However, you can change the handgroups as required
-//
-// ////////////////////////////////////////////////////////////////
-// DO NOT EDIT
-// Default setting for Post Bubble if Aggressive is not set
-// ////////////////////////////////////////////////////////////////
-When user_BLA_None And NOT (user_Aggressive_Post_Bubble) SET user_Tame_Post_Bubble
 
 //////////////////////////////////////////////////////////////////
 // DO NOT EDIT
@@ -75,10 +77,10 @@ When user_BLA_None And NOT (user_Aggressive_Post_Bubble) SET user_Tame_Post_Bubb
 When user_BLA_None And OpponentsAtTable > 5 SET user_FullRing
 When user_BLA_None And OpponentsAtTable = 1 SET user_HeadsUp
 
-When user_BLA_None And user_Aggressive_Post_Bubble And OpponentsAtTable = 5 SET user_Bubble
-When user_BLA_None And user_Aggressive_Post_Bubble And OpponentsAtTable < 5 And NOT (user_HeadsUp) SET user_InTheMoney
-When user_BLA_None And user_Tame_Post_Bubble And OpponentsAtTable = 2 SET user_InTheMoney
-When user_BLA_None And user_Tame_Post_Bubble And NOT (user_FullRing OR user_InTheMoney OR user_HeadsUp) SET user_Bubble
+When user_BLA_None And Configuration_Aggressive_Post_Bubble And OpponentsAtTable = 5 SET user_Bubble
+When user_BLA_None And Configuration_Aggressive_Post_Bubble And OpponentsAtTable < 5 And NOT (user_HeadsUp) SET user_InTheMoney
+When user_BLA_None And Tame_Post_Bubble And OpponentsAtTable = 2 SET user_InTheMoney
+When user_BLA_None And Tame_Post_Bubble And NOT (user_FullRing OR user_InTheMoney OR user_HeadsUp) SET user_Bubble
 
 //////////////////////////////////////////////////////////////////
 // DO NOT EDIT
@@ -89,10 +91,8 @@ When user_BLA_None And user_Tame_Post_Bubble And NOT (user_FullRing OR user_InTh
 //////////////////////////////////////////////////////////////////
 // @Trish Options for other popular rooms and turbo format required
 When user_BLA_None And user_FullRing And 
- NOT (user_Site_iPoker OR user_Site_UB OR user_Site_Bodog OR user_Site_Cake) 	Set user_Site_Generic
+ NOT (user_Site_iPoker OR user_Site_Bodog) 	Set user_Site_Generic
 When user_BLA_None And user_FullRing And user_Site_iPoker And BigBlindSize <= 60 	Set user_GameState_Early
-When user_BLA_None And user_FullRing And user_Site_UB And BigBlindSize <= 30 		Set user_GameState_Early
-When user_BLA_None And user_FullRing And user_Site_Cake And BigBlindSize <= 50 		Set user_GameState_Early
 When user_BLA_None And user_FullRing And user_Site_Bodog And BigBlindSize <= 60 	Set user_GameState_Early
 When user_BLA_None And user_FullRing And user_Site_Generic And BigBlindSize <= 60 SET user_GameState_Early
 When user_BLA_None And user_FullRing And NOT (user_GameState_Early) SET user_GameState_Middle
@@ -221,7 +221,6 @@ When user_BLA_None And user_HeadsUp
 // DO NOT EDIT
 // Villan Variables
 //////////////////////////////////////////////////////////////////
-When OpponentIsAllin 													Set user_Opponent_ALL_IN
 
 // Early Raiser warning - Used in PostFlop
 When user_BLA_None And Raises = 1 And LastRaiserPosition >= 6 SET userEarlyRaiser
@@ -342,11 +341,11 @@ When user_HeadsUp And InBigBlind
 // Aggression Factor Override
 // You can add additional lines with additional Hand Groups as required
 //
-When user_InTheMoney And user_Opponent_ALL_IN And user_Aggression_Factor_1
+When user_InTheMoney And OpponentIsAllin And Configuration_Play_AA_KK_Multiway
  When listITMCat1 Call Force
 
 //Regular processing of Opponent All In with 2 or more in the pot
-When user_InTheMoney And user_Opponent_ALL_IN 
+When user_InTheMoney And OpponentIsAllin 
  // Get out of the way if 2 Opponents want to clash
  When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
 
@@ -356,7 +355,7 @@ When user_InTheMoney And (InSmallBlind OR InBigBlind)
  When user_InTheMoney_Stack_0_2 RaiseMax Force
 
 
-When user_InTheMoney And user_InTheMoney_BigStack And user_Opponent_ALL_IN
+When user_InTheMoney And user_InTheMoney_BigStack And OpponentIsAllin
  // When we are in the Big Blind
  When InBigBlind And AmountToCall < 2 And listITMCat1 Call Force
  When InBigBlind And AmountToCall < 2 And listITMCat2 Call Force
@@ -425,7 +424,7 @@ When user_InTheMoney And user_InTheMoney_BigStack And user_Opponent_ALL_IN
  When NOT (InBigBlind) And AmountToCall >= 8 And listITMCat3 Call Force
  
 
-When user_InTheMoney And user_InTheMoney_MiddleStack And user_Opponent_ALL_IN
+When user_InTheMoney And user_InTheMoney_MiddleStack And OpponentIsAllin
  When InBigBlind And AmountToCall < 2 And listITMCat1 Call Force
  When InBigBlind And AmountToCall < 2 And listITMCat2 Call Force
  When InBigBlind And AmountToCall < 2 And listITMCat3 Call Force
@@ -472,7 +471,7 @@ When user_InTheMoney And user_InTheMoney_MiddleStack And user_Opponent_ALL_IN
 
  When NOT (InBigBlind) And AmountToCall >= 8 And listITMCat1 Call Force
 
-When user_InTheMoney And user_InTheMoney_SmallStack And user_Opponent_ALL_IN
+When user_InTheMoney And user_InTheMoney_SmallStack And OpponentIsAllin
  // When we are in the Big Blind
  When InBigBlind And AmountToCall < 2 And listITMCat1 Call Force
  When InBigBlind And AmountToCall < 2 And listITMCat2 Call Force
@@ -546,7 +545,7 @@ When user_InTheMoney And user_InTheMoney_SmallStack And user_Opponent_ALL_IN
 //      what to do. Since MiddleStack does not know the size of the next opponent
 //      the "safer range" of shoving into a larger stack is used
 // Tetre - V_009 06/10/2011
-When user_InTheMoney And NOT (user_Opponent_ALL_IN)
+When user_InTheMoney And NOT (OpponentIsAllin)
  When user_InTheMoney_BigStack And listITMCat1 RaiseMax Force
  When user_InTheMoney_BigStack And listITMCat2 RaiseMax Force
  When user_InTheMoney_BigStack And listITMCat3 RaiseMax Force
@@ -581,11 +580,11 @@ When user_InTheMoney And NOT (user_Opponent_ALL_IN)
 // Aggression Factor Override
 // You can add additional lines with additional Hand Groups as required
 //
-When user_Bubble And user_Opponent_ALL_IN And user_Aggression_Factor_1
+When user_Bubble And OpponentIsAllin And Configuration_Play_AA_KK_Multiway
  When listBubbleCat1 Call Force
 
 // Regular processing of Opponent All In with 2 or more in the pot
-When user_Bubble And user_Opponent_ALL_IN 
+When user_Bubble And OpponentIsAllin 
  // Get out of the way if 2 Opponents want to clash
  When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
 
@@ -596,7 +595,7 @@ When user_Bubble And (InSmallBlind OR InBigBlind)
 //////////////////////////////////////////////////////////////////
 // Bubble Play - Biggest Stack
 //////////////////////////////////////////////////////////////////
-When user_Bubble And user_Bubble_BigStack And user_Opponent_ALL_IN
+When user_Bubble And user_Bubble_BigStack And OpponentIsAllin
  // Get out of the way if 2 Opponents want to clash
  When user_BLA_None And (CallsSinceLastRaise > 0 OR Raises > 1) Fold Force
 
@@ -658,7 +657,7 @@ When user_Bubble And user_Bubble_BigStack And user_Opponent_ALL_IN
 //////////////////////////////////////////////////////////////////
 // Bubble Play - One of the Middle Stacks
 //////////////////////////////////////////////////////////////////
-When user_Bubble And user_Bubble_MiddleStack And user_Opponent_ALL_IN
+When user_Bubble And user_Bubble_MiddleStack And OpponentIsAllin
 
  // When we are in the Big Blind
  When InBigBlind And AmountToCall < 2 And listBubbleCat1 Call Force
@@ -700,7 +699,7 @@ When user_Bubble And user_Bubble_MiddleStack And user_Opponent_ALL_IN
 //////////////////////////////////////////////////////////////////
 // Bubble Play - Small Stack
 //////////////////////////////////////////////////////////////////
-When user_Bubble And user_Bubble_SmallStack And user_Opponent_ALL_IN
+When user_Bubble And user_Bubble_SmallStack And OpponentIsAllin
 
  // When we are in the big Blind
  When InBigBlind And AmountToCall < 2 Call Force
@@ -758,7 +757,7 @@ When user_Bubble And user_Bubble_SmallStack And user_Opponent_ALL_IN
  When NOT (InBigBlind) And AmountToCall >= 10 And listBubbleCat1 Call Force
 
 //  Now process regular Bets and hands
-When user_Bubble And NOT (user_Opponent_ALL_IN)
+When user_Bubble And NOT (OpponentIsAllin)
  When (InMiddlePosition2 OR InMiddlePosition3 OR InCutOff) And MaxStillToActStackSize < 100% StackSize And listBubbleCat1 RaiseMax Force
  When (InMiddlePosition2 OR InMiddlePosition3 OR InCutOff) And MaxStillToActStackSize < 100% StackSize And listBubbleCat2 RaiseMax Force
  When (InMiddlePosition2 OR InMiddlePosition3 OR InCutOff) And MaxStillToActStackSize < 100% StackSize And Raises = 0 And Calls = 0 And listBubbleCat3 RaiseMax Force
@@ -803,13 +802,13 @@ When user_Bubble And NOT (user_Opponent_ALL_IN)
 //////////////////////////////////////////////////////////////////
 // Call all in within a multi-way pot. Add additional lines as required
 //
-When user_GameState_Middle And user_Opponent_ALL_IN And user_Aggression_Factor_1
+When user_GameState_Middle And OpponentIsAllin And Configuration_Play_AA_KK_Multiway
  When user_BLA_None And listCat1 Call Force
 
 //////////////////////////////////////////////////////////////////
 // Middle Game Play - Blinds > Early blind values and Opponents = Full Ring
 //////////////////////////////////////////////////////////////////
-When user_GameState_Middle And user_Opponent_ALL_IN
+When user_GameState_Middle And OpponentIsAllin
  // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
  When BotsLastAction = Raise And AmountToCall <= 1 Call Force
  // Get out of the multi-way all in
@@ -876,10 +875,10 @@ When user_GameState_Middle And user_Stack_FullRing_0_5
 //////////////////////////////////////////////////////////////////
 // Early Game Play
 //////////////////////////////////////////////////////////////////
-When user_GameState_Early And user_Opponent_ALL_IN And user_Aggression_Factor_1
+When user_GameState_Early And OpponentIsAllin And Configuration_Play_AA_KK_Multiway
  When user_BLA_None And listCat1 Call Force
 
-When user_GameState_Early And user_Opponent_ALL_IN
+When user_GameState_Early And OpponentIsAllin
  // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
  When BotsLastAction = Raise And AmountToCall <= 1 Call Force
  // Get out of the multi-way all in
@@ -913,7 +912,7 @@ When user_GameState_Early And listCat4
 //  starting with the last line, and working your way up
 //
 //////////////////////////////////////////////////////////////////
-When user_Aggression_Factor_2 And InSmallBlind And Raises = 0 And Calls >= 2 And StackSize > 12
+When Configuration_Limp_Any_Two_In_SmallBlind And InSmallBlind And Raises = 0 And Calls >= 2 And StackSize > 12
  When listCat3 Call Force
  When listCat4 Call Force
  When listCat5 Call Force
@@ -936,7 +935,11 @@ When Others
  When InBigBlind And Raises = 0 SET user_BigBlind_We_Limped
  When Others Fold Force
 
-
+//////////////////////////////////////////////////////////////////
+//
+// Postflop logic
+//
+//////////////////////////////////////////////////////////////////
 
 ##Termita_SNG_Flop##
 Gecko_6Max_FR_NL_BSS_Flop
@@ -946,9 +949,22 @@ Gecko_6Max_FR_NL_BSS_Turn
 
 ##Termita_SNG_River##
 Gecko_6Max_FR_NL_BSS_River
+
+//////////////////////////////////////////////////////////////////
+//
+// Technical functions
+//
+//////////////////////////////////////////////////////////////////
+
+##Tame_Post_Bubble##
+NOT Configuration_Aggressive_Post_Bubble
  
- 
-// Standard Lists
+//////////////////////////////////////////////////////////////////
+//
+// Handlists
+//
+//////////////////////////////////////////////////////////////////
+
 ##listCat1##
 AA KK
 
