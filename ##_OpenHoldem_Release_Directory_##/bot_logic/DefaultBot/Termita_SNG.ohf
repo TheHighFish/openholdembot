@@ -28,34 +28,16 @@
 //     position-symbols like InCutOff.
 //   * replaced version identifier by comment
 //   * replaced user_Opponent_ALL_IN by OpponentIsAllin
-//   * introduced configuration frunctions that replace user-variables
-//   * Added automatic detection of poker-site
+//   * removed options for
+//       * playing AA / KK multiway
+//       * limping any two multiway
+//       * playing bubble like 3-handed (and vice versa)
+//       * playing 3-handed like headsup (and vice versa)
+//     in order to get reasonable and simple strategy 
+//   * added automatic detection of poker-site
 //   * removed support for no longer existing sites Ultimate Bet and Cake.
-//   * replaced user_Tame_Post_Bubble by function Tame_Post_Bubble
 //   * replaced user-variable user_InTheMoney by new OpenPPL-symbol IsInTheMoney
 //
-//////////////////////////////////////////////////////////////////
-//
-// Configuration section
-// Set the functions below to true or false 
-// in order to adapt the playing-logic easily.
-//
-//////////////////////////////////////////////////////////////////
-
-##Option_Play_AA_KK_Multiway##
-// Default: false
-false
-  
-##Option_Limp_Any_Two_In_SmallBlind##
-// Play ATC from the mall Blind with 2 or more callers
-// and a StackSize > 12 <but you can restrict it>
-// Default: false
-false 
-
-##Option_Aggressive_Post_Bubble##
-// Default: false
-false
-
 //////////////////////////////////////////////////////////////////
 //
 // Playing logic preflop
@@ -74,14 +56,6 @@ When BotsLastAction = None SET user_True
 // Table Type Variables
 When user_BLA_None And OpponentsAtTable > 5 SET user_FullRing
 When user_BLA_None And OpponentsAtTable = 1 SET user_HeadsUp
-
-
-
-
-When user_BLA_None And Option_Aggressive_Post_Bubble And OpponentsAtTable = 5 SET user_Bubble
-When user_BLA_None And Option_Aggressive_Post_Bubble And OpponentsAtTable < 5 And NOT (user_HeadsUp) SET user_InTheMoney
-When user_BLA_None And Tame_Post_Bubble And OpponentsAtTable = 2 SET user_InTheMoney
-When user_BLA_None And Tame_Post_Bubble And NOT (user_FullRing OR user_InTheMoney OR user_HeadsUp) SET user_Bubble
 
 //////////////////////////////////////////////////////////////////
 // DO NOT EDIT
@@ -341,8 +315,7 @@ When user_HeadsUp And InBigBlind
 // Aggression Factor Override
 // You can add additional lines with additional Hand Groups as required
 //
-When user_InTheMoney And OpponentIsAllin And Option_Play_AA_KK_Multiway
- When listITMCat1 Call Force
+When user_InTheMoney And OpponentIsAllin And listITMCat1 Call Force
 
 //Regular processing of Opponent All In with 2 or more in the pot
 When user_InTheMoney And OpponentIsAllin 
@@ -580,8 +553,7 @@ When user_InTheMoney And NOT (OpponentIsAllin)
 // Aggression Factor Override
 // You can add additional lines with additional Hand Groups as required
 //
-When user_Bubble And OpponentIsAllin And Option_Play_AA_KK_Multiway
- When listBubbleCat1 Call Force
+When user_Bubble And OpponentIsAllin listBubbleCat1 Call Force
 
 // Regular processing of Opponent All In with 2 or more in the pot
 When user_Bubble And OpponentIsAllin 
@@ -802,8 +774,7 @@ When user_Bubble And NOT (OpponentIsAllin)
 //////////////////////////////////////////////////////////////////
 // Call all in within a multi-way pot. Add additional lines as required
 //
-When user_GameState_Middle And OpponentIsAllin And Option_Play_AA_KK_Multiway
- When user_BLA_None And listCat1 Call Force
+When user_GameState_Middle And OpponentIsAllin And user_BLA_None And listCat1 Call Force
 
 //////////////////////////////////////////////////////////////////
 // Middle Game Play - Blinds > Early blind values and Opponents = Full Ring
@@ -875,8 +846,7 @@ When user_GameState_Middle And user_Stack_FullRing_0_5
 //////////////////////////////////////////////////////////////////
 // Early Game Play
 //////////////////////////////////////////////////////////////////
-When user_GameState_Early And OpponentIsAllin And Option_Play_AA_KK_Multiway
- When user_BLA_None And listCat1 Call Force
+When user_GameState_Early And OpponentIsAllin And user_BLA_None And listCat1 Call Force
 
 When user_GameState_Early And OpponentIsAllin
  // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
@@ -912,7 +882,7 @@ When user_GameState_Early And listCat4
 //  starting with the last line, and working your way up
 //
 //////////////////////////////////////////////////////////////////
-When Option_Limp_Any_Two_In_SmallBlind And InSmallBlind And Raises = 0 And Calls >= 2 And StackSize > 12
+When /*!!! Option_Limp_Any_Two_In_SmallBlind */ And InSmallBlind And Raises = 0 And Calls >= 2 And StackSize > 12
  When listCat3 Call Force
  When listCat4 Call Force
  When listCat5 Call Force
@@ -950,15 +920,6 @@ Gecko_6Max_FR_NL_BSS_Turn
 ##Termita_SNG_River##
 Gecko_6Max_FR_NL_BSS_River
 
-//////////////////////////////////////////////////////////////////
-//
-// Technical functions
-//
-//////////////////////////////////////////////////////////////////
-
-##Tame_Post_Bubble##
-NOT Option_Aggressive_Post_Bubble
- 
 //////////////////////////////////////////////////////////////////
 //
 // Handlists
