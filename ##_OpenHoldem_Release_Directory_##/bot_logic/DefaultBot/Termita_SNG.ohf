@@ -32,6 +32,7 @@
 //   * Added automatic detection of poker-site
 //   * removed support for no longer existing sites Ultimate Bet and Cake.
 //   * replaced user_Tame_Post_Bubble by function Tame_Post_Bubble
+//   * replaced user-variable user_InTheMoney by new OpenPPL-symbol IsInTheMoney
 //
 //////////////////////////////////////////////////////////////////
 //
@@ -1214,3 +1215,55 @@ AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
 KQo KJo KTo K9o
 QJo QTo 
 JTo T9o 98o 87o 76o 
+
+
+// TO DO
+handle headsup before ITM
+
+
+##IsInTheMoney##
+WHEN NOT istournament RETURN false FORCE
+WHEN (PlayersLeftInTournament <= PaidPlaces) RETURN true FORCE
+
+##IsBubble##
+WHEN NOT istournament RETURN false FORCE
+WHEN (PlayersLeftInTournament == (PaidPlaces + 1)) RETURN true FORCE
+
+##PaidPlaces##
+WHEN NOT istournament RETURN false FORCE
+WHEN TableIsHeadsup RETURN PaidPlacesHeadsup FORCE
+WHEN TableIsThreeHanded RETURN PaidPlacesThreeHanded FORCE
+WHEN TableIsShortHanded RETURN PaidPlacesShortHanded FORCE
+WHEN TableIsFullRing RETURN PaidPlacesFullRing FORCE
+WHEN TableIsMultiTable RETURN PaidPlacesMultiTable FORCE
+
+##PaidPlacesHeadsup##
+1
+
+##PaidPlacesThreeHanded##
+1
+
+##PaidPlacesShortHanded##
+WHEN isdon RETURN 3 FORCE
+WHEN Others RETURN 2 FORCE
+
+##PaidPlacesFullRing##
+WHEN isdon RETURN 5 FORCE
+WHEN Others RETURN 3 FORCE
+
+##PaidPlacesMultiTable##
+// To Do !!!!!
+999999
+
+##PlayersLeftInTournament##
+WHEN NOT istournament RETURN playersseated FORCE
+WHEN NOT ismtt RETURN playersseated FORCE
+WHEN Others RETURN PlayersLeftInMultiTableTournament FORCE
+
+##PlayersLeftInMultiTableTournament##
+// To Do !!!!!
+999999
+
+
+
+
