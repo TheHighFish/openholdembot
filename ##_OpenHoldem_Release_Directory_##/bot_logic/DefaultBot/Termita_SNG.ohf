@@ -34,8 +34,6 @@
 //       * playing bubble like 3-handed (AND vice versa)
 //       * playing 3-handed like headsup (AND vice versa)
 //     in order to get reasonable AND simple strategy 
-//   * added automatic detection of poker-site
-//   * removed support for no longer existing sites Ultimate Bet AND Cake.
 //   * replaced user-variable user_TheMoney by new OpenPPL-symbol InTheMoney
 //   * replaced user-variable user_Bubble by new OpenPPL-symbol IsBubble
 //   * removed superfluous variable user_true
@@ -45,6 +43,11 @@
 //     which was only used in already removed postflop-play
 //   * replaced user_MP / user_EP by InMiddlePosition / InEarlyPosition
 //   * replaced user_RaiseQuad-logic by RaiseBy (4 * amountToCall) FORCE
+//   * removed all casino-specific code in favour of automatic detection 
+//     of blind-level and tournament stage.
+//   * repalced user variables user_GameState_Early, ... by functions
+//     f$EarlyStage, f$MiddleStage, f$LateStage
+//   * replaced variable user_BLA_None by f4FirstAction
 //
 //////////////////////////////////////////////////////////////////
 //
@@ -53,39 +56,17 @@
 //////////////////////////////////////////////////////////////////
 
 ##Termita_SNG_Preflop##
-// Poker Site Identification
-WHEN sitename$Bodog  SET user_Site_Bodog
-WHEN sitename$IPoker SET user_Site_IPoker
-//
-// Generic Variables
-WHEN BotsLastAction = None SET user_BLA_None
-
-//////////////////////////////////////////////////////////////////
-// DO NOT EDIT
-// Game State by Room Variables
-//
-// Note: You "can" edit this if you want to become more involved
-// before the "bingo" rounds are over... Edit at own risk
-//////////////////////////////////////////////////////////////////
-// @Trish Options for other popular rooms AND turbo format required
-WHEN user_BLA_None AND HandIsFullRing AND 
- NOT (user_Site_iPoker OR user_Site_Bodog) 	Set user_Site_Generic
-WHEN user_BLA_None AND HandIsFullRing AND user_Site_iPoker AND BigBlindSize <= 60 	Set user_GameState_Early
-WHEN user_BLA_None AND HandIsFullRing AND user_Site_Bodog AND BigBlindSize <= 60 	Set user_GameState_Early
-WHEN user_BLA_None AND HandIsFullRing AND user_Site_Generic AND BigBlindSize <= 60 SET user_GameState_Early
-WHEN user_BLA_None AND HandIsFullRing AND NOT (user_GameState_Early) SET user_GameState_Middle
-
 //////////////////////////////////////////////////////////////////
 // Variables Organized by Game Play 
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
 // Section 1 - Regular Full Ring Play Variables
 //////////////////////////////////////////////////////////////////
-WHEN user_BLA_None AND HandIsFullRing AND StackSize < 2 			Set user_Stack_FullRing_0_2
-WHEN user_BLA_None AND HandIsFullRing AND StackSize < 5 			Set user_Stack_FullRing_0_5
-WHEN user_BLA_None AND HandIsFullRing AND (StackSize >= 5 
+WHEN f$FirstAction AND HandIsFullRing AND StackSize < 2 			Set user_Stack_FullRing_0_2
+WHEN f$FirstAction AND HandIsFullRing AND StackSize < 5 			Set user_Stack_FullRing_0_5
+WHEN f$FirstAction AND HandIsFullRing AND (StackSize >= 5 
  AND StackSize <= 11) 											Set user_Stack_FullRing_5_12
-WHEN user_BLA_None AND HandIsFullRing AND StackSize >= 12		Set user_Stack_FullRing_12P
+WHEN f$FirstAction AND HandIsFullRing AND StackSize >= 12		Set user_Stack_FullRing_12P
 //////////////////////////////////////////////////////////////////
 // DO NOT EDIT
 // Bubble Variables
@@ -93,17 +74,17 @@ WHEN user_BLA_None AND HandIsFullRing AND StackSize >= 12		Set user_Stack_FullRi
 //////////////////////////////////////////////////////////////////
 // Section 2 - On the Bubble Play Variables
 //////////////////////////////////////////////////////////////////
-WHEN user_BLA_None AND IsBubble AND StackSize >= 10 					Set user_Bubble_Stack_10P
-WHEN user_BLA_None AND IsBubble AND StackSize >= 8 AND StackSize <= 9	Set user_Bubble_Stack_8_9
-WHEN user_BLA_None AND IsBubble AND StackSize >= 6 AND StackSize <= 7	Set user_Bubble_Stack_6_8
-WHEN user_BLA_None AND IsBubble AND StackSize >= 4 AND StackSize <= 5	Set user_Bubble_Stack_4_6
-WHEN user_BLA_None AND IsBubble AND StackSize >= 2 AND StackSize <= 3	Set user_Bubble_Stack_2_4
-WHEN user_BLA_None AND IsBubble AND StackSize < 2					Set user_Bubble_Stack_0_2
-WHEN user_BLA_None AND IsBubble AND OpponentsWithHigherStack = 0 	Set user_Bubble_BigStack
-WHEN user_BLA_None AND IsBubble AND OpponentsWithLowerStack = 0 		Set user_Bubble_SmallStack
-WHEN user_BLA_None AND IsBubble 
+WHEN f$FirstAction AND IsBubble AND StackSize >= 10 					Set user_Bubble_Stack_10P
+WHEN f$FirstAction AND IsBubble AND StackSize >= 8 AND StackSize <= 9	Set user_Bubble_Stack_8_9
+WHEN f$FirstAction AND IsBubble AND StackSize >= 6 AND StackSize <= 7	Set user_Bubble_Stack_6_8
+WHEN f$FirstAction AND IsBubble AND StackSize >= 4 AND StackSize <= 5	Set user_Bubble_Stack_4_6
+WHEN f$FirstAction AND IsBubble AND StackSize >= 2 AND StackSize <= 3	Set user_Bubble_Stack_2_4
+WHEN f$FirstAction AND IsBubble AND StackSize < 2					Set user_Bubble_Stack_0_2
+WHEN f$FirstAction AND IsBubble AND OpponentsWithHigherStack = 0 	Set user_Bubble_BigStack
+WHEN f$FirstAction AND IsBubble AND OpponentsWithLowerStack = 0 		Set user_Bubble_SmallStack
+WHEN f$FirstAction AND IsBubble 
  AND NOT (user_Bubble_BigStack OR user_Bubble_SmallStack)				Set user_Bubble_MiddleStack
-WHEN user_BLA_None AND IsBubble 
+WHEN f$FirstAction AND IsBubble 
  AND MaxStillToActStackSize > 100% StackSize 							Set user_Bubble_We_Are_Covered
 
 //////////////////////////////////////////////////////////////////
@@ -116,23 +97,23 @@ WHEN user_BLA_None AND IsBubble
 // VSS = Villan Stack Size
 // RSS = Relevant Stack Size
 //////////////////////////////////////////////////////////////////
-WHEN user_BLA_None AND InTheMoney AND StackSize >= 10 				Set InTheMoney_HSS_10P
-WHEN user_BLA_None AND InTheMoney 
+WHEN f$FirstAction AND InTheMoney AND StackSize >= 10 				Set InTheMoney_HSS_10P
+WHEN f$FirstAction AND InTheMoney 
  AND StackSize >= 8 AND StackSize < 10 								Set InTheMoney_HSS_8_9
-WHEN user_BLA_None AND InTheMoney 
+WHEN f$FirstAction AND InTheMoney 
  AND StackSize >= 6 AND StackSize <= 7 								Set InTheMoney_HSS_6_8
-WHEN user_BLA_None AND InTheMoney 
+WHEN f$FirstAction AND InTheMoney 
  AND StackSize >= 4 AND StackSize <= 5									Set InTheMoney_HSS_4_6
-WHEN user_BLA_None AND InTheMoney 
+WHEN f$FirstAction AND InTheMoney 
  AND StackSize >= 2 AND StackSize <= 3									Set InTheMoney_HSS_2_4
-WHEN user_BLA_None AND InTheMoney AND StackSize < 2				Set InTheMoney_HSS_0_2
+WHEN f$FirstAction AND InTheMoney AND StackSize < 2				Set InTheMoney_HSS_0_2
 
 // Sub Variables - Large, Medium, OR Small Stack
-WHEN user_BLA_None AND InTheMoney 
+WHEN f$FirstAction AND InTheMoney 
  AND OpponentsWithHigherStack = 0 										Set InTheMoney_BigStack
-WHEN user_BLA_None AND InTheMoney 
+WHEN f$FirstAction AND InTheMoney 
  AND OpponentsWithLowerStack = 0 										Set InTheMoney_SmallStack
-WHEN user_BLA_None AND InTheMoney 
+WHEN f$FirstAction AND InTheMoney 
  AND NOT (InTheMoney_BigStack OR InTheMoney_SmallStack) 		Set InTheMoney_MiddleStack
 
 //////////////////////////////////////////////////////////////////
@@ -145,43 +126,43 @@ WHEN user_BLA_None AND InTheMoney
 // VSS = Villan Stack Size
 // RSS = Relevant Stack Size
 //////////////////////////////////////////////////////////////////
-WHEN user_BLA_None AND HandIsHeadsUp AND StackSize <= 8					Set HandIsHeadsUp_HSS_0_8
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp AND StackSize <= 8					Set HandIsHeadsUp_HSS_0_8
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND StackSize >= 8 AND StackSize <= 12								Set HandIsHeadsUp_HSS_8_12
-WHEN user_BLA_None AND HandIsHeadsUp AND StackSize >= 12 				Set HandIsHeadsUp_HSS_12P
+WHEN f$FirstAction AND HandIsHeadsUp AND StackSize >= 12 				Set HandIsHeadsUp_HSS_12P
 
-WHEN user_BLA_None AND HandIsHeadsUp AND MaxOpponentStackSize <= 8		Set HandIsHeadsUp_VSS_0_8
-WHEN user_BLA_None AND HandIsHeadsUp AND 
+WHEN f$FirstAction AND HandIsHeadsUp AND MaxOpponentStackSize <= 8		Set HandIsHeadsUp_VSS_0_8
+WHEN f$FirstAction AND HandIsHeadsUp AND 
  MaxOpponentStackSize >= 8 AND MaxOpponentStackSize <= 12				Set HandIsHeadsUp_VSS_8_12
-WHEN user_BLA_None AND HandIsHeadsUp AND MaxOpponentStackSize >= 12 		Set HandIsHeadsUp_VSS_12P
+WHEN f$FirstAction AND HandIsHeadsUp AND MaxOpponentStackSize >= 12 		Set HandIsHeadsUp_VSS_12P
 
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND (HandIsHeadsUp_HSS_0_8 OR HandIsHeadsUp_VSS_0_8)					Set HandIsHeadsUp_RSS_0_8
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND (HandIsHeadsUp_HSS_8_12 OR HandIsHeadsUp_VSS_8_12) 
  AND NOT (HandIsHeadsUp_RSS_0_8)										Set HandIsHeadsUp_RSS_8_12
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND (HandIsHeadsUp_HSS_12P OR HandIsHeadsUp_VSS_12P) 
  AND NOT (HandIsHeadsUp_RSS_0_8 OR HandIsHeadsUp_RSS_8_12)				Set HandIsHeadsUp_RSS_12P
 
-WHEN user_BLA_None AND HandIsHeadsUp AND StackSize < 2					Set HandIsHeadsUp_HSS_0_2
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp AND StackSize < 2					Set HandIsHeadsUp_HSS_0_2
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND StackSize >= 2 AND StackSize <= 3									Set HandIsHeadsUp_HSS_2_4
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND StackSize >= 4 AND StackSize <= 12								Set HandIsHeadsUp_HSS_4_12
  
-WHEN user_BLA_None AND HandIsHeadsUp AND MaxOpponentStackSize < 2		Set HandIsHeadsUp_VSS_0_2
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp AND MaxOpponentStackSize < 2		Set HandIsHeadsUp_VSS_0_2
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND MaxOpponentStackSize >= 2 AND MaxOpponentStackSize <= 3 			Set HandIsHeadsUp_VSS_2_4
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND MaxOpponentStackSize >= 4 AND MaxOpponentStackSize <= 12			Set HandIsHeadsUp_VSS_4_12
 
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND (HandIsHeadsUp_HSS_0_2 OR HandIsHeadsUp_VSS_0_2)					Set HandIsHeadsUp_RSS_0_2
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND (HandIsHeadsUp_HSS_2_4 OR HandIsHeadsUp_VSS_2_4) 
  AND NOT (HandIsHeadsUp_RSS_0_2)										Set HandIsHeadsUp_RSS_2_4
-WHEN user_BLA_None AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsUp 
  AND (HandIsHeadsUp_HSS_4_12 OR HandIsHeadsUp_VSS_4_12) 
  AND NOT (HandIsHeadsUp_RSS_0_2 OR HandIsHeadsUp_RSS_2_4)				Set HandIsHeadsUp_RSS_4_12
 
@@ -216,14 +197,14 @@ WHEN HandIsHeadsUp AND InSmallBlind
    WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat3 Call FORCE
    WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat4 Call FORCE
    WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat5 Call FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat1 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat2 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat3 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat4 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat5 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat6 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat7 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND listHUCat8 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat1 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat2 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat3 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat4 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat5 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat6 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat7 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat8 RaiseBy 3 FORCE
    WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat1 RaiseMax FORCE
    WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat2 RaiseMax FORCE
    WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat3 RaiseMax FORCE
@@ -244,12 +225,12 @@ WHEN HandIsHeadsUp AND InBigBlind
    WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat2 Call FORCE
    WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat3 Call FORCE
    WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat4 Call FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat1 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat2 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat3 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat4 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat5 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat6 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat1 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat2 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat3 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat4 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat5 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat6 RaiseBy 3 FORCE
    WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat1 RaiseMax FORCE
    WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat2 RaiseMax FORCE
    WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat3 RaiseMax FORCE
@@ -262,38 +243,38 @@ WHEN HandIsHeadsUp AND InBigBlind
 // In the Big Blind AND Small Blind Raises
 // I can't remember the ruleset, but you can re-create it from code if need be
 WHEN HandIsHeadsUp AND InBigBlind
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat1 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat2 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat3 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat4 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat5 RaiseMax FORCE
 
  // Raise to 4 times the small Raisers Raise. 
  // Sometimes they want a cheap flop
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat1 RaiseBy (4 * AmountToCall) FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat2 RaiseBy (4 * AmountToCall) FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat3 RaiseBy (4 * AmountToCall) FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat4 RaiseBy (4 * AmountToCall) FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat5 RaiseBy (4 * AmountToCall) FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat6 Call FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat7 Call FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat1 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat2 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat3 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat4 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat5 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat6 Call FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat7 Call FORCE
 
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
 
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat7 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat7 RaiseMax FORCE
 
-   WHEN user_BLA_None AND HandIsHeadsUp_RSS_0_2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_RSS_0_2 RaiseMax FORCE
 
 
 //////////////////////////////////////////////////////////////////
@@ -307,7 +288,7 @@ WHEN InTheMoney AND OpponentIsAllin AND listITMCat1 Call FORCE
 //Regular processing of Opponent All In with 2 OR more in the pot
 WHEN InTheMoney AND OpponentIsAllin 
  // Get out of the way if 2 Opponents want to clash
-   WHEN user_BLA_None AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+   WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
 // Short Stack Shoving
 WHEN InTheMoney AND (InSmallBlind OR InBigBlind)
@@ -545,7 +526,7 @@ WHEN IsBubble AND OpponentIsAllin listBubbleCat1 Call FORCE
 // Regular processing of Opponent All In with 2 OR more in the pot
 WHEN IsBubble AND OpponentIsAllin 
  // Get out of the way if 2 Opponents want to clash
-   WHEN user_BLA_None AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+   WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
 WHEN IsBubble AND (InSmallBlind OR InBigBlind)
    WHEN user_Bubble_Stack_0_2 RaiseMax FORCE
@@ -556,7 +537,7 @@ WHEN IsBubble AND (InSmallBlind OR InBigBlind)
 //////////////////////////////////////////////////////////////////
 WHEN IsBubble AND user_Bubble_BigStack AND OpponentIsAllin
  // Get out of the way if 2 Opponents want to clash
-   WHEN user_BLA_None AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+   WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
  //   WHEN we are in the big Blind
    WHEN InBigBlind AND AmountToCall < 2 Call FORCE
@@ -760,44 +741,44 @@ WHEN IsBubble AND NOT (OpponentIsAllin)
 //////////////////////////////////////////////////////////////////
 // Call all in within a multi-way pot. Add additional lines as required
 //
-WHEN user_GameState_Middle AND OpponentIsAllin AND user_BLA_None AND listCat1 Call FORCE
+WHEN f$MiddleStage AND OpponentIsAllin AND f$FirstAction AND listCat1 Call FORCE
 
 //////////////////////////////////////////////////////////////////
 // Middle Game Play - Blinds > Early blind values AND Opponents = Full Ring
 //////////////////////////////////////////////////////////////////
-WHEN user_GameState_Middle AND OpponentIsAllin
+WHEN f$MiddleStage AND OpponentIsAllin
  // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
    WHEN BotsLastAction = Raise AND AmountToCall <= 1 Call FORCE
  // Get out of the multi-way all in
-   WHEN user_BLA_None AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+   WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
-WHEN user_GameState_Middle AND (InSmallBlind OR InBigBlind)
+WHEN f$MiddleStage AND (InSmallBlind OR InBigBlind)
    WHEN user_Stack_FullRing_0_2 RaiseMax FORCE
 
-WHEN user_GameState_Middle AND user_Stack_FullRing_12P 
+WHEN f$MiddleStage AND user_Stack_FullRing_12P 
    WHEN BotsLastAction = Raise AND listCat1 RaiseMax FORCE
    WHEN BotsLastAction = Raise AND listCat2 RaiseMax FORCE
    WHEN BotsLastAction = Raise Fold FORCE
 
-   WHEN user_BLA_None AND listCat1 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat2 RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat3 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat1 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat2 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat3 RaiseBy 3 FORCE
 
-   WHEN user_BLA_None AND listCat4 AND Raises = 0 AND Calls >= 0 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls >= 0 RaiseBy 3 FORCE
 
-   WHEN user_BLA_None AND listCat4 AND Raises = 0 AND Calls = 0 AND user_EP RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat5 AND Raises = 0 AND Calls = 0 AND user_EP RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND user_EP RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND user_EP RaiseBy 3 FORCE
 
-   WHEN user_BLA_None AND listCat4 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat5 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat6 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat6 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
 
-   WHEN user_BLA_None AND listCat4 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat5 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat6 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
-   WHEN user_BLA_None AND listCat7 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat6 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat7 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
 
-WHEN user_GameState_Middle AND user_Stack_FullRing_5_12
+WHEN f$MiddleStage AND user_Stack_FullRing_5_12
    WHEN listCat1 RaiseMax FORCE
    WHEN listCat2 RaiseMax FORCE
    WHEN listCat3 RaiseMax FORCE
@@ -816,7 +797,7 @@ WHEN user_GameState_Middle AND user_Stack_FullRing_5_12
    WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseMax FORCE 
    WHEN listCat8 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseMax FORCE
 
-WHEN user_GameState_Middle AND user_Stack_FullRing_0_5
+WHEN f$MiddleStage AND user_Stack_FullRing_0_5
    WHEN listCat1 RaiseMax FORCE
    WHEN listCat2 RaiseMax FORCE
    WHEN listCat3 RaiseMax FORCE
@@ -832,30 +813,30 @@ WHEN user_GameState_Middle AND user_Stack_FullRing_0_5
 //////////////////////////////////////////////////////////////////
 // Early Game Play
 //////////////////////////////////////////////////////////////////
-WHEN user_GameState_Early AND OpponentIsAllin AND user_BLA_None AND listCat1 Call FORCE
+WHEN f$EarlyStage AND OpponentIsAllin AND f$FirstAction AND listCat1 Call FORCE
 
-WHEN user_GameState_Early AND OpponentIsAllin
+WHEN f$EarlyStage AND OpponentIsAllin
  // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
    WHEN BotsLastAction = Raise AND AmountToCall <= 1 Call FORCE
  // Get out of the multi-way all in
-   WHEN user_BLA_None AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+   WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
-WHEN user_GameState_Early AND (InSmallBlind OR InBigBlind)
+WHEN f$EarlyStage AND (InSmallBlind OR InBigBlind)
    WHEN user_Stack_FullRing_0_2 RaiseMax FORCE
 
-WHEN user_GameState_Early AND listCat1
+WHEN f$EarlyStage AND listCat1
    WHEN BotsLastAction = Raise RaiseMax FORCE
    WHEN BotsLastAction = None RaiseBy 3 FORCE
 
-WHEN user_GameState_Early AND listCat2
+WHEN f$EarlyStage AND listCat2
    WHEN BotsLastAction = Raise RaiseMax FORCE
    WHEN BotsLastAction = None RaiseBy 3 FORCE
 
-WHEN user_GameState_Early AND listCat3
+WHEN f$EarlyStage AND listCat3
    WHEN BotsLastAction = Raise Fold FORCE
    WHEN BotsLastAction = None AND (InCutOff OR InButton) RaiseBy 3 FORCE
 
-WHEN user_GameState_Early AND listCat4
+WHEN f$EarlyStage AND listCat4
    WHEN BotsLastAction = Raise Fold FORCE
    WHEN BotsLastAction = None AND (InCutOff OR InButton) RaiseBy 3 FORCE
 
@@ -1154,6 +1135,7 @@ JTo T9o 98o 87o 76o
 
 // TO DO
 handle headsup before ITM
+handle late before early, in case tournament stage is both
 isbigstack middle small
 
 ##InTheMoney##
@@ -1200,18 +1182,36 @@ WHEN Others RETURN PlayersLeftInMultiTableTournament FORCE
 999999
 
 ##f$EarlyStage##
-WHEN (BigBlindSize <= (5 * StartingBigBlingSize)) RETURN true FORCE
+WHEN (BigBlindSize <= (5 * StartingBigBlindSize)) RETURN true FORCE
 
 ##f$MiddleStage##
 WHEN f$EarlyStage RETURN false FORCE
 WHEN f$LateStage RETURN false FORCE
-WHEN others RETURN true FORCE
+WHEN Ohers RETURN true FORCE
 
 ##f$LateStage##
 WHEN (StackSize < 20) RETURN true FORCE
 WHEN (AverageStackSize < 20) RETURN true FORCE
 
+##f$FirstAction##
+WHEN BotsLastAction = None RETURN true FORCE f$FirstAction
 
-##StartingBigBlingSize##
+
+##StartingBigBlindSize##
 
 ##AverageStackSize##
+
+
+##f$StackSize_Range_0_2##
+
+##f$StackSize_Range_2_4##
+
+##f$StackSize_Range_4_6##
+
+##f$StackSize_Range_6_8##
+
+##f$StackSize_Range_8_10##
+
+##f$StackSize_Range_10_12##
+
+##f$StackSize_Range_12_Plus##
