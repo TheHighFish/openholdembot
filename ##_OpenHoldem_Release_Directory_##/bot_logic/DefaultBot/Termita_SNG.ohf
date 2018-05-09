@@ -877,6 +877,27 @@ Gecko_6Max_FR_NL_BSS_River
 
 //////////////////////////////////////////////////////////////////
 //
+// Technical functions
+//
+//////////////////////////////////////////////////////////////////
+
+##f$EarlyStage##
+WHEN (BigBlindSize <= (5 * StartingBigBlindSize)) RETURN true FORCE
+
+##f$MiddleStage##
+WHEN f$EarlyStage RETURN false FORCE
+WHEN f$LateStage RETURN false FORCE
+WHEN Ohers RETURN true FORCE
+
+##f$LateStage##
+WHEN (StackSize < 20) RETURN true FORCE
+WHEN (AverageStackSize < 20) RETURN true FORCE
+
+##f$FirstAction##
+WHEN BotsLastAction = None RETURN true FORCE f$FirstAction
+
+//////////////////////////////////////////////////////////////////
+//
 // Handlists
 //
 //////////////////////////////////////////////////////////////////
@@ -1138,68 +1159,14 @@ handle headsup before ITM
 handle late before early, in case tournament stage is both
 isbigstack middle small
 
-##InTheMoney##
-WHEN NOT istournament RETURN false FORCE
-WHEN (PlayersLeftInTournament <= PaidPlaces) RETURN true FORCE
+document:
+InTheMoney
+IsBubble
+new tournament symbols
+StartingBigBlindSize
+AverageStackSize
 
-##IsBubble##
-WHEN NOT istournament RETURN false FORCE
-WHEN (PlayersLeftInTournament == (PaidPlaces + 1)) RETURN true FORCE
-
-##PaidPlaces##
-WHEN NOT istournament RETURN false FORCE
-WHEN TableIsHeadsup RETURN PaidPlacesHeadsup FORCE
-WHEN TableIsThreeHanded RETURN PaidPlacesThreeHanded FORCE
-WHEN TableIsShortHanded RETURN PaidPlacesShortHanded FORCE
-WHEN TableIsFullRing RETURN PaidPlacesFullRing FORCE
-WHEN TableIsMultiTable RETURN PaidPlacesMultiTable FORCE
-
-##PaidPlacesHeadsup##
-1
-
-##PaidPlacesThreeHanded##
-1
-
-##PaidPlacesShortHanded##
-WHEN isdon RETURN 3 FORCE
-WHEN Others RETURN 2 FORCE
-
-##PaidPlacesFullRing##
-WHEN isdon RETURN 5 FORCE
-WHEN Others RETURN 3 FORCE
-
-##PaidPlacesMultiTable##
-// To Do !!!!!
-999999
-
-##PlayersLeftInTournament##
-WHEN NOT istournament RETURN playersseated FORCE
-WHEN NOT ismtt RETURN playersseated FORCE
-WHEN Others RETURN PlayersLeftInMultiTableTournament FORCE
-
-##PlayersLeftInMultiTableTournament##
-// To Do !!!!!
-999999
-
-##f$EarlyStage##
-WHEN (BigBlindSize <= (5 * StartingBigBlindSize)) RETURN true FORCE
-
-##f$MiddleStage##
-WHEN f$EarlyStage RETURN false FORCE
-WHEN f$LateStage RETURN false FORCE
-WHEN Ohers RETURN true FORCE
-
-##f$LateStage##
-WHEN (StackSize < 20) RETURN true FORCE
-WHEN (AverageStackSize < 20) RETURN true FORCE
-
-##f$FirstAction##
-WHEN BotsLastAction = None RETURN true FORCE f$FirstAction
-
-
-##StartingBigBlindSize##
-
-##AverageStackSize##
+load tournament symbols
 
 
 ##f$StackSize_Range_0_2##

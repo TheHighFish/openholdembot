@@ -375,3 +375,15 @@ false
 
 ##HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions##
 false
+
+##HINT_UnknownPaidPlacesMultiTable##
+// Return a reasonable number
+10
+
+##HINT_PlayersLeftInMultiTableTournament##
+// Return a reasonable number
+999
+
+##HINT_unknoiwn_AverageStackSize_MultiTable##
+// Return a reasonable number
+99
