@@ -66,18 +66,16 @@ POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
       bool isomaha, 
       bool istournament,
 	    int site_id, 
-      CString player_name) {
+      CString player_name,
+      double big_blind) {
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
 	CString query = query_definitions[stats_index].query;
-
 	CString site_id_as_string;
 	site_id_as_string.Format("%i", site_id);
-
 	query.Replace("%SITEID%", site_id_as_string);
 	query.Replace("%SCREENNAME%", player_name);
 	query.Replace("%GAMETYPE%", (isomaha ? k_omaha_id : k_holdem_id) );
 	query.Replace("%TYPE%", (istournament ? k_tournament_infix : k_cashgame_infix));
-	
 	return query;
 }
 
