@@ -33,10 +33,10 @@ class CReplayFrame {
 	CString GetCommonCardsAsHTML();
 	CString GetPotsAsHTML();
 	CString GetLinksToPrevAndNextFile();
-  CString GeneralInfo();
+	CString GeneralInfo();
 	void CreateBitMapFile();
  private:
-	static int	_next_replay_frame;
+	static int _next_replay_frame;
 };
 
 #endif /* INC_CREPLAYFRAME_H */
