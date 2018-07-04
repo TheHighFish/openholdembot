@@ -100,8 +100,9 @@ WHEN Others RETURN (f$positional_allin_on_betsize_balance_ratio * (StackSize_hea
 
 ##f$call_nuts##
 // Basic calls with nuts or free to check
-WHEN [prwin>=0.98] RETURN true FORCE
-WHEN [call<=0.001] RETURN true FORCE
+WHEN HaveNuts RETURN true FORCE
+WHEN [prwin >= 0.98] RETURN true FORCE
+WHEN [call <= 0.001] RETURN true FORCE
 WHEN [IsPreflop AND (hand$AA OR hand$KK)] RETURN true FORCE
 
 ##f$call_minbets##

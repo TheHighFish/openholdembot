@@ -205,5 +205,6 @@
 //   * Improved f$BetsizePreflop, now adapting its betsize to position/range
 //     when open-raising.
 //   * Simplified f$PotOdds which assumed there was always at least 1 bb to call.
+//   * f$call_nuts now also considers HaveNuts, as the best hand might have less than 98% equity.
 //
 //*****************************************************************************
