@@ -28,6 +28,7 @@
 #include "..\CTablemap\CTablemap.h"
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
+#include <io.h>
 
 //  Sanity check: enough disk-space for a replay frame?
 //	We assume, 10 MB are enough
@@ -42,6 +43,17 @@ const unsigned int FREE_SPACE_NEEDED_FOR_REPLAYFRAME = 10000000;
 int CReplayFrame::_next_replay_frame = 0;
 
 CReplayFrame::CReplayFrame(void) {
+	// if replay frame current nb is 0 (it will most often happen at start)
+	// then check first available file and use that one first
+	if (0 == _next_replay_frame) {
+		for (int i = 0 ; i < Preferences()->replay_max_frames() ; i++) {
+			CString path = ReplayHTMLFilename(p_sessioncounter->session_id(), i);
+			if (ENOENT == _access_s(path.GetString(), 0)) {
+				_next_replay_frame = i;
+				break;
+			}
+		}
+	}
 }
 
 CReplayFrame::~CReplayFrame(void) {
@@ -69,18 +81,18 @@ void CReplayFrame::CreateReplayFrame(void){
 	if (free_bytes_for_user_on_disk.QuadPart < FREE_SPACE_NEEDED_FOR_REPLAYFRAME) {
 		write_log(Preferences()->debug_replayframes(), "[CReplayFrame] Not enough disk-space\n");
 		MessageBox_Error_Warning("Not enough disk space to create replay-frame.");
-    return;
+		return;
 	}
 	// Get exclusive access to CScraper and CSymbols variables
 	// (Wait for scrape/symbol cycle to finish before saving frame)
 	EnterCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
-  CString next_frame;
+	CString next_frame;
 	next_frame.Format("[%06d]", _next_replay_frame);
-  // Replay-frame should always be mentioned in the log for easy reference
-  write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame %s\n", next_frame);
+	// Replay-frame should always be mentioned in the log for easy reference
+	write_log(k_always_log_basic_information, "[CReplayFrame] Shooting frame %s\n", next_frame);
 	CreateBitMapFile();
-  // Create HTML file
-  assert(p_sessioncounter != nullptr);
+	// Create HTML file
+	assert(p_sessioncounter != nullptr);
 	CString path = ReplayHTMLFilename(p_sessioncounter->session_id(), _next_replay_frame);
 	if (fopen_s(&fp, path.GetString(), "w")==0) {
 		write_log(Preferences()->debug_replayframes(), "[CReplayFrame] Creating HTML file: %s\n", path);
@@ -88,7 +100,7 @@ void CReplayFrame::CreateReplayFrame(void){
 		// This is no longer valid HTML, but the way Ray.E.Bornert did it
 		// for WinHoldem and WinScrape.
 		fprintf(fp, "%s\n", LPCSTR(p_table_state->TableTitle()->Title()));
-    fprintf(fp, "<br>\n");
+		fprintf(fp, "<br>\n");
 		// HTML header
 		fprintf(fp, "<html>\n");
 		fprintf(fp, "  <head>\n");
@@ -99,20 +111,20 @@ void CReplayFrame::CreateReplayFrame(void){
 		fprintf(fp, "</style>\n");
 		fprintf(fp, "<body>\n");
 		fprintf(fp, "<font face=courier>\n");
-    // Bitmap image
+		// Bitmap image
 		fprintf(fp, "<img src=\"frame%06d.bmp\">\n", _next_replay_frame);
 		fprintf(fp, "<br>\n");
-    // Title, data, frame-number, OH-version
-    fprintf(fp, "%s", LPCSTR(GeneralInfo()));
-    // Links forwards and backwards to the next frames
+		// Title, data, frame-number, OH-version
+		fprintf(fp, "%s", LPCSTR(GeneralInfo()));
+		// Links forwards and backwards to the next frames
 		fprintf(fp, "%s", LPCSTR(GetLinksToPrevAndNextFile()));
 		fprintf(fp, "<br>\n");
 		fprintf(fp, "<br>\n");
-    // Header of main table for smaller data tables
+		// Header of main table for smaller data tables
 		fprintf(fp, "<table>\n");
 		fprintf(fp, "<tr>\n");
 		fprintf(fp, "<td>\n");
-    // Data tables
+		// Data tables
 		fprintf(fp, "%s", LPCSTR(GetPlayerInfoAsHTML()));
 		fprintf(fp, "/<td>\n");
 		fprintf(fp, "<td>\n");
@@ -121,54 +133,54 @@ void CReplayFrame::CreateReplayFrame(void){
 		fprintf(fp, "%s", LPCSTR(GetCommonCardsAsHTML()));
 		fprintf(fp, "%s", LPCSTR(GetPotsAsHTML()));
 		fprintf(fp, "</td>\n");
-    // Footer of main table
+		// Footer of main table
 		fprintf(fp, "</tr>\n");
 		fprintf(fp, "</table>\n");
-    // End of HTML
+		// End of HTML
 		fprintf(fp, "</body></html>\n");
-    fclose(fp);
+		fclose(fp);
 	}	
-  LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
+	LeaveCriticalSection(&p_heartbeat_thread->cs_update_in_progress);
 }
 
 CString CReplayFrame::GeneralInfo() {
-  // Get current time
-  time_t    ltime = 0;
+	// Get current time
+	time_t    ltime = 0;
 	tm        now_time = {0};
 	char			now_time_str[100] = {0};
 	time(&ltime);
 	localtime_s(&now_time, &ltime);
 	strftime(now_time_str, 100, "%Y-%m-%d %H:%M:%S", &now_time);
 
-  CString result;
-  result += "<table border=4 cellpadding=1 cellspacing=1>\n";
-  // Table title
-  result += "<tr><td>\n";
+	CString result;
+	result += "<table border=4 cellpadding=1 cellspacing=1>\n";
+	// Table title
+	result += "<tr><td>\n";
 	result += p_table_state->TableTitle()->Title();
-  result += "</td></tr>\n";
+	result += "</td></tr>\n";
 	// Session, 
-  result += "<tr><td>\n";
-  result += "Session: ";
+	result += "<tr><td>\n";
+	result += "Session: ";
 	result += Number2CString(p_sessioncounter->session_id(), 0);
-  result += "</td></tr>\n";
-  // Frame number 
-  result += "<tr><td>\n";
-  CString next_frame;
-  next_frame.Format("Frame: %06d", _next_replay_frame);
+	result += "</td></tr>\n";
+	// Frame number 
+	result += "<tr><td>\n";
+	CString next_frame;
+	next_frame.Format("Frame: %06d", _next_replay_frame);
 	result += next_frame;
-  result += "</td></tr>\n";
-  // Time
-  result += "<tr><td>\n";
+	result += "</td></tr>\n";
+	// Time
+	result += "<tr><td>\n";
 	result += now_time_str;
-  result += "</td></tr>\n";
-  // Version
-  result += "<tr><td>\n";
+	result += "</td></tr>\n";
+	// Version
+	result += "<tr><td>\n";
 	result += "OpenHoldem ";
-  result += VERSION_TEXT;
-  result += "</td></tr>\n";
-  // Finish table
-  result += "</table>\n";
-  return result;
+	result += VERSION_TEXT;
+	result += "</td></tr>\n";
+	// Finish table
+	result += "</table>\n";
+	return result;
 }
 
 CString CReplayFrame::GetPlayerInfoAsHTML() {
@@ -208,17 +220,16 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
 		text +=	(p_engine_container->symbol_engine_active_dealt_playing()->playersdealtbits() & (1<<i)) ? "d" : "-";
 		text +=	(p_engine_container->symbol_engine_active_dealt_playing()->playersplayingbits() & (1<<i)) ? "p" : "-";
 		text += "</td>\n";
-		player_info += text;  
+		player_info += text;
 		// Cards
-    text.Format("      <td>%s</td>\n",
-      p_table_state->Player(i)->CardsAsHTML());
-		player_info += text;  
+		text.Format("      <td>%s</td>\n", p_table_state->Player(i)->CardsAsHTML());
+		player_info += text;
 		// Bet
 		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->_bet.GetValue());
-		player_info += text; 
+		player_info += text;
 		// Balance
 		text.Format("      <td>%11.2f</td>\n", p_table_state->Player(i)->_balance.GetValue());
-		player_info += text;  
+		player_info += text;
 		// Name
 		text.Format("      <td>%-15s</td>\n", p_table_state->Player(i)->name().GetString());
 		player_info += text;
@@ -233,7 +244,7 @@ CString CReplayFrame::GetPlayerInfoAsHTML() {
 
 CString CReplayFrame::GetButtonStatesAsHTML() {
 	CString button_states;
-  // Table header for: FCKRA
+	// Table header for: FCKRA
 	button_states += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
 	button_states += "  <tr><th>FCKRA</th></tr>\n";
 	button_states += "  <tr>\n";
@@ -265,12 +276,12 @@ CString CReplayFrame::GetBlindInfoAsHTML() {
 
 CString CReplayFrame::GetCommonCardsAsHTML() {
 	CString common_cards, text;
-  // Table header for: common cards
+	// Table header for: common cards
 	common_cards += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
 	common_cards += "<tr><th>commoncard</th></tr>\n";
 	common_cards += "<tr>\n";
 	// Common cards
-  text.Format("<td>%s%s%s%s%s</td>\n",
+	text.Format("<td>%s%s%s%s%s</td>\n",
     p_table_state->CommonCards(0)->ToHTML(),
     p_table_state->CommonCards(1)->ToHTML(),
     p_table_state->CommonCards(2)->ToHTML(),
@@ -285,7 +296,7 @@ CString CReplayFrame::GetCommonCardsAsHTML() {
 
 CString CReplayFrame::GetPotsAsHTML() {
 	CString pots, text;
-  // Table header for: pots
+	// Table header for: pots
 	pots += "<table align=center border=4 cellpadding=1 cellspacing=1>\n";
 	pots += "  <tr><th>#</th><th>pot</th></tr>\n";
 	pots += "  <tr>\n";
@@ -309,7 +320,7 @@ CString CReplayFrame::GetPotsAsHTML() {
 }
 
 void CReplayFrame::CreateReplaySessionDirectoryIfNecessary() {
-  assert(p_sessioncounter != nullptr);
+	assert(p_sessioncounter != nullptr);
 	CString path = ReplaySessionDirectory(p_sessioncounter->session_id());
 	if (GetFileAttributes(path.GetString()) == INVALID_FILE_ATTRIBUTES)	{
     write_log(Preferences()->debug_replayframes(), "[CReplayFrame] Creating replay directory %s\n", path);
