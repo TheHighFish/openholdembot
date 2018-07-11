@@ -206,5 +206,7 @@
 //     when open-raising.
 //   * Simplified f$PotOdds which assumed there was always at least 1 bb to call.
 //   * f$call_nuts now also considers HaveNuts, as the best hand might have less than 98% equity.
+//   * Reduced large raises in f$BetsizeFlopHeadsup:
+//     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=270#p153332
 //
 //*****************************************************************************

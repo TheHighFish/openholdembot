@@ -671,9 +671,9 @@ WHEN (AmountToCall <= 1)
    WHEN Others  RaiseBy 55% FORCE
 WHEN NOT didbetsize
    WHEN (AmountToCall <= 33% PotSize) RaisePot FORCE
-   WHEN Others RaiseBy (4 * BetSize) FORCE
+   WHEN Others RaiseBy (2 * BetSize) FORCE
 WHEN Others
-   WHEN (nbetsround_preflop <= 1) RaiseBy (4 * BetSize) FORCE
+   WHEN (nbetsround_preflop <= 1) RaiseBy (2 * BetSize) FORCE
    WHEN f$ptype_raise_contibet_very_high RaiseBy (2 * BetSize) FORCE
    // Formerly RaiseMax.
    WHEN Others RaisePot FORCE
