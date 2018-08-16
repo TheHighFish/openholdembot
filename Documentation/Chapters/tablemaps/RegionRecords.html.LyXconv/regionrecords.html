@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-01-18"/>
+<meta name="create-date" content="2018-08-16"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -355,6 +355,51 @@ i0state - i9state, iAstate - iFstate
 </td>
 <td align="left" valign="top" style="width: 85%;">
 Specifies whether the corresponding button is live and available to be clicked. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+betpot_X_Ybutton
+</td>
+<td align="left" valign="top" style="width: 85%;">
+Similar to the I0button - I9button regions, however these regions are intended to bet fractions of the pot. Where X is the numerator and Y is the denominator. It’s used to bet:<ul>
+<li>
+Pot bet - betpot_1_1button
+</li>
+<li>
+Half pot bet - betpot_1_2button
+</li>
+<li>
+One third of the pot bet - betpot_1_3button
+</li>
+<li>
+One fourth of the pot bet - betpot_1_4button 
+</li>
+<li>
+Two times the pot bet - betpot_2_1button
+</li>
+<li>
+Two thirds of the pot bet - betpot_2_3button 
+</li>
+<li>
+Three quarters of the pot bet - betpot_3_4
+</li>
+
+</ul>
+<div class="Remark*">
+It’s not possible to assign a label to these buttons for obvius reasons.
+</div>
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 15%;">
+betpot_X_Ystate
+</td>
+<td align="left" valign="top" style="width: 85%;">
+The corresponding state regions for the betpot_X_Ybutton regions above. The best transformation is hash or color. If the leftmost characters of the result from this region’s transform are either “true”, "on", "yes", "checked" or "lit" then the button will be seen as available to be clicked. If any other result is returned, such as "false", then the button will be seen as not available to be clicked. Results are case-insensitive.
 </td>
 
 </tr>

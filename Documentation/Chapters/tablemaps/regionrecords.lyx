@@ -654,7 +654,7 @@ Valid region records and their descriptions
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="47" columns="2">
+<lyxtabular version="3" rows="49" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="15text%">
 <column alignment="left" valignment="top" width="85text%">
@@ -987,6 +987,88 @@ i0state - i9state, iAstate - iFstate
 
 \begin_layout Plain Layout
 Specifies whether the corresponding button is live and available to be clicked.
+ The best transformation is hash or color.
+ If the leftmost characters of the result from this region’s transform are
+ either “true”, "on", "yes", "checked" or "lit" then the button will be
+ seen as available to be clicked.
+ If any other result is returned, such as "false", then the button will
+ be seen as not available to be clicked.
+ Results are case-insensitive.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+betpot_X_Ybutton
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Similar to the I0button - I9button regions, however these regions are intended
+ to bet fractions of the pot.
+ Where X is the numerator and Y is the denominator.
+ It's used to bet:
+\end_layout
+
+\begin_layout Itemize
+Pot bet - betpot_1_1button
+\end_layout
+
+\begin_layout Itemize
+Half pot bet - betpot_1_2button
+\end_layout
+
+\begin_layout Itemize
+One third of the pot bet - betpot_1_3button
+\end_layout
+
+\begin_layout Itemize
+One fourth of the pot bet - betpot_1_4button 
+\end_layout
+
+\begin_layout Itemize
+Two times the pot bet - betpot_2_1button
+\end_layout
+
+\begin_layout Itemize
+Two thirds of the pot bet - betpot_2_3button 
+\end_layout
+
+\begin_layout Itemize
+Three quarters of the pot bet - betpot_3_4
+\end_layout
+
+\begin_layout Remark*
+It's not possible to assign a label to these buttons for obvius reasons.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+betpot_X_Ystate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The corresponding state regions for the betpot_X_Ybutton regions above.
  The best transformation is hash or color.
  If the leftmost characters of the result from this region’s transform are
  either “true”, "on", "yes", "checked" or "lit" then the button will be
