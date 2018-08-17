@@ -7,6 +7,11 @@ BUG FIXES:
   This caused problems headsup.
   Thanks to Relhby for reporting and to Gunfadoso for helping with the fix.
   [THF]
+- BotsLastFlopAction could -- if used at the flop -- incorrectly
+  return the last action from preflop. This has now been fixed.
+  Thanks to Eden for reporting, Cold12Zera, Stars83 
+  and ChuckNeverMuck for helping.
+  [THF]
 
 MAINTENANCE:
 - Improved table-display for 6max and large tour5nament-betsizes

@@ -132,11 +132,9 @@ WHEN IsPreflop RETURN BotsLastAction FORCE
 WHEN Others RETURN me_re_MemBotsLastPreflopAction FORCE
 
 ##BotsLastFlopAction##
-WHEN IsFlop RETURN BotsLastAction FORCE
 WHEN Others RETURN me_re_MemBotsLastFlopAction FORCE
 
 ##BotsLastTurnAction##
-WHEN IsTurn RETURN BotsLastAction FORCE
 WHEN Others RETURN me_re_MemBotsLastTurnAction FORCE
 
 ##Calls##
