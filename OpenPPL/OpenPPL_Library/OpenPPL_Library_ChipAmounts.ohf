@@ -135,7 +135,7 @@ pot - EffectivePotSizeInDollars
 (bblind > 0) ? (SidePotInDollars / bblind) : 0
 
 ##TotalChipsAtTheTable##
-  pot
+  PotSize
 + StackSize0
 + StackSize1
 + StackSize2

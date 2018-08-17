@@ -1,7 +1,6 @@
 ﻿﻿v﻿13.0.3 2018-08-17
 ==================
 BUG FIXES:
--
 - Since version 13.0.3 OpenHoldem incorrectly always was looking 
   for the smallblind-bet when searching for the dealer.
   This caused problems headsup.
@@ -16,6 +15,9 @@ BUG FIXES:
 MAINTENANCE:
 - Improved table-display for 6max and large tour5nament-betsizes
   [Bob]
+- Starting replay-frames at the first available frame-number,
+  no longer overwriting existing frames.
+  [Niko]
 
 ﻿v﻿13.0.2 2018-05-02
 ==================
