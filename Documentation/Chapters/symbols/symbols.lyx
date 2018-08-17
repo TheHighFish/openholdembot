@@ -5328,7 +5328,9 @@ Rank Bits
 \end_layout
 
 \begin_layout Standard
-Please note: aces are both hi and lo.
+Rankbits are used in the following order AKQJT98765432a-.
+ The last bit is unused by WinHoldem definition.
+ Aces can be high, low or both, depending on our hand.
 \end_layout
 
 \begin_layout Standard
