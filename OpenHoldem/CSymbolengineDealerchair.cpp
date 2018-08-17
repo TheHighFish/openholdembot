@@ -62,7 +62,7 @@ void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
 		if (p_table_state->Player(i)->dealer())	{
 			write_log(Preferences()->debug_symbolengine(), "Setting dealerchair to %d\n", i);
 			_dealerchair = i;					
-			break;
+			return;
 		}
 	}
   // No dealer-button found.

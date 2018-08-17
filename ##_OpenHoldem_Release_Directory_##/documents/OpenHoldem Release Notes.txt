@@ -1,4 +1,18 @@
-﻿﻿v﻿13.0.2 2018-05-02
+﻿﻿v﻿13.0.3 2018-08-17
+==================
+BUG FIXES:
+-
+- Since version 13.0.3 OpenHoldem incorrectly always was looking 
+  for the smallblind-bet when searching for the dealer.
+  This caused problems headsup.
+  Thanks to Relhby for reporting and to Gunfadoso for helping with the fix.
+  [THF]
+
+MAINTENANCE:
+- Improved table-display for 6max and large tour5nament-betsizes
+  [Bob]
+
+﻿v﻿13.0.2 2018-05-02
 ==================
 NEW STUFF:
 - Support for s§iXbuttondefaultlabel.
