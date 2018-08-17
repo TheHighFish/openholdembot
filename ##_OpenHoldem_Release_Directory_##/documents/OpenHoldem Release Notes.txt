@@ -17,7 +17,7 @@ MAINTENANCE:
   [Bob]
 - Starting replay-frames at the first available frame-number,
   no longer overwriting existing frames.
-  [Niko]
+  [Nik0]
 
 ﻿v﻿13.0.2 2018-05-02
 ==================
