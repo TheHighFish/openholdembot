@@ -1,0 +1,143 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Players and Opponents
+//
+//*****************************************************************************
+
+##HandIsHeadsup##
+TwoPlayersCompetingForThisPot
+
+##TableIsHeadsup##
+WHEN istournament AND OnlyTwoPlayersLeftAtTournamentTable RETURN true FORCE
+WHEN (NOT istournament) AND (nplayersdealt = 2) RETURN true FORCE
+
+##TwoPlayersCompetingForThisPot##
+// Just to create some verbosity in HandIsHeadsup
+WHEN nplayersplaying = 2 RETURN true FORCE
+
+##OnlyTwoPlayersLeftAtTournamentTable##
+// Just to create some verbosity in HandIsHeadsup
+WHEN (not istournament) RETURN false FORCE
+// Players in tournaments get always dealt even if they are sitting out.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19778
+// So we check seated players
+WHEN (nplayersseated = 2) RETURN true FORCE
+
+##PlayersAtStartOfThisRound##
+nplayersround_currentround
+
+##Opponents##
+OpponentsLeft
+
+##OpponentsAtTable##
+nopponentsseated
+
+##OpponentIsAllin##
+nopponentsallin > 0
+
+##NumberOfOpponentsAllin##
+nopponentsallin 
+
+##OpponentsLeft##
+// Does also consider players who are allin 
+// (contrary to Shankys, who consider players allin in this round, but not from previous rounds).
+nopponentsplaying
+
+##OpponentsOnFlop##
+(nplayersround_flop - 1)
+
+##OpponentsOnTurn##
+(nplayersround_turn - 1)
+
+##OpponentsOnRiver##
+(nplayersround_river - 1)
+
+##OpponentsWithLowerStack##
+  (((balance0 + currentbet0) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0001) > 0) ? 1:0)
++ (((balance1 + currentbet1) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0002) > 0) ? 1:0)
++ (((balance2 + currentbet2) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0004) > 0) ? 1:0)
++ (((balance3 + currentbet3) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0008) > 0) ? 1:0)
++ (((balance4 + currentbet4) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0010) > 0) ? 1:0)
++ (((balance5 + currentbet5) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0020) > 0) ? 1:0)
++ (((balance6 + currentbet6) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0040) > 0) ? 1:0)
++ (((balance7 + currentbet7) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0080) > 0) ? 1:0)
++ (((balance8 + currentbet8) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0100) > 0) ? 1:0)
++ (((balance9 + currentbet9) < MaximumPossibleBetsizeInDollars) AND ((playersseatedbits & 0x0200) > 0) ? 1:0)
+
+##StillToActPreflop##
+// Precondition: first action, but this gets checked in StillToAct
+WHEN InBigBlind RETURN 0 FORCE
+WHEN InSmallBlind RETURN 1 FORCE
+// Not in the blinds
+WHEN (MissingSmallBlind > 0) RETURN (nchairsdealtleft + 1) FORCE
+WHEN Others RETURN (nchairsdealtleft + 2) FORCE
+
+##StillToActPostflop##
+// Precondition: first action, but this gets checked in StillToAct
+((OpponentsLeft + 1) - betposition)
+
+##StillToAct##
+(BotsActionsOnThisRoundIncludingChecks > 0) ? HINT_StillToAct_Is_Only_Valid_On_First_Orbit :
+(IsPreflop AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPreflop:
+((betround != preflop) AND (BotsActionsOnThisRoundIncludingChecks == 0)) ? StillToActPostflop:
+0

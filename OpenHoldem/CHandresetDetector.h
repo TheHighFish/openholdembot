@@ -1,22 +1,23 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
-// Purpose:
+// Purpose: Detecting handresets the reliable way,
+//   requireing N seen handresetmethods within 3 heartbeats
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CHANDRESETDETECTOR_H
 #define INC_CHANDRESETDETECTOR_H
 
-#include "MagicNumbers.h"
+#include "CSpaceOptimizedGlobalObject.h"
 
-class CHandresetDetector {
+class CHandresetDetector : public CSpaceOptimizedGlobalObject {
  public:
 	CHandresetDetector();
 	~CHandresetDetector();
@@ -24,22 +25,28 @@ class CHandresetDetector {
 	// OnNewHeartbeat(): to be called on every new heartbeat
 	// BEFORE IsHandreset() gets called.
 	void OnNewHeartbeat();
-	bool IsHandreset()		{ return _is_handreset_on_this_heartbeat; }
+	bool IsHandreset() { return _is_handreset_on_this_heartbeat; }
  public:
 	// Only for output in the log
 	CString GetHandNumber();
  private: 
 	void CalculateIsHandreset();
+  void ClearSeenHandResets();
+ private:
 	bool IsHandresetByDealerChair();
 	bool IsHandresetByUserCards();
 	bool IsHandresetByHandNumber();
 	bool IsHandresetByCommunityCards();
 	bool IsHandresetByPotsize();
-	bool IsHandresetByNopponentsplaying();
+	bool IsHandresetByIncreasingNumberOfOpponentsPlaying();
 	bool IsHandresetByIncreasingBalance();
   bool IsHandresetByNewSmallBlind();
   bool IsHandresetByChangingBlindLevel();
-public:
+  bool IsHandresetByOHReplayFrameNumber();
+  bool IsHandresetByVisibleAntes();
+  bool IsHandresetByDisappearingShowdownCards();
+  bool IsHandresetByButtonsAfterFold();
+ public:
   int hands_played() { return _hands_played; }
   int hands_played_headsup() { return _hands_played_headsup; }
  private:
@@ -51,10 +58,12 @@ public:
 	void GetNewSymbolValues();
 	void StoreOldValuesForComparisonOnNextHeartbeat();
  private:
+  void UpdateHandsPlayedOnHandreset();
+ private:
 	int dealerchair;
 	int last_dealerchair;
-	int playercards[kNumberOfCardsPerPlayer];
-	int last_playercards[kNumberOfCardsPerPlayer];
+	int playercards[kMaxNumberOfCardsPerPlayer];
+	int last_playercards[kMaxNumberOfCardsPerPlayer];
  private:
   double _potsize;
   double _last_potsize;
@@ -62,11 +71,19 @@ public:
   int    _last_community_cards;
   int    _nopponentsplaying;
   int    _last_nopponentsplaying;
-  double _balance[k_max_number_of_players];
-  double _last_balance[k_max_number_of_players];
+  double _balance[kMaxNumberOfPlayers];
+  double _last_balance[kMaxNumberOfPlayers];
   double _bblind;
   double _last_bblind;
   bool   _small_blind_existed_last_hand;
+  int    _ohreplay_framenumber;
+  int    _last_ohreplay_framenumber;
+  bool   _showdown_cards_visible;
+  bool   _last_showdown_cards_visible;
+  bool   _antes_visible;
+  bool   _last_antes_visible;
+  bool   _buttons_visible;
+  bool   _last_buttons_visible;
  private:
 	// Handnumber should be a string, as
 	//   * it may contain characters

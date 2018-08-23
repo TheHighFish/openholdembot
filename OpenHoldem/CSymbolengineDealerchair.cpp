@@ -1,84 +1,116 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineDealerchair.h"
 
-#include "CPreferences.h"
+#include "CEngineContainer.h"
+
 #include "CScraper.h"
+#include "CSymbolEngineTableLimits.h"
 #include "CTableState.h"
-#include "MagicNumbers.h"
 
-CSymbolEngineDealerchair *p_symbol_engine_dealerchair = NULL;
 
-CSymbolEngineDealerchair::CSymbolEngineDealerchair()
-{
+CSymbolEngineDealerchair::CSymbolEngineDealerchair() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
 	//
 	// This engine does not use any other engines.
+  //
+  // This engine also might use CSymbolEngineTableLimits, but
+  //   * only very rarely if we have to detect the dealer by the SB-chair
+  //   * the small-blind is (more or less( constant
+  //   * that symbol-engine gets initialized later
+  // so we omit the check for initialization here.
 }
 
 CSymbolEngineDealerchair::~CSymbolEngineDealerchair()
 {}
 
-void CSymbolEngineDealerchair::InitOnStartup()
-{
-	ResetOnConnection();
+void CSymbolEngineDealerchair::InitOnStartup() {
+	UpdateOnConnection();
 }
 
-void CSymbolEngineDealerchair::ResetOnConnection()
-{
+void CSymbolEngineDealerchair::UpdateOnConnection() {
 	_dealerchair = kUndefined;
 }
 
-void CSymbolEngineDealerchair::ResetOnHandreset()
-{}
+void CSymbolEngineDealerchair::UpdateOnHandreset() {
+}
 
-void CSymbolEngineDealerchair::ResetOnNewRound()
-{}
+void CSymbolEngineDealerchair::UpdateOnNewRound() {
+}
 
-void CSymbolEngineDealerchair::ResetOnMyTurn()
-{}
+void CSymbolEngineDealerchair::UpdateOnMyTurn() {
+}
 
-void CSymbolEngineDealerchair::ResetOnHeartbeat() {
-	write_log(preferences.debug_symbolengine(), "nchairs: %d\n", 
+void CSymbolEngineDealerchair::UpdateOnHeartbeat() {
+	write_log(Preferences()->debug_symbolengine(), "nchairs: %d\n", 
 		p_tablemap->nchairs());
 	for (int i=0; i<p_tablemap->nchairs(); i++)	{
-		if (p_table_state->_players[i]._dealer)	{
-			write_log(preferences.debug_symbolengine(), "Setting dealerchair to %d\n", i);
+		if (p_table_state->Player(i)->dealer())	{
+			write_log(Preferences()->debug_symbolengine(), "Setting dealerchair to %d\n", i);
 			_dealerchair = i;					
-			break;
+			return;
 		}
 	}
+  // No dealer-button found.
+  // Maybe temporary occluded, maybe completely bad tablemap
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=21454
+  // Try to find the smallblind
+  int smallblindchair = SmallBlindChair();
+  if (smallblindchair >= 0) {
+    _dealerchair = RightHandActiveChair(smallblindchair);
+  }
 	// Otherwise: do nothing and keep the dealer as is.
-	// Dealer-button probably just temporary occluded.
 	// Do not reset, as this might cause a hand-reset.
 }
 
-bool CSymbolEngineDealerchair::EvaluateSymbol(const char *name, double *result, bool log /* = false */)
-{
+int CSymbolEngineDealerchair::SmallBlindChair() {
+  for (int i = 0; i < p_tablemap->nchairs(); i++) {
+    if (p_table_state->Player(i)->_bet.GetValue() == p_engine_container->symbol_engine_tablelimits()->sblind()) {
+      return i;
+    }
+  }
+  return kUndefined;
+}
+
+int CSymbolEngineDealerchair::RightHandActiveChair(int chair) {
+  for (int i = (p_tablemap->nchairs() - 1); i >= 0; --i) {
+    int next_chair = chair + i;
+    next_chair %= p_tablemap->nchairs();
+    if (p_table_state->Player(next_chair)->active()) {
+      return next_chair;
+    }
+  }
+  return kUndefined;
+}
+
+bool CSymbolEngineDealerchair::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
-	if (memcmp(name, "dealerchair", 11)==0 && strlen(name)==11)	
-	{
-		*result = p_symbol_engine_dealerchair->dealerchair();
+	if (name == "dealerchair")	{
+		*result = p_engine_container->symbol_engine_dealerchair()->dealerchair();
 		return true;
 	}
+  if (name == "buttonchair") {
+    *result = p_engine_container->symbol_engine_dealerchair()->dealerchair();
+    return true;
+  }
 	return false;
 }
 
 CString CSymbolEngineDealerchair::SymbolsProvided() {
-  return "dealerchair ";
+  return "dealerchair buttonchair ";
 }
 	

@@ -1,0 +1,205 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - History Symbols
+//
+// This module provides the following symbols
+// = Bets
+// = BotsLastAction
+// = BotsLastPreflopAction
+// = Calls
+// = Checks
+// = MaxOpponentStackSize
+// = MinOpponentStackSize
+// = MissingSmallBlind
+// = NumberOfRaisesBeforeFlop
+// = NumberOfRaisesOnFlop
+// = NumberOfRaisesOnTurn 
+// = Raises
+// = StartingChips
+// = StartingStackSize 
+//
+//*****************************************************************************
+
+##Bets##
+// There are no bets preflop per Shanky definition
+WHEN IsPreflop RETURN 0 FORCE
+// Known stored value
+WHEN (me_re_MemBets > 0) RETURN me_re_MemBets FORCE
+WHEN ((AmountToCall > 0) AND (TotalInvestedThisRound <= Ante)) RETURN 1 FORCE
+
+##BotsLastAction##
+// Just to be extra safe...
+WHEN [IsPreflop AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+// Computing BotsLastAction from prevation
+// k_prevaction_undefined = -2
+// k_prevaction_fold = -1
+// k_prevaction_check = 0   // new in OpenHoldem
+// k_prevaction_call = 1
+// k_prevaction_raise = 2   // min-raise
+// k_prevaction_betsize = 3	// "stated wager", i.e. using f$betsize
+// k_prevaction_allin = 4
+// k_prevaction_jam = 5     // allin with the slider
+//
+// We do no longer check for successful and failed allins
+// because this function gets used for the initialization of BotsLastPreflopAction
+// This update happens potentiually multiple times preflop, not only once on the flop,
+// and at the same heartbeat when the action was executed,
+// so we can't check if the balance is zero, as the casino did not yet update
+// and we did not yet scrape again.
+WHEN PrevActionWasAllin RETURN RaiseMax FORCE
+// Raising (FL and NL)
+WHEN ((prevaction == 2) OR (prevaction == 3)) RETURN Raise FORCE
+// calling
+WHEN (prevaction == 1) RETURN Call FORCE
+// Checking postflop
+WHEN ((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) RETURN Check FORCE
+// Checking preflop
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) RETURN Check FORCE
+// "Checking" when it was a call
+// Actually OpenHoldem does auto-adapt prevaction after such actions
+// but we try to be extra safe
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) RETURN Call FORCE
+// Folding (might be used in sitout formulas)
+WHEN (prevaction == -1) RETURN Fold FORCE
+// No autoplayer-actions, but human being acting at ManualMode
+WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) FORCE
+// None
+WHEN (prevaction == -1) RETURN None FORCE
+WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
+
+##BotsLastPreflopAction##
+WHEN IsPreflop RETURN BotsLastAction FORCE
+WHEN Others RETURN me_re_MemBotsLastPreflopAction FORCE
+
+##BotsLastFlopAction##
+WHEN Others RETURN me_re_MemBotsLastFlopAction FORCE
+
+##BotsLastTurnAction##
+WHEN Others RETURN me_re_MemBotsLastTurnAction FORCE
+
+##Calls##
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemCalls FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemCalls FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN CallsBeforeOurFirstAction FORCE
+WHEN Others RETURN (me_re_MemCalls + CallsSinceLastPlay) FORCE
+
+##Checks##
+// No checks preflop. Not even big blind can check (betround over).
+// We ignore additional blind-posters however.
+WHEN IsPreflop RETURN 0 FORCE
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemChecks FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemChecks FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN ChecksInFrontOfHero FORCE
+// Stored value of checks on previous orbit plus players behind
+WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN (me_re_MemChecks + ChecksAfterHero) FORCE
+// There can no longer be any checking players, so just return the known value
+WHEN Others RETURN me_re_MemChecks FORCE
+
+##MaxOpponentStackSize##
+WHEN (me_re_MemMaxOpponentStackSize > 0) RETURN me_re_MemMaxOpponentStackSize FORCE
+WHEN Others RETURN CalculateMaxOpponentStackSize FORCE
+
+##MinOpponentStackSize##
+WHEN (me_re_MemMinOpponentStackSize > 0) RETURN me_re_MemMinOpponentStackSize FORCE
+WHEN Others RETURN CalculateMinOpponentStackSize FORCE
+
+##MissingSmallBlind##
+// Gets now calculated by OpenHoldem
+missingsmallblind
+
+##NumberOfRaisesBeforeFlop##
+WHEN IsPreflop RETURN Raises FORCE
+WHEN (betround >  preflop) RETURN me_re_MemRaisesBeforeFlop FORCE
+WHEN Others RETURN 0 FORCE
+
+##NumberOfRaisesOnFlop##
+WHEN IsFlop RETURN Raises FORCE
+WHEN (betround >  flop) RETURN me_re_MemRaisesOnFlop FORCE
+WHEN Others RETURN 0 FORCE
+
+##NumberOfRaisesOnTurn##
+WHEN IsTurn RETURN Raises FORCE
+WHEN (betround >  turn) RETURN me_re_MemRaisesOnTurn FORCE
+WHEN Others RETURN 0 FORCE
+
+##Raises##
+WHEN OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction RETURN me_re_MemRaises FORCE
+WHEN NOT GameStateChangedSinceLastAutoplayerAction RETURN me_re_MemRaises FORCE
+WHEN Others RETURN (me_re_MemRaises + RaisesSinceLastPlay) FORCE
+
+##RaisesBeforeFlop##
+WHEN (NumberOfRaisesBeforeFlop > 0) RETURN true FORCE
+
+##RaisesOnFlop##
+WHEN (NumberOfRaisesOnFlop > 0) RETURN true FORCE
+
+##RaisesOnTurn##
+WHEN (NumberOfRaisesOnTurn > 0) RETURN true FORCE
+
+##StartingChips##
+WHEN (me_re_MemStartingChips > 0) RETURN me_re_MemStartingChips FORCE
+WHEN Others RETURN CalculateStartingChips FORCE
+
+##StartingStackSize##
+WHEN (me_re_MemStartingStackSize > 0) RETURN me_re_MemStartingStackSize FORCE
+WHEN Others RETURN CalculateStartingStackSize FORCE

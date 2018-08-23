@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -19,6 +19,7 @@
 #include <math.h>
 
 #include "DialogTableMap.h"
+#include "ListOfSymbols.h"
 #include "resource.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
@@ -45,7 +46,7 @@ const char * cardsList[] = { "2c", "2s", "2h", "2d", "3c", "3s", "3h", "3d", "4c
 // CDlgTableMap dialog
 CDlgTableMap::CDlgTableMap(CWnd* pParent /*=NULL*/)	: CDialog(CDlgTableMap::IDD, pParent)
 {
-	__SEH_SET_EXCEPTION_HANDLER
+  BuildVectorsOfScraperSymbols();
 
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
@@ -258,7 +259,7 @@ BOOL CDlgTableMap::OnInitDialog()
 	m_Transform.AddString("Hash1");
 	m_Transform.AddString("Hash2");
 	m_Transform.AddString("Hash3");
-  m_Transform.AddString("WebCode");
+  	m_Transform.AddString("WebColour");
 	m_Transform.AddString("None");
 	m_Transform.SetWindowPos(NULL, 0, 0, 72, 200, SWP_NOMOVE | SWP_NOZORDER);
 
@@ -1470,15 +1471,11 @@ void CDlgTableMap::OnDeltaposRadiusSpin(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CDlgTableMap::OnBnClickedNew()
-{
+void CDlgTableMap::OnBnClickedNew() {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
-
-	CString	sel_text, type_text;
+  CString	sel_text, type_text;
 	HTREEITEM type_node = GetTextSelItemAndRecordType(&sel_text, &type_text);
-
-	if (type_text == "Sizes")
-	{
+  if (type_text == "Sizes") {
 		// Prep dialog
 		CDlgEditSizes dlgsizes;
 		dlgsizes.titletext = "New Size record";
@@ -1488,41 +1485,31 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgsizes.strings.RemoveAll();
 
 		ZMap::const_iterator z_iter;
-		for (int i=0; i<num_z$strings; i++)
-		{
+		for (int i=0; i<list_of_sizes.size(); i++) {
 			bool used_string = false;
-
-			for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++)
-				if (z_iter->second.name == z$strings[i])  
+      for (z_iter=p_tablemap->z$()->begin(); z_iter!=p_tablemap->z$()->end(); z_iter++) {
+				if (z_iter->second.name == list_of_sizes[i]) { 
 					used_string=true;
-
-			if (!used_string)
-				dlgsizes.strings.Add(z$strings[i]);
+        }
+      }
+			if (!used_string) {
+				dlgsizes.strings.Add(list_of_sizes[i]);
+      }
 		}
-
 		// Show dialog if there are any strings left to add
-		if (dlgsizes.strings.GetSize() == 0)
-		{
+		if (dlgsizes.strings.GetSize() == 0) {
 			MessageBox("All Size records are already present.");
-		}
-		else
-		{
-			if (dlgsizes.DoModal()==IDOK && dlgsizes.name!="")
-			{
-
+		}	else {
+			if (dlgsizes.DoModal()==IDOK && dlgsizes.name!="") {
 				// Add new record to internal structure
 				STablemapSize new_size;
 				new_size.name = dlgsizes.name;
 				new_size.width = dlgsizes.width;
 				new_size.height = dlgsizes.height;
-
-				// Insert the new record in the existing array of z$ records
-				if (!p_tablemap->z$_insert(new_size))
-				{
+        // Insert the new record in the existing array of z$ records
+				if (!p_tablemap->z$_insert(new_size))	{
 					MessageBox("Failed to create size record.", "Size creation error", MB_OK);
-				}
-				else
-				{
+				}	else {
 					// Add new record to tree
 					HTREEITEM new_hti = m_TableMapTree.InsertItem(dlgsizes.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
 					m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
@@ -1533,10 +1520,7 @@ void CDlgTableMap::OnBnClickedNew()
 				}
 			}
 		}
-	}
-	
-	else if (type_text == "Symbols")
-	{
+	}	else if (type_text == "Symbols") {
 		// Prep dialog
 		CDlgEditSymbols dlgsymbols;
 		dlgsymbols.titletext = "New Symbol record";
@@ -1548,18 +1532,17 @@ void CDlgTableMap::OnBnClickedNew()
 		dlgsymbols.strings.RemoveAll();
 
 		SMap::const_iterator s_iter;
-		for (int i=0; i<num_s$strings; i++)
-		{
+		for (int i=0; i<list_of_symbols.size(); i++)	{
 			bool used_string = false;
-
-			for (s_iter = p_tablemap->s$()->begin(); s_iter != p_tablemap->s$()->end(); s_iter++)
-				if (s$strings[i] == NULL || s_iter->second.name == s$strings[i])
+      for (s_iter = p_tablemap->s$()->begin(); s_iter != p_tablemap->s$()->end(); s_iter++) {
+        if (list_of_symbols[i] == "" || s_iter->second.name == list_of_symbols[i]) {
 					used_string=true;
-
-			if (!used_string)
-				dlgsymbols.strings.Add(s$strings[i]);
+        }
+      }
+      if (!used_string) {
+				dlgsymbols.strings.Add(list_of_symbols[i]);
+      }
 		}
-
 		// Show dialog if there are any strings left to add
 		if (dlgsymbols.strings.GetSize() == 0)
 		{
@@ -1592,23 +1575,25 @@ void CDlgTableMap::OnBnClickedNew()
 			}
 		}
 	}
-	
-	else if (type_text == "Regions")
-	{
+	else if (type_text == "Regions") {
 		// Prep dialog
 		CDlgEditRegion dlgregions;
 		dlgregions.titletext = "New Region record";
 		dlgregions.name = "";
 		dlgregions.strings.RemoveAll();
-    assert(r$strings[num_r$strings - 1] != NULL);
-		for (int i=0; i<num_r$strings; i++)
-		{
+    assert(list_of_regions[list_of_regions.size() - 1] != "");
+		for (int i=0; i<list_of_regions.size(); i++) {
+      // Ignore empty strings
+      // This should no longer happen with the new way we build lists
+      // but we keep this checl, as the consequences of empty symbols were nasty.
+      if (list_of_regions[i] == "") continue;
 			bool used_string = false;
 			for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++) {
         CString tablemap_string = r_iter->second.name;
-        char *allowed_string = r$strings[i];
+        CString allowed_string = list_of_regions[i];
         assert(tablemap_string != "");
-        assert(allowed_string != NULL);
+        assert(allowed_string != "");
+        if (tablemap_string == "") continue;
 				if (tablemap_string == allowed_string) {  
 					used_string = true;
           break;
@@ -1616,7 +1601,7 @@ void CDlgTableMap::OnBnClickedNew()
       }
 
 			if (!used_string)
-				dlgregions.strings.Add(r$strings[i]);
+				dlgregions.strings.Add(list_of_regions[i]);
 		}
 
 		// Show dialog if there are any strings left to add
@@ -1649,19 +1634,8 @@ void CDlgTableMap::OnBnClickedNew()
 
 					// Add new record to tree
 					HTREEITEM new_hti = NULL;
-					if (region_grouping==UNGROUPED)
-					{
-						new_hti = m_TableMapTree.InsertItem(new_region.name, type_node ? type_node : m_TableMapTree.GetSelectedItem());
-						m_TableMapTree.SortChildren(type_node ? type_node : m_TableMapTree.GetSelectedItem());
-					}
-
-					else
-					{
-						new_hti = InsertGroupedRegion(new_region.name);
-					}
-
+					new_hti = InsertGroupedRegion(new_region.name);
 					m_TableMapTree.SelectItem(new_hti);
-
 					pDoc->SetModifiedFlag(true);
 					Invalidate(false);
 				}
@@ -1778,10 +1752,10 @@ void CDlgTableMap::OnBnClickedDelete()
 			item_deleted = true;
 	}
 	
-	else if (type_text == "Regions")
-	{
-		if (p_tablemap->r$_erase(sel_text))
-			item_deleted = true;
+	else if (type_text == "Regions") {
+		if (p_tablemap->r$_erase(sel_text)) {
+      item_deleted = true;
+    }
 	}
 	
 	else if (type_text == "Fonts")
@@ -1942,8 +1916,8 @@ void CDlgTableMap::OnBnClickedEdit()
 		dlgsizes.height = z_iter->second.height;
 
 		dlgsizes.strings.RemoveAll();
-		for (int i=0; i<num_z$strings; i++)  
-			dlgsizes.strings.Add(z$strings[i]);
+		for (int i=0; i<list_of_sizes.size(); i++)  
+			dlgsizes.strings.Add(list_of_sizes[i]);
 
 		// Show dialog
 		if (dlgsizes.DoModal() != IDOK)
@@ -2007,8 +1981,8 @@ void CDlgTableMap::OnBnClickedEdit()
 		dlgsymbols.titlebartext = title;
 
 		dlgsymbols.strings.RemoveAll();
-		for (int i=0; i<num_s$strings; i++)  
-			dlgsymbols.strings.Add(s$strings[i]);
+		for (int i=0; i<list_of_symbols.size(); i++)  
+			dlgsymbols.strings.Add(list_of_symbols[i]);
 		
 		// Show dialog
 		if (dlgsymbols.DoModal() != IDOK)
@@ -2068,8 +2042,8 @@ void CDlgTableMap::OnBnClickedEdit()
 		dlgregion.name = r_iter->second.name;
 		
 		dlgregion.strings.RemoveAll();
-		for (int i=0; i<num_r$strings; i++)  
-			dlgregion.strings.Add(r$strings[i]);
+		for (int i=0; i<list_of_regions.size(); i++)  
+			dlgregion.strings.Add(list_of_regions[i]);
 		
 		// Show dialog
 		if (dlgregion.DoModal() != IDOK)
@@ -2876,14 +2850,11 @@ void CDlgTableMap::create_tree(void)
 	parent = m_TableMapTree.InsertItem("Regions");
 	m_TableMapTree.SetItemState(parent, TVIS_BOLD, TVIS_BOLD );
 
-	for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
-		m_TableMapTree.InsertItem(r_iter->second.name, parent);
-
-	if (region_grouping) 
-		GroupRegions(); 
-	else 
-		UngroupRegions();
-
+  for (RMapCI r_iter = p_tablemap->r$()->begin(); r_iter != p_tablemap->r$()->end(); r_iter++) {
+    m_TableMapTree.InsertItem(r_iter->second.name, parent);
+  }
+  GroupRegions(); 
+	
 	m_TableMapTree.SortChildren(parent);
 
 	// t$ records
@@ -3415,9 +3386,6 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 			if (regionName.Mid(0,1)=="p" || regionName.Mid(0,1)=="u" || regionName.Mid(0,1)=="c")
 				groupName = regionName.Mid(0,2);
 
-			else if (regionName.Mid(0,3)=="i86")
-				groupName = regionName.Mid(0,3);
-
 			else if (regionName.Mid(0,1)=="i")
 				groupName = regionName.Mid(0,2);
 
@@ -3427,7 +3395,7 @@ CString CDlgTableMap::GetGroupName(CString regionName)
 			break;
 
 		case BY_NAME:
-
+    default:
 			if (regionName.Find("cardface")!=-1 && regionName.Find("rank")!=-1)
 				groupName = "cardface-rank";
 

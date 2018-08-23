@@ -1,26 +1,27 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CWhiteInfoBox.h"
 
+#include "CEngineContainer.h"
 #include "CHandresetDetector.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineGameType.h"
 #include "CSymbolengineTableLimits.h"
 #include "CSymbolengineUserchair.h"
 #include "CTableState.h"
-#include "StringFunctions.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CWhiteInfoBox *p_white_info_box = NULL;
 
@@ -89,12 +90,12 @@ void CWhiteInfoBox::Draw(RECT client_rect, LOGFONT logfont, CDC *pDC,
 }
 
 CString CWhiteInfoBox::InfoText() {
-  double sym_bblind		= p_symbol_engine_tablelimits->bblind();
-	double sym_sblind		= p_symbol_engine_tablelimits->sblind();
-	double sym_ante			= p_symbol_engine_tablelimits->ante();
-	int sym_lim				  = p_symbol_engine_gametype->gametype();
+  double sym_bblind		= p_engine_container->symbol_engine_tablelimits()->bblind();
+	double sym_sblind		= p_engine_container->symbol_engine_tablelimits()->sblind();
+	double sym_ante			= p_engine_container->symbol_engine_tablelimits()->ante();
+	int sym_lim				  = p_engine_container->symbol_engine_gametype()->gametype();
 	CString sym_handnumber = p_handreset_detector->GetHandNumber();
-	double sym_pot			= p_symbol_engine_chip_amounts->pot();
+	double sym_pot			= p_engine_container->symbol_engine_chip_amounts()->pot();
   CString result, s;
 	// handnumber
 	if (sym_handnumber != "") {
@@ -115,8 +116,8 @@ CString CWhiteInfoBox::InfoText() {
 		format_string = "  %s %.2f/%.2f/%.2f\n";
 	}
 	s.Format(format_string,
-		p_symbol_engine_gametype->GetGameTypeAsString(),
-		sym_sblind, sym_bblind, p_symbol_engine_tablelimits->bigbet());
+		p_engine_container->symbol_engine_gametype()->GetGameTypeAsString(),
+		sym_sblind, sym_bblind, p_engine_container->symbol_engine_tablelimits()->bigbet());
 	result.Append(s);
 
 	// ante

@@ -231,7 +231,6 @@ void ViewStyle::Init() {
 }
 
 void ViewStyle::RefreshColourPalette(Palette &pal, bool want) {
-	unsigned int i;
 	for (int i=0;i<(sizeof(styles)/sizeof(styles[0]));i++) {
 		pal.WantFind(styles[i].fore, want);
 		pal.WantFind(styles[i].back, want);

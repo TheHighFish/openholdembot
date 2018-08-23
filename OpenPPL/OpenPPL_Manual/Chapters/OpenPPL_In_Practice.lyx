@@ -188,12 +188,12 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN calls = 0 AND Raises = 1 AND LastRaiserPosition <= 3
+WHEN Calls = 0 AND Raises = 1 AND LastRaiserPosition <= 3
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN AmountToCall <= 3 AND islist...
+    WHEN AmountToCall <= 3 AND list...
  RaiseTo 9 FORCE
 \end_layout
 
@@ -510,7 +510,8 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN AmountToCall / AmountToCall + PotSize > f$Outs / f$CardsLeft Call FORCE
+WHEN AmountToCall / (AmountToCall + PotSize) > f$Outs / f$CardsLeft Call
+ FORCE
 \end_layout
 
 \end_inset
@@ -534,12 +535,12 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN HaveStraightDraw OR HaveFlushDraw RETURN True FORCE
+    WHEN HaveStraightDraw OR HaveFlushDraw RETURN true FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN HaveInsideStraightDraw AND Overcards = 2 RETURN True FORCE
+    WHEN HaveInsideStraightDraw AND Overcards = 2 RETURN true FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -553,17 +554,17 @@ status open
 
 \begin_layout Plain Layout
 
-    WHEN HaveTopPair RETURN True FORCE
+    WHEN HaveTopPair RETURN true FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN HaveOverPair RETURN True FORCE
+    WHEN HaveOverPair RETURN true FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-    WHEN HaveBestOverpairOrBetter RETURN True FORCE
+    WHEN HaveBestOverpairOrBetter RETURN true FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -621,7 +622,7 @@ WHEN issittingout
 
 \begin_layout Plain Layout
 
-  RETURN True FORCE  
+  RETURN true FORCE  
 \end_layout
 
 \end_inset

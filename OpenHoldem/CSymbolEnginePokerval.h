@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
-// Purpose:
+// Purpose: Hand-strength, HoldEm only, not Omaha.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CSYMBOLENGINEPOKERVAL_H
 #define INC_CSYMBOLENGINEPOKERVAL_H
@@ -18,8 +18,8 @@
 #include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
-#include "MagicNumbers.h"
-#include "NumericalFunctions.h"
+
+
 
 class CSymbolEnginePokerval: public CVirtualSymbolEngine
 {
@@ -29,16 +29,16 @@ public:
 public:
 	// Mandatory reset-functions
 	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
+	void UpdateOnConnection();
+	void UpdateOnHandreset();
+	void UpdateOnNewRound();
+	void UpdateOnMyTurn();
+	void UpdateOnHeartbeat();
 public:
 	int CalculatePokerval(HandVal hv, int n, int *pcb, int card0, int card1);
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
 	CString SymbolsProvided();;
 public:
 	// Pokerval
@@ -71,7 +71,7 @@ public:
 	int rankbitsplayer()	{ return _rankbitsplayer; }
 	int rankbitscommon()	{ return _rankbitscommon; }
 	int rankbitspoker()		{ return _rankbitspoker; }
-	int srankbits()			{ return _srankbitsplayer | _srankbitscommon; }
+	int srankbits()			{ return _srankbitsplayer | _srankbitscommonp; }
 	int srankbitsplayer()	{ return _srankbitsplayer; }
 	int srankbitscommon()	{ return _srankbitscommon; }
 	int srankbitspoker()	{ return _srankbitspoker; }
@@ -94,6 +94,10 @@ public:
 	int srankloplayer()		{ return GetRankLo(_srankbitsplayer); }
 	int sranklopoker()		{ return GetRankLo(_srankbitspoker); }
 public:
+  // mainly for Omaha
+  int suitbitsplayer(int suit);
+  int suitbitscommon(int suit);
+public:
 	CString HandType();
 private:
 	void CalculateRankBits();
@@ -104,6 +108,14 @@ private:
 	int GetRankHi(int rankbits);
 	int GetRankLo(int rankbits);
 	void SetRankBit(int* rankbits, int rank);
+private:
+  void PrepareConstantSuitMasks();
+  void CalculateCardMasks();
+private:
+  int HandEval(CardMask c);
+  int CardCount(CardMask c);
+  int CardMaskToRankBits(CardMask c);
+  int SuitBits(CardMask c, int suit);
 private:
 	int _pokerval;
 	int _pokervalplayer;
@@ -128,16 +140,18 @@ private:
 private:
 	int _srankbitsplayer;
 	int _srankbitscommon;
+	int _srankbitscommonp;
 	int _srankbitspoker;
 private:
 	// for ishandup and ishandupcommon symbol calcs
-	HandVal	_phandval[kNumberOfBetrounds];
-	HandVal	_chandval[kNumberOfBetrounds];	 
+  // Index 0 is unused
+	HandVal	_phandval[kNumberOfBetrounds + 1];
+	HandVal	_chandval[kNumberOfBetrounds + 1];	
 private:
-	int nCards;
+  CardMask _heartsCards, _diamondsCards, _clubsCards, _spadesCards;
+  CardMask _player_cards, _board_cards, _all_cards;
+private:
 	HandVal	handval; 
 };
-
-extern CSymbolEnginePokerval *p_symbol_engine_pokerval;
 
 #endif INC_CSYMBOLENGINEPOKERVAL_H

@@ -1,0 +1,148 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Betsizes and StackSizes - supporting technical functions
+//
+//*****************************************************************************
+
+##AverageStackSize##
+WHEN ismtt RETURN AverageStackSize_MultiTable FORCE
+WHEN Others RETURN AverageStackSize_SingleTable FORCE
+
+##AverageStackSize_MultiTable##
+WHEN (mtt_average_stack > 0) RETURN mtt_average_stack FORCE
+WHEN isfinaltable RETURN AverageStackSize_SingleTable FORCE
+WHEN Others RETURN HINT_unknoiwn_AverageStackSize_MultiTable FORCE
+
+##AverageStackSize_SingleTable##
+// !!! nplayersdealt?
+WHEN (nplayersdealt <= 0) RETURN TotalChipsAtTheTable FORCE
+WHEN (Others) RETURN (TotalChipsAtTheTable / nplayersdealt) FORCE
+
+##BigBlindCurrentBet##
+// Amount in bets (big blinds for preflop)
+(bet <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+(currentbet_bigblindchair / bet)
+
+##SmallBlindCurrentBet##
+// Amount in bets (big blinds for preflop)
+(bet <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
+(smallblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+(currentbet_smallblindchair / bet)
+
+##DollarsToCallForMisScrapedEverything##
+// My balance and opponents bet miss-scraped
+// For NL and Pl assume a min-raise which must be about as much as my bet
+// The ability to check got already excluded
+(isnl OR ispl) ? currentbet : bet
+
+##DollarsToCallForMisScrapedUserBalance##
+// My balance miss-scraped as 0
+(call > 0) ? call : DollarsToCallForMisScrapedEverything
+
+##DollarsToCallForMisScrapedOpponentBet##
+// Opponents bet must be miss-scraped
+// Incorrect amount to call despite I already acted.
+// Lets assume a min-raise, which must be at least as much as my bet (NL / PL)
+isfl ? bet : currentbet
+
+##DollarsToCall##
+// Effective DollarsToCall could go wrong, if our balance got miss-scraped
+// (Our balance must be always > 0 if it is our turn)
+// Therefore we create multiple functions for multiple cases of bad input.
+(ismyturn AND balance <= 0) ? DollarsToCallForMisScrapedUserBalance :
+// Preflop and I already did act in a raised pot, but nothing to call
+(IsPreflop AND (ncurrentbets >= 1.01) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+// Preflop and I am not big-blind and there is nothing to call
+(IsPreflop AND (ncurrentbets < 1) AND (call <= 0)) ? DollarsToCallForMisScrapedOpponentBet :
+// Postflop and I already did act, but nothing to call
+((betround > preflop) AND (ncurrentbets > 0) AND (call <= 0))  ? DollarsToCallForMisScrapedOpponentBet :
+// The normal case (including correct and incorrect abilities to check)
+(call <= balance) ? call : balance
+
+##MaximumPossibleBetsizeInDollars##
+MyTotalMoney
+
+##MyTotalMoney##
+balance + currentbet
+
+##SidePotInDollars##
+// Money in the side-pot, i.e. the money we don't compete for.
+pot - EffectivePotSizeInDollars
+
+##SidePot##
+// Money in the side-pot, i.e. the money we don't compete for (measured in big blinds)
+(bblind > 0) ? (SidePotInDollars / bblind) : 0
+
+##TotalChipsAtTheTable##
+  PotSize
++ StackSize0
++ StackSize1
++ StackSize2
++ StackSize3
++ StackSize4
++ StackSize5
++ StackSize6
++ StackSize7
++ StackSize8
++ StackSize9

@@ -1,25 +1,25 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
-// Purpose: PrWin-simulation
+// Purpose: PrWin-simulation, HoldEm only, not Omaha
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CITERATORTHREAD_H
 #define INC_CITERATORTHREAD_H
 
 #include "inlines/eval.h"
-#include "..\CCritSec\CCritSec.h"
+#include "CSpaceOptimizedGlobalObject.h"
 
 extern sprw1326	_prw1326;	// prwin 1326 data structure Matrix 2008-04-29
 
-class CIteratorThread {
+class CIteratorThread /*!!!!!: public CSpaceOptimizedGlobalObject */{
  public:
 	// public functions
 	CIteratorThread();
@@ -35,7 +35,6 @@ class CIteratorThread {
   int  IteratorThreadProgress()   { return _iterations_calculated; }
  public:
 	void StartPrWinComputationsIfNeeded();
-  void StartIteratorThread();
 	void set_prw1326_useme(const int i)	{ _prw1326.useme = i;}
 	const	sprw1326 *prw1326()	          { return &_prw1326; }
  public:
@@ -49,13 +48,14 @@ class CIteratorThread {
 	static void StandardDealingAlgorithm(int nopponents);
 	static void SwapDealingAlgorithmForMoreThan13Opponents(int nopponents);
 	static void StandardDealingAlgorithmForUpTo13Opponents(int nopponents);
-	static void EnhancedDealingAlgorithm();
+	static int EnhancedDealingAlgorithm();
 	static bool UseEnhancedPrWin();
-	static int  GetRandomCard();
+	static int  GetRandomCard();	
  private:
 	static void UpdateIteratorVarsForDisplay();
 	static void ResetIteratorVars();
 	static void ResetGlobalVariables();
+	static void CalculateTotalWeights();
  private:
 	void InitIteratorLoop();
 	void InitHandranktTableForPrwin();
@@ -64,11 +64,12 @@ class CIteratorThread {
  private:
 	// variables for iterator loop
 	CardMask		_plCards, _comCards;
-	HANDLE			_m_stop_thread;
 	HANDLE			_m_wait_thread;
+  static HANDLE			_m_stop_thread; //!!!!!
  private:
   static int _iterations_calculated;
   static int _iterations_required;
+  static int _total_weight[kMaxNumberOfPlayers];
   static int _nopponents;;
  private:
   static double _prwin, _prtie, _prlos;

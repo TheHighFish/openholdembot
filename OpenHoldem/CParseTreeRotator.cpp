@@ -1,11 +1,11 @@
 //***************************;***************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Priority-ordering of operator-nodes in the parse-tree.
 //   OpenHoldem creates parse-trees in a very straight-forward way:
@@ -33,15 +33,16 @@
 // Evaluating this tree depth-first will result in (2 * 3) + (4 * 5),
 // first the sibblings, then the parent node (plus-operator).
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CParseTreeRotator.h"
 
 #include "CFunction.h"
 #include "CParseTreeNode.h"
-#include "CPreferences.h"
-#include "OH_MessageBox.h"
+#include "CParseTreeOperatorNode.h"
+
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "TokenizerConstants.h"
 
 // undef for no extra debug output
@@ -53,25 +54,24 @@ CParseTreeRotator::CParseTreeRotator() {
 CParseTreeRotator::~CParseTreeRotator() {
 }
 
-void CParseTreeRotator::Rotate(CFunction *function)
-{
-  write_log(preferences.debug_ast_priority_ordering(),
+void CParseTreeRotator::Rotate(CFunction *function) {
+  write_log(Preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] starting rotation\n");
   if (function == NULL) {
     return;
   }
-  write_log(preferences.debug_ast_priority_ordering(),
+  write_log(Preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] finished rotation\n");
   Rotate(function->_parse_tree_node, &function->_parse_tree_node);
   VerifyCorrectRotation(function->_parse_tree_node);
 #ifdef DEBUG_SHOW_SERIALIZATION_AFTER_ROTATION_COMPLETELY_FINISHED
-  OH_MessageBox_Interactive(function->Serialize(), function->name(), 0);
-  if (preferences.debug_ast_priority_ordering()) {
+  MessageBox_Interactive(function->Serialize(), function->name(), 0);
+  if (Preferences()->debug_ast_priority_ordering()) {
     CString serialized_function = function->Serialize();
     if (serialized_function.GetLength() < 2000) {
       // Extremely large functions overflow the print-buffer.
       // Therefore we skip everything that looks "large".
-      write_log(preferences.debug_ast_priority_ordering(),
+      write_log(Preferences()->debug_ast_priority_ordering(),
         "[CParseTreeRotator] function [%s] after rotation: %s\n",
         function->name(), serialized_function);
     }
@@ -81,7 +81,7 @@ void CParseTreeRotator::Rotate(CFunction *function)
 
 void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
                                TPParseTreeNode *pointer_to_parent_pointer_for_back_patching) {
-  write_log(preferences.debug_ast_priority_ordering(),
+  write_log(Preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] rotating node %x\n", parse_tree_node);
   if (parse_tree_node == NULL) {
     return;
@@ -95,7 +95,7 @@ void CParseTreeRotator::Rotate(TPParseTreeNode parse_tree_node,
     // can be reached in 2 ways:
     //   * by the previous sequence of when-conditions (implicit continue)
     //   * by the false-edge of the previous open-ended when-condition
-    // If we naivelz roate every sibbling of a sequence of open-ended
+    // If we naively roate every sibbling of a sequence of open-ended
     // when conditions, then every addition of an OEWC doubles the effort.
     // Therefore we have to skip the edge to the next OEWC.
     Rotate(parse_tree_node->_third_sibbling,  &parse_tree_node->_third_sibbling);
@@ -133,7 +133,7 @@ void CParseTreeRotator::RotateLeftAsLongAsNecessary(TPParseTreeNode parse_tree_n
   // but this causes cubic effort, as all sub-trees
   // get rotated recursively again.
   // As all subtrees are already correctly ordered
-  // we onlz need one (or more) left-rotations
+  // we only need one (or more) left-rotations
   // of this node again.
   //          + 
   //         / \
@@ -143,7 +143,7 @@ void CParseTreeRotator::RotateLeftAsLongAsNecessary(TPParseTreeNode parse_tree_n
   //    / \    
   //   2   3 
   //
-  write_log(preferences.debug_ast_priority_ordering(),
+  write_log(Preferences()->debug_ast_priority_ordering(),
     "[CParseTreeRotator] rotating node to left as long as necessary %x\n", parse_tree_node);
   if (parse_tree_node == NULL) {
     return;

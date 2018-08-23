@@ -233,12 +233,12 @@ Raise FORCE        // min-raise (fixed limit)
 
 \begin_layout Plain Layout
 
-MinBet FORCE
+BetMin FORCE
 \end_layout
 
 \begin_layout Plain Layout
 
-MinRaise FORCE
+RaiseMin FORCE
 \end_layout
 
 \begin_layout Plain Layout
@@ -258,7 +258,7 @@ Fold FORCE
 
 \begin_layout Plain Layout
 
-Beep FORCE         // beep, but don#t act
+Beep FORCE         // beep, but don't act
 \end_layout
 
 \end_inset
@@ -324,7 +324,7 @@ RaiseBy 2.5 FORCE
 \end_layout
 
 \begin_layout Standard
-RaiseTo specifies your final betsize, RiaseBy specifies the amount you want
+RaiseTo specifies your final betsize, RaiseBy specifies the amount you want
  to add to the aggressors bet-amount.
  
 \end_layout
@@ -406,7 +406,7 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN (...) RaiseTo MyFavouriteBetsizeForDryBoards FORCE
+WHEN (...) RaiseTo f$MyFavouriteBetsizeForDryBoards FORCE
 \end_layout
 
 \end_inset
@@ -603,15 +603,7 @@ It may happen, that a certain action is not available, e.g.
 betsize invalid (too less or too much (PotLimit or more than your balance)):
  betsize gets automatically adapted.
  This happens also to actions like RaisePot and RaiseHalfPot, that get executed
- with the f$betsize-function (formerly known as 
-\begin_inset Quotes eld
-\end_inset
-
-f$swag
-\begin_inset Quotes erd
-\end_inset
-
-).
+ with the f$betsize-function.
 \end_layout
 
 \begin_layout Itemize

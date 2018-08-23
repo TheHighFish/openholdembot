@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -19,7 +19,7 @@
 #include "StickyButton.h"
 
 // Region grouping types
-enum {UNGROUPED, BY_TYPE, BY_NAME};
+enum {BY_TYPE = 1, BY_NAME = 2};
 
 // CDlgTableMap dialog
 class CDlgTableMap : public CDialog

@@ -1,20 +1,21 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CTOKENIZER_H
 #define INC_CTOKENIZER_H
 
 #include "atlstr.h"
+#include "COHScriptObject.h"
 
 class CTokenizer {	
   friend class CFormulaParser;
@@ -22,7 +23,11 @@ class CTokenizer {
 	CTokenizer();
 	~CTokenizer();
  public:
-	void SetInput(const char* next_formula_to_be_parsed);
+  // For parsing functions and lists of CFunctionCollection
+  void SetInputFunction(COHScriptObject* function_or_list_to_be_parsed);
+  // For parsing expressions of the debug-tab
+	void SetInputBufferByDebugTab(const char* expression_to_be_parsed, int line);
+ public:
 	int GetToken();
 	int LookAhead(bool expect_action = false);
 	char* GetTokenString();
@@ -38,21 +43,28 @@ class CTokenizer {
   // Cross your fingers that it works. ;-)
   void PushBackAdditionalPercentageOperator() { _additional_percentage_operator_pushed_back = true; }
  public:
+  static CString InputFile();
+  static CString CurrentFunctionName();
 	static int LineAbsolute();
 	static int LineRelative();
 	static char* RemainingInput();
  public:
   void InitNewParse();
+  void SetInputBuffer(const char* expression_to_be_parsed);
  private:
 	int  ScanForNextToken();
+  void SkipNextCharacter();
 	void SkipToEndOfLine();
 	void SkipToEndOfMultiLineComment();
+ private:
+  void ErrorInvalidCharacter(char invalid_char);
  private:
 	bool IsBinaryMinus();
 	bool IsTokenOpenPPLKeyword();
  private:
   void CheckTokenForOpenPPLAction(int *token);
-private:
+  int  ProperEqualityOperatorForOpenPPLOrShankyPPL();
+ private:
 	void InitVars();
 	char CURRENT_CHARACTER();
  private:

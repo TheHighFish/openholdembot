@@ -1,0 +1,212 @@
+//*****************************************************************************
+//
+// Change-log of the Gecko default-bot
+//
+//*****************************************************************************
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Main author: Gecko 
+//
+// Co-author:   ThehighFish
+//   (adaptions for OpenHoldem 12.x, documentation, simplification,          
+//    extending preflop to full-ring)
+//
+//*****************************************************************************
+//
+// TECHNICAL CHANGES:
+//   * OpenPPL-functions f$preflop..f$river added (all empty)
+//     to make Gecko OpenPPL-compatible
+//   * Renaming f$preflop,... by Gecko_6Max_FR_NL_BSS_Preflop,
+//     because that's how the default-bot will address Gecko-logic.
+//   * Splitting call formula
+//     - introducing f$call_nuts, f$call_minbets, call_potcommitted
+//     - removed superfluous backup action for betsizing (now built-in)
+//     - reused f$call_preflop..f$call_river
+//   * Betsizing
+//     - removed f$srai (called "Bet/raise strategy", returning true/false,
+//       despite it should return how much) and distributed it to f$preflop..f$river  
+//     - moved rule for strong set to f$flop_turn_raise_strong_set
+//     - renamed f$swag (unsupported) to f$best_netsize
+//   * Replaced #### 1000 by f$prwin_number_of_iterations 50.000
+//     for more precise simulations
+//   * Renamed f$P to f$prwin_number_of_opponents
+//   * Removed unused default formulas (dll, defcon, f$debug, ...)
+//   * Removed f$play formula (always play on)
+//     as f$sitout, f$close, etc. can be handled by the user if desired.
+//   * Replaced "islist..." sy,bols by "list..."
+//   * Replaced didswag by didbetsize
+//   * Simplified the PokerTracker-functions
+//     f$pt_pfr, f$pt_vpip, f$pt_flopaf, f$pt_turnaf, f$pt_riveraf, f$pt_wtsd
+//     f$pt_vpip, f$pt_pfr, pt_fbbts, pt_fsbts
+//     because headsup-stats are now availabele more easily
+//   * Uniform naming for f$pt_-functions, no longer f$pt_
+//   * Adapted names of Pokertracker symbols to new naming conventions
+//     - pt_flop_af   -> pr_flop_af          (same for turn and river)
+//     - pt_fbbts     -> pt_bb_fold_to_steal (same for sb)
+//     - pt_hands_raischair -> pt_hands_raischair  (same for all other ptr_symbols)
+//   * Removed duplicate f$pt_-functions
+//   * Uniform naming for f$pt_-functions, no longer f$stats
+//     Renamed f$pt_raggf to f$PT_Flop_AF_RaisChair (same for turn and river) 
+//   * Replaced f$dealposition function by OpenPPL position symbol like InBigBlind
+//   * Replaced br by betround by even more verbosity: IsFlop, ...
+//   * Renamed $$AA, $$KK to more verbose hand$AA, hand$KK
+//   * Replaced nopponentsraising by Raises.
+//     Thank god Gecko had already created more abstract functions
+//     f$Preflop_Multiple_Raisers and f$BettingAction_Single_Raiser_Before_Us
+//     that made the conversion eady (no "blind-raisers") 
+//   * Changed handlists from WinHoldem to OpenHoldem-style format, e.g.
+//       AK  ->  AKs
+//       KA  ->  AKo    
+//   * Removed unused f$BettingAction_Freeplay
+//     OpenHoldem reported an undefined list40 there
+//     and it turned out the complete function 
+//     was not in use.
+//   * Removed unused function f$Player_category
+//   * Removed unused f$Player1..f$Player14 functions
+//     (opponent modelling from a different Gecko-bot)
+//   * Removed unused function f$raisbits1 and f$memory
+//   * Removed unused function f$currentbetopponent
+//   * Simplified f$dealpositionrais, extended it to FR-games
+//     and renamed it to f$logicalpositionrais
+//   * Removed unusef f$pt_pfrr and f$pt_pfrrr
+//   * Removed f$oppchair (only used in f$pt_pfrr and f$pt_pfrrr)
+//   * Introduced f$pt_icon0..f$pt_icon08 for all chairs
+//     for opponent-modelling as PokerTracker does no longer support
+//     the auto-rate-icon.
+//     Geckos auto-rate-rules are documented below.
+//   * Removed some unused PT-code, that was commented out
+//     (f$Punten_Limper_Smallblind1, f$Punten_Preflop_Cutoff, ...
+//     that created a combined score for multiple players
+//     based on different auto-rate-rules)
+//   * Simplified f$stackopponent, f$stackraiser, f$pt_hands,
+//     f$mycurrentbet, currentbet_raischair which now use the
+//     multiplexer-engine instead of considering all possible chairs.
+//   * Resolved some naming conflict with validator-postfixes.
+//   * Removed the function f$betsizing_strategy that
+//     implemented some redundant "don't-raise"-logic
+//     when we already decided to raise.
+//   * Introducing functions f$BetsizePreflop,
+//     f$BetsizeFlopHeadsup, f$BetsizeFlopMultiway, 
+//     f$BetsizeTurnHeadsup, f$BetsizeTurnMultiway, 
+//     f$BetsizeRiverHeadsup, f$BetsizeRiverMultiway
+//     to structure f$Betsize_Adjusted better.
+//   * Changing (nearly) all betsizing to Betpot-actions.
+//   * Removing f$best_betsize and f$best_betsize_in_dollars 
+//     and renaming f$Betsize_Adjusted to f%NestBetsize
+//     as the betsize calculations became now superfluous.
+//   * Making f$allin_on_betsize_balance_ratio
+//     dependent on effective stacks headsup.
+//     This was formerly part of Geckos betsizing-logic.  
+//   * Removed now unused f$balance, formerly used to
+//     calculate the betsize for allins.  
+//   * Renamed symbols like nbetsround1 to nbetsround_preflop
+//     for more verbosity.
+//   * Replaced f$Position_Middle, f$Position_Early and f$Position_Late 
+//     by OpenPPL position symbols
+//   * Removed duplicate f$pt_vpip, $pt_pfr
+//   * Removed f$BettingAction_Raisers_Behind_Us which became superfluous  
+//     after the multiple use-cases of list100 got distinguished.
+//   * Replaces f$twopair by TwoPairOnBoard
+//   * Replaced "nrankedcommon==2" by PairOnBoard
+//   * Replaced "nsuited==4" by HaveFlushDraw
+//   * Replaced "nrankedcommon==1" by "NOT PairOnBoard"
+//   * Replaced "nstraightcommon < 3" by "NOT StraightPossible"
+//   * Replaced "nstraightfillcommon<=2" by Straightpossible
+//   * Replaced "nsuitedcommon==3" by FlushPossible
+//   * Replaced "nsuitedcommon<3" by "NOT FlushPossible"
+//   * Removed now unused function f$realbalance, formerly used for allins
+//   * Introduced f$effective_balance_to_call_ratio to make the code simpler
+//     and more verbose
+//   * Renamed lists
+//       listGecko17  -> listGeckoSetMining
+//       listGecko300 -> listGeckoLimpMultiway
+//       listGecko301 -> listGeckoLimpAgainstOneOpponent
+//   * Restructured f$preflop_call, introducing
+//       f$preflop_call_for_setmining, f$preflop_call_reraise
+//       and f$preflop_limp_good_hand
+//   * Introduced f$villain_allin and $villain_potcommitted
+//     to make the code more verbose and fixed a bug in the code
+//     that detects potcommitted villains.
+//   * Replaced f$Position_CutOff, f$Position_Button, f$Position_UTG1, 
+//     f$Position_UTG2, f$Position_Blinds, f$Position_SmallBlind, f$Position_BigBlind
+//     by OpenPPL-symbols like InCutOff.
+//   * Removed 61 unused lists.
+//   * Removed the functions f$Bits_Players_Truely_Raising_Preflop,
+//     f$Bits_Players_With_More_Than_One_Bet and f$BettingAction_Number_Of_Raisers_Preflop
+//     in favour of OpenPPL-symbols
+//   * Rewrote the function f$BettingAction_Number_Of_Opponents_Truely_Playing
+//   * Removed the now unused functions f$Bits_Opponents_Truely_Playing
+//     and f$Bits_Players_Allin
+//   * Removed the unused log-function f$THIS_MUST_NOT_HAPPEN.
+//   * Removed the unused functions f$TightFactor, f$bluffformula, f$threat1, 
+//     f$AggressionFactor_Flop1, f$AggressionFactor_Turn1, f$AggressionFactor_River1 
+//   * Removed the unused functions f$actionpreflop_1 .. f$actionpreflop_8.
+//   * Removed the unused functions f$foldequity1, f$villiantakeover1,
+//     f$reducewinchance_when_have_twopair1, f$2ndnuts
+//   * Replaceed the superfliois function f$mycurrentbet by currentbet.
+//   * Removed the unused functions f$real_pfr, f$realpfr_range and f$preflop_aggressor
+//   * removed the pT-icon-functions which encoded a combination of
+//     pt_flop_raise_cbetX and pt_flop_fold_to_cbetX.
+//   * Renamed some opponent-modelling functions:
+//       f$fold2cbet_veel   -> f$fold2cbet_high
+//       f$fold2cbet_weinig -> f$fold2cbet_low
+//       f$ptype_ubernit    -> f$ptype_raise_contibet_very_low
+//       f$ptype_nit        -> f$ptype_raise_contibet_low
+//       f$ptype_tag        -> f$ptype_raise_contibet_normal
+//       f$ptype_semilag    -> f$ptype_raise_contibet_high
+//       f$ptype_lag        -> f$ptype_raise_contibet_very_high
+//   * Moved AA, KK,QQ from f$Preflop_Raiser_In_Front_Of_me to 
+//     new f$Preflop_Raise_Monster
+//   * Replaced ` (backtick) by more verbose "BitCount"-operator
+//     and finally removed this code completely, as counting bits 
+//     was used to detect GaveThirdNutFlushDraw and similar.
+//   * Removed f$logicalpositionrais in facour of expressions like
+//     raischair == cutoffchair.
+//
+// LOGICAL CHANGES:
+//   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
+//   * Added sanity-check that prevents Gecko playing Omaha.
+//   * Added f$pt_min_hands_for_opponent_modelling
+//     to require a minimal sample-size.
+//   * Extended f$prefold to full-ring
+//   * introducing f$delay
+//   * Added opening-ranges for full-ring
+//   * changed all three RaiseMax-actions to RaisePot-actions
+//     because some smart people complained that check-raising allin
+//     at the turn is too much when we are 10.000 bb deep.
+//   * Extended f$prwin_number_of_opponents for potential more 
+//     than 7 players postflop (full-ring).
+//   * Gecko used list100 for multiple different scenarios.
+//     Now introduced
+//       listGeckoMultipleRaisers
+//       listGeckoSqueeze
+//       listGeckoSingleRaiserBehindUs
+//       listGeckoMultipleRaisersBehindUs
+//     and rewrote f$Preflop_React_To_Reraise to distinguish
+//     one or multiple raises behind us and added AKo 
+//     to listGeckoSingleRaiserBehindUs.
+//   * Introduced f$positional_allin_on_betsize_balance_ratio
+//     to go more liberally allin out of position
+//     to reduce the disadvantage of position and put more 
+//     pressure on the opponent.
+//     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&p=147907#p147907
+//   * Introduced f$required_balance_to_call_ratio_for_setmining
+//     which is slightly more conservatice than Gecko 
+//     and also considers position.
+//     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=60#p147986
+//   * Improved f$BetsizePreflop, now adapting its betsize to position/range
+//     when open-raising.
+//   * Simplified f$PotOdds which assumed there was always at least 1 bb to call.
+//   * f$call_nuts now also considers HaveNuts, as the best hand might have less than 98% equity.
+//   * Reduced large raises in f$BetsizeFlopHeadsup:
+//     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=270#p153332
+//
+//*****************************************************************************

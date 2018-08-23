@@ -1,3 +1,71 @@
+﻿v﻿13.0.2 2017-05-02
+==================
+NEW STUFF:
+- Support for s§iXbuttondefaultlabel.
+  For details please refer to the manual.
+  [Nik0]
+  
+
+v﻿12.0.3 2017-10-18
+==================
+MAINTENANCE:
+- Turning DPI-awareness off for OpenHoldem, OpenScrape, OHReplay  and ManualMode. 
+  DPI-awareness is a Windows-feature that makes applications believe
+  that they run at a different screen-resolution as they actually do.
+  This feature could affect connection to the tables (client-size).
+  Thanks to WetOphelia for reporting and for the excellent explanations.
+  [THF]
+
+
+v11.1.3 2016-04-12
+==================
+BUG FIXES: 
+- The game-type selection in the game-info-dialog didn't work,
+  since we reordered the options when NL became default.
+  Thanks to JohnNash and Relhby for reporting.
+  [THF]
+- Added some missing poker networks to the drop-down-menu
+  of the game.info-dialog. Thanks to ValueBotty for reporting.
+  [THF]
+
+  
+v11.0.1 2016-01-14
+==================
+BUG FIXES: 
+- All folds happened at the userchair.
+  Thanks to Stars83 for reporting.
+  [THF]
+
+v11.0.0 2016-12-26
+==================
+NEW STUFF:
+- Support for Omaha.
+  Click the game-info-dialog and select the desired game-type.
+  The rest work like before.
+  [OpenHoldem, SingleMalt, THF]
+
+  
+v9.2.6 2016-08-30
+=================
+NEW STUFF:
+- Auto-adapting the clientsize to support all operating-systems
+  out of the box, independent of their window configuration
+  (theme, borders, titlebar, ...).
+  Thanks to Todamach for reporting incompatibilities with Win7.
+  [THF]
+BUG FIXES: 
+- Fix for broken dealer-command "N" in macro-definition.
+  Thanks to ZeeZooLaa for reporting.
+  [THF]
+
+
+v9.1.1 2016-04-01
+=================
+NEW STUFF:
+- Full support for Windows 10 and probably all other modern versions of Windows.
+  [THF]
+  
+
 v4.4.1 2014-02-10
 =================
 BUG FIXES: 
@@ -5,6 +73,7 @@ BUG FIXES:
   Thanks to PokerKid1 for reporting.
   [THF]
 
+  
 v4.4.0 2014-01-14
 =================
 NEW STUFF:
@@ -15,6 +84,7 @@ NEW STUFF:
   after a first click to any button-region.
   [THF]
 
+  
 v4.0.0 2013-01-26
 =================
 MAINTENANCE:
@@ -22,16 +92,16 @@ MAINTENANCE:
   Thanks to BotForSale for the patch.
   [THF]
 
+  
 v2.1.9.2 2011-12-24
 ===================
 BUG FIXES: 
 - allin-bug: sum of bets and balances should be now correct. 
   Thanks to Pingvvino for reporting. [THF]
 
+  
 v2.0.0 2009-05-22
 =================
-BUG FIXES:
-
 MAINTENANCE:
 - Migrated from SEH exception handling to Minidump exception handling. [OpenHoldem]
 - Removal of identifying information from Properties/Version display in Windows Explorer. [OpenHoldem]
@@ -105,7 +175,6 @@ v1.0.2 2007-12-14
 v1.0.1 2007-11-30
 =================
 - Class name of dialog changed to allow detection by OpenHoldem, and subsequent setting of "ismanual" symbol.
-
 - Scraper profile updated to correctly handle "check" button
  
 

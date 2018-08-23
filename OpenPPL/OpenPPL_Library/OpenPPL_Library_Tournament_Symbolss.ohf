@@ -1,0 +1,109 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Tournament Symbols
+//
+//*****************************************************************************
+
+##InTheMoney##
+WHEN NOT istournament RETURN false FORCE
+WHEN (PlayersLeftInTournament <= PaidPlaces) RETURN true FORCE
+
+##IsBubble##
+WHEN NOT istournament RETURN false FORCE
+WHEN (PlayersLeftInTournament == (PaidPlaces + 1)) RETURN true FORCE
+
+##PaidPlaces##
+WHEN NOT istournament RETURN false FORCE
+WHEN TableIsHeadsup RETURN PaidPlacesHeadsup FORCE
+WHEN TableIsThreeHanded RETURN PaidPlacesThreeHanded FORCE
+WHEN TableIsShortHanded RETURN PaidPlacesShortHanded FORCE
+WHEN TableIsFullRing RETURN PaidPlacesFullRing FORCE
+WHEN TableIsMultiTable RETURN PaidPlacesMultiTableTournament FORCE
+
+##PaidPlacesHeadsup##
+1
+
+##PaidPlacesThreeHanded##
+1
+
+##PaidPlacesShortHanded##
+WHEN isdon RETURN 3 FORCE
+WHEN Others RETURN 2 FORCE
+
+##PaidPlacesFullRing##
+WHEN isdon RETURN 5 FORCE
+WHEN Others RETURN 3 FORCE
+
+##PaidPlacesMultiTableTournament##
+WHEN (mtt_paid_places > 0) RETURN mtt_paid_places FORCE
+WHEN Others	RETURN HINT_UnknownPaidPlacesMultiTable FORCE
+
+##PlayersLeftInTournament##
+WHEN NOT istournament RETURN playersseated FORCE
+WHEN NOT ismtt RETURN playersseated FORCE
+WHEN Others RETURN PlayersLeftInMultiTableTournament FORCE
+
+##PlayersLeftInMultiTableTournament##
+WHEN (mtt_players_remaining > 0) RETURN mtt_players_remaining FORCE
+WHEN isfinaltable RETURN playersseated FORCE
+WHEN Others	RETURN HINT_PlayersLeftInMultiTableTournament FORCE

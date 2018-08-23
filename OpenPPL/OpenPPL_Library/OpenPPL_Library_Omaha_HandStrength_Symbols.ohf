@@ -1,0 +1,471 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - HandStrength Symbols Omaha
+//
+//*****************************************************************************
+
+##Omaha_HadOverPairOnFlop##
+
+
+##Omaha_HadOverPairOnTurn##
+
+
+##Omaha_HadSecondOverPairOnFlop##
+
+
+##Omaha_HadSecondOverPairOnTurn##
+
+
+##Omaha_HadPairOnFlop##
+
+
+##Omaha_HadPairOnTurn##
+
+
+##Omaha_HadSetOnFlop##
+
+
+##Omaha_HadSetOnTurn##
+
+
+##Omaha_HadTopPairOnFlop##
+
+
+##Omaha_HadSecondTopPairOnFlop##
+
+
+##Omaha_HadTopPairOnTurn##
+
+
+##Omaha_HadTwoPairOnFlop##
+
+
+##Omaha_HaveGoodBackdoorStraightDrawAKQJT##
+
+
+##Omaha_HaveGoodBackdoorStraightDrawKQJT9##
+
+
+##Omaha_HaveGoodBackdoorStraightDrawQJT98##
+
+
+##Omaha_HaveGoodBackdoorStraightDrawJT987##
+
+
+##Omaha_HaveGoodBackdoorStraightDrawT9876##
+
+
+##Omaha_HaveGoodBackdoorStraightDraw98765##
+
+
+##Omaha_HaveGoodBackdoorStraightDraw87654##
+
+
+##Omaha_HaveGoodBackdoorStraightDraw76543##
+
+
+##Omaha_HaveGoodBackdoorStraightDraw65432##
+
+
+##Omaha_HaveGoodBackdoorStraightDraw54321##
+
+
+##Omaha_HaveBackdoorStraightDraw##
+
+
+##Omaha_HaveSecondBestKicker##
+
+
+##Omaha_HaveSecondBestKickerOrBetter##
+
+
+##Omaha_HaveSecondBestOverPair##
+
+
+##Omaha_HaveSecondBestOverPairOrBetter##
+
+
+##Omaha_HaveSecondNutFlush##
+
+
+##Omaha_HaveSecondNutFlushDraw##
+
+
+##Omaha_HaveSecondNutStraight##
+
+
+##Omaha_HaveSecondOverPair##
+
+
+##Omaha_HaveSecondTopPair##
+
+
+##Omaha_HaveSecondTopSet##
+
+
+##Omaha_HaveThirdBestKicker##
+
+
+##Omaha_HaveThirdBestKickerOrBetter##
+
+
+##Omaha_HaveThirdBestOverPair##
+
+
+##Omaha_HaveThirdBestOverPairOrBetter##
+
+
+##Omaha_HaveThirdNutFlush##
+
+
+##Omaha_HaveThirdNutFlushDraw##
+
+
+##Omaha_HaveThirdOverPair##
+
+
+##Omaha_HaveThirdTopPair##
+
+
+##ThirdTopPairRank##
+
+
+##Omaha_HaveFifthTopPair##
+ 
+
+##FifthTopPairRank##
+
+
+##Omaha_HaveThirdTopSet##
+
+
+##Omaha_HaveFourthNutFlush##
+
+
+##Omaha_HaveFourthNutFlushDraw##
+
+
+##Omaha_HaveFourthOverPair##
+
+
+##Omaha_HaveFourthTopPair##
+
+
+##Omaha_HaveFourthTopSet##
+
+
+##Omaha_HaveFifthNutFlush##
+
+
+##Omaha_HaveFifthNutFlushDraw##
+
+
+##Omaha_HaveFifthOverPair##
+
+
+##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
+ 
+
+##Omaha_HaveBackdoorNutFlushDraw##
+
+
+##Omaha_HaveBackdoorSecondNutFlushDraw##
+
+
+##Omaha_HaveBackdoorThirdNutFlushDraw##
+ 
+ 
+##Omaha_HaveBackdoorFlushDraw##
+
+
+##Omaha_HaveBestKicker##
+
+
+##Omaha_HaveBestKickerOrBetter##
+
+
+##Omaha_HaveBestOverPair##
+
+
+##Omaha_HaveBestOverPairOrBetter##
+
+
+##Omaha_HaveBottomPair##
+
+
+##Omaha_HaveSecondBottomPair##
+
+
+##Omaha_HaveBottomSet##
+
+
+##Omaha_HaveBottomTrips##
+
+
+##Omaha_HaveBottomTwoPair##
+
+
+##Omaha_HaveDoubleGutshotDraw##
+
+
+##Omaha_HaveFlush##
+
+
+##Omaha_HaveFlushDraw##
+
+
+##Omaha_HaveFlushDrawContributingTwoCards##
+
+
+##Omaha_HaveGoodFlushDrawContributingOnlyOneCard##
+
+
+##Omaha_HaveFullHouse##
+
+
+##Omaha_HaveNothing##
+
+
+##Omaha_HaveNutFlush##
+
+
+##Omaha_HaveNutFlushCard##
+
+
+##Omaha_HaveNutFlushDraw##
+ 
+ 
+##Omaha_HaveNutStraight##
+
+
+##Omaha_MyKicker##
+
+
+##Omaha_NumberOfBetterKickers##
+
+
+##Omaha_HaveNutStraightDraw##
+
+
+##Omaha_HaveUnDiscountedNutStraightDraw##
+
+
+##Omaha_HaveInsideNutStraightDraw##
+
+
+##Omaha_HaveInsideStraightDraw##
+
+
+##Omaha_HaveNuts##
+
+
+##Omaha_HigherStraightFlushPossible##
+
+
+##Omaha_HaveNutStraightFlush##
+
+
+##Omaha_HaveOpenEndedStraightDraw##
+
+
+##Omaha_HaveQuads##
+
+
+##Omaha_HaveOverPair##
+
+
+##Omaha_HaveOverPairOrBetter##
+
+
+##Omaha_HavePair##
+
+
+##Omaha_HavePocketPair##
+
+
+##Omaha_HaveRunnerRunnerFlushAtRiver##
+
+
+##Omaha_HaveSet##
+
+
+##Omaha_HaveTopTrips##
+
+
+##Omaha_HaveTrips##
+
+
+##Omaha_HaveStraight##
+
+
+##Omaha_HaveStraightDraw##
+
+
+##Omaha_HaveStraightFlush##
+
+
+##Omaha_HaveTopNonBoardPairedPair##
+
+
+##Omaha_HaveTopPair##
+
+
+##Omaha_HaveTopSet##
+
+
+##Omaha_HaveTopTwoPair##
+
+
+##Omaha_HaveTwoPair##
+
+
+##Omaha_HaveWeakBackdoorStraightDraw##
+
+
+##Omaha_HaveWeakDoubleGutshotDraw##
+
+
+##Omaha_HaveWeakFlush##
+
+
+##Omaha_HaveWeakFlushDraw##
+
+
+##Omaha_HaveWeakInsideStraightDraw##
+
+
+##Omaha_HaveWeakStraight##
+
+
+##Omaha_HaveWeakStraightDraw##
+
+
+##Omaha_Overcards##
+
+
+##Omaha_HaveUnderPair##
+
+
+##Omaha_HaveUnderStraight##
+
+
+##Omaha_PairInHand##
+
+
+##Omaha_RunnerRunnerFlushPossibleAtRiver##
+
+
+##Omaha_SuitsInHand##
+
+//*****************************************************************************
+//
+// OpenPPL - HandStrength Symbols Omaha only
+//   (but some of them might be useful for Hold'em too)
+//
+//*****************************************************************************
+
+##LowCardsInHand##
+
+##DoubleSuited##
+
+##FourCardStraightInHand##
+
+##FourCardsWith1GapInHan##
+
+##Have10OutStraightDraw##
+
+##Have12OutStraightDraw##
+
+##Have16OutStraightDraw##
+
+##Have2ndNutLow##
+
+##Have2ndNutLowDraw##
+
+##Have3rdNutLow##
+
+##Have3rdNutLowDraw##
+
+##Have4thNutLow##
+
+##Have4thNutLowDraw##
+
+##HaveLow##
+
+##HaveNutLow##
+
+##HaveNutLowBackdoorDraw##
+
+##HaveNutLowDraw##
+
+##HaveNutLowDrawWithBackup##
+
+##HaveNutLowWithBackup##
+
+##ThreeCardStraightInHand##
+
+##ThreeCardsWith1gapInHand##
+
+##TripsInHand##
+
+##TwoPairInHand##

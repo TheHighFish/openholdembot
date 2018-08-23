@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_DIALOGSAPREFS2_H
 #define INC_DIALOGSAPREFS2_H
@@ -43,7 +43,7 @@ protected:
 
 	CEdit			m_FrameDelay, m_ClickDelay, m_SwagDelay1, m_SwagDelay2, m_SwagDelay3;
 	CSpinButtonCtrl m_FrameDelay_Spin, m_ClickDelay_Spin, m_SwagDelay1_Spin, m_SwagDelay2_Spin, m_SwagDelay3_Spin;
-	CButton			m_Autoplayer_Upon_Connection, m_Use_Auto_Replay, m_SwagUseComma;
+	CButton		m_Autoplayer_Upon_Connection, m_Restore_Position_And_Focus, m_Use_Auto_Replay;
 
 	DECLARE_MESSAGE_MAP()
 

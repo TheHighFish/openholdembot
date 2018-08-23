@@ -1,22 +1,23 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CPOKERTRACKERTHREAD_H
 #define INC_CPOKERTRACKERTHREAD_H
 
 #include "libpq-fe.h"
 #include <map>
-#include "MagicNumbers.h"
+#include "CSpaceOptimizedGlobalObject.h"
+
 
 const int k_advanced_stat_update_every    =    5;
 const int k_min_hands_for_slower_updates  = 1000;
@@ -24,18 +25,17 @@ const int k_min_name_length_to_skip_lev_dist  = 10;
 
 struct SPlayerData 
 {
-	char			scraped_name[k_max_length_of_playername];
-	char			pt_name[k_max_length_of_playername];
+	char			scraped_name[kMaxLengthOfPlayername];
+	char			pt_name[kMaxLengthOfPlayername];
 	bool			found;
 	// Stats are now in the DLL
 	//double			stat[k_max_number_of_supported_pokertracker_stats];
 	int				skipped_updates;           
 };
 
-extern SPlayerData _player_data[k_max_number_of_players];
+extern SPlayerData _player_data[kMaxNumberOfPlayers];
 
-
-class CPokerTrackerThread 
+class CPokerTrackerThread : public CSpaceOptimizedGlobalObject
 {
 	friend class CSymbolEnginePokerTracker;
 public:
@@ -54,10 +54,11 @@ private:
 	// private functions and variables - not available via accessors or mutators
 	static void			GetStatsForChair(LPVOID pParam, int chair, int sleepTime);
 	static UINT			PokertrackerThreadFunction(LPVOID pParam);
-	static int			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
+	static bool			LightSleep(int sleepTime, CPokerTrackerThread * pParent);
 	void				SetStatGroups();
 	bool				AllConnectionDataSpecified();
 	void				Connect();
+  void        Reconnect(void);
 	void				Disconnect();
 	bool				NameLooksLikeBadScrape(char *oh_scraped_name);
 	bool				CheckIfNameExistsInDB(int chair);

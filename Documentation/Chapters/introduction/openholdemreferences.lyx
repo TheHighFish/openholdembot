@@ -104,7 +104,7 @@ status open
 
 \begin_layout Plain Layout
 
-https://sites.google.com/site/openholdempokerbot/downloads/
+https://github.com/OpenHoldem/openholdembot/releases
 \end_layout
 
 \end_inset
@@ -113,7 +113,38 @@ https://sites.google.com/site/openholdempokerbot/downloads/
 \end_layout
 
 \begin_layout Itemize
-Source code download:  
+License, GPL v3:  
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.gnu.org/copyleft/gpl.html 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Source code: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/OpenHoldem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Old source code (OpenHoldem 1.0 ...
+ 7.7.3):  
 \begin_inset Flex URL
 status collapsed
 
@@ -135,36 +166,6 @@ status collapsed
 \begin_layout Plain Layout
 
 http://www.maxinmontreal.com/forums/viewtopic.php?f=113&t=3542
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Source license, GPL v3:  
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.gnu.org/copyleft/gpl.html 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-Issue tracker:  
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://code.google.com/p/openholdembot/issues 
 \end_layout
 
 \end_inset
@@ -377,7 +378,7 @@ http://www.kernel.org/doc/Documentation/pcmcia/crc32hash.c
 \end_layout
 
 \begin_layout Itemize
-MD5-checksum for files by Shaheer Abdulrahiman & "Napalm"; 
+MD5-checksum for files by Shaheer Abdulrahiman and "Napalm"; 
 \begin_inset Flex URL
 status collapsed
 
@@ -402,18 +403,111 @@ http://www.rohitab.com/discuss/topic/21740-md5-hashing/
 
 \end_layout
 
-\begin_layout Subsection
-Commercial projects used in OpenHoldem
-\end_layout
-
 \begin_layout Itemize
-ActiveState Perl (ActiveState Perl is free for personal use); 
+Mersenne random algorithm by Makoto Matsumoto and Takuji Nishimura; 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://www.activestate.com/
+http://dmorse.github.io/simpatico/doc/html/mtrand_8h_source.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Image sources
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://40.media.tumblr.com/tumblr_lo17fqFYal1qj5qvfo1_500.jpg
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Recommended tools
+\end_layout
+
+\begin_layout Itemize
+PokerTH, an open-source poker simulator: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.pokerth.net/download
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+DDPoker, a freeware poker simulator: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://static.ddpoker.com/download/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+GNU CoreUtils, including head and tail to handle huge logs: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://gnuwin32.sourceforge.net/packages/coreutils.htm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+GNU grep to filter log-files: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://gnuwin32.sourceforge.net/packages/grep.htm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+AutoIT, a freeware scripting language for tools like hoppers: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.autoitscript.com/
 \end_layout
 
 \end_inset

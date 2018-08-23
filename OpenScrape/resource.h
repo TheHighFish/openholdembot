@@ -93,6 +93,7 @@
 #define IDC_NUDGE_BIGGER                1067
 #define IDC_NUDGE_SMALLER               1068
 #define IDC_TEST                        1069
+#define IDC_TITLETEXT_PREPROCESSED      1070
 #define IDC_TRACKER_FONT_SET            1077
 #define IDC_TRACKER_CARD_NUM            1078
 #define IDC_TRACKER_FONT_NUM            1079
@@ -116,7 +117,6 @@
 #define ID_VIEW_GROUPREGIONS            32781
 #define ID_GROUPREGIONS_BYTYPE          32782
 #define ID_GROUPREGIONS_BYNAME          32783
-#define ID_VIEW_UNGROUPREGIONS          32784
 #define ID_MAIN_TOOLBAR_PREV            32785
 #define ID_MAIN_TOOLBAR_NEXT            32786
 #define ID_VIEW_PREV                    32787

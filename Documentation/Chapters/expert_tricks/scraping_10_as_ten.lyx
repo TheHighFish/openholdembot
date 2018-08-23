@@ -96,7 +96,7 @@ we select a region that shows the rank of the card
 \end_layout
 
 \begin_layout Itemize
-we select a transformation (hier text3, but it might also be a hash or an
+we select a transformation (here text3, but it might also be a hash or an
  image if there is no fuzzyness)
 \end_layout
 

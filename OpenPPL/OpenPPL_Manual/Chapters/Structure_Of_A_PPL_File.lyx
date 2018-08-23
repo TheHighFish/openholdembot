@@ -467,6 +467,34 @@ Building Symbols On Your Own
 \end_layout
 
 \begin_layout Section*
+Controlflow of Open-Ended When-Conditions
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/when_conditions_control_flow.png
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
 Structure Of A PPL-File
 \end_layout
 
@@ -556,7 +584,7 @@ Unspecified Return Values
 \end_layout
 
 \begin_layout Standard
-It is common practice to add
+People who create complete profiles usually add
 \end_layout
 
 \begin_layout Standard
@@ -566,7 +594,12 @@ status open
 
 \begin_layout Plain Layout
 
-WHEN Others Fold FORCE
+WHEN Others
+\end_layout
+
+\begin_layout Plain Layout
+
+   WHEN Others Fold FORCE
 \end_layout
 
 \end_inset
@@ -576,10 +609,12 @@ WHEN Others Fold FORCE
 
 \begin_layout Standard
 to the end of every code-section.
- But it does not hurt if you forget to do so.
- If no condition matches the situation OpenHoldem will automatically evaluate
- this function to zero, which is also the encoding for false, and also for
- check/fold.
+ But it does not hurt if you don't so.
+ If no condition matches the situation OpenHoldem will automatically continue
+ to evaluate the built-in default-not (Gecko).
+ If no default-bot is present (you may safely delete it) then OpenHoldem
+ will evaluate functions without a return-value to zero, which is also the
+ encoding for false, and also for check/fold.
 \end_layout
 
 \begin_layout Section*

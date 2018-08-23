@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CREPLAYFRAME_H
 #define INC_CREPLAYFRAME_H
@@ -27,17 +27,16 @@ class CReplayFrame {
 	// private functions and variables - not available via accessors or mutators
 	void CreateReplayFrame();
 	void CreateReplaySessionDirectoryIfNecessary();
-	CString GetCardHtml(unsigned int card);
 	CString GetPlayerInfoAsHTML();
 	CString GetButtonStatesAsHTML();
 	CString GetBlindInfoAsHTML();
 	CString GetCommonCardsAsHTML();
 	CString GetPotsAsHTML();
 	CString GetLinksToPrevAndNextFile();
-  CString GeneralInfo();
+	CString GeneralInfo();
 	void CreateBitMapFile();
  private:
-	static int	_next_replay_frame;
+	static int _next_replay_frame;
 };
 
 #endif /* INC_CREPLAYFRAME_H */

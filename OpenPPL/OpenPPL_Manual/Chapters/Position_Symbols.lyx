@@ -89,11 +89,7 @@ Positions are always BU --- CO --- MP3 --- MP2 --- MP1 --- EP3 --- EP2 ---
  EP1 --- BB --- SB.
  If there are less than 10 players at the table, then some of the early
  positions will be missing (EP1 --- EP2, etc.).
- 
-\end_layout
-
-\begin_layout Standard
-Symbols like 
+ Symbols like 
 \begin_inset Quotes eld
 \end_inset
 
@@ -101,19 +97,11 @@ InButton
 \begin_inset Quotes erd
 \end_inset
 
- can be spelled in three different ways: 
+ can be spelled in two different ways: 
 \begin_inset Quotes eld
 \end_inset
 
 InButton
-\begin_inset Quotes erd
-\end_inset
-
-, 
-\begin_inset Quotes eld
-\end_inset
-
-In Button
 \begin_inset Quotes erd
 \end_inset
 
@@ -126,6 +114,34 @@ Button
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/positions_at_the_table.JPG
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -662,10 +678,18 @@ InUTG
 \begin_inset Text
 
 \begin_layout Plain Layout
-True, if you are UTG (left to the big blind), independent of the number
- of players at the table.
+True, if you are 
+\emph on
+under the gun
+\emph default
+ (left to the big blind), independent of the number of players at the table.
  This symbols is escpecially useful to sitout after the last hand of a session
- (before the next blind).
+ (before the next blind), but should not be used for positional play.
+ Better use symbols like 
+\emph on
+InEarlyPosition1
+\emph default
+ for selection of your starting hands.
 \end_layout
 
 \end_inset
@@ -707,7 +731,7 @@ The position of the last caller
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
+First orbit preflop only
 \end_layout
 
 \end_inset
@@ -740,7 +764,7 @@ The position of the last raiser
 \begin_inset Text
 
 \begin_layout Plain Layout
-None
+First orbit preflop only
 \end_layout
 
 \end_inset
@@ -760,7 +784,8 @@ Position
 \begin_inset Text
 
 \begin_layout Plain Layout
-Our position relative to the other player.
+Our position relative to the other player, meant especially for postflop
+ play.
  There are 3 positions at the table: 
 \end_layout
 
@@ -790,7 +815,7 @@ Position = Last
 \end_layout
 
 \begin_layout Plain Layout
-Middle is everything, that is neither first nor last
+Middle is everything, that is neither first nor last.
 \end_layout
 
 \end_inset

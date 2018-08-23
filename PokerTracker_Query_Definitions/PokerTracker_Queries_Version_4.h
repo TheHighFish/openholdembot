@@ -1,23 +1,23 @@
-//******************************************************************************
+///*****************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//******************************************************************************
+///*****************************************************************************
 //
 // Purpose:
 //
-//******************************************************************************
+///*****************************************************************************
 
 #ifndef INC_POKERTRACKER_QUERIES_VERSION_4_H
 #define INC_POKERTRACKER_QUERIES_VERSION_4_H
 // GENERAL STATS
-// ICON disabled, as not supported bz PT 4.
+// ICON disabled, as not supported by PT 4.
 // https://pt4.pokertracker.com/forums/viewtopic.php?f=59&t=49035
 #define PT4_QUERY_SUPPORT__ICON							(FALSE) // "icon"
-#define PT4_QUERY_SUPPORT__NB_HANDS						(TRUE)	// "hands"
+#define PT4_QUERY_SUPPORT__NB_HANDS					(TRUE)	// "hands"
 #define PT4_QUERY_SUPPORT__VPIP							(TRUE)	// "vpip"
 #define PT4_QUERY_SUPPORT__PFR							(TRUE)	// "pfr"
 #define PT4_QUERY_SUPPORT__RFI							(TRUE)	// "rfi"
@@ -25,24 +25,24 @@
 #define PT4_QUERY_SUPPORT__WSSD							(TRUE)	// "wssd"
 
 // PREFLOP STATS
-#define PT4_QUERY_SUPPORT__STEAL_ATTEMPT				(TRUE)	// "steal_attempt"
+#define PT4_QUERY_SUPPORT__STEAL_ATTEMPT				  (TRUE)	// "steal_attempt"
 #define PT4_QUERY_SUPPORT__FOLD_BB_TO_STEAL				(TRUE)	// "bb_fold_to_steal"
 #define PT4_QUERY_SUPPORT__FOLD_SB_TO_STEAL				(TRUE)	// "sb_fold_to_steal"
-#define PT4_QUERY_SUPPORT__3B_VS_STEAL					(TRUE)	// "3bet_vs_steal"
-#define PT4_QUERY_SUPPORT__BB_3B_VS_STEAL				(TRUE)	// "bb_3bet_vs_steal"
-#define PT4_QUERY_SUPPORT__SB_3B_VS_STEAL				(TRUE)	// "sb_3bet_vs_steal"
-#define PT4_QUERY_SUPPORT__PREFLOP_CALLED_RAISE			(TRUE)	// "preflop_called_raise"
-#define PT4_QUERY_SUPPORT__PREFLOP_3B					(TRUE)	// "3bet"
+#define PT4_QUERY_SUPPORT__3B_VS_STEAL					  (TRUE)	// "3bet_vs_steal"
+#define PT4_QUERY_SUPPORT__BB_3B_VS_STEAL				  (TRUE)	// "bb_3bet_vs_steal"
+#define PT4_QUERY_SUPPORT__SB_3B_VS_STEAL				  (TRUE)	// "sb_3bet_vs_steal"
+#define PT4_QUERY_SUPPORT__PREFLOP_CALLED_RAISE		(TRUE)	// "preflop_called_raise"
+#define PT4_QUERY_SUPPORT__PREFLOP_3B					    (TRUE)	// "3bet"
 #define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B			(TRUE)	// "fold_to_3bet"
 #define PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL			(TRUE)	// "fold_to_resteal"
-#define PT4_QUERY_SUPPORT__PREFLOP_4B					(TRUE)	// "4bet"
+#define PT4_QUERY_SUPPORT__PREFLOP_4B					    (TRUE)	// "4bet"
 #define PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B			(TRUE)	// "fold_to_4bet"
 
 // AF
 #define PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FACTOR		(TRUE)	// "flop_af"
 #define PT4_QUERY_SUPPORT__TURN_AGGRESSION_FACTOR		(TRUE)	// "turn_af"
-#define PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FACTOR		(TRUE)	// "river_af"
-#define PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FACTOR		(TRUE)	// "total_af"
+#define PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FACTOR	(TRUE)	// "river_af"
+#define PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FACTOR	(TRUE)	// "total_af"
 
 // AFq
 #define PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FREQUENCY	(TRUE)	// "flop_afq" 
@@ -57,128 +57,112 @@
 
 // Continuation bet
 // Flop
-#define PT4_QUERY_SUPPORT__FLOP_CBET					(TRUE)	// "flop_cbet"
-#define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET			(TRUE)	// "flop_fold_to_cbet"
-#define PT4_QUERY_SUPPORT__FLOP_RAISE_CBET				(TRUE)	// "flop_raise_cbet"
+#define PT4_QUERY_SUPPORT__FLOP_CBET					  (TRUE)	// "flop_cbet"
+#define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET	  (TRUE)	// "flop_fold_to_cbet"
+#define PT4_QUERY_SUPPORT__FLOP_RAISE_CBET		  (TRUE)	// "flop_raise_cbet"
 // Turn
-#define PT4_QUERY_SUPPORT__TURN_CBET					(TRUE)	// "turn_cbet"
-#define PT4_QUERY_SUPPORT__TURN_FOLD_TO_CBET			(TRUE)	// "turn_fold_to_cbet"
+#define PT4_QUERY_SUPPORT__TURN_CBET					  (TRUE)	// "turn_cbet"
+#define PT4_QUERY_SUPPORT__TURN_FOLD_TO_CBET	  (TRUE)	// "turn_fold_to_cbet"
 // River
-#define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_CBET			(TRUE)	// "river_fold_to_cbet"
+#define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_CBET	  (TRUE)	// "river_fold_to_cbet"
 
 // POSTFLOP Other stats
-#define PT4_QUERY_SUPPORT__POSTFLOP_FOLD_TO_3B			(TRUE)	// "postflop_fold_to_3bet"
+#define PT4_QUERY_SUPPORT__POSTFLOP_FOLD_TO_3B	(TRUE)	// "postflop_fold_to_3bet"
 
 // FLOP Other stats
-#define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B				(FALSE)	// "flop_fold_to_3bet"   // 3b is a reraise, we should have a "flop_fold_to_raise" stat first.
-#define PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE				(TRUE)	// "flop_checkraise"
+#define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B			(FALSE)	// "flop_fold_to_3bet"   // 3b is a reraise, we should have a "flop_fold_to_raise" stat first.
+#define PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE			(TRUE)	// "flop_checkraise"
 #define PT4_QUERY_SUPPORT__FLOP_DONKBET					(TRUE)	// "flop_donkbet"
-#define PT4_QUERY_SUPPORT__FLOP_FLOAT     				(TRUE)	// "flop_float" (PT's stat for: bet IP flop vs missed cbet)
+#define PT4_QUERY_SUPPORT__FLOP_FLOAT     			(TRUE)	// "flop_float" (PT's stat for: bet IP flop vs missed cbet)
 
 // TURN Other stats
-#define PT4_QUERY_SUPPORT__TURN_FOLD_TO_3B				(FALSE)	// "turn_fold_to_3bet" // 3b is a reraise, we should have a "turn_fold_to_raise" stat first.
-#define PT4_QUERY_SUPPORT__TURN_CHECK_RAISE				(TRUE)	// "turn_checkraise"
-#define PT4_QUERY_SUPPORT__TURN_CHECK_CALL				(TRUE)	// "turn_checkcall"
+#define PT4_QUERY_SUPPORT__TURN_FOLD_TO_3B			(FALSE)	// "turn_fold_to_3bet" // 3b is a reraise, we should have a "turn_fold_to_raise" stat first.
+#define PT4_QUERY_SUPPORT__TURN_CHECK_RAISE			(TRUE)	// "turn_checkraise"
+#define PT4_QUERY_SUPPORT__TURN_CHECK_CALL			(TRUE)	// "turn_checkcall"
 
 //RIVER Other stats
-#define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B				(FALSE)	// "river_fold_to_3bet" // 3b is a reraise, we should have a "river_fold_to_raise" stat first.
+#define PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B			(FALSE)	// "river_fold_to_3bet" // 3b is a reraise, we should have a "river_fold_to_raise" stat first.
 #define PT4_QUERY_SUPPORT__RIVER_BET     				(TRUE)	// "river_bet"
 
-
-
 const int k_number_of_pokertracker_stats =  //GENERAL STATS
-											(PT4_QUERY_SUPPORT__ICON ? 1 : 0) +
-											(PT4_QUERY_SUPPORT__NB_HANDS ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__VPIP ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__PFR ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__RFI ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__WTSD ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__WSSD ? 1 : 0) +
-
-											//PREFLOP STATS
-											(PT4_QUERY_SUPPORT__STEAL_ATTEMPT ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FOLD_BB_TO_STEAL ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FOLD_SB_TO_STEAL ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__3B_VS_STEAL ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__BB_3B_VS_STEAL ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__SB_3B_VS_STEAL ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__PREFLOP_CALLED_RAISE ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__PREFLOP_3B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__PREFLOP_4B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B ? 1 : 0) + 
-
-											//  AF
-											(PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FACTOR ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__TURN_AGGRESSION_FACTOR ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FACTOR ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FACTOR ? 1 : 0) +
-
-											//  AFq
-											(PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FREQUENCY ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__TURN_AGGRESSION_FREQUENCY ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FREQUENCY ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FREQUENCY ? 1 : 0) +
-
-											// POSTFLOP stats
-											(PT4_QUERY_SUPPORT__POSTFLOP_FOLD_TO_3B ? 1 : 0) +
-
-											//  Street seen
-											(PT4_QUERY_SUPPORT__SEEN_FLOP_PCT ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__SEEN_TURN_PCT ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__SEEN_RIVER_PCT ? 1 : 0) +
-
-											//  Continuation bet
-											//  Flop
-											(PT4_QUERY_SUPPORT__FLOP_CBET ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FLOP_RAISE_CBET ? 1 : 0) + 
-											//  Turn
-											(PT4_QUERY_SUPPORT__TURN_CBET ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__TURN_FOLD_TO_CBET ? 1 : 0) + 
-											//  River
-											(PT4_QUERY_SUPPORT__RIVER_FOLD_TO_CBET ? 1 : 0)+
-
-											//  Flop Other stats
-											(PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FLOP_DONKBET ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__FLOP_FLOAT ? 1 : 0) +
-
-											//  Turn Other stats
-											(PT4_QUERY_SUPPORT__TURN_FOLD_TO_3B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__TURN_CHECK_RAISE ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__TURN_CHECK_CALL ? 1 : 0) + 
-
-											//  River Other stats
-											(PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B ? 1 : 0) + 
-											(PT4_QUERY_SUPPORT__RIVER_BET ? 1 : 0) ;
-
+  	(PT4_QUERY_SUPPORT__ICON ? 1 : 0) 
+	+ (PT4_QUERY_SUPPORT__NB_HANDS ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__VPIP ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__PFR ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__RFI ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__WTSD ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__WSSD ? 1 : 0) 
+    //PREFLOP STATS
+	+ (PT4_QUERY_SUPPORT__STEAL_ATTEMPT ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__FOLD_BB_TO_STEAL ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__FOLD_SB_TO_STEAL ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__3B_VS_STEAL ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__BB_3B_VS_STEAL ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__SB_3B_VS_STEAL ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__PREFLOP_CALLED_RAISE ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__PREFLOP_3B ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__PREFLOP_4B ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B ? 1 : 0)  
+    //  AF
+	+ (PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FACTOR ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__TURN_AGGRESSION_FACTOR ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FACTOR ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FACTOR ? 1 : 0) 
+    //  AFq
+	+ (PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FREQUENCY ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__TURN_AGGRESSION_FREQUENCY ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FREQUENCY ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FREQUENCY ? 1 : 0) 
+    // POSTFLOP stats
+	+ (PT4_QUERY_SUPPORT__POSTFLOP_FOLD_TO_3B ? 1 : 0) 
+    //  Street seen
+	+ (PT4_QUERY_SUPPORT__SEEN_FLOP_PCT ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__SEEN_TURN_PCT ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__SEEN_RIVER_PCT ? 1 : 0) 
+    //  Continuation bet
+		//  Flop
+	+ (PT4_QUERY_SUPPORT__FLOP_CBET ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__FLOP_RAISE_CBET ? 1 : 0)  
+		//  Turn
+	+ (PT4_QUERY_SUPPORT__TURN_CBET ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__TURN_FOLD_TO_CBET ? 1 : 0)  
+		//  River
+	+ (PT4_QUERY_SUPPORT__RIVER_FOLD_TO_CBET ? 1 : 0)
+    //  Flop Other stats
+	+ (PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__FLOP_DONKBET ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__FLOP_FLOAT ? 1 : 0) 
+    //  Turn Other stats
+	+ (PT4_QUERY_SUPPORT__TURN_FOLD_TO_3B ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__TURN_CHECK_RAISE ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__TURN_CHECK_CALL ? 1 : 0)  
+    //  River Other stats
+	+ (PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B ? 1 : 0)  
+	+ (PT4_QUERY_SUPPORT__RIVER_BET ? 1 : 0);
 
 // PokerTracker support
-enum PT_Groups
-{
+enum PT_Groups {
 	pt_group_basic = 1,
 	pt_group_advanced = 2,
 	pt_group_positional = 3
 };
 
-enum PT_UpdateTypes
-{
+enum PT_UpdateTypes {
 	pt_updateType_noUpdate = 0,
 	pt_updateType_updateBasic = 1,
 	pt_updateType_updateAll = 2
 };
 
-enum PT_StatTypes
-{
+enum PT_StatTypes {
 	pt_statType_Ring = 0,
 	pt_statType_Tourney = 1
 };
 
-typedef struct t_QueryDefinition
-{
+struct t_QueryDefinition {
 	CString name;
 	CString description_for_editor;
 	CString query;
@@ -187,12 +171,10 @@ typedef struct t_QueryDefinition
 
 // PokerTracker naming conventions: 
 //   http://www.pokertracker.com/guides/PT3/tutorials/using-custom-reports-and-statistics#Naming-conventions
-
 t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 {
-
 #if PT4_QUERY_SUPPORT__ICON
-	/* PT4 query to get icon */
+	// PT4 query to get icon 
 	{
 		// name
 		"icon",
@@ -209,7 +191,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__NB_HANDS
-	/* PT4 query to get number of hands in the database */
+	// PT4 query to get number of hands in the database 
 	{
 		// name
 		"hands",	
@@ -228,7 +210,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__VPIP
-	/* PT4 query to get vpip */
+	// PT4 query to get vpip 
 	{
 		// name
 		"vpip",			
@@ -253,7 +235,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__PFR
-	/* PT4 query to get pre flop raise */
+	// PT4 query to get pre flop raise 
 	{
 		// name
 		"pfr",			
@@ -278,7 +260,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__RFI
-	/* PT4 query to get pre-flop raise first in*/
+	// PT4 query to get pre-flop raise first in
 	{
 		// name
 		"rfi",		
@@ -303,7 +285,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__WTSD
-	/* PT4 query to get Went to SD */
+	// PT4 query to get Went to SD 
 	{
 		// name
 		"wtsd",			
@@ -328,7 +310,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__WSSD
-	/* PT4 query to get Won $ At SD */
+	// PT4 query to get Won $ At SD 
 	{
 		// name
 		"wssd",			
@@ -353,7 +335,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__STEAL_ATTEMPT
-	/* PT4 query to get attempted to steal */
+	// PT4 query to get attempted to steal 
 	{
 		// name
 		"steal_attempt",	
@@ -378,7 +360,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FOLD_BB_TO_STEAL
-	/* PT4 query to get Folded Big Blind to steal */
+	// PT4 query to get Folded Big Blind to steal 
 	{
 		// name
 		"bb_fold_to_steal",		
@@ -403,7 +385,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FOLD_SB_TO_STEAL
-	/* PT4 query to get Folded Small Blind to steal */
+	// PT4 query to get Folded Small Blind to steal 
 	{
 		// name
 		"sb_fold_to_steal",
@@ -428,7 +410,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__3B_VS_STEAL
-	/* PT4 query to get 3B vs. steal */
+	// PT4 query to get 3B vs. steal 
 	{
 		// name
 		"3bet_vs_steal",
@@ -453,57 +435,57 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__BB_3B_VS_STEAL
-	/* PT4 query to get BB 3B vs. steal */
-	{
-		// name
-		"bb_3bet_vs_steal",
-		// description_for_editor
-		"Poker Tracker BB 3bet vs. steal",
-		// query
-		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else cast(ActionCount as real) / ActionOpportunities \
-				 end) as result \
-		 FROM	(SELECT	sum(case when ((flg_blind_b=TRUE) AND (flg_blind_def_opp=TRUE) AND (cnt_p_raise>0)) then 1 else 0 end) \
-						 as ActionCount, \
-						sum(case when ((flg_blind_b=TRUE) AND (flg_blind_def_opp=TRUE)) then 1 else 0 end) \
-						 as ActionOpportunities \
-				 FROM	player as P, %TYPE%_hand_player_statistics as S \
-				 WHERE	S.id_player = P.id_player AND \
-						S.id_gametype = %GAMETYPE% AND \
-						P.id_site = %SITEID% AND \
-						P.player_name LIKE '%SCREENNAME%') foo",
-      // stat_group
-      pt_group_positional
-	},
+	// PT4 query to get BB 3B vs. steal 
+  {
+    // name
+    "bb_3bet_vs_steal",
+    // description_for_editor
+    "Poker Tracker BB 3bet vs. steal",
+    // query
+    "SELECT (case when ActionOpportunities = 0 then -1 \
+      else cast(ActionCount as real) / ActionOpportunities \
+      end) as result \
+    FROM (SELECT   sum(case when (flg_blind_b AND flg_blind_def_opp AND flg_p_3bet) then 1 else 0 end) \
+      as ActionCount, \
+      sum(case when (flg_blind_b AND flg_blind_def_opp AND flg_p_3bet_opp) then 1 else 0 end) \
+      as ActionOpportunities \
+    FROM player as P, %TYPE%_hand_player_statistics as S \
+    WHERE S.id_player = P.id_player AND \
+      S.id_gametype = %GAMETYPE% AND \
+      P.id_site = %SITEID% AND \
+      P.player_name LIKE '%SCREENNAME%') foo",
+    // stat_group
+    pt_group_positional
+  },
 #endif
 
 #if PT4_QUERY_SUPPORT__SB_3B_VS_STEAL
-	/* PT4 query to get SB 3B vs. steal */
-	{
-		// name
-		"sb_3bet_vs_steal",
-		// description_for_editor
-		"Poker Tracker SB 3bet vs. steal",
-		// query
-		"SELECT (case when ActionOpportunities = 0 then -1 \
-				 else cast(ActionCount as real) / ActionOpportunities \
-				 end) as result \
-		 FROM	(SELECT	sum(case when ((flg_blind_s=TRUE) AND (flg_blind_def_opp=TRUE) AND (cnt_p_raise>0)) then 1 else 0 end) \
-						 as ActionCount, \
-						sum(case when ((flg_blind_s=TRUE) AND (flg_blind_def_opp=TRUE)) then 1 else 0 end) \
-						 as ActionOpportunities \
-				 FROM	player as P, %TYPE%_hand_player_statistics as S \
-				 WHERE	S.id_player = P.id_player AND \
-						S.id_gametype = %GAMETYPE% AND \
-						P.id_site = %SITEID% AND \
-						P.player_name LIKE '%SCREENNAME%') foo",
-		// stat_group
-		pt_group_positional
-	},
+  // PT4 query to get SB 3B vs. steal 
+  {
+    // name
+    "sb_3bet_vs_steal",
+    // description_for_editor
+    "Poker Tracker SB 3bet vs. steal",
+    // query
+    "SELECT (case when ActionOpportunities = 0 then -1 \
+      else cast(ActionCount as real) / ActionOpportunities \
+      end) as result \
+    FROM (SELECT sum(case when (flg_blind_s AND flg_blind_def_opp AND flg_p_3bet) then 1 else 0 end) \
+      as ActionCount, \
+      sum(case when (flg_blind_s AND flg_blind_def_opp AND flg_p_3bet_opp) then 1 else 0 end) \
+      as ActionOpportunities \
+    FROM   player as P, %TYPE%_hand_player_statistics as S \
+    WHERE   S.id_player = P.id_player AND \
+      S.id_gametype = %GAMETYPE% AND \
+      P.id_site = %SITEID% AND \
+      P.player_name LIKE '%SCREENNAME%') foo",
+    // stat_group
+    pt_group_positional
+  },
 #endif
 
 #if PT4_QUERY_SUPPORT__PREFLOP_CALLED_RAISE
-	/* PT4 query to get pre-flop called raise */
+	// PT4 query to get pre-flop called raise 
 	{
 		// name
 		"preflop_called_raise",		
@@ -530,7 +512,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__PREFLOP_3B
-	/* PT4  query to get PREFLOP 3 bet */
+	// PT4  query to get PREFLOP 3 bet 
 	{
 		// name
 		"3bet",	
@@ -555,7 +537,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_3B
-	/* PT4  query to get PREFLOP fold to 3 bet */
+	// PT4  query to get PREFLOP fold to 3 bet 
 	{
 		// name
 		"fold_to_3bet",	
@@ -580,7 +562,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__PF_FOLD_TO_RESTEAL
-	/* PT4 query to get Fold to Resteal */
+	// PT4 query to get Fold to Resteal 
 	{
 		// name
 		"fold_to_resteal",
@@ -605,7 +587,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__PREFLOP_4B
-	/* PT4 query to get Preflop 4B */
+	// PT4 query to get Preflop 4B 
 	{
 		// name
 		"4bet",
@@ -630,7 +612,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__PREFLOP_FOLD_TO_4B
-	/* PT4 query to get Preflop fold to 4B */
+	// PT4 query to get Preflop fold to 4B 
 	{
 		// name
 		"fold_to_4bet",
@@ -655,7 +637,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FACTOR
-	/* PT4 query to get flop aggression factor */
+	// PT4 query to get flop aggression factor 
 	{
 		// name
 		"flop_af",
@@ -680,7 +662,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TURN_AGGRESSION_FACTOR
-	/* PT4 query to get turn aggression factor */
+	// PT4 query to get turn aggression factor 
 	{
 		// name
 		"turn_af",
@@ -705,7 +687,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FACTOR
-	/* PT4 query to get river aggression factor */
+	// PT4 query to get river aggression factor 
 	{
 		// name
 		"river_af",			
@@ -730,7 +712,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FACTOR
-	/* PT4 query to get total aggression factor without preflop */
+	// PT4 query to get total aggression factor without preflop 
 	{
 		// name
 		"total_af",	
@@ -759,7 +741,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_AGGRESSION_FREQUENCY
-	/* PT4 query to get flop aggression frequency */
+	// PT4 query to get flop aggression frequency 
 	{
 		// name
 		"flop_afq",
@@ -784,7 +766,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TURN_AGGRESSION_FREQUENCY
-	/* PT4 query to get turn aggression frequency */
+	// PT4 query to get turn aggression frequency 
 	{
 		// name
 		"turn_afq",
@@ -809,7 +791,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__RIVER_AGGRESSION_FREQUENCY
-	/* PT4 query to get river aggression frequency */
+	// PT4 query to get river aggression frequency 
 	{
 		// name
 		"river_afq",			
@@ -834,7 +816,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TOTAL_AGGRESSION_FREQUENCY
-	/* PT4 query to get total aggression frequency without preflop */
+	// PT4 query to get total aggression frequency without preflop 
 	{
 		// name
 		"total_afq",	
@@ -863,7 +845,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__SEEN_FLOP_PCT
-	/* PT4 query to get flops seen */
+	// PT4 query to get flops seen 
 	{
 		// name
 		"flop_seen",		
@@ -888,7 +870,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__SEEN_TURN_PCT
-	/* PT4 query to get turns seen */
+	// PT4 query to get turns seen 
 	{
 		// name
 		"turn_seen",		
@@ -913,7 +895,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__SEEN_RIVER_PCT
-	/* PT4 query to get rivers seen */
+	// PT4 query to get rivers seen 
 	{
 		// name
 		"river_seen", 
@@ -938,7 +920,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_CBET
-	/* PT4  query to get cbet on FLOP */
+	// PT4  query to get cbet on FLOP 
 	{
 		// name
 		"flop_cbet",		
@@ -963,7 +945,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET
-	/* PT4  query to get FLOP fold to cbet */
+	// PT4  query to get FLOP fold to cbet 
 	{
 		// name
 		"flop_fold_to_cbet",	
@@ -988,7 +970,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_RAISE_CBET
-	/* PT4  query to get raise cbet on FLOP */
+	// PT4  query to get raise cbet on FLOP 
 	{
 		// name
 		"flop_raise_cbet",		
@@ -1012,7 +994,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TURN_CBET
-	/* PT4  query to get cbet on TURN */
+	// PT4  query to get cbet on TURN 
 	{
 		// name
 		"turn_cbet",		
@@ -1036,7 +1018,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TURN_FOLD_TO_CBET
-	/* PT4  query to get TURN fold to cbet */
+	// PT4  query to get TURN fold to cbet 
 	{
 		// name
 		"turn_fold_to_cbet",
@@ -1061,7 +1043,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__RIVER_FOLD_TO_CBET
-	/* PT4  query to get RIVER fold to cbet */
+	// PT4  query to get RIVER fold to cbet 
 	{
 		// name
 		"river_fold_to_cbet",
@@ -1086,7 +1068,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__POSTFLOP_FOLD_TO_3B
-	/* PT4  query to get total fold to 3 bet without preflop*/
+	// PT4  query to get total fold to 3 bet without preflop
 	{
 		// name
 		"postflop_fold_to_3bet",		
@@ -1111,7 +1093,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_FOLD_TO_3B
-	/* PT4  query to get FLOP fold to 3 bet */
+	// PT4  query to get FLOP fold to 3 bet 
 	{
 		// name
 		"flop_fold_to_3bet",
@@ -1136,7 +1118,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_CHECK_RAISE
-	/* PT4  query to get flop check-raise */
+	// PT4  query to get flop check-raise 
 	{
 		// name
 		"flop_checkraise",		
@@ -1160,7 +1142,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_DONKBET
-	/* PT4  query to get FLOP donk */
+	// PT4  query to get FLOP donk 
 	{
 		// name
 		"flop_donkbet",
@@ -1192,7 +1174,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__FLOP_FLOAT
-	/* PT4  query to get flop float */
+	// PT4  query to get flop float 
 	{
 		// name
 		"flop_float",
@@ -1224,7 +1206,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TURN_FOLD_TO_3B
-	/* PT4  query to get TURN fold to 3 bet */
+	// PT4  query to get TURN fold to 3 bet 
 	{
 		// name
 		"turn_fold_to_3bet",	
@@ -1249,7 +1231,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TURN_CHECK_RAISE
-	/* PT4  query to get TURN Check-Raise */
+	// PT4  query to get TURN Check-Raise 
 	{
 		// name
 		"turn_checkraise",	
@@ -1274,7 +1256,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__TURN_CHECK_CALL
-	/* PT4  query to get TURN Check-Call */
+	// PT4  query to get TURN Check-Call 
 	{
 		// name
 		"turn_checkcall",	
@@ -1299,7 +1281,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__RIVER_FOLD_TO_3B
-	/* PT4  query to get RIVER fold to 3 bet */
+	// PT4  query to get RIVER fold to 3 bet 
 	{
 		// name
 		"river_fold_to_3bet",	
@@ -1324,7 +1306,7 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 #endif
 
 #if PT4_QUERY_SUPPORT__RIVER_BET
-	/* PT4  query to get River bet */
+	// PT4  query to get River bet 
 	{
 		// name
 		"river_bet",

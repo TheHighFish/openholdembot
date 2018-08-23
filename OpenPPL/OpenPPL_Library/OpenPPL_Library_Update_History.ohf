@@ -1,0 +1,277 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Update Of History Symbols
+//
+// For history symbols and other information,
+// that can't be retrieved from OH-symbols
+// and not from the current gamestate either.
+//
+//*****************************************************************************
+
+##CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction##
+// This function is a nearly identical copy of BotsLastAction.
+// Unfortunately the logical value can change after autoplayer-action,
+// but not the technical value (due to symbol-caching)
+// and we need both values at the same heartbeat,
+// one for execution (bot-logic) and the other one to update the history.
+// The most easy solution was this code-clone.
+//
+// We removed the first lines of BotsLastAction
+// WHEN [IsPreflop AND (BotsActionsOnThisRoundIncludingChecks == 0)] RETURN None FORCE
+// WHEN (betround != preflop) RETURN BotsLastPreflopAction FORCE
+// because BotsActionsOnThisRoundIncludingChecks and BotsLastPreflopAction
+// could be [cached] after the first action and we could get wrong results.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20395
+// Computing BotsLastAction from prevation
+// k_prevaction_undefined = -2
+// k_prevaction_fold = -1
+// k_prevaction_check = 0   // new in OpenHoldem
+// k_prevaction_call = 1
+// k_prevaction_raise = 2   // min-raise
+// k_prevaction_betsize = 3	// "stated wager", i.e. using f$betsize
+// k_prevaction_allin = 4
+// k_prevaction_jam = 5     // allin with the slider
+//
+// We do no longer check for successful and failed allins
+// because this function gets used for the initialization of BotsLastPreflopAction
+// This update happens potentiually multiple times preflop, not only once on the flop,
+// and at the same heartbeat when the action was executed,
+// so we can't check if the balance is zero, as the casino did not yet update
+// and we did not yet scrape again.
+WHEN PrevActionWasAllin RETURN RaiseMax FORCE
+// Raising (FL and NL)
+WHEN ((prevaction == 2) OR (prevaction == 3)) RETURN Raise FORCE
+// calling
+WHEN (prevaction == 1) RETURN Call FORCE
+// Checking postflop
+WHEN ((prevaction == 0) AND (betround > 1) AND (currentbet == 0)) RETURN Check FORCE
+// Checking preflop
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet <= bblind)) RETURN Check FORCE
+// "Checking" when it was a call
+// Actually OpenHoldem does auto-adapt prevaction after such actions
+// but we try to be extra safe
+WHEN ((prevaction == 0) AND (betround == 1) AND (currentbet > bblind)) RETURN Call FORCE
+// Folding (might be used in sitout formulas)
+WHEN (prevaction == -1) RETURN Fold FORCE
+// No autoplayer-actions, but human being acting at ManualMode
+WHEN sitename$openholdem RETURN (HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions + None) FORCE
+// None
+WHEN (prevaction == -1) RETURN None FORCE
+WHEN Others RETURN ERROR_IncorrectBotsLastAction FORCE
+
+##CalculateStartingChips##
+// Precondition: first hand, preflop
+(currentbet + balance + ante)
+
+##CalculateStartingStackSize##
+// Precondition: first hand, preflop
+WHEN (StartingChips <= 0) RETURN 0 FORCE
+WHEN (bblind > 0) RETURN (StartingChips / bblind) FORCE
+WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE
+
+##UpdateMemorySymbolsOnHandReset##
+WHEN ResetOldGameStateAtHandReset
+WHEN Others
+WHEN Others SET me_st_MemRaisesBeforeFlop_0
+WHEN Others SET me_st_MemRaisesOnFlop_0
+WHEN Others SET me_st_MemRaisesOnTurn_0
+WHEN Others SET me_st_MemMaxOpponentStackSize_0
+WHEN Others SET me_st_MemMinOpponentStackSize_0
+WHEN Others SET me_st_MemBotsLastPreflopAction_None
+WHEN Others SET me_st_MemBotsLastFlopAction_None
+WHEN Others SET me_st_MemBotsLastTurnAction_None
+// Reset starting chips, stacksize and bigblind-size once at the beginning of the session
+WHEN (handsplayed <= 1) SET me_st_MemStartingChips_0
+WHEN (handsplayed <= 1) SET me_st_MemStartingStackSize_0
+WHEN (handsplayed <= 1) SET me_st_MemStartingBigBlindSize_0
+// Execute UpdateMemorySymbolsOnNewRound unconditionally, but don't do anything
+WHEN UpdateMemorySymbolsOnNewRound
+
+##UpdateMemorySymbolsOnNewRound##
+WHEN Others SET me_st_MemRaises_0
+WHEN Others SET me_st_MemChecks_0
+WHEN Others SET me_st_MemCalls_0
+WHEN Others SET me_st_MemBets_0
+
+##UpdateMemorySymbolsAfterAutoplayerAction##
+// This function is the preferred place to store and update memory symbola
+// as it is our turn and we see stable frames, i.e. absence of casino animations
+//
+// At first we set the flag me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_true
+// as during the update we have partially inconsistent information,
+// as the OpenHoldem-symbols are already updated (e.g. didrais, ...).
+// This could cause some OpenPPl-symbols like BotsActionsOnThisRoundIncludingChecks
+// to be off by one, so we have to adapt.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=120&t=20275&p=142396#p142396
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_true
+WHEN Others SET me_st_MemRaises_Raises
+WHEN Others SET me_st_MemChecks_Checks
+WHEN Others SET me_st_MemCalls_Calls
+WHEN Others SET me_st_MemBets_Bets
+WHEN IsPreflop SET me_st_MemBotsLastPreflopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+// CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+// can also be used on other betting-rounds, as it is not specific to preflop.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20960
+WHEN IsFlop    SET me_st_MemBotsLastFlopAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN IsTurn    SET me_st_MemBotsLastTurnAction_CalculateBotsLastPreflopActionForUpdateAfterAutoplayerAction
+WHEN IsPreflop SET me_st_MemRaisesBeforeFlop_Raises
+WHEN IsFlop SET me_st_MemRaisesOnFlop_Raises
+WHEN IsTurn SET me_st_MemRaisesOnTurn_Raises
+WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
+WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
+WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
+WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
+WHEN (me_re_MemMinOpponentStackSize <= 0) SET me_st_MemMinOpponentStackSize_MinOpponentStackSize
+// Finally remember a heartbeat ID so that be become able to detect
+// if a symbol gets used before the next scrape (e.g by the debug-tab).
+// In this case we have to return the new value (e.g. of "Raises")
+// and not a computed result based on the "old" value + ActionsSinceLastPlay.
+WHEN CreateHeartbeatIDAfterAutoplayerAction
+// Terminating the open-ended when-condition above
+// to execute the next one for sure.
+WHEN Others
+// Remember current game-state to avoid duplicte updates
+// of memory-symbols in case an action has no effect.
+WHEN RememberCurrentGameStateAfterAutoplayeraction
+// Terminating the open-ended when-condition above
+// to execute the next one for sure.
+WHEN Others
+WHEN Others SET me_st_MemUpdateOfOpenPPLMemorySymbolsInProgress_false
+
+//*****************************************************************************
+//
+// Detecting already executed updates of memory-symbols
+// that conflict with the normal way of evaluation
+//
+// Usually we calculate symbols like "Raises" based on old, stable values
+// plus RaisesSinceLastPlay (based on nopponentstruelyraising, computed 
+// with the info of the current orbit).
+// This however does no longer work if we store a new "old" value
+// at the end of my turn after an autoplayer action.
+// true, all critical work is done, but code in other threads
+// (especially the debug-tab) might request these symbols.
+// Then OpenHoldem would temporarily display invalid info
+// and people would be confused.
+// To avoid countless "bug"-reports, we remember and compare
+// a heartbeat-ID and then return the new value without
+// any computed updates based on an old frame
+// (that usually displays some ActionsSinceLastPlay by other players).
+//
+// Affected are the action counters
+// Calls, Checks, Raises
+//
+//*****************************************************************************
+
+##CreateHeartbeatIDAfterAutoplayerAction##
+// As there are no heartbeat-counters 
+// and we don't want things to complicated
+// we use randomheartbeat as a "nearly unique" ID.
+me_st_heartbeatID_randomheartbeat
+
+##OpenPPLHistorySymbolsAlreadyUpdatedThisHeartbeatAfterAutoplayerAction##
+WHEN (me_re_heartbeatID == randomheartbeat) RETURN true FORCE
+
+//*****************************************************************************
+//
+// Avoid duplicate updates in case an autoplayer action had no effect.
+// In this case we must not update the symbols again (increase counters, ...).
+// To prevent this problem we remember the current game-state (partially)
+// and then verify that it has changed.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19407
+//
+//*****************************************************************************
+
+##GameStateChangedSinceLastAutoplayerAction##
+// Change in dealerchair => new hand
+   (dealerchair != me_re_MemOldGameStateDealerChair)
+// Change in currentbet => we did act 
+// and the autoplayer executed successfully   
+OR (currentbet  != me_re_MemOldGameStateCurrentBet)
+// Change in potsize: somebody else behind us acted, 
+// so we checked or folded successfully
+OR (pot			    != me_re_MemOldGameStatePotSize)
+// Change in betround, if everybody checked 
+// and potsize is the same
+OR (betround    != me_re_MemOldGameStateBetround)
+
+##RememberCurrentGameStateAfterAutoplayeraction##
+// We can't use AND and OR here because of short circuiting.
+// We must use an operator that evaluates both sites.
+// The final result is meaningless.
+    me_st_MemOldGameStateCurrentBet_currentbet
+XOR me_st_MemOldGameStatePotSize_pot
+XOR me_st_MemOldGameStateBetround_betround
+// _dealerchair is a multiplexer-postfix nowadays
+// that gets textually replaced by its current value.
+// So we need an additional underscore here for a correct me_st_x_y-command.
+XOR me_st_MemOldGameStateDealerChair__dealerchair
+
+##ResetOldGameStateAtHandReset##
+// We have to explicitly reset the old game-state at hand-reset,
+// as RememberCurrentGameStateAfterAutoplayeraction won't get executed
+// if a user simulates e.g. at Manualmode and just clicks "Reset".
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=261&t=20226#p142447
+    me_st_MemOldGameStateDealerChair_0
+XOR me_st_MemOldGameStateCurrentBet_0
+XOR me_st_MemOldGameStatePotSize_0
+XOR me_st_MemOldGameStateBetround_0
