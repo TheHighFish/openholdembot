@@ -560,7 +560,7 @@ ispl
 \begin_inset Text
 
 \begin_layout Plain Layout
-(lim == 1) Pot Limi
+(lim == 1) Pot Limit
 \end_layout
 
 \end_inset
@@ -1279,7 +1279,7 @@ cut off chair number (0-9)
 \begin_inset Text
 
 \begin_layout Plain Layout
-mp3chai
+mp3chair
 \end_layout
 
 \end_inset
@@ -1299,7 +1299,7 @@ middle position 3 chair number (0-9)
 \begin_inset Text
 
 \begin_layout Plain Layout
-mp2chai
+mp2chair
 \end_layout
 
 \end_inset
@@ -1319,7 +1319,7 @@ middle position 2 chair number (0-9)
 \begin_inset Text
 
 \begin_layout Plain Layout
-mp1chai
+mp1chair
 \end_layout
 
 \end_inset
