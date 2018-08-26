@@ -86,10 +86,12 @@ class CEngineContainer : public CSpaceOptimizedGlobalObject {
   void DestroyAllSpecialSymbolEngines();
  private:
   void InitOnStartup();
+  /* probably no longer needed
   void UpdateOnHandreset();
   void UpdateOnNewRound();
   void UpdateOnMyTurn();
   void UpdateOnHeartbeat();
+  */
  private:
   CArray <CVirtualSymbolEngine*, CVirtualSymbolEngine*> _symbol_engines;
   bool _reset_on_connection_executed;

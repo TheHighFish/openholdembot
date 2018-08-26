@@ -321,17 +321,35 @@ void CEngineContainer::EvaluateAll() {
 	// * UpdateOnHandreset()
 	// * UpdateOnNewRound()
 	// * UpdateOnMyTurn()
-	if (p_handreset_detector->IsHandreset()) 	{
-		UpdateOnHandreset();
-	}
-	if (p_betround_calculator->IsNewBetround())	{
-		UpdateOnNewRound();
-	}
-	if (p_casino_interface->IsMyTurn())	{
-		UpdateOnMyTurn();
-	}
-	// And finally UpdateOnHeartbeat() gets always called.
-	UpdateOnHeartbeat();
+  bool is_handreset = p_handreset_detector->IsHandreset();
+  bool is_new_betround = p_betround_calculator->IsNewBetround();
+  bool is_my_turn = p_casino_interface->IsMyTurn();
+  // Order of evaluation matters.
+  // We have to calculate UpdateOnHandreset() before UpdateOnHeartbeat()
+  // because when doing the compuations in every heartbeat we usually
+  // require a handreset to be detected first and resets of symbols
+  // already executed.
+  // But we also have to finish all update-functions of a symbol-engine first
+  // before we can continue with the next symbol-engine,
+  // as later engines might depend on earlier engines in arbitrary ways,
+  // e.g. the UpdateOnmyTurn()-function of the late history-engine depends
+  // on the UpdateOnHeartbeat()-function that calculates nplayersdealt.
+  // That's why the loop has to enumerate the symbol-engines,
+  // no longer using a separate loop for every update-function().
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=21955
+  for (int i = 0; i < _symbol_engines.GetCount(); ++i) {
+    if (is_handreset) {
+      _symbol_engines[i]->UpdateOnHandreset();
+    }
+    if (is_new_betround) {
+      _symbol_engines[i]->UpdateOnNewRound();
+    }
+    if (is_my_turn) {
+      _symbol_engines[i]->UpdateOnMyTurn();
+    }
+    // And finally UpdateOnHeartbeat() gets always called.
+    _symbol_engines[i]->UpdateOnHeartbeat();
+  }
 }
 
 void CEngineContainer::InitOnStartup() {
@@ -340,7 +358,6 @@ void CEngineContainer::InitOnStartup() {
     _symbol_engines[i]->InitOnStartup();
   }
   write_log(Preferences()->debug_engine_container(), "[EngineContainer] Init on startup finished\n");
-
 }
 
 void CEngineContainer::UpdateOnConnection() {
@@ -359,6 +376,7 @@ void CEngineContainer::UpdateOnDisconnection() {
 	_reset_on_connection_executed = false;
 }
 
+/* probably no longer needed
 void CEngineContainer::UpdateOnHandreset() {
 	write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset on handreset\n");
 	for (int i=0; i<_symbol_engines.GetCount(); ++i) {
@@ -385,7 +403,7 @@ void CEngineContainer::UpdateOnHeartbeat() {
   for (int i=0; i<_symbol_engines.GetCount(); ++i) {
 	  _symbol_engines[i]->UpdateOnHeartbeat();
   }
-}
+}*/
 
 void CEngineContainer::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
   write_log(Preferences()->debug_engine_container(), "[EngineContainer] Reset after autoplayer action\n");
