@@ -297,7 +297,7 @@ betround == 2 ?
 \end_layout
 
 \begin_layout Standard
-Id it is on the flop then we will store the values of the functions f$stpr
+If it is on the flop then we will store the values of the functions f$stpr
  and f$slowplay at that moment.
  
 \end_layout

@@ -61,14 +61,20 @@ void CSymbolEngineActiveDealtPlaying::UpdateOnNewRound()
 {}
 
 void CSymbolEngineActiveDealtPlaying::UpdateOnMyTurn()
-{}
+{
+    CalculateActiveBits();
+    CalculatePlayingBits();
+    CalculateDealtBits();
+    CalculateSeatedBits();
+    CalculateAllinBits();
+}
 
 void CSymbolEngineActiveDealtPlaying::UpdateOnHeartbeat() {
-	CalculateActiveBits();
-	CalculatePlayingBits();
-	CalculateDealtBits();
-	CalculateSeatedBits();
-  CalculateAllinBits();
+    CalculateActiveBits();
+    CalculatePlayingBits();
+    CalculateDealtBits();
+    CalculateSeatedBits();
+    CalculateAllinBits();
 }
 
 void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
@@ -85,9 +91,10 @@ void CSymbolEngineActiveDealtPlaying::CalculateActiveBits()
 
 void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	_playersplayingbits = 0;
-	for (int i=0; i<kMaxNumberOfPlayers; ++i)	{
-    if (p_table_state->Player(i)->HasAnyCards()) {
-			_playersplayingbits |= (1<<i);			
+	for (int i=0; i<kMaxNumberOfPlayers; ++i) {
+        if (p_table_state->Player(i)->HasAnyCards()) {
+            write_log(true, "[nik0] Player %i HasAnyCards\n", i);
+			_playersplayingbits |= (1<<i);
 		}
 	}
 }

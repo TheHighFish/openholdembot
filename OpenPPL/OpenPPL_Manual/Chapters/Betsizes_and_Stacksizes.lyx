@@ -404,7 +404,7 @@ MinStillToActStackSize
 \begin_inset Text
 
 \begin_layout Plain Layout
-The biggest stack of the opponents behind you (including SB and BB), measured
+The smallest stack of the opponents behind you (including SB and BB), measured
  in big blinds
 \end_layout
 
