@@ -1,4 +1,26 @@
-﻿﻿v﻿13.0.3 2018-08-17
+﻿﻿v﻿13.1.9 2018-09-05
+==================
+NEW STUFF:
+- Lots of new PokerTracker-stats in the new PT.DLL.
+  Special thanks to Johnny, Termitapalahermita, ChuckNeverMuck,
+  Guysmo, Salem, Gunfadoso and Masky007 for contributing 
+  database-queriesm helping and testing.
+  [Stars83]
+
+BUG FIXES:
+- The engine-xontainer was executing some functions in wrong order.
+  This could affect history-symbols if we were seeing only unique frames,
+  i.e. not waiting for stable frames ir reviewing replay-frames 
+  that got shot with the option "on change in table-state".
+  Thanks to Stars83 for reporting the bug and to Toto, Salem,
+  Cold12Zera, Qwerty, ChuckNeverMuck and Nik0 for helping.
+  [THF]
+
+MAINTENANCE:
+- Improved table-display for 6max and large tour5nament-betsizes
+  [Bob]
+
+﻿v﻿13.0.3 2018-08-17
 ==================
 BUG FIXES:
 - Since version 13.0.3 OpenHoldem incorrectly always was looking 
@@ -13,8 +35,6 @@ BUG FIXES:
   [THF]
 
 MAINTENANCE:
-- Improved table-display for 6max and large tour5nament-betsizes
-  [Bob]
 - Starting replay-frames at the first available frame-number,
   no longer overwriting existing frames.
   [Nik0]
