@@ -1,4 +1,4 @@
-﻿﻿v﻿13.1.9 2018-09-05
+﻿﻿v﻿13.1.0 2018-09-05
 ==================
 NEW STUFF:
 - Lots of new PokerTracker-stats in the new PT.DLL.
