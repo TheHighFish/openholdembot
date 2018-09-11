@@ -138,12 +138,10 @@
 // Advanced OPPORTUNITIES /// 
 #define PT4_QUERY_SUPPORT__CBET_FLOP_OPP_IN_3BET_POT     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__CBET_FLOP_OPP     				(TRUE)	// ""
-#define PT4_QUERY_SUPPORT__FOLD_TO_3BET_AFTERR_OPP     				(TRUE)	// ""
+#define PT4_QUERY_SUPPORT__FOLD_TO_3BET_AFTER_R_OPP     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__PREFLOP_SQUEEZE_OPP   				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET__FLOP_RAISE_CBET_OPP     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__FLOP_DONKBET_OPP    				(TRUE)	// ""
-#define PT4_QUERY_SUPPORT__FOLD_TO_PF_4BET_AFTER_3BET_OPP     				(TRUE)	// ""
-#define PT4_QUERY_SUPPORT__PREFLOP_3B_OPP     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__FOLD_TO_F_CBET_IN_3BET_PLUS_POT_OPP     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__FOLD_TO_F_CHECK_RAISE_OPP     				(TRUE)	// ""
 #define PT4_QUERY_SUPPORT__FOLD_TO_SQUEEZE_AS_RAISER_OPP     				(TRUE)	// ""
@@ -247,12 +245,10 @@ const int k_number_of_pokertracker_stats =  //GENERAL STATS
 // OPP
 + (PT4_QUERY_SUPPORT__CBET_FLOP_OPP_IN_3BET_POT ? 1 : 0)
 + (PT4_QUERY_SUPPORT__CBET_FLOP_OPP ? 1 : 0)
-+ (PT4_QUERY_SUPPORT__FOLD_TO_3BET_AFTERR_OPP ? 1 : 0)
++ (PT4_QUERY_SUPPORT__FOLD_TO_3BET_AFTER_R_OPP ? 1 : 0)
 + (PT4_QUERY_SUPPORT__PREFLOP_SQUEEZE_OPP ? 1 : 0)
 + (PT4_QUERY_SUPPORT__FLOP_FOLD_TO_CBET__FLOP_RAISE_CBET_OPP ? 1 : 0)
 + (PT4_QUERY_SUPPORT__FLOP_DONKBET_OPP ? 1 : 0)
-+ (PT4_QUERY_SUPPORT__FOLD_TO_PF_4BET_AFTER_3BET_OPP ? 1 : 0)
-+ (PT4_QUERY_SUPPORT__PREFLOP_3B_OPP ? 1 : 0)
 + (PT4_QUERY_SUPPORT__FOLD_TO_F_CBET_IN_3BET_PLUS_POT_OPP ? 1 : 0)
 + (PT4_QUERY_SUPPORT__FOLD_TO_F_CHECK_RAISE_OPP ? 1 : 0)
 + (PT4_QUERY_SUPPORT__FOLD_TO_SQUEEZE_AS_RAISER_OPP ? 1 : 0);
@@ -2392,13 +2388,13 @@ t_QueryDefinition query_definitions[k_number_of_pokertracker_stats] =
 	},
 #endif
 
-#if PT4_QUERY_SUPPORT__FOLD_TO_3BET_AFTERR_OPP
+#if PT4_QUERY_SUPPORT__FOLD_TO_3BET_AFTER_R_OPP
 	// PT4 
 	{
 		// name
-		"fold_to_3bet_afterr_opp",
+		"fold_to_3bet_afterR_opp",
 		// description_for_editor
-		"Poker Tracker folded while facing 3bet preflop Opportunities",
+		"Poker Tracker folded while facing 3bet preflop Opportunities after raise",
 		// query
 		"SELECT sum(CASE WHEN(s.flg_p_3bet_def_opp AND s.flg_p_first_raise) THEN 1 ELSE 0 END) as result \
 		FROM	player as P, %TYPE%_hand_player_statistics as S \
