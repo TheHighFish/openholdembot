@@ -474,6 +474,7 @@ const int BETCONF_NOTHING	 = TEXTSEL_NOTHING;
 // Button click options
 const int BUTTON_SINGLECLICK = TEXTSEL_SINGLECLICK;
 const int BUTTON_DOUBLECLICK = TEXTSEL_DOUBLECLICK;
+const int BUTTON_NOTHING     = TEXTSEL_NOTHING;
 
 // Autoplayer prevaction
 #define PREVACT_FOLD		-1

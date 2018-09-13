@@ -34,6 +34,14 @@ void CAutoplayerButton::SetTechnicalName(const CString name) {
   _hotkey.SetName(hotkey_name);
 
   _default_label = p_tablemap->GetTMSymbol(_technical_name + "defaultlabel").MakeLower();
+
+  if (p_tablemap->GetTMSymbol(_technical_name + "clickmethod").MakeLower() == "double") {
+    _click_method = BUTTON_DOUBLECLICK;
+  } else if (p_tablemap->GetTMSymbol(_technical_name + "clickmethod").MakeLower() == "nothing") {
+    _click_method = BUTTON_NOTHING;
+  } else {
+    _click_method = BUTTON_SINGLECLICK;
+  }
 }
 
 void CAutoplayerButton::Reset() {
@@ -53,9 +61,17 @@ bool CAutoplayerButton::Click() {
     // Lookup the region
     RECT button_region;
     p_tablemap->GetTMRegion(_technical_name, &button_region);
-    // Otherwise: click the button the normal way
-    p_casino_interface->ClickRect(button_region);
-    write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Clicked button [%s] [%s]\n", _label, _technical_name);
+    if (BUTTON_NOTHING == _click_method) {
+      write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Doing nothing on this button [%s] [%s]\n", _label, _technical_name);
+    } else if (BUTTON_DOUBLECLICK == _click_method) {
+      // double click the button if needed
+      p_casino_interface->DoubleClickRect(button_region);
+      write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Clicked button [%s] [%s]\n", _label, _technical_name);
+    } else {
+      // Otherwise: click the button the normal way
+      p_casino_interface->ClickRect(button_region);
+      write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Clicked button [%s] [%s]\n", _label, _technical_name);
+    }
     return true;
   } else {
     write_log(Preferences()->debug_autoplayer(), "[CAutoplayerButton] Could not click button %s. Either undefined or not visible.\n", _label);
@@ -158,6 +174,11 @@ bool CAutoplayerButton::IsLabelPrefold() {
   return (_label.MakeLower().Left(7) == "prefold");
 }
 
+bool CAutoplayerButton::IsNameI86() {
+  return (_technical_name.MakeLower().Left(3) == "i86");
+}
+
+
 // We precompute the button-type from the label, because their was a raise-condition
 // when COpenHoldemView::UpdateDisplay(), triggered by a timer,
 // accessed the button-labels (non-elementary data)
@@ -175,7 +196,7 @@ void CAutoplayerButton::PrecomputeButtonType() {
     _button_type = k_autoplayer_function_check;
   } else if (IsLabelFold()) {
     _button_type = k_autoplayer_function_fold;
-  } else if (IsLabelAutopost()) { 
+  } else if (IsLabelAutopost()) {
     _button_type = k_hopper_function_autopost;
   } else if (IsLabelSitin()) {
     _button_type = k_hopper_function_sitin;
@@ -185,8 +206,10 @@ void CAutoplayerButton::PrecomputeButtonType() {
     _button_type = k_hopper_function_leave;
   } else if (IsLabelRematch()) {
     _button_type = k_hopper_function_rematch;
-  } else if (IsLabelPrefold()) { 
+  } else if (IsLabelPrefold()) {
     _button_type = k_standard_function_prefold;
+  } else if (IsNameI86()) {
+    _button_type = k_button_i86;
   } else {
     /* No or wrongly scraped value, apply default label, if any */
     if (_default_label == "allin" || _default_label == "max") {

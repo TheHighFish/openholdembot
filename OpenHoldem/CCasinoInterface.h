@@ -44,6 +44,7 @@ class CCasinoInterface: public CSpaceOptimizedGlobalObject {
   bool HandleInterfacebuttonsI86();
   bool TableLostFocus();
   void ClickRect(RECT rect); 
+  void DoubleClickRect(RECT rect); 
   void SendKey(const char ascii_key);
  private:
 	POINT p_null;
@@ -68,7 +69,8 @@ class CCasinoInterface: public CSpaceOptimizedGlobalObject {
   CAutoplayerButton _non_clickable_fake_button;
  private:
   CCasinoHotkey casino_hotkeys;
-}; 
+  int _next_i86_starting_button;
+};
 
 extern CCasinoInterface *p_casino_interface;
 

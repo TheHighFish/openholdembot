@@ -65,7 +65,7 @@ private:
 	POINT	cursor_position;
 	HWND	window_with_focus;
 	bool	action_sequence_needs_to_be_finished;
-  bool  _already_executing_allin_adjustment;
+	bool	_already_executing_allin_adjustment;
 
 	CCritSec	m_critsec;
 };
