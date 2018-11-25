@@ -90,6 +90,12 @@ $$pr0
 ##RankOfSecondHoleCard##
 $$pr1
 
+##RankOfThirdHoleCard##
+$$pr2
+
+##RankOfFourthHoleCard##
+$$pr3
+
 ##RankOfFirstFlopCard##
 $$cr0
 
