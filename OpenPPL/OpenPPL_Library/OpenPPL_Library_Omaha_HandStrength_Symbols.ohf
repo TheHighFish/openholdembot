@@ -527,3 +527,6 @@ OR RankOfFourthHoleCard == SecondTopFlopCard
 ##TripsInHand##
 
 ##TwoPairInHand##
+WHEN RankOfTopPairInHand < 0 RETURN false FORCE
+WHEN RankOfBottomPairInHand < 0 RETURN false FORCE
+WHEN RankOfTopPairInHand > RankOfBottomPairInHand RETURN true FORCE
