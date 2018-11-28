@@ -64,10 +64,48 @@
 //
 //*****************************************************************************
 
-##Omaha_HadOverPairOnFlop##
+##RankOfTopPairInHand##
+// Searching PairInHand rank, top to down
+hand$AA ? 14 :
+hand$KK ? 13 :
+hand$QQ ? 12 :
+hand$JJ ? 11 :
+hand$TT ? 10 :
+hand$99 ? 9 :
+hand$88 ? 8 :
+hand$77 ? 7 :
+hand$66 ? 6 :
+hand$55 ? 5 :
+hand$44 ? 4 :
+hand$33 ? 3 :
+hand$22 ? 2 :
+HINT_There_Is_No_Pair_In_Hand__MinusOne
 
+##RankOfBottomPairInHand##      
+// Searching PairInHand rank, down to top
+hand$22 ? 2 :   
+hand$33 ? 3 :   
+hand$44 ? 4 :   
+hand$55 ? 5 :   
+hand$66 ? 6 :   
+hand$77 ? 7 :   
+hand$88 ? 8 :   
+hand$99 ? 9 :   
+hand$TT ? 10 :   
+hand$JJ ? 11 :   
+hand$QQ ? 12 :   
+hand$KK ? 13 :   
+HINT_There_Is_No_Pair_In_Hand__MinusOne  	
+
+##HINT_There_Is_No_Pair_In_Hand__MinusOne##
+-1
+
+##Omaha_HadOverPairOnFlop##
+WHEN RankOfTopPairInHand > TopFlopCard RETURN true FORCE
 
 ##Omaha_HadOverPairOnTurn##
+WHEN RankOfTopPairInHand > TopFlopCard
+AND RankOfTopPairInHand > TurnCard  RETURN true FORCE
 
 
 ##Omaha_HadSecondOverPairOnFlop##
@@ -82,16 +120,36 @@
 ##Omaha_HadPairOnTurn##
 
 
-##Omaha_HadSetOnFlop##
+##TopPairInHandPairsTheFlop##
+WHEN RankOfTopPairInHand == FirstFlopCard 
+OR RankOfTopPairInHand == SecondFlopCard 
+OR RankOfTopPairInHand == ThirdFlopCard RETURN true FORCE
 
+##BottomPairInHandPairsTheFlop##
+WHEN RankOfBottomPairInHand == FirstFlopCard 
+OR RankOfBottomPairInHand == SecondFlopCard 
+OR RankOfBottomPairInHand == ThirdFlopCard RETURN true FORCE
+
+##Omaha_HadSetOnFlop##
+WHEN TopPairInHandPairsTheFlop 
+OR BottomPairInHandPairsTheFlop RETURN true FORCE
 
 ##Omaha_HadSetOnTurn##
-
+WHEN HadSetOnFlop 
+OR RankOfTopPairInHand == TurnCard 
+OR RankOfBottomPairInHand == TurnCard RETURN true FORCE
 
 ##Omaha_HadTopPairOnFlop##
-
+WHEN RankOfFirstHoleCard == HighestRankOnFlop
+OR RankOfSecondHoleCard == HighestRankOnFlop
+OR RankOfThirdHoleCard == HighestRankOnFlop
+OR RankOfFourthHoleCard == HighestRankOnFlop
 
 ##Omaha_HadSecondTopPairOnFlop##
+WHEN RankOfFirstHoleCard == SecondTopFlopCard
+OR RankOfSecondHoleCard == SecondTopFlopCard
+OR RankOfThirdHoleCard == SecondTopFlopCard
+OR RankOfFourthHoleCard == SecondTopFlopCard
 
 
 ##Omaha_HadTopPairOnTurn##
