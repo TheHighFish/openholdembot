@@ -151,8 +151,11 @@ OR RankOfSecondHoleCard == SecondTopFlopCard
 OR RankOfThirdHoleCard == SecondTopFlopCard
 OR RankOfFourthHoleCard == SecondTopFlopCard
 
-
 ##Omaha_HadTopPairOnTurn##
+RankOfFirstHoleCard == HighestRankOnTurn
+OR RankOfSecondHoleCard == HighestRankOnTurn
+OR RankOfThirdHoleCard == HighestRankOnTurn
+OR RankOfFourthHoleCard == HighestRankOnTurn
 
 
 ##Omaha_HadTwoPairOnFlop##
@@ -212,8 +215,8 @@ OR RankOfFourthHoleCard == SecondTopFlopCard
 ##Omaha_HaveSecondNutStraight##
 
 
-##Omaha_HaveSecondOverPair##
-
+##Omaha_HaveOverPair##
+RankOfTopPairInHand > BestBoardCard
 
 ##Omaha_HaveSecondTopPair##
 
