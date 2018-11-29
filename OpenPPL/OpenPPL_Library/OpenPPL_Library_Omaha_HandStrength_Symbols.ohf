@@ -109,9 +109,11 @@ AND RankOfTopPairInHand > TurnCard  RETURN true FORCE
 
 
 ##Omaha_HadSecondOverPairOnFlop##
-
+WHEN RankOfTopPairInHand < TopFlopCard
+AND RankOfTopPairInHand > SecondTopFlopCard
 
 ##Omaha_HadSecondOverPairOnTurn##
+HadSecondOverPairOnFlop AND ((TurnCard == TopFlopCard) OR (TurnCard < TopFlopCard))
 
 
 ##Omaha_HadPairOnFlop##
@@ -158,7 +160,26 @@ OR RankOfThirdHoleCard == HighestRankOnTurn
 OR RankOfFourthHoleCard == HighestRankOnTurn
 
 
+##ThirdHoleCardPairsTheFlop##
+WHEN (RankOfThirdHoleCard == FirstFlopCard) RETURN true FORCE
+WHEN (RankOfThirdHoleCard == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfThirdHoleCard == ThirdFlopCard) RETURN true FORCE
+WHEN Others RETURN false FORCE
+
+##FourthHoleCardPairsTheFlop##
+WHEN (RankOfFourthHoleCard == FirstFlopCard) RETURN true FORCE
+WHEN (RankOfFourthHoleCard == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfFourthHoleCard == ThirdFlopCard) RETURN true FORCE
+WHEN Others RETURN false FORCE
+
 ##Omaha_HadTwoPairOnFlop##
+WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop RETURN true FORCE
+WHEN FirstHoleCardPairsTheFlop AND ThirdHoleCardPairsTheFlop RETURN true FORCE
+WHEN FirstHoleCardPairsTheFlop AND FourthHoleCardPairsTheFlop RETURN true FORCE
+WHEN SecondHoleCardPairsTheFlop AND ThirdHoleCardPairsTheFlop RETURN true FORCE
+WHEN SecondHoleCardPairsTheFlop AND FourthHoleCardPairsTheFlop RETURN true FORCE
+WHEN ThirdHoleCardPairsTheFlop AND FourthHoleCardPairsTheFlop RETURN true FORCE
+WHEN Others RETURN false FORCE    
 
 
 ##Omaha_HaveGoodBackdoorStraightDrawAKQJT##
@@ -201,6 +222,7 @@ OR RankOfFourthHoleCard == HighestRankOnTurn
 
 
 ##Omaha_HaveSecondBestOverPair##
+hand$KK AND (BestBoardCard < king)
 
 
 ##Omaha_HaveSecondBestOverPairOrBetter##
@@ -219,6 +241,10 @@ OR RankOfFourthHoleCard == HighestRankOnTurn
 RankOfTopPairInHand > BestBoardCard
 
 ##Omaha_HaveSecondTopPair##
+RankOfFirstHoleCard == SecondBestBoardCard 
+OR RankOfSecondHoleCard == SecondBestBoardCard
+OR RankOfThirdHoleCard == SecondBestBoardCard
+OR RankOfFourthHoleCard == SecondBestBoardCard
 
 
 ##Omaha_HaveSecondTopSet##
@@ -231,6 +257,7 @@ RankOfTopPairInHand > BestBoardCard
 
 
 ##Omaha_HaveThirdBestOverPair##
+hand$QQ AND (BestBoardCard < queen)
 
 
 ##Omaha_HaveThirdBestOverPairOrBetter##
@@ -243,15 +270,24 @@ RankOfTopPairInHand > BestBoardCard
 
 
 ##Omaha_HaveThirdOverPair##
+RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestBoardCard)
 
 
 ##Omaha_HaveThirdTopPair##
+RankOfFirstHoleCard==ThirdBestBoardCard 
+OR RankOfSecondHoleCard==ThirdBestBoardCard
+OR RankOfThirdHoleCard==ThirdBestBoardCard
+OR RankOfFourthHoleCard==ThirdBestBoardCard
 
 
 ##ThirdTopPairRank##
 
 
 ##Omaha_HaveFifthTopPair##
+RankOfFirstHoleCard==FifthBestBoardCard 
+OR RankOfSecondHoleCard==FifthBestBoardCard
+OR RankOfThirdHoleCard==FifthBestBoardCard
+OR RankOfFourthHoleCard==FifthBestBoardCard
  
 
 ##FifthTopPairRank##
@@ -270,6 +306,10 @@ RankOfTopPairInHand > BestBoardCard
 
 
 ##Omaha_HaveFourthTopPair##
+RankOfFirstHoleCard==FourthBestBoardCard 
+OR RankOfSecondHoleCard==FourthBestBoardCard
+OR RankOfThirdHoleCard==FourthBestBoardCard
+OR RankOfFourthHoleCard==FourthBestBoardCard
 
 
 ##Omaha_HaveFourthTopSet##
@@ -306,6 +346,7 @@ RankOfTopPairInHand > BestBoardCard
 
 
 ##Omaha_HaveBestOverPair##
+hand$AA AND (BestBoardCard < ace)
 
 
 ##Omaha_HaveBestOverPairOrBetter##
@@ -429,6 +470,10 @@ RankOfTopPairInHand > BestBoardCard
 
 
 ##Omaha_HaveTopPair##
+RankOfFirstHoleCard==rankhicommon 
+OR RankOfSecondHoleCard==rankhicommon
+OR RankOfThirdHoleCard==rankhicommon
+OR RankOfFourthHoleCard==rankhicommon
 
 
 ##Omaha_HaveTopSet##
@@ -477,6 +522,10 @@ RankOfTopPairInHand > BestBoardCard
 
 
 ##Omaha_SuitsInHand##
+  (suitbitsplayer_clubs    ? 1 : 0)
++ (suitbitsplayer_diamonds ? 1 : 0)
++ (suitbitsplayer_hearts   ? 1 : 0)
++ (suitbitsplayer_spades   ? 1 : 0)
 
 //*****************************************************************************
 //
