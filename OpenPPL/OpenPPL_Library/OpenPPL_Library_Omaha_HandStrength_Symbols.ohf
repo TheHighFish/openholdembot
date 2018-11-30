@@ -117,9 +117,14 @@ HadSecondOverPairOnFlop AND ((TurnCard == TopFlopCard) OR (TurnCard < TopFlopCar
 
 
 ##Omaha_HadPairOnFlop##
-
+WHEN Omaha_PairInHand RETURN True FORCE
+WHEN BitCount(RankBitsCommonFlop BitAnd rankbitsplayer) > 0 RETURN True FORCE
 
 ##Omaha_HadPairOnTurn##
+// We already had a pair at the flop...
+WHEN Omaha_HadPairOnFlop RETURN True FORCE
+// ...or got a new one at the turn
+WHEN (((rankbitsplayer >> TurnCard) BitAnd 1) == 1) RETURN True FORCE
 
 
 ##TopPairInHandPairsTheFlop##
