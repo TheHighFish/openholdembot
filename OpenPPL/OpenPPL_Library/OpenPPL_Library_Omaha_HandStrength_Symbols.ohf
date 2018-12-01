@@ -278,7 +278,7 @@ hand$QQ AND (BestBoardCard < queen)
 
 
 ##Omaha_HaveThirdOverPair##
-RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestBoardCard)
+(RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestBoardCard)
 
 
 ##Omaha_HaveThirdTopPair##
@@ -316,7 +316,7 @@ AND (RankOfTopPairInHand == ThirdBestBoardCard OR RankOfBottomPairInHand == Thir
 
 
 ##Omaha_HaveFourthOverPair##
-RankOfTopPairInHand < ThirdBestBoardCard) AND (RankOfTopPairInHand > FourthBestBoardCard)
+(RankOfTopPairInHand < ThirdBestBoardCard) AND (RankOfTopPairInHand > FourthBestBoardCard)
 
 
 ##Omaha_HaveFourthTopPair##
@@ -335,7 +335,7 @@ AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == Fou
 
 
 ##Omaha_HaveFifthOverPair##
-RankOfTopPairInHand < FourthBestBoardCard) AND (RankOfTopPairInHand > FifthBestBoardCard)
+(RankOfTopPairInHand < FourthBestBoardCard) AND (RankOfTopPairInHand > FifthBestBoardCard)
 
 
 ##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
