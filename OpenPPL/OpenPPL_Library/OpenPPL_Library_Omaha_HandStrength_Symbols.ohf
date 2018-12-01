@@ -230,9 +230,6 @@ WHEN Others RETURN false FORCE
 hand$KK AND (BestBoardCard < king)
 
 
-##Omaha_HaveSecondBestOverPairOrBetter##
-
-
 ##Omaha_HaveSecondNutFlush##
 
 
@@ -266,9 +263,6 @@ AND (RankOfTopPairInHand == SecondBestBoardCard OR RankOfBottomPairInHand == Sec
 
 ##Omaha_HaveThirdBestOverPair##
 hand$QQ AND (BestBoardCard < queen)
-
-
-##Omaha_HaveThirdBestOverPairOrBetter##
 
 
 ##Omaha_HaveThirdNutFlush##
@@ -361,9 +355,6 @@ AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == Fou
 
 ##Omaha_HaveBestOverPair##
 hand$AA AND (BestBoardCard < ace)
-
-
-##Omaha_HaveBestOverPairOrBetter##
 
 
 ##Omaha_HaveBottomPair##
@@ -479,9 +470,6 @@ WHEN RankOfBottomPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
 
 ##Omaha_HaveOverPair##
 RankOfTopPairInHand > BestBoardCard
-
-
-##Omaha_HaveOverPairOrBetter##
 
 
 ##Omaha_HavePair##

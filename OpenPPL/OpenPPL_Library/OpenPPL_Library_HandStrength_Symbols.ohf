@@ -128,8 +128,7 @@ WHEN isomaha RETURN Omaha_HaveSecondBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveSecondBestOverPair FORCE
 
 ##HaveSecondBestOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveSecondBestOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveSecondBestOverPairOrBetter FORCE
+(HaveSecondBestOverPair OR HaveBestOverPairOrBetter)
 
 ##HaveSecondNutFlush##
 WHEN isomaha RETURN Omaha_HaveSecondNutFlush FORCE
@@ -168,8 +167,7 @@ WHEN isomaha RETURN Omaha_HaveThirdBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveThirdBestOverPair FORCE
 
 ##HaveThirdBestOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveThirdBestOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveThirdBestOverPairOrBetter FORCE
+(HaveThirdBestOverPair OR  HaveSecondBestOverPairOrBetter)
 
 ##HaveThirdNutFlush##
 WHEN isomaha RETURN Omaha_HaveThirdNutFlush FORCE
@@ -387,8 +385,7 @@ WHEN isomaha RETURN Omaha_HaveOverPair FORCE
 WHEN Others RETURN HoldEm_HaveOverPair FORCE
 
 ##HaveOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveOverPairOrBetter FORCE
+HaveOverPair OR HaveBestOverPairOrBetter
 
 ##HavePair##
 WHEN isomaha RETURN Omaha_HavePair FORCE
