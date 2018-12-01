@@ -260,8 +260,15 @@ WHEN isomaha RETURN Omaha_HaveBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveBestOverPair FORCE
 
 ##HaveBestOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveBestOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveBestOverPairOrBetter FORCE
+  (HaveBestOverPair
+OR HaveTwoPair
+OR HaveSet
+OR HaveTrips
+OR HaveStraight
+OR HaveFlush
+OR HaveFullHouse
+OR HaveQuads
+OR HaveStraightFlush)
 
 ##HaveBottomPair##
 WHEN isomaha RETURN Omaha_HaveBottomPair FORCE

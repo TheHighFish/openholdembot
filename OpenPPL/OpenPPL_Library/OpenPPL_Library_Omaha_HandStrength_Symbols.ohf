@@ -109,7 +109,7 @@ AND RankOfTopPairInHand > TurnCard  RETURN true FORCE
 
 
 ##Omaha_HadSecondOverPairOnFlop##
-WHEN RankOfTopPairInHand < TopFlopCard
+RankOfTopPairInHand < TopFlopCard
 AND RankOfTopPairInHand > SecondTopFlopCard
 
 ##Omaha_HadSecondOverPairOnTurn##
@@ -242,8 +242,9 @@ hand$KK AND (BestBoardCard < king)
 ##Omaha_HaveSecondNutStraight##
 
 
-##Omaha_HaveOverPair##
-RankOfTopPairInHand > BestBoardCard
+
+##Omaha_HaveSecondOverPair##
+RankOfTopPairInHand < BestBoardCard AND RankOfTopPairInHand > SecondBestBoardCard
 
 ##Omaha_HaveSecondTopPair##
 RankOfFirstHoleCard == SecondBestBoardCard 
@@ -253,6 +254,8 @@ OR RankOfFourthHoleCard == SecondBestBoardCard
 
 
 ##Omaha_HaveSecondTopSet##
+RankOfTopPairInHand > 0
+AND (RankOfTopPairInHand == SecondBestBoardCard OR RankOfBottomPairInHand == SecondBestBoardCard)
 
 
 ##Omaha_HaveThirdBestKicker##
@@ -279,26 +282,31 @@ RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestB
 
 
 ##Omaha_HaveThirdTopPair##
-RankOfFirstHoleCard==ThirdBestBoardCard 
-OR RankOfSecondHoleCard==ThirdBestBoardCard
-OR RankOfThirdHoleCard==ThirdBestBoardCard
-OR RankOfFourthHoleCard==ThirdBestBoardCard
+(((rankbitsplayer >> ThirdBestBoardCard) BitAnd 1) == 1)
 
 
-##ThirdTopPairRank##
+##Omaha_TopPairRank##
+Omaha_HaveTopPair ? BestBoardCard : 0
 
+##Omaha_SecondTopPairRank##
+Omaha_HaveSecondTopPair ? SecondBestBoardCard : 0
+
+##Omaha_ThirdTopPairRank##
+Omaha_HaveThirdTopPair ? ThirdBestBoardCard : 0
+
+##Omaha_FourthTopPairRank##
+Omaha_HaveFourthTopPair ? FourthBestBoardCard : 0
+
+##Omaha_FifthTopPairRank##
+Omaha_HaveFifthTopPair ? FifthBestBoardCard : 0
 
 ##Omaha_HaveFifthTopPair##
-RankOfFirstHoleCard==FifthBestBoardCard 
-OR RankOfSecondHoleCard==FifthBestBoardCard
-OR RankOfThirdHoleCard==FifthBestBoardCard
-OR RankOfFourthHoleCard==FifthBestBoardCard
- 
-
-##FifthTopPairRank##
+(((rankbitsplayer >> FifthBestBoardCard) BitAnd 1) == 1)
 
 
 ##Omaha_HaveThirdTopSet##
+RankOfTopPairInHand > 0
+AND (RankOfTopPairInHand == ThirdBestBoardCard OR RankOfBottomPairInHand == ThirdBestBoardCard)
 
 
 ##Omaha_HaveFourthNutFlush##
@@ -308,16 +316,16 @@ OR RankOfFourthHoleCard==FifthBestBoardCard
 
 
 ##Omaha_HaveFourthOverPair##
+RankOfTopPairInHand < ThirdBestBoardCard) AND (RankOfTopPairInHand > FourthBestBoardCard)
 
 
 ##Omaha_HaveFourthTopPair##
-RankOfFirstHoleCard==FourthBestBoardCard 
-OR RankOfSecondHoleCard==FourthBestBoardCard
-OR RankOfThirdHoleCard==FourthBestBoardCard
-OR RankOfFourthHoleCard==FourthBestBoardCard
+(((rankbitsplayer >> FourthBestBoardCard) BitAnd 1) == 1)
 
 
 ##Omaha_HaveFourthTopSet##
+RankOfTopPairInHand > 0
+AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == FourthBestBoardCard)
 
 
 ##Omaha_HaveFifthNutFlush##
@@ -327,6 +335,7 @@ OR RankOfFourthHoleCard==FourthBestBoardCard
 
 
 ##Omaha_HaveFifthOverPair##
+RankOfTopPairInHand < FourthBestBoardCard) AND (RankOfTopPairInHand > FifthBestBoardCard)
 
 
 ##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
@@ -358,15 +367,29 @@ hand$AA AND (BestBoardCard < ace)
 
 
 ##Omaha_HaveBottomPair##
+WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN true FORCE
+WHEN (RankOfThirdHoleCard == LowestBoardCard) RETURN true FORCE
+WHEN (RankOfFourthHoleCard == LowestBoardCard) RETURN true FORCE
 
 
 ##Omaha_HaveSecondBottomPair##
+WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN true FORCE
+WHEN (RankOfThirdHoleCard == SecondLowestBoardCard) RETURN true FORCE
+WHEN (RankOfFourthHoleCard == SecondLowestBoardCard) RETURN true FORCE
 
 
 ##Omaha_HaveBottomSet##
+RankOfTopPairInHand == LowestBoardCard
+OR RankOfBottomPairInHand == LowestBoardCard
 
 
 ##Omaha_HaveBottomTrips##
+RankOfFirstHoleCard == RankOfBottomPairOnBoard
+OR RankOfSecondHoleCard == RankOfBottomPairOnBoard
+OR RankOfThirdHoleCard == RankOfBottomPairOnBoard
+OR RankOfFourthHoleCard == RankOfBottomPairOnBoard
 
 
 ##Omaha_HaveBottomTwoPair##
@@ -378,7 +401,17 @@ hand$AA AND (BestBoardCard < ace)
 ##Omaha_HaveFlush##
 
 
+##Omaha_FlushDraw_Counter##
+  (BitCount(suitbitsplayer_clubs)    >= 2 & BitCount(suitbitscommon_clubs)    == 2 ? 1 : 0)
++ (BitCount(suitbitsplayer_diamonds) >= 2 & BitCount(suitbitscommon_diamonds) == 2 ? 1 : 0)
++ (BitCount(suitbitsplayer_hearts)   >= 2 & BitCount(suitbitscommon_hearts)   == 2 ? 1 : 0)
++ (BitCount(suitbitsplayer_spades)   >= 2 & BitCount(suitbitscommon_clubs)    == 2 ? 1 : 0)
+
 ##Omaha_HaveFlushDraw##
+Omaha_FlushDraw_Counter > 0
+
+##Omaha_HaveDoubleFlushDraw##
+Omaha_FlushDraw_Counter == 2
 
 
 ##Omaha_HaveFlushDrawContributingTwoCards##
@@ -436,30 +469,59 @@ hand$AA AND (BestBoardCard < ace)
 
 
 ##Omaha_HaveQuads##
+WHEN NOT PairOnBoard RETURN false FORCE
+WHEN TripsOnBoard AND (((rankbitsplayer >> trankcommon) BitAnd 1) == 1) RETURN true FORCE
+WHEN RankOfTopPairOnBoard == RankOfTopPairInHand RETURN true FORCE
+WHEN RankOfTopPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
+WHEN RankOfBottomPairOnBoard == RankOfTopPairInHand RETURN true FORCE
+WHEN RankOfBottomPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
 
 
 ##Omaha_HaveOverPair##
+RankOfTopPairInHand > BestBoardCard
 
 
 ##Omaha_HaveOverPairOrBetter##
 
 
 ##Omaha_HavePair##
+(rankbitsplayer BitAnd rankbitscommon) > 0 
 
 
 ##Omaha_HavePocketPair##
+RankOfTopPairInHand > 0
 
 
 ##Omaha_HaveRunnerRunnerFlushAtRiver##
 
 
+##TopPairPairsTheBoard##
+RankOfTopPairInHand==FirstFlopCard
+OR RankOfTopPairInHand==SecondFlopCard
+OR RankOfTopPairInHand==ThirdFlopCard
+OR RankOfTopPairInHand==TurnCard
+OR RankOfTopPairInHand==RiverCard
+
+##BottomPairPairsTheBoard##
+RankOfBottomPairInHand==FirstFlopCard
+OR RankOfBottomPairInHand==SecondFlopCard
+OR RankOfBottomPairInHand==ThirdFlopCard
+OR RankOfBottomPairInHand==TurnCard
+OR RankOfBottomPairInHand==RiverCard
+
 ##Omaha_HaveSet##
+TopPairPairsTheBoard OR BottomPairPairsTheBoard
 
 
 ##Omaha_HaveTopTrips##
+RankOfFirstHoleCard == RankOfTopPairOnBoard
+OR RankOfSecondHoleCard == RankOfTopPairOnBoard
+OR RankOfThirdHoleCard == RankOfTopPairOnBoard
+OR RankOfFourthHoleCard == RankOfTopPairOnBoard
 
 
 ##Omaha_HaveTrips##
+Omaha_HaveTopTrips OR Omaha_HaveBottomTrips
 
 
 ##Omaha_HaveStraight##
@@ -482,6 +544,8 @@ OR RankOfFourthHoleCard==rankhicommon
 
 
 ##Omaha_HaveTopSet##
+RankOfTopPairInHand == BestBoardCard
+OR RankOfBottomPairInHand == BestBoardCard
 
 
 ##Omaha_HaveTopTwoPair##
@@ -512,16 +576,24 @@ OR RankOfFourthHoleCard==rankhicommon
 
 
 ##Omaha_Overcards##
+(betround < flop) ? 0 : [
+  (RankOfFirstHoleCard  > BestBoardCard)
++ (RankOfSecondHoleCard > BestBoardCard)
++ (RankOfThirdHoleCard  > BestBoardCard)
++ (RankOfFourthHoleCard > BestBoardCard)
+]
 
 
 ##Omaha_HaveUnderPair##
+RankOfTopPairInHand > 0
+AND RankOfTopPairInHand < ranklocommon
 
 
 ##Omaha_HaveUnderStraight##
 
 
 ##Omaha_PairInHand##
-
+RankOfTopPairInHand > 0
 
 ##Omaha_RunnerRunnerFlushPossibleAtRiver##
 
@@ -539,13 +611,41 @@ OR RankOfFourthHoleCard==rankhicommon
 //
 //*****************************************************************************
 
-##LowCardsInHand##
+##ConstRankBitsPlayerLowCards##
+// player bits 8..ace(low), last bit is unused.
+(rankbitsplayer BitAnd 0b111111110)
 
-##DoubleSuited##
+##LowCardsInHand##
+// The number of unique low cards in our hand, especially for Hi/Lo
+BitCount(ConstRankBitsPlayerLowCards)
+
+##FirstHoleCardSuit##
+$$ps0
+
+##SecondHoleCardSuit##
+$$ps1
+
+##ThirdHoleCardSuit##
+$$ps2
+
+##FourthHoleCardSuit##
+$$ps3
+
+##Double_Suited##
+WHEN SuitsInHand != 2 RETURN false FORCE
+// Suits xxyy
+WHEN (FirstHoleCardSuit == SecondHoleCardSuit AND ThirdHoleCardSuit  == FourthHoleCardSuit) RETURN true FORCE
+// Suits xyxy
+WHEN (FirstHoleCardSuit == ThirdHoleCardSuit  AND SecondHoleCardSuit == FourthHoleCardSuit) RETURN true FORCE
+// Suits xyyx
+WHEN (FirstHoleCardSuit == FourthHoleCardSuit AND SecondHoleCardSuit == ThirdHoleCardSuit) RETURN true FORCE
 
 ##FourCardStraightInHand##
+// A234, 2345 ... QAKJ
+// If we have hand$A2, rankloplayer will be 2 but we need to start from Ace(low)
+// In this case we just subtract 1 so jump to ace low, any other case we can start simply from rankloplayer.
+BitCount[((rankbitsplayer >> (rankloplayer - hand$A2)) BitAnd 0b1111)] == 4
 
-##FourCardsWith1GapInHan##
 
 ##Have10OutStraightDraw##
 
@@ -578,10 +678,51 @@ OR RankOfFourthHoleCard==rankhicommon
 ##HaveNutLowWithBackup##
 
 ##ThreeCardStraightInHand##
+// first with Ace-low (A23)
+   [BitCount((rankbitsplayer >> 1) BitAnd 0b111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfFirstHoleCard)  BitAnd 0b111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfSecondHoleCard) BitAnd 0b111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfThirdHoleCard)  BitAnd 0b111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfFourthHoleCard) BitAnd 0b111) == 3]
 
-##ThreeCardsWith1gapInHand##
+
+##ThreeCardsWithOneGapInHand##
+// Shanky def: True if the bot has three cards in sequence with 1 gap in the hole.
+// Example: 568A.
+   [BitCount((rankbitsplayer >> 1) BitAnd 0b1111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfFirstHoleCard)  BitAnd 0b1111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfSecondHoleCard) BitAnd 0b1111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfThirdHoleCard)  BitAnd 0b1111) == 3]
+OR [BitCount((rankbitsplayer >> RankOfFourthHoleCard) BitAnd 0b1111) == 3]
+
+##FourCardsWithOneGapInHand##
+// Shanky def:
+// True if the bot has 4 cards in sequence with 1 gap in the hole, for example 5689.
+WHEN FourCardStraightInHand RETURN false FORCE
+// ********************************************5432A variations
+WHEN BitCount(rankbitsplayer BitAnd 0b000000000111110) == 4 RETURN true FORCE     
+// Other variations
+WHEN BitCount((rankbitsplayer >> rankloplayer) BitAnd 0b11111) == 4 RETURN true FORCE
+
+##FourCardsWithDoubleGapInHand##
+// ie. QT97 or QT87
+// idea by jbj81, Omaha Coding Info - Shanky Forum
+WHEN FourCardStraightInHand RETURN false FORCE
+WHEN FourCardsWithOneGapInHand RETURN false FORCE
+//                                     --AKQJT98765432a-
+WHEN {[BitCount((rankbitsplayer BitAnd 0b111111000000000)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b011111100000000)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b001111110000000)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b000111111000000)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b000011111100000)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b000001111110000)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b000000111111000)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b000000011111100)) == 4]
+   OR [BitCount((rankbitsplayer BitAnd 0b000000001111110)) == 4]
+} RETURN true FORCE
 
 ##TripsInHand##
+BitCount rankbitsplayer == 2 AND NOT TwoPairInHand
 
 ##TwoPairInHand##
 WHEN RankOfTopPairInHand < 0 RETURN false FORCE
