@@ -355,17 +355,10 @@ hand$AA AND (BestBoardCard < ace)
 
 
 ##Omaha_HaveBottomPair##
-WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN true FORCE
-WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN true FORCE
-WHEN (RankOfThirdHoleCard == LowestBoardCard) RETURN true FORCE
-WHEN (RankOfFourthHoleCard == LowestBoardCard) RETURN true FORCE
-
+(((rankbitsplayer >> LowestBoardCard) BitAnd 1) == 1)
 
 ##Omaha_HaveSecondBottomPair##
-WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN true FORCE
-WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN true FORCE
-WHEN (RankOfThirdHoleCard == SecondLowestBoardCard) RETURN true FORCE
-WHEN (RankOfFourthHoleCard == SecondLowestBoardCard) RETURN true FORCE
+(((rankbitsplayer >> SecondLowestBoardCard) BitAnd 1) == 1)
 
 
 ##Omaha_HaveBottomSet##
@@ -708,3 +701,12 @@ BitCount rankbitsplayer == 2 AND NOT TwoPairInHand
 WHEN RankOfTopPairInHand < 0 RETURN false FORCE
 WHEN RankOfBottomPairInHand < 0 RETURN false FORCE
 WHEN RankOfTopPairInHand > RankOfBottomPairInHand RETURN true FORCE
+
+// can be deleted
+##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
+
+##Omaha_HaveFlushDrawContributingTwoCards##
+
+##Omaha_HaveGoodFlushDrawContributingOnlyOneCard##
+
+##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
