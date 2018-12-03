@@ -405,17 +405,12 @@ Omaha_FlushDraw_Counter > 0
 Omaha_FlushDraw_Counter == 2
 
 
-##Omaha_HaveFlushDrawContributingTwoCards##
-
-
-##Omaha_HaveGoodFlushDrawContributingOnlyOneCard##
-
-
 ##Omaha_HaveFullHouse##
 
 
 ##Omaha_HaveNothing##
-
+NOT HavePair AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
+// AND NOT HaveBackdoorStraightDraw
 
 ##Omaha_HaveNutFlush##
 
