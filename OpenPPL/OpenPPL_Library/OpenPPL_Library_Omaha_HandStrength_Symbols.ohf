@@ -355,6 +355,12 @@ OR RankOfFourthHoleCard == RankOfBottomPairOnBoard
 
 
 ##Omaha_HaveBottomTwoPair##
+WHEN NOT Omaha_HaveTwoPair RETURN false FORCE
+WHEN HaveBottomPair AND HaveSecondBottomPair RETURN true FORCE
+
+##HaveTwoPairOverTopPairOnBoard##
+BitCount[((rankbitsplayer >> RankOfTopPairOnBoard) BitAnd (rankbitscommon >> RankOfTopPairOnBoard))] > 1
+
 
 
 ##Omaha_HaveDoubleGutshotDraw##
@@ -496,9 +502,15 @@ OR RankOfBottomPairInHand == BestBoardCard
 
 
 ##Omaha_HaveTopTwoPair##
+WHEN HaveTopPair AND HaveSecondTopPair RETURN true FORCE
 
 
 ##Omaha_HaveTwoPair##
+// At least 2 of our cards must pair the board
+WHEN NOT [BitCount(rankbitsplayer & rankbitscommon & ConstAllRanksWithoutAceLow) >= 2] RETURN false FORCE
+// Check for higher pairs on board that devalue our "three pairs"
+WHEN PairOnBoard AND NOT HaveTwoPairOverTopPairOnBoard RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 
 ##Omaha_HaveWeakBackdoorStraightDraw##
