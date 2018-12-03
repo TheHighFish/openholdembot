@@ -332,9 +332,6 @@ AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == Fou
 (RankOfTopPairInHand < FourthBestBoardCard) AND (RankOfTopPairInHand > FifthBestBoardCard)
 
 
-##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
- 
-
 ##Omaha_HaveBackdoorNutFlushDraw##
 
 
