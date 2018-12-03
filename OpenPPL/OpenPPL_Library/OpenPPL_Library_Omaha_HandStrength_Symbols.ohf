@@ -243,12 +243,6 @@ hand$KK AND (BestBoardCard < king)
 ##Omaha_HaveSecondOverPair##
 RankOfTopPairInHand < BestBoardCard AND RankOfTopPairInHand > SecondBestBoardCard
 
-##Omaha_HaveSecondTopPair##
-RankOfFirstHoleCard == SecondBestBoardCard 
-OR RankOfSecondHoleCard == SecondBestBoardCard
-OR RankOfThirdHoleCard == SecondBestBoardCard
-OR RankOfFourthHoleCard == SecondBestBoardCard
-
 
 ##Omaha_HaveSecondTopSet##
 RankOfTopPairInHand > 0
@@ -275,28 +269,20 @@ hand$QQ AND (BestBoardCard < queen)
 (RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestBoardCard)
 
 
-##Omaha_HaveThirdTopPair##
-(((rankbitsplayer >> ThirdBestBoardCard) BitAnd 1) == 1)
-
-
 ##Omaha_TopPairRank##
-Omaha_HaveTopPair ? BestBoardCard : 0
+HaveTopPair ? BestBoardCard : 0
 
 ##Omaha_SecondTopPairRank##
-Omaha_HaveSecondTopPair ? SecondBestBoardCard : 0
+HaveSecondTopPair ? SecondBestBoardCard : 0
 
 ##Omaha_ThirdTopPairRank##
-Omaha_HaveThirdTopPair ? ThirdBestBoardCard : 0
+HaveThirdTopPair ? ThirdBestBoardCard : 0
 
 ##Omaha_FourthTopPairRank##
-Omaha_HaveFourthTopPair ? FourthBestBoardCard : 0
+HaveFourthTopPair ? FourthBestBoardCard : 0
 
 ##Omaha_FifthTopPairRank##
-Omaha_HaveFifthTopPair ? FifthBestBoardCard : 0
-
-##Omaha_HaveFifthTopPair##
-(((rankbitsplayer >> FifthBestBoardCard) BitAnd 1) == 1)
-
+HaveFifthTopPair ? FifthBestBoardCard : 0
 
 ##Omaha_HaveThirdTopSet##
 RankOfTopPairInHand > 0
@@ -311,11 +297,6 @@ AND (RankOfTopPairInHand == ThirdBestBoardCard OR RankOfBottomPairInHand == Thir
 
 ##Omaha_HaveFourthOverPair##
 (RankOfTopPairInHand < ThirdBestBoardCard) AND (RankOfTopPairInHand > FourthBestBoardCard)
-
-
-##Omaha_HaveFourthTopPair##
-(((rankbitsplayer >> FourthBestBoardCard) BitAnd 1) == 1)
-
 
 ##Omaha_HaveFourthTopSet##
 RankOfTopPairInHand > 0
@@ -509,13 +490,6 @@ Omaha_HaveTopTrips OR Omaha_HaveBottomTrips
 ##Omaha_HaveTopNonBoardPairedPair##
 
 
-##Omaha_HaveTopPair##
-RankOfFirstHoleCard==rankhicommon 
-OR RankOfSecondHoleCard==rankhicommon
-OR RankOfThirdHoleCard==rankhicommon
-OR RankOfFourthHoleCard==rankhicommon
-
-
 ##Omaha_HaveTopSet##
 RankOfTopPairInHand == BestBoardCard
 OR RankOfBottomPairInHand == BestBoardCard
@@ -702,11 +676,4 @@ WHEN RankOfTopPairInHand < 0 RETURN false FORCE
 WHEN RankOfBottomPairInHand < 0 RETURN false FORCE
 WHEN RankOfTopPairInHand > RankOfBottomPairInHand RETURN true FORCE
 
-// can be deleted
-##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
 
-##Omaha_HaveFlushDrawContributingTwoCards##
-
-##Omaha_HaveGoodFlushDrawContributingOnlyOneCard##
-
-##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
