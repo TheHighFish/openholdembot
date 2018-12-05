@@ -382,6 +382,9 @@ Omaha_FlushDraw_Counter == 2
 
 
 ##Omaha_HaveFullHouse##
+(HaveSet AND PairOnBoard)
+OR (RankOfTopPairInHand > 0 AND TripsOnBoard)
+OR (HaveTrips AND HaveTwoPair)
 
 
 ##Omaha_HaveNothing##
@@ -454,14 +457,14 @@ RankOfTopPairInHand > 0
 ##Omaha_HaveRunnerRunnerFlushAtRiver##
 
 
-##TopPairPairsTheBoard##
+##TopPairInHandPairsTheBoard##
 RankOfTopPairInHand==FirstFlopCard
 OR RankOfTopPairInHand==SecondFlopCard
 OR RankOfTopPairInHand==ThirdFlopCard
 OR RankOfTopPairInHand==TurnCard
 OR RankOfTopPairInHand==RiverCard
 
-##BottomPairPairsTheBoard##
+##BottomPairInHandPairsTheBoard##
 RankOfBottomPairInHand==FirstFlopCard
 OR RankOfBottomPairInHand==SecondFlopCard
 OR RankOfBottomPairInHand==ThirdFlopCard
@@ -469,7 +472,7 @@ OR RankOfBottomPairInHand==TurnCard
 OR RankOfBottomPairInHand==RiverCard
 
 ##Omaha_HaveSet##
-TopPairPairsTheBoard OR BottomPairPairsTheBoard
+TopPairInHandPairsTheBoard OR BottomPairInHandPairsTheBoard
 
 
 ##Omaha_HaveTopTrips##
@@ -481,7 +484,6 @@ OR RankOfFourthHoleCard == RankOfTopPairOnBoard
 
 ##Omaha_HaveTrips##
 Omaha_HaveTopTrips OR Omaha_HaveBottomTrips
-
 
 
 ##Omaha_HaveStraightDraw##
@@ -538,7 +540,6 @@ WHEN Others RETURN true FORCE
 + (RankOfThirdHoleCard  > BestBoardCard)
 + (RankOfFourthHoleCard > BestBoardCard)
 ]
-
 
 ##Omaha_HaveUnderPair##
 RankOfTopPairInHand > 0
@@ -597,17 +598,17 @@ BitCount[((rankbitsplayer >> (rankloplayer - hand$A2)) BitAnd 0b1111)] == 4
 
 ##Have16OutStraightDraw##
 
-##Have2ndNutLow##
+##HaveSecondNutLow##
 
-##Have2ndNutLowDraw##
+##HaveSecondNutLowDraw##
 
-##Have3rdNutLow##
+##HaveThirdNutLow##
 
-##Have3rdNutLowDraw##
+##HaveThirdNutLowDraw##
 
-##Have4thNutLow##
+##HaveFourthNutLow##
 
-##Have4thNutLowDraw##
+##HaveFourthNutLowDraw##
 
 ##HaveLow##
 
