@@ -111,6 +111,18 @@ $$cr3
 ##RankOfRiverCard##
 $$cr4
 
+##FirstHoleCardSuit##
+$$ps0
+
+##SecondHoleCardSuit##
+$$ps1
+
+##ThirdHoleCardSuit##
+$$ps2
+
+##FourthHoleCardSuit##
+$$ps3
+
 ##SuitOfFirstFlopCard##
 $$cs0
 
