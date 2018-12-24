@@ -1095,6 +1095,8 @@ WHEN (rankloplayer == RankOfTopPairOnBoard) RETURN true FORCE
 WHEN (rankhiplayer == RankOfBottomPairOnBoard) RETURN true FORCE
 WHEN (rankloplayer == RankOfBottomPairOnBoard) RETURN true FORCE
 
+##ThirdTopPairRank##
+
 ##TripsRank##
 WHEN HaveTrips AND HaveTopPair       RETURN TopPairRank FORCE
 WHEN HaveTrips AND HaveSecondTopPair RETURN SecondTopPairRank FORCE
