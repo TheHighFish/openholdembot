@@ -147,7 +147,7 @@ OR RankOfTopPairInHand == TurnCard
 OR RankOfBottomPairInHand == TurnCard RETURN true FORCE
 
 ##Omaha_HadTopPairOnFlop##
-WHEN RankOfFirstHoleCard == HighestRankOnFlop
+   RankOfFirstHoleCard == HighestRankOnFlop
 OR RankOfSecondHoleCard == HighestRankOnFlop
 OR RankOfThirdHoleCard == HighestRankOnFlop
 OR RankOfFourthHoleCard == HighestRankOnFlop
@@ -230,12 +230,6 @@ WHEN Others RETURN false FORCE
 hand$KK AND (BestBoardCard < king)
 
 
-##Omaha_HaveSecondNutFlush##
-
-
-##Omaha_HaveSecondNutFlushDraw##
-
-
 ##Omaha_HaveSecondNutStraight##
 
 
@@ -257,12 +251,6 @@ AND (RankOfTopPairInHand == SecondBestBoardCard OR RankOfBottomPairInHand == Sec
 
 ##Omaha_HaveThirdBestOverPair##
 hand$QQ AND (BestBoardCard < queen)
-
-
-##Omaha_HaveThirdNutFlush##
-
-
-##Omaha_HaveThirdNutFlushDraw##
 
 
 ##Omaha_HaveThirdOverPair##
@@ -289,12 +277,6 @@ RankOfTopPairInHand > 0
 AND (RankOfTopPairInHand == ThirdBestBoardCard OR RankOfBottomPairInHand == ThirdBestBoardCard)
 
 
-##Omaha_HaveFourthNutFlush##
-
-
-##Omaha_HaveFourthNutFlushDraw##
-
-
 ##Omaha_HaveFourthOverPair##
 (RankOfTopPairInHand < ThirdBestBoardCard) AND (RankOfTopPairInHand > FourthBestBoardCard)
 
@@ -303,26 +285,8 @@ RankOfTopPairInHand > 0
 AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == FourthBestBoardCard)
 
 
-##Omaha_HaveFifthNutFlush##
-
-
-##Omaha_HaveFifthNutFlushDraw##
-
-
 ##Omaha_HaveFifthOverPair##
 (RankOfTopPairInHand < FourthBestBoardCard) AND (RankOfTopPairInHand > FifthBestBoardCard)
-
-
-##Omaha_HaveBackdoorNutFlushDraw##
-
-
-##Omaha_HaveBackdoorSecondNutFlushDraw##
-
-
-##Omaha_HaveBackdoorThirdNutFlushDraw##
- 
- 
-##Omaha_HaveBackdoorFlushDraw##
 
 
 ##Omaha_HaveBestKicker##
@@ -365,9 +329,6 @@ BitCount[((rankbitsplayer BitAnd rankbitscommon) >> RankOfTopPairOnBoard) >= 2]
 ##Omaha_HaveDoubleGutshotDraw##
 
 
-##Omaha_HaveFlush##
-
-
 ##Omaha_FlushDraw_Counter##
   (BitCount(suitbitsplayer_clubs BitAnd ConstAllRanksWithoutAceLow)    >= 2 & BitCount(suitbitscommon_clubs BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
 + (BitCount(suitbitsplayer_diamonds BitAnd ConstAllRanksWithoutAceLow) >= 2 & BitCount(suitbitscommon_diamonds BitAnd ConstAllRanksWithoutAceLow) == 2 ? 1 : 0)
@@ -391,15 +352,7 @@ OR (HaveTrips AND HaveTwoPair)
 NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
 // AND NOT HaveBackdoorStraightDraw
 
-##Omaha_HaveNutFlush##
 
-
-##Omaha_HaveNutFlushCard##
-
-
-##Omaha_HaveNutFlushDraw##
- 
- 
 ##Omaha_HaveNutStraight##
 
 
@@ -424,18 +377,28 @@ NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT H
 ##Omaha_HaveNuts##
 
 
-##Omaha_HigherStraightFlushPossible##
-
-
-##Omaha_HaveNutStraightFlush##
-
-
 ##Omaha_HaveOpenEndedStraightDraw##
 
 
+##RankTripsOnBoard##
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == TurnCard AND TurnCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  SecondFlopCard FORCE
+WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  SecondFlopCard FORCE
+WHEN SecondFlopCard == TurnCard AND TurnCard == RiverCard RETURN  SecondFlopCard FORCE
+WHEN ThirdFlopCard == TurnCard AND TurnCard == RiverCard RETURN  ThirdFlopCard FORCE
+
 ##Omaha_HaveQuads##
 WHEN NOT PairOnBoard RETURN false FORCE
-WHEN TripsOnBoard AND (((rankbitsplayer >> trankcommon) BitAnd 1) == 1) RETURN true FORCE
+WHEN TripsOnBoard
+AND (RankTripsOnBoard == RankOfFirstHoleCard
+OR	RankTripsOnBoard == RankOfSecondHoleCard
+OR	RankTripsOnBoard == RankOfThirdHoleCard
+OR	RankTripsOnBoard == RankOfFourthHoleCard) RETURN true FORCE
 WHEN RankOfTopPairOnBoard == RankOfTopPairInHand RETURN true FORCE
 WHEN RankOfTopPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
 WHEN RankOfBottomPairOnBoard == RankOfTopPairInHand RETURN true FORCE
@@ -452,9 +415,6 @@ RankOfTopPairInHand > BestBoardCard
 
 ##Omaha_HavePocketPair##
 RankOfTopPairInHand > 0
-
-
-##Omaha_HaveRunnerRunnerFlushAtRiver##
 
 
 ##TopPairInHandPairsTheBoard##
@@ -487,9 +447,6 @@ Omaha_HaveTopTrips OR Omaha_HaveBottomTrips
 
 
 ##Omaha_HaveStraightDraw##
-
-
-##Omaha_HaveStraightFlush##
 
 
 ##Omaha_HaveTopNonBoardPairedPair##
@@ -561,6 +518,7 @@ RankOfTopPairInHand > 0
 + (suitbitsplayer_hearts   ? 1 : 0)
 + (suitbitsplayer_spades   ? 1 : 0)
 
+
 //*****************************************************************************
 //
 // OpenPPL - HandStrength Symbols Omaha only
@@ -576,14 +534,6 @@ RankOfTopPairInHand > 0
 // The number of unique low cards in our hand, especially for Hi/Lo
 BitCount(ConstRankBitsPlayerLowCards)
 
-##Double_Suited##
-WHEN SuitsInHand != 2 RETURN false FORCE
-// Suits xxyy
-WHEN (FirstHoleCardSuit == SecondHoleCardSuit AND ThirdHoleCardSuit  == FourthHoleCardSuit) RETURN true FORCE
-// Suits xyxy
-WHEN (FirstHoleCardSuit == ThirdHoleCardSuit  AND SecondHoleCardSuit == FourthHoleCardSuit) RETURN true FORCE
-// Suits xyyx
-WHEN (FirstHoleCardSuit == FourthHoleCardSuit AND SecondHoleCardSuit == ThirdHoleCardSuit) RETURN true FORCE
 
 ##FourCardStraightInHand##
 // A234, 2345 ... QAKJ
@@ -676,6 +626,7 @@ BitCount(rankbitsplayer & ConstAllRanksWithoutAceLow) == 1
 WHEN RankOfTopPairInHand < 0 RETURN false FORCE
 WHEN RankOfBottomPairInHand < 0 RETURN false FORCE
 WHEN RankOfTopPairInHand > RankOfBottomPairInHand RETURN true FORCE
+
 
 
 //*****************************************************************************
@@ -991,3 +942,487 @@ AND (Omaha_BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightFor
 
 ##HINT_You_Do_Not_Have_A_Straight##
 -1
+
+
+
+
+//*****************************************************************************
+//
+// Flush and FlushDraw
+//
+//*****************************************************************************
+
+##IsFirstFlopSuit##
+FirstFlopSuit >=0
+
+
+##IsSecondFlopSuit##
+SecondFlopSuit >=0
+
+##IsThirdFlopSuit##
+ThirdFlopSuit >=0
+
+##IsTurnSuit##
+TurnSuit >=0
+
+##IsRiverSuit##
+RiverSuit >=0
+
+##IsFirstHoleCardSuit##
+FirstHoleCardSuit >=0
+
+##IsSecondHoleCardSuit##
+SecondHoleCardSuit >=0
+
+##IsThirdHoleCardSuit##
+ThirdHoleCardSuit >=0
+
+##IsFourthHoleCardSuit##
+FourthHoleCardSuit >=0
+
+
+##Double_Suited##
+WHEN Omaha_SuitsInHand != 2 RETURN false FORCE
+// Suits xxyy
+WHEN (FirstHoleCardSuit == SecondHoleCardSuit AND ThirdHoleCardSuit  == FourthHoleCardSuit) RETURN true FORCE
+// Suits xyxy
+WHEN (FirstHoleCardSuit == ThirdHoleCardSuit  AND SecondHoleCardSuit == FourthHoleCardSuit) RETURN true FORCE
+// Suits xyyx
+WHEN (FirstHoleCardSuit == FourthHoleCardSuit AND SecondHoleCardSuit == ThirdHoleCardSuit) RETURN true FORCE
+
+##HINT_TSuitCommonForMadeFlush__Flush_Is_Not_Possible__Return_Minus_One##
+-1
+
+##HINT_TSuit1__Your_Hand_Is_Rainbow__Return_Minus_One##
+-1
+
+##HINT_Tsuit2__Your_Hand_Is_Not_Double_Suited__Return_Minus_One##
+-1
+
+##TSuitCommonForMadeFlush##
+WHEN NOT Omaha_FlushPossible RETURN HINT_TSuitCommonForMadeFlush__Flush_Is_Not_Possible__Return_Minus_One FORCE
+WHEN BitCount(suitbitscommon_clubs    & ConstAllRanksWithoutAceLow) >= 3 RETURN clubs FORCE
+WHEN BitCount(suitbitscommon_diamonds & ConstAllRanksWithoutAceLow) >= 3 RETURN diamonds FORCE
+WHEN BitCount(suitbitscommon_hearts   & ConstAllRanksWithoutAceLow) >= 3 RETURN hearts FORCE
+WHEN BitCount(suitbitscommon_spades   & ConstAllRanksWithoutAceLow) >= 3 RETURN spades FORCE
+
+
+##TSuit1##
+// Searching a suited card suit in our hand.
+WHEN BitCount(suitbitsplayer_clubs    & ConstAllRanksWithoutAceLow) >= 2 RETURN clubs FORCE
+WHEN BitCount(suitbitsplayer_diamonds & ConstAllRanksWithoutAceLow) >= 2 RETURN diamonds FORCE
+WHEN BitCount(suitbitsplayer_hearts   & ConstAllRanksWithoutAceLow) >= 2 RETURN hearts FORCE
+WHEN BitCount(suitbitsplayer_spades   & ConstAllRanksWithoutAceLow) >= 2 RETURN spades FORCE
+WHEN Others RETURN HINT_TSuit1__Your_Hand_Is_Rainbow__Return_Minus_One FORCE
+
+##TSuit2##
+// It is only possible when double suited is true.
+// In this case we search the suit which is not the TSuit1.
+WHEN NOT Double_Suited RETURN HINT_Tsuit2__Your_Hand_Is_Not_Double_Suited__Return_Minus_One FORCE
+WHEN (FirstHoleCardSuit  != TSuit1) RETURN FirstHoleCardSuit FORCE 
+WHEN (SecondHoleCardSuit != TSuit1) RETURN SecondHoleCardSuit FORCE
+WHEN (ThirdHoleCardSuit  != TSuit1) RETURN ThirdHoleCardSuit FORCE
+WHEN (FourthHoleCardSuit != TSuit1) RETURN FourthHoleCardSuit FORCE
+WHEN Others RETURN ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY FORCE
+
+// ****************
+// SrankBitsPlayers
+// ****************
+
+##Omaha_SrankBitsPlayer_For_NSuited1##
+      (IsFirstHoleCardSuit  AND FirstHoleCardSuit  == TSuit1 ? (RankOfFirstHoleCard  != ace ? (2 ** RankOfFirstHoleCard)  : 0b100000000000010) : 0)
+BitOr (IsSecondHoleCardSuit AND SecondHoleCardSuit == TSuit1 ? (RankOfSecondHoleCard != ace ? (2 ** RankOfSecondHoleCard) : 0b100000000000010) : 0)
+BitOr (IsThirdHoleCardSuit  AND ThirdHoleCardSuit  == TSuit1 ? (RankOfThirdHoleCard  != ace ? (2 ** RankOfThirdHoleCard)  : 0b100000000000010) : 0)
+BitOr (IsFourthHoleCardSuit AND FourthHoleCardSuit == TSuit1 ? (RankOfFourthHoleCard != ace ? (2 ** RankOfFourthHoleCard) : 0b100000000000010) : 0)
+
+
+##Omaha_SrankBitsPlayer_For_NSuited2##
+      (IsFirstHoleCardSuit  AND FirstHoleCardSuit  == TSuit2 ? (RankOfFirstHoleCard  != ace ? (2 ** RankOfFirstHoleCard)  : 0b100000000000010) : 0)
+BitOr (IsSecondHoleCardSuit AND SecondHoleCardSuit == TSuit2 ? (RankOfSecondHoleCard != ace ? (2 ** RankOfSecondHoleCard) : 0b100000000000010) : 0)
+BitOr (IsThirdHoleCardSuit  AND ThirdHoleCardSuit  == TSuit2 ? (RankOfThirdHoleCard  != ace ? (2 ** RankOfThirdHoleCard)  : 0b100000000000010) : 0)
+BitOr (IsFourthHoleCardSuit AND FourthHoleCardSuit == TSuit2 ? (RankOfFourthHoleCard != ace ? (2 ** RankOfFourthHoleCard) : 0b100000000000010) : 0)
+
+
+##Omaha_SrankBitsPlayer_For_MadeFlush##
+// Firstly I created this function only for Omaha_HaveNutFlushCard function.
+// But renamed to MadeFlush, because we can use it any time when a flush possible because two flush is not possible at the same time,
+// but not for draws because maybe we have two flushdraws (or 1 backdoor + 1 real FD) and in this case we can not use tsuitcommon properly.
+Omaha_FlushPossible ? [
+      (IsFirstHoleCardSuit  AND FirstHoleCardSuit  == TSuitCommonForMadeFlush ? (RankOfFirstHoleCard  != ace ? (2 ** RankOfFirstHoleCard)  : 0b100000000000010) : 0)
+BitOr (IsSecondHoleCardSuit AND SecondHoleCardSuit == TSuitCommonForMadeFlush ? (RankOfSecondHoleCard != ace ? (2 ** RankOfSecondHoleCard) : 0b100000000000010) : 0)
+BitOr (IsThirdHoleCardSuit  AND ThirdHoleCardSuit  == TSuitCommonForMadeFlush ? (RankOfThirdHoleCard  != ace ? (2 ** RankOfThirdHoleCard)  : 0b100000000000010) : 0)
+BitOr (IsFourthHoleCardSuit AND FourthHoleCardSuit == TSuitCommonForMadeFlush ? (RankOfFourthHoleCard != ace ? (2 ** RankOfFourthHoleCard) : 0b100000000000010) : 0)
+] : 0
+
+
+
+// ****************
+// SrankBitsCommons
+// ****************
+##Omaha_SrankBitsCommon_For_NSuited1##
+      (IsFirstFlopSuit  AND FirstFlopSuit  == TSuit1 ? (FirstFlopCard  != ace ? (2 ** FirstFlopCard)  : 0b100000000000010) : 0)
+BitOr (IsSecondFlopSuit AND SecondFlopSuit == TSuit1 ? (SecondFlopCard != ace ? (2 ** SecondFlopCard) : 0b100000000000010) : 0)
+BitOr (IsThirdFlopSuit  AND ThirdFlopSuit  == TSuit1 ? (ThirdFlopCard  != ace ? (2 ** ThirdFlopCard)  : 0b100000000000010) : 0)
+BitOr (IsTurnSuit       AND TurnSuit       == TSuit1 ? (TurnCard       != ace ? (2 ** TurnCard)       : 0b100000000000010) : 0)
+BitOr (IsRiverSuit      AND RiverSuit      == TSuit1 ? (RiverCard      != ace ? (2 ** RiverCard)      : 0b100000000000010) : 0)
+
+
+##Omaha_SrankBitsCommon_For_NSuited2##
+      (IsFirstFlopSuit  AND FirstFlopSuit  == TSuit2 ? (FirstFlopCard  != ace ? (2 ** FirstFlopCard)  : 0b100000000000010) : 0)
+BitOr (IsSecondFlopSuit AND SecondFlopSuit == TSuit2 ? (SecondFlopCard != ace ? (2 ** SecondFlopCard) : 0b100000000000010) : 0)
+BitOr (IsThirdFlopSuit  AND ThirdFlopSuit  == TSuit2 ? (ThirdFlopCard  != ace ? (2 ** ThirdFlopCard)  : 0b100000000000010) : 0)
+BitOr (IsTurnSuit       AND TurnSuit       == TSuit2 ? (TurnCard       != ace ? (2 ** TurnCard)       : 0b100000000000010) : 0)
+BitOr (IsRiverSuit      AND RiverSuit      == TSuit2 ? (RiverCard      != ace ? (2 ** RiverCard)      : 0b100000000000010) : 0)
+
+
+##Omaha_SrankBitsCommon_For_MadeFlush##
+Omaha_FlushPossible ? [
+      (IsFirstFlopSuit  AND FirstFlopSuit  == TSuitCommonForMadeFlush ? (FirstFlopCard  != ace ? (2 ** FirstFlopCard)  : 0b100000000000010) : 0)
+BitOr (IsSecondFlopSuit AND SecondFlopSuit == TSuitCommonForMadeFlush ? (SecondFlopCard != ace ? (2 ** SecondFlopCard) : 0b100000000000010) : 0)
+BitOr (IsThirdFlopSuit  AND ThirdFlopSuit  == TSuitCommonForMadeFlush ? (ThirdFlopCard  != ace ? (2 ** ThirdFlopCard)  : 0b100000000000010) : 0)
+BitOr (IsTurnSuit       AND TurnSuit       == TSuitCommonForMadeFlush ? (TurnCard       != ace ? (2 ** TurnCard)       : 0b100000000000010) : 0)
+BitOr (IsRiverSuit      AND RiverSuit      == TSuitCommonForMadeFlush ? (RiverCard      != ace ? (2 ** RiverCard)      : 0b100000000000010) : 0)
+] : 0
+
+
+
+// *******************
+// SrankBitsAvailables
+// *******************
+
+##Omaha_SrankBitsAvailable_For_NSuited1##
+(BitNot(Omaha_SrankBitsCommon_For_NSuited1 BitOr Omaha_SrankBitsPlayer_For_NSuited1)) BitAnd ConstAllRanksWithoutAceLow
+
+
+##Omaha_SrankBitsAvailable_For_NSuited2##
+(BitNot(Omaha_SrankBitsCommon_For_NSuited2 BitOr Omaha_SrankBitsPlayer_For_NSuited2)) BitAnd ConstAllRanksWithoutAceLow
+
+
+##Omaha_SrankBitsAvailable_For_MadeFlush##
+(BitNot(Omaha_SrankBitsCommon_For_MadeFlush BitOr Omaha_SrankBitsPlayer_For_MadeFlush)) BitAnd ConstAllRanksWithoutAceLow
+
+
+
+// ****************
+// SrankBitsPlayers
+// ****************
+
+##Omaha_SrankHiPlayer_For_NSuited1##
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> ace)   BitAnd 1) == 1) ? ace :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> king)  BitAnd 1) == 1) ? king :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> queen) BitAnd 1) == 1) ? queen :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> jack)  BitAnd 1) == 1) ? jack :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> ten)   BitAnd 1) == 1) ? ten :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Nine)  BitAnd 1) == 1) ? Nine :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Eight) BitAnd 1) == 1) ? Eight :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Seven) BitAnd 1) == 1) ? Seven :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Six)   BitAnd 1) == 1) ? Six :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Five)  BitAnd 1) == 1) ? Five :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Four)  BitAnd 1) == 1) ? Four :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Three) BitAnd 1) == 1) ? Three :
+(((Omaha_SrankBitsPlayer_For_NSuited1 >> Two)   BitAnd 1) == 1) ? Two :
+0
+
+
+##Omaha_SrankHiPlayer_For_NSuited2##
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> ace)   BitAnd 1) == 1) ? ace :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> king)  BitAnd 1) == 1) ? king :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> queen) BitAnd 1) == 1) ? queen :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> jack)  BitAnd 1) == 1) ? jack :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> ten)   BitAnd 1) == 1) ? ten :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Nine)  BitAnd 1) == 1) ? Nine :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Eight) BitAnd 1) == 1) ? Eight :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Seven) BitAnd 1) == 1) ? Seven :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Six)   BitAnd 1) == 1) ? Six :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Five)  BitAnd 1) == 1) ? Five :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Four)  BitAnd 1) == 1) ? Four :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Three) BitAnd 1) == 1) ? Three :
+(((Omaha_SrankBitsPlayer_For_NSuited2 >> Two)   BitAnd 1) == 1) ? Two :
+0
+
+
+##Omaha_SrankHiPlayer_For_MadeFlush##
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> ace)   BitAnd 1) == 1) ? ace :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> king)  BitAnd 1) == 1) ? king :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> queen) BitAnd 1) == 1) ? queen :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> jack)  BitAnd 1) == 1) ? jack :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> ten)   BitAnd 1) == 1) ? ten :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Nine)  BitAnd 1) == 1) ? Nine :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Eight) BitAnd 1) == 1) ? Eight :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Seven) BitAnd 1) == 1) ? Seven :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Six)   BitAnd 1) == 1) ? Six :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Five)  BitAnd 1) == 1) ? Five :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Four)  BitAnd 1) == 1) ? Four :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Three) BitAnd 1) == 1) ? Three :
+(((Omaha_SrankBitsPlayer_For_MadeFlush >> Two)   BitAnd 1) == 1) ? Two :
+0
+
+
+
+// ******************************
+// NumberOfUnknownSuitedOvercards
+// ******************************
+
+##Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1##
+// Suited unknown overcards to holecards with NSuited1,
+// e.g. on Board Ah Th, in Hand Jh 9h => 2. Unknown suited overcards: Kh Qh.
+BitCount(Omaha_SrankBitsAvailable_For_NSuited1 >> (Omaha_SrankHiPlayer_For_NSuited1))
+
+
+##Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2##
+BitCount(Omaha_SrankBitsAvailable_For_NSuited2 >> (Omaha_SrankHiPlayer_For_NSuited2))
+
+
+##Omaha_NumberOfUnknownSuitedOvercards_For_MadeFlush##
+BitCount(Omaha_SrankBitsAvailable_For_MadeFlush >> (Omaha_SrankHiPlayer_For_MadeFlush))
+
+
+
+// ***********
+// NSuited_X_Y
+// ***********
+
+##NSuited1Player##
+// Counting the cards with TSuit1 suit in our hand, without Ace-low.
+BitCount(Omaha_SrankBitsPlayer_For_NSuited1 & ConstAllRanksWithoutAceLow)
+
+
+##NSuited2Player##
+// only possible if our hand is double suited, and in this case is always 2.
+WHEN Double_Suited RETURN 2 FORCE
+
+
+##NSuited1Common##
+// Counting the common cards with TSuit1 suit, without Ace-low
+BitCount(Omaha_SrankBitsCommon_For_NSuited1 & ConstAllRanksWithoutAceLow)
+
+
+##NSuited2Common##
+// Counting the common cards with TSuit2 suit, without Ace-low
+BitCount(Omaha_SrankBitsCommon_For_NSuited2 & ConstAllRanksWithoutAceLow)
+
+
+##NSuited1##
+NSuited1Player + NSuited1Common
+
+
+##NSuited2##
+NSuited2Player + NSuited2Common
+
+
+// **********************
+//
+// HandStrength Symbols
+//
+// **********************
+
+
+##Omaha_FourCardsWithSameSuit##
+WHEN NSuited1Player == 4 RETURN true FORCE
+
+
+##Omaha_ThreeCardsWithSameSuit##
+WHEN NSuited1Player == 3 RETURN true FORCE
+
+
+##Omaha_TwoCardsWithSameSuit##
+WHEN NSuited1Player == 2 RETURN true FORCE
+
+
+##Omaha_Rainbow_Cards##
+// NSuited1Player use BitCount, so returns 0 in this case (0 suited hand)
+WHEN NSuited1Player == 0 RETURN true FORCE
+
+
+
+// **********
+// Made Flush
+// **********
+
+##Omaha_HighCardOfOurStraightFlush##
+Omaha_HaveFlush ? [
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b111110000000000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b111110000000000)=2)] ? ace :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b011111000000000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b011111000000000)=2)] ? king :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b001111100000000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b001111100000000)=2)] ? queen :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b000111110000000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b000111110000000)=2)] ? jack :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b000011111000000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b000011111000000)=2)] ? ten :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b000001111100000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b000001111100000)=2)] ? Nine :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b000000111110000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b000000111110000)=2)] ? Eight :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b000000011111000)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b000000011111000)=2)] ? Seven :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b000000001111100)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b000000001111100)=2)] ? Six  :
+[(BitCount(Omaha_SrankBitsCommon_For_MadeFlush BitAnd 0b000000000111110)=3) AND (BitCount(Omaha_SrankBitsPlayer_For_MadeFlush BitAnd 0b000000000111110)=2)] ? Five : 0
+] : 0
+
+
+##Omaha_HaveStraightFlush##
+WHEN Omaha_HighCardOfOurStraightFlush >= Five RETURN true FORCE
+
+
+##Omaha_HigherStraightFlushPossible##
+// The logic adapted from HoldEm library
+WHEN NOT Omaha_HaveStraightFlush RETURN HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function FORCE
+WHEN (Omaha_HighCardOfOurStraightFlush == ace) RETURN false FORCE
+WHEN (BitCount((Omaha_SrankBitsCommon_For_MadeFlush >> Omaha_SrankHiPlayer_For_MadeFlush) BitAnd 0b111110) >= 3) RETURN true FORCE
+
+
+##Omaha_HaveNutStraightFlush##
+WHEN Omaha_HaveStraightFlush AND NOT Omaha_HigherStraightFlushPossible RETURN true FORCE
+
+
+##Omaha_HaveFlush##
+// Counting the player suits which match with tsuitcommon when FlushPossible, without Ace-low.
+// We must use 2 cards for a flush.
+WHEN BitCount(Omaha_SrankBitsPlayer_For_MadeFlush & ConstAllRanksWithoutAceLow) >= 2 RETURN true FORCE
+
+
+##Omaha_HaveNutFlush##
+WHEN NOT Omaha_HaveFlush RETURN false FORCE
+WHEN Omaha_NumberOfUnknownSuitedOvercards_For_MadeFlush == 0 RETURN true Force
+
+
+##Omaha_HaveSecondNutFlush##
+WHEN NOT Omaha_HaveFlush RETURN false FORCE
+WHEN Omaha_NumberOfUnknownSuitedOvercards_For_MadeFlush == 1 RETURN true Force
+
+
+##Omaha_HaveThirdNutFlush##
+WHEN NOT Omaha_HaveFlush RETURN false FORCE
+WHEN Omaha_NumberOfUnknownSuitedOvercards_For_MadeFlush == 2 RETURN true Force
+
+
+##Omaha_HaveFourthNutFlush##
+WHEN NOT Omaha_HaveFlush RETURN false FORCE
+WHEN Omaha_NumberOfUnknownSuitedOvercards_For_MadeFlush == 3 RETURN true Force
+
+
+##Omaha_HaveFifthNutFlush##
+WHEN NOT Omaha_HaveFlush RETURN false FORCE
+WHEN Omaha_NumberOfUnknownSuitedOvercards_For_MadeFlush == 4 RETURN true Force
+
+
+
+// ***********
+// FlushDraws
+// ***********
+
+##Omaha_HaveFlushDrawContributingTwoCards##
+// Always need, but.
+// true if the bot has a made flush or a flush draw, ContributingTwoCards
+WHEN NOT Omaha_HaveFlushDraw RETURN false FORCE
+WHEN (NSuited1Player == 2) AND (NSuited1Common >= 2) RETURN true FORCE
+WHEN (NSuited2Player == 2) AND (NSuited2Common >= 2) RETURN true FORCE
+
+
+##Omaha_HaveNutFlushDraw##
+// Shanky: true if the bot has a made nut flush or a nut flush draw.
+WHEN NOT Omaha_HaveFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 0 RETURN true Force
+WHEN (NSuited2Player >= 2) AND (NSuited2Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 0 RETURN true Force
+
+
+##Omaha_HaveSecondNutFlushDraw##
+WHEN NOT Omaha_HaveFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 1 RETURN true Force
+WHEN (NSuited2Player >= 2) AND (NSuited2Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 1 RETURN true Force
+
+
+##Omaha_HaveThirdNutFlushDraw##
+WHEN NOT Omaha_HaveFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 2 RETURN true Force
+WHEN (NSuited2Player >= 2) AND (NSuited2Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 2 RETURN true Force
+
+
+##Omaha_HaveFourthNutFlushDraw##
+WHEN NOT Omaha_HaveFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 3 RETURN true Force
+WHEN (NSuited2Player >= 2) AND (NSuited2Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 3 RETURN true Force
+
+
+##Omaha_HaveFifthNutFlushDraw##
+WHEN NOT Omaha_HaveFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 4 RETURN true Force
+WHEN (NSuited2Player >= 2) AND (NSuited2Common >= 2) AND Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 4 RETURN true Force
+
+
+##Omaha_HaveTwoFlushDraw##
+Omaha_HaveDoubleFlushDraw
+
+##HaveTwoFlushDraw##
+Omaha_HaveDoubleFlushDraw
+
+##Omaha_OneCardFlushPossible##
+// need it for Omaha_HaveRunnerRunnerFlushAtRiver
+   BitCount(suitbitscommon_clubs    & ConstAllRanksWithoutAceLow) >= 4
+OR BitCount(suitbitscommon_diamonds & ConstAllRanksWithoutAceLow) >= 4
+OR BitCount(suitbitscommon_hearts   & ConstAllRanksWithoutAceLow) >= 4
+OR BitCount(suitbitscommon_spades   & ConstAllRanksWithoutAceLow) >= 4
+
+##Omaha_HaveRunnerRunnerFlushAtRiver##
+// http://www.maxinmontreal.com/forums/viewtopic.php?p=142509#p142509
+// a bit different than the Hold'Em version
+// because we can not use native symbols like nsuited, nsuitedcommon etc.
+    Omaha_HaveFlush
+AND IsRiver
+AND (SuitsOnFlop >= 2)
+AND (TurnSuit == RiverSuit)
+AND NOT Omaha_OneCardFlushPossible
+
+
+##Omaha_HaveNutFlushCard##
+WHEN NOT Omaha_FlushPossible RETURN false FORCE
+WHEN Omaha_NumberOfUnknownSuitedOvercards_For_MadeFlush == 0 RETURN true Force
+
+
+##Omaha_HaveGoodFlushDrawContributingOnlyOneCard##
+false
+
+
+##Omaha_HaveAnyFlushDrawContributingOnlyOneCard##
+false
+
+
+//
+// Backdoor FlushDraws
+//
+
+##Omaha_HaveBackdoorFlushDraw##
+WHEN (betround != flop) RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common == 1) RETURN true FORCE
+WHEN (NSuited2Player >= 2) AND (NSuited2Common == 1) RETURN true FORCE
+
+
+##Omaha_HaveBackdoorFlushDrawContributingTwoCards##
+WHEN NOT Omaha_HaveBackdoorFlushDraw RETURN false FORCE
+WHEN (NSuited1Player == 2) AND (NSuited1Common == 1) RETURN true FORCE
+WHEN (NSuited2Player == 2) AND (NSuited2Common == 1) RETURN true FORCE
+
+
+##Omaha_HaveBackdoorDoubleFlushDraw##
+WHEN NOT Omaha_HaveBackdoorFlushDraw RETURN false FORCE
+WHEN NOT Double_Suited RETURN false FORCE
+WHEN (NSuited1Player == 2) AND (NSuited1Common == 1) AND (NSuited2Player == 2) AND (NSuited2Common == 1) RETURN true FORCE
+
+
+##Omaha_HaveBackdoorDoubleNutFlushDraw##
+WHEN NOT Omaha_HaveBackdoorDoubleFlushDraw RETURN false FORCE
+WHEN (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 0) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 0) RETURN true FORCE
+
+ 
+##Omaha_HaveBackdoorNutFlushDraw##
+WHEN NOT Omaha_HaveBackdoorFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common == 1) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 0) RETURN true FORCE
+WHEN (NSuited2Player >= 2) AND (NSuited2Common == 1) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 0) RETURN true FORCE
+
+
+##Omaha_HaveBackdoorSecondNutFlushDraw##
+WHEN NOT Omaha_HaveBackdoorFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common == 1) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 1) RETURN true FORCE
+WHEN (NSuited2Player >= 2) AND (NSuited2Common == 1) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 1) RETURN true FORCE
+
+
+##Omaha_HaveBackdoorThirdNutFlushDraw##
+WHEN NOT Omaha_HaveBackdoorFlushDraw RETURN false FORCE
+WHEN (NSuited1Player >= 2) AND (NSuited1Common == 1) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited1 == 2) RETURN true FORCE
+WHEN (NSuited2Player >= 2) AND (NSuited2Common == 1) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 2) RETURN true FORCE
+
+
