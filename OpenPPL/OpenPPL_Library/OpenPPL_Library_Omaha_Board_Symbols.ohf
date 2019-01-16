@@ -112,3 +112,4 @@ OR BitCount(suitbitscommon_spades   & ConstAllRanksWithoutAceLow) >= 3
 OR BitCount(suitbitscommon_diamonds & ConstAllRanksWithoutAceLow) == 2
 OR BitCount(suitbitscommon_hearts   & ConstAllRanksWithoutAceLow) == 2
 OR BitCount(suitbitscommon_spades   & ConstAllRanksWithoutAceLow) == 2
+
