@@ -184,77 +184,8 @@ WHEN SecondHoleCardPairsTheFlop AND FourthHoleCardPairsTheFlop RETURN true FORCE
 WHEN ThirdHoleCardPairsTheFlop AND FourthHoleCardPairsTheFlop RETURN true FORCE
 WHEN Others RETURN false FORCE    
 
-##Omaha_HaveGoodBackdoorStraightDrawAKQJT##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b111110000000000) != BitCount(rankbitsplayer BitAnd 0b111100000000000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b111100000000000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b111110000000000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDrawKQJT9##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b011111000000000) != BitCount(rankbitsplayer BitAnd 0b011110000000000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b011111000000000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDrawQJT98##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b001111100000000) != BitCount(rankbitsplayer BitAnd 0b001111000000000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b001111100000000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDrawJT987##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b000111110000000) != BitCount(rankbitsplayer BitAnd 0b000111100000000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b000111110000000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDrawT9876##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b000011111000000) != BitCount(rankbitsplayer BitAnd 0b000011110000000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b000011111000000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDraw98765##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b000001111100000) != BitCount(rankbitsplayer BitAnd 0b000001111000000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b000001111100000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDraw87654##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b000000111110000) != BitCount(rankbitsplayer BitAnd 0b000000111100000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b000000111110000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDraw76543##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b000000011111000) != BitCount(rankbitsplayer BitAnd 0b000000011110000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b000000011111000) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDraw65432##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b000000001111100) != BitCount(rankbitsplayer BitAnd 0b000000001111000) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b000000001111100) == 1)  RETURN true FORCE
-
-##Omaha_HaveGoodBackdoorStraightDraw54321##
-WHEN betround != flop RETURN false FORCE
- // to avoid the same card in hand and on board is counted for backdoor
-WHEN BitCount(rankbits BitAnd 0b000000000111110) != BitCount(rankbitsplayer BitAnd 0b000000000111100) + 1 RETURN false FORCE
-WHEN (BitCount(rankbitsplayer BitAnd 0b000000000111100) >= 2)  AND  (BitCount(rankbitscommon BitAnd 0b000000000111110) == 1)  RETURN true FORCE
-
 ##Omaha_HaveBackdoorStraightDraw##
-   Omaha_HaveGoodBackdoorStraightDrawAKQJT
-OR Omaha_HaveGoodBackdoorStraightDrawKQJT9
-OR Omaha_HaveGoodBackdoorStraightDrawQJT98
-OR Omaha_HaveGoodBackdoorStraightDrawJT987
-OR Omaha_HaveGoodBackdoorStraightDrawT9876
-OR Omaha_HaveGoodBackdoorStraightDraw98765
-OR Omaha_HaveGoodBackdoorStraightDraw87654
-OR Omaha_HaveGoodBackdoorStraightDraw76543
-OR Omaha_HaveGoodBackdoorStraightDraw65432
-OR Omaha_HaveGoodBackdoorStraightDraw54321
+betround == flop
 
 ##Omaha_HaveSecondBestKicker##
 
