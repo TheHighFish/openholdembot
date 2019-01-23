@@ -69,6 +69,7 @@ void CCasinoInterface::Reset() {
     _technical_i86X_spam_buttons[i].Reset();
     _technical_i86X_spam_buttons[i].SetTechnicalName(button_name);
   }
+  _next_i86_starting_button = 0;
 }
 
 bool CCasinoInterface::TableLostFocus() {
@@ -91,6 +92,13 @@ void CCasinoInterface::ClickRect(RECT rect) {
 	write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to single click button: %d,%d %d,%d\n", 
     rect.left, rect.top, rect.right, rect.bottom);
 	(theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 1);
+  p_engine_container->symbol_engine_time()->UpdateOnAutoPlayerAction();
+}
+
+void CCasinoInterface::DoubleClickRect(RECT rect) {
+  write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Calling mouse.dll to double click button: %d,%d %d,%d\n", 
+    rect.left, rect.top, rect.right, rect.bottom);
+  (theApp._dll_mouse_click) (p_autoconnector->attached_hwnd(), rect, MouseLeft, 2);
   p_engine_container->symbol_engine_time()->UpdateOnAutoPlayerAction();
 }
 
@@ -163,15 +171,18 @@ int CCasinoInterface::NumberOfVisibleAutoplayerButtons() {
 }
 
 bool CCasinoInterface::HandleInterfacebuttonsI86(void) {
-  for (int i = 0; i<k_max_number_of_i86X_buttons; ++i) {
-    if (p_casino_interface->_technical_i86X_spam_buttons[i].IsClickable()) {
+  for (int i = _next_i86_starting_button ; i < _next_i86_starting_button + k_max_number_of_i86X_buttons ; ++i) {
+    int idx = i % k_max_number_of_i86X_buttons;
+    if (p_casino_interface->_technical_i86X_spam_buttons[idx].IsClickable()) {
       CMyMutex mutex;
       if (!mutex.IsLocked()) return false;
-     write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Clicking i86X (%d) button.\n", i);
-      return p_casino_interface->_technical_i86X_spam_buttons[i].Click();
+      write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] Clicking i86X (%d) button.\n", idx);
+      _next_i86_starting_button = idx + 1;
+      return p_casino_interface->_technical_i86X_spam_buttons[idx].Click();
     }
   }
- write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] No interface button (i86X) to be handled.\n");
+  write_log(Preferences()->debug_autoplayer(), "[CasinoInterface] No interface button (i86X) to be handled.\n");
+  _next_i86_starting_button = 0;
   return false;
 }
 

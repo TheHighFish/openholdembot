@@ -168,7 +168,6 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 			           "'Delete' and 'Backspace'",
 					   "Invalid value", MB_OK);	
 	}
-
 	else if (s=="betsizeconfirmationmethod")
 	{
 		if (v!="Enter" && v!="Click Bet")
@@ -176,7 +175,6 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 			           "'Enter' and 'Click Bet'",
 					   "Invalid value", MB_OK);	
 	}
-
 	else if (s=="buttonclickmethod")
 	{
 		if (v!="Single" && v!="Double")
@@ -184,6 +182,14 @@ void CDlgEditSymbols::OnEnKillfocusValue()
 			           "'Single' and 'Double'",
 					   "Invalid value", MB_OK);	
 	}
+	else if (s.Left(3) == "i86" && s.Right(17) == "buttonclickmethod")
+	{
+		if (v != "Single" && v != "Double" && v != "Nothing")
+			MessageBox("Valid values for i86Xbuttonclickmethod are:\n"
+				"'Single', 'Double' and 'Nothing'",
+				"Invalid value", MB_OK);
+	}
+
 }
 
 void CDlgEditSymbols::SetDefaultValues()
@@ -197,14 +203,12 @@ void CDlgEditSymbols::SetDefaultValues()
 		m_Value.AddString("Click Drag");
 		m_Value.AddString("Nothing");
 	}
-	
 	else if (name.MakeLower() == "betsizedeletionmethod")
 	{
 		m_Value.AddString("Delete");
 		m_Value.AddString("Backspace");
 		m_Value.AddString("Nothing");
 	}
-
 	else if (name.MakeLower() == "betsizeconfirmationmethod")
 	{
 		m_Value.AddString("Enter");
@@ -222,11 +226,17 @@ void CDlgEditSymbols::SetDefaultValues()
 		m_Value.AddString("Single");
 		m_Value.AddString("Double");
 	}
-	
 	else if (name.MakeLower() == "chipscrapemethod")
 	{
 		m_Value.AddString("Original");
 		m_Value.AddString("All");
 		m_Value.AddString("XxY");
 	}
+	else if (name.MakeLower().Left(3) == "i86" && name.MakeLower().Right(17) == "buttonclickmethod")
+	{
+		m_Value.AddString("Single");
+		m_Value.AddString("Double");
+		m_Value.AddString("Nothing");
+	}
+
 }

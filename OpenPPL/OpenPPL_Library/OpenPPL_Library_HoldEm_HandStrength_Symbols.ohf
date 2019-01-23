@@ -1096,11 +1096,9 @@ WHEN (rankhiplayer == RankOfBottomPairOnBoard) RETURN true FORCE
 WHEN (rankloplayer == RankOfBottomPairOnBoard) RETURN true FORCE
 
 ##TripsRank##
-WHEN HaveTrips AND HaveTopPair       RETURN TopPairRank FORCE
-WHEN HaveTrips AND HaveSecondTopPair RETURN SecondTopPairRank FORCE
-WHEN HaveTrips AND HaveThirdTopPair  RETURN ThirdTopPairRank FORCE
-WHEN HaveTrips AND HaveFourthTopPair RETURN FourthTopPairRank FORCE
-WHEN HaveTrips AND HaveFifthTopPair  RETURN FifthTopPairRank FORCE
+WHEN NOT HaveTrips RETURN false FORCE
+WHEN (((rankbitsplayer >> RankOfTopPairOnBoard)    & 1) == 1) RETURN RankOfTopPairOnBoard FORCE
+WHEN (((rankbitsplayer >> RankOfBottomPairOnBoard) & 1) == 1) RETURN RankOfBottomPairOnBoard FORCE
 
 ##TripsKickerRank##
 WHEN HaveTrips AND TripsRank==RankOfFirstHoleCard  RETURN RankOfSecondHoleCard FORCE
@@ -1145,27 +1143,6 @@ WHEN Others RETURN 0 FORCE
 // So we have to shift 1 to the left just by the rank of the card
 WHEN (RankOfBottomPairOnBoard > 0) RETURN  (1 << RankOfBottomPairOnBoard) FORCE
 WHEN Others RETURN 0 FORCE
-
-##RankBitsCommonBoardPairs##
-RankBitsCommonTopBoardPair | RankBitsCommonBottomBoardPair
-
-##RankBitsCommonWithoutPairs##
-rankbitscommon & (~RankBitsCommonBoardPairs)
-
-##HighestUnpairedBoardCard##
-(RankBitsCommonWithoutPairs >> ace)   & 1 ? ace   :
-(RankBitsCommonWithoutPairs >> king)  & 1 ? king  :
-(RankBitsCommonWithoutPairs >> queen) & 1 ? queen :
-(RankBitsCommonWithoutPairs >> jack)  & 1 ? jack  :
-(RankBitsCommonWithoutPairs >> ten)   & 1 ? ten   :
-(RankBitsCommonWithoutPairs >> Nine)  & 1 ? Nine  :
-(RankBitsCommonWithoutPairs >> Eight) & 1 ? Eight :
-(RankBitsCommonWithoutPairs >> Seven) & 1 ? Seven :
-(RankBitsCommonWithoutPairs >> Six)   & 1 ? Six   :
-(RankBitsCommonWithoutPairs >> Five)  & 1 ? Five  :
-(RankBitsCommonWithoutPairs >> Four)  & 1 ? Four  :
-(RankBitsCommonWithoutPairs >> Three) & 1 ? Three :
-(RankBitsCommonWithoutPairs >> Two)   & 1 ? Two   : 0
 
 ##HoldEm_HaveTopNonBoardPairedPair##
    [(betround >= flop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]

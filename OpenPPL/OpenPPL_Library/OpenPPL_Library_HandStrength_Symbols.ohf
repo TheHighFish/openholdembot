@@ -128,8 +128,7 @@ WHEN isomaha RETURN Omaha_HaveSecondBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveSecondBestOverPair FORCE
 
 ##HaveSecondBestOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveSecondBestOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveSecondBestOverPairOrBetter FORCE
+(HaveSecondBestOverPair OR HaveBestOverPairOrBetter)
 
 ##HaveSecondNutFlush##
 WHEN isomaha RETURN Omaha_HaveSecondNutFlush FORCE
@@ -148,8 +147,7 @@ WHEN isomaha RETURN Omaha_HaveSecondOverPair FORCE
 WHEN Others RETURN HoldEm_HaveSecondOverPair FORCE
 
 ##HaveSecondTopPair##
-WHEN isomaha RETURN Omaha_HaveSecondTopPair FORCE
-WHEN Others RETURN HoldEm_HaveSecondTopPair FORCE
+(((rankbitsplayer >> SecondBestBoardCard) BitAnd 1) == 1)
 
 ##HaveSecondTopSet##
 WHEN isomaha RETURN Omaha_HaveSecondTopSet FORCE
@@ -168,8 +166,7 @@ WHEN isomaha RETURN Omaha_HaveThirdBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveThirdBestOverPair FORCE
 
 ##HaveThirdBestOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveThirdBestOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveThirdBestOverPairOrBetter FORCE
+(HaveThirdBestOverPair OR  HaveSecondBestOverPairOrBetter)
 
 ##HaveThirdNutFlush##
 WHEN isomaha RETURN Omaha_HaveThirdNutFlush FORCE
@@ -184,12 +181,10 @@ WHEN isomaha RETURN Omaha_HaveThirdOverPair FORCE
 WHEN Others RETURN HoldEm_HaveThirdOverPair FORCE
 
 ##HaveThirdTopPair##
-WHEN isomaha RETURN Omaha_HaveThirdTopPair FORCE
-WHEN Others RETURN HoldEm_HaveThirdTopPair FORCE
+(((rankbitsplayer >> ThirdBestBoardCard) BitAnd 1) == 1)
 
 ##HaveFifthTopPair##
-WHEN isomaha RETURN Omaha_HaveFifthTopPair FORCE
-WHEN Others RETURN HoldEm_HaveFifthTopPair FORCE
+(((rankbitsplayer >> FifthBestBoardCard) BitAnd 1) == 1)
 
 ##HaveThirdTopSet##
 WHEN isomaha RETURN Omaha_HaveThirdTopSet FORCE
@@ -208,8 +203,7 @@ WHEN isomaha RETURN Omaha_HaveFourthOverPair FORCE
 WHEN Others RETURN HoldEm_HaveFourthOverPair FORCE
 
 ##HaveFourthTopPair##
-WHEN isomaha RETURN Omaha_HaveFourthTopPair FORCE
-WHEN Others RETURN HoldEm_HaveFourthTopPair FORCE
+(((rankbitsplayer >> FourthBestBoardCard) BitAnd 1) == 1)
 
 ##HaveFourthTopSet##
 WHEN isomaha RETURN Omaha_HaveFourthTopSet FORCE
@@ -228,7 +222,7 @@ WHEN isomaha RETURN Omaha_HaveFifthOverPair FORCE
 WHEN Others RETURN HoldEm_HaveFifthOverPair FORCE
 
 ##HaveBackdoorFlushDrawContributingTwoCards##
-WHEN isomaha RETURN Omaha_HaveBackdoorFlushDrawContributingTwoCards FORCE
+WHEN isomaha RETURN Omaha_HaveBackdoorFlushDraw FORCE
 WHEN Others RETURN HoldEm_HaveBackdoorFlushDrawContributingTwoCards FORCE
 
 ##HaveBackdoorNutFlushDraw##
@@ -260,8 +254,15 @@ WHEN isomaha RETURN Omaha_HaveBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveBestOverPair FORCE
 
 ##HaveBestOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveBestOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveBestOverPairOrBetter FORCE
+  (HaveBestOverPair
+OR HaveTwoPair
+OR HaveSet
+OR HaveTrips
+OR HaveStraight
+OR HaveFlush
+OR HaveFullHouse
+OR HaveQuads
+OR HaveStraightFlush)
 
 ##HaveBottomPair##
 WHEN isomaha RETURN Omaha_HaveBottomPair FORCE
@@ -296,11 +297,11 @@ WHEN isomaha RETURN Omaha_HaveFlushDraw FORCE
 WHEN Others RETURN HoldEm_HaveFlushDraw FORCE
 
 ##HaveFlushDrawContributingTwoCards##
-WHEN isomaha RETURN Omaha_HaveFlushDrawContributingTwoCards FORCE
+WHEN isomaha RETURN Omaha_HaveFlushDraw FORCE
 WHEN Others RETURN HoldEm_HaveFlushDrawContributingTwoCards FORCE
 
 ##HaveGoodFlushDrawContributingOnlyOneCard##
-WHEN isomaha RETURN Omaha_HaveGoodFlushDrawContributingOnlyOneCard FORCE
+WHEN isomaha RETURN Omaha_HaveNutFlushDraw FORCE
 WHEN Others RETURN HoldEm_HaveGoodFlushDrawContributingOnlyOneCard FORCE
 
 ##HaveFullHouse##
@@ -380,8 +381,7 @@ WHEN isomaha RETURN Omaha_HaveOverPair FORCE
 WHEN Others RETURN HoldEm_HaveOverPair FORCE
 
 ##HaveOverPairOrBetter##
-WHEN isomaha RETURN Omaha_HaveOverPairOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveOverPairOrBetter FORCE
+HaveOverPair OR HaveBestOverPairOrBetter
 
 ##HavePair##
 WHEN isomaha RETURN Omaha_HavePair FORCE
@@ -424,8 +424,7 @@ WHEN isomaha RETURN Omaha_HaveTopNonBoardPairedPair FORCE
 WHEN Others RETURN HoldEm_HaveTopNonBoardPairedPair FORCE
 
 ##HaveTopPair##
-WHEN isomaha RETURN Omaha_HaveTopPair FORCE
-WHEN Others RETURN HoldEm_HaveTopPair FORCE
+(((rankbitsplayer >> BestBoardCard) BitAnd 1) == 1)
 
 ##HaveTopSet##
 WHEN isomaha RETURN Omaha_HaveTopSet FORCE

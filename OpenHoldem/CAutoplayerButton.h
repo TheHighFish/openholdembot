@@ -69,6 +69,7 @@ class CAutoplayerButton {
   bool IsLabelLeave();
   bool IsLabelRematch();
   bool IsLabelPrefold();
+  bool IsNameI86();
 
   void PrecomputeButtonType();
 
@@ -76,6 +77,7 @@ class CAutoplayerButton {
   // label = logical name, e.g. "raise"
   CString _label;
   CString _default_label;
+  int _click_method; 
   // technical name = tablemap-object, e.g. "i3button"
   CString _technical_name;
   int _button_type;

@@ -116,10 +116,12 @@ OR SecondFlopCard == TurnCard
 OR ThirdFlopCard == TurnCard
 
 ##FlushPossible##
-(nsuitedcommon >= 3)
+WHEN isomaha RETURN Omaha_FlushPossible FORCE
+WHEN Others RETURN (nsuitedcommon >= 3) FORCE
 
 ##FlushDrawPossible##
-(nsuitedcommon >= 2)
+WHEN isomaha RETURN Omaha_FlushDrawPossible FORCE
+WHEN Others RETURN (nsuitedcommon >= 2) FORCE
 
 ##FlushOnBoard##
 (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit)
@@ -291,7 +293,8 @@ BitCount[rankbitscommon >> (rankhiplayer + 1)]
 + ((RiverCard      > rankhiplayer) ? 1 : 0)
 
 ##PairOnBoard##
-(nrankedcommon >= 2)
+WHEN isomaha RETURN Omaha_PairOnBoard FORCE
+WHEN Others RETURN (nrankedcommon >= 2) FORCE
 
 ##PairOnFlop##
 (FirstFlopCard == SecondFlopCard OR SecondFlopCard == ThirdFlopCard OR FirstFlopCard == ThirdFlopCard)
@@ -318,7 +321,8 @@ OR SecondTopFlopCardPairedOnTurn
 OR LowestFlopCardPairedOnTurn
 
 ##QuadsOnBoard##
-(nrankedcommon == 4)
+WHEN isomaha RETURN Omaha_QuadsOnBoard FORCE
+WHEN Others RETURN (nrankedcommon == 4) FORCE
 
 ##QueenPresentOnFlop##
    (FirstFlopCard==queen)
@@ -328,6 +332,27 @@ OR (ThirdFlopCard==queen)
 ##RankBitsCommonWithoutLowestBit##
 // we negate lowest-bit and then do an and-operation
 rankbitscommon & ~LowestBitOfRankBitsCommon
+
+##RankBitsCommonBoardPairs##
+RankBitsCommonTopBoardPair | RankBitsCommonBottomBoardPair
+
+##RankBitsCommonWithoutPairs##
+rankbitscommon & (~RankBitsCommonBoardPairs)
+
+##HighestUnpairedBoardCard##
+(RankBitsCommonWithoutPairs >> ace)   & 1 ? ace   :
+(RankBitsCommonWithoutPairs >> king)  & 1 ? king  :
+(RankBitsCommonWithoutPairs >> queen) & 1 ? queen :
+(RankBitsCommonWithoutPairs >> jack)  & 1 ? jack  :
+(RankBitsCommonWithoutPairs >> ten)   & 1 ? ten   :
+(RankBitsCommonWithoutPairs >> Nine)  & 1 ? Nine  :
+(RankBitsCommonWithoutPairs >> Eight) & 1 ? Eight :
+(RankBitsCommonWithoutPairs >> Seven) & 1 ? Seven :
+(RankBitsCommonWithoutPairs >> Six)   & 1 ? Six   :
+(RankBitsCommonWithoutPairs >> Five)  & 1 ? Five  :
+(RankBitsCommonWithoutPairs >> Four)  & 1 ? Four  :
+(RankBitsCommonWithoutPairs >> Three) & 1 ? Three :
+(RankBitsCommonWithoutPairs >> Two)   & 1 ? Two   : 0
 
 ##RiverCardIsOvercardToBoard##
 [   RiverCard > FirstFlopCard
@@ -471,7 +496,8 @@ ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 (TopFlopCard == TurnCard)
 
 ##TripsOnBoard##
-(nrankedcommon >= 3)
+WHEN isomaha RETURN Omaha_TripsOnBoard FORCE
+WHEN Others RETURN (nrankedcommon >= 3) FORCE
 
 ##TripsOnBoardOnTurn##
    (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard)
