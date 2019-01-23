@@ -102,10 +102,10 @@ OR (FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard AND TurnCard ==
 OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard AND TurnCard == RiverCard)
 
 ##Omaha_FlushPossible##
-   BitCount(suitbitscommon_clubs    & ConstAllRanksWithoutAceLow) >= 3
+   BitCount(suitbitscommon_clubs   & ConstAllRanksWithoutAceLow) >= 3
 OR BitCount(suitbitscommon_diamonds & ConstAllRanksWithoutAceLow) >= 3
-OR BitCount(suitbitscommon_hearts   & ConstAllRanksWithoutAceLow) >= 3
-OR BitCount(suitbitscommon_spades   & ConstAllRanksWithoutAceLow) >= 3
+OR BitCount(suitbitscommon_hearts  & ConstAllRanksWithoutAceLow) >= 3
+OR BitCount(suitbitscommon_spades  & ConstAllRanksWithoutAceLow) >= 3
 
 ##Omaha_FlushDrawPossible##
    BitCount(suitbitscommon_clubs    & ConstAllRanksWithoutAceLow) == 2
