@@ -1,4 +1,21 @@
-﻿﻿v﻿13.1.0 2018-09-05
+﻿﻿v﻿13.2.0 2019-02-xx
+==================
+NEW STUFF:
+- The OpenPPL-library for Omaha has been finished.
+  [ChuckNeverMuck, Cold12Zeras, Johnny, THF]
+
+BUG FIXES:
+- Some board-symbols are usable for Omaha, but incorrectly threw a warning:
+	nstraightcommon
+	nstraightfillcommon
+	nstraightflushcommon
+	nstraightflushfillcommon
+  This has now been fixed.
+  Thanks to Johnny for reporting.
+  [THF]
+  
+
+﻿v﻿13.1.0 2018-09-05
 ==================
 NEW STUFF:
 - Lots of new PokerTracker-stats in the new PT.DLL.
