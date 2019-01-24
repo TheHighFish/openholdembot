@@ -505,6 +505,8 @@ HINT_You_Do_Not_Have_A_Straight
 
 
 ##Omaha_HaveUnderStraight##
+// to avoid AKQJT  is UnderStraight for hand JT
+WHEN HaveNutStraight RETURN false FORCE
 WHEN (Omaha_HighCardOfOurUnderStraight < 0) RETURN false FORCE
 // ten because jack returns the nut straight
 WHEN (Omaha_HighCardOfOurUnderStraight <= ten) RETURN true FORCE
