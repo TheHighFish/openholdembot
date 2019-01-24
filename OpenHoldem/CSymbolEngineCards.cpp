@@ -788,7 +788,6 @@ bool CSymbolEngineCards::EvaluateSymbol(const CString name, double *result, bool
 		}
 		else if (memcmp(name, "nstraightfillcommon", 19)==0 && strlen(name)==19)	
 		{
-      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightfillcommon();
 		}
 		else if (memcmp(name, "nstraightflush", 14)==0 && strlen(name)==14)		
@@ -798,7 +797,6 @@ bool CSymbolEngineCards::EvaluateSymbol(const CString name, double *result, bool
 		}
 		else if (memcmp(name, "nstraightflushcommon", 20)==0 && strlen(name)==20)
 		{
-      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightflushcommon();
 		}
 		else if (memcmp(name, "nstraightflushfill", 18)==0 && strlen(name)==18)
@@ -808,7 +806,6 @@ bool CSymbolEngineCards::EvaluateSymbol(const CString name, double *result, bool
 		}
 		else if (memcmp(name, "nstraightflushfillcommon", 24)==0 && strlen(name)==24)
 		{
-      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightflushfillcommon();
 		}
 		else
