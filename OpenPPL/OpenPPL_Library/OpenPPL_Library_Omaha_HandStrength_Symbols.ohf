@@ -196,10 +196,25 @@ betround == flop
 ##Omaha_HaveSecondBestOverPair##
 hand$KK AND (BestBoardCard < king)
 
+##Omaha_NumberOfPossibleBetterStraights##
+WHEN (Omaha_HighCardOfOurStraight == ace)   RETURN 0 FORCE
+WHEN (Omaha_HighCardOfOurStraight == king)  RETURN NumberOfPossibleStraightsAceHigh           FORCE
+WHEN (Omaha_HighCardOfOurStraight == queen) RETURN NumberOfPossibleStraightsKingHighOrBetter  FORCE
+WHEN (Omaha_HighCardOfOurStraight == jack)  RETURN NumberOfPossibleStraightsQueenHighOrBetter FORCE
+WHEN (Omaha_HighCardOfOurStraight == ten)   RETURN NumberOfPossibleStraightsJackHighOrBetter  FORCE
+WHEN (Omaha_HighCardOfOurStraight == Nine)  RETURN NumberOfPossibleStraightsTenHighOrBetter   FORCE
+WHEN (Omaha_HighCardOfOurStraight == Eight) RETURN NumberOfPossibleStraightsNineHighOrBetter  FORCE
+WHEN (Omaha_HighCardOfOurStraight == Seven) RETURN NumberOfPossibleStraightsEightHighOrBetter FORCE
+WHEN (Omaha_HighCardOfOurStraight == Six)   RETURN NumberOfPossibleStraightsSevenHighOrBetter FORCE
+WHEN (Omaha_HighCardOfOurStraight == Five)  RETURN NumberOfPossibleStraightsSixHighOrBetter   FORCE
+// We don't have any straight
+WHEN Others RETURN NumberOfPossibleStraightsFiveHighOrBetter FORCE
+
 
 ##Omaha_HaveSecondNutStraight##
-
-
+WHEN NOT Omaha_HaveStraight RETURN false FORCE
+WHEN Omaha_HaveNutStraight RETURN false FORCE
+WHEN Omaha_NumberOfPossibleBetterStraights = 1 RETURN true FORCE	
 
 ##Omaha_HaveSecondOverPair##
 RankOfTopPairInHand < BestBoardCard AND RankOfTopPairInHand > SecondBestBoardCard
@@ -313,6 +328,13 @@ Omaha_FlushDraw_Counter == 2
 OR (RankOfTopPairInHand > 0 AND TripsOnBoard)
 OR (HaveTrips AND HaveTwoPair)
 
+##Omaha_HaveNutFullHouse##
+HaveTopTrips
+AND RankOfTopPairOnBoard == BestBoardCard
+AND HaveSecondTopPair
+
+##Omaha_NutFullHouseOrFourOfAKind##
+msgbox$NutFullHouseOrFourOfAKind_Unot_Uyet_Uimplemented_D
 
 ##Omaha_HaveNothing##
 NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
@@ -358,6 +380,17 @@ Omaha_NutStraightDraw_Outs >= 4 AND Omaha_NutStraightDraw_Outs == Omaha_Straight
 Omaha_StraightDraw_Outs >= 4
 
 ##Omaha_HaveNuts##
+WHEN HaveNutStraightFlush RETURN true FORCE
+WHEN StraightFlushPossible RETURN false FORCE
+WHEN Omaha_HaveNutQuads RETURN true FORCE
+WHEN Omaha_HaveNutFullHouse RETURN true FORCE
+WHEN PairOnBoard RETURN false FORCE
+WHEN HaveNutFlush RETURN true FORCE
+WHEN FlushPossible RETURN false FORCE
+WHEN HaveNutStraight RETURN true FORCE
+WHEN StraightPossible RETURN false FORCE
+WHEN HaveTopSet RETURN true FORCE
+WHEN Others RETURN false FORCE
 
 
 ##Omaha_HaveOpenEndedStraightDraw##
@@ -387,18 +420,20 @@ WHEN RankOfTopPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
 WHEN RankOfBottomPairOnBoard == RankOfTopPairInHand RETURN true FORCE
 WHEN RankOfBottomPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
 
+##Omaha_HaveNutQuads##
+WHEN (HaveQuads AND TripsOnBoard) RETURN true FORCE
+WHEN NOT PairInHand RETURN false FORCE
+WHEN (RankOfTopPairInHand == RankOfTopPairOnBoard) RETURN true FORCE
+WHEN (RankOfBottomPairInHand == RankOfTopPairOnBoard) RETURN true FORCE
 
 ##Omaha_HaveOverPair##
 RankOfTopPairInHand > BestBoardCard
 
-
 ##Omaha_HavePair##
 (rankbitsplayer BitAnd rankbitscommon) > 0 
 
-
 ##Omaha_HavePocketPair##
 RankOfTopPairInHand > 0
-
 
 ##TopPairInHandPairsTheBoard##
 RankOfTopPairInHand==FirstFlopCard
@@ -429,14 +464,12 @@ Omaha_HaveTopTrips OR Omaha_HaveBottomTrips
 ##Omaha_HaveStraightDraw##
 Omaha_StraightDraw_Outs > 0
 
-
 ##Omaha_HaveTopNonBoardPairedPair##
 WHEN NOT IsPostflop RETURN false FORCE
 WHEN (RankOfFirstHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
 WHEN (RankOfSecondHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
 WHEN (RankOfThirdHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
 WHEN (RankOfFourthHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
-
 
 ##Omaha_HaveTopSet##
 RankOfTopPairInHand == BestBoardCard
@@ -451,7 +484,6 @@ WHEN NOT [BitCount(rankbitsplayer & rankbitscommon & ConstAllRanksWithoutAceLow)
 // Check for higher pairs on board that devalue our "three pairs"
 WHEN PairOnBoard AND NOT HaveTwoPairOverTopPairOnBoard RETURN false FORCE
 WHEN Others RETURN true FORCE
-
 
 ##Omaha_HaveWeakBackdoorStraightDraw##
 
@@ -469,9 +501,8 @@ Omaha_HaveFlushDraw AND NOT Omaha_HaveNutFlushDraw
 ##Omaha_HaveWeakInsideStraightDraw##
 Omaha_HaveInsideStraightDraw  AND NOT Omaha_HaveNutStraightDraw
 
-
 ##Omaha_HaveWeakStraight##
-
+HaveStraight AND NOT HaveNutStraight
 
 ##Omaha_HaveWeakStraightDraw##
 Omaha_HaveStraightDraw AND NOT Omaha_HaveNutStraightDraw
@@ -489,7 +520,6 @@ Omaha_HaveStraightDraw AND NOT Omaha_HaveNutStraightDraw
 RankOfTopPairInHand > 0
 AND RankOfTopPairInHand < ranklocommon
 
-
 ##Omaha_HighCardOfOurUnderStraight##
 [ (BitCount(rankbitscommon & 0b111000000000000)==3) AND (BitCount(rankbitsplayer & 0b000110000000000)==2) AND (BitCount(rankbits & 0b111110000000000)=5) ] ? jack :
 [ (BitCount(rankbitscommon & 0b011100000000000)==3) AND (BitCount(rankbitsplayer & 0b000011000000000)==2) AND (BitCount(rankbits & 0b011111000000000)=5) ] ? ten :
@@ -503,14 +533,12 @@ AND RankOfTopPairInHand < ranklocommon
 [ (BitCount(rankbitscommon & 0b000000000111000)==3) AND (BitCount(rankbitsplayer & 0b000000000000110)==2) AND (BitCount(rankbits & 0b000000000111110)=5) ] ? Two :
 HINT_You_Do_Not_Have_A_Straight
 
-
 ##Omaha_HaveUnderStraight##
 // to avoid AKQJT  is UnderStraight for hand JT
 WHEN HaveNutStraight RETURN false FORCE
 WHEN (Omaha_HighCardOfOurUnderStraight < 0) RETURN false FORCE
 // ten because jack returns the nut straight
 WHEN (Omaha_HighCardOfOurUnderStraight <= ten) RETURN true FORCE
-
 
 ##Omaha_PairInHand##
 RankOfTopPairInHand > 0
@@ -526,7 +554,6 @@ WHEN SuitOfSecondFlopCard == SuitOfTurnCard
 WHEN SuitOfThirdFlopCard == SuitOfTurnCard 
 	AND (SuitOfThirdFlopCard != SuitOfSecondFlopCard) 
 	AND (SuitOfFirstFlopCard != SuitOfThirdFlopCard) RETURN true FORCE
-
 
 ##Omaha_SuitsInHand##
   (suitbitsplayer_clubs    ? 1 : 0)
@@ -549,7 +576,6 @@ WHEN SuitOfThirdFlopCard == SuitOfTurnCard
 ##LowCardsInHand##
 // The number of unique low cards in our hand, especially for Hi/Lo
 BitCount(ConstRankBitsPlayerLowCards)
-
 
 ##FourCardStraightInHand##
 // A234, 2345 ... QAKJ
@@ -597,7 +623,6 @@ OR [BitCount((rankbitsplayer >> RankOfFirstHoleCard)  BitAnd 0b111) == 3]
 OR [BitCount((rankbitsplayer >> RankOfSecondHoleCard) BitAnd 0b111) == 3]
 OR [BitCount((rankbitsplayer >> RankOfThirdHoleCard)  BitAnd 0b111) == 3]
 OR [BitCount((rankbitsplayer >> RankOfFourthHoleCard) BitAnd 0b111) == 3]
-
 
 ##ThreeCardsWithOneGapInHand##
 // Shanky def: True if the bot has three cards in sequence with 1 gap in the hole.
@@ -660,7 +685,6 @@ WHEN RankOfBottomPairInHand < 0 RETURN false FORCE
 WHEN RankOfTopPairInHand > RankOfBottomPairInHand RETURN true FORCE
 
 
-
 //*****************************************************************************
 //
 // Straight and StraightDraw
@@ -692,7 +716,6 @@ WHEN (Omaha_BestPossibleStraightForUsIfFourHitsTheBoard  > Omaha_HighCardOfOurSt
 WHEN (Omaha_BestPossibleStraightForUsIfThreeHitsTheBoard > Omaha_HighCardOfOurStraight) AND NOT (board$3) SET me_add_MemOmahaStraightDrawOutsWeHaveAStraight_UnknownThrees
 WHEN (Omaha_BestPossibleStraightForUsIfTwoHitsTheBoard   > Omaha_HighCardOfOurStraight) AND NOT (board$2) SET me_add_MemOmahaStraightDrawOutsWeHaveAStraight_UnknownTwos
 WHEN Others RETURN me_re_MemOmahaStraightDrawOutsWeHaveAStraight FORCE
-
 
 ##Omaha_StraightDraw_Outs_We_Dont_Have_A_Straight_Yet##
 WHEN Omaha_HaveStraight RETURN false FORCE
@@ -987,7 +1010,6 @@ AND (Omaha_BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightFor
 ##IsFirstFlopSuit##
 FirstFlopSuit >=0
 
-
 ##IsSecondFlopSuit##
 SecondFlopSuit >=0
 
@@ -1011,7 +1033,6 @@ ThirdHoleCardSuit >=0
 
 ##IsFourthHoleCardSuit##
 FourthHoleCardSuit >=0
-
 
 ##Double_Suited##
 WHEN Omaha_SuitsInHand != 2 RETURN false FORCE
@@ -1085,7 +1106,6 @@ BitOr (IsSecondHoleCardSuit AND SecondHoleCardSuit == TSuitCommonForMadeFlush ? 
 BitOr (IsThirdHoleCardSuit  AND ThirdHoleCardSuit  == TSuitCommonForMadeFlush ? (RankOfThirdHoleCard  != ace ? (2 ** RankOfThirdHoleCard)  : 0b100000000000010) : 0)
 BitOr (IsFourthHoleCardSuit AND FourthHoleCardSuit == TSuitCommonForMadeFlush ? (RankOfFourthHoleCard != ace ? (2 ** RankOfFourthHoleCard) : 0b100000000000010) : 0)
 ] : 0
-
 
 
 // ****************

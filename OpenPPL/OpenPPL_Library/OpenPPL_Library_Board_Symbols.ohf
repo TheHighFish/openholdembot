@@ -86,6 +86,10 @@ rankhicommon
 ((rankbitscommon >> 2) & 0x7f) == 0x5d ? 1 :
 ((rankbitscommon >> 1) & 0x7f) == 0x5d ? 1 : 0
 
+##DoubleFlushDrawPossible##
+WHEN betround < turn RETURN false FORCE
+WHEN SuitsOnTurn == 2 AND NOT FlushPossibleOnTurn RETURN true FORCE
+
 ##ExactlyOneStraightPossibleOnFlop##
    [StraightPossibleOnFlop AND AcePresentOnFlop]
 OR [StraightPossibleOnFlop AND (TopFlopCard - LowestFlopCard == 4)]
