@@ -778,7 +778,6 @@ bool CSymbolEngineCards::EvaluateSymbol(const CString name, double *result, bool
 		}
 		else if (memcmp(name, "nstraightcommon", 15)==0 && strlen(name)==15)	
 		{
-      WarnIfSymbolIsHoldemOnly(name);
 			*result = nstraightcommon();
 		}
 		else if (memcmp(name, "nstraightfill", 13)==0 && strlen(name)==13)		
