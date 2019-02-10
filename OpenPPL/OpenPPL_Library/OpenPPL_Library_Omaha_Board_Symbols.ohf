@@ -70,10 +70,6 @@
 
 ##LowPossibleOnTurn##
 
-##Omaha_TwoPairOnBoard## 
-RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfBottomPairOnBoard > 0
-
-
 ##Omaha_TripsOnBoard##
 WHEN IsPreflop RETURN false FORCE
 WHEN  (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard )
