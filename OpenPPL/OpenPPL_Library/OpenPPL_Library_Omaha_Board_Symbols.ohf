@@ -71,7 +71,7 @@
 ##LowPossibleOnTurn##
 
 ##Omaha_PairOnBoard##
-   FirstFlopCard == SecondFlopCard
+       FirstFlopCard == SecondFlopCard
 OR FirstFlopCard == ThirdFlopCard
 OR FirstFlopCard == TurnCard
 OR FirstFlopCard == RiverCard
@@ -80,7 +80,7 @@ OR SecondFlopCard == TurnCard
 OR SecondFlopCard == RiverCard
 OR ThirdFlopCard == TurnCard
 OR ThirdFlopCard == RiverCard
-OR TurnCard == RiverCard
+OR (TurnCard == RiverCard AND TurnCard > 0)
 
 ##Omaha_TripsOnBoard##
    (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard )
