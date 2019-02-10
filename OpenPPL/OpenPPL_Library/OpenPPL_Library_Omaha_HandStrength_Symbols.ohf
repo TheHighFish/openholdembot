@@ -381,6 +381,7 @@ WHEN Others RETURN false FORCE
 Omaha_StraightDraw_Outs >= 8
 
 ##RankTripsOnBoard##
+WHEN IsPreflop RETURN false FORCE
 WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard RETURN  FirstFlopCard FORCE
 WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard RETURN  FirstFlopCard FORCE
 WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == RiverCard RETURN  FirstFlopCard FORCE
@@ -528,6 +529,7 @@ WHEN (Omaha_HighCardOfOurUnderStraight <= ten) RETURN true FORCE
 RankOfTopPairInHand > 0
 
 ##Omaha_RunnerRunnerFlushPossibleAtRiver##
+WHEN IsPreflop RETURN false FORCE
 WHEN SuitOfTurnCard != SuitOfRiverCard RETURN false FORCE
 WHEN SuitOfFirstFlopCard == SuitOfTurnCard 
 	AND (SuitOfFirstFlopCard != SuitOfSecondFlopCard) 

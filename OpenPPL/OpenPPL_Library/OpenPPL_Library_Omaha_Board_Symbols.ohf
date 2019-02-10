@@ -70,20 +70,13 @@
 
 ##LowPossibleOnTurn##
 
-##Omaha_PairOnBoard##
-       FirstFlopCard == SecondFlopCard
-OR FirstFlopCard == ThirdFlopCard
-OR FirstFlopCard == TurnCard
-OR FirstFlopCard == RiverCard
-OR SecondFlopCard == ThirdFlopCard
-OR SecondFlopCard == TurnCard
-OR SecondFlopCard == RiverCard
-OR ThirdFlopCard == TurnCard
-OR ThirdFlopCard == RiverCard
-OR (TurnCard == RiverCard AND TurnCard > 0)
+##Omaha_TwoPairOnBoard## 
+RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfBottomPairOnBoard > 0
+
 
 ##Omaha_TripsOnBoard##
-   (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard )
+WHEN IsPreflop RETURN false FORCE
+WHEN  (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard )
 OR ( FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard )
 OR ( FirstFlopCard == SecondFlopCard AND SecondFlopCard == RiverCard )
 OR ( FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard )
@@ -92,14 +85,15 @@ OR ( FirstFlopCard == TurnCard AND TurnCard == RiverCard )
 OR ( SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard )
 OR ( SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard )
 OR ( SecondFlopCard == TurnCard AND TurnCard == RiverCard )
-OR ( ThirdFlopCard == TurnCard AND TurnCard == RiverCard )
+OR ( ThirdFlopCard == TurnCard AND TurnCard == RiverCard ) RETURN true FORCE
 
 ##Omaha_QuadsOnBoard##
-   (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN  (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
 OR (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard)
 OR (FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard AND TurnCard == RiverCard)
 OR (FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard AND TurnCard == RiverCard)
-OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard AND TurnCard == RiverCard)
+OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard AND TurnCard == RiverCard) RETURN true FORCE
 
 ##Omaha_FlushPossible##
    BitCount(suitbitscommon_clubs   & ConstAllRanksWithoutAceLow) >= 3
