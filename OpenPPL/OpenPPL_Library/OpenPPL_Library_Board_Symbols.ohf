@@ -129,16 +129,19 @@ WHEN isomaha RETURN Omaha_FlushDrawPossible FORCE
 WHEN Others RETURN (nsuitedcommon >= 2) FORCE
 
 ##FlushOnBoard##
-(FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit)
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit) RETURN true FORCE
 
 ##FlushPossibleOnFlop##
-(FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit)
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit) RETURN true FORCE
 
 ##FlushPossibleOnTurn##
-   FlushPossibleOnFlop
+WHEN IsPreflop RETURN false FORCE
+WHEN  FlushPossibleOnFlop
 OR (FirstFlopSuit  == SecondFlopSuit AND FirstFlopSuit  == TurnSuit)
 OR (FirstFlopSuit  == ThirdFlopSuit  AND FirstFlopSuit  == TurnSuit)
-OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit)
+OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit) RETURN true FORCE
 
 ##FourCardsToWheelOnBoard##
 BitCount(rankbitscommon & 0b0000000000111110) >= 4
