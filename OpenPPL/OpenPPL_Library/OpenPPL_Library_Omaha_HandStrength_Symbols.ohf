@@ -337,7 +337,7 @@ AND HaveSecondTopPair
 msgbox$NutFullHouseOrFourOfAKind_Unot_Uyet_Uimplemented_D
 
 ##Omaha_HaveNothing##
-NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
+NOT HavePair AND NOT (Overcards == 4) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
 
 ##Omaha_HaveNutStraight##
 WHEN NOT Omaha_HaveStraight RETURN false FORCE
