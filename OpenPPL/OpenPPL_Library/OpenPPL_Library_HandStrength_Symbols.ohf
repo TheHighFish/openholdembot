@@ -254,7 +254,7 @@ WHEN isomaha RETURN Omaha_HaveBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveBestOverPair FORCE
 
 ##HaveBestOverPairOrBetter##
-  (HaveBestOverPair
+     (HaveBestOverPair
 OR HaveTwoPair
 OR HaveSet
 OR HaveTrips
@@ -489,3 +489,14 @@ WHEN Others RETURN HoldEm_Overcards FORCE
 ##SuitsInHand##
 WHEN isomaha RETURN Omaha_SuitsInHand FORCE
 WHEN Others RETURN HoldEm_SuitsInHand FORCE
+
+##HaveOverTrips##
+// hand$9 on board$995
+WHEN NOT HaveTrips RETURN false FORCE
+WHEN TripsRank == BestBoardCard RETURN true FORCE
+
+##HaveUnderTrips##
+// hand$9 on board$K99
+WHEN HaveOverTrips RETURN false FORCE
+WHEN NOT HaveTrips RETURN false FORCE
+WHEN TripsRank != BestBoardCard RETURN true FORCE
