@@ -190,9 +190,6 @@ betround == flop
 ##Omaha_HaveSecondBestKicker##
 
 
-##Omaha_HaveSecondBestKickerOrBetter##
-
-
 ##Omaha_HaveSecondBestOverPair##
 hand$KK AND (BestBoardCard < king)
 
@@ -226,9 +223,6 @@ AND (RankOfTopPairInHand == SecondBestBoardCard OR RankOfBottomPairInHand == Sec
 
 
 ##Omaha_HaveThirdBestKicker##
-
-
-##Omaha_HaveThirdBestKickerOrBetter##
 
 
 ##Omaha_HaveThirdBestOverPair##
@@ -273,8 +267,6 @@ AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == Fou
 
 ##Omaha_HaveBestKicker##
 
-
-##Omaha_HaveBestKickerOrBetter##
 
 
 ##Omaha_HaveBestOverPair##
@@ -336,8 +328,6 @@ AND HaveSecondTopPair
 ##Omaha_NutFullHouseOrFourOfAKind##
 msgbox$NutFullHouseOrFourOfAKind_Unot_Uyet_Uimplemented_D
 
-##Omaha_HaveNothing##
-NOT HavePair AND NOT (Overcards == 4) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
 
 ##Omaha_HaveNutStraight##
 WHEN NOT Omaha_HaveStraight RETURN false FORCE
@@ -415,7 +405,8 @@ WHEN (RankOfBottomPairInHand == RankOfTopPairOnBoard) RETURN true FORCE
 RankOfTopPairInHand > BestBoardCard
 
 ##Omaha_HavePair##
-(rankbitsplayer BitAnd rankbitscommon) > 0 
+PairInHand
+OR (rankbitsplayer BitAnd rankbitscommon) > 0
 
 ##Omaha_HavePocketPair##
 RankOfTopPairInHand > 0

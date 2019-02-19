@@ -115,8 +115,6 @@ HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3)
 ##HoldEm_HadSecondTopPairOnFlop##
 [(RankOfFirstHoleCard == SecondTopFlopCard) OR (RankOfSecondHoleCard == SecondTopFlopCard)]
 
-
-
 ##HoldEm_HadTopPairOnTurn##
 [ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
 
@@ -282,8 +280,6 @@ OR HaveGoodBackdoorStraightDraw54321
 ##HoldEm_HaveSecondBestKicker##
 (NumberOfBetterKickers == 1)
 
-##HoldEm_HaveSecondBestKickerOrBetter##
-HaveSecondBestKicker OR HaveBestKickerOrBetter
 
 ##HoldEm_HaveSecondBestOverPair##
     ($KK
@@ -293,8 +289,6 @@ AND ThirdFlopCard < king
 AND TurnCard < king
 AND RiverCard < king)
 
-##HoldEm_HaveSecondBestOverPairOrBetter##
-(HaveSecondBestOverPair OR HaveBestOverPairOrBetter)
 
 ##HoldEm_HaveSecondNutFlush##
 [HaveFlush AND (NumberOfUnknownSuitedOvercards == 1)]
@@ -317,8 +311,6 @@ ispair AND RankOfFirstHoleCard == SecondBestBoardCard
 ##HoldEm_HaveThirdBestKicker##
 (NumberOfBetterKickers == 2)
 
-##HoldEm_HaveThirdBestKickerOrBetter##
-HaveThirdBestKicker OR HaveSecondBestKickerOrBetter
 
 ##HoldEm_HaveThirdBestOverPair##
     $QQ
@@ -327,9 +319,6 @@ AND SecondFlopCard < queen
 AND ThirdFlopCard < queen
 AND TurnCard < queen
 AND RiverCard < queen
-
-##HoldEm_HaveThirdBestOverPairOrBetter##
-(HaveThirdBestOverPair OR  HaveSecondBestOverPairOrBetter)
 
 ##HoldEm_HaveThirdNutFlush##
 [HaveFlush AND (NumberOfUnknownSuitedOvercards == 2)]
@@ -408,8 +397,6 @@ OR HaveBackdoorSecondNutFlushDraw
 ##HoldEm_HaveBestKicker##
 (NumberOfBetterKickers == 0)
 
-##HoldEm_HaveBestKickerOrBetter##
-(HaveBestKicker OR HavePair OR HaveOverPairOrBetter)
 
 ##HoldEm_HaveBestOverPair##
    ($AA
@@ -419,16 +406,6 @@ AND ThirdFlopCard < ace
 AND TurnCard < ace
 AND RiverCard < ace)
 
-##HoldEm_HaveBestOverPairOrBetter##
-  (HaveBestOverPair
-OR HaveTwoPair
-OR HaveSet
-OR HaveTrips
-OR HaveStraight
-OR HaveFlush
-OR HaveFullHouse
-OR HaveQuads
-OR HaveStraightFlush)
 
 ##LowestBoardCard##
 ranklocommon
@@ -621,10 +598,6 @@ WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN 
 
 ##HoldEm_HaveFullHouse##
 isfullhouse OR HaveQuads
-
-##HoldEm_HaveNothing##
-NOT HavePair AND NOT (Overcards == 2) AND NOT HaveBestOverPairOrBetter AND NOT HaveBackdoorFlushDraw AND NOT HaveStraightDraw AND NOT HaveInsideStraightDraw AND NOT HaveFlushDraw
-// AND NOT HaveBackdoorStraightDraw
 
 ##HoldEm_HaveNutFlush##
     HaveNutStraightFlush
@@ -1052,8 +1025,6 @@ OR ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT
 ##HoldEm_HaveOverPair##
 ispair AND (rankhiplayer > rankhicommon)
 
-##HoldEm_HaveOverPairOrBetter##
-HaveOverPair OR HaveBestOverPairOrBetter
 
 ##HoldEm_HavePair##
 [  RankOfFirstHoleCard==RankOfSecondHoleCard

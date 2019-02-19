@@ -116,7 +116,7 @@ OR [StraightPossibleOnFlop AND (TopFlopCard - LowestFlopCard == 4)]
 
 ##FlopCardPairedOnTurn##
 WHEN IsPreflop RETURN false FORCE
-WHEN  FirstFlopCard == TurnCard
+WHEN FirstFlopCard == TurnCard
 OR SecondFlopCard == TurnCard
 OR ThirdFlopCard == TurnCard RETURN true FORCE
 
@@ -295,7 +295,7 @@ WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != Lowest
 BitCount[rankbitscommon >> (rankhiplayer + 1)]
 
 ##OvercardsOnBoard##
-  ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
+   ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
 + ((SecondFlopCard > rankhiplayer) ? 1 : 0)
 + ((ThirdFlopCard  > rankhiplayer) ? 1 : 0)
 + ((TurnCard       > rankhiplayer) ? 1 : 0)
