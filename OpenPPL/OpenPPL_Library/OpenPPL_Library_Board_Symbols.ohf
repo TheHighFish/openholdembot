@@ -86,6 +86,10 @@ rankhicommon
 ((rankbitscommon >> 2) & 0x7f) == 0x5d ? 1 :
 ((rankbitscommon >> 1) & 0x7f) == 0x5d ? 1 : 0
 
+##DoubleFlushDrawPossible##
+WHEN betround < turn RETURN false FORCE
+WHEN SuitsOnTurn == 2 AND NOT FlushPossibleOnTurn RETURN true FORCE
+
 ##ExactlyOneStraightPossibleOnFlop##
    [StraightPossibleOnFlop AND AcePresentOnFlop]
 OR [StraightPossibleOnFlop AND (TopFlopCard - LowestFlopCard == 4)]
@@ -111,9 +115,10 @@ OR [StraightPossibleOnFlop AND (TopFlopCard - LowestFlopCard == 4)]
 -1
 
 ##FlopCardPairedOnTurn##
-   FirstFlopCard == TurnCard
+WHEN IsPreflop RETURN false FORCE
+WHEN FirstFlopCard == TurnCard
 OR SecondFlopCard == TurnCard
-OR ThirdFlopCard == TurnCard
+OR ThirdFlopCard == TurnCard RETURN true FORCE
 
 ##FlushPossible##
 WHEN isomaha RETURN Omaha_FlushPossible FORCE
@@ -124,22 +129,26 @@ WHEN isomaha RETURN Omaha_FlushDrawPossible FORCE
 WHEN Others RETURN (nsuitedcommon >= 2) FORCE
 
 ##FlushOnBoard##
-(FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit)
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit) RETURN true FORCE
 
 ##FlushPossibleOnFlop##
-(FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit)
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit) RETURN true FORCE
 
 ##FlushPossibleOnTurn##
-   FlushPossibleOnFlop
+WHEN IsPreflop RETURN false FORCE
+WHEN  FlushPossibleOnFlop
 OR (FirstFlopSuit  == SecondFlopSuit AND FirstFlopSuit  == TurnSuit)
 OR (FirstFlopSuit  == ThirdFlopSuit  AND FirstFlopSuit  == TurnSuit)
-OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit)
+OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit) RETURN true FORCE
 
 ##FourCardsToWheelOnBoard##
 BitCount(rankbitscommon & 0b0000000000111110) >= 4
 
 ##FourOfOneSuitOnTurn##
-((FirstFlopSuit == SecondFlopSuit) AND (ThirdFlopSuit == TurnSuit) AND (FirstFlopSuit == TurnSuit))
+WHEN IsPreflop RETURN false FORCE
+WHEN ((FirstFlopSuit == SecondFlopSuit) AND (ThirdFlopSuit == TurnSuit) AND (FirstFlopSuit == TurnSuit)) RETURN true FORCE
 
 ##FourthBestBoardCard##
 // Only considering individual ranks, paired cards get ignored this way
@@ -286,18 +295,18 @@ WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != Lowest
 BitCount[rankbitscommon >> (rankhiplayer + 1)]
 
 ##OvercardsOnBoard##
-  ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
+   ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
 + ((SecondFlopCard > rankhiplayer) ? 1 : 0)
 + ((ThirdFlopCard  > rankhiplayer) ? 1 : 0)
 + ((TurnCard       > rankhiplayer) ? 1 : 0)
 + ((RiverCard      > rankhiplayer) ? 1 : 0)
 
 ##PairOnBoard##
-WHEN isomaha RETURN Omaha_PairOnBoard FORCE
-WHEN Others RETURN (nrankedcommon >= 2) FORCE
+RankOfTopPairOnBoard > 0
 
 ##PairOnFlop##
-(FirstFlopCard == SecondFlopCard OR SecondFlopCard == ThirdFlopCard OR FirstFlopCard == ThirdFlopCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopCard == SecondFlopCard OR SecondFlopCard == ThirdFlopCard OR FirstFlopCard == ThirdFlopCard) RETURN true FORCE
 
 ##LowestFlopCard##
 FirstFlopCard  <= SecondFlopCard AND FirstFlopCard  <=  ThirdFlopCard  ? FirstFlopCard :
@@ -315,10 +324,11 @@ AND NOT [MoreThanOneStraightPossibleOnFlop
   OR MoreThanOneStraightPossibleOnRiver]
 
 ##PairOnTurn##
-   PairOnFlop
+WHEN IsPreflop RETURN false FORCE
+WHEN PairOnFlop
 OR TopFlopCardPairedOnTurn
 OR SecondTopFlopCardPairedOnTurn
-OR LowestFlopCardPairedOnTurn
+OR LowestFlopCardPairedOnTurn RETURN true FORCE
 
 ##QuadsOnBoard##
 WHEN isomaha RETURN Omaha_QuadsOnBoard FORCE
@@ -490,20 +500,23 @@ ThirdFlopCard >= FirstFlopCard AND ThirdFlopCard >= SecondFlopCard ? ThirdFlopCa
 ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
 
 ##TopFlopCardPairedOnRiver##
-(TopFlopCard == RiverCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (TopFlopCard == RiverCard) RETURN true FORCE
 
 ##TopFlopCardPairedOnTurn##
-(TopFlopCard == TurnCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (TopFlopCard == TurnCard) RETURN true FORCE
 
 ##TripsOnBoard##
 WHEN isomaha RETURN Omaha_TripsOnBoard FORCE
 WHEN Others RETURN (nrankedcommon >= 3) FORCE
 
 ##TripsOnBoardOnTurn##
-   (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard)
 OR (FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard)
 OR (FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
-OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
+OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard) RETURN true FORCE
 
 ##TurnCardIsOvercardToBoard##
 [   TurnCard > FirstFlopCard
@@ -511,14 +524,15 @@ AND TurnCard > SecondFlopCard
 AND TurnCard > ThirdFlopCard ]
 
 ##TurnCardPaired##
-(TurnCard == RiverCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (TurnCard == RiverCard) RETURN true FORCE
 
 ##TwoOfOneSuitPresentOnFlop##
-((FirstFlopSuit == SecondFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit) OR (SecondFlopSuit == ThirdFlopSuit))
+WHEN IsPreflop RETURN false FORCE
+WHEN ((FirstFlopSuit == SecondFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit) OR (SecondFlopSuit == ThirdFlopSuit)) RETURN true FORCE
 
 ##TwoPairOnBoard##
-   ((pokervalcommon & twopair) > 0)
-OR ((pokervalcommon & fullhouse) > 0)
+WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfBottomPairOnBoard > 0 RETURN true FORCE
 
 ##TwoPairOnBoardOnTurn##
    (betround>flop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)

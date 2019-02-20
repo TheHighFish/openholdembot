@@ -120,8 +120,7 @@ WHEN isomaha RETURN Omaha_HaveSecondBestKicker FORCE
 WHEN Others RETURN HoldEm_HaveSecondBestKicker FORCE
 
 ##HaveSecondBestKickerOrBetter##
-WHEN isomaha RETURN Omaha_HaveSecondBestKickerOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveSecondBestKickerOrBetter FORCE
+HaveSecondBestKicker OR HaveBestKickerOrBetter
 
 ##HaveSecondBestOverPair##
 WHEN isomaha RETURN Omaha_HaveSecondBestOverPair FORCE
@@ -158,8 +157,7 @@ WHEN isomaha RETURN Omaha_HaveThirdBestKicker FORCE
 WHEN Others RETURN HoldEm_HaveThirdBestKicker FORCE
 
 ##HaveThirdBestKickerOrBetter##
-WHEN isomaha RETURN Omaha_HaveThirdBestKickerOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveThirdBestKickerOrBetter FORCE
+HaveThirdBestKicker OR HaveSecondBestKickerOrBetter
 
 ##HaveThirdBestOverPair##
 WHEN isomaha RETURN Omaha_HaveThirdBestOverPair FORCE
@@ -246,15 +244,14 @@ WHEN isomaha RETURN Omaha_HaveBestKicker FORCE
 WHEN Others RETURN HoldEm_HaveBestKicker FORCE
 
 ##HaveBestKickerOrBetter##
-WHEN isomaha RETURN Omaha_HaveBestKickerOrBetter FORCE
-WHEN Others RETURN HoldEm_HaveBestKickerOrBetter FORCE
+(HaveBestKicker OR HavePair OR HaveOverPairOrBetter)
 
 ##HaveBestOverPair##
 WHEN isomaha RETURN Omaha_HaveBestOverPair FORCE
 WHEN Others RETURN HoldEm_HaveBestOverPair FORCE
 
 ##HaveBestOverPairOrBetter##
-  (HaveBestOverPair
+     (HaveBestOverPair
 OR HaveTwoPair
 OR HaveSet
 OR HaveTrips
@@ -309,8 +306,15 @@ WHEN isomaha RETURN Omaha_HaveFullHouse FORCE
 WHEN Others RETURN HoldEm_HaveFullHouse FORCE
 
 ##HaveNothing##
-WHEN isomaha RETURN Omaha_HaveNothing FORCE
-WHEN Others RETURN HoldEm_HaveNothing FORCE
+WHEN HaveOverPairOrBetter RETURN false FORCE
+WHEN HavePair RETURN false FORCE
+WHEN (Overcards == 2) RETURN false FORCE
+WHEN HaveBackdoorFlushDraw RETURN false FORCE
+WHEN HaveStraightDraw RETURN false FORCE
+WHEN HaveInsideStraightDraw RETURN false FORCE
+WHEN HaveFlushDraw RETURN false FORCE
+// WHEN HaveBackdoorStraightDraw RETURN false FORCE
+WHEN Others RETURN true FORCE
 
 ##HaveNutFlush##
 WHEN isomaha RETURN Omaha_HaveNutFlush FORCE
@@ -489,3 +493,14 @@ WHEN Others RETURN HoldEm_Overcards FORCE
 ##SuitsInHand##
 WHEN isomaha RETURN Omaha_SuitsInHand FORCE
 WHEN Others RETURN HoldEm_SuitsInHand FORCE
+
+##HaveOverTrips##
+// hand$9 on board$995
+WHEN NOT HaveTrips RETURN false FORCE
+WHEN TripsRank == BestBoardCard RETURN true FORCE
+
+##HaveUnderTrips##
+// hand$9 on board$K99
+WHEN HaveOverTrips RETURN false FORCE
+WHEN NOT HaveTrips RETURN false FORCE
+WHEN TripsRank != BestBoardCard RETURN true FORCE
