@@ -13,6 +13,13 @@
 
 #define DEBUG_DLL_EXPORTS
 
+#ifdef _DEBUG
+// visual leak detector in debug-mode
+// https://vld.codeplex.com/
+// needs to be included at the very beginning
+#include <vld.h>			
+#endif _DEBUG
+
 #include "debug.h"
 #include "afxwin.h"
 #include <assert.h>
@@ -22,12 +29,6 @@
 #include "..\Files_DLL\Files.h"
 #include "..\..\Shared\CCritSec\CCritSec.h"
 #include "..\..\Shared\MagicNumbers\MagicNumbers.h"
-
-#ifdef _DEBUG
-// visual leak detector in debug-mode
-// https://vld.codeplex.com/
-#include <vld.h>			
-#endif _DEBUG
 
 FILE *log_fp = NULL;
 int session_ID = kUndefined;
