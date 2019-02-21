@@ -303,10 +303,11 @@ BitCount[((rankbitsplayer BitAnd rankbitscommon) >> RankOfTopPairOnBoard) >= 2]
 Omaha_StraightDraw_Outs >= 8
 
 ##Omaha_FlushDraw_Counter##
-   (BitCount(suitbitsplayer_clubs BitAnd ConstAllRanksWithoutAceLow)    >= 2 & BitCount(suitbitscommon_clubs BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
+  (BitCount(suitbitsplayer_clubs BitAnd ConstAllRanksWithoutAceLow)    >= 2 & BitCount(suitbitscommon_clubs BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
 + (BitCount(suitbitsplayer_diamonds BitAnd ConstAllRanksWithoutAceLow) >= 2 & BitCount(suitbitscommon_diamonds BitAnd ConstAllRanksWithoutAceLow) == 2 ? 1 : 0)
 + (BitCount(suitbitsplayer_hearts BitAnd ConstAllRanksWithoutAceLow)   >= 2 & BitCount(suitbitscommon_hearts BitAnd ConstAllRanksWithoutAceLow)   == 2 ? 1 : 0)
-+ (BitCount(suitbitsplayer_spades BitAnd ConstAllRanksWithoutAceLow)   >= 2 & BitCount(suitbitscommon_clubs BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
++ (BitCount(suitbitsplayer_spades BitAnd ConstAllRanksWithoutAceLow)   >= 2 & BitCount(suitbitscommon_spades BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
+
 
 ##Omaha_HaveFlushDraw##
 Omaha_FlushDraw_Counter > 0
