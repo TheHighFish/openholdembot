@@ -101,19 +101,26 @@ HINT_There_Is_No_Pair_In_Hand__MinusOne
 -1
 
 ##Omaha_HadOverPairOnFlop##
+WHEN IsPreflop RETURN false FORCE
+WHEN IsFlop RETURN HaveOverPair FORCE
 WHEN RankOfTopPairInHand > TopFlopCard RETURN true FORCE
 
 ##Omaha_HadOverPairOnTurn##
-WHEN RankOfTopPairInHand > TopFlopCard
-AND RankOfTopPairInHand > TurnCard  RETURN true FORCE
+WHEN betround < turn RETURN false FORCE
+WHEN IsTurn RETURN HaveOverPair FORCE
+WHEN HadOverPairOnFlop AND RankOfTopPairInHand > TurnCard  RETURN true FORCE
 
 
 ##Omaha_HadSecondOverPairOnFlop##
-RankOfTopPairInHand < TopFlopCard
-AND RankOfTopPairInHand > SecondTopFlopCard
+WHEN IsPreflop RETURN false FORCE
+WHEN IsFlop RETURN HaveSecondOverPair FORCE
+WHEN RankOfTopPairInHand < TopFlopCard
+AND RankOfTopPairInHand > SecondTopFlopCard RETURN true FORCE
 
 ##Omaha_HadSecondOverPairOnTurn##
-HadSecondOverPairOnFlop AND ((TurnCard == TopFlopCard) OR (TurnCard < TopFlopCard))
+WHEN betround < turn RETURN false FORCE
+WHEN IsTurn RETURN HaveSecondOverPair FORCE
+WHEN HadSecondOverPairOnFlop AND ((TurnCard == TopFlopCard) OR (TurnCard < TopFlopCard)) RETURN true FORCE
 
 
 ##Omaha_HadPairOnFlop##
@@ -127,55 +134,71 @@ WHEN Omaha_HadPairOnFlop RETURN true FORCE
 WHEN (((rankbitsplayer >> TurnCard) BitAnd 1) == 1) RETURN true FORCE
 
 ##TopPairInHandPairsTheFlop##
+WHEN IsPreflop RETURN false FORCE
 WHEN RankOfTopPairInHand == FirstFlopCard 
 OR RankOfTopPairInHand == SecondFlopCard 
 OR RankOfTopPairInHand == ThirdFlopCard RETURN true FORCE
 
 ##BottomPairInHandPairsTheFlop##
+WHEN IsPreflop RETURN false FORCE
 WHEN RankOfBottomPairInHand == FirstFlopCard 
 OR RankOfBottomPairInHand == SecondFlopCard 
 OR RankOfBottomPairInHand == ThirdFlopCard RETURN true FORCE
 
 ##Omaha_HadSetOnFlop##
+WHEN IsPreflop RETURN false FORCE
+WHEN IsFlop RETURN HaveSet FORCE
 WHEN TopPairInHandPairsTheFlop 
 OR BottomPairInHandPairsTheFlop RETURN true FORCE
 
 ##Omaha_HadSetOnTurn##
+WHEN betround < turn RETURN false FORCE
+WHEN IsTurn RETURN HaveSet FORCE
 WHEN HadSetOnFlop 
 OR RankOfTopPairInHand == TurnCard 
 OR RankOfBottomPairInHand == TurnCard RETURN true FORCE
 
 ##Omaha_HadTopPairOnFlop##
-   RankOfFirstHoleCard == HighestRankOnFlop
+WHEN IsPreflop RETURN false FORCE
+WHEN IsFlop RETURN HaveTopPair FORCE
+WHEN RankOfFirstHoleCard == HighestRankOnFlop
 OR RankOfSecondHoleCard == HighestRankOnFlop
 OR RankOfThirdHoleCard == HighestRankOnFlop
-OR RankOfFourthHoleCard == HighestRankOnFlop
+OR RankOfFourthHoleCard == HighestRankOnFlop RETURN true FORCE
 
 ##Omaha_HadSecondTopPairOnFlop##
+WHEN IsPreflop RETURN false FORCE
+WHEN IsFlop RETURN HaveSecondTopPair FORCE
 WHEN RankOfFirstHoleCard == SecondTopFlopCard
 OR RankOfSecondHoleCard == SecondTopFlopCard
 OR RankOfThirdHoleCard == SecondTopFlopCard
-OR RankOfFourthHoleCard == SecondTopFlopCard
+OR RankOfFourthHoleCard == SecondTopFlopCard RETURN true FORCE
 
 ##Omaha_HadTopPairOnTurn##
-RankOfFirstHoleCard == HighestRankOnTurn
+WHEN betround < turn RETURN false FORCE
+WHEN IsTurn RETURN HaveTopPair FORCE
+WHEN RankOfFirstHoleCard == HighestRankOnTurn
 OR RankOfSecondHoleCard == HighestRankOnTurn
 OR RankOfThirdHoleCard == HighestRankOnTurn
-OR RankOfFourthHoleCard == HighestRankOnTurn
+OR RankOfFourthHoleCard == HighestRankOnTurn RETURN true FORCE
 
 ##ThirdHoleCardPairsTheFlop##
+WHEN IsPreflop RETURN false FORCE
 WHEN (RankOfThirdHoleCard == FirstFlopCard) RETURN true FORCE
 WHEN (RankOfThirdHoleCard == SecondFlopCard) RETURN true FORCE
 WHEN (RankOfThirdHoleCard == ThirdFlopCard) RETURN true FORCE
 WHEN Others RETURN false FORCE
 
 ##FourthHoleCardPairsTheFlop##
+WHEN IsPreflop RETURN false FORCE
 WHEN (RankOfFourthHoleCard == FirstFlopCard) RETURN true FORCE
 WHEN (RankOfFourthHoleCard == SecondFlopCard) RETURN true FORCE
 WHEN (RankOfFourthHoleCard == ThirdFlopCard) RETURN true FORCE
 WHEN Others RETURN false FORCE
 
 ##Omaha_HadTwoPairOnFlop##
+WHEN IsPreflop RETURN false FORCE
+WHEN IsFlop RETURN HaveTwoPair FORCE
 WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop RETURN true FORCE
 WHEN FirstHoleCardPairsTheFlop AND ThirdHoleCardPairsTheFlop RETURN true FORCE
 WHEN FirstHoleCardPairsTheFlop AND FourthHoleCardPairsTheFlop RETURN true FORCE
@@ -191,7 +214,8 @@ betround == flop
 
 
 ##Omaha_HaveSecondBestOverPair##
-hand$KK AND (BestBoardCard < king)
+WHEN IsPreflop RETURN false FORCE
+WHEN hand$KK AND (BestBoardCard < king) RETURN true FORCE
 
 ##Omaha_NumberOfPossibleBetterStraights##
 WHEN (Omaha_HighCardOfOurStraight == ace)   RETURN 0 FORCE
@@ -214,23 +238,28 @@ WHEN Omaha_HaveNutStraight RETURN false FORCE
 WHEN Omaha_NumberOfPossibleBetterStraights = 1 RETURN true FORCE	
 
 ##Omaha_HaveSecondOverPair##
-RankOfTopPairInHand < BestBoardCard AND RankOfTopPairInHand > SecondBestBoardCard
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfTopPairInHand < BestBoardCard AND RankOfTopPairInHand > SecondBestBoardCard RETURN true FORCE	
 
 
 ##Omaha_HaveSecondTopSet##
-RankOfTopPairInHand > 0
-AND (RankOfTopPairInHand == SecondBestBoardCard OR RankOfBottomPairInHand == SecondBestBoardCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfTopPairInHand > 0
+AND (RankOfTopPairInHand == SecondBestBoardCard 
+OR RankOfBottomPairInHand == SecondBestBoardCard) RETURN true FORCE	
 
 
 ##Omaha_HaveThirdBestKicker##
 
 
 ##Omaha_HaveThirdBestOverPair##
-hand$QQ AND (BestBoardCard < queen)
+WHEN IsPreflop RETURN false FORCE
+WHEN hand$QQ AND (BestBoardCard < queen) RETURN true FORCE	
 
 
 ##Omaha_HaveThirdOverPair##
-(RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestBoardCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestBoardCard) RETURN true FORCE
 
 
 ##Omaha_TopPairRank##
@@ -249,20 +278,24 @@ HaveFourthTopPair ? FourthBestBoardCard : 0
 HaveFifthTopPair ? FifthBestBoardCard : 0
 
 ##Omaha_HaveThirdTopSet##
-RankOfTopPairInHand > 0
-AND (RankOfTopPairInHand == ThirdBestBoardCard OR RankOfBottomPairInHand == ThirdBestBoardCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfTopPairInHand > 0
+AND (RankOfTopPairInHand == ThirdBestBoardCard OR RankOfBottomPairInHand == ThirdBestBoardCard) RETURN true FORCE
 
 
 ##Omaha_HaveFourthOverPair##
-(RankOfTopPairInHand < ThirdBestBoardCard) AND (RankOfTopPairInHand > FourthBestBoardCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (RankOfTopPairInHand < ThirdBestBoardCard) AND (RankOfTopPairInHand > FourthBestBoardCard) RETURN true FORCE
 
 ##Omaha_HaveFourthTopSet##
-RankOfTopPairInHand > 0
-AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == FourthBestBoardCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfTopPairInHand > 0
+AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == FourthBestBoardCard) RETURN true FORCE
 
 
 ##Omaha_HaveFifthOverPair##
-(RankOfTopPairInHand < FourthBestBoardCard) AND (RankOfTopPairInHand > FifthBestBoardCard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (RankOfTopPairInHand < FourthBestBoardCard) AND (RankOfTopPairInHand > FifthBestBoardCard) RETURN true FORCE
 
 
 ##Omaha_HaveBestKicker##
@@ -270,7 +303,8 @@ AND (RankOfTopPairInHand == FourthBestBoardCard OR RankOfBottomPairInHand == Fou
 
 
 ##Omaha_HaveBestOverPair##
-hand$AA AND (BestBoardCard < ace)
+WHEN IsPreflop RETURN false FORCE
+WHEN hand$AA AND (BestBoardCard < ace) RETURN true FORCE
 
 
 ##Omaha_HaveBottomPair##
@@ -286,10 +320,11 @@ OR RankOfBottomPairInHand == LowestBoardCard
 
 
 ##Omaha_HaveBottomTrips##
-RankOfFirstHoleCard == RankOfBottomPairOnBoard
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfFirstHoleCard == RankOfBottomPairOnBoard
 OR RankOfSecondHoleCard == RankOfBottomPairOnBoard
 OR RankOfThirdHoleCard == RankOfBottomPairOnBoard
-OR RankOfFourthHoleCard == RankOfBottomPairOnBoard
+OR RankOfFourthHoleCard == RankOfBottomPairOnBoard RETURN true FORCE
 
 
 ##Omaha_HaveBottomTwoPair##
@@ -303,10 +338,11 @@ BitCount[((rankbitsplayer BitAnd rankbitscommon) >> RankOfTopPairOnBoard) >= 2]
 Omaha_StraightDraw_Outs >= 8
 
 ##Omaha_FlushDraw_Counter##
-   (BitCount(suitbitsplayer_clubs BitAnd ConstAllRanksWithoutAceLow)    >= 2 & BitCount(suitbitscommon_clubs BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
+   (BitCount(suitbitsplayer_clubs BitAnd ConstAllRanksWithoutAceLow) >= 2 & BitCount(suitbitscommon_clubs BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
 + (BitCount(suitbitsplayer_diamonds BitAnd ConstAllRanksWithoutAceLow) >= 2 & BitCount(suitbitscommon_diamonds BitAnd ConstAllRanksWithoutAceLow) == 2 ? 1 : 0)
-+ (BitCount(suitbitsplayer_hearts BitAnd ConstAllRanksWithoutAceLow)   >= 2 & BitCount(suitbitscommon_hearts BitAnd ConstAllRanksWithoutAceLow)   == 2 ? 1 : 0)
-+ (BitCount(suitbitsplayer_spades BitAnd ConstAllRanksWithoutAceLow)   >= 2 & BitCount(suitbitscommon_clubs BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
++ (BitCount(suitbitsplayer_hearts BitAnd ConstAllRanksWithoutAceLow) >= 2 & BitCount(suitbitscommon_hearts BitAnd ConstAllRanksWithoutAceLow)   == 2 ? 1 : 0)
++ (BitCount(suitbitsplayer_spades BitAnd ConstAllRanksWithoutAceLow) >= 2 & BitCount(suitbitscommon_spades BitAnd ConstAllRanksWithoutAceLow)    == 2 ? 1 : 0)
+
 
 ##Omaha_HaveFlushDraw##
 Omaha_FlushDraw_Counter > 0
@@ -314,16 +350,17 @@ Omaha_FlushDraw_Counter > 0
 ##Omaha_HaveDoubleFlushDraw##
 Omaha_FlushDraw_Counter == 2
 
-
 ##Omaha_HaveFullHouse##
-(HaveSet AND PairOnBoard)
+WHEN IsPreflop RETURN false FORCE
+WHEN (HaveSet AND PairOnBoard)
 OR (RankOfTopPairInHand > 0 AND TripsOnBoard)
-OR (HaveTrips AND HaveTwoPair)
+OR (HaveTrips AND HaveTwoPair) RETURN true FORCE
 
 ##Omaha_HaveNutFullHouse##
-HaveTopTrips
+WHEN IsPreflop RETURN false FORCE
+WHEN HaveTopTrips
 AND RankOfTopPairOnBoard == BestBoardCard
-AND HaveSecondTopPair
+AND HaveSecondTopPair RETURN true FORCE
 
 ##Omaha_NutFullHouseOrFourOfAKind##
 msgbox$NutFullHouseOrFourOfAKind_Unot_Uyet_Uimplemented_D
@@ -402,7 +439,8 @@ WHEN (RankOfTopPairInHand == RankOfTopPairOnBoard) RETURN true FORCE
 WHEN (RankOfBottomPairInHand == RankOfTopPairOnBoard) RETURN true FORCE
 
 ##Omaha_HaveOverPair##
-RankOfTopPairInHand > BestBoardCard
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfTopPairInHand > BestBoardCard RETURN true FORCE
 
 ##Omaha_HavePair##
 PairInHand
@@ -412,27 +450,33 @@ OR (rankbitsplayer BitAnd rankbitscommon) > 0
 RankOfTopPairInHand > 0
 
 ##TopPairInHandPairsTheBoard##
-RankOfTopPairInHand==FirstFlopCard
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfTopPairInHand < 0 RETURN false FORCE
+WHEN RankOfTopPairInHand==FirstFlopCard
 OR RankOfTopPairInHand==SecondFlopCard
 OR RankOfTopPairInHand==ThirdFlopCard
 OR RankOfTopPairInHand==TurnCard
-OR RankOfTopPairInHand==RiverCard
+OR RankOfTopPairInHand==RiverCard RETURN true FORCE
 
 ##BottomPairInHandPairsTheBoard##
-RankOfBottomPairInHand==FirstFlopCard
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfBottomPairInHand < 0 RETURN false FORCE
+WHEN RankOfBottomPairInHand==FirstFlopCard
 OR RankOfBottomPairInHand==SecondFlopCard
 OR RankOfBottomPairInHand==ThirdFlopCard
 OR RankOfBottomPairInHand==TurnCard
-OR RankOfBottomPairInHand==RiverCard
+OR RankOfBottomPairInHand==RiverCard RETURN true FORCE
 
 ##Omaha_HaveSet##
-TopPairInHandPairsTheBoard OR BottomPairInHandPairsTheBoard
+WHEN IsPreflop RETURN false FORCE
+WHEN TopPairInHandPairsTheBoard OR BottomPairInHandPairsTheBoard RETURN true FORCE	
 
 ##Omaha_HaveTopTrips##
-RankOfFirstHoleCard == RankOfTopPairOnBoard
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfFirstHoleCard == RankOfTopPairOnBoard
 OR RankOfSecondHoleCard == RankOfTopPairOnBoard
 OR RankOfThirdHoleCard == RankOfTopPairOnBoard
-OR RankOfFourthHoleCard == RankOfTopPairOnBoard
+OR RankOfFourthHoleCard == RankOfTopPairOnBoard RETURN true FORCE	
 
 ##Omaha_HaveTrips##
 Omaha_HaveTopTrips OR Omaha_HaveBottomTrips
@@ -441,15 +485,16 @@ Omaha_HaveTopTrips OR Omaha_HaveBottomTrips
 Omaha_StraightDraw_Outs > 0
 
 ##Omaha_HaveTopNonBoardPairedPair##
-WHEN NOT IsPostflop RETURN false FORCE
+WHEN IsPreflop RETURN false FORCE
 WHEN (RankOfFirstHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
 WHEN (RankOfSecondHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
 WHEN (RankOfThirdHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
 WHEN (RankOfFourthHoleCard == HighestUnpairedBoardCard) RETURN true FORCE
 
 ##Omaha_HaveTopSet##
-RankOfTopPairInHand == BestBoardCard
-OR RankOfBottomPairInHand == BestBoardCard
+WHEN IsPreflop RETURN false FORCE
+WHEN RankOfTopPairInHand == BestBoardCard
+OR RankOfBottomPairInHand == BestBoardCard RETURN true FORCE
 
 ##Omaha_HaveTopTwoPair##
 WHEN HaveTopPair AND HaveSecondTopPair RETURN true FORCE
