@@ -1568,7 +1568,7 @@ chair$abc
 \begin_inset Text
 
 \begin_layout Plain Layout
-player “abc” chair number (0-9); -1 if not found
+player “abc” chair number (0-9); -1 if not found, case-sensitive
 \end_layout
 
 \end_inset
@@ -1588,7 +1588,7 @@ chairbit$abc
 \begin_inset Text
 
 \begin_layout Plain Layout
-player “abc” chairbit (1 << chair$abc); 0 if not found 
+player “abc” chairbit (1 << chair$abc); 0 if not found, case-sensitive
 \end_layout
 
 \end_inset
