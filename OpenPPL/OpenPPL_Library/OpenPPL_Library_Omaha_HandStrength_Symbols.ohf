@@ -696,7 +696,7 @@ WHEN {[BitCount((rankbitsplayer BitAnd 0b111111000000000)) == 4]
 } RETURN true FORCE
 
 ##TripsInHand##
-BitCount rankbitsplayer == 2 AND NOT TwoPairInHand
+BitCount(rankbitsplayer & ConstAllRanksWithoutAceLow) == 2 AND NOT TwoPairInHand
 
 ##PokerInHand##
 BitCount(rankbitsplayer & ConstAllRanksWithoutAceLow) == 1
