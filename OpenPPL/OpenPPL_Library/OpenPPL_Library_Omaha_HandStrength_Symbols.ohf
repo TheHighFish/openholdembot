@@ -351,10 +351,9 @@ Omaha_FlushDraw_Counter > 0
 Omaha_FlushDraw_Counter == 2
 
 ##Omaha_HaveFullHouse##
-WHEN IsPreflop RETURN false FORCE
-WHEN (HaveSet AND PairOnBoard)
+(HaveSet AND PairOnBoard)
 OR (RankOfTopPairInHand > 0 AND TripsOnBoard)
-OR (HaveTrips AND HaveTwoPair) RETURN true FORCE
+OR (HaveTrips AND BitCount(rankbitsplayer & rankbitscommon)>=2)
 
 ##Omaha_HaveNutFullHouse##
 WHEN IsPreflop RETURN false FORCE
