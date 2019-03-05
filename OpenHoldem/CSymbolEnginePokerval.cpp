@@ -192,7 +192,7 @@ void CSymbolEnginePokerval::CalcPokerValues() {
 	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pokerval = %i\n", _pokerval);
 	write_log(Preferences()->debug_symbolengine(), "[CSymbolEnginePokerval] pcbits = %i\n", _pcbits);
 
-	_phandval[BETROUND-1] = _pokerval & 0xff000000; 
+	_phandval[BETROUND] = _pokerval & 0xff000000; 
   if (BETROUND > kBetroundPreflop
 		&& _phandval[BETROUND] > _phandval[BETROUND-1]) {
 		_ishandup = true;														
