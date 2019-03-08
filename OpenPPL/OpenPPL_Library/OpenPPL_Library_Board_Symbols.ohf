@@ -275,7 +275,15 @@ nhands == nhandsti
 OneCardStraightPossible AND NOT MoreThanOneOneCardStraightPossible
 
 ##OpenEndedStraightDrawOnBoard##
-(nstraightcommon == 4 AND (BitCount((rankbitscommon >> 10) & 0x1f) < 4) AND (BitCount((rankbitscommon >> 1) & 0x1f) < 4))
+   board$KQJT
+OR board$QJT9
+OR board$JT98
+OR board$T987
+OR board$9876
+OR board$8765
+OR board$7654
+OR board$6543
+OR board$5432
 
 ##TripsOnBoardOnFlop##
 WHEN (LowestFlopCard < 2) RETURN false FORCE
