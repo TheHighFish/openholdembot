@@ -172,31 +172,39 @@ OR f$Preflop_React_To_Reraise
 
 ##f$pt_pfr##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 WHEN Others RETURN pt_pfr_headsupchair FORCE
 
 ##f$pt_vpip##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 WHEN Others RETURN pt_vpip_headsupchair FORCE
 
 ##f$pt_flopaf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 WHEN Others RETURN pt_flop_af_headsupchair FORCE
 
 ##f$pt_turnaf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 WHEN Others RETURN pt_turn_af_headsupchair FORCE
 
 ##f$pt_riveraf##
 WHEN NOT HandIsHeadsup RETURN 0 FORCE
+WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 WHEN Others RETURN pt_river_af_headsupchair FORCE
 
 ##f$pt_fbbts##
+WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 pt_bb_fold_to_steal_headsupchair
 
 ##f$pt_fsbts##
+// WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 pt_sb_fold_to_steal_headsupchair
 
 ##f$pt_wtsd##
+// WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 pt_wtsd_headsupchair
 
 ##f$pt_hands##
@@ -204,16 +212,20 @@ pt_hands_headsupchair
 
 ##f$PT_Flop_AF_RaisChair##
 // !!! name it "adjusted" !!!
+// WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 (pt_flop_af_raischair*(pt_wtsd_raischair*4))
 
 ##f$PT_Turn_AF_RaisChair##
+// WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 (pt_turn_af_raischair*(pt_wtsd_raischair*4))
 
 ##f$PT_River_AF_RaisChair##
+// WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 (pt_river_af_raischair*(pt_wtsd_raischair*4))
 
 ##f$pt_min_hands_for_opponent_modelling##
-50
+WHEN IsPreflop RETURN  50 FORCE
+WHEN Others    RETURN 150 FORCE
 
 ##f$draws##
    (NOT TwoPairOnBoard AND HaveFlushDraw AND nsuitedcommon==2 AND nstraight==4 AND NOT StraightPossible AND NOT f$wheeldraw AND NOT PairOnBoard) 
