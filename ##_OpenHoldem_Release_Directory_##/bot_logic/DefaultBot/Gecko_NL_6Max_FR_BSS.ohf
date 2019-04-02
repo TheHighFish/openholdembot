@@ -196,7 +196,7 @@ WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORC
 WHEN Others RETURN pt_river_af_headsupchair FORCE
 
 ##f$pt_fbbts##
-WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
+//WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
 pt_bb_fold_to_steal_headsupchair
 
 ##f$pt_fsbts##
@@ -336,7 +336,7 @@ false
 
 ##f$flop_raise_initiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ nplayersplaying<=2 ] ? 1 :
 //          [ f$fold2cbet_high OR f$fold2cbet_normal ] ? {
 //            [ f$stackopponent< 30*bblind ] ? {
@@ -352,14 +352,14 @@ false
 //              [ f$pt_flopaf>=4 ] ? f$prwin>0.65 AND f$prwin<.92 : 0 } : 0 } :
         [ nplayersplaying==3 ] ? 1            :
         [ nplayersplaying>=4 ] ? f$prwin>0.45 : 0 } :
-    [ f$actionpostflop_2 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? {
         [ nplayersplaying<=2 ] ? f$prwin>0.45 :
         [ nplayersplaying==3 ] ? f$prwin>0.68 :
         [ nplayersplaying>=4 ] ? f$prwin>0.70 : 0 } :
-    [ f$actionpostflop_3 ] ? f$prwin>0.75 :
-    [ f$actionpostflop_4 ] ? f$prwin>0.76 :
-    [ f$actionpostflop_5 ] ? f$prwin>0.77 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>0.75 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>0.76 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>0.77 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
@@ -367,7 +367,7 @@ false
         [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.72 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.78 : 0 } : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
@@ -375,53 +375,53 @@ false
         [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.76 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.78 : 0 } : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.77 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin>.85 :
-    [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin>.85 :
+    [ f$actionpostflop_large_investment] ? f$prwin>.85 : 0 } :
 // ---------------------------------------------
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ nplayersplaying==2 ] ? 1 :
         [ nplayersplaying==3 ] ? {
             [ f$draws>1 AND HaveFlushDraw ] ? 1 :
             [ f$prwin>0.65            ] ? 1 : 0 } :
         [ nplayersplaying>=4 ] ? f$prwin>0.58 : 0 } :
-    [ f$actionpostflop_2 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? {
         [ nplayersplaying==3 ] ? f$prwin>0.65 :
         [ nplayersplaying>=4 ] ? f$prwin>0.65 : 0 } :
-    [ f$actionpostflop_3 ] ? {
+    [ f$actionpostflop_opponent_bets_medium ] ? {
         [ nplayersplaying==2 ] ? f$prwin>.75 :
         [ nplayersplaying>=3 ] ? f$prwin>.78 : 0 } :
-    [ f$actionpostflop_4 ] ? f$prwin>.78 :
-    [ f$actionpostflop_5 ] ? f$prwin>.78 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.78 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.78 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin>.85 :
-    [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin>.85 :
+    [ f$actionpostflop_large_investment] ? f$prwin>.85 : 0 } :
 // ---------------------------------------------------
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ nplayersplaying<=2 ] ? {
             [ f$prwin>0.00 AND f$prwin<0.38 ] ? 1 :
             [ f$prwin>0.40 AND f$prwin<0.45 ] ? 1 :
@@ -430,58 +430,58 @@ false
             [ f$prwin>0.86                 ] ? 1 : 0 } :
         [ nplayersplaying==3 ] ? 1            :
         [ nplayersplaying>=4 ] ? f$prwin>0.65 : 0 } :
-    [ f$actionpostflop_2 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? {
         [ nplayersplaying<=2 ] ? f$prwin>0.30 :
         [ nplayersplaying==3 ] ? f$prwin>0.65 :
         [ nplayersplaying>=4 ] ? f$prwin>0.70 : 0 } :
-    [ f$actionpostflop_3 ] ? {
+    [ f$actionpostflop_opponent_bets_medium ] ? {
         [ nplayersplaying==2 ] ? {
             [ f$pt_wtsd<=0.00 ] ? f$prwin>.70 :
             [ f$pt_wtsd>0.00 AND f$pt_wtsd<=0.30 ] ? f$prwin>.65 AND f$prwin<.95 : // bluffraise his lead
             [ f$pt_wtsd>0.30 ] ? f$prwin>.70 : 0 } :
         [ nplayersplaying>=3 ] ? f$prwin>.78 : 0 } :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin>.80 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.83 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.79 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.77 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.83 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.79 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.77 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.83 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.78:
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin>.85 :
-    [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin>.85 :
+    [ f$actionpostflop_large_investment] ? f$prwin>.85 : 0 } :
 0
 
 ##f$flop_raise_noinitiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_1 AND nplayersplaying==2 ] ? { // donk flop
+    [ f$actionpostflop_free_to_play AND nplayersplaying==2 ] ? { // donk flop
         [ f$draws>=2                   ] ? 1 :
         [ f$prwin>0.40 AND f$prwin<0.60 ] ? 1 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.50 : // raise minbet
-    [ f$actionpostflop_3 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.50 : // raise minbet
+    [ f$actionpostflop_opponent_bets_medium ] ? {
         [ nplayersplaying==2 ] ? {
             [ nplayersround_flop==2 ] ? f$prwin>0.70 :
             [ nplayersround_flop>=3 ] ? f$prwin>0.75 : 0 } :
         [ nplayersplaying>=3 ] ? {
             [ nplayersround_flop==3 ] ? f$prwin>0.75 :
             [ nplayersround_flop>=4 ] ? f$prwin>0.80 : 0 } : 0 } :
-    [ f$actionpostflop_4 ] ? {
+    [ f$actionpostflop_opponent_bets_pot ] ? {
         [ f$draws>1 AND nplayersplaying==2 ] ? 1 :
         [ f$prwin>0.75 AND f$prwin<0.95    ] ? 1 : 0 } :
-    [ f$actionpostflop_5 ] ? f$prwin>.80 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
@@ -489,7 +489,7 @@ false
         [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.80 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
@@ -497,7 +497,7 @@ false
         [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.78 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
@@ -505,104 +505,104 @@ false
         [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.78 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.77 : 0 } : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin>.80 :
-    [ f$actionpostflop_10] ? f$prwin>.80 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin>.80 :
+    [ f$actionpostflop_large_investment] ? f$prwin>.80 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.72 :
-    [ f$actionpostflop_2 ] ? f$prwin>.76 :
-    [ f$actionpostflop_3 ] ? f$prwin>.78 :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin>.80 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.72 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.76 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.78 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.78 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin>.80 :
-    [ f$actionpostflop_10] ? f$prwin>.80 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin>.80 :
+    [ f$actionpostflop_large_investment] ? f$prwin>.80 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
        [ nplayersplaying==2 ] ? {
            [ f$draws>1   ] ? 1 :
            [ f$prwin>.50 ] ? 1 : 0 } :
        [ nplayersplaying>=3 ] ? f$prwin>.60 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.67 :
-    [ f$actionpostflop_3 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.67 :
+    [ f$actionpostflop_opponent_bets_medium ] ? {
         [ f$draws>1                    ] ? 1 :
         [ f$prwin>0.72 AND f$prwin<0.90 ] ? 1 : 0 } :
-    [ f$actionpostflop_4 ] ? {
+    [ f$actionpostflop_opponent_bets_pot ] ? {
         [ f$draws>3                    ] ? 1 :
         [ f$prwin>0.75 AND f$prwin<0.90 ] ? 1 : 0 } :
-    [ f$actionpostflop_5 ] ? f$prwin>.80 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.83 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin>.85 :
-    [ f$actionpostflop_10] ? f$prwin>.85 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin>.85 :
+    [ f$actionpostflop_large_investment] ? f$prwin>.85 : 0 } :
 0
 
 ##f$flop_raise_noaction##
 [ Position = First ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.55 :
-    [ f$actionpostflop_2 ] ? f$prwin>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin>.65 :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin>.92 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.55 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.65 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.92 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.72 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.76 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.55 :
-    [ f$actionpostflop_2 ] ? f$prwin>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin>.65 :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin>.92 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.55 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.65 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.92 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.82 :
@@ -610,7 +610,7 @@ false
         [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.72 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.84 :
@@ -618,41 +618,41 @@ false
         [ f$ptype_raise_contibet_very_high     ] ? {
             [ nplayersplaying==2 ] ? f$prwin2>.76 : 
             [ nplayersplaying>=3 ] ? f$prwin2>.80 : 0 } : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.55 :
-    [ f$actionpostflop_2 ] ? f$prwin>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin>.65 :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin>.92 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.55 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.65 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.92 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.80 : 0 } :
 
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.84 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.82 : 0 } :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$BestBetsize##
@@ -749,7 +749,7 @@ WHEN Others
 
 ##f$turn_raise_initiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ nplayersplaying==2 AND nplayersround_flop==2 ] ? {
             [ didcallround_preflop AND nbetsround_preflop>1 AND nbetsround_preflop<=5 ] ? f$prwin>0 : // donkbet and 2nd barrel turn
             [ f$AggressionFactor_Turn2<=3.00 ] ? {
@@ -757,259 +757,259 @@ WHEN Others
                 [ f$prwin>.70 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? 1 : 0 } :
             [ f$AggressionFactor_Turn2>3.00 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? f$prwin>.70 AND f$prwin<.80 : 0 } : // only barrel value oop
         [ nplayersplaying>=2 AND nplayersround_flop>=3 AND NOT(ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? f$prwin>.74 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.80 :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 : // check push allin
-    [ f$actionpostflop_5 ] ? f$prwin>.90 :
-    [ f$actionpostflop_6 ] ? f$prwin>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin>.86 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 : // check push allin
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.72 :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.85 :
-    [ f$actionpostflop_4 ] ? f$prwin>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.72 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.85 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ nplayersplaying==2 AND nplayersround_flop==2 ] ? {
              [ f$prwin<0.72 AND NOT (ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) AND ranklocommon<10 AND nbetsround_preflop<7 AND nbetsround_flop<15 AND NOT PairOnBoard ] ? 1 :
              [ f$prwin>=0.78 ] ? 1 : 0 } :
         [ nplayersplaying>=2 AND nplayersround_flop>=3 AND ranklocommon<10 AND NOT (ismidpair AND (rankhicommon == ace) AND NOT PairOnBoard) ] ? f$prwin>0.65 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.80 :
-    [ f$actionpostflop_4 ] ? f$prwin>.85 :
-    [ f$actionpostflop_5 ] ? f$prwin>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.85 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$turn_raise_noinitiative##
 [ Position = First ] ? {
     [ nplayersplaying==2 ] ? {
-        [ f$actionpostflop_1 ] ? f$prwin>.88 : // check raise
-        [ f$actionpostflop_2 ] ? f$prwin>.75 :
-        [ f$actionpostflop_3 ] ? f$prwin>.78 :
-        [ f$actionpostflop_4 ] ? f$prwin>.80 :
-        [ f$actionpostflop_5 ] ? f$prwin>.95 :
-        [ f$actionpostflop_6 ] ? f$prwin>.96 :
-        [ f$actionpostflop_7 ] ? f$prwin>.97 :
-        [ f$actionpostflop_8 ] ? f$prwin>.97 :
-        [ f$actionpostflop_9 ] ? f$nuts      :
-        [ f$actionpostflop_10] ? f$nuts      : 0 } :
+        [ f$actionpostflop_free_to_play ] ? f$prwin>.88 : // check raise
+        [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.75 :
+        [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.78 :
+        [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+        [ f$actionpostflop_opponent_overbets ] ? f$prwin>.95 :
+        [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+        [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+        [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+        [ f$actionpostflop_medium_investment ] ? f$nuts      :
+        [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
     [ nplayersplaying>=3 ] ? {
-        [ f$actionpostflop_1 ] ? f$prwin>.75 AND f$prwin<.96 :
-        [ f$actionpostflop_2 ] ? f$prwin>.96 :
-        [ f$actionpostflop_3 ] ? f$prwin>.96 :
-        [ f$actionpostflop_4 ] ? f$prwin>.96 :
-        [ f$actionpostflop_5 ] ? f$prwin>.96 :
-        [ f$actionpostflop_6 ] ? f$prwin>.96 :
-        [ f$actionpostflop_7 ] ? f$prwin>.97 :
-        [ f$actionpostflop_8 ] ? f$prwin>.97 :
-        [ f$actionpostflop_9 ] ? f$nuts      :
-        [ f$actionpostflop_10] ? f$nuts      : 0 } : 0 } :
+        [ f$actionpostflop_free_to_play ] ? f$prwin>.75 AND f$prwin<.96 :
+        [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.96 :
+        [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.96 :
+        [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+        [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+        [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+        [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+        [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+        [ f$actionpostflop_medium_investment ] ? f$nuts      :
+        [ f$actionpostflop_large_investment] ? f$nuts      : 0 } : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.86 :
-    [ f$actionpostflop_4 ] ? f$prwin>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.97 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.80 :
-    [ f$actionpostflop_4 ] ? f$prwin>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.98 :
-    [ f$actionpostflop_7 ] ? f$prwin>.98 :
-    [ f$actionpostflop_8 ] ? f$prwin>.98 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.98 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$turn_raise_noaction##
 [ Position = First ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ nplayersplaying==2 ] ? {
             [ f$draws>1   ] ? 1 :
             [ f$prwin>.64 ] ? 1 : 0 } :
         [ nplayersplaying>=3 ] ? f$prwin>.64 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.98 :
-    [ f$actionpostflop_3 ] ? f$prwin>.98 :
-    [ f$actionpostflop_4 ] ? f$prwin>.98 :
-    [ f$actionpostflop_5 ] ? f$prwin>.98 :
-    [ f$actionpostflop_6 ] ? f$prwin>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin>.85 : 
-    [ f$actionpostflop_8 ] ? f$prwin>.95 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.85 : 
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ f$draws>1   ] ? 1 :
         [ f$prwin>.62 ] ? 1 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.80 :
-    [ f$actionpostflop_4 ] ? f$prwin>.82 :
-    [ f$actionpostflop_5 ] ? f$prwin>.86 :
-    [ f$actionpostflop_6 ] ? f$prwin>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.82 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
          [ nplayersround_flop==2 ] ? f$prwin>0 :
          [ nplayersround_flop>=3 ] ? {
              [ f$draws>1   ] ? 1 :
              [ f$prwin>.60 ] ? 1 : 0 } : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.74 :
-    [ f$actionpostflop_3 ] ? f$prwin>.78 :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin>.86 :
-    [ f$actionpostflop_6 ] ? f$prwin>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.74 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.78 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$river_raise_initiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
       [ nplayersplaying==2 ] ? {
         [ f$draws>1 AND HaveFlushDraw AND f$pt_vpip>0.50 AND f$pt_wtsd>0.30 AND random>.50 ] ? 1 :
         [ f$pt_riveraf<2  ] ? f$prwin>.78 :
         [ f$pt_riveraf>=2 ] ? f$prwin>.90 : 0 } :
       [ nplayersplaying>=3 ] ? f$prwin>.80 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.98 :
-    [ f$actionpostflop_4 ] ? f$prwin>.98 :
-    [ f$actionpostflop_5 ] ? f$prwin>.98 :
-    [ f$actionpostflop_6 ] ? f$prwin>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.86 :
-    [ f$actionpostflop_3 ] ? f$prwin>.90 :
-    [ f$actionpostflop_4 ] ? f$prwin>.96 :
-    [ f$actionpostflop_5 ] ? f$prwin>.98 :
-    [ f$actionpostflop_6 ] ? f$prwin>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
         [ nplayersplaying==2 AND nplayersround_flop==2 AND handsplayed>15 AND NOT f$safeboard1 AND NOT didcallround_preflop AND nbetsround_preflop>1 AND nbetsround_preflop<=6 AND didbetsizeround_flop AND NOT didcallround_flop AND nbetsround_flop<11 ] ? f$prwin>0.00 :
         [ nplayersplaying==2 AND nbetsround_flop==0 ] ? f$prwin>0.70 :
         [ nplayersplaying>=3 AND nbetsround_flop==0 ] ? f$prwin>0.75 :
         [ f$prwin>.80 ] ? 1 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.86 :
-    [ f$actionpostflop_3 ] ? f$prwin>.90 :
-    [ f$actionpostflop_4 ] ? f$prwin>.96 :
-    [ f$actionpostflop_5 ] ? f$prwin>.98 :
-    [ f$actionpostflop_6 ] ? f$prwin>.98 :
-    [ f$actionpostflop_7 ] ? f$prwin>.98 :
-    [ f$actionpostflop_8 ] ? f$prwin>.98 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.98 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$river_raise_noinitiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.90 :
-    [ f$actionpostflop_3 ] ? f$prwin>.90 :
-    [ f$actionpostflop_4 ] ? f$prwin>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin>.90 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.97 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.86 :
-    [ f$actionpostflop_4 ] ? f$prwin>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.97 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.80 :
-    [ f$actionpostflop_4 ] ? f$prwin>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.98 :
-    [ f$actionpostflop_7 ] ? f$prwin>.98 :
-    [ f$actionpostflop_8 ] ? f$prwin>.98 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.98 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$river_raise_noaction##
 // Toevoegen NBETSround_preflop
 [ Position = First ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
          [ nplayersround_flop==2 ] ? {
              [ nbetsround_preflop<6 AND nbetsround_flop<15 ] ? f$prwin>0 :
              [ f$prwin>.65                     ] ? 1         : 0 } :
          [ nplayersround_flop>=3 ] ? f$prwin>.65 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.98 :
-    [ f$actionpostflop_3 ] ? f$prwin>.98 :
-    [ f$actionpostflop_4 ] ? f$prwin>.98 :
-    [ f$actionpostflop_5 ] ? f$prwin>.98 :
-    [ f$actionpostflop_6 ] ? f$prwin>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 : 
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.98 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 : 
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.64 :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.80 :
-    [ f$actionpostflop_4 ] ? f$prwin>.82 :
-    [ f$actionpostflop_5 ] ? f$prwin>.86 :
-    [ f$actionpostflop_6 ] ? f$prwin>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.64 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.82 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? {
+    [ f$actionpostflop_free_to_play ] ? {
          [ nplayersround_flop==2 ] ? f$prwin>.50 :
          [ nplayersround_flop>=3 ] ? f$prwin>.55 : 0 } :
-    [ f$actionpostflop_2 ] ? f$prwin>.74 :
-    [ f$actionpostflop_3 ] ? f$prwin>.78 :
-    [ f$actionpostflop_4 ] ? f$prwin>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin>.86 :
-    [ f$actionpostflop_6 ] ? f$prwin>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.74 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.78 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.86 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$Odds_and_Outs##
@@ -1202,389 +1202,389 @@ IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewincha
 
 ##f$flop_call_initiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.15 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.15 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.75 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.72 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.70 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.84 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.15 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.15 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.75 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.72 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.15 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.15 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.75 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.72 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.70 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.78 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.79 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 0
 
 ##f$flop_call_noaction##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.80 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.80 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 0
 
 ##f$flop_call_noinitiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.15 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.15 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.15 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.15 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.15 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_6 ] ? {
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.15 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_min_reraises ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_7 ] ? {
+    [ f$actionpostflop_opponent_reraises_normal ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_8 ] ? {
+    [ f$actionpostflop_opponent_reraises_huge ] ? {
         [ f$ptype_raise_contibet_very_low ] ? f$prwin2>.85 :
         [ f$ptype_raise_contibet_low     ] ? f$prwin2>.82 :
         [ f$ptype_raise_contibet_normal     ] ? f$prwin2>.80 :
         [ f$ptype_raise_contibet_high ] ? f$prwin2>.77 :
         [ f$ptype_raise_contibet_very_high     ] ? f$prwin2>.74 : 0 } :
-    [ f$actionpostflop_9 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_10] ? f$prwin1>.86 : 0 } :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.82 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.86 : 0 } :
 0
 
 ##f$turn_call_initiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.55 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.75 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.77 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.55 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.75 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.77 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.82 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.80 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.80 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.75 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.77 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.75 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.77 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 0
 
 ##f$river_call_initiative##
-[ f$actionpostflop_2 ] ? f$prwin1>.50 :
-[ f$actionpostflop_3 ] ? {
+[ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+[ f$actionpostflop_opponent_bets_medium ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.65 :
     [ nplayersplaying>=3 ] ? f$prwin>.70 : 0 } :
-[ f$actionpostflop_4 ] ? {
+[ f$actionpostflop_opponent_bets_pot ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.80 :
     [ nplayersplaying>=3 ] ? f$prwin>.75 : 0 } :
-[ f$actionpostflop_5 ] ? {
+[ f$actionpostflop_opponent_overbets ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.90 :
     [ nplayersplaying>=3 ] ? f$prwin>.95 : 0 } :
-[ f$actionpostflop_6  ] ? f$prwin1>.78 :
-[ f$actionpostflop_7  ] ? f$prwin1>.82 :
-[ f$actionpostflop_8  ] ? f$prwin1>.95 :
-[ f$actionpostflop_9  ] ? f$prwin1>.95 :
-[ f$actionpostflop_10 ] ? f$prwin1>.97 :
+[ f$actionpostflop_opponent_min_reraises  ] ? f$prwin1>.78 :
+[ f$actionpostflop_opponent_reraises_normal  ] ? f$prwin1>.82 :
+[ f$actionpostflop_opponent_reraises_huge  ] ? f$prwin1>.95 :
+[ f$actionpostflop_medium_investment  ] ? f$prwin1>.95 :
+[ f$actionpostflop_large_investment ] ? f$prwin1>.97 :
 0
 
 ##f$turn_call_noaction##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.75 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.78 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.78 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.75 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.78 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.78 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.55 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.75 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.78 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.80 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.55 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.75 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.78 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.80 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.75 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.78 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.86 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.75 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.78 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.82 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.86 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 0
 
 ##f$river_call_noaction##
-[ f$actionpostflop_2 ] ? f$prwin1>.50 :
-[ f$actionpostflop_3 ] ? {
+[ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+[ f$actionpostflop_opponent_bets_medium ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.65 :
     [ nplayersplaying>=3 ] ? f$prwin>.70 : 0 } :
-[ f$actionpostflop_4 ] ? {
+[ f$actionpostflop_opponent_bets_pot ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.80 :
     [ nplayersplaying>=3 ] ? f$prwin>.75 : 0 } :
-[ f$actionpostflop_5 ] ? {
+[ f$actionpostflop_opponent_overbets ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.90 :
     [ nplayersplaying>=3 ] ? f$prwin>.95 : 0 } :
-[ f$actionpostflop_6  ] ? f$prwin1>.78 :
-[ f$actionpostflop_7  ] ? f$prwin1>.82 :
-[ f$actionpostflop_8  ] ? f$prwin1>.95 :
-[ f$actionpostflop_9  ] ? f$prwin1>.95 :
-[ f$actionpostflop_10 ] ? f$prwin1>.97 :
+[ f$actionpostflop_opponent_min_reraises  ] ? f$prwin1>.78 :
+[ f$actionpostflop_opponent_reraises_normal  ] ? f$prwin1>.82 :
+[ f$actionpostflop_opponent_reraises_huge  ] ? f$prwin1>.95 :
+[ f$actionpostflop_medium_investment  ] ? f$prwin1>.95 :
+[ f$actionpostflop_large_investment ] ? f$prwin1>.97 :
 0
 
 ##f$river_call_noinitiative##
-[ f$actionpostflop_2 ] ? f$prwin1>.50 :
-[ f$actionpostflop_3 ] ? {
+[ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+[ f$actionpostflop_opponent_bets_medium ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.65 :
     [ nplayersplaying>=3 ] ? f$prwin>.70 : 0 } :
-[ f$actionpostflop_4 ] ? {
+[ f$actionpostflop_opponent_bets_pot ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.80 :
     [ nplayersplaying>=3 ] ? f$prwin>.75 : 0 } :
-[ f$actionpostflop_5 ] ? {
+[ f$actionpostflop_opponent_overbets ] ? {
     [ nplayersplaying==2 ] ? f$prwin>.90 :
     [ nplayersplaying>=3 ] ? f$prwin>.95 : 0 } :
-[ f$actionpostflop_6  ] ? f$prwin1>.78 :
-[ f$actionpostflop_7  ] ? f$prwin1>.82 :
-[ f$actionpostflop_8  ] ? f$prwin1>.95 :
-[ f$actionpostflop_9  ] ? f$prwin1>.95 :
-[ f$actionpostflop_10 ] ? f$prwin1>.97 :
+[ f$actionpostflop_opponent_min_reraises  ] ? f$prwin1>.78 :
+[ f$actionpostflop_opponent_reraises_normal  ] ? f$prwin1>.82 :
+[ f$actionpostflop_opponent_reraises_huge  ] ? f$prwin1>.95 :
+[ f$actionpostflop_medium_investment  ] ? f$prwin1>.95 :
+[ f$actionpostflop_large_investment ] ? f$prwin1>.97 :
 0
 
 ##f$turn_call_noinitiative##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.82 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.88 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.82 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.88 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.55 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.80 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.55 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.80 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.50 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.70 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.97 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.50 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.70 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.97 : 0 } :
 0
 
 ##f$effective_balance_to_call_ratio##
@@ -1878,184 +1878,184 @@ WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
         [ f$prwin>0.96                   ] ? (AmountToCall*1.0 < EffectivePotSize) : 0 } : 0 } :
 0
 
-##f$actionpostflop_1##
+##f$actionpostflop_free_to_play##
 [ call<=0 ]
 
-##f$actionpostflop_2##
+##f$actionpostflop_opponent_min_bets##
 [ NOT didbetsize AND (call>0) AND (call<=bblind) ]
 
-##f$actionpostflop_3##
-[ NOT didbetsize AND (call>bblind) AND (call<=(potcommon*0.8)) AND NOT f$actionpostflop_2 ]
+##f$actionpostflop_opponent_bets_medium##
+[ NOT didbetsize AND (call>bblind) AND (call<=(potcommon*0.8)) AND NOT f$actionpostflop_opponent_min_bets ]
 
-##f$actionpostflop_4##
-[ NOT didbetsize AND (call>(potcommon*0.8)) AND (call<=(potcommon*1.2)) AND NOT f$actionpostflop_2 ]
+##f$actionpostflop_opponent_bets_pot##
+[ NOT didbetsize AND (call>(potcommon*0.8)) AND (call<=(potcommon*1.2)) AND NOT f$actionpostflop_opponent_min_bets ]
 
-##f$actionpostflop_5##
-[ NOT didbetsize AND (call>(potcommon*1.2)) AND NOT f$actionpostflop_2 ]
+##f$actionpostflop_opponent_overbets##
+[ NOT didbetsize AND (call>(potcommon*1.2)) AND NOT f$actionpostflop_opponent_min_bets ]
 
-##f$actionpostflop_6##
+##f$actionpostflop_opponent_min_reraises##
 [ (didbetsize OR didcall) AND currentbet<=potcommon AND call<=currentbet ]
 
-##f$actionpostflop_7##
+##f$actionpostflop_opponent_reraises_normal##
 [ (didbetsize OR didcall) AND (currentbet<=potcommon) AND (call>currentbet) AND (call<=(currentbet*3.5)) ]
 
-##f$actionpostflop_8##
+##f$actionpostflop_opponent_reraises_huge##
 [ (didbetsize OR didcall) AND (currentbet<=potcommon) AND (call>(currentbet*3.5)) ]
 
-##f$actionpostflop_9##
+##f$actionpostflop_medium_investment##
 [ didbetsize AND (currentbet>potcommon) AND (currentbet<=potcommon*3) ]
 
-##f$actionpostflop_10##
+##f$actionpostflop_large_investment##
 [ didbetsize AND (currentbet>potcommon*3) ]
 
 ##f$river_raise_wegotraised##
 [ Position = First ] ? {
-//  [ f$actionpostflop_1 ] ? f$prwin>.76 : // let the aggressor do the betting
-    [ f$actionpostflop_2 ] ? f$prwin>.96 :
-    [ f$actionpostflop_3 ] ? f$prwin>.96 :
-    [ f$actionpostflop_4 ] ? f$prwin>.96 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.97 :
-    [ f$actionpostflop_8 ] ? f$prwin>.98 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+//  [ f$actionpostflop_free_to_play ] ? f$prwin>.76 : // let the aggressor do the betting
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.98 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.96 :
-    [ f$actionpostflop_2 ] ? f$prwin>.90 :
-    [ f$actionpostflop_3 ] ? f$prwin>.96 :
-    [ f$actionpostflop_4 ] ? f$prwin>.96 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.82 :
-    [ f$actionpostflop_2 ] ? f$prwin>.90 :
-    [ f$actionpostflop_3 ] ? f$prwin>.96 :
-    [ f$actionpostflop_4 ] ? f$prwin>.96 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.82 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$river_call_wegotraised##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.98 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.98 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.65 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.98 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.65 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.98 : 0 } :
 0
 
 ##f$turn_raise_wegotraised##
 [ Position = First ] ? {
     [ nplayersplaying==2 ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.80 :
-    [ f$actionpostflop_3 ] ? f$prwin>.85 :
-    [ f$actionpostflop_4 ] ? f$prwin>.85 :
-    [ f$actionpostflop_5 ] ? f$prwin>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.97 :
-    [ f$actionpostflop_8 ] ? f$prwin>.98 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.85 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.85 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.98 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
     [ nplayersplaying>=3 ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.80 :
-    [ f$actionpostflop_2 ] ? f$prwin>.85 :
-    [ f$actionpostflop_3 ] ? f$prwin>.95 :
-    [ f$actionpostflop_4 ] ? f$prwin>.95 :
-    [ f$actionpostflop_5 ] ? f$prwin>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.97 :
-    [ f$actionpostflop_8 ] ? f$prwin>.98 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.80 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.85 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.97 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.98 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.96 :
-    [ f$actionpostflop_2 ] ? f$prwin>.90 :
-    [ f$actionpostflop_3 ] ? f$prwin>.96 :
-    [ f$actionpostflop_4 ] ? f$prwin>.96 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_1 ] ? f$prwin>.82 :
-    [ f$actionpostflop_2 ] ? f$prwin>.90 :
-    [ f$actionpostflop_3 ] ? f$prwin>.96 :
-    [ f$actionpostflop_4 ] ? f$prwin>.96 :
-    [ f$actionpostflop_5 ] ? f$prwin>.96 :
-    [ f$actionpostflop_6 ] ? f$prwin>.96 :
-    [ f$actionpostflop_7 ] ? f$prwin>.96 :
-    [ f$actionpostflop_8 ] ? f$prwin>.97 :
-    [ f$actionpostflop_9 ] ? f$nuts      :
-    [ f$actionpostflop_10] ? f$nuts      : 0 } :
+    [ f$actionpostflop_free_to_play ] ? f$prwin>.82 :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin>.90 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin>.96 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin>.97 :
+    [ f$actionpostflop_medium_investment ] ? f$nuts      :
+    [ f$actionpostflop_large_investment] ? f$nuts      : 0 } :
 0
 
 ##f$turn_call_wegotraised##
 [ Position = First ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.78 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.78 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.78 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.78 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.96 : 0 } :
 [ Position = Middle ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.77 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.79 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.77 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.79 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.96 : 0 } :
 [ Position = Last ] ? {
-    [ f$actionpostflop_2 ] ? f$prwin1>.60 :
-    [ f$actionpostflop_3 ] ? f$prwin1>.78 :
-    [ f$actionpostflop_4 ] ? f$prwin1>.80 :
-    [ f$actionpostflop_5 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_6 ] ? f$prwin1>.85 :
-    [ f$actionpostflop_7 ] ? f$prwin1>.90 :
-    [ f$actionpostflop_8 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_9 ] ? f$prwin1>.95 :
-    [ f$actionpostflop_10] ? f$prwin1>.96 : 0 } :
+    [ f$actionpostflop_opponent_min_bets ] ? f$prwin1>.60 :
+    [ f$actionpostflop_opponent_bets_medium ] ? f$prwin1>.78 :
+    [ f$actionpostflop_opponent_bets_pot ] ? f$prwin1>.80 :
+    [ f$actionpostflop_opponent_overbets ] ? f$prwin1>.95 :
+    [ f$actionpostflop_opponent_min_reraises ] ? f$prwin1>.85 :
+    [ f$actionpostflop_opponent_reraises_normal ] ? f$prwin1>.90 :
+    [ f$actionpostflop_opponent_reraises_huge ] ? f$prwin1>.95 :
+    [ f$actionpostflop_medium_investment ] ? f$prwin1>.95 :
+    [ f$actionpostflop_large_investment] ? f$prwin1>.96 : 0 } :
 0
 
 ##f$Initiative_GotRaised##

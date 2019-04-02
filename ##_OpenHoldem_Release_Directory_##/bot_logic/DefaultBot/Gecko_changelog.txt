@@ -170,6 +170,7 @@
 //     was used to detect GaveThirdNutFlushDraw and similar.
 //   * Removed f$logicalpositionrais in facour of expressions like
 //     raischair == cutoffchair.
+//   * renaqmed f$actionpostflop_1 .. f$actionpostflop_10 to something more meaningful
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
