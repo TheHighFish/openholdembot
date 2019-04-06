@@ -79,6 +79,11 @@ void CVirtualSymbolEngine::WarnIfSymbolRequiresMyTurn(CString name) {
 }
 
 void CVirtualSymbolEngine::WarnIfSymbolIsHoldemOnly(CString name) {
+  if (p_formula_parser->IsParsingReadOnlyFunctionLibrary()) {
+    // Do nothing if game-type is "Omaha" while parsing libraries.
+    // This can happen in a temporar Omaha-only version.
+    return;
+  }
   if (p_engine_container->symbol_engine_isomaha()->isomaha()) {
     CString error_message;
     error_message.Format("%s%s%s%s%s%s%s",

@@ -205,6 +205,8 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code) {
 void CSymbolEngineHistory::CalculateHistory() {
   // Collect symbol if ismyturn.
   // Per definition we need to get the value at last myturn in betround N.
+  //!!!!!!! temp disabled because it causes problems for Omaha
+  return;
   write_log(Preferences()->debug_symbolengine(),
     "[SymbolEngineHistory] Update on my turn\n");
   int	betround = p_betround_calculator->betround();
