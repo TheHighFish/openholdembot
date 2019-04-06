@@ -13,7 +13,10 @@ BUG FIXES:
   This has now been fixed.
   Thanks to Johnny for reporting.
   [THF]
-  
+- OpenEndedStraightDrawOnBoard did not recognize KQJT.
+  Thanks to DonkeyKong for reporting-
+  [THF]
+
   
   
 
