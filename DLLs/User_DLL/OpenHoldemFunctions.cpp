@@ -43,7 +43,7 @@ typedef char*(*t_GetTableTitle)();
 typedef void(*t_ParseHandList)(const char* name_of_list, const char* list_body);
 typedef char*(*t_ScrapeTableMapRegion)(char* p_region, int& p_returned_lengh);
 typedef void(*t_SendChatMessage)(char *message);
-typedef void(*t_WriteLog)(char* format, ...);
+typedef void(*t_WriteLog)(char* format, va_list args);
 
 t_GetSymbol p_GetSymbol = nullptr;
 t_GetPrw1326 p_GetPrw1326 = nullptr;
@@ -127,7 +127,7 @@ void __stdcall SendChatMessage(char *message) {
   p_SendChatMessage(message);
 }
 
-void __stdcall WriteLog(char* format, ...) {
+void WriteLog(char* format, ...) {
   if (p_WriteLog == nullptr) {
     ErrorPointerNotInitialized("WriteLog");
     return;

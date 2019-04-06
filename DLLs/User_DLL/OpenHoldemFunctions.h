@@ -31,6 +31,6 @@ char*  __stdcall GetTableTitle();
 void   __stdcall ParseHandList(const char* name_of_list, const char* list_body);
 char*  __stdcall ScrapeTableMapRegion(char* p_region, int& p_returned_lengh);
 void   __stdcall SendChatMessage(char *message);
-void   __stdcall WriteLog(char* format, ...);
+void   WriteLog(char* format, ...);
 
 void InitializeOpenHoldemFunctionInterface();

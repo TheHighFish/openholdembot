@@ -152,12 +152,10 @@ EXE_IMPLEMENTS char* ScrapeTableMapRegion(char* p_region, int& p_returned_lengh)
 // EXE_IMPLEMENTS void SendChatMessage(char *message)
 // gets implemented by PokerChat.cpp
 
-EXE_IMPLEMENTS void WriteLog(char* fmt, ...) {
+EXE_IMPLEMENTS void WriteLog(char* fmt, va_list args) {
   // Docu about ellipsis and variadic macro:
   // http://msdn.microsoft.com/en-us/library/ms177415(v=vs.80).aspx
   // http://stackoverflow.com/questions/1327854/how-to-convert-a-variable-argument-function-into-a-macro
-  va_list args;
-  va_start(args, fmt);
+
   write_log_vl(kAlwaysLogDLLMessages, fmt, args);
-  va_end(args);
 }
