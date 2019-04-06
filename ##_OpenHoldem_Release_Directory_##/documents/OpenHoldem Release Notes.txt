@@ -1,5 +1,5 @@
-﻿﻿v﻿13.2.0 2019-02-xx
-==================
+﻿﻿v﻿13.^1.1 2019-04-07
+===================
 NEW STUFF:
 - The OpenPPL-library for Omaha has been finished.
   [ChuckNeverMuck, Cold12Zeras, Johnny, THF]
@@ -14,6 +14,8 @@ BUG FIXES:
   Thanks to Johnny for reporting.
   [THF]
   
+  
+  
 
 ﻿v﻿13.1.0 2018-09-05
 ==================
@@ -25,9 +27,9 @@ NEW STUFF:
   [Stars83]
 
 BUG FIXES:
-- The engine-xontainer was executing some functions in wrong order.
+- The engine-container was executing some functions in wrong order.
   This could affect history-symbols if we were seeing only unique frames,
-  i.e. not waiting for stable frames ir reviewing replay-frames 
+  i.e. not waiting for stable frames when reviewing replay-frames 
   that got shot with the option "on change in table-state".
   Thanks to Stars83 for reporting the bug and to Toto, Salem,
   Cold12Zera, Qwerty, ChuckNeverMuck and Nik0 for helping.
