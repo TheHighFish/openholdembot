@@ -1,7 +1,7 @@
-﻿﻿v﻿13.^1.1 2019-04-07
+﻿﻿v﻿13.1.1 2019-04-07
 ===================
 NEW STUFF:
-- The OpenPPL-library for Omaha has been finished.
+- Lots of new Omaha-symbols for the OpenPPL-library.
   [ChuckNeverMuck, Cold12Zeras, Johnny, THF]
 
 BUG FIXES:
@@ -14,11 +14,16 @@ BUG FIXES:
   Thanks to Johnny for reporting.
   [THF]
 - OpenEndedStraightDrawOnBoard did not recognize KQJT.
-  Thanks to DonkeyKong for reporting-
+  Thanks to DonkeyKong for reporting,
   [THF]
+- PrWin could keep its old values if OpenHoldem didn't scrape 
+  a frame without buttons between two different situations.
+  thanks to Karmix for reporting and to ChuckNeverMuck for finding the bug
+  [THF]
+- The WriteLog(...)-function of the user-DLL did not handle 
+  variadic arguments properly. This has now been fixed.
+  [Strikles]
 
-  
-  
 
 ﻿v﻿13.1.0 2018-09-05
 ==================
@@ -31,6 +36,7 @@ NEW STUFF:
 
 BUG FIXES:
 - The engine-container was executing some functions in wrong order.
+  This could affect history-symbols if we were seeing only unique frames,
   This could affect history-symbols if we were seeing only unique frames,
   i.e. not waiting for stable frames when reviewing replay-frames 
   that got shot with the option "on change in table-state".
