@@ -135,8 +135,8 @@
 #define OPENHOLDEM_PROGRAM
 
 // Version
-#define VERSION_NUMBER			13.20
-#define VERSION_TEXT				"13.2.0.0"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER			13.11
+#define VERSION_TEXT				"13.1.1.0"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"
