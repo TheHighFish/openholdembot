@@ -132,20 +132,11 @@ CIteratorThread::~CIteratorThread() {
 
 void CIteratorThread::RestartPrWinComputations() {
 	write_log(Preferences()->debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
+  assert(p_iterator_thread != NULL);
+  assert(IteratorThreadWorking() == false);
   InitIteratorLoop();
   ResetIteratorVars();
 	ResetGlobalVariables();
-}
-
-void CIteratorThread::StartPrWinComputationsIfNeeded() {		
-	assert(p_iterator_thread != NULL);
-	if (p_engine_container->symbol_engine_autoplayer()->IsFirstHeartbeatOfMyTurn())	{
-    write_log(Preferences()->debug_prwin(), "[PrWinThread] IteratorThread paused. Going to restart.\n");
-    assert(IteratorThreadWorking() == false);
-    RestartPrWinComputations();
-		return;
-	}
-	// Otherwise: nothing to do, e.g. not my turn
 }
 
 void CIteratorThread::AdjustPrwinVariablesIfNecessary() {

@@ -21,6 +21,7 @@
 #include "CIteratorThread.h"
 
 #include "CScraper.h"
+#include "CSymbolEngineAutoplayer.h"
 #include "CSymbolEngineIsOmaha.h"
 #include "CSymbolenginePokerval.h"
 #include "CTableState.h"
@@ -40,6 +41,7 @@ CSymbolEnginePrwin::CSymbolEnginePrwin() {
   _prwinnow = 0;
   _prlosnow = 0;
   _nopponents_for_prwin = 0;
+  _known_change_in_gamestate_since_last_prwin_calculation = false;
 }
 
 CSymbolEnginePrwin::~CSymbolEnginePrwin() {
@@ -63,16 +65,34 @@ void CSymbolEnginePrwin::UpdateOnNewRound() {
 	_nhandsti = 0;
 	_prwinnow = 0;
 	_prlosnow = 0;
+  _known_change_in_gamestate_since_last_prwin_calculation = true;
 }
 
 void CSymbolEnginePrwin::UpdateOnMyTurn() {
+  if (StartOfPrWinComputationsNeeded()) {
+    assert(p_iterator_thread != NULL);
+    p_iterator_thread->RestartPrWinComputations();
+    _known_change_in_gamestate_since_last_prwin_calculation = false;
+  }
 	CalculateNOpponents();
-  assert(p_iterator_thread != NULL);
-	p_iterator_thread->StartPrWinComputationsIfNeeded();
 	CalculateNhands();
 }
 
 void CSymbolEnginePrwin::UpdateOnHeartbeat() {
+}
+
+void CSymbolEnginePrwin::UpdateAfterAutoplayerAction(int autoplayer_action_code) {
+  _known_change_in_gamestate_since_last_prwin_calculation = true;
+}
+
+bool CSymbolEnginePrwin::StartOfPrWinComputationsNeeded() {
+  if (_known_change_in_gamestate_since_last_prwin_calculation) {
+    return true;
+  }
+  if (p_engine_container->symbol_engine_autoplayer()->IsFirstHeartbeatOfMyTurn()) {
+    return true;
+  }
+  return false;
 }
 
 void CSymbolEnginePrwin::CalculateNhands() {

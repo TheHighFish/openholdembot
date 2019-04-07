@@ -33,6 +33,7 @@ public:
 	void UpdateOnNewRound();
 	void UpdateOnMyTurn();
 	void UpdateOnHeartbeat();
+  void UpdateAfterAutoplayerAction(int autoplayer_action_code);
 public:
 	// Public accessors
 	bool EvaluateSymbol(const CString name, double *result, bool log = false);
@@ -49,6 +50,7 @@ public:
 private:
 	void CalculateNOpponents();
 	void CalculateNhands();
+  bool StartOfPrWinComputationsNeeded();
 private:
 	int _nhandshi;
 	int _nhandslo;
@@ -57,6 +59,7 @@ private:
 	double _prlosnow;
 private:
 	int _nopponents_for_prwin;
+  bool _known_change_in_gamestate_since_last_prwin_calculation;
 };
 
 #endif INC_CSYMBOLENGINEPRWIN_H
