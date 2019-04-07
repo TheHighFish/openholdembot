@@ -131,6 +131,10 @@ CIteratorThread::~CIteratorThread() {
 }
 
 void CIteratorThread::RestartPrWinComputations() {
+  if (p_engine_container->symbol_engine_isomaha()->isomaha()) {
+    write_log(Preferences()->debug_prwin(), "[PrWinThread] Not restarting prwin computations, PrWin is Hold'em only\n");
+    return;
+  }
 	write_log(Preferences()->debug_prwin(), "[PrWinThread] Restarting prwin computations.\n");
   assert(p_iterator_thread != NULL);
   assert(IteratorThreadWorking() == false);
