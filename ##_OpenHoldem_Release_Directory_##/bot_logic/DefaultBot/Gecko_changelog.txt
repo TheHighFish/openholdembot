@@ -171,13 +171,18 @@
 //   * Removed f$logicalpositionrais in facour of expressions like
 //     raischair == cutoffchair.
 //   * renaqmed f$actionpostflop_1 .. f$actionpostflop_10 to something more meaningful
+//   * Introduced f$StandardOpenRaisingRange and rewrote f$Chart_OpenRaise
+//     using percentages and the handrank169-symbol in favour of
+//     a more maths-based approach over hard-coded lists.
+//   * Removed the lists listGecko900, listGecko05, listGecko07
+//     which became superfluous due to the new maths-based open-raising logic.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
 //   * Added sanity-check that prevents Gecko playing Omaha.
 //   * Added f$pt_min_hands_for_opponent_modelling to require a minimal sample-size.
 //     with different requirements preflop (50) and postflop (150)
-//   * Extended f$prefold to full-ring
+//   * Extended f$prefold to full-ring and adapted it for the new open-raising-logic
 //   * introducing f$delay
 //   * Added opening-ranges for full-ring
 //   * changed all three RaiseMax-actions to RaisePot-actions

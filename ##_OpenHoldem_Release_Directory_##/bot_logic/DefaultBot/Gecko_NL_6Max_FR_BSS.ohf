@@ -147,17 +147,15 @@ nplayersplaying>=7 AND nplayersround_flop>=7 ? 4.50 :
 Random * 30
 
 ##f$prefold##
-WHEN IsPostflop    RETURN false FORCE
-WHEN (call < 0.01) RETURN false FORCE
-WHEN (InBigBlind        AND NOT listGecko07)  RETURN true FORCE
-WHEN (InSmallBlind      AND NOT listGecko900) RETURN true FORCE
-WHEN (InButton          AND NOT listGecko900) RETURN true FORCE               
-WHEN (InCutOff          AND NOT listGecko05)  RETURN true FORCE
-WHEN (InMiddlePosition3 AND NOT listGecko02)  RETURN true FORCE
-WHEN (InMiddlePosition2 AND NOT listGecko01)  RETURN true FORCE
-// Extended to full-ring
-// Simply assuming we can fold in early position as much as in MP2
-WHEN (Others            AND NOT listGecko01)  RETURN true FORCE
+// Not prefolding the open-raise hands
+// !!! This should be adapted for dynamic stealing.
+WHEN f$Chart_OpenRaise RETURN false fORCE
+// Not prefoldind pairs and suited aces, they are good multiway
+WHEN (InLateposition OR InTheBlinds) AND (ispair OR hand$Asuited) RETURN false FORCE
+// A little bit of randomization for flesh-and-blood-players
+WHEN (Random < 10) RETURN false FORCE
+// Prefold all the rest
+WHEN Others RETURN true FORCE
 
 ##f$preflop_raise##
    f$Preflop_First_In
@@ -1718,7 +1716,8 @@ WHEN (raischair >= 0) RETURN (balance_raischair + currentbet_raischair) FORCE
 0
 
 ##f$Preflop_First_In##
-(f$BettingAction_First_In AND f$Chart_OpenRaise) ? 1 : 0
+WHEN NOT f$BettingAction_First_In RETURN false FORCE
+WHEN f$Chart_OpenRaise RETURN true FORCE
 
 ##f$Preflop_Raise_After_Three_Limpers##
 (f$BettingAction_Three_Limpers_Or_More AND f$Chart_MultiLimpers) ? 1 : 0
@@ -1762,17 +1761,21 @@ NOT f$BettingAction_Unraised_Pot
 ##f$BettingAction_First_In##
 (f$BettingAction_Unraised_Pot AND nopponentscalling<=0)
 
-##f$Chart_OpenRaise##
-   [ InSmallBlind AND listGecko900 ] // 40%
-OR [ InButton AND listGecko900 ] // 40%
-OR [ InCutOff AND listGecko05  ] // 27%
-OR [ InMiddlePosition3 AND listGecko02  ] // 15%
-OR [ InMiddlePosition2 AND listGecko01  ] // 10%
+##f$StandardOpenRaisingRange##
+WHEN InSmallBlind      RETURN 0.40 FORCE
+WHEN InButton          RETURN 0.40 FORCE
+WHEN InCutOff          RETURN 0.27 FORCE
+WHEN InMiddlePosition3 RETURN 0.15 FORCE
+WHEN InMiddlePosition2 RETURN 0.10 FORCE
 // Extended to full-ring, not original Gecko
-OR [ InMiddlePosition1 AND listGecko_OpenRaise_MP1 ] // 9%
-OR [ InEarlyPosition3 AND listGecko_OpenRaise_EP3  ] // 7%
-OR [ InEarlyPosition2 AND listGecko_OpenRaise_EP2  ] // 6%
-OR [ InEarlyPosition1 AND listGecko_OpenRaise_EP1  ] // 5%
+// according to http://www.exceptionalpoker.com/?p=225
+WHEN InMiddlePosition1 RETURN 0.09 FORCE
+WHEN InEarlyPosition3  RETURN 0.07 FORCE
+WHEN InEarlyPosition2  RETURN 0.06 FORCE
+WHEN InEarlyPosition1  RETURN 0.05 FORCE
+
+##f$Chart_OpenRaise##
+WHEN (f$StandardOpenRaisingRange < (handrank169 / 169)) RETURN true fORCE
 
 ##f$BettingAction_Hero_Did_Already_Act##
 (didrais OR didcall OR didchec OR didbetsize)
@@ -2242,23 +2245,6 @@ KTo  KJo  KQo
 QTo  QJo  
 JTo 
 
-##listGecko05##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
-A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
-K8s K9s KTs KJs KQs  
-Q9s QTs QJs  
-J8s J9s JTs  
-T8s T9s  
-97s 98s  
-87s  
-76s  
-65s  
-54s  
-A8o  A9o ATo AJo AQo AKo 
-K9o  KTo  KJo  KQo  
-QTo  QJo  
-JTo 
-
 ##listGeckoMultipleRaisers##
 AA  KK  QQ  
 
@@ -2298,24 +2284,6 @@ K8o  K9o  KTo  KJo  KQo
 QTo  QJo  
 JTo 
 
-##listGecko07##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
-A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
-K7s K8s K9s KTs KJs KQs  
-Q8s Q9s QTs QJs  
-J8s J9s JTs  
-T7s T8s T9s  
-96s 97s 98s  
-86s 87s  
-75s 76s  
-64s 65s  
-54s  
-A5o  A6o A7o A8o A9o ATo AJo AQo AKo 
-K9o  KTo  KJo  KQo  
-Q9o  QTo  QJo  
-J9o  JTo  
-T9o  
-
 ##listGecko10##
 AA  KK  
 
@@ -2347,62 +2315,6 @@ AA  KK  QQ  JJ  TT  99  88  77
 AKs KQs QJs JTs T9s 98s 
 AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2s KJs KTs QTs 
 AKo AQo AJo ATo 
-
-##listGecko900##
-22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
-A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
-K2s K3s K4s K5s K6s K7s K8s K9s KTs KJs KQs  
-Q2s Q3s Q4s Q5s Q6s Q7s Q8s Q9s QTs QJs  
-J6s J7s J8s J9s JTs  
-T5s T6s T7s T8s T9s  
-95s 96s 97s 98s  
-85s 86s 87s  
-75s 76s  
-64s 65s  
-54s  
-43s  
-32s  
-A2o A3o A4o A5o A6o A7o A8o A9o ATo AJo AQo AKo 
-K2o K3o  K4o  K5o  K6o  K7o  K8o  K9o  KTo  KJo  KQo  
-Q2o Q3o  Q4o  Q5o  Q6o  Q7o  Q8o  Q9o  QTo  QJo  
-J7o  J8o  J9o  JTo
-T7o  T8o  T9o  
-97o 98o  
-87o  
-76o 
-
-##listGecko_OpenRaise_MP1##
-// Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
-// which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
-88  99  TT  JJ  QQ  AA  KK
-A9s ATs AJs AQs AKs 
-KTs KJs KQs
-QJs
-AJo AQo AKo 
-
-##listGecko_OpenRaise_EP3##
-// Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
-// which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
-88  99  TT  JJ  QQ  AA  KK
-ATS AJS AQS AKS 
-KTS KJS KQS
-QJs
-AQo AKo 
-
-##listGecko_OpenRaise_EP2##
-// Ranges for MP1, EP3 and EP2 taken from http://www.exceptionalpoker.com/?p=225
-// which sounds reasonable, as MP1 is slightly tighter than Geckos MP2-range
-88  99  TT  JJ  QQ  AA  KK
-ATS AJS AQS AKS 
-KJS KQS
-AQo AKo 
-
-##listGecko_OpenRaise_EP1##
-// List for EP1 made up on my own ;-)
-TT  JJ  QQ  AA  KK
-AQS AKS 
-KQS
-AQo AKo
 
 ##listGecko_3bet_vs_SmallBlind##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
