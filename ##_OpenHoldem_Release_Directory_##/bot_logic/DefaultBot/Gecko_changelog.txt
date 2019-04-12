@@ -176,6 +176,12 @@
 //     a more maths-based approach over hard-coded lists.
 //   * Removed the lists listGecko900, listGecko05, listGecko07
 //     which became superfluous due to the new maths-based open-raising logic.
+//   * f$AggressionFactor_Flop / Turn / River: removed some dozen redundant lines
+//     where the functions returned 0.00 for high and even higher aggression factors.
+//   * Joined the functions f$call_potcommitted and f$committed
+//   * Simplified f$Chart_MultiLimpers as always listGecko01 was used.
+//     Renamed function to f$Chart_RaiseMultiLimpers.
+//   * Removed unused listGecko10, listGecko11, listGecko12, listGecko99
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.

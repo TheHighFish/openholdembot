@@ -27,12 +27,6 @@
 //   Gecko_changelog.txt
 //
 //*****************************************************************************
-//
-// KNOWN WEAKNESSES:
-//   * currently uses Geckos 3betting-range against MP2 (UTG short-handed)
-//     against all more early positions full-ring.
-//
-//*****************************************************************************
 
 ##Gecko_6Max_FR_NL_BSS_Preflop##
 WHEN isomaha Fold FORCE
@@ -111,7 +105,32 @@ WHEN [call<=bblind AND nbetsround_preflop>1 AND (f$prwin > 0.15)] RETURN true FO
 WHEN [call<=bblind AND (EffectivePotSize > 6) AND (f$prwin > 0.50)] RETURN true FORCE
 
 ##f$call_potcommitted##
-[ IsPostflop AND f$committed ] 
+[ IsPreflop ] ? false :
+[ AmountToCall*10 < EffectivePotSize ] ? f$prwin>.30 :
+[ AmountToCall*9  < EffectivePotSize ] ? f$prwin>.40 :
+[ AmountToCall*8  < EffectivePotSize ] ? f$prwin>.50 :
+[ AmountToCall*7  < EffectivePotSize ] ? f$prwin>.60 :
+[ AmountToCall*6  < EffectivePotSize ] ? f$prwin>.75 :
+[ AmountToCall*5  < EffectivePotSize ] ? f$prwin>.80 :
+[ AmountToCall*4  < EffectivePotSize ] ? f$prwin>.85 :
+[ AmountToCall*3  < EffectivePotSize ] ? f$prwin>.95 :
+[ nplayersplaying==2 ] ? {
+    [ f$prwin>0.65 AND f$prwin<=0.70 ] ? (balance*7<EffectivePotSizeInDollars) :
+    [ f$prwin>0.70 AND f$prwin<=0.75 ] ? (balance*6<EffectivePotSizeInDollars) :
+    [ f$prwin>0.75 AND f$prwin<=0.80 ] ? (balance*5<EffectivePotSizeInDollars) :
+    [ f$prwin>0.80 AND f$prwin<=0.85 ] ? (balance*4<EffectivePotSizeInDollars) :
+    [ f$prwin>0.85 AND f$prwin<=0.90 ] ? (balance*3<EffectivePotSizeInDollars) :
+    [ f$prwin>0.90                  ] ? (balance*3<EffectivePotSizeInDollars) :
+    [ (f$villain_allin OR f$villain_potcommitted) ] ? {
+        [ f$prwin>0.68 AND f$prwin<=0.72 ] ? (AmountToCall*7.0 < EffectivePotSize) :
+        [ f$prwin>0.72 AND f$prwin<=0.76 ] ? (AmountToCall*6.0 < EffectivePotSize) :
+        [ f$prwin>0.76 AND f$prwin<=0.80 ] ? (AmountToCall*4.0 < EffectivePotSize) :
+        [ f$prwin>0.78 AND f$prwin<=0.82 ] ? (AmountToCall*3.5 < EffectivePotSize) :
+        [ f$prwin>0.82 AND f$prwin<=0.86 ] ? (AmountToCall*3.0 < EffectivePotSize) :
+        [ f$prwin>0.86 AND f$prwin<=0.90 ] ? (AmountToCall*2.5 < EffectivePotSize) : 
+        [ f$prwin>0.90 AND f$prwin<=0.96 ] ? (AmountToCall*2.0 < EffectivePotSize) : 
+        [ f$prwin>0.96                   ] ? (AmountToCall*1.0 < EffectivePotSize) : 0 } : 0 } :
+0 
 
 ##f$flop_turn_raise_strong_set##
 [ IsPostflop AND NOT IsRiver AND HaveSet AND nsuitedcommon<4 AND nstraightcommon<4 AND NOT PairOnBoard ] 
@@ -151,7 +170,7 @@ Random * 30
 // !!! This should be adapted for dynamic stealing.
 WHEN f$Chart_OpenRaise RETURN false fORCE
 // Not prefoldind pairs and suited aces, they are good multiway
-WHEN (InLateposition OR InTheBlinds) AND (ispair OR hand$Asuited) RETURN false FORCE
+WHEN (InLatePosition OR InTheBlinds) AND (ispair OR hand$Asuited) RETURN false FORCE
 // A little bit of randomization for flesh-and-blood-players
 WHEN (Random < 10) RETURN false FORCE
 // Prefold all the rest
@@ -271,41 +290,41 @@ OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveFlushDraw AND FlushPossible AND r
 OR (rankbits & 0b0000000000011110)==0b0000000000011110  // 432A
 
 ##f$safeboard##
-[ NOT PairOnBoard AND nsuitedcommon<=2 AND nstraightcommon<=2 ]
+[ NOT PairOnBoard AND NOT FlushPossible AND NOT StraightPossible ]
 
 ##f$flop_call##
 WHEN f$Odds_and_Outs      RETURN true FORCE
 WHEN f$Initiative_Hero    RETURN f$flop_call_initiative FORCE
-WHEN f$Initiative_Villian RETURN f$flop_call_noinitiative FORCE
+WHEN f$Initiative_Villain RETURN f$flop_call_noinitiative FORCE
 WHEN f$Initiative_Nobody  RETURN f$flop_call_noaction FORCE
 
 ##f$turn_call##
 WHEN f$Odds_and_Outs        RETURN true FORCE
 WHEN f$Initiative_Hero      RETURN f$turn_call_initiative FORCE
-WHEN f$Initiative_Villian   RETURN f$turn_call_noinitiative FORCE
+WHEN f$Initiative_Villain   RETURN f$turn_call_noinitiative FORCE
 WHEN f$Initiative_Nobody    RETURN f$turn_call_noaction FORCE
 WHEN f$Initiative_GotRaised RETURN f$turn_call_wegotraised FORCE
 
 ##f$river_call##
 WHEN f$Initiative_Hero      RETURN f$river_call_initiative FORCE
-WHEN f$Initiative_Villian   RETURN f$river_call_noinitiative FORCE
+WHEN f$Initiative_Villain   RETURN f$river_call_noinitiative FORCE
 WHEN f$Initiative_Nobody    RETURN f$river_call_noaction FORCE
 WHEN f$Initiative_GotRaised RETURN f$river_call_wegotraised FORCE
 
 ##f$flop_raise##
 WHEN f$Initiative_Hero    RETURN f$flop_raise_initiative FORCE
-WHEN f$Initiative_Villian RETURN f$flop_raise_noinitiative FORCE
+WHEN f$Initiative_Villain RETURN f$flop_raise_noinitiative FORCE
 WHEN f$Initiative_Nobody  RETURN f$flop_raise_noaction FORCE
 
 ##f$turn_raise##
 WHEN f$Initiative_Hero      RETURN f$turn_raise_initiative FORCE
-WHEN f$Initiative_Villian   RETURN f$turn_raise_noinitiative FORCE
+WHEN f$Initiative_Villain   RETURN f$turn_raise_noinitiative FORCE
 WHEN f$Initiative_Nobody    RETURN f$turn_raise_noaction FORCE
 WHEN f$Initiative_GotRaised RETURN f$turn_raise_wegotraised FORCE
 
 ##f$river_raise##
 WHEN f$Initiative_Hero      RETURN f$river_raise_initiative FORCE
-WHEN f$Initiative_Villian   RETURN f$river_raise_noinitiative FORCE
+WHEN f$Initiative_Villain   RETURN f$river_raise_noinitiative FORCE
 WHEN f$Initiative_Nobody    RETURN f$river_raise_noaction FORCE
 WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
 
@@ -322,7 +341,7 @@ IsTurn ? nbetsround_flop<=0 :
 IsRiver ? nbetsround_turn<=0 : 
 false
 
-##f$Initiative_Villian##
+##f$Initiative_Villain##
 IsPreflop ? didcallround_preflop AND nbetsround_preflop>1 :
 IsFlop ? didcallround_preflop AND nbetsround_preflop>1 :
 IsTurn ? NOT didbetsizeround_flop AND didcallround_flop AND nbetsround_flop>0 :
@@ -1015,44 +1034,37 @@ IsFlop ? (f$OutOdds*2.0)>f$PotOdds :
 IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 
 ##f$nOuts##
-[0+
-
-(IsFlop AND nsuitedcommon==2 AND HaveFlushDraw AND NOT PairOnBoard                                    ? 9 : 0) +
-(IsFlop AND nsuitedcommon==2 AND HaveFlushDraw AND PairOnBoard                                    ? 8 : 0) +
-(IsTurn AND nsuitedcommon==2 AND HaveFlushDraw AND NOT PairOnBoard                                    ? 9 : 0) +
-(IsTurn AND nsuitedcommon==2 AND HaveFlushDraw AND PairOnBoard                                    ? 9 : 0) +
-(HaveThirdNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 7 : 0) + 
-(HaveThirdNutFlushDraw AND FlushPossible AND PairOnBoard ? 5 : 0) + 
-(HaveSecondNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 8 : 0) + 
-(HaveSecondNutFlushDraw AND FlushPossible AND PairOnBoard ? 6 : 0) + 
-(HaveNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 9 : 0) + 
-(HaveNutFlushDraw AND FlushPossible AND PairOnBoard ? 7 : 0) + 
-(IsFlop AND rankloplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair                                                                                                             ? 6 : 0) +
-(IsFlop AND rankhiplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair AND NOT(rankloplayer>rankhicommon)                                                                              ? 3 : 0) +
-(IsTurn AND rankloplayer>rankhicommon AND nbetsround_flop<3 AND nplayersplaying==2 AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND NOT PairOnBoard AND NOT(isonepair AND NOT PairOnBoard) ? 6 : 0) +
-(IsTurn AND rankloplayer>rankhicommon AND nbetsround_flop<2 AND nplayersplaying==3 AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND NOT PairOnBoard AND NOT(isonepair AND NOT PairOnBoard) ? 6 : 0) +
-
-(nstraightcommon==3 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw      ? 4 : 0) +
-(nstraightcommon==3 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 2 : 0) +
-(nstraightcommon==2 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw      ? 8 : 0) +         
-(nstraightcommon==2 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 6 : 0) +
-(nstraightcommon==1 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw      ? 8 : 0) +         
-(nstraightcommon==1 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 6 : 0) +
-(nstraightcommon<=3 AND nstraight==4 AND NOT FlushPossible AND nrankedcommon<=2 AND  f$wheeldraw      ? 4 : 0) +
-
-(f$safeboard AND ispair                                                                          ? 2 : 0) +
-(f$safeboard AND isonepair AND NOT ispair AND nstraightfillcommon>2                                   ? 5 : 0) +
-
-(NOT PairOnBoard AND istwopair AND NOT TwoPairOnBoard                                                    ? 4 : 0) +
-(PairOnBoard AND istwopair AND NOT TwoPairOnBoard                                                    ? 1 : 0) +
-
-(IsFlop AND isthreeofakind AND PairOnBoard                                                    ? 7 : 0) +
-(IsTurn AND isthreeofakind AND PairOnBoard                                                    ? 9 : 0) +
-(IsFlop AND isthreeofakind AND NOT PairOnBoard                                                    ? 7 : 0) +
-(IsTurn AND isthreeofakind AND NOT PairOnBoard                                                    ? 12: 0) +
-
-(IsFlop AND nsuited==3 AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>12                ? 3 : 0) +
-(IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard          ? 2 : 0) + 0 ]
+  (IsFlop AND nsuitedcommon==2 AND HaveFlushDraw AND NOT PairOnBoard                                    ? 9 : 0)
++ (IsFlop AND nsuitedcommon==2 AND HaveFlushDraw AND PairOnBoard                                    ? 8 : 0)
++ (IsTurn AND nsuitedcommon==2 AND HaveFlushDraw AND NOT PairOnBoard                                    ? 9 : 0)
++ (IsTurn AND nsuitedcommon==2 AND HaveFlushDraw AND PairOnBoard                                    ? 9 : 0)
++ (HaveThirdNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 7 : 0)
++ (HaveThirdNutFlushDraw AND FlushPossible AND PairOnBoard ? 5 : 0)
++ (HaveSecondNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 8 : 0)
++ (HaveSecondNutFlushDraw AND FlushPossible AND PairOnBoard ? 6 : 0)
++ (HaveNutFlushDraw AND FlushPossible AND NOT PairOnBoard ? 9 : 0)
++ (HaveNutFlushDraw AND FlushPossible AND PairOnBoard ? 7 : 0)
++ (IsFlop AND rankloplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair                                                                                                             ? 6 : 0)
++ (IsFlop AND rankhiplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair AND NOT(rankloplayer>rankhicommon)                                                                              ? 3 : 0)
++ (IsTurn AND rankloplayer>rankhicommon AND nbetsround_flop<3 AND nplayersplaying==2 AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND NOT PairOnBoard AND NOT(isonepair AND NOT PairOnBoard) ? 6 : 0)
++ (IsTurn AND rankloplayer>rankhicommon AND nbetsround_flop<2 AND nplayersplaying==3 AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND NOT PairOnBoard AND NOT(isonepair AND NOT PairOnBoard) ? 6 : 0)
++ (nstraightcommon==3 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw      ? 4 : 0)
++ (nstraightcommon==3 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 2 : 0)
++ (nstraightcommon==2 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw      ? 8 : 0)
++ (nstraightcommon==2 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 6 : 0)
++ (nstraightcommon==1 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw      ? 8 : 0)
++ (nstraightcommon==1 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 6 : 0)
++ (nstraightcommon<=3 AND nstraight==4 AND NOT FlushPossible AND nrankedcommon<=2 AND  f$wheeldraw      ? 4 : 0)
++ (f$safeboard AND ispair                                                                          ? 2 : 0)
++ (f$safeboard AND isonepair AND NOT ispair AND nstraightfillcommon>2                                   ? 5 : 0)
++ (NOT PairOnBoard AND istwopair AND NOT TwoPairOnBoard                                                    ? 4 : 0)
++ (PairOnBoard AND istwopair AND NOT TwoPairOnBoard                                                    ? 1 : 0)
++ (IsFlop AND isthreeofakind AND PairOnBoard                                                    ? 7 : 0)
++ (IsTurn AND isthreeofakind AND PairOnBoard                                                    ? 9 : 0)
++ (IsFlop AND isthreeofakind AND NOT PairOnBoard                                                    ? 7 : 0)
++ (IsTurn AND isthreeofakind AND NOT PairOnBoard                                                    ? 12: 0)
++ (IsFlop AND nsuited==3 AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>12                ? 3 : 0)
++ (IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard          ? 2 : 0) + 0 ]
 
 ##f$OutOdds##
 [ f$nOuts/46 ]
@@ -1070,39 +1082,27 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
 [ IsRiver ] ? f$AggressionFactor_River : 0
 
 ##f$AggressionFactor_Flop##
-[ call<=0 ] ? 0 :
-[ call>0 AND pt_hands_raischair>25 ] ? {
-    [ f$PT_Flop_AF_RaisChair<=0.00 ] ? 0.00 :
-    [ f$PT_Flop_AF_RaisChair>0.00 AND f$PT_Flop_AF_RaisChair<=0.33 ] ? 0.40 :
-    [ f$PT_Flop_AF_RaisChair>0.33 AND f$PT_Flop_AF_RaisChair<=0.66 ] ? 0.35 :
-    [ f$PT_Flop_AF_RaisChair>0.66 AND f$PT_Flop_AF_RaisChair<=1.00 ] ? 0.25 :
-    [ f$PT_Flop_AF_RaisChair>1.00 AND f$PT_Flop_AF_RaisChair<=1.33 ] ? 0.15 :
-    [ f$PT_Flop_AF_RaisChair>1.33 AND f$PT_Flop_AF_RaisChair<=1.66 ] ? 0.05 :
-    [ f$PT_Flop_AF_RaisChair>1.66 AND f$PT_Flop_AF_RaisChair<=2.00 ] ? 0.00 :
-    [ f$PT_Flop_AF_RaisChair>2.00 AND f$PT_Flop_AF_RaisChair<=2.50 ] ? 0.00 :
-    [ f$PT_Flop_AF_RaisChair>2.50 AND f$PT_Flop_AF_RaisChair<=3.00 ] ? 0.00 :
-    [ f$PT_Flop_AF_RaisChair>3.00 AND f$PT_Flop_AF_RaisChair<=4.00 ] ? 0.00 :
-    [ f$PT_Flop_AF_RaisChair>4.00 AND f$PT_Flop_AF_RaisChair<=5.00 ] ? 0.00 :
-    [ f$PT_Flop_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
-0
+WHEN f$actionpostflop_free_to_play RETURN 0.00 FORCE
+WHEN pt_hands_raischair<=25 RETURN 0.00 FORCE
+WHEN f$PT_Flop_AF_RaisChair<=0.00 RETURN 0.00 FORCE
+WHEN f$PT_Flop_AF_RaisChair>0.00 AND f$PT_Flop_AF_RaisChair<=0.33 RETURN 0.40 FORCE
+WHEN f$PT_Flop_AF_RaisChair>0.33 AND f$PT_Flop_AF_RaisChair<=0.66 RETURN 0.35 FORCE
+WHEN f$PT_Flop_AF_RaisChair>0.66 AND f$PT_Flop_AF_RaisChair<=1.00 RETURN 0.25 FORCE
+WHEN f$PT_Flop_AF_RaisChair>1.00 AND f$PT_Flop_AF_RaisChair<=1.33 RETURN 0.15 FORCE
+WHEN f$PT_Flop_AF_RaisChair>1.33 AND f$PT_Flop_AF_RaisChair<=1.66 RETURN 0.05 FORCE
 
 ##f$AggressionFactor_Turn##
-[ call<=0 ] ? {
-    [ f$Initiative_Hero   ] ? 0 :
-    [ f$Initiative_Nobody ] ? 0 :
-    [ f$Initiative_Villian AND f$pt_hands>25 ] ? {
+[ f$actionpostflop_free_to_play ] ? {
+    [ f$Initiative_Hero   ] ? 0.00 :
+    [ f$Initiative_Nobody ] ? 0.00 :
+    [ f$Initiative_Villain AND f$pt_hands>25 ] ? {
                             f$pt_flopaf<=0.00 ? 0.00 :
         f$pt_flopaf>0.00 AND f$pt_flopaf<=0.33 ? 0.50 :
         f$pt_flopaf>0.33 AND f$pt_flopaf<=0.66 ? 0.40 :
         f$pt_flopaf>0.66 AND f$pt_flopaf<=1.00 ? 0.30 :
         f$pt_flopaf>1.00 AND f$pt_flopaf<=1.33 ? 0.20 :
         f$pt_flopaf>1.33 AND f$pt_flopaf<=1.66 ? 0.10 :
-        f$pt_flopaf>1.66 AND f$pt_flopaf<=2.00 ? 0.00 :
-        f$pt_flopaf>2.00 AND f$pt_flopaf<=2.50 ? 0.00 :
-        f$pt_flopaf>2.50 AND f$pt_flopaf<=3.00 ? 0.00 :
-        f$pt_flopaf>3.00 AND f$pt_flopaf<=4.00 ? 0.00 :
-        f$pt_flopaf>4.00 AND f$pt_flopaf<=5.00 ? 0.00 :
-        f$pt_flopaf>5.00                         ? 0.00 : 0 } : 0 } :
+        0 } : 0 } :
 [ call>0 AND pt_hands_raischair>25 ] ? {
   [ NOT didbetsize ] ? {
     [ f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
@@ -1112,14 +1112,7 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_Turn_AF_RaisChair>0.75 AND f$PT_Turn_AF_RaisChair<=1.00 ] ? 0.20 :
     [ f$PT_Turn_AF_RaisChair>1.00 AND f$PT_Turn_AF_RaisChair<=1.25 ] ? 0.10 :
     [ f$PT_Turn_AF_RaisChair>1.25 AND f$PT_Turn_AF_RaisChair<=1.50 ] ? 0.05 :
-    [ f$PT_Turn_AF_RaisChair>1.50 AND f$PT_Turn_AF_RaisChair<=1.75 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>1.75 AND f$PT_Turn_AF_RaisChair<=2.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>2.00 AND f$PT_Turn_AF_RaisChair<=2.25 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>2.25 AND f$PT_Turn_AF_RaisChair<=2.50 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>2.50 AND f$PT_Turn_AF_RaisChair<=3.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>3.00 AND f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>4.00 AND f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
+    0 } : 
   [ didbetsize ] ? {
     [ f$PT_Turn_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_Turn_AF_RaisChair>0.00 AND f$PT_Turn_AF_RaisChair<=0.25 ] ? 1.00 :
@@ -1127,22 +1120,14 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_Turn_AF_RaisChair>0.50 AND f$PT_Turn_AF_RaisChair<=0.75 ] ? 0.50 :
     [ f$PT_Turn_AF_RaisChair>0.75 AND f$PT_Turn_AF_RaisChair<=1.00 ] ? 0.33 :
     [ f$PT_Turn_AF_RaisChair>1.00 AND f$PT_Turn_AF_RaisChair<=1.25 ] ? 0.16 :
-    [ f$PT_Turn_AF_RaisChair>1.25 AND f$PT_Turn_AF_RaisChair<=1.50 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>1.50 AND f$PT_Turn_AF_RaisChair<=1.75 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>1.75 AND f$PT_Turn_AF_RaisChair<=2.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>2.00 AND f$PT_Turn_AF_RaisChair<=2.25 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>2.25 AND f$PT_Turn_AF_RaisChair<=2.50 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>2.50 AND f$PT_Turn_AF_RaisChair<=3.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>3.00 AND f$PT_Turn_AF_RaisChair<=4.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>4.00 AND f$PT_Turn_AF_RaisChair<=5.00 ] ? 0.00 :
-    [ f$PT_Turn_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 0 } :
+    0 } : 0 } :
 0
 
 ##f$AggressionFactor_River##
-[ call<=0 ] ? {
+[ f$actionpostflop_free_to_play ] ? {
     [ f$Initiative_Hero   ] ? 0 :
     [ f$Initiative_Nobody ] ? 0 :
-    [ f$Initiative_Villian AND f$pt_hands>25 ] ? {
+    [ f$Initiative_Villain AND f$pt_hands>25 ] ? {
         [ f$pt_turnaf<=0.00 ] ? 0.00 :
         [ f$pt_turnaf>0.00 AND f$pt_turnaf<=0.25 ] ? 0.50 :
         [ f$pt_turnaf>0.25 AND f$pt_turnaf<=0.50 ] ? 0.40 :
@@ -1150,14 +1135,7 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
         [ f$pt_turnaf>0.75 AND f$pt_turnaf<=1.00 ] ? 0.20 :
         [ f$pt_turnaf>1.00 AND f$pt_turnaf<=1.25 ] ? 0.10 :
         [ f$pt_turnaf>1.25 AND f$pt_turnaf<=1.50 ] ? 0.05 :
-        [ f$pt_turnaf>1.50 AND f$pt_turnaf<=1.75 ] ? 0.00 :
-        [ f$pt_turnaf>1.75 AND f$pt_turnaf<=2.00 ] ? 0.00 :
-        [ f$pt_turnaf>2.00 AND f$pt_turnaf<=2.25 ] ? 0.00 :
-        [ f$pt_turnaf>2.25 AND f$pt_turnaf<=2.50 ] ? 0.00 :
-        [ f$pt_turnaf>2.50 AND f$pt_turnaf<=3.00 ] ? 0.00 :
-        [ f$pt_turnaf>3.00 AND f$pt_turnaf<=4.00 ] ? 0.00 :
-        [ f$pt_turnaf>4.00 AND f$pt_turnaf<=5.00 ] ? 0.00 :
-        [ f$pt_turnaf>5.00 ] ? 0.00 : 0 } : 0 } :
+        0 } : 0 } :
 [ call>0 AND pt_hands_raischair>25 ] ? {
   [ NOT didbetsize ] ? {
     [ f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
@@ -1167,14 +1145,7 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_River_AF_RaisChair>0.75 AND f$PT_River_AF_RaisChair<=1.00 ] ? 0.20 :
     [ f$PT_River_AF_RaisChair>1.00 AND f$PT_River_AF_RaisChair<=1.25 ] ? 0.10 :
     [ f$PT_River_AF_RaisChair>1.25 AND f$PT_River_AF_RaisChair<=1.50 ] ? 0.05 :
-    [ f$PT_River_AF_RaisChair>1.50 AND f$PT_River_AF_RaisChair<=1.75 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>1.75 AND f$PT_River_AF_RaisChair<=2.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>2.00 AND f$PT_River_AF_RaisChair<=2.25 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>2.25 AND f$PT_River_AF_RaisChair<=2.50 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>2.50 AND f$PT_River_AF_RaisChair<=3.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>3.00 AND f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>4.00 AND f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>5.00                     ] ? 0.00 : 0 } : 
+    0 } : 
   [ didbetsize ] ? {
     [ f$PT_River_AF_RaisChair<=0.00 ] ? 0.00 :
     [ f$PT_River_AF_RaisChair>0.00 AND f$PT_River_AF_RaisChair<=0.25 ] ? 1.00 :
@@ -1182,21 +1153,13 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
     [ f$PT_River_AF_RaisChair>0.50 AND f$PT_River_AF_RaisChair<=0.75 ] ? 0.50 :
     [ f$PT_River_AF_RaisChair>0.75 AND f$PT_River_AF_RaisChair<=1.00 ] ? 0.33 :
     [ f$PT_River_AF_RaisChair>1.00 AND f$PT_River_AF_RaisChair<=1.25 ] ? 0.16 :
-    [ f$PT_River_AF_RaisChair>1.25 AND f$PT_River_AF_RaisChair<=1.50 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>1.50 AND f$PT_River_AF_RaisChair<=1.75 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>1.75 AND f$PT_River_AF_RaisChair<=2.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>2.00 AND f$PT_River_AF_RaisChair<=2.25 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>2.25 AND f$PT_River_AF_RaisChair<=2.50 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>2.50 AND f$PT_River_AF_RaisChair<=3.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>3.00 AND f$PT_River_AF_RaisChair<=4.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>4.00 AND f$PT_River_AF_RaisChair<=5.00 ] ? 0.00 :
-    [ f$PT_River_AF_RaisChair>5.00 ] ? 0.00 : 0 } : 0 } :
+    0 } : 0 } :
 0
 
 ##f$threat##
-IsFlop  ? (f$AggressionFactor_Flop+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair)  :
-IsTurn  ? (f$AggressionFactor_Turn+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair)  :
-IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villiantakeover+f$reducewinchance_when_have_twopair) : 0
+IsFlop  ? (f$AggressionFactor_Flop+f$foldequity+f$villaintakeover+f$reducewinchance_when_have_twopair)  :
+IsTurn  ? (f$AggressionFactor_Turn+f$foldequity+f$villaintakeover+f$reducewinchance_when_have_twopair)  :
+IsRiver ?(f$AggressionFactor_River+f$foldequity+f$villaintakeover+f$reducewinchance_when_have_twopair) : 0
 
 ##f$flop_call_initiative##
 [ Position = First ] ? {
@@ -1720,7 +1683,7 @@ WHEN NOT f$BettingAction_First_In RETURN false FORCE
 WHEN f$Chart_OpenRaise RETURN true FORCE
 
 ##f$Preflop_Raise_After_Three_Limpers##
-(f$BettingAction_Three_Limpers_Or_More AND f$Chart_MultiLimpers) ? 1 : 0
+(f$BettingAction_Three_Limpers_Or_More AND f$Chart_RaiseMultiLimpers) ? 1 : 0
 
 ##f$Preflop_Raise_After_Two_Limpers##
 (f$BettingAction_Two_Limpers AND f$Chart_TwoLimpers) ? 1 : 0
@@ -1784,6 +1747,7 @@ WHEN (f$StandardOpenRaisingRange < (handrank169 / 169)) RETURN true fORCE
 ((Raises == 1) AND (Calls == 0))
 
 ##f$Chart_ReRaise##
+WHEN (f$StandardThreeRaisingRange < (handrank169 / 169)) RETURN true fORCE
 [ raischair==smallblindchair ] ? listGecko_3bet_vs_SmallBlind : 
 [ raischair==dealerchair ]     ? listGecko_3bet_vs_Dealer : 
 [ raischair==cutoffchair ]     ? listGecko_3bet_vs_CutOff : 
@@ -1807,13 +1771,8 @@ false
 ##f$BettingAction_Three_Limpers_Or_More##
 (nopponentscalling >= 3 AND ncallbets<=1)
 
-##f$Chart_MultiLimpers##
-   (InMiddlePosition2       AND listGecko01)
-OR (InMiddlePosition3       AND listGecko01)
-OR (InCutOff     AND listGecko01)
-OR (InButton     AND listGecko01)
-OR (InSmallBlind AND listGecko01)
-OR (InBigBlind   AND listGecko01)
+##f$Chart_RaiseMultiLimpers##
+listGecko01
 
 ##f$Chart_OneLimper##
    [ InSmallBlind AND listGecko06 ]  // 30%
@@ -1853,33 +1812,7 @@ WHEN (f$stackopponent == 0) RETURN true FORCE
 ##f$villain_potcommitted##
 WHEN (nopponentsplaying > 1) RETURN false FORCE
 WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
-							  
-##f$committed##
-[ AmountToCall*10 < EffectivePotSize ] ? f$prwin>.30 :
-[ AmountToCall*9  < EffectivePotSize ] ? f$prwin>.40 :
-[ AmountToCall*8  < EffectivePotSize ] ? f$prwin>.50 :
-[ AmountToCall*7  < EffectivePotSize ] ? f$prwin>.60 :
-[ AmountToCall*6  < EffectivePotSize ] ? f$prwin>.75 :
-[ AmountToCall*5  < EffectivePotSize ] ? f$prwin>.80 :
-[ AmountToCall*4  < EffectivePotSize ] ? f$prwin>.85 :
-[ AmountToCall*3  < EffectivePotSize ] ? f$prwin>.95 :
-[ nplayersplaying==2 ] ? {
-    [ f$prwin>0.65 AND f$prwin<=0.70 ] ? (balance*7<EffectivePotSizeInDollars) :
-    [ f$prwin>0.70 AND f$prwin<=0.75 ] ? (balance*6<EffectivePotSizeInDollars) :
-    [ f$prwin>0.75 AND f$prwin<=0.80 ] ? (balance*5<EffectivePotSizeInDollars) :
-    [ f$prwin>0.80 AND f$prwin<=0.85 ] ? (balance*4<EffectivePotSizeInDollars) :
-    [ f$prwin>0.85 AND f$prwin<=0.90 ] ? (balance*3<EffectivePotSizeInDollars) :
-    [ f$prwin>0.90                  ] ? (balance*3<EffectivePotSizeInDollars) :
-    [ (f$villain_allin OR f$villain_potcommitted) ] ? {
-        [ f$prwin>0.68 AND f$prwin<=0.72 ] ? (AmountToCall*7.0 < EffectivePotSize) :
-        [ f$prwin>0.72 AND f$prwin<=0.76 ] ? (AmountToCall*6.0 < EffectivePotSize) :
-        [ f$prwin>0.76 AND f$prwin<=0.80 ] ? (AmountToCall*4.0 < EffectivePotSize) :
-        [ f$prwin>0.78 AND f$prwin<=0.82 ] ? (AmountToCall*3.5 < EffectivePotSize) :
-        [ f$prwin>0.82 AND f$prwin<=0.86 ] ? (AmountToCall*3.0 < EffectivePotSize) :
-        [ f$prwin>0.86 AND f$prwin<=0.90 ] ? (AmountToCall*2.5 < EffectivePotSize) : 
-        [ f$prwin>0.90 AND f$prwin<=0.96 ] ? (AmountToCall*2.0 < EffectivePotSize) : 
-        [ f$prwin>0.96                   ] ? (AmountToCall*1.0 < EffectivePotSize) : 0 } : 0 } :
-0
+							 
 
 ##f$actionpostflop_free_to_play##
 [ call<=0 ]
@@ -2069,7 +2002,7 @@ IsRiver ? didbetsizeround_turn AND didcallround_turn AND nbetsround_turn>0 : 0
    [ nhandshi<=0 ]
 OR [ prwin>.97 ]
 
-##f$villiantakeover##
+##f$villaintakeover##
 [ IsTurn AND NOT didcallround_preflop AND nbetsround_preflop>1 AND NOT didbetsizeround_flop AND didcallround_flop ] ? {
     [ f$PT_Flop_AF_RaisChair<=0.00 ] ?  0.50 :
     [ pt_hands_raischair>50 ] ? {
@@ -2259,14 +2192,6 @@ AKo
 ##listGeckoMultipleRaisersBehindUs##
 AA  KK  QQ  
 
-##listGecko11##
-AA  KK  QQ  
-
-##listGecko12##
-AA  KK  QQ  
-AKs  
-AKo
-
 ##listGecko06##
 22  33  44  55  66  77  88  99  TT  JJ  QQ  AA  KK  
 A2s A3s A4s A5s A6s A7s A8s A9s ATs AJs AQs AKs  
@@ -2284,19 +2209,11 @@ K8o  K9o  KTo  KJo  KQo
 QTo  QJo  
 JTo 
 
-##listGecko10##
-AA  KK  
-
 ##listGeckoSetMining##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AQs AKs  
 AKo  
 KQs
-
-##listGecko99##
-QQ  AA  KK  
-AKs  
-AKo
 
 ##listGecko09##
 88  99  TT  JJ  QQ  AA  KK  
