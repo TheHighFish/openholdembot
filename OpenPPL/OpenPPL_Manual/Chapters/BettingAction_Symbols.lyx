@@ -109,27 +109,6 @@ Meaning
 \begin_inset Text
 
 \begin_layout Plain Layout
-AllOpponentsLeftSittingOut 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-True, if all remaining opponents are sitting out.
- This symbol is especially meant for use in tournaments 
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 Bets 
 \end_layout
 
@@ -906,6 +885,27 @@ An opponent is all in, there may still be other players in the hand.
  If the amount to call is equal to our stack size and we are headsUp we
  consider the villan as being allin.
  
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+OpponentsLeftSittingOut 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+True, if all remaining opponents are sitting out.
+ This symbol is especially meant for use in tournaments
 \end_layout
 
 \end_inset
