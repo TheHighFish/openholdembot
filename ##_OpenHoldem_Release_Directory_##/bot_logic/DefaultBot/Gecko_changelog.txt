@@ -182,6 +182,8 @@
 //   * Simplified f$Chart_MultiLimpers as always listGecko01 was used.
 //     Renamed function to f$Chart_RaiseMultiLimpers.
 //   * Removed unused listGecko10, listGecko11, listGecko12, listGecko99
+//   * Rewrote f$Initiative_Hero in order to replace somewhat unreliable nbetsroundX
+//     by mire autoplayer-history-symbols.
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.

@@ -329,10 +329,12 @@ WHEN f$Initiative_Nobody    RETURN f$river_raise_noaction FORCE
 WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
 
 ##f$Initiative_Hero##
-IsPreflop AND nbetsround_preflop>1 AND NOT didcallround_preflop ? 1 :
-IsFlop AND nbetsround_preflop>1 AND NOT didcallround_preflop ? 1 :
-IsTurn AND nbetsround_flop>0 AND NOT didcallround_flop ? 1 :
-IsRiver AND nbetsround_turn>0 AND NOT didcallround_turn ? 1 : 0
+WHEN IsPreflop AND didcallround_preflop RETURN false FORCE
+WHEN IsPreflop AND didraiseround_preflop RETURN true FORCE
+WHEN IsPreflop AND didbetsizeround_preflop RETURN true FORCE
+WHEN didcallround_previousround RETURN false FORCE
+WHEN didraiseround_previousround RETURN true FORCE
+WHEN didbetsizeround_previousround RETURN true FORCE
 
 ##f$Initiative_Nobody##
 IsPreflop ? nbetsround_preflop<=1 :
