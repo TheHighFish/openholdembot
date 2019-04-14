@@ -330,10 +330,10 @@ WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
 
 ##f$Initiative_Hero##
 WHEN IsPreflop AND didcallround_preflop RETURN false FORCE
-WHEN IsPreflop AND didraiseround_preflop RETURN true FORCE
+WHEN IsPreflop AND didraisround_preflop RETURN true FORCE
 WHEN IsPreflop AND didbetsizeround_preflop RETURN true FORCE
 WHEN didcallround_previousround RETURN false FORCE
-WHEN didraiseround_previousround RETURN true FORCE
+WHEN didraisround_previousround RETURN true FORCE
 WHEN didbetsizeround_previousround RETURN true FORCE
 
 ##f$Initiative_Nobody##
