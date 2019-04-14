@@ -329,26 +329,19 @@ WHEN f$Initiative_Nobody    RETURN f$river_raise_noaction FORCE
 WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
 
 ##f$Initiative_Hero##
-WHEN IsPreflop AND didcallround_preflop RETURN false FORCE
-WHEN IsPreflop AND didraisround_preflop RETURN true FORCE
-WHEN IsPreflop AND didbetsizeround_preflop RETURN true FORCE
-WHEN didcallround_previousround RETURN false FORCE
-WHEN didraisround_previousround RETURN true FORCE
-WHEN didbetsizeround_previousround RETURN true FORCE
+// Can't have initiative preflop: either we did not yet act or somebody raised
+WHEN IsPostflop RETURN (lastraised_previousround == userchair) FORCE
 
 ##f$Initiative_Nobody##
-IsPreflop ? nbetsround_preflop<=1 :
-IsFlop ? nbetsround_preflop<=1 :
-IsTurn ? nbetsround_flop<=0 :
-IsRiver ? nbetsround_turn<=0 : 
-false
+NOT f$Initiative_Hero AND NOT f$Initiative_Villain
 
 ##f$Initiative_Villain##
-IsPreflop ? didcallround_preflop AND nbetsround_preflop>1 :
-IsFlop ? didcallround_preflop AND nbetsround_preflop>1 :
-IsTurn ? NOT didbetsizeround_flop AND didcallround_flop AND nbetsround_flop>0 :
-IsRiver ? NOT didbetsizeround_flop AND didcallround_turn AND nbetsround_turn>0 : 
-false
+WHEN IsPreflop RETURN ncallbets > 1 FORCE 
+WHEN IsFlop    RETURN (lastraised_preflop != userchair AND nbetsround_preflop > 1) FORCE
+WHEN Others    RETURN (lastraised_previousround != userchair AND nbetsround_previousround > 0) FORCE
+
+##f$Initiative_GotRaised##
+didbetsizeround_previousround AND (lastraised_previousround != userchair)
 
 ##f$prwin##
 [prwin+(prtie/2)]**(1+f$threat)
@@ -1995,13 +1988,9 @@ WHEN (f$stackopponent <= currentbet_headsupchair) RETURN true FORCE
     [ f$actionpostflop_large_investment] ? f$prwin1>.96 : 0 } :
 0
 
-##f$Initiative_GotRaised##
-IsTurn ? didbetsizeround_flop AND didcallround_flop AND nbetsround_flop>0 :
-IsRiver ? didbetsizeround_turn AND didcallround_turn AND nbetsround_turn>0 : 0
-
 ##f$nuts##
-   [ nhandshi<=0 ]
-OR [ prwin>.97 ]
+   [ nhandshi <=0 ]
+OR [ prwin > 0.97 ]
 
 ##f$villaintakeover##
 [ IsTurn AND NOT didcallround_preflop AND nbetsround_preflop>1 AND NOT didbetsizeround_flop AND didcallround_flop ] ? {
