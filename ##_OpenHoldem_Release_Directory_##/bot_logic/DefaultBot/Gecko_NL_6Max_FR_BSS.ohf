@@ -249,11 +249,13 @@ WHEN Others    RETURN 150 FORCE
 OR (NOT TwoPairOnBoard AND HaveFlushDraw AND FlushPossible AND nstraight==4 AND NOT f$wheeldraw AND (NumberOfUnknownSuitedOvercards<=3) AND NOT StraightPossible AND NOT PairOnBoard) 
 OR (IsFlop AND NOT TwoPairOnBoard AND HaveFlushDraw AND nsuitedcommon==2 AND nstraight==4 AND NOT f$wheeldraw AND NOT StraightPossible AND PairOnBoard) 
 OR (IsFlop AND NOT TwoPairOnBoard AND HaveFlushDraw AND FlushPossible AND nstraight==4 AND NOT f$wheeldraw AND (NumberOfUnknownSuitedOvercards<=3) AND NOT StraightPossible AND PairOnBoard) ? 4 :
+
    ((NOT TwoPairOnBoard AND HaveNutFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard) 
 OR (NOT TwoPairOnBoard AND rankloplayer>rankhicommon AND NOT StraightPossible AND NOT PairOnBoard AND HaveFlushDraw AND nsuitedcommon==2) 
-OR(NOT TwoPairOnBoard AND hand$AA AND FlushPossible AND HaveFlushDraw AND NOT PairOnBoard) 
+OR (NOT TwoPairOnBoard AND hand$AA AND FlushPossible AND HaveFlushDraw AND NOT PairOnBoard) 
 OR (NOT TwoPairOnBoard AND nstraight==4 AND nstraight>nstraightcommon AND NOT f$wheeldraw AND ishipair AND NOT FlushPossible AND NOT PairOnBoard AND (pokervalcommon < onepair)) 
-OR(HaveFlushDraw AND nsuited>nsuitedcommon AND ishipair AND NOT PairOnBoard)) ? 3 :
+OR (HaveFlushDraw AND nsuited>nsuitedcommon AND ishipair AND NOT PairOnBoard)) ? 3 :
+
    ((NOT TwoPairOnBoard AND HaveNutFlushDraw AND FlushPossible AND NOT PairOnBoard) 
 OR (NOT TwoPairOnBoard AND HaveNutFlushDraw AND FlushPossible AND nrankedcommon<3) 
 OR (NOT TwoPairOnBoard AND nstraight==4 AND nstraight>nstraightcommon AND NOT f$wheeldraw AND ismidpair AND nrankedcommon<3 AND NOT FlushPossible AND (pokervalcommon < onepair)) 
@@ -268,21 +270,21 @@ OR (rankloplayer>rankhicommon AND NOT IsRiver AND f$safeboard AND isonepair AND 
 OR (rankloplayer>rankhicommon AND NOT IsRiver AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND istwopair AND PairOnBoard) 
 OR (nstraightfill==1 AND NOT IsRiver AND istwopair AND PairOnBoard AND NOT FlushPossible) 
 OR (nstraightfill==1 AND NOT IsRiver AND rankloplayer>rankhicommon AND f$safeboard) 
-OR (nstraightfill==1 AND NOT IsRiver AND nsuited==3 AND IsFlop AND rankhiplayer>rankhicommon AND f$safeboard) 
-OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveFlushDraw AND FlushPossible AND rankloplayer>11 AND nrankedcommon<3) OR
-(NOT TwoPairOnBoard AND NOT IsRiver AND nsuited==3 AND nsuitedcommon==1 AND nstraight==3 AND nstraightcommon<=2 AND rankloplayer>rankhicommon AND NOT PairOnBoard AND IsFlop) OR
-(NOT TwoPairOnBoard AND IsFlop AND nstraight==4 AND nstraightcommon==3 AND NOT f$wheeldraw AND NOT FlushPossible AND nrankedcommon<3 AND rankhiplayer>rankhicommon) OR
-(NOT TwoPairOnBoard AND nstraight==4 AND nstraightcommon<=2 AND NOT FlushPossible AND nrankedcommon<3 AND NOT f$wheeldraw AND nrankedcommon<3) OR
-(NOT TwoPairOnBoard AND NOT IsRiver AND nstraight==4 AND nstraightcommon==3 AND NOT f$wheeldraw AND rankloplayer>ranklocommon AND rankhiplayer>rankhicommon AND nrankedcommon<3)) ? 2 :
-((NOT TwoPairOnBoard AND (nstraight==2 AND nstraightfillcommon==1 AND NOT FlushPossible AND NOT PairOnBoard)OR(nstraight==3 AND nstraightfillcommon==1 AND NOT FlushPossible AND NOT PairOnBoard)) OR
-(nstraightfill==1 AND NOT FlushPossible) OR
-(istwopair AND NOT PairOnBoard) OR
-(isonepair AND NOT FlushPossible AND NOT StraightPossible AND NOT PairOnBoard) OR
-(NOT TwoPairOnBoard AND FlushPossible AND HaveFlushDraw AND (srankloplayer>6 OR srankhiplayer>6) AND NOT PairOnBoard) OR
-(NOT TwoPairOnBoard AND nstraight==4 AND nstraightcommon==3 AND NOT PairOnBoard) OR
-(NOT TwoPairOnBoard AND nstraight==3 AND nstraightcommon==2 AND StraightPossible AND NOT PairOnBoard) OR
-(f$wheeldraw AND NOT PairOnBoard)) ? 1 :
-0
+OR (nstraightfill==1 AND NOT IsRiver AND HaveBackDoorFlushDraw AND IsFlop AND rankhiplayer>rankhicommon AND f$safeboard) 
+OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveFlushDraw AND FlushPossible AND rankloplayer>11 AND nrankedcommon<3) 
+OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveBackDoorFlushDraw AND nsuitedcommon==1 AND nstraight==3 AND nstraightcommon<=2 AND rankloplayer>rankhicommon AND NOT PairOnBoard AND IsFlop) OR
+   (NOT TwoPairOnBoard AND IsFlop AND nstraight==4 AND nstraightcommon==3 AND NOT f$wheeldraw AND NOT FlushPossible AND nrankedcommon<3 AND rankhiplayer>rankhicommon) 
+OR (NOT TwoPairOnBoard AND nstraight==4 AND nstraightcommon<=2 AND NOT FlushPossible AND nrankedcommon<3 AND NOT f$wheeldraw AND nrankedcommon<3) 
+OR (NOT TwoPairOnBoard AND NOT IsRiver AND nstraight==4 AND nstraightcommon==3 AND NOT f$wheeldraw AND rankloplayer>ranklocommon AND rankhiplayer>rankhicommon AND nrankedcommon<3)) ? 2 :
+
+   ((NOT TwoPairOnBoard AND (nstraight==2 AND nstraightfillcommon==1 AND NOT FlushPossible AND NOT PairOnBoard)OR(nstraight==3 AND nstraightfillcommon==1 AND NOT FlushPossible AND NOT PairOnBoard)) 
+OR (nstraightfill==1 AND NOT FlushPossible) 
+OR (istwopair AND NOT PairOnBoard) 
+OR (isonepair AND NOT FlushPossible AND NOT StraightPossible AND NOT PairOnBoard) 
+OR (NOT TwoPairOnBoard AND FlushPossible AND HaveFlushDraw AND (srankloplayer>6 OR srankhiplayer>6) AND NOT PairOnBoard) 
+OR (NOT TwoPairOnBoard AND nstraight==4 AND nstraightcommon==3 AND NOT PairOnBoard) 
+OR (NOT TwoPairOnBoard AND nstraight==3 AND nstraightcommon==2 AND StraightPossible AND NOT PairOnBoard) 
+OR (f$wheeldraw AND NOT PairOnBoard)) ? 1 : 0
 
 ##f$wheeldraw##
 // !!! Does not consider all wheels
@@ -1058,7 +1060,7 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 + (IsTurn AND isthreeofakind AND PairOnBoard                           ? 9 : 0)
 + (IsFlop AND isthreeofakind AND NOT PairOnBoard                       ? 7 : 0)
 + (IsTurn AND isthreeofakind AND NOT PairOnBoard                       ? 12: 0)
-+ (IsFlop AND nsuited==3 AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>12           ? 3 : 0)
++ (IsFlop AND HaveBackDoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>12           ? 3 : 0)
 + (IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard  ? 2 : 0)
 
 ##f$OutOdds##

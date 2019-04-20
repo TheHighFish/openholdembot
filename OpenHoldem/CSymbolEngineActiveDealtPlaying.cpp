@@ -93,7 +93,6 @@ void CSymbolEngineActiveDealtPlaying::CalculatePlayingBits() {
 	_playersplayingbits = 0;
 	for (int i=0; i<kMaxNumberOfPlayers; ++i) {
         if (p_table_state->Player(i)->HasAnyCards()) {
-            write_log(true, "[nik0] Player %i HasAnyCards\n", i);
 			_playersplayingbits |= (1<<i);
 		}
 	}

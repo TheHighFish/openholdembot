@@ -117,6 +117,7 @@
 //   * Replaces f$twopair by TwoPairOnBoard
 //   * Replaced "nrankedcommon==2" by PairOnBoard
 //   * Replaced "nsuited==4" by HaveFlushDraw
+//   * Replaced "nsuited==3" by HaveBackDoorFlushDraw
 //   * Replaced "nrankedcommon==1" by "NOT PairOnBoard"
 //   * Replaced "nstraightcommon < 3" by "NOT StraightPossible"
 //   * Replaced "nstraightfillcommon<=2" by Straightpossible
