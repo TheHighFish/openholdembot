@@ -120,7 +120,7 @@ WHEN isomaha RETURN Omaha_HaveSecondBestKicker FORCE
 WHEN Others RETURN HoldEm_HaveSecondBestKicker FORCE
 
 ##HaveSecondBestKickerOrBetter##
-HaveSecondBestKicker OR HaveBestKickerOrBetter
+HaveSecondBestKicker OR HaveBestKickerOrBetter_OpenHoldem_Shanky_Disambiguation
 
 ##HaveSecondBestOverPair##
 WHEN isomaha RETURN Omaha_HaveSecondBestOverPair FORCE
@@ -244,6 +244,24 @@ WHEN isomaha RETURN Omaha_HaveBestKicker FORCE
 WHEN Others RETURN HoldEm_HaveBestKicker FORCE
 
 ##HaveBestKickerOrBetter##
+// DO NOT USE THIS SYMBOL DIRCTLY
+// ESPECIALLY NEVER IN THUIS LINRARY
+// Using this symbol means that you want to switch to the Shanky definition
+// of "OrBetter", which includes all better hands, e.g. any pairs or straights.
+// The switch below implicitly affects all kinds of HaveXBestKickerOrBetter
+WHEn Others SET me_st_UserWantsShankyStyleDefinitopnOfKickers_true
+WHEN Others RETURN HaveBestKickerOrBetter_ShankyCompatible FORCE
+
+##HaveBestKickerOrBetter_OpenHoldem_Shanky_Disambiguation##
+WHEN me_re_UserWantsShankystyledefinitopnOfKickers RETURN HaveBestKickerOrBetter_ShankyCompatible FORCE
+WHEN Others RETURN HaveBestKickerOrBetter_OpenHoldem FORCE
+
+##HaveBestKickerOrBetter_OpenHoldem##
+// Considering only best kicker, not all better hands
+HaveBestKicker
+
+##HaveBestKickerOrBetter_ShankyCompatible##
+// Considering best kicker and all better hands
 (HaveBestKicker OR HavePair OR HaveOverPairOrBetter)
 
 ##HaveBestOverPair##
