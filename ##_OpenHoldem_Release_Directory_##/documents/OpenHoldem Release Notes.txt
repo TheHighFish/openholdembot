@@ -1,5 +1,20 @@
-﻿﻿v﻿13.1.1 2019-04-07
-===================
+﻿﻿v﻿13.1.2 2019-04-26
+==================
+BUG FIXES:
+- Some history-symbols got affected by Omaha-code.
+  This has now been fixed.
+  [THF]
+MAINTENANCE:
+- HaveXBestKickerOrBetter has been redefined and considers now only kickers.
+ “OrBetter” means in the Shanky-world: any better hand, including any pair, any set, 
+  even straights, whereas in the Openholdem world HaveXBestKickerOrBetter considers only kickers. 
+  If you use the symbol HaveBestKickerOrBetter that mentions better hands than best kicker in its name 
+  OpenHoldem will switch all kicker-functions to Shanky-style behaviour.
+  [THF]
+
+
+﻿v﻿13.1.1 2019-04-07
+==================
 NEW STUFF:
 - Lots of new Omaha-symbols for the OpenPPL-library.
   [ChuckNeverMuck, Cold12Zeras, Johnny, THF]
