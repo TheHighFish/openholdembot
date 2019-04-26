@@ -245,7 +245,7 @@ WHEN Others RETURN HoldEm_HaveBestKicker FORCE
 
 ##HaveBestKickerOrBetter##
 // DO NOT USE THIS SYMBOL DIRCTLY
-// ESPECIALLY NEVER IN THUIS LINRARY
+// ESPECIALLY NEVER IN THIS LINRARY
 // Using this symbol means that you want to switch to the Shanky definition
 // of "OrBetter", which includes all better hands, e.g. any pairs or straights.
 // The switch below implicitly affects all kinds of HaveXBestKickerOrBetter
