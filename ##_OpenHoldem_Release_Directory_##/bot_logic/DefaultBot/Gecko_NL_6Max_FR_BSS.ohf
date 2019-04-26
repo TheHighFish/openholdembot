@@ -270,9 +270,9 @@ OR (rankloplayer>rankhicommon AND NOT IsRiver AND f$safeboard AND isonepair AND 
 OR (rankloplayer>rankhicommon AND NOT IsRiver AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND istwopair AND PairOnBoard) 
 OR (nstraightfill==1 AND NOT IsRiver AND istwopair AND PairOnBoard AND NOT FlushPossible) 
 OR (nstraightfill==1 AND NOT IsRiver AND rankloplayer>rankhicommon AND f$safeboard) 
-OR (nstraightfill==1 AND NOT IsRiver AND HaveBackDoorFlushDraw AND IsFlop AND rankhiplayer>rankhicommon AND f$safeboard) 
+OR (nstraightfill==1 AND NOT IsRiver AND HaveBackdoorFlushDraw AND IsFlop AND rankhiplayer>rankhicommon AND f$safeboard) 
 OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveFlushDraw AND FlushPossible AND rankloplayer>11 AND nrankedcommon<3) 
-OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveBackDoorFlushDraw AND nsuitedcommon==1 AND nstraight==3 AND nstraightcommon<=2 AND rankloplayer>rankhicommon AND NOT PairOnBoard AND IsFlop) OR
+OR (NOT TwoPairOnBoard AND NOT IsRiver AND HaveBackdoorFlushDraw AND nsuitedcommon==1 AND nstraight==3 AND nstraightcommon<=2 AND rankloplayer>rankhicommon AND NOT PairOnBoard AND IsFlop) OR
    (NOT TwoPairOnBoard AND IsFlop AND nstraight==4 AND nstraightcommon==3 AND NOT f$wheeldraw AND NOT FlushPossible AND nrankedcommon<3 AND rankhiplayer>rankhicommon) 
 OR (NOT TwoPairOnBoard AND nstraight==4 AND nstraightcommon<=2 AND NOT FlushPossible AND nrankedcommon<3 AND NOT f$wheeldraw AND nrankedcommon<3) 
 OR (NOT TwoPairOnBoard AND NOT IsRiver AND nstraight==4 AND nstraightcommon==3 AND NOT f$wheeldraw AND rankloplayer>ranklocommon AND rankhiplayer>rankhicommon AND nrankedcommon<3)) ? 2 :
@@ -1060,7 +1060,7 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 + (IsTurn AND isthreeofakind AND PairOnBoard                           ? 9 : 0)
 + (IsFlop AND isthreeofakind AND NOT PairOnBoard                       ? 7 : 0)
 + (IsTurn AND isthreeofakind AND NOT PairOnBoard                       ? 12: 0)
-+ (IsFlop AND HaveBackDoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>12           ? 3 : 0)
++ (IsFlop AND HaveBackdoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>12           ? 3 : 0)
 + (IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard  ? 2 : 0)
 
 ##f$OutOdds##

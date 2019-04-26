@@ -25,7 +25,7 @@
 #include "FloatingPoint_Comparisions.h"
 
 
-const char* const k_hist_sym_strings[24]/*k_hist_sym_count]*/ = {
+const char* const k_hist_sym_strings[24]/*!!!k_hist_sym_count]*/ = {
   // CHIP AMOUNTS (21)
   "balance", 
   "balance0", "balance1", "balance2", "balance3", "balance4", 
@@ -82,7 +82,7 @@ CSymbolEngineHistory::CSymbolEngineHistory() {
 	// to avoid array overflows later if we remove symbols
 	// without adapting the counter.
 	// Last index is (_hist_sym_count - 1).
-	assert(k_hist_sym_strings[k_hist_sym_count - 1] != NULL);
+	//!!!assert(k_hist_sym_strings[k_hist_sym_count - 1] != NULL);
 }
 
 CSymbolEngineHistory::~CSymbolEngineHistory() {}
@@ -107,7 +107,7 @@ void CSymbolEngineHistory::UpdateOnHandreset() {
 			_autoplayer_actions[i][j] = 0;
 		}
     // History-smbols
-    for (int j=0; j<k_hist_sym_count; ++j) {
+    for (int j=0; j<24 /*!!!k_hist_sym_count*/; ++j) {
       _hist_sym[j][i] = 0.0;
     }
 	}
@@ -217,7 +217,7 @@ void CSymbolEngineHistory::CalculateHistory() {
   write_log(Preferences()->debug_symbolengine(),
     "[SymbolEngineHistory] Update on my turn\n");
   int	betround = p_betround_calculator->betround();
-  for (int i = 0; i<k_hist_sym_count; ++i) {
+  for (int i = 0; i<24/*!!!k_hist_sym_count*/; ++i) {
     double result;
     p_engine_container->EvaluateSymbol(k_hist_sym_strings[i], &result);
     _hist_sym[i][betround] = result;
@@ -251,7 +251,7 @@ void CSymbolEngineHistory::CalculateHistory() {
 double CSymbolEngineHistory::HistorySymbol(const CString sym, const int round) {
   write_log(Preferences()->debug_symbolengine(),
     "[SymbolEngineHistory] Looking up %s for round %i\n", sym, round);
-	for (int i=0; i<k_hist_sym_count; i++)	{
+	for (int i=0; i<24/*!!!k_hist_sym_count*/; i++)	{
 		if (memcmp(sym, k_hist_sym_strings[i], strlen(sym))==0 && strlen(sym)==strlen(k_hist_sym_strings[i]))	{
 			return _hist_sym[i][round];
 		}
@@ -379,13 +379,10 @@ CString CSymbolEngineHistory::SymbolsProvided() {
   list += RangeOfSymbols("didbetsizeround%i",  kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nplayersround%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nbetsround%i",    kBetroundPreflop, kBetroundRiver);
-  for (int i=0; i<k_hist_sym_count; ++i) {
+  for (int i=0; i<24; /*!!!k_hist_sym_count*/; ++i) {
     CString new_history_symbol;
     new_history_symbol.Format("hi_%s%%i", k_hist_sym_strings[i]);
     list += RangeOfSymbols(new_history_symbol, kBetroundPreflop, kBetroundRiver);
   }
   return list;
 }
-
-
-	

@@ -4,6 +4,7 @@ BUG FIXES:
 - Some history-symbols got affected by Omaha-code.
   This has now been fixed.
   [THF]
+  
 MAINTENANCE:
 - HaveXBestKickerOrBetter has been redefined and considers now only kickers.
  “OrBetter” means in the Shanky-world: any better hand, including any pair, any set, 
