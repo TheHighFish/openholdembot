@@ -379,7 +379,7 @@ CString CSymbolEngineHistory::SymbolsProvided() {
   list += RangeOfSymbols("didbetsizeround%i",  kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nplayersround%i", kBetroundPreflop, kBetroundRiver);
   list += RangeOfSymbols("nbetsround%i",    kBetroundPreflop, kBetroundRiver);
-  for (int i=0; i<24; /*!!!k_hist_sym_count*/; ++i) {
+  for (int i=0; i<24; /*!!!k_hist_sym_count*/ ++i) {
     CString new_history_symbol;
     new_history_symbol.Format("hi_%s%%i", k_hist_sym_strings[i]);
     list += RangeOfSymbols(new_history_symbol, kBetroundPreflop, kBetroundRiver);
