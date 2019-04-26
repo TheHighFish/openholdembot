@@ -25,7 +25,7 @@
 #include "FloatingPoint_Comparisions.h"
 
 
-const char* const k_hist_sym_strings[k_hist_sym_count] = {
+const char* const k_hist_sym_strings[24]/*k_hist_sym_count]*/ = {
   // CHIP AMOUNTS (21)
   "balance", 
   "balance0", "balance1", "balance2", "balance3", "balance4", 
@@ -33,32 +33,41 @@ const char* const k_hist_sym_strings[k_hist_sym_count] = {
   "stack0", "stack1", "stack2", "stack3", "stack4", 
   "stack5", "stack6", "stack7", "stack8", "stack9",
   // FLUSHES SETS STRAIGHTS (16)
-  "nsuited", 	"nsuitedcommon", "tsuit", "tsuitcommon", "nranked", 
+  /*"nsuited", 	"nsuitedcommon", "tsuit", "tsuitcommon", "nranked", 
   "nrankedcommon", "trank", "trankcommon", "nstraight", "nstraightcommon", 
   "nstraightfill", "nstraightfillcommon", "nstraightflush", 
   "nstraightflushcommon", "nstraightflushfill", "nstraightflushfillcommon",
+  */
 	// PROBABILITIES (3)
 	"prwin", "prlos", "prtie", 
 	//POKER VALUES (5)
-	"pokerval", "pokervalplayer", "pokervalcommon", "pcbits", "npcbits", 
+	/*"pokerval", "pokervalplayer", "pokervalcommon", "pcbits", "npcbits", 
+  */
 	//HAND TESTS (12)
-	"ishandup", "ishandupcommon", "ishicard", "isonepair", "istwopair", "isthreeofakind", 
+	/*"ishandup", "ishandupcommon", "ishicard", "isonepair", "istwopair", "isthreeofakind", 
 	"isstraight", "isflush", "isfullhouse", "isfourofakind", "isstraightflush", "isroyalflush", 
+  */
 	//POCKET/COMMON TESTS (5)
-	"ishipair", "islopair", "ismidpair", "ishistraight", "ishiflush", 
+	/*"ishipair", "islopair", "ismidpair", "ishistraight", "ishiflush", 
+  */
 	//(UN)KNOWN CARDS (1)
-	"ncardsbetter", 
+	/*"ncardsbetter", 
+  */
 	//NHANDS (6)
-	"nhands", "nhandshi", "nhandslo", "nhandsti", "prwinnow", "prlosnow", 
+	/*"nhands", "nhandshi", "nhandslo", "nhandsti", "prwinnow", "prlosnow", 
+  */
 	//RANK BITS (8)
-	"rankbits", "rankbitscommon", "rankbitsplayer", "rankbitspoker", "srankbits", 
+	/*"rankbits", "rankbitscommon", "rankbitsplayer", "rankbitspoker", "srankbits", 
 	"srankbitscommon", "srankbitsplayer", "srankbitspoker", 
+  */
 	//RANK HI (8)
-	"rankhi", "rankhicommon", "rankhiplayer", "rankhipoker", "srankhi", "srankhicommon", 
+	/*"rankhi", "rankhicommon", "rankhiplayer", "rankhipoker", "srankhi", "srankhicommon", 
 	"srankhiplayer", "srankhipoker", 
+  */
 	//RANK LO (8)
-	"ranklo", "ranklocommon", "rankloplayer", "ranklopoker", "sranklo", "sranklocommon", 
+	/*"ranklo", "ranklocommon", "rankloplayer", "ranklopoker", "sranklo", "sranklocommon", 
 	"srankloplayer", "sranklopoker", 
+  */
 };
 
 CSymbolEngineHistory::CSymbolEngineHistory() {
@@ -205,8 +214,6 @@ void CSymbolEngineHistory::SetPrevaction(int autoplayer_action_code) {
 void CSymbolEngineHistory::CalculateHistory() {
   // Collect symbol if ismyturn.
   // Per definition we need to get the value at last myturn in betround N.
-  //!!!!!!! temp disabled because it causes problems for Omaha
-  return;
   write_log(Preferences()->debug_symbolengine(),
     "[SymbolEngineHistory] Update on my turn\n");
   int	betround = p_betround_calculator->betround();
