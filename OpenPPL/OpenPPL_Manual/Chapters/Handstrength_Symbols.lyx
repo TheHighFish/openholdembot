@@ -394,7 +394,11 @@ HaveSecondBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the best or second best kicker
+We have the best or second best kicker.
+\end_layout
+
+\begin_layout Plain Layout
+For Shanky-compatibility please see HaveBestKickerOrBetter.
 \end_layout
 
 \end_inset
@@ -575,7 +579,11 @@ HaveThirdBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the third best kicker or better
+We have the third best, second best or very best kicker.
+\end_layout
+
+\begin_layout Plain Layout
+For Shanky-compatibility please see HaveBestKickerOrBetter.
 \end_layout
 
 \end_inset
@@ -1031,7 +1039,28 @@ HaveBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the best kickeBestOvr or a better hand
+
+\emph on
+Deprecated!
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+OrBetter
+\begin_inset Quotes erd
+\end_inset
+
+ means in the Shanky-world: any better hand, including any pair, any set,
+ even straights, whereas in the Openholdem world HaveXBestKickerOrBetter
+ considers only kickers.
+ If you use this function that mentions better hands than best kicker in
+ its name OpenHoldem will switch all kicker-functions to Shanky-style behaviour.
+\end_layout
+
+\begin_layout Plain Layout
+Not recommended, symbol exists for compatibility only.
 \end_layout
 
 \end_inset

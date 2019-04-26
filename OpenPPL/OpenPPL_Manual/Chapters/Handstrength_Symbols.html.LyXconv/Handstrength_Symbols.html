@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2017-12-12"/>
+<meta name="create-date" content="2019-04-26"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -122,7 +122,7 @@ We had 2nd over pair on flop
 HadSecondOverPairOnTurn
 </td>
 <td align="left" valign="middle" style="width: 55%;">
-We had 2nd over pair on flop
+We had 2nd over pair on turn
 </td>
 
 </tr>
@@ -149,7 +149,14 @@ There is only one card that is better than our current kicker
 HaveSecondBestKickerOrBetter
 </td>
 <td align="left" valign="middle" style="width: 55%;">
-We have the best or second best kicker
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+We have the best or second best kicker.<br/>
+For Shanky-compatibility please see HaveBestKickerOrBetter.
+</div>
+
 </td>
 
 </tr>
@@ -230,7 +237,14 @@ We have the third best kicker
 HaveThirdBestKickerOrBetter
 </td>
 <td align="left" valign="middle" style="width: 55%;">
-We have the third best kicker or better
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+We have the third best, second best or very best kicker.<br/>
+For Shanky-compatibility please see HaveBestKickerOrBetter.
+</div>
+
 </td>
 
 </tr>
@@ -440,7 +454,16 @@ We have the best kicker
 HaveBestKickerOrBetter
 </td>
 <td align="left" valign="middle" style="width: 55%;">
-We have the best kickeBestOvr or a better hand
+<div class="PlainVisible">
+<i>Deprecated!</i>
+</div>
+<div class="PlainVisible">
+&ldquo;OrBetter&rdquo; means in the Shanky-world: any better hand, including any pair, any set, even straights, whereas in the Openholdem world HaveXBestKickerOrBetter considers only kickers. If you use this function that mentions better hands than best kicker in its name OpenHoldem will switch all kicker-functions to Shanky-style behaviour.
+</div>
+<div class="PlainVisible">
+Not recommended, symbol exists for compatibility only.
+</div>
+
 </td>
 
 </tr>
