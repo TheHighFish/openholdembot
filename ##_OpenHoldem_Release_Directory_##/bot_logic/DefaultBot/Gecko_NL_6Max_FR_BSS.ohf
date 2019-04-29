@@ -332,15 +332,17 @@ WHEN f$Initiative_GotRaised RETURN f$river_raise_wegotraised FORCE
 
 ##f$Initiative_Hero##
 // Can't have initiative preflop: either we did not yet act or somebody raised
-WHEN IsPostflop RETURN (lastraised_previousround == userchair) FORCE
+WHEN IsPreflop RETURN false FORCE
+WHEN didcallround_previousround RETURN false FORCE
+WHEN didbetsizeround_previousround OR didraisround_previousround RETURN true FORCE
 
 ##f$Initiative_Nobody##
 NOT f$Initiative_Hero AND NOT f$Initiative_Villain
 
 ##f$Initiative_Villain##
 WHEN IsPreflop RETURN ncallbets > 1 FORCE 
-WHEN IsFlop    RETURN (lastraised_preflop != userchair AND nbetsround_preflop > 1) FORCE
-WHEN Others    RETURN (lastraised_previousround != userchair AND nbetsround_previousround > 0) FORCE
+WHEN IsFlop    RETURN (didcallround_previousround AND nbetsround_preflop > 1) FORCE
+WHEN Others    RETURN (didcallround_previousround AND nbetsround_previousround > 0) FORCE
 
 ##f$Initiative_GotRaised##
 didbetsizeround_previousround AND (lastraised_previousround != userchair)

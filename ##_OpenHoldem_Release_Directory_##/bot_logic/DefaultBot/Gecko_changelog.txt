@@ -187,7 +187,6 @@
 //     by autoplayer-history-symbols.
 //   * rewrote and simplified the f$Initiative-functions. 
 //     They make now use of autoplayer-history for more reliability, 
-//     betsroundX only if we were guaranteed to see the bet (initiative villain).
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
