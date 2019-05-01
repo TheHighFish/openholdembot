@@ -675,6 +675,8 @@ WHEN HighCardOfBestPossibleStraight >= ace RETURN HighCardOfBestPossibleStraight
 // Then we check ace-high...
 WHEN BitCount(RankBitsCommonWithAdditionalAce BitAnd 0b111110000000000) >= 3 RETURN ace FORCE
 // ...and the wheel with ace-low
+// Check if better straight available
+WHEN HighCardOfBestPossibleStraight >= Six RETURN HighCardOfBestPossibleStraight FORCE
 WHEN BitCount(RankBitsCommonWithAdditionalAce BitAnd 0b000000000111110) >= 3 RETURN Five FORCE
 WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
 
