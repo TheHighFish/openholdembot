@@ -97,7 +97,6 @@ int CSymbolEngineChairs::HeadsupChair() {
   }
   assert(kThisMustNotHappen);
   return kUndefined;
-
 }
 
 int CSymbolEngineChairs::ChairByDealposition(int dealposition) {

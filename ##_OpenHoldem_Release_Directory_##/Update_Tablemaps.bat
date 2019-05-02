@@ -17,6 +17,7 @@
 @IF %ERRORLEVEL% NEQ 0 (
    @echo Required software: TortoiseSVN
    @echo https://tortoisesvn.net/downloads.html
+   @echo You need to install its command-line tools.
    @echo.
    @pause
    @exit
