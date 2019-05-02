@@ -297,6 +297,11 @@ WHEN (LowestFlopCard < 2) RETURN false FORCE
 WHEN TripsOnBoardOnFlop RETURN false FORCE
 WHEN [(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard != SecondTopFlopCard) AND (TopFlopCard != ace)] RETURN true FORCE
 WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != LowestFlopCard)] RETURN true FORCE
+// Two special cases of double-gutshots that don't get caught by the code above: AQ8 and 73A
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=22507
+//                           AKQJT98765432A-      AKQJT98765432A-
+WHEN (RankBitsCommonFlop & 0b101000100000000) = 0b101000100000000 RETURN true FORCE
+WHEN (RankBitsCommonFlop & 0b000000010001010) = 0b000000010001010 RETURN true FORCE
 
 ##IndividualOvercardsOnBoard##
 // Works like OvercardsOnBoard, except that it counts cards only once

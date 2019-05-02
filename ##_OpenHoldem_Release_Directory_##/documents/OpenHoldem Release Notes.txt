@@ -1,4 +1,18 @@
-﻿﻿v﻿13.1.2 2019-04-26
+﻿﻿v﻿13.1.3 2019-0x-xx
+==================
+BUG FIXES:
+- OpenEndedStraightDrawPossibleOnFlop did not consider 
+  two double-gutshoots with an ace; AQ8 and 73A.
+  Thanks to Paranoid for reporting and suggesting a fix..
+  [THF]
+- The technical functzion BestPossibleStraightForVillainIfAceHitsTheBoard
+  treated some ace-low boards incorrectly when better straights than a wheel were possible.
+  This could also affect HaveNutStraightDraw.
+  Thanks to ChuckNeverMuck and Paranoid for reporting and suggesting the fix.
+  [THF]
+  
+
+﻿v﻿13.1.2 2019-04-26
 ==================
 BUG FIXES:
 - Some history-symbols got affected by Omaha-code.
