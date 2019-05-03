@@ -170,7 +170,7 @@ Random * 30
 // !!! This should be adapted for dynamic stealing.
 WHEN f$Chart_OpenRaise RETURN false fORCE
 // Not prefoldind pairs and suited aces, they are good multiway
-WHEN (InLatePosition OR InTheBlinds) AND (ispair OR hand$Asuited) RETURN false FORCE
+WHEN (InLatePosition OR InTheBlinds) AND (PairInHand OR hand$Asuited) RETURN false FORCE
 // A little bit of randomization for flesh-and-blood-players
 WHEN (Random < 10) RETURN false FORCE
 // Prefold all the rest
@@ -266,7 +266,7 @@ OR (NOT TwoPairOnBoard AND HaveNutFlushDraw AND nsuitedcommon==2 AND nrankedcomm
 OR (NOT TwoPairOnBoard AND HaveThirdNutFlushDraw AND nrankedcommon<3) 
 OR (NOT TwoPairOnBoard AND HaveFlushDraw AND nsuitedcommon==2 AND nrankedcommon<3) 
 OR (isthreeofakind AND NOT IsRiver AND NOT PairOnBoard) 
-OR (rankloplayer>rankhicommon AND NOT IsRiver AND f$safeboard AND isonepair AND NOT ispair) 
+OR (rankloplayer>rankhicommon AND NOT IsRiver AND f$safeboard AND isonepair AND NOT PairInHand) 
 OR (rankloplayer>rankhicommon AND NOT IsRiver AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND istwopair AND PairOnBoard) 
 OR (nstraightfill==1 AND NOT IsRiver AND istwopair AND PairOnBoard AND NOT FlushPossible) 
 OR (nstraightfill==1 AND NOT IsRiver AND rankloplayer>rankhicommon AND f$safeboard) 
@@ -1033,6 +1033,15 @@ IsFlop ? (f$OutOdds*2.0)>f$PotOdds :
 IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 
 ##f$nOuts##
+  f$nOuts_FlushDraw
++ f$nOuts_Overcards
++ f$nOuts_StraightDraw
++ f$nOuts_DrawingPair
++ f$nOuts_DrawingTwoPair
++ f$nOuts_DrawingSet
++ f$nOuts_BackdoorDraws
+
+##f$nOuts_FlushDraw##
   (IsFlop AND nsuitedcommon==2 AND HaveFlushDraw AND NOT PairOnBoard   ? 9 : 0)
 + (IsFlop AND nsuitedcommon==2 AND HaveFlushDraw AND PairOnBoard       ? 8 : 0)
 + (IsTurn AND nsuitedcommon==2 AND HaveFlushDraw AND NOT PairOnBoard   ? 9 : 0)
@@ -1043,27 +1052,39 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 + (HaveSecondNutFlushDraw AND FlushPossible AND PairOnBoard            ? 6 : 0)
 + (HaveNutFlushDraw AND FlushPossible AND NOT PairOnBoard              ? 9 : 0)
 + (HaveNutFlushDraw AND FlushPossible AND PairOnBoard                  ? 7 : 0)
-+ (IsFlop AND rankloplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair                                      ? 6 : 0)
+
+##f$nOuts_Overcards##
+  (IsFlop AND rankloplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair                                      ? 6 : 0)
 + (IsFlop AND rankhiplayer>rankhicommon AND nplayersplaying<=4 AND f$safeboard AND NOT isonepair AND NOT(rankloplayer>rankhicommon)   ? 3 : 0)
 + (IsTurn AND rankloplayer>rankhicommon AND nbetsround_flop<3 AND nplayersplaying==2 AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND NOT PairOnBoard AND NOT(isonepair AND NOT PairOnBoard) ? 6 : 0)
 + (IsTurn AND rankloplayer>rankhicommon AND nbetsround_flop<2 AND nplayersplaying==3 AND NOT FlushPossible AND NOT StraightPossible AND nstraightfillcommon>1 AND NOT PairOnBoard AND NOT(isonepair AND NOT PairOnBoard) ? 6 : 0)
-+ (nstraightcommon==3 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw  ? 4 : 0)
+
+##f$nOuts_StraightDraw##
+  (nstraightcommon==3 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw  ? 4 : 0)
 + (nstraightcommon==3 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 2 : 0)
 + (nstraightcommon==2 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw  ? 8 : 0)
 + (nstraightcommon==2 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 6 : 0)
 + (nstraightcommon==1 AND nstraight==4 AND NOT FlushPossible AND NOT PairOnBoard AND NOT f$wheeldraw  ? 8 : 0)
 + (nstraightcommon==1 AND nstraight==4 AND NOT FlushPossible AND PairOnBoard AND NOT f$wheeldraw      ? 6 : 0)
-+ (nstraightcommon<=3 AND nstraight==4 AND NOT FlushPossible AND nrankedcommon<=2 AND  f$wheeldraw    ? 4 : 0)
-+ (f$safeboard AND ispair                                              ? 2 : 0)
-+ (f$safeboard AND isonepair AND NOT ispair AND nstraightfillcommon>2  ? 5 : 0)
-+ (NOT PairOnBoard AND istwopair AND NOT TwoPairOnBoard                ? 4 : 0)
++ (nstraightcommon<=3 AND nstraight==4 AND NOT FlushPossible AND nrankedcommon<=2 AND f$wheeldraw     ? 4 : 0)
+
+##f$nOuts_DrawingPair##
+  (f$safeboard AND PairInHand                                              ? 2 : 0)
++ (f$safeboard AND isonepair AND NOT PairInHand AND nstraightfillcommon>2  ? 5 : 0)
+
+##f$nOuts_DrawingTwoPair##
+  (NOT PairOnBoard AND istwopair AND NOT TwoPairOnBoard                ? 4 : 0)
 + (PairOnBoard AND istwopair AND NOT TwoPairOnBoard                    ? 1 : 0)
-+ (IsFlop AND isthreeofakind AND PairOnBoard                           ? 7 : 0)
+
+##f$nOuts_DrawingSet##
+  (IsFlop AND isthreeofakind AND PairOnBoard                           ? 7 : 0)
 + (IsTurn AND isthreeofakind AND PairOnBoard                           ? 9 : 0)
 + (IsFlop AND isthreeofakind AND NOT PairOnBoard                       ? 7 : 0)
 + (IsTurn AND isthreeofakind AND NOT PairOnBoard                       ? 12: 0)
-+ (IsFlop AND HaveBackdoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>12           ? 3 : 0)
-+ (IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard  ? 2 : 0)
+
+##f$nOuts_BackdoorDraws##
+  (IsFlop AND HaveBackdoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>=king ? 3 : 0)
++ (IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard      ? 2 : 0)
 
 ##f$OutOdds##
 [ f$nOuts/46 ]
@@ -1588,7 +1609,7 @@ WHEN [didbetsize AND (4 * AmountToCall < EffectivePotSize)] RETURN true FORCE
 WHEN [ncallbets > 1] RETURN false FORCE
 WHEN [BotsLastAction != None] RETURN false FORCE
 WHEN [InSmallBlind AND (handrank169 < 50)] RETURN true FORCE
-WHEN [nopponentscalling==0 AND ispair] RETURN true FORCE
+WHEN [nopponentscalling==0 AND PairInHand] RETURN true FORCE
 WHEN [nopponentscalling==1 AND listGeckoLimpAgainstOneOpponent] RETURN true FORCE
 WHEN [nopponentscalling>=2 AND (listGeckoLimpMultiway)] RETURN true FORCE
    

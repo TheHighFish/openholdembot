@@ -186,7 +186,11 @@
 //   * Rewrote f$Initiative_Hero in order to replace somewhat unreliable nbetsroundX
 //     by autoplayer-history-symbols.
 //   * rewrote and simplified the f$Initiative-functions. 
-//     They make now use of autoplayer-history for more reliability, 
+//     They make now use of autoplayer-history for more reliability.
+//   * Restructured f$nOuts, now using
+//       f$nOuts_FlushDraw, f$nOuts_Overcards, f$nOuts_StraightDraw, f$nOuts_DrawingPair
+//       f$nOuts_DrawingTwoPair, f$nOuts_DrawingSets, f$nOuts_BackdoorDraws
+//   * Replaces "ispair" by "PairInHand"
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
@@ -225,5 +229,7 @@
 //   * f$call_nuts now also considers HaveNuts, as the best hand might have less than 98% equity.
 //   * Reduced large raises in f$BetsizeFlopHeadsup:
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=270#p153332
+//   * Decreased outs for vackdoor draws to 1.5 (BDF) and 1.0 (BDS) 
+//     http://www.maxinmontreal.com/forums/viewtopic.php?f=184&t=21070&sid=d8c46f2f23678f21699bcfdc3a8ae8f5&start=390#p157990
 //
 //*****************************************************************************
