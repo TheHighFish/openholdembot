@@ -1083,8 +1083,8 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 + (IsTurn AND isthreeofakind AND NOT PairOnBoard                       ? 12: 0)
 
 ##f$nOuts_BackdoorDraws##
-  (IsFlop AND HaveBackdoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>=king ? 3 : 0)
-+ (IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard      ? 2 : 0)
+  (IsFlop AND HaveBackdoorFlushDraw AND nsuitedcommon==2 AND NOT PairOnBoard AND srankhiplayer>=king ? 1.5 : 0)
++ (IsFlop AND nstraightfill==1 AND NOT StraightPossible AND nsuitedcommon<2 AND NOT PairOnBoard      ? 1.0 : 0)
 
 ##f$OutOdds##
 [ f$nOuts/46 ]
