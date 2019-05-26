@@ -33,7 +33,7 @@
 //       * playing AA / KK multiway
 //       * limping any two multiway
 //       * playing bubble like 3-handed (AND vice versa)
-//       * playing 3-handed like headsup (AND vice versa)
+//       * playing 3-handed like HeadsUp (AND vice versa)
 //     in order to get reasonable AND simple strategy 
 //   * replaced user-variable user_TheMoney by new OpenPPL-symbol InTheMoney
 //   * replaced user-variable user_Bubble by new OpenPPL-symbol IsBubble
@@ -53,7 +53,10 @@
 //     for stacksize-ranges of various players
 //   * Replayed f$InTheMoney_BigStack, InTheMoney_MiddleStack 
 //     and InTheMoney_SmallStack by user-defined functions
-//   
+//   * Removed stacksize-variables for the bubble,
+//     with one exception they were unused
+//   * Simplified calculation if effectibe-stacksize-variables for headsup-play,
+//     using EffectiveMaxStacksizeOfActiveOpponents
 //
 //////////////////////////////////////////////////////////////////
 //
@@ -74,70 +77,22 @@ WHEN f$FirstAction AND HandIsFullRing AND (StackSize >= 5
  AND StackSize <= 11) 											Set user_Stack_FullRing_5_12
 WHEN f$FirstAction AND HandIsFullRing AND StackSize >= 12		Set user_Stack_FullRing_12P
 //////////////////////////////////////////////////////////////////
-// Section 2 - On the Bubble Play Variables
-//////////////////////////////////////////////////////////////////
-WHEN f$FirstAction AND IsBubble AND StackSize >= 10 					Set user_Bubble_Stack_10P
-WHEN f$FirstAction AND IsBubble AND StackSize >= 8 AND StackSize <= 9	Set user_Bubble_Stack_8_9
-WHEN f$FirstAction AND IsBubble AND StackSize >= 6 AND StackSize <= 7	Set user_Bubble_Stack_6_8
-WHEN f$FirstAction AND IsBubble AND StackSize >= 4 AND StackSize <= 5	Set user_Bubble_Stack_4_6
-WHEN f$FirstAction AND IsBubble AND StackSize >= 2 AND StackSize <= 3	Set user_Bubble_Stack_2_4
-WHEN f$FirstAction AND IsBubble AND StackSize < 2					Set user_Bubble_Stack_0_2
-WHEN f$FirstAction AND IsBubble AND OpponentsWithHigherStack = 0 	Set user_Bubble_BigStack
-WHEN f$FirstAction AND IsBubble AND OpponentsWithLowerStack = 0 		Set user_Bubble_SmallStack
-WHEN f$FirstAction AND IsBubble 
- AND NOT (user_Bubble_BigStack OR user_Bubble_SmallStack)				Set user_Bubble_MiddleStack
-WHEN f$FirstAction AND IsBubble 
- AND MaxStillToActStackSize > 100% StackSize 							Set user_Bubble_We_Are_Covered
-//////////////////////////////////////////////////////////////////
 // Section 4 - Heads Up Play Variables
 //////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////
-// DO NOT EDIT
-// Heads Up Stack Size Variables (Relevant Stack Calculated)
-// HSS = Hero Stack Size
-// VSS = Villan Stack Size
-// RSS = Relevant Stack Size
+// Heads Up Stack Size Variables 
+// ESS = Effective Stack Size
 //////////////////////////////////////////////////////////////////
-WHEN f$FirstAction AND HandIsHeadsUp AND StackSize <= 8					Set HandIsHeadsUp_HSS_0_8
 WHEN f$FirstAction AND HandIsHeadsUp 
- AND StackSize >= 8 AND StackSize <= 12								Set HandIsHeadsUp_HSS_8_12
-WHEN f$FirstAction AND HandIsHeadsUp AND StackSize >= 12 				Set HandIsHeadsUp_HSS_12P
-
-WHEN f$FirstAction AND HandIsHeadsUp AND MaxOpponentStackSize <= 8		Set HandIsHeadsUp_VSS_0_8
-WHEN f$FirstAction AND HandIsHeadsUp AND 
- MaxOpponentStackSize >= 8 AND MaxOpponentStackSize <= 12				Set HandIsHeadsUp_VSS_8_12
-WHEN f$FirstAction AND HandIsHeadsUp AND MaxOpponentStackSize >= 12 		Set HandIsHeadsUp_VSS_12P
-
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND (HandIsHeadsUp_HSS_0_8 OR HandIsHeadsUp_VSS_0_8)					Set HandIsHeadsUp_RSS_0_8
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND (HandIsHeadsUp_HSS_8_12 OR HandIsHeadsUp_VSS_8_12) 
- AND NOT (HandIsHeadsUp_RSS_0_8)										Set HandIsHeadsUp_RSS_8_12
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND (HandIsHeadsUp_HSS_12P OR HandIsHeadsUp_VSS_12P) 
- AND NOT (HandIsHeadsUp_RSS_0_8 OR HandIsHeadsUp_RSS_8_12)				Set HandIsHeadsUp_RSS_12P
-
-WHEN f$FirstAction AND HandIsHeadsUp AND StackSize < 2					Set HandIsHeadsUp_HSS_0_2
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND StackSize >= 2 AND StackSize <= 3									Set HandIsHeadsUp_HSS_2_4
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND StackSize >= 4 AND StackSize <= 12								Set HandIsHeadsUp_HSS_4_12
- 
-WHEN f$FirstAction AND HandIsHeadsUp AND MaxOpponentStackSize < 2		Set HandIsHeadsUp_VSS_0_2
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND MaxOpponentStackSize >= 2 AND MaxOpponentStackSize <= 3 			Set HandIsHeadsUp_VSS_2_4
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND MaxOpponentStackSize >= 4 AND MaxOpponentStackSize <= 12			Set HandIsHeadsUp_VSS_4_12
-
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND (HandIsHeadsUp_HSS_0_2 OR HandIsHeadsUp_VSS_0_2)					Set HandIsHeadsUp_RSS_0_2
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND (HandIsHeadsUp_HSS_2_4 OR HandIsHeadsUp_VSS_2_4) 
- AND NOT (HandIsHeadsUp_RSS_0_2)										Set HandIsHeadsUp_RSS_2_4
-WHEN f$FirstAction AND HandIsHeadsUp 
- AND (HandIsHeadsUp_HSS_4_12 OR HandIsHeadsUp_VSS_4_12) 
- AND NOT (HandIsHeadsUp_RSS_0_2 OR HandIsHeadsUp_RSS_2_4)				Set HandIsHeadsUp_RSS_4_12
-
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) Set HandIsHeadsUp_ESS_12P
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 8) Set HandIsHeadsUp_ESS_0_8
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) Set HandIsHeadsUp_ESS_0_2
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 8)
+      AND (EffectiveMaxStacksizeOfActiveOpponents <= 12) Set HandIsHeadsUp_ESS_8_12
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 4)
+      AND (EffectiveMaxStacksizeOfActiveOpponents <= 12) Set HandIsHeadsUp_ESS_4_12
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 2)
+      AND (EffectiveMaxStacksizeOfActiveOpponents <= 4) Set HandIsHeadsUp_ESS_2_4
 //////////////////////////////////////////////////////////////////
 //
 // OK, Lets Play the Game
@@ -147,7 +102,7 @@ WHEN f$FirstAction AND HandIsHeadsUp
 //////////////////////////////////////////////////////////////////
 // Pot Commited
 // If we are more than 1/3 stack into the pot, we are committed
-// If we get to < 2 BB at any stage except headsup, we shove if
+// If we get to < 2 BB at any stage except HeadsUp, we shove if
 // in a blind
 //////////////////////////////////////////////////////////////////
 // Personally, I don't think 1/3 of the stack really commits us, we
@@ -164,28 +119,28 @@ WHEN f$FirstAction AND HandIsHeadsUp
 // 3,   WHEN more than 12 BB RaiseBy 3 for Category 8 OR better AND call
 //   with category 5 OR better
 WHEN HandIsHeadsUp AND InSmallBlind
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat1 RaiseMax FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat2 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat3 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat4 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat5 Call FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat1 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat2 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat3 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat4 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat5 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat6 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat7 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND listHUCat8 RaiseBy 3 FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat1 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat2 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat3 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat4 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat5 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat6 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat7 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat8 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_0_8 RaiseMax FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseMax FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat2 Call FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat3 Call FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat4 Call FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat5 Call FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat2 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat3 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat4 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat5 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat6 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat7 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat8 RaiseBy 3 FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat1 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat2 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat3 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat4 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat5 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat6 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat7 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat8 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_0_8 RaiseMax FORCE
 
 // In the Big Blind AND Small Blind Limps
 // 1. With either stack less than 8 BB push ATC @Trish change this
@@ -193,60 +148,60 @@ WHEN HandIsHeadsUp AND InSmallBlind
 // 3. With either stack > 12BB RaiseBy 4 with Category 6 OR better AND
 //   call with Category 4 OR better
 WHEN HandIsHeadsUp AND InBigBlind
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat1 RaiseMax FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat2 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat3 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_RSS_12P AND listHUCat4 Call FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat1 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat2 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat3 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat4 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat5 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 0 AND listHUCat6 RaiseBy 3 FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat1 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat2 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat3 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat4 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat5 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat6 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_8_12 AND listHUCat7 RaiseMax FORCE
-   WHEN HandIsHeadsUp_RSS_0_8 RaiseMax FORCE 
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseMax FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat2 Call FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat3 Call FORCE
+   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat4 Call FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat1 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat2 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat3 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat4 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat5 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat6 RaiseBy 3 FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat1 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat2 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat3 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat4 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat5 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat6 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat7 RaiseMax FORCE
+   WHEN HandIsHeadsUp_ESS_0_8 RaiseMax FORCE 
 
 // In the Big Blind AND Small Blind Raises
 // I can't remember the ruleset, but you can re-create it from code if need be
 WHEN HandIsHeadsUp AND InBigBlind
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat1 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat2 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat3 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat4 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat5 RaiseMax FORCE
 
  // Raise to 4 times the small Raisers Raise. 
  // Sometimes they want a cheap flop
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat1 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat2 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat3 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat4 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat5 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat6 Call FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat7 Call FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat1 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat2 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat3 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat4 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat5 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat6 Call FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat7 Call FORCE
 
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_4_12 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
 
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_2_4 AND Raises = 1 AND listHUCat7 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat7 RaiseMax FORCE
 
-   WHEN f$FirstAction AND HandIsHeadsUp_RSS_0_2 RaiseMax FORCE
+   WHEN f$FirstAction AND HandIsHeadsUp_ESS_0_2 RaiseMax FORCE
 
 
 //////////////////////////////////////////////////////////////////
@@ -501,7 +456,7 @@ WHEN IsBubble AND OpponentIsAllin
    WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
 WHEN IsBubble AND (InSmallBlind OR InBigBlind)
-   WHEN user_Bubble_Stack_0_2 RaiseMax FORCE
+   WHEN StackSize <= 2 RaiseMax FORCE
 
 // Now Play based on StackSize 
 //////////////////////////////////////////////////////////////////
@@ -877,20 +832,29 @@ InTheMoney AND OpponentsWithHigherStack = 1)
 ##f$InTheMoney_SmallStack##
 InTheMoney AND OpponentsWithHigherStack = 2)
 
-//////////////////////////////////////////////////////////////////
-// DO NOT EDIT
-// In The Money Stack Size Variables (Relevant Stack Calculated)
-// HSS = Hero Stack Size
-// VSS = Villan Stack Size
-// RSS = Relevant Stack Size
-//////////////////////////////////////////////////////////////////
+##HandIsHeadsup_12_Plus##
+WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) RETURN true FORCE
 
-// Sub Variables - Large, Medium, OR Small Stack
-WHEN f$FirstAction AND  										Set f$InTheMoney_BigStack
-WHEN f$FirstAction AND InTheMoney 
- AND OpponentsWithLowerStack = 0 										Set InTheMoney_SmallStack
-WHEN f$FirstAction AND InTheMoney 
- AND NOT (f$InTheMoney_BigStack OR InTheMoney_SmallStack) 		Set InTheMoney_MiddleStack
+##HandIsHeadsup_8_12##
+WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) RETURN false FORCE
+WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 8) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HandIsHeadsup_4_12##
+WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) RETURN false FORCE
+WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 4) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+HandIsHeadsup_2_4
+WHEN (EffectiveMaxStacksizeOfActiveOpponents > 4) RETURN false FORCE
+WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HandIsHeadsup_0_4##
+WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 4) RETURN true FORCE
+
+HandIsHeadsup_0_2
+WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) RETURN true FORC
 
 //////////////////////////////////////////////////////////////////
 //
@@ -1151,9 +1115,9 @@ JTo T9o 98o 87o 76o
 
 
 // TO DO
-handle headsup before ITM
+handle HeadsUp before ITM
 handle late before early, in case tournament stage is both
-isbigstack middle small
+
 
 document:
 InTheMoney
