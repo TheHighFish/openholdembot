@@ -48,7 +48,7 @@ BUG FIXES:
   [THF]
 - PrWin could keep its old values if OpenHoldem didn't scrape 
   a frame without buttons between two different situations.
-  thanks to Karmix for reporting and to ChuckNeverMuck for finding the bug
+  thanks to Kamix for reporting and to ChuckNeverMuck for finding the bug
   [THF]
 - The WriteLog(...)-function of the user-DLL did not handle 
   variadic arguments properly. This has now been fixed.

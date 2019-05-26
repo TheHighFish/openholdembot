@@ -1595,6 +1595,7 @@ WHEN Others
 // Rules are the same for raised and reraised pots.
 // Different balance-to-call-ratios get handled by f$required_balance_to_call_ratio_for_setmining.
 // "Setmining"-range also contains some premium-hands
+WHEN Raises <= 0 RETURN false FORCE
 WHEN (f$effective_balance_to_call_ratio < f$required_balance_to_call_ratio_for_setmining) RETURN false FORCE
 WHEN (AmountToCall > 0.50 * EffectivePotSize) RETURN false FORCE
 WHEN listGeckoSetMining RETURN true FORCE
