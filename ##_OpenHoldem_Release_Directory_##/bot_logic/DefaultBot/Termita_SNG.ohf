@@ -10,53 +10,12 @@
 // Target:  Unknown... depends on how much extra work you put in
 // Version: OpenHoldem 13.0.3
 //
-// Original Authors:
-// =================
+// Authors:
+// ========
 //   * Tetre (BonusBots)
 //   * Termitapalahermita aka Xiquetete (BonusBots)
 //   * Trish
 //   * TheHighFish
-//
-//////////////////////////////////////////////////////////////////
-//
-// Changes
-// =======
-//   * removed postflop-logic that contained code-snippets from Zulu
-//     (potential copyright-infringement) in favour of Gecko-logic.
-//   * hand-categories turned from hand-expressions to hand-lists
-//   * created extra categories for HU / ITM / bubble / early play.
-//   * replaced user-variables like user_CutOff by OpenPPL
-//     position-symbols like InCutOff.
-//   * replaced version identifier by comment
-//   * replaced user_Opponent_ALL_IN by OpponentIsAllin
-//   * removed options for
-//       * playing AA / KK multiway
-//       * limping any two multiway
-//       * playing bubble like 3-handed (AND vice versa)
-//       * playing 3-handed like HeadsUp (AND vice versa)
-//     in order to get reasonable AND simple strategy 
-//   * replaced user-variable user_TheMoney by new OpenPPL-symbol InTheMoney
-//   * replaced user-variable user_Bubble by new OpenPPL-symbol IsBubble
-//   * removed superfluous variable user_true
-//   * Replaced user_FullRing AND user_HeadsUp by
-//     OpenPPL-symbols HandIsFullRing HandIsHeadsUp 
-//   * removed variables userEarlyRaiser and user_BigBlind_We_Limped
-//     which was only used in already removed postflop-play
-//   * replaced user_MP / user_EP by InMiddlePosition / InEarlyPosition
-//   * replaced user_RaiseQuad-logic by RaiseBy (4 * amountToCall) FORCE
-//   * removed all casino-specific code in favour of automatic detection 
-//     of blind-level and tournament stage.
-//   * replaced user variables user_GameState_Early, ... by functions
-//     f$EarlyStage, f$MiddleStage, f$LateStage
-//   * replaced variable user_BLA_None by f4FirstAction
-//   * Removed lots of now superfluous "InTheMoney"-variabled 
-//     for stacksize-ranges of various players
-//   * Replayed f$InTheMoney_BigStack, InTheMoney_MiddleStack 
-//     and InTheMoney_SmallStack by user-defined functions
-//   * Removed stacksize-variables for the bubble,
-//     with one exception they were unused
-//   * Simplified calculation if effectibe-stacksize-variables for headsup-play,
-//     using EffectiveMaxStacksizeOfActiveOpponents
 //
 //////////////////////////////////////////////////////////////////
 //
@@ -65,364 +24,384 @@
 //////////////////////////////////////////////////////////////////
 
 ##Termita_SNG_Preflop##
-//////////////////////////////////////////////////////////////////
-// Variables Organized by Game Play 
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-// Section 1 - Regular Full Ring Play Variables
-//////////////////////////////////////////////////////////////////
-WHEN f$FirstAction AND HandIsFullRing AND StackSize < 2 			Set user_Stack_FullRing_0_2
-WHEN f$FirstAction AND HandIsFullRing AND StackSize < 5 			Set user_Stack_FullRing_0_5
-WHEN f$FirstAction AND HandIsFullRing AND (StackSize >= 5 
- AND StackSize <= 11) 											Set user_Stack_FullRing_5_12
-WHEN f$FirstAction AND HandIsFullRing AND StackSize >= 12		Set user_Stack_FullRing_12P
-//////////////////////////////////////////////////////////////////
-// Section 4 - Heads Up Play Variables
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-// Heads Up Stack Size Variables 
-// ESS = Effective Stack Size
-//////////////////////////////////////////////////////////////////
-WHEN f$FirstAction AND HandIsHeadsUp 
-   WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) Set HandIsHeadsUp_ESS_12P
-   WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 8) Set HandIsHeadsUp_ESS_0_8
-   WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) Set HandIsHeadsUp_ESS_0_2
-   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 8)
-      AND (EffectiveMaxStacksizeOfActiveOpponents <= 12) Set HandIsHeadsUp_ESS_8_12
-   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 4)
-      AND (EffectiveMaxStacksizeOfActiveOpponents <= 12) Set HandIsHeadsUp_ESS_4_12
-   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 2)
-      AND (EffectiveMaxStacksizeOfActiveOpponents <= 4) Set HandIsHeadsUp_ESS_2_4
-//////////////////////////////////////////////////////////////////
 //
-// OK, Lets Play the Game
-//
-//////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////
 // Pot Commited
 // If we are more than 1/3 stack into the pot, we are committed
 // If we get to < 2 BB at any stage except HeadsUp, we shove if
 // in a blind
-//////////////////////////////////////////////////////////////////
+//
 // Personally, I don't think 1/3 of the stack really commits us, we
-// are a bot afterall, AND able to come back from small stacks
-// Section 1 - Generic Rule 
-//   WHEN TotalInvested > 33% StackSize RaiseMax FORCE
+// are a bot afterall, AND able to come back from small stacks (Trish)
+//
+WHEN TotalInvested > 33% StackSize RaiseMax FORCE
+WHEN HandIsHeadsUp RETURN f$Termita_SNG_Preflop_HeadsUp FORCE
+WHEN InTheMoney    RETURN f$Termita_SNG_Preflop_InTheMoney FORCE
+When IsBubble      RETURN f$Termita_SNG_Preflop_Bubble FORCE
+WHEN Others        RETURN f$Termita_SNG_Preflop_Fullring FORCE
 
 //////////////////////////////////////////////////////////////////
+//
 // Heads Up Play
+//
 //////////////////////////////////////////////////////////////////
+
+##f$Termita_SNG_Preflop_HeadsUp##
+WHWN NOT HandIsHeadsUp RETURN Fold FORCE
+//
+// Heads Up Stack Size Variables 
+// ESS = Effective Stack Size
+//
+WHEN f$FirstAction AND HandIsHeadsUp 
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) Set user_HandIsHeadsUp_ESS_12P
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 8) Set user_HandIsHeadsUp_ESS_0_8
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) Set user_HandIsHeadsUp_ESS_0_2
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 8)
+      AND (EffectiveMaxStacksizeOfActiveOpponents <= 12) Set user_HandIsHeadsUp_ESS_8_12
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 4)
+      AND (EffectiveMaxStacksizeOfActiveOpponents <= 12) Set user_HandIsHeadsUp_ESS_4_12
+   WHEN (EffectiveMaxStacksizeOfActiveOpponents  > 2)
+      AND (EffectiveMaxStacksizeOfActiveOpponents <= 4)  Set user_HandIsHeadsUp_ESS_2_4
+//
 // In the Small Blind
 // 1.   WHEN either stack < 8BB push ATC @Trish Change this
 // 2.   WHEN either stack 8-12 BB Push Category 8 OR better
 // 3,   WHEN more than 12 BB RaiseBy 3 for Category 8 OR better AND call
 //   with category 5 OR better
-WHEN HandIsHeadsUp AND InSmallBlind
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseMax FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat2 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat3 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat4 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat5 Call FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat2 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat3 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat4 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat5 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat6 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat7 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND listHUCat8 RaiseBy 3 FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat1 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat2 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat3 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat4 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat5 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat6 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat7 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat8 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_0_8 RaiseMax FORCE
-
+//
+WHEN InSmallBlind
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseMax FORCE
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat2 Call FORCE
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat3 Call FORCE
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat4 Call FORCE
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat5 Call FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat2 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat3 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat4 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat5 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat6 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat7 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND listHUCat8 RaiseBy 3 FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat1 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat2 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat3 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat4 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat5 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat6 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat7 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat8 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_0_8 RaiseMax FORCE
+//
 // In the Big Blind AND Small Blind Limps
 // 1. With either stack less than 8 BB push ATC @Trish change this
 // 2. With either stack 8-12 BB Push Category 7 OR better
 // 3. With either stack > 12BB RaiseBy 4 with Category 6 OR better AND
 //   call with Category 4 OR better
-WHEN HandIsHeadsUp AND InBigBlind
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseMax FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat2 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat3 Call FORCE
-   WHEN BotsLastAction = Raise AND HandIsHeadsUp_ESS_12P AND listHUCat4 Call FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat1 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat2 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat3 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat4 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat5 RaiseBy 3 FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat6 RaiseBy 3 FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat1 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat2 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat3 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat4 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat5 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat6 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_8_12 AND listHUCat7 RaiseMax FORCE
-   WHEN HandIsHeadsUp_ESS_0_8 RaiseMax FORCE 
-
+//
+WHEN InBigBlind
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat1 RaiseMax FORCE
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat2 Call FORCE
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat3 Call FORCE
+   WHEN BotsLastAction = Raise AND user_HandIsHeadsUp_ESS_12P AND listHUCat4 Call FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat1 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat2 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat3 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat4 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat5 RaiseBy 3 FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 0 AND listHUCat6 RaiseBy 3 FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat1 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat2 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat3 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat4 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat5 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat6 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_8_12 AND listHUCat7 RaiseMax FORCE
+   WHEN user_HandIsHeadsUp_ESS_0_8 RaiseMax FORCE 
+//
 // In the Big Blind AND Small Blind Raises
 // I can't remember the ruleset, but you can re-create it from code if need be
-WHEN HandIsHeadsUp AND InBigBlind
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat1 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat2 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat3 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat4 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat5 RaiseMax FORCE
-
- // Raise to 4 times the small Raisers Raise. 
- // Sometimes they want a cheap flop
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat1 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat2 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat3 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat4 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat5 RaiseBy (4 * AmountToCall) FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat6 Call FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat7 Call FORCE
-
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
-
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat7 RaiseMax FORCE
-
-   WHEN f$FirstAction AND HandIsHeadsUp_ESS_0_2 RaiseMax FORCE
-
-
-//////////////////////////////////////////////////////////////////
-//InTheMoney 3Way Play
-//////////////////////////////////////////////////////////////////
-// Aggression Factor Override
-// You can add additional lines with additional Hand Groups as required
 //
-WHEN InTheMoney AND OpponentIsAllin AND listITMCat1 Call FORCE
+WHEN InBigBlind
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall > 3 AND listHUCat5 RaiseMax FORCE
+//
+// Raise to 4 times the small Raisers Raise. 
+// Sometimes they want a cheap flop
+//
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat1 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat2 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat3 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat4 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat5 RaiseBy (4 * AmountToCall) FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat6 Call FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_12P AND Raises = 1 AND AmountToCall <= 3 AND listHUCat7 Call FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_4_12 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat1 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat2 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat3 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat4 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat5 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat6 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_2_4 AND Raises = 1 AND listHUCat7 RaiseMax FORCE
+   WHEN f$FirstAction AND user_HandIsHeadsUp_ESS_0_2 RaiseMax FORCE
 
-//Regular processing of Opponent All In with 2 OR more in the pot
-WHEN InTheMoney AND OpponentIsAllin 
- // Get out of the way if 2 Opponents want to clash
-   WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+//////////////////////////////////////////////////////////////////
+//
+// InTheMoney 3Way Play
+//
+//////////////////////////////////////////////////////////////////
 
-// Short Stack Shoving
-WHEN InTheMoney AND (InSmallBlind OR InBigBlind)
- // shove with microstack in a blind
-   WHEN InTheMoney_Stack_0_2 RaiseMax FORCE
-
-
-WHEN InTheMoney AND f$InTheMoney_BigStack AND OpponentIsAllin
- //   WHEN we are in the Big Blind
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat5 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat6 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat7 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat8 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat7 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat6 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat5 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat4 Call FORCE
-
- //   WHEN we are NOT in the Big Blind
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat4 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat5 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat6 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat7 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 8 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 8 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 8 AND listITMCat3 Call FORCE
- 
-
-WHEN InTheMoney AND InTheMoney_MiddleStack AND OpponentIsAllin
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat5 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat6 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
- 
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat2 Call FORCE
-
- //   WHEN we are NOT in the Big Blind
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat4 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat5 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 8 AND listITMCat1 Call FORCE
-
-WHEN InTheMoney AND InTheMoney_SmallStack AND OpponentIsAllin
- //   WHEN we are in the Big Blind
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat5 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat6 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat7 Call FORCE
-   WHEN InBigBlind AND AmountToCall < 2 AND listITMCat8 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat7 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat6 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat5 Call FORCE
-
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat1 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat2 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat3 Call FORCE
-   WHEN InBigBlind AND AmountToCall >= 8 AND listITMCat4 Call FORCE
-
- //   WHEN we are NOT in the Big Blind
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat4 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat5 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat6 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall < 2 AND listITMCat7 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
-
-   WHEN NOT (InBigBlind) AND AmountToCall >= 8 AND listITMCat1 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 8 AND listITMCat2 Call FORCE
-   WHEN NOT (InBigBlind) AND AmountToCall >= 8 AND listITMCat3 Call FORCE
- 
+##f$Termita_SNG_Preflop_ThreeHanded##
+WHWN NOT InTheMoney RETURN Fold FORCE
+//
+// Take opponents off the table with premium hands
+//
+WHEN OpponentIsAllin AND listITMCat1 Call FORCE
+//
+// Regular processing of Opponent All In with 2 OR more in the pot
+// Get out of the way if 2 Opponents want to clash
+//
+WHEN OpponentIsAllin AND f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+//
+// Shoving as short-stack 
+//
+WHEN InTheBlinds AND InTheMoney_Stack_0_2 RaiseMax FORCE
+//
+// BigBlind, big-stack, opponent is allin
+//
+WHEN InBigBlind AND f$InTheMoney_BigStack AND OpponentIsAllin
+   // Facing small raise 0..2 bb		
+   WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat3 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat4 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat5 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat6 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat7 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat8 Call FORCE
+   // Facing raise 2..4 bb
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat7 Call FORCE
+   // Facing raise 4..6 bb
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat6 Call FORCE
+   // Facing raise 6..8 bb
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat5 Call FORCE
+   // Facing large raise >8 bb
+   WHEN AmountToCall >= 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat4 Call FORCE
+//
+// Not big-blind, big-stack, opponent is allin
+//
+WHEN NOT InBigBlind AND f$InTheMoney_BigStack AND OpponentIsAllin
+   // Facing small raise 0..2 bb		
+   WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat3 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat4 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat5 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat6 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat7 Call FORCE
+   // Facing raise 2..4 bb
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
+   // Facing raise 4..6 bb
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
+   // Facing raise 6..8 bb
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
+   // Facing large raise >8 bb
+   WHEN AmountToCall >= 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat3 Call FORCE
+//
+// BigBlind, middle-stack, opponent is allin
+// 
+WHEN InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
+   // Facing small raise 0..2 bb
+   WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat3 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat4 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat5 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat6 Call FORCE
+   // Facing raise 2..4 bb
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
+   // Facing raise 4..6 bb
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
+   // Facing raise 6..8 bb
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
+   // Facing large raise >8 bb
+   WHEN AmountToCall >= 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat2 Call FORCE
+//
+// Not BigBlind, middle-stack, opponent is allin
+// 
+WHEN NOT InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
+   // Facing small raise 0..2 bb
+   WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat3 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat4 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat5 Call FORCE
+   // Facing raise 2..4 bb
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
+   // Facing raise 4..6 bb
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
+   // Facing raise 6..8 bb
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
+   // Facing large raise >8 bb
+   WHEN AmountToCall >= 8 AND listITMCat1 Call FORCE
+//
+// BigBlind, small-stack, opponent is allin
+// 
+WHEN InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
+   // Facing small raise 0..2 bb
+   WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat3 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat4 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat5 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat6 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat7 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat8 Call FORCE
+   // Facing raise 2..4 bb
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat7 Call FORCE
+   // Facing raise 4..6 bb
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat6 Call FORCE
+   // Facing raise 6..8 bb
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat5 Call FORCE
+   // Facing large raise >8 bb
+   WHEN AmountToCall >= 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat4 Call FORCE
+//
+// Not BigBlind, small-stack, opponent is allin
+// 
+WHEN NOT InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
+	// Facing small raise 0..2 bb
+   WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat3 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat4 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat5 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat6 Call FORCE
+   WHEN AmountToCall < 2 AND listITMCat7 Call FORCE
+   // Facing raise 2..4 bb
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat5 Call FORCE
+   WHEN AmountToCall >= 2 AND AmountToCall < 4 AND listITMCat6 Call FORCE
+   // Facing raise 4..6 bb
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat4 Call FORCE
+   WHEN AmountToCall >= 4 AND AmountToCall < 6 AND listITMCat5 Call FORCE
+   // Facing raise 6..8 bb
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat3 Call FORCE
+   WHEN AmountToCall >= 6 AND AmountToCall < 8 AND listITMCat4 Call FORCE
+   // Facing large raise >8 bb
+   WHEN AmountToCall >= 8 AND listITMCat1 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat2 Call FORCE
+   WHEN AmountToCall >= 8 AND listITMCat3 Call FORCE
+// 
 // Process the Not Opponent is All in scenario now
 // NOTE: Due to an issue with MaxStillToActStackSize, this code is using the values
 //      from OpponentsWithHigherStack AND OpponentsWithLowerStack to determine 
 //      what to do. Since MiddleStack does not know the size of the next opponent
 //      the "safer range" of shoving into a larger stack is used
 // Tetre - V_009 06/10/2011
-WHEN InTheMoney AND NOT (OpponentIsAllin)
-   WHEN f$InTheMoney_BigStack AND listITMCat1 RaiseMax FORCE
-   WHEN f$InTheMoney_BigStack AND listITMCat2 RaiseMax FORCE
-   WHEN f$InTheMoney_BigStack AND listITMCat3 RaiseMax FORCE
-   WHEN f$InTheMoney_BigStack AND listITMCat4 RaiseMax FORCE
-   WHEN f$InTheMoney_BigStack AND listITMCat5 RaiseMax FORCE
-   WHEN f$InTheMoney_BigStack AND listITMCat6 RaiseMax FORCE
-   WHEN f$InTheMoney_BigStack AND listITMCat7 RaiseMax FORCE
-   WHEN f$InTheMoney_BigStack AND listITMCat8 RaiseMax FORCE
-
+//
+// !!! code looks half-made
+WHEN f$InTheMoney_BigStack AND NOT (OpponentIsAllin)
+   WHEN listITMCat1 RaiseMax FORCE
+   WHEN listITMCat2 RaiseMax FORCE
+   WHEN listITMCat3 RaiseMax FORCE
+   WHEN listITMCat4 RaiseMax FORCE
+   WHEN listITMCat5 RaiseMax FORCE
+   WHEN listITMCat6 RaiseMax FORCE
+   WHEN listITMCat7 RaiseMax FORCE
+   WHEN listITMCat8 RaiseMax FORCE
+WHEN f$InTheMoney_MiddleStack AND NOT (OpponentIsAllin)
+   WHEN InTheMoney_MiddleStack AND listITMCat1 RaiseMax FORCE
+   WHEN InTheMoney_MiddleStack AND listITMCat2 RaiseMax FORCE
+   WHEN InTheMoney_MiddleStack AND listITMCat3 RaiseMax FORCE
+   WHEN InTheMoney_MiddleStack AND listITMCat4 RaiseMax FORCE
+   WHEN InTheMoney_MiddleStack AND listITMCat5 RaiseMax FORCE
+   WHEN InTheMoney_MiddleStack AND listITMCat6 RaiseMax FORCE
+   WHEN InTheMoney_MiddleStack AND listITMCat7 RaiseMax FORCE
+// !!! inclear who commented this out
+//   WHEN InTheMoney_MiddleStack AND listITMCat8 RaiseMax FORCE
+WHEN f$InTheMoney_SmallStack AND NOT (OpponentIsAllin)
    WHEN InTheMoney_SmallStack AND listITMCat1 RaiseMax FORCE
    WHEN InTheMoney_SmallStack AND listITMCat2 RaiseMax FORCE
    WHEN InTheMoney_SmallStack AND listITMCat3 RaiseMax FORCE
@@ -432,30 +411,62 @@ WHEN InTheMoney AND NOT (OpponentIsAllin)
    WHEN InTheMoney_SmallStack AND listITMCat7 RaiseMax FORCE
    WHEN InTheMoney_SmallStack AND listITMCat8 RaiseMax FORCE
 
-   WHEN InTheMoney_MiddleStack AND listITMCat1 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat2 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat3 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat4 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat5 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat6 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat7 RaiseMax FORCE
-//   WHEN InTheMoney_MiddleStack AND listITMCat8 RaiseMax FORCE
-
-
 //////////////////////////////////////////////////////////////////
-// Bubble Play - 
-//////////////////////////////////////////////////////////////////
-// Aggression Factor Override
-// You can add additional lines with additional Hand Groups as required
 //
+// bubble Play
+//
+//////////////////////////////////////////////////////////////////
+
+##f$Termita_SNG_Preflop_Bubble##
+
+//////////////////////////////////////////////////////////////////
+//
+// Full Ring Play
+//
+//////////////////////////////////////////////////////////////////
+
+##f$Termita_SNG_Preflop_FullRing##
+
+
+
+
+##Termita_SNG_Preflop##
+//////////////////////////////////////////////////////////////////
+//
+// Variables Organized by Game Play 
+//
+//////////////////////////////////////////////////////////////////
+//
+// Section 1 - Regular Full Ring Play Variables
+//
+//////////////////////////////////////////////////////////////////
+WHEN f$FirstAction AND HandIsFullRing AND StackSize < 2         Set user_Stack_FullRing_0_2
+WHEN f$FirstAction AND HandIsFullRing AND StackSize < 5         Set user_Stack_FullRing_0_5
+WHEN f$FirstAction AND HandIsFullRing AND (StackSize >= 5 
+    AND StackSize < 12)                                         Set user_Stack_FullRing_5_12
+WHEN f$FirstAction AND HandIsFullRing AND StackSize >= 12       Set user_Stack_FullRing_12P
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////
+//
+// Bubble Play - 
+//
+//////////////////////////////////////////////////////////////////
+
 WHEN IsBubble AND OpponentIsAllin listBubbleCat1 Call FORCE
 
 // Regular processing of Opponent All In with 2 OR more in the pot
 WHEN IsBubble AND OpponentIsAllin 
- // Get out of the way if 2 Opponents want to clash
+   // Get out of the way if 2 Opponents want to clash
    WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
-WHEN IsBubble AND (InSmallBlind OR InBigBlind)
+WHEN IsBubble AND InTheBlinds)
    WHEN StackSize <= 2 RaiseMax FORCE
 
 // Now Play based on StackSize 
@@ -679,7 +690,7 @@ WHEN f$MiddleStage AND OpponentIsAllin
  // Get out of the multi-way all in
    WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
-WHEN f$MiddleStage AND (InSmallBlind OR InBigBlind)
+WHEN f$MiddleStage AND InRheBlinds
    WHEN user_Stack_FullRing_0_2 RaiseMax FORCE
 
 WHEN f$MiddleStage AND user_Stack_FullRing_12P 
@@ -693,12 +704,12 @@ WHEN f$MiddleStage AND user_Stack_FullRing_12P
 
    WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls >= 0 RaiseBy 3 FORCE
 
-   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND user_EP RaiseBy 3 FORCE
-   WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND user_EP RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND InEarlyPosition RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND InEarlyPosition RaiseBy 3 FORCE
 
-   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
-   WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
-   WHEN f$FirstAction AND listCat6 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseBy 3 FORCE
+   WHEN f$FirstAction AND listCat6 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseBy 3 FORCE
 
    WHEN f$FirstAction AND listCat4 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
    WHEN f$FirstAction AND listCat5 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseBy 3 FORCE
@@ -712,12 +723,12 @@ WHEN f$MiddleStage AND user_Stack_FullRing_5_12
    WHEN listCat4 RaiseMax FORCE
    WHEN listCat5 AND Raises = 0 AND Calls >= 0 RaiseMax FORCE
 
-   WHEN listCat5 AND Raises = 0 AND Calls = 0 AND user_EP RaiseMax FORCE
-   WHEN listCat6 AND Raises = 0 AND Calls = 0 AND user_EP RaiseMax FORCE
+   WHEN listCat5 AND Raises = 0 AND Calls = 0 AND InEarlyPosition RaiseMax FORCE
+   WHEN listCat6 AND Raises = 0 AND Calls = 0 AND InEarlyPosition RaiseMax FORCE
 
-   WHEN listCat5 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseMax FORCE
-   WHEN listCat6 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseMax FORCE
-   WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (uInMiddlePosition) RaiseMax FORCE
+   WHEN listCat5 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseMax FORCE
+   WHEN listCat6 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseMax FORCE
+   WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseMax FORCE
 
    WHEN listCat5 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseMax FORCE
    WHEN listCat6 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseMax FORCE
@@ -734,7 +745,7 @@ WHEN f$MiddleStage AND user_Stack_FullRing_0_5
 
    WHEN listCat7 AND Raises = 0 AND Calls = 0 RaiseMax FORCE
 
-   WHEN listCat8 AND Raises = 0 AND Calls = 0 AND NOT (user_EP) RaiseMax FORCE
+   WHEN listCat8 AND Raises = 0 AND Calls = 0 AND NOT (InEarlyPosition) RaiseMax FORCE
 
 
 //////////////////////////////////////////////////////////////////
@@ -821,7 +832,7 @@ WHEN (StackSize < 20) RETURN true FORCE
 WHEN (AverageStackSize < 20) RETURN true FORCE
 
 ##f$FirstAction##
-WHEN BotsLastAction = None RETURN true FORCE f$FirstAction
+WHEN BotsLastAction = None RETURN true FORCE 
 
 ##f$InTheMoney_BigStack##
 InTheMoney AND OpponentsWithHigherStack = 0)
@@ -832,28 +843,28 @@ InTheMoney AND OpponentsWithHigherStack = 1)
 ##f$InTheMoney_SmallStack##
 InTheMoney AND OpponentsWithHigherStack = 2)
 
-##HandIsHeadsup_12_Plus##
+##f$HandIsHeadsup_12_Plus##
 WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) RETURN true FORCE
 
-##HandIsHeadsup_8_12##
+##f$HandIsHeadsup_8_12##
 WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) RETURN false FORCE
 WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 8) RETURN false FORCE
 WHEN Others RETURN true FORCE
 
-##HandIsHeadsup_4_12##
+##f$HandIsHeadsup_4_12##
 WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) RETURN false FORCE
 WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 4) RETURN false FORCE
 WHEN Others RETURN true FORCE
 
-HandIsHeadsup_2_4
+##f$HandIsHeadsup_2_4##
 WHEN (EffectiveMaxStacksizeOfActiveOpponents > 4) RETURN false FORCE
 WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) RETURN false FORCE
 WHEN Others RETURN true FORCE
 
-##HandIsHeadsup_0_4##
+##f$HandIsHeadsup_0_4##
 WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 4) RETURN true FORCE
 
-HandIsHeadsup_0_2
+##f$HandIsHeadsup_0_2##
 WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) RETURN true FORC
 
 //////////////////////////////////////////////////////////////////

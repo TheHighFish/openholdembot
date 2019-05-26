@@ -1,0 +1,65 @@
+//*****************************************************************************
+//
+// Change-log of the Termita-SNG--bot
+//
+//*****************************************************************************
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Main author: Gecko 
+//
+// Co-author:   ThehighFish
+//   (adaptions for OpenHoldem 12.x, documentation, simplification,          
+//    extending preflop to full-ring)
+//
+//*****************************************************************************
+//
+// Changes
+// =======
+//   * removed postflop-logic that contained code-snippets from Zulu
+//     (potential copyright-infringement) in favour of Gecko-logic.
+//   * hand-categories turned from hand-expressions to hand-lists
+//   * created extra categories for HU / ITM / bubble / early play.
+//   * replaced user-variables like user_CutOff by OpenPPL
+//     position-symbols like InCutOff.
+//   * replaced version identifier by comment
+//   * replaced user_Opponent_ALL_IN by OpponentIsAllin
+//   * removed options for
+//       * playing AA / KK multiway
+//       * limping any two multiway
+//       * playing bubble like 3-handed (AND vice versa)
+//       * playing 3-handed like HeadsUp (AND vice versa)
+//     in order to get reasonable AND simple strategy 
+//   * replaced user-variable user_TheMoney by new OpenPPL-symbol InTheMoney
+//   * replaced user-variable user_Bubble by new OpenPPL-symbol IsBubble
+//   * removed superfluous variable user_true
+//   * Replaced user_FullRing AND user_HeadsUp by
+//     OpenPPL-symbols HandIsFullRing HandIsHeadsUp 
+//   * removed variables userEarlyRaiser and user_BigBlind_We_Limped
+//     which was only used in already removed postflop-play
+//   * replaced user_MP / InEarlyPosition by InMiddlePosition / InEarlyPosition
+//   * replaced user_RaiseQuad-logic by RaiseBy (4 * amountToCall) FORCE
+//   * removed all casino-specific code in favour of automatic detection 
+//     of blind-level and tournament stage.
+//   * replaced user variables user_GameState_Early, ... by functions
+//     f$EarlyStage, f$MiddleStage, f$LateStage
+//   * replaced variable user_BLA_None by f4FirstAction
+//   * Removed lots of now superfluous "InTheMoney"-variabled 
+//     for stacksize-ranges of various players
+//   * Replayed InTheMoney_BigStack, InTheMoney_MiddleStack 
+//     and InTheMoney_SmallStack by user-defined functions
+//   * Removed stacksize-variables for the bubble,
+//     with one exception they were unused
+//   * Simplified calculation if effectibe-stacksize-variables for headsup-play,
+//     using EffectiveMaxStacksizeOfActiveOpponents
+//   * Replaceed (InSmallBlind OR InBigBlind) by InTheBlinds
+//   * Restructured the code, introducing extra-functions for
+//     headsup, ITM, bubble and full-ring play
+//
