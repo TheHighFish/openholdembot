@@ -10,11 +10,12 @@
 // Target:  Unknown... depends on how much extra work you put in
 // Version: OpenHoldem 13.0.3
 //
-// Authors:
-// ========
-//   * Tetre
-//   * Termitapalahermita aka Xiquetete
+// Original Authors:
+// =================
+//   * Tetre (BonusBots)
+//   * Termitapalahermita aka Xiquetete (BonusBots)
 //   * Trish
+//   * TheHighFish
 //
 //////////////////////////////////////////////////////////////////
 //
@@ -45,9 +46,14 @@
 //   * replaced user_RaiseQuad-logic by RaiseBy (4 * amountToCall) FORCE
 //   * removed all casino-specific code in favour of automatic detection 
 //     of blind-level and tournament stage.
-//   * repalced user variables user_GameState_Early, ... by functions
+//   * replaced user variables user_GameState_Early, ... by functions
 //     f$EarlyStage, f$MiddleStage, f$LateStage
 //   * replaced variable user_BLA_None by f4FirstAction
+//   * Removed lots of now superfluous "InTheMoney"-variabled 
+//     for stacksize-ranges of various players
+//   * Replayed f$InTheMoney_BigStack, InTheMoney_MiddleStack 
+//     and InTheMoney_SmallStack by user-defined functions
+//   
 //
 //////////////////////////////////////////////////////////////////
 //
@@ -68,10 +74,6 @@ WHEN f$FirstAction AND HandIsFullRing AND (StackSize >= 5
  AND StackSize <= 11) 											Set user_Stack_FullRing_5_12
 WHEN f$FirstAction AND HandIsFullRing AND StackSize >= 12		Set user_Stack_FullRing_12P
 //////////////////////////////////////////////////////////////////
-// DO NOT EDIT
-// Bubble Variables
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
 // Section 2 - On the Bubble Play Variables
 //////////////////////////////////////////////////////////////////
 WHEN f$FirstAction AND IsBubble AND StackSize >= 10 					Set user_Bubble_Stack_10P
@@ -86,36 +88,6 @@ WHEN f$FirstAction AND IsBubble
  AND NOT (user_Bubble_BigStack OR user_Bubble_SmallStack)				Set user_Bubble_MiddleStack
 WHEN f$FirstAction AND IsBubble 
  AND MaxStillToActStackSize > 100% StackSize 							Set user_Bubble_We_Are_Covered
-
-//////////////////////////////////////////////////////////////////
-// Section 3 - In The Money Play Variables $$$$$$
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-// DO NOT EDIT
-// In The Money Stack Size Variables (Relevant Stack Calculated)
-// HSS = Hero Stack Size
-// VSS = Villan Stack Size
-// RSS = Relevant Stack Size
-//////////////////////////////////////////////////////////////////
-WHEN f$FirstAction AND InTheMoney AND StackSize >= 10 				Set InTheMoney_HSS_10P
-WHEN f$FirstAction AND InTheMoney 
- AND StackSize >= 8 AND StackSize < 10 								Set InTheMoney_HSS_8_9
-WHEN f$FirstAction AND InTheMoney 
- AND StackSize >= 6 AND StackSize <= 7 								Set InTheMoney_HSS_6_8
-WHEN f$FirstAction AND InTheMoney 
- AND StackSize >= 4 AND StackSize <= 5									Set InTheMoney_HSS_4_6
-WHEN f$FirstAction AND InTheMoney 
- AND StackSize >= 2 AND StackSize <= 3									Set InTheMoney_HSS_2_4
-WHEN f$FirstAction AND InTheMoney AND StackSize < 2				Set InTheMoney_HSS_0_2
-
-// Sub Variables - Large, Medium, OR Small Stack
-WHEN f$FirstAction AND InTheMoney 
- AND OpponentsWithHigherStack = 0 										Set InTheMoney_BigStack
-WHEN f$FirstAction AND InTheMoney 
- AND OpponentsWithLowerStack = 0 										Set InTheMoney_SmallStack
-WHEN f$FirstAction AND InTheMoney 
- AND NOT (InTheMoney_BigStack OR InTheMoney_SmallStack) 		Set InTheMoney_MiddleStack
-
 //////////////////////////////////////////////////////////////////
 // Section 4 - Heads Up Play Variables
 //////////////////////////////////////////////////////////////////
@@ -296,7 +268,7 @@ WHEN InTheMoney AND (InSmallBlind OR InBigBlind)
    WHEN InTheMoney_Stack_0_2 RaiseMax FORCE
 
 
-WHEN InTheMoney AND InTheMoney_BigStack AND OpponentIsAllin
+WHEN InTheMoney AND f$InTheMoney_BigStack AND OpponentIsAllin
  //   WHEN we are in the Big Blind
    WHEN InBigBlind AND AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN InBigBlind AND AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -487,14 +459,14 @@ WHEN InTheMoney AND InTheMoney_SmallStack AND OpponentIsAllin
 //      the "safer range" of shoving into a larger stack is used
 // Tetre - V_009 06/10/2011
 WHEN InTheMoney AND NOT (OpponentIsAllin)
-   WHEN InTheMoney_BigStack AND listITMCat1 RaiseMax FORCE
-   WHEN InTheMoney_BigStack AND listITMCat2 RaiseMax FORCE
-   WHEN InTheMoney_BigStack AND listITMCat3 RaiseMax FORCE
-   WHEN InTheMoney_BigStack AND listITMCat4 RaiseMax FORCE
-   WHEN InTheMoney_BigStack AND listITMCat5 RaiseMax FORCE
-   WHEN InTheMoney_BigStack AND listITMCat6 RaiseMax FORCE
-   WHEN InTheMoney_BigStack AND listITMCat7 RaiseMax FORCE
-   WHEN InTheMoney_BigStack AND listITMCat8 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat1 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat2 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat3 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat4 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat5 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat6 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat7 RaiseMax FORCE
+   WHEN f$InTheMoney_BigStack AND listITMCat8 RaiseMax FORCE
 
    WHEN InTheMoney_SmallStack AND listITMCat1 RaiseMax FORCE
    WHEN InTheMoney_SmallStack AND listITMCat2 RaiseMax FORCE
@@ -896,6 +868,30 @@ WHEN (AverageStackSize < 20) RETURN true FORCE
 ##f$FirstAction##
 WHEN BotsLastAction = None RETURN true FORCE f$FirstAction
 
+##f$InTheMoney_BigStack##
+InTheMoney AND OpponentsWithHigherStack = 0)
+
+##f$InTheMoney_MiddleStack##
+InTheMoney AND OpponentsWithHigherStack = 1)
+		
+##f$InTheMoney_SmallStack##
+InTheMoney AND OpponentsWithHigherStack = 2)
+
+//////////////////////////////////////////////////////////////////
+// DO NOT EDIT
+// In The Money Stack Size Variables (Relevant Stack Calculated)
+// HSS = Hero Stack Size
+// VSS = Villan Stack Size
+// RSS = Relevant Stack Size
+//////////////////////////////////////////////////////////////////
+
+// Sub Variables - Large, Medium, OR Small Stack
+WHEN f$FirstAction AND  										Set f$InTheMoney_BigStack
+WHEN f$FirstAction AND InTheMoney 
+ AND OpponentsWithLowerStack = 0 										Set InTheMoney_SmallStack
+WHEN f$FirstAction AND InTheMoney 
+ AND NOT (f$InTheMoney_BigStack OR InTheMoney_SmallStack) 		Set InTheMoney_MiddleStack
+
 //////////////////////////////////////////////////////////////////
 //
 // Handlists
@@ -1167,18 +1163,3 @@ StartingBigBlindSize
 AverageStackSize
 
 load tournament symbols
-
-
-##f$StackSize_Range_0_2##
-
-##f$StackSize_Range_2_4##
-
-##f$StackSize_Range_4_6##
-
-##f$StackSize_Range_6_8##
-
-##f$StackSize_Range_8_10##
-
-##f$StackSize_Range_10_12##
-
-##f$StackSize_Range_12_Plus##
