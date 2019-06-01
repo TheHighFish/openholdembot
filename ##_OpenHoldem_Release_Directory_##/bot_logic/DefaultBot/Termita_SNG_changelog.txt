@@ -62,4 +62,19 @@
 //   * Replaceed (InSmallBlind OR InBigBlind) by InTheBlinds
 //   * Restructured the code, introducing extra-functions for
 //     headsup, ITM, bubble and full-ring play
-//
+//   * Removed option to limp any two in SB in early stage
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 

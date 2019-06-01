@@ -779,26 +779,6 @@ WHEN f$EarlyStage AND listCat4
    WHEN BotsLastAction = None AND (InCutOff OR InButton) RaiseBy 3 FORCE
 
 //////////////////////////////////////////////////////////////////
-//  Aggression Factor 2 - Call in Small Blind   WHEN 2 OR more callers
-//
-//  If you see that you bleed too many chips, tighten up the range
-//  starting with the last line, AND working your way up
-//
-//////////////////////////////////////////////////////////////////
-WHEN /*!!! Option_Limp_Any_Two_In_SmallBlind */ AND InSmallBlind AND Raises = 0 AND Calls >= 2 AND StackSize > 12
-   WHEN listCat3 Call FORCE
-   WHEN listCat4 Call FORCE
-   WHEN listCat5 Call FORCE
-   WHEN listCat6 Call FORCE
-   WHEN listCat7 Call FORCE
-   WHEN listCat8 Call FORCE
- // this statement will Call with ATC <Any Two Cards> @Trish change this
-   WHEN Others Call FORCE
-
-WHEN Others
-   WHEN Others Fold FORCE
-
-//////////////////////////////////////////////////////////////////
 //
 // Postflop logic
 //
