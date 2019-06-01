@@ -37,6 +37,7 @@ WHEN TotalInvested > 33% StackSize RaiseMax FORCE
 WHEN HandIsHeadsUp RETURN f$Termita_SNG_Preflop_HeadsUp FORCE
 WHEN InTheMoney    RETURN f$Termita_SNG_Preflop_InTheMoney FORCE
 When IsBubble      RETURN f$Termita_SNG_Preflop_Bubble FORCE
+WHEN f$EarlyStage  RETURN f$Termita_SNG_Preflop_EarlyStage FORCE
 WHEN Others        RETURN f$Termita_SNG_Preflop_Fullring FORCE
 
 //////////////////////////////////////////////////////////////////
@@ -749,34 +750,33 @@ WHEN f$MiddleStage AND user_Stack_FullRing_0_5
 
 
 //////////////////////////////////////////////////////////////////
+//
 // Early Game Play
+//
 //////////////////////////////////////////////////////////////////
-WHEN f$EarlyStage AND OpponentIsAllin AND f$FirstAction AND listCat1 Call FORCE
 
-WHEN f$EarlyStage AND OpponentIsAllin
- // If we entered the hand with a Raise, Call an all-in of 1 BB OR less
-   WHEN BotsLastAction = Raise AND AmountToCall <= 1 Call FORCE
- // Get out of the multi-way all in
-   WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
-
-WHEN f$EarlyStage AND (InSmallBlind OR InBigBlind)
-   WHEN user_Stack_FullRing_0_2 RaiseMax FORCE
-
+##f$Termita_SNG_Preflop_EarlyStage##
+// Calling allin with premium hands
+WHEN OpponentIsAllin AND f$FirstAction AND listCat1 Call FORCE
+// If we entered the hand with a Raise, Call an all-in of 1 BB OR less
+WHEN OpponentIsAllin AND BotsLastAction = Raise AND AmountToCall <= 1 Call FORCE
+// Get out of the multi-way all in
+WHEN OpponentIsAllin AND f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
+// Crippled in the blinds
+WHEN InTheBlinds AND user_Stack_FullRing_0_2 RaiseMax FORCE
+// Normal play by hand-categories
 WHEN f$EarlyStage AND listCat1
    WHEN BotsLastAction = Raise RaiseMax FORCE
    WHEN BotsLastAction = None RaiseBy 3 FORCE
-
 WHEN f$EarlyStage AND listCat2
    WHEN BotsLastAction = Raise RaiseMax FORCE
    WHEN BotsLastAction = None RaiseBy 3 FORCE
-
 WHEN f$EarlyStage AND listCat3
    WHEN BotsLastAction = Raise Fold FORCE
-   WHEN BotsLastAction = None AND (InCutOff OR InButton) RaiseBy 3 FORCE
-
+   WHEN BotsLastAction = None AND InLatePosition RaiseBy 3 FORCE
 WHEN f$EarlyStage AND listCat4
    WHEN BotsLastAction = Raise Fold FORCE
-   WHEN BotsLastAction = None AND (InCutOff OR InButton) RaiseBy 3 FORCE
+   WHEN BotsLastAction = None AND InLatePosition RaiseBy 3 FORCE
 
 //////////////////////////////////////////////////////////////////
 //
