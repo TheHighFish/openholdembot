@@ -226,5 +226,7 @@
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=21070&start=270#p153332
 //   * Decreased outs for vackdoor draws to 1.5 (BDF) and 1.0 (BDS) 
 //     http://www.maxinmontreal.com/forums/viewtopic.php?f=184&t=21070&sid=d8c46f2f23678f21699bcfdc3a8ae8f5&start=390#p157990
+//   * Gecko incorrectly checked for nstraightfill == 1 in his backdoor-code
+//     http://www.maxinmontreal.com/forums/viewtopic.php?f=184&t=21070&p=158486#p158486
 //
 //*****************************************************************************
