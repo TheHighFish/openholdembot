@@ -10,7 +10,10 @@ BUG FIXES:
   This could also affect HaveNutStraightDraw.
   Thanks to ChuckNeverMuck and Paranoid for reporting and suggesting the fix.
   [THF]
-  
+- The custom function-library gets now loaded after the default-bot,
+  so the user can more easily overwrite functions or recreate functions of the same name.
+  Thanks to Johnny for reporting.
+  [THF]
 
 ﻿v﻿13.1.2 2019-04-26
 ==================

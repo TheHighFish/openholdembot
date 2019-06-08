@@ -125,8 +125,11 @@ void CFormulaParser::ParseDefaultLibraries() {
   }
   // Check once at the end of the modular OpenPPL-library
   p_function_collection->SetOpenPPLLibraryLoaded(true);
-  LoadOptionalFunctionLibrary(CustomLibraryPath());
   LoadDefaultBot();
+  // Load custom library after default-bot,
+  // so the user can more easily overwrite functions like f$PotOdds
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=22475
+  LoadOptionalFunctionLibrary(CustomLibraryPath());
   // Check again after the custom library
   p_engine_container->symbol_engine_open_ppl()->VerifyExistenceOfOpenPPLInitializationInLibrary();
   p_function_collection->ParseAll(); 
