@@ -47,7 +47,6 @@ WHEN Others        RETURN f$Termita_SNG_Preflop_Fullring FORCE
 //////////////////////////////////////////////////////////////////
 
 ##f$Termita_SNG_Preflop_HeadsUp##
-WHWN NOT HandIsHeadsUp RETURN Fold FORCE
 //
 // Heads Up Stack Size Variables 
 // ESS = Effective Stack Size
@@ -161,7 +160,6 @@ WHEN InBigBlind
 //////////////////////////////////////////////////////////////////
 
 ##f$Termita_SNG_Preflop_ThreeHanded##
-WHWN NOT InTheMoney RETURN Fold FORCE
 //
 // Take opponents off the table with premium hands
 //
