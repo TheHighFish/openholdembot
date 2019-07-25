@@ -34,6 +34,8 @@
 // are a bot afterall, AND able to come back from small stacks (Trish)
 //
 WHEN TotalInvested > 33% StackSize RaiseMax FORCE
+// Added raise sit-outs NOTE check your prefold, @Trish @THF check Gecko's prefold
+When Calls = 0 and Raises = 0 AND OpponentsLeftSittingOut RaiseMin FORCE
 WHEN HandIsHeadsup RETURN f$Termita_SNG_Preflop_HeadsUp FORCE
 WHEN InTheMoney    RETURN f$Termita_SNG_Preflop_InTheMoney FORCE
 When IsBubble      RETURN f$Termita_SNG_Preflop_Bubble FORCE
@@ -159,7 +161,7 @@ WHEN InBigBlind
 //
 //////////////////////////////////////////////////////////////////
 
-##f$Termita_SNG_Preflop_ThreeHanded##
+##f$Termita_SNG_Preflop_InTheMoney##
 //
 // Take opponents off the table with premium hands
 //
@@ -249,7 +251,7 @@ WHEN NOT InBigBlind AND f$InTheMoney_BigStack AND OpponentIsAllin
 //
 // BigBlind, middle-stack, opponent is allin
 // 
-WHEN InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
+WHEN InBigBlind AND f$InTheMoney_MiddleStack AND OpponentIsAllin
    // Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -278,7 +280,7 @@ WHEN InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
 //
 // Not BigBlind, middle-stack, opponent is allin
 // 
-WHEN NOT InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
+WHEN NOT InBigBlind AND f$InTheMoney_MiddleStack AND OpponentIsAllin
    // Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -302,7 +304,7 @@ WHEN NOT InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
 //
 // BigBlind, small-stack, opponent is allin
 // 
-WHEN InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
+WHEN InBigBlind AND f$InTheMoney_SmallStack AND OpponentIsAllin
    // Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -341,7 +343,7 @@ WHEN InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
 //
 // Not BigBlind, small-stack, opponent is allin
 // 
-WHEN NOT InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
+WHEN NOT InBigBlind AND f$InTheMoney_SmallStack AND OpponentIsAllin
 	// Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -391,24 +393,24 @@ WHEN f$InTheMoney_BigStack AND NOT (OpponentIsAllin)
    WHEN listITMCat7 RaiseMax FORCE
    WHEN listITMCat8 RaiseMax FORCE
 WHEN f$InTheMoney_MiddleStack AND NOT (OpponentIsAllin)
-   WHEN InTheMoney_MiddleStack AND listITMCat1 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat2 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat3 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat4 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat5 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat6 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat7 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat1 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat2 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat3 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat4 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat5 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat6 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat7 RaiseMax FORCE
 // !!! inclear who commented this out
-//   WHEN InTheMoney_MiddleStack AND listITMCat8 RaiseMax FORCE
+//   WHEN f$InTheMoney_MiddleStack AND listITMCat8 RaiseMax FORCE
 WHEN f$InTheMoney_SmallStack AND NOT (OpponentIsAllin)
-   WHEN InTheMoney_SmallStack AND listITMCat1 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat2 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat3 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat4 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat5 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat6 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat7 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat8 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat1 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat2 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat3 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat4 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat5 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat6 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat7 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat8 RaiseMax FORCE
 
 //////////////////////////////////////////////////////////////////
 //
@@ -465,7 +467,7 @@ WHEN IsBubble AND OpponentIsAllin
    // Get out of the way if 2 Opponents want to clash
    WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
-WHEN IsBubble AND InTheBlinds)
+WHEN IsBubble AND InTheBlinds
    WHEN StackSize <= 2 RaiseMax FORCE
 
 // Now Play based on StackSize 
