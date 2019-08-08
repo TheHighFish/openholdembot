@@ -1,5 +1,11 @@
 ﻿﻿v﻿13.1.3 2019-0x-xx
 ==================
+NEW STUFF:
+- Additional postfixes for the multiplexer: 
+  bigstackchair, smallstackchair.
+  Thanks to Trish for the suggestion
+  [THF]
+
 BUG FIXES:
 - OpenEndedStraightDrawPossibleOnFlop did not consider 
   two double-gutshoots with an ace; AQ8 and 73A.
@@ -15,6 +21,7 @@ BUG FIXES:
   Thanks to Johnny for reporting.
   [THF]
 
+  
 ﻿v﻿13.1.2 2019-04-26
 ==================
 BUG FIXES:
@@ -81,6 +88,7 @@ MAINTENANCE:
 - Improved table-display for 6max and large tour5nament-betsizes
   [Bob]
 
+  
 ﻿v﻿13.0.3 2018-08-17
 ==================
 BUG FIXES:
@@ -100,6 +108,7 @@ MAINTENANCE:
   no longer overwriting existing frames.
   [Nik0]
 
+  
 ﻿v﻿13.0.2 2018-05-02
 ==================
 NEW STUFF:

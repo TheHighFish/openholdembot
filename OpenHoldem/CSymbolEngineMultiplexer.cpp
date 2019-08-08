@@ -24,7 +24,7 @@
 #include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
-const int kNumberOfSupportedPostfixes = 29;
+const int kNumberOfSupportedPostfixes = 31;
 // If you extend the list below please don't forget to update FastExitOnLastCharacter()
 const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {
   // Chairs, special ones
@@ -50,6 +50,9 @@ const char* kSupportedPostFixes[kNumberOfSupportedPostfixes] = {
   "lastraiserchair",
   // lastraiserchair and raischair are synonyms
   "raischair",
+  // big-stack and small-stack cjair
+  "bigstackchair",
+  "smallstackchair",
   // Betrounds
   "preflop",
   "flop",
