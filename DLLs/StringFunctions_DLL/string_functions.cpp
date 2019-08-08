@@ -309,6 +309,48 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
 	    // Portuguese "n" with accent
         s->SetAt(i, 'n');
 		break;
+	  case 0xFFFFFFC1:
+		  // A with accent (Alt 0193)
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p156046
+		  s->SetAt(i, 'A');
+		break;
+	  case 0xFFFFFFC9:
+		  // E with accent (Alt 0201)
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p154322
+		  s->SetAt(i, 'E');
+		break;
+	  case 0xFFFFFFE1:
+		  // a with accent 	(Alt 0225)
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p158545
+		  s->SetAt(i, 'a');
+		break;
+	  case 0xFFFFFFE2:
+		  // a with circumflex accent (Alt 0226)
+		  s->SetAt(i, 'a');
+		break;
+	  case 0xFFFFFFE7:
+		  // c cedilla (Alt 0231)
+		  s->SetAt(i, 'c');
+		break;
+	  case 0xFFFFFFE8:
+		  // e grave (Alt 0232)
+		  s->SetAt(i, 'e');
+		break;
+	  case 0xFFFFFFBF:
+		  // interrogation opening character, replaced with space (Alt 168)
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
+		  s->SetAt(i, ' ');
+		break;
+	  case 0xFFFFFFBD:
+		  // 1/2 character, replaced with space (Alt 0189)
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
+		  s->SetAt(i, ' ');
+		break;
+	  case 0xFFFFFFEF:
+		  // i umlaut character or i acute character, (Alt 139 or Alt 161)
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
+		  s->SetAt(i, 'i');
+		break;
       }
     }
   }
