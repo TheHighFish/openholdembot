@@ -34,7 +34,9 @@
 // are a bot afterall, AND able to come back from small stacks (Trish)
 //
 WHEN TotalInvested > 33% StackSize RaiseMax FORCE
-WHEN HandIsHeadsUp RETURN f$Termita_SNG_Preflop_HeadsUp FORCE
+// Added raise sit-outs NOTE check your prefold, @Trish @THF check Gecko's prefold
+When Calls = 0 and Raises = 0 AND OpponentsLeftSittingOut RaiseMin FORCE
+WHEN HandIsHeadsup RETURN f$Termita_SNG_Preflop_HeadsUp FORCE
 WHEN InTheMoney    RETURN f$Termita_SNG_Preflop_InTheMoney FORCE
 When IsBubble      RETURN f$Termita_SNG_Preflop_Bubble FORCE
 WHEN f$EarlyStage  RETURN f$Termita_SNG_Preflop_EarlyStage FORCE
@@ -51,7 +53,7 @@ WHEN Others        RETURN f$Termita_SNG_Preflop_Fullring FORCE
 // Heads Up Stack Size Variables 
 // ESS = Effective Stack Size
 //
-WHEN f$FirstAction AND HandIsHeadsUp 
+WHEN f$FirstAction AND HandIsHeadsup 
    WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) Set user_HandIsHeadsUp_ESS_12P
    WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 8) Set user_HandIsHeadsUp_ESS_0_8
    WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) Set user_HandIsHeadsUp_ESS_0_2
@@ -159,7 +161,7 @@ WHEN InBigBlind
 //
 //////////////////////////////////////////////////////////////////
 
-##f$Termita_SNG_Preflop_ThreeHanded##
+##f$Termita_SNG_Preflop_InTheMoney##
 //
 // Take opponents off the table with premium hands
 //
@@ -249,7 +251,7 @@ WHEN NOT InBigBlind AND f$InTheMoney_BigStack AND OpponentIsAllin
 //
 // BigBlind, middle-stack, opponent is allin
 // 
-WHEN InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
+WHEN InBigBlind AND f$InTheMoney_MiddleStack AND OpponentIsAllin
    // Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -278,7 +280,7 @@ WHEN InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
 //
 // Not BigBlind, middle-stack, opponent is allin
 // 
-WHEN NOT InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
+WHEN NOT InBigBlind AND f$InTheMoney_MiddleStack AND OpponentIsAllin
    // Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -302,7 +304,7 @@ WHEN NOT InBigBlind AND InTheMoney_MiddleStack AND OpponentIsAllin
 //
 // BigBlind, small-stack, opponent is allin
 // 
-WHEN InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
+WHEN InBigBlind AND f$InTheMoney_SmallStack AND OpponentIsAllin
    // Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -341,7 +343,7 @@ WHEN InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
 //
 // Not BigBlind, small-stack, opponent is allin
 // 
-WHEN NOT InBigBlind AND InTheMoney_SmallStack AND OpponentIsAllin
+WHEN NOT InBigBlind AND f$InTheMoney_SmallStack AND OpponentIsAllin
 	// Facing small raise 0..2 bb
    WHEN AmountToCall < 2 AND listITMCat1 Call FORCE
    WHEN AmountToCall < 2 AND listITMCat2 Call FORCE
@@ -391,24 +393,24 @@ WHEN f$InTheMoney_BigStack AND NOT (OpponentIsAllin)
    WHEN listITMCat7 RaiseMax FORCE
    WHEN listITMCat8 RaiseMax FORCE
 WHEN f$InTheMoney_MiddleStack AND NOT (OpponentIsAllin)
-   WHEN InTheMoney_MiddleStack AND listITMCat1 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat2 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat3 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat4 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat5 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat6 RaiseMax FORCE
-   WHEN InTheMoney_MiddleStack AND listITMCat7 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat1 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat2 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat3 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat4 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat5 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat6 RaiseMax FORCE
+   WHEN f$InTheMoney_MiddleStack AND listITMCat7 RaiseMax FORCE
 // !!! inclear who commented this out
-//   WHEN InTheMoney_MiddleStack AND listITMCat8 RaiseMax FORCE
+//   WHEN f$InTheMoney_MiddleStack AND listITMCat8 RaiseMax FORCE
 WHEN f$InTheMoney_SmallStack AND NOT (OpponentIsAllin)
-   WHEN InTheMoney_SmallStack AND listITMCat1 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat2 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat3 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat4 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat5 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat6 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat7 RaiseMax FORCE
-   WHEN InTheMoney_SmallStack AND listITMCat8 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat1 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat2 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat3 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat4 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat5 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat6 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat7 RaiseMax FORCE
+   WHEN f$InTheMoney_SmallStack AND listITMCat8 RaiseMax FORCE
 
 //////////////////////////////////////////////////////////////////
 //
@@ -458,14 +460,14 @@ WHEN f$FirstAction AND HandIsFullRing AND StackSize >= 12       Set user_Stack_F
 //
 //////////////////////////////////////////////////////////////////
 
-WHEN IsBubble AND OpponentIsAllin listBubbleCat1 Call FORCE
+WHEN IsBubble AND OpponentIsAllin And listBubbleCat1 Call FORCE
 
 // Regular processing of Opponent All In with 2 OR more in the pot
 WHEN IsBubble AND OpponentIsAllin 
    // Get out of the way if 2 Opponents want to clash
    WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
-WHEN IsBubble AND InTheBlinds)
+WHEN IsBubble AND InTheBlinds
    WHEN StackSize <= 2 RaiseMax FORCE
 
 // Now Play based on StackSize 
@@ -689,7 +691,7 @@ WHEN f$MiddleStage AND OpponentIsAllin
  // Get out of the multi-way all in
    WHEN f$FirstAction AND (CallsSinceLastRaise > 0 OR Raises > 1) Fold FORCE
 
-WHEN f$MiddleStage AND InRheBlinds
+WHEN f$MiddleStage AND InTheBlinds
    WHEN user_Stack_FullRing_0_2 RaiseMax FORCE
 
 WHEN f$MiddleStage AND user_Stack_FullRing_12P 
@@ -803,7 +805,7 @@ WHEN (BigBlindSize <= (5 * StartingBigBlindSize)) RETURN true FORCE
 ##f$MiddleStage##
 WHEN f$EarlyStage RETURN false FORCE
 WHEN f$LateStage RETURN false FORCE
-WHEN Ohers RETURN true FORCE
+WHEN Others RETURN true FORCE
 
 ##f$LateStage##
 WHEN (StackSize < 20) RETURN true FORCE
@@ -813,13 +815,13 @@ WHEN (AverageStackSize < 20) RETURN true FORCE
 WHEN BotsLastAction = None RETURN true FORCE 
 
 ##f$InTheMoney_BigStack##
-InTheMoney AND OpponentsWithHigherStack = 0)
+InTheMoney AND OpponentsWithHigherStack = 0
 
 ##f$InTheMoney_MiddleStack##
-InTheMoney AND OpponentsWithHigherStack = 1)
+InTheMoney AND OpponentsWithHigherStack = 1
 		
 ##f$InTheMoney_SmallStack##
-InTheMoney AND OpponentsWithHigherStack = 2)
+InTheMoney AND OpponentsWithHigherStack = 2
 
 ##f$HandIsHeadsup_12_Plus##
 WHEN (EffectiveMaxStacksizeOfActiveOpponents > 12) RETURN true FORCE
@@ -843,7 +845,7 @@ WHEN Others RETURN true FORCE
 WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 4) RETURN true FORCE
 
 ##f$HandIsHeadsup_0_2##
-WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) RETURN true FORC
+WHEN (EffectiveMaxStacksizeOfActiveOpponents <= 2) RETURN true FORCE
 
 //////////////////////////////////////////////////////////////////
 //
@@ -1076,7 +1078,7 @@ AKo AQo AJo ATo
 KQo KJo
 
 ##listHUCat7##
-KK QQ JJ TT 99 88 77 66 55 44 33 22 
+AA KK QQ JJ TT 99 88 77 66 55 44 33 22 
 AKs AQs AJs ATs A9s A8s A7s A6s A5s A4s A3s A2S
 KQs KJs KTs
 QJs QTs

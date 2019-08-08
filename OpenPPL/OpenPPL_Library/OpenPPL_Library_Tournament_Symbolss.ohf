@@ -99,11 +99,11 @@ WHEN (mtt_paid_places > 0) RETURN mtt_paid_places FORCE
 WHEN Others	RETURN HINT_UnknownPaidPlacesMultiTable FORCE
 
 ##PlayersLeftInTournament##
-WHEN NOT istournament RETURN playersseated FORCE
-WHEN NOT ismtt RETURN playersseated FORCE
+WHEN NOT istournament RETURN nplayersseated FORCE
+WHEN NOT ismtt RETURN nplayersseated FORCE
 WHEN Others RETURN PlayersLeftInMultiTableTournament FORCE
 
 ##PlayersLeftInMultiTableTournament##
 WHEN (mtt_players_remaining > 0) RETURN mtt_players_remaining FORCE
-WHEN isfinaltable RETURN playersseated FORCE
+WHEN isfinaltable RETURN nplayersseated FORCE
 WHEN Others	RETURN HINT_PlayersLeftInMultiTableTournament FORCE
