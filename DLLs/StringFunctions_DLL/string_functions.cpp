@@ -45,13 +45,9 @@
 #include <windows.h>
 #include "assert.h"
 #include "string_functions.h"
+#include "..\Debug_DLL\debug.h"
 #include "..\..\Shared\MagicNumbers\MagicNumbers.h"
 #include "Psapi.h"
-
-#ifdef OPENHOLDEM_PROGRAM
-#include "..\OpenHoldem\MessageBox.h"
-#include "..\OpenHoldem\CSymbolEngineReplayFrameController.h"
-#endif
 
 const char kUnprintableBeepChar = 0x07;
 const char kCharToBeRemoved = kUnprintableBeepChar;
@@ -251,107 +247,108 @@ void ReplaceKnownNonASCIICharacters(CString *s) {
   int length = s->GetLength();
   for (int i = 0; i < length; ++i) {
     char current_char = s->GetAt(i);
-    if (!isascii(current_char)) {
-      unsigned int char_value = unsigned int(current_char);
-      switch (char_value) {
-      case 0xFFFFFF80:
-        // "Euro" in some unknown extended ASCII-encoding.
-        // Replace it by Dollars, as Euro is extended ASCII.
-        // "Proprietary Windows" according to https://de.wikipedia.org/wiki/Eurozeichen
-        s->SetAt(i, '$');
-        break;
-      case 0xFFFFFF88:
-        // "Euro" in some unknown extended ASCII-encoding,
-        // displayed as "Modifier letter circumflex accent" in latin-1
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=141946#p141916
-        // Probably Western Europe encoding, also reported here (Germany):
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=90#p143386
-        s->SetAt(i, '$');
-        break;
-      case 0xFFFFFF92:
-        // Yet another encoding of "Euro",
-        // probably Western Europe encoding (Germany)
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=90#p143386
-        s->SetAt(i, '$');
-        break;
-      case 0xFFFFFFA0:
-        // "Non-breakable space" in extended ASCII Latin-1 encoding
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=60#p143155
-        s->SetAt(i, ' ');
-        break;
-      case 0xFFFFFFA2:
-        // Cent symbol
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=60#p143155
-        // https://www.atwebresults.com/ascii-codes.php?type=2
-        s->SetAt(i, 'c');
-        break;
-      case 0xFFFFFFA3:
-        // British pounds
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p142990
-        s->SetAt(i, '$');
-        break;
-      case 0xFFFFFFF3:
-      case 0xFFFFFFE4:
-      case 0xFFFFFFE0:
-      case 0xFFFFFFEB:
-      case 0xFFFFFFE5:
-      case 0xFFFFFFED:
-      case 0xFFFFFFFB:
-      case 0xFFFFFFE9:
-        // From Pokerstars with love
-        // they put crap at the end of the real title (########)
-        // but the visible titlebar in the client-area is clean.
-        // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=142568#p142568
-        s->SetAt(i, kCharToBeRemoved);
-        // and remove it at the end of the function
-        break;
-      case 0xFFFFFFF1:
-	    // Portuguese "n" with accent
-        s->SetAt(i, 'n');
-		break;
-	  case 0xFFFFFFC1:
-		  // A with accent (Alt 0193)
-		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p156046
-		  s->SetAt(i, 'A');
-		break;
-	  case 0xFFFFFFC9:
-		  // E with accent (Alt 0201)
-		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p154322
-		  s->SetAt(i, 'E');
-		break;
-	  case 0xFFFFFFE1:
-		  // a with accent 	(Alt 0225)
-		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p158545
-		  s->SetAt(i, 'a');
-		break;
-	  case 0xFFFFFFE2:
-		  // a with circumflex accent (Alt 0226)
-		  s->SetAt(i, 'a');
-		break;
-	  case 0xFFFFFFE7:
-		  // c cedilla (Alt 0231)
-		  s->SetAt(i, 'c');
-		break;
-	  case 0xFFFFFFE8:
-		  // e grave (Alt 0232)
-		  s->SetAt(i, 'e');
-		break;
-	  case 0xFFFFFFBF:
-		  // interrogation opening character, replaced with space (Alt 168)
-		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
-		  s->SetAt(i, ' ');
-		break;
-	  case 0xFFFFFFBD:
-		  // 1/2 character, replaced with space (Alt 0189)
-		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
-		  s->SetAt(i, ' ');
-		break;
-	  case 0xFFFFFFEF:
-		  // i umlaut character or i acute character, (Alt 139 or Alt 161)
-		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
-		  s->SetAt(i, 'i');
-		break;
-      }
+    if (isascii(current_char)) {
+      continue;
+    }
+    unsigned int char_value = unsigned int(current_char);
+    switch (char_value) {
+    case 0xFFFFFF80:
+      // "Euro" in some unknown extended ASCII-encoding.
+      // Replace it by Dollars, as Euro is extended ASCII.
+      // "Proprietary Windows" according to https://de.wikipedia.org/wiki/Eurozeichen
+      s->SetAt(i, '$');
+      break;
+    case 0xFFFFFF88:
+      // "Euro" in some unknown extended ASCII-encoding,
+      // displayed as "Modifier letter circumflex accent" in latin-1
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=141946#p141916
+      // Probably Western Europe encoding, also reported here (Germany):
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=90#p143386
+      s->SetAt(i, '$');
+      break;
+    case 0xFFFFFF92:
+      // Yet another encoding of "Euro",
+      // probably Western Europe encoding (Germany)
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=90#p143386
+      s->SetAt(i, '$');
+      break;
+    case 0xFFFFFFA0:
+      // "Non-breakable space" in extended ASCII Latin-1 encoding
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=60#p143155
+      s->SetAt(i, ' ');
+      break;
+    case 0xFFFFFFA2:
+      // Cent symbol
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&start=60#p143155
+      // https://www.atwebresults.com/ascii-codes.php?type=2
+      s->SetAt(i, 'c');
+      break;
+    case 0xFFFFFFA3:
+      // British pounds
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p142990
+      s->SetAt(i, '$');
+      break;
+    case 0xFFFFFFF3:
+    case 0xFFFFFFE4:
+    case 0xFFFFFFE0:
+    case 0xFFFFFFEB:
+    case 0xFFFFFFE5:
+    case 0xFFFFFFED:
+    case 0xFFFFFFFB:
+    case 0xFFFFFFE9:
+      // From Pokerstars with love
+      // they put crap at the end of the real title (########)
+      // but the visible titlebar in the client-area is clean.
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=142568#p142568
+      s->SetAt(i, kCharToBeRemoved);
+      // and remove it at the end of the function
+      break;
+    case 0xFFFFFFF1:
+      // Portuguese "n" with accent
+      s->SetAt(i, 'n');
+      break;
+    case 0xFFFFFFC1:
+      // A with accent (Alt 0193)
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p156046
+      s->SetAt(i, 'A');
+      break;
+    case 0xFFFFFFC9:
+      // E with accent (Alt 0201)
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167&p=143012#p154322
+      s->SetAt(i, 'E');
+      break;
+    case 0xFFFFFFE1:
+      // a with accent 	(Alt 0225)
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p158545
+      s->SetAt(i, 'a');
+      break;
+    case 0xFFFFFFE2:
+      // a with circumflex accent (Alt 0226)
+      s->SetAt(i, 'a');
+      break;
+    case 0xFFFFFFE7:
+      // c cedilla (Alt 0231)
+      s->SetAt(i, 'c');
+      break;
+    case 0xFFFFFFE8:
+      // e grave (Alt 0232)
+      s->SetAt(i, 'e');
+      break;
+    case 0xFFFFFFBF:
+      // interrogation opening character, replaced with space (Alt 168)
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
+      s->SetAt(i, ' ');
+      break;
+    case 0xFFFFFFBD:
+      // 1/2 character, replaced with space (Alt 0189)
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
+      s->SetAt(i, ' ');
+      break;
+    case 0xFFFFFFEF:
+      // i umlaut character or i acute character, (Alt 139 or Alt 161)
+      // http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=20167&p=158814#p156798
+      s->SetAt(i, 'i');
+      break;
     }
   }
   s->Remove(kCharToBeRemoved);
@@ -596,27 +593,17 @@ void WarnAboutNonASCIICharacters(const CString *s) {
   for (int i = 0; i < length; ++i) {
     char current_char = s->GetAt(i);
     if (!isascii(current_char)) {
-#ifdef OPENHOLDEM_PROGRAM
-      // Shooting a replay-frame for closer inspection.
-      // Should be handled somewhere else, preferrably in OH,
-      // as this soon to be DLL will be used by various programs
-      p_engine_container->symbol_engine_replayframe_controller()->ShootReplayFrameIfNotYetDone();
-#endif
       unsigned int char_value = unsigned int(current_char);
       int signed_char_value = int(current_char);
       CString message;
       message.Format("Unexpected character inside title or number\n"
         "Probably extended ASCII or Unicode\n"
         "Numerical value: %x, %d\n"
-        "OpenHoldem shot a replay-frame automatically\n"
+        "Title: %s\n"
         "Please report to the developers\n"
         "http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167",
-        char_value, signed_char_value);
-#ifdef OPENHOLDEM_PROGRAM
-      MessageBox_Error_Warning(message);
-#else
-      MessageBox(0, message, "Warning", 0);
-#endif
+        char_value, signed_char_value, s);
+      write_log(k_always_log_errors, message);
     }
   }
 }

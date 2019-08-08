@@ -20,7 +20,15 @@ BUG FIXES:
   so the user can more easily overwrite functions or recreate functions of the same name.
   Thanks to Johnny for reporting.
   [THF]
-
+  
+MAINTENANCE:
+- Title proprocessing: handling more special characters.
+  Thanks to Diku for the patch.
+  [THF]
+- Title proprocessing: now silently logging unknown characxters,
+  no longer shooting a replay-frame and no longer showing an error.message.
+  [THF]
+  
   
 ﻿v﻿13.1.2 2019-04-26
 ==================
