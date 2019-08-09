@@ -24,6 +24,10 @@ BUG FIXES:
   so the user can more easily overwrite functions or recreate functions of the same name.
   Thanks to Johnny for reporting.
   [THF]
+- The function GetTableTitle() of the user.DLL incorrectly returned the title of Openholdem
+  instead of the title of the table.
+  Thanks to plutus for reporting.
+  [THF]
   
 MAINTENANCE:
 - Title proprocessing: handling more special characters.

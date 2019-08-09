@@ -127,7 +127,7 @@ EXE_IMPLEMENTS char* GetPlayerName(int chair) {
 }
 
 EXE_IMPLEMENTS char* GetTableTitle() {
-  return p_openholdem_title->GetTitle().GetBuffer();
+  return p_table_state->TableTitle()->PreprocessedTitle().GetBuffer();
 }
 
 EXE_IMPLEMENTS void ParseHandList(const char* name_of_list, const char* list_body) {
