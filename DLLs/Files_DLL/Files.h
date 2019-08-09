@@ -21,7 +21,7 @@
 #include <afxwin.h>
 
 // OpenPPL-files in the botlogic-directory
-const int kNumberOfOpenPPLLibraries = 23;
+const int kNumberOfOpenPPLLibraries = 24;
 const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Ante_Others_IsFinalTable.ohf",
   "OpenPPL_Library_Bets_Pots_And_Stacks.ohf",
@@ -44,6 +44,7 @@ const CString kOpenPPLLibraries[kNumberOfOpenPPLLibraries] = {
   "OpenPPL_Library_Technical_HandStrength_Symbols.ohf",
   "OpenPPL_Library_Technical_Position_Symbols.ohf",
   "OpenPPL_Library_Technical_Stacksizes.ohf",
+  "OpenPPL_Library_Tournament_Symbols.ohf",
   "OpenPPL_Library_Update_History.ohf",
   "OpenPPL_Library_Verbosity.ohf",
 };

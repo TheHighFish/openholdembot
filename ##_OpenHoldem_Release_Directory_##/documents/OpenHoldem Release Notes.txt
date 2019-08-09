@@ -5,6 +5,8 @@ NEW STUFF:
   bigstackchair, smallstackchair.
   Thanks to Trish for the suggestion
   [THF]
+  
+"OpenPPL_Library_Tournament_Symbols.ohf",
 
 BUG FIXES:
 - OpenEndedStraightDrawPossibleOnFlop did not consider 
