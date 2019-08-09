@@ -8,6 +8,8 @@ NEW STUFF:
   
 "OpenPPL_Library_Tournament_Symbols.ohf",
 
+StartingStackSize
+
 BUG FIXES:
 - OpenEndedStraightDrawPossibleOnFlop did not consider 
   two double-gutshoots with an ace; AQ8 and 73A.
