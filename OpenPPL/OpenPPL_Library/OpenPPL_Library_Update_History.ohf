@@ -177,7 +177,7 @@ WHEN IsTurn    SET me_st_MemBotsLastTurnAction_CalculateBotsLastPreflopActionFor
 WHEN IsPreflop SET me_st_MemRaisesBeforeFlop_Raises
 WHEN IsFlop SET me_st_MemRaisesOnFlop_Raises
 WHEN IsTurn SET me_st_MemRaisesOnTurn_Raises
-WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingBigBlindSize
+WHEN (me_re_MemStartingBigBlindSize <= 0) SET me_st_MemStartingBigBlindSize_StartingBigBlindSize
 WHEN (me_re_MemStartingChips <= 0) SET me_st_MemStartingChips_StartingChips
 WHEN (me_re_MemStartingStackSize <= 0) SET me_st_MemStartingStackSize_StartingStackSize
 WHEN (me_re_MemMaxOpponentStackSize <= 0) SET me_st_MemMaxOpponentStackSize_MaxOpponentStackSize
