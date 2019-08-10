@@ -28,6 +28,8 @@ BUG FIXES:
   instead of the title of the table.
   Thanks to plutus for reporting.
   [THF]
+- The symbol ishandup did not work.
+  {Stars83]
   
 MAINTENANCE:
 - Title proprocessing: handling more special characters.
