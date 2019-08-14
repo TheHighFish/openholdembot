@@ -64,16 +64,45 @@
 //
 //*****************************************************************************
 
+##PreBubble##
+When TableIsHeadsup Return false FORCE
+// Above is ok for now but maybe...
+// When OnlyTwoPlayersLeftAtTournamentTable Return false FORCE
+When InTheMoney Return false FORCE
+When IsBubble Return false FORCE
+When Others Return true Force 
+
 ##InTheMoney##
 WHEN NOT istournament RETURN false FORCE
+When isdon Return false FORCE
 WHEN (PlayersLeftInTournament <= PaidPlaces) RETURN true FORCE
 
 ##IsBubble##
 WHEN NOT istournament RETURN false FORCE
 WHEN (PlayersLeftInTournament == (PaidPlaces + 1)) RETURN true FORCE
 
+##TableIsThreeHanded##
+WHEN istournament AND maxnplayersdealt = 3 RETURN true FORCE
+WHEN (NOT istournament) AND (nplayersdealt = 3) RETURN true FORCE
+
+##TableIsShortHanded##
+// Note, In MTTs we can be reseated at tables with varying numbers of players
+WHEN istournament AND maxnplayersdealt  > 3 And maxnplayersdealt <= 6 RETURN true FORCE
+WHEN (NOT istournament) AND (nplayersdealt > 3) And (nplayersdealt <= 6) RETURN true FORCE
+
+##TableIsFullRing##
+WHEN istournament AND maxnplayersdealt > 6 RETURN true FORCE
+WHEN (NOT istournament) AND (nplayersdealt > 6) RETURN true FORCE
+
+##TableIsMultiTable##
+When NOT istournament Return false FORCE
+When ismtt And NOT isfinaltable Return true Force
+
 ##PaidPlaces##
 WHEN NOT istournament RETURN false FORCE
+// TableIsHeadsup is true if OnlyTwoPlayersLeftAtTournamentTable
+	// Therefore IsBubble and TableIsHeadsup can coexist 
+	// Perhaps change to maxnplayersdealt in OpenPPL_Library_Players_and_Opponents.ohf
 WHEN TableIsHeadsup RETURN PaidPlacesHeadsup FORCE
 WHEN TableIsThreeHanded RETURN PaidPlacesThreeHanded FORCE
 WHEN TableIsShortHanded RETURN PaidPlacesShortHanded FORCE
@@ -91,6 +120,7 @@ WHEN isdon RETURN 3 FORCE
 WHEN Others RETURN 2 FORCE
 
 ##PaidPlacesFullRing##
+When isdon And maxnplayersdealt = 8 Return 4 Force
 WHEN isdon RETURN 5 FORCE
 WHEN Others RETURN 3 FORCE
 
