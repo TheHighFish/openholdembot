@@ -165,7 +165,7 @@ nplayersplaying>=7 AND nplayersround_flop>=7 ? 4.50 :
 // Rendom delay of 0..3000 milli-seconds
 Random * 30
 
-##f$prefold##
+##Gecko_6Max_FR_NL_BSS_Prefold##
 // A little bit of randomization for flesh-and-blood-players
 WHEN (Random < 10) RETURN false FORCE
 // Prefold, depending on position
