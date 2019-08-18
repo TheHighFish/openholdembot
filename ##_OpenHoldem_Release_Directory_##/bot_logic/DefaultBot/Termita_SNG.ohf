@@ -980,10 +980,10 @@ JTs J9s
 T9s T8s 
 98s 97s 
 87s 86s 
-76s 
-65s 64s 54s
+76s 75s
+65s 54s
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
-KQo KJo KTo K9o
+KQo KJo KTo K9o K8o
 QJo QTo 
 JTo T9o 98o 87o 76o 
 
@@ -1043,12 +1043,12 @@ JTs J9s
 T9s T8s 
 98s 97s 
 87s 86s 
-76s 
-65s 64s 54s
+76s 75s
+65s 54s
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
-KQo KJo KTo K9o
+KQo KJo KTo K9o K8o
 QJo QTo 
-JTo T9o 98o 87o 76o 
+JTo T9o 98o 87o 76o  
 
 // ITM Lists
 ##listITMCat1##
@@ -1106,12 +1106,12 @@ JTs J9s
 T9s T8s 
 98s 97s 
 87s 86s 
-76s 
-65s 64s 54s
+76s 75s
+65s 54s
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
-KQo KJo KTo K9o
+KQo KJo KTo K9o K8o
 QJo QTo 
-JTo T9o 98o 87o 76o 
+JTo T9o 98o 87o 76o  
 
 // HU Lists
 ##listHUCat1##
@@ -1169,10 +1169,10 @@ JTs J9s
 T9s T8s 
 98s 97s 
 87s 86s 
-76s 
-65s 64s 54s
+76s 75s
+65s 54s
 AKo AQo AJo ATo A9o A8o A7o A6o A5o A4o A3o A2o
-KQo KJo KTo K9o
+KQo KJo KTo K9o K8o
 QJo QTo 
 JTo T9o 98o 87o 76o 
 
