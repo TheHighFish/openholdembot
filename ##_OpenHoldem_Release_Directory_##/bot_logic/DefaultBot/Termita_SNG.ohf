@@ -441,6 +441,8 @@ WHEN InBigBlind And f$Stack_12P
 // 												// Short Stack Open Push \\
 // For obvious reasons this open push repush applies only when we are short stacked 
 // A future improvement could be to include something similar for effective short stack
+// The lists for this rely a lot on fold equity
+// The lists for effective should be based on assumed equity or the ICM
 
 When StackSize <= 12 And Raises = 0 And Calls = 0 And f$FirstAction
 	When InSmallBlind And listsb12bb RaiseMax Force
@@ -476,6 +478,20 @@ When StackSize <= 5 And Raises = 0 And Calls = 0 And f$FirstAction
 	When InCutOff And listco5bb RaiseMax Force
 	When InMiddlePosition And listhj5bb RaiseMax Force
 	When InEarlyPosition And listep5bb RaiseMax Force
+	
+// Effective Push Code \\ Needs work see above
+WHEN f$Stack_5_12
+   WHEN listCat4 RaiseMax FORCE
+   WHEN listCat5 AND Raises = 0 AND Calls >= 0 RaiseMax FORCE
+   WHEN listCat6 AND Raises = 0 AND Calls = 0 AND InEarlyPosition RaiseMax FORCE
+   WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseMax FORCE
+   WHEN listCat8 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseMax FORCE
+
+WHEN f$Stack_0_5
+   WHEN listCat5 RaiseMax FORCE
+   WHEN listCat6 AND Raises = 0 AND Calls >= 0 RaiseMax FORCE
+   WHEN listCat7 AND Raises = 0 AND Calls = 0 RaiseMax FORCE
+   WHEN listCat8 AND Raises = 0 AND Calls = 0 AND NOT (InEarlyPosition) RaiseMax FORCE
 // 													// End Open Push \\
 //
 //  		Shortstack Repush // Squeeze // Called/Limped pots are pushed LastRaiserPosition -1
@@ -844,7 +860,7 @@ When IsBubble Return true Force
 // Worth thinking about //
 ##f$EarlyStage##
 When NOT PreBubble Return false Force
-When StackSize < 12 Return false FORCE
+When Not f$Stack_12P Return false FORCE
 // Was 5 changed to 3 Trish compatibility for most casinos today even non turbo
 	// StartingBigBlindSize excellent for SnG & MTTSnG, but people tweeking this for MTTs
 	// should consider late reg, and re-entry game types
@@ -855,8 +871,8 @@ When NOT PreBubble Return false Force
 When f$EarlyStage Return false Force
 When BigBlindSize >= 160 And (f$TableMzone < 12 OR f$Mzone < 10) Return true FORCE
 // @Trish check this temporary inclusion
-When BigBlindSize >= 100 And StackSize <= 12 Return true FORCE
-When StackSize <= 10 Return true FORCE
+When BigBlindSize >= 100 And Not f$Stack_12P Return true FORCE
+When f$EffectiveActiveStackInBigBlinds <= 10 Return true FORCE
 
 ##f$MiddleStage##
 When NOT PreBubble Return false Force
