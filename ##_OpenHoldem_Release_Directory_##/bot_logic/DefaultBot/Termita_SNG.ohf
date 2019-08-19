@@ -415,6 +415,8 @@ WHEN f$OpponentSignificantAllin And f$FirstAction
 	WHEN StackSize >= 6 Fold FORCE
    
 WHEN f$Stack_12P And f$FirstAction
+   // The original was raising Cat 3 by 3BB here
+   When Raises > 1 And listCat2 RaiseMax FORCE
    When Raises > 1 Fold FORCE
    WHEN listCat3 And Raises = 1 RaisePot FORCE
 
