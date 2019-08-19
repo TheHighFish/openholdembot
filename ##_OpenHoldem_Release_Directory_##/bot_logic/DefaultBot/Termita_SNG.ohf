@@ -423,7 +423,7 @@ WHEN f$Stack_12P And f$FirstAction And Raises = 0
    
 WHEN f$Stack_12P And f$FirstAction And Raises = 0 And Calls = 0
    WHEN listCat5 AND InEarlyPosition RaiseBy f$Termita_PreflopRaise FORCE
-   WHEN listCat6 AND (InMiddlePosition) RaiseBy f$Termita_PreflopRaise FORCE
+   WHEN listCat6 AND (InMiddlePosition OR InCutOff) RaiseBy f$Termita_PreflopRaise FORCE
    WHEN listCat7 AND (InButton OR InSmallBlind) RaiseBy f$Termita_PreflopRaise FORCE
    
 // Complete SmallBlind \\ SetMine PotShots etc
@@ -484,7 +484,7 @@ WHEN f$Stack_5_12
    WHEN listCat4 RaiseMax FORCE
    WHEN listCat5 AND Raises = 0 AND Calls >= 0 RaiseMax FORCE
    WHEN listCat6 AND Raises = 0 AND Calls = 0 AND InEarlyPosition RaiseMax FORCE
-   WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseMax FORCE
+   WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition OR InCutOff) RaiseMax FORCE
    WHEN listCat8 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseMax FORCE
 
 WHEN f$Stack_0_5
@@ -616,7 +616,7 @@ WHEN f$Stack_12P And f$FirstAction And Raises = 0
    
 WHEN f$Stack_12P And f$FirstAction And Raises = 0 And Calls = 0
    WHEN listCat5 AND InEarlyPosition RaiseBy f$Termita_PreflopRaise FORCE
-   WHEN listCat6 AND (InMiddlePosition) RaiseBy f$Termita_PreflopRaise FORCE
+   WHEN listCat6 AND (InMiddlePosition OR InCutOff) RaiseBy f$Termita_PreflopRaise FORCE
    WHEN listCat7 AND (InButton OR InSmallBlind) RaiseBy f$Termita_PreflopRaise FORCE
 
 // Complete SmallBlind \\ ^SetMine^ // ^PotShots^  \\
@@ -636,7 +636,7 @@ WHEN f$Stack_5_12
    WHEN listCat4 RaiseMax FORCE
    WHEN listCat5 AND Raises = 0 AND Calls >= 0 RaiseMax FORCE
    WHEN listCat6 AND Raises = 0 AND Calls = 0 AND InEarlyPosition RaiseMax FORCE
-   WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition) RaiseMax FORCE
+   WHEN listCat7 AND Raises = 0 AND Calls = 0 AND (InMiddlePosition OR InCutOff) RaiseMax FORCE
    WHEN listCat8 AND Raises = 0 AND Calls = 0 AND (InButton OR InSmallBlind) RaiseMax FORCE
 
 WHEN f$Stack_0_5
