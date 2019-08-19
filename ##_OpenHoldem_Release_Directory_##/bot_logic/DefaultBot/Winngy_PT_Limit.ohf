@@ -6,6 +6,8 @@
   * OpenPPL-ification
     - Replaced all br==2 by Isflop, same for the other betting-rounds
   * Turned WinGoldems f$play to f$sitin / f$sitout / f$leave
+  * renamed f$P to f$prwin_number_of_opponents
+  * created 
   
 ##f$sitin##
 // SITIN RULE - Based on players 
@@ -43,6 +45,16 @@ OR
        *nopponentsdealt               // 100 seconds times opponents dealt
   && (IsFlop || IsTurn)                 // flop or turn  
 ]
+
+##f$prwin_number_of_opponents##
+(nopponentsplaying<=1) ? 1 :
+IsPreflop ? nopponentsdealt :
+IsFlop    ? ((nplayersround2-1)+((ncallbets*2)-(didraisround2*2))+((nbetsround1-didraisround1)*.8)) :
+IsTurn    ? ((nplayersround3-1)+((ncallbets*2)-(didraisround3*2))+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) :
+IsRiver   ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-didraisround3)+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) : 1
+
+##f$prwin_number_of_iterations##
+50000
 
 ##f$rais##
    f$Fold==1 ? 0 :                              // "Fold"        rules
@@ -133,12 +145,6 @@ OR
 
 
 
-##f$P##
-(nopponentsplaying<=1) ? 1 :
-IsPreflop ? nopponentsdealt :
-IsFlop ? ((nplayersround2-1)+((ncallbets*2)-(didraisround2*2))+((nbetsround1-didraisround1)*.8)) :
-IsTurn ? ((nplayersround3-1)+((ncallbets*2)-(didraisround3*2))+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) :
-IsRiver ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-didraisround3)+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) : 1
 
 ##f$NESTR##
 //NO EASY STRAIGHT DRAW
