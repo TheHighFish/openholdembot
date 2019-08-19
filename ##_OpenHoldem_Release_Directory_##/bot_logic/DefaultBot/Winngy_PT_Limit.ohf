@@ -1,31 +1,8 @@
 ##2009-11-25 20:47:53##
 
 ##notes##
+  * Removed unused functions like f$allin and old WinHoldem-functions like f$swag
 
-
-##dll##
-
-
-##bankroll##
-0.000000
-
-##defcon##
-0.500000
-
-##rake##
-0.000000
-
-##nit##
-6000
-
-##f$alli##
-0
-
-##f$swag##
-0
-
-##f$srai##
-0
 
 ##f$rais##
    f$Fold==1 ? 0 :                              // "Fold"        rules
@@ -112,13 +89,8 @@
 ##f$prefold##
 
 
-##f$rebuy##
-
-
 ##f$delay##
 
-
-##f$chat##
 
 
 ##f$P##
@@ -177,11 +149,6 @@ br==4 ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-didra
 //************************************************************************** 
 -1                                  // disabled
 
-##f$test##
-
-
-##f$debug##
-
 
 ##list0##
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
@@ -192,11 +159,6 @@ KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ
 AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
 AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S QJS QTS Q9S Q8S JTS J9S J8S T9S T8S T7S 98S 97S 96S 87S 86S 85S 76S 75S 74S 65S 64S 63S 54S 53S 43S 
 
-##f$evrais##
-0
-
-##f$evcall##
-0
 
 ##f$NESTR##
 //NO EASY STRAIGHT DRAW
@@ -1459,4 +1421,3 @@ isthreeofakind && ispair
 
 // Round four.  We have been leaking a lot of big bets at the river calling hand call.  Our win percentage with less than a pair is near zero.
 || [br==4 && randomround<.75 && pokerval<onepair && call>0] // add profiling
-
