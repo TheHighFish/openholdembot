@@ -71,7 +71,62 @@
 //       f$Termita_SNG_Preflop_EarlyStage
 //       f$Termita_SNG_Preflop_Fullring
 //   * Added raise vs sit-outs
-//   * 
+//   * Added Termita prefold
+//   * Tidied HU removed unnecessary lines
+//   * Replaced any remaning user variables with functions
+//   * Removed possibility of a situation qualifying for more than one stage/section 
+//   * Created OpponentSignificantAllin, using instead of OpponentIsAllin for some cases
+//   * Created late stage and...
+		  // Created late stage list based open push fold and added lists
+		  // Created late stage list based re-push and squeeze and added lists
+//   * In Early Stage
+		  // Only playing Cat2 from BigBlind or SmallBlind I increased that a little 
+		  // Added SmallBlind complete and new lists
+		  // Added Call From BigBlind and new lists
+	  // In early stage the current code will re-raise by 3BB if facing a raise or 3Bet
+		  // As 3BB is too small for a 3Bet I increased it - considering this increase we wont
+		  // want to fold too often so I made some changes
+		  // these changes need review
+//  * Avoiding 4Bet pots
+		// We fold listCat3 and 4 when faced with a 3Bet after we open raise
+		// But we 4Bet a 3Bet if an opponent open raises
+		// If we avoid 4Bet pots we start it only makes sense to avoid
+		// them if started by other players, also it is easier to fold
+		// those as we have less invested
+		// I stopped it raising 3Bet pots with less than Cat2 hands 
+	
+//   * In middle stage 
+	// Only playing Cat2 from BigBlind increased that a little 
+	// Increased 3Bet size
+	// Added SmallBlind complete for SetMining PotShots etc, with new lists
+	// Added call from BigBlind and new lists
+	// Avoid 4Bet pots as in early stage 
+//   *  In Bubble
+	// Tidied code
+	// Added some short-stack push fold, should I add re-push
+	// Bubble play needs some thought, I have kept as close as possible to original
+		// If we play against an allin we only call never push to try to
+		// isolate and also avoid a re-raise after we call maybe we should
+		// push some of these depending on stack/pot size
+		// When no opponent is allin we always RaiseMax maybe we should
+		// consider some standard raises if deep stacked?
+		// we definitely need to consider this if the profile was to be used in
+		// MTTs Freerolls or MTTSnG
+//   * Most sections deal with OpponentIsAllin before normal play but sometimes the blocks
+	// for this didn't close so OpponentIsAllin was also dealt with in normal play stopped that
+	
+//   * Extend some play against multiway or opponent allin for late and middle stages 
+
+//   * Changed 'MaxStillToActStackSize < 100% StackSize' To 'Not f$We_Are_Covered' in bubble
+	// It doesn't make any difference now but just to have a direct contradiction
+	// in case of future changes or user changes
+//   * Created 'TheBiggestActiveOpponentsStack' Unlike 'MaxStacksizeOfActiveOpponents' this
+	// includes current bets - using it for full stack comparison instead of effective 
+//   * user_Bubble_We_Are_Covered I couldn't see it defined in the Termita I downloaded
+	// Created user symbol 'f$We_Are_Covered' and based it on 'TheBiggestActiveOpponentsStack'
+	// Although I think originally this was based on 'MaxStillToActStackSize'
+//   * 'AverageStackSize' is based on effective pot size so I created
+	// 'TableAverageStackAtStartOfHand'
 //   * 
 //   * 
 //   * 
