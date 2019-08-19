@@ -890,13 +890,15 @@ When f$EffectiveActiveStackInBigBlinds >= 25 Return true FORCE
 When f$TableMzone > 20.7 And f$EffectiveActiveStackInBigBlinds > 20 Return true FORCE
 
 ##f$Termita_PreflopRaise##
+// Needs work just basic to get running
 When PreBubble And Raises = 0
-	When StackSize < 12 Return RaiseMax FORCE
+	When StackSize < 12 Return 12 FORCE
 	When f$DeepStackHand And (f$EarlyStage or f$MiddleStage) And Calls >= 1 Return (2 + Calls) FORCE
-	When (f$EarlyStage or f$MiddleStage) And StackSize > 20 And f$TheBiggestActiveOpponentsStack >= 12 And Calls >= 1 Return (2 + Calls) FORCE
+	When (f$EarlyStage or f$MiddleStage) And StackSize > 14 And f$TheBiggestActiveOpponentsStack >= 12 And Calls >= 1 Return (2 + Calls) FORCE
 	When f$DeepStackHand And f$LateStage Return (1 + Calls) FORCE
-When Others 
 	When f$LateStage Return 2 FORCE
+When PreBubble 
+	When Raises > 0 Return (AmountToCall*3) Force
 	When Others Return 3 FORCE
 
 
