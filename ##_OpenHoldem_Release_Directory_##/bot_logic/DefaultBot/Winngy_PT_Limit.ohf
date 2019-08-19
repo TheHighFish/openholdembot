@@ -5,6 +5,44 @@
   * Removed unused lists (all two!)
   * OpenPPL-ification
     - Replaced all br==2 by Isflop, same for the other betting-rounds
+  * Turned WinGoldems f$play to f$sitin / f$sitout / f$leave
+  
+##f$sitin##
+// SITIN RULE - Based on players 
+1                                   // 0=off 1=on 
+&& issittingout                     // sitting out
+&& (IsFlop || IsTurn)               // flop or turn 
+&& nchairsdealtright==2             // about to be big blind 
+&& nopponentsdealt>=5               // 5 or more opponents
+
+##f$sitout##
+// SITOUT RULE - Based on players 
+[ 1                                   // 0=off 1=on 
+  && issittingin                      // sitting in
+  && IsFlop && nopponentsdealt<=5     // Getting short          
+] OR
+// SITOUT RULE - based on Time 
+[ 0                                   // 0=off 1=on 
+  && issittingin                      // sitting in 
+  && (IsFlop || IsTurn)               // flop or turn 
+  &&  elapsed>21600                   // playing 6 hours
+]
+
+##f$leave##
+// LEAVE RULE - Game broken up 
+[ 1                                   // 0=off 1=on 
+  && issittingout                     // sitting out 
+  && nopponentsdealt<=2               // super short handed
+  && (IsFlop || IsTurn)               // flop or turn  
+] 
+OR
+// LEAVE RULE - Wait around, but get out before you get booted 
+[ 1                                   // 0=off 1=on 
+  && issittingout                     // sitting out 
+  && elapsedauto>=100                 // dynamic rule  
+       *nopponentsdealt               // 100 seconds times opponents dealt
+  && (IsFlop || IsTurn)                 // flop or turn  
+]
 
 ##f$rais##
    f$Fold==1 ? 0 :                              // "Fold"        rules
@@ -101,56 +139,6 @@ IsPreflop ? nopponentsdealt :
 IsFlop ? ((nplayersround2-1)+((ncallbets*2)-(didraisround2*2))+((nbetsround1-didraisround1)*.8)) :
 IsTurn ? ((nplayersround3-1)+((ncallbets*2)-(didraisround3*2))+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) :
 IsRiver ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-didraisround3)+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) : 1
-
-##f$play##
-1 ? -1 :
-(elapsed%4)              ? -1 :     // disabled 3 out of 4 seconds 
-// (IsFlop && balance > 150) ? 0 :
-//------------------------------------------------------------------------ 
-//************************************************************************** 
-                         // leave the table 
-//------------------------------------------------------------------------ 
-// LEAVE RULE - Game broken up 
-1                                   // 0=off 1=on 
-&& issittingout                     // sitting out 
-&& nopponentsdealt<=2               // super short handed
-&& (IsFlop || IsTurn)                 // flop or turn  
-? -2 :                              // leave the table 
-//------------------------------------------------------------------------ 
-
-// LEAVE RULE - Wait around, but get out before you get booted 
-1                                   // 0=off 1=on 
-&& issittingout                     // sitting out 
-&& elapsedauto>=100                 // dynamic rule  
-     *nopponentsdealt               // 100 seconds times opponents dealt
-&& (IsFlop || IsTurn)                 // flop or turn  
-? -2 :                              // leave the table 
-//------------------------------------------------------------------------ 
-// SITIN RULE - Based on players 
-1                                   // 0=off 1=on 
-&& issittingout                     // sitting out
-&& (IsFlop || IsTurn)                 // flop or turn 
-&& nchairsdealtright==2             // about to be big blind 
-&& nopponentsdealt>=5               // 5 or more opponents
- 
-?  1 :                              // sitin 
-//------------------------------------------------------------------------ 
-
-// SITOUT RULE - Based on players 
-1                                   // 0=off 1=on 
-&& issittingin                      // sitting in
-&& IsFlop && nopponentsdealt<=5      // Getting short          
-?  0 :                              // sitout 
-//------------------------------------------------------------------------ 
-// SITOUT RULE - based on Time 
-0                                   // 0=off 1=on 
-&& issittingin                      // sitting in 
-&& (IsFlop || IsTurn)                 // flop or turn 
-&&  elapsed>21600                   // playing 6 hours
-?  0 :                              // sitout 
-//************************************************************************** 
--1                                  // disabled
-
 
 ##f$NESTR##
 //NO EASY STRAIGHT DRAW
