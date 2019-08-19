@@ -150,16 +150,6 @@ br==4 ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-didra
 -1                                  // disabled
 
 
-##list0##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S K7S K6S K5S K4S K3S K2S QJS QTS Q9S Q8S JTS J9S J8S T9S T8S T7S 98S 97S 96S 87S 86S 85S 76S 75S 74S 65S 64S 63S 54S 53S 52S 43S 42S 32S 
-KA  QA  QK  JA  JK  JQ  TA  TK  TQ  TJ  
-
-##list1##
-AA  KK  QQ  JJ  TT  99  88  77  66  55  44  33  22  
-AKS AQS AJS ATS A9S A8S A7S A6S A5S A4S A3S A2S KQS KJS KTS K9S K8S QJS QTS Q9S Q8S JTS J9S J8S T9S T8S T7S 98S 97S 96S 87S 86S 85S 76S 75S 74S 65S 64S 63S 54S 53S 43S 
-
-
 ##f$NESTR##
 //NO EASY STRAIGHT DRAW
 (nstraightcommon<=2 && nstraightfillcommon>=3) 
