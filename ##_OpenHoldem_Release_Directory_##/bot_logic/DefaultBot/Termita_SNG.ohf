@@ -931,6 +931,8 @@ When f$InTheMoney_BigStack Return false FORCE
 When f$InTheMoney_SmallStack Return false FORCE
 When InTheMoney Return true FORCE
 
+// @Trish The 1.115 base here could be confusing for beginners, consider changing to e
+// Or even to a definable base, x = (ln a / ln b)
 ##f$ShortSBHU##
 39*(1.115**(8-f$EffectiveActiveStackInBigBlinds)) < 39 ? 0.39 :
 39*(1.115**(8-f$EffectiveActiveStackInBigBlinds)) > 75 ? 0.75 :
