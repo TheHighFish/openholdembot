@@ -64,13 +64,13 @@ When f$MiddleStage Return f$Termita_SNG_Preflop_MiddleStage FORCE
 
 // Crippled in the blinds
 When f$Stack_0_2 RaiseMax Force
+When f$HandRank2Way <= (2652*f$SS_Blind_HU_Log) RaiseMax FORCE
 
 WHEN InSmallBlind
    WHEN BotsLastAction = Raise AND f$Stack_12P AND listHUCat1 RaiseMax FORCE
    WHEN BotsLastAction = Raise AND f$Stack_12P AND listHUCat5 Call FORCE
    WHEN f$FirstAction AND f$Stack_12P AND listHUCat8 RaiseBy 3 FORCE
    WHEN f$Stack_8_12 AND listHUCat8 RaiseMax FORCE
-   When f$Stack_2_8 And handrank2652 <= 2652*f$ShortSBHU RaiseMax Force
 //
 // In the Big Blind AND Small Blind Limps
 // 1. With either stack less than 8 BB push ATC @Trish change this Done
@@ -83,7 +83,6 @@ WHEN InBigBlind
    WHEN BotsLastAction = Raise AND f$Stack_12P AND listHUCat4 Call FORCE
    WHEN f$FirstAction AND f$Stack_12P AND Raises = 0 AND listHUCat6 RaiseBy 3 FORCE
    WHEN f$Stack_8_12 And Raises = 0 AND listHUCat7 RaiseMax FORCE
-   When f$Stack_2_8 And Raises = 0 And handrank2652 <= 2652*f$ShortBBHU RaiseMax Force 
 //
 // In the Big Blind AND Small Blind Raises
 // I can't remember the ruleset, but you can re-create it from code if need be
@@ -931,17 +930,25 @@ When f$InTheMoney_BigStack Return false FORCE
 When f$InTheMoney_SmallStack Return false FORCE
 When InTheMoney Return true FORCE
 
-// @Trish The 1.115 base here could be confusing for beginners, consider changing to e
-// Or even to a definable base, x = (ln a / ln b)
-##f$ShortSBHU##
-39*(1.115**(8-f$EffectiveActiveStackInBigBlinds)) < 39 ? 0.39 :
-39*(1.115**(8-f$EffectiveActiveStackInBigBlinds)) > 75 ? 0.75 :
-39*(1.115**(8-f$EffectiveActiveStackInBigBlinds))/100
+///////////////////////////////////////////////////////////////////
+// Provides a mild exponential increase as the stack diminishes  //
+// Using log natural (e) 2.718281828459 but any base can be used //
+///////////////////////////////////////////////////////////////////
+##f$SS_Blind_HU_Start##
+InSmallBlind ? 39 :
+InBigBlind ? 33 :
+33
 
-##f$ShortBBHU##
-33*(1.147**(8-f$EffectiveActiveStackInBigBlinds)) < 33 ? 0.33 :
-33*(1.147**(8-f$EffectiveActiveStackInBigBlinds)) > 75 ? 0.75 :
-33*(1.147**(8-f$EffectiveActiveStackInBigBlinds))/100
+##f$SS_Blind_HU_Exponent##
+(ln (75 / f$SS_Blind_HU_Start) / 6)*(8-f$EffectiveActiveStackInBigBlinds)
+
+##f$SS_Blind_HU_Log##
+f$EffectiveActiveStackInBigBlinds > 8 ? 0 :
+f$SS_Blind_HU_Start*(2.718281828459**(f$SS_Blind_HU_Exponent)) < f$SS_Blind_HU_Start ? (f$SS_Blind_HU_Start/100) :
+f$SS_Blind_HU_Start*(2.718281828459**(f$SS_Blind_HU_Exponent)) > 75 ? (0.75) :
+f$SS_Blind_HU_Start*(2.718281828459**(f$SS_Blind_HU_Exponent))/100
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////
 //
