@@ -1498,3 +1498,74 @@ WHEN (NSuited1Player >= 2) AND (NSuited1Common == 1) AND (Omaha_NumberOfUnknownS
 WHEN (NSuited2Player >= 2) AND (NSuited2Common == 1) AND (Omaha_NumberOfUnknownSuitedOvercards_For_NSuited2 == 2) RETURN true FORCE
 
 
+##BestHoleCard##
+rankhiplayer
+
+##TopHoleCard##
+BestHoleCard
+
+
+##LowestHoleCard##
+rankloplayer
+
+##BottomHoleCard##
+LowestHoleCard
+
+
+////////////////////
+
+
+##TopBitOfRankBitsPlayer##
+(1 << BestHoleCard)
+
+##RankBitsPlayerWithoutTopBit##
+rankbitsplayer BitAnd (BitNot TopBitOfRankBitsPlayer)
+
+##SecondBestHoleCard##
+// 14 (ace) can't happen, but anyway...
+(RankBitsPlayerWithoutTopBit & 0b100000000000000) != 0 ? ace   :
+(RankBitsPlayerWithoutTopBit & 0b010000000000000) != 0 ? king  :
+(RankBitsPlayerWithoutTopBit & 0b001000000000000) != 0 ? queen :
+(RankBitsPlayerWithoutTopBit & 0b000100000000000) != 0 ? jack  :
+(RankBitsPlayerWithoutTopBit & 0b000010000000000) != 0 ? ten   :
+(RankBitsPlayerWithoutTopBit & 0b000001000000000) != 0 ? Nine  :
+(RankBitsPlayerWithoutTopBit & 0b000000100000000) != 0 ? Eight :
+(RankBitsPlayerWithoutTopBit & 0b000000010000000) != 0 ? Seven :
+(RankBitsPlayerWithoutTopBit & 0b000000001000000) != 0 ? Six   :
+(RankBitsPlayerWithoutTopBit & 0b000000000100000) != 0 ? Five  :
+(RankBitsPlayerWithoutTopBit & 0b000000000010000) != 0 ? Four  :
+(RankBitsPlayerWithoutTopBit & 0b000000000001000) != 0 ? Three :
+(RankBitsPlayerWithoutTopBit & 0b000000000000100) != 0 ? Two   :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+
+////////////////////
+
+
+##SecondTopBitOfRankBitsPlayer##
+(1 << SecondBestHoleCard)
+
+##RankBitsPlayerWithoutTopTwoBits##
+RankBitsPlayerWithoutTopBit BitAnd (BitNot SecondTopBitOfRankBitsPlayer)
+
+##ThirdBestHoleCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsPlayerWithoutTopTwoBits & 0b100000000000000) != 0 ? ace :
+(RankBitsPlayerWithoutTopTwoBits & 0b010000000000000) != 0 ? king :
+(RankBitsPlayerWithoutTopTwoBits & 0b001000000000000) != 0 ? queen :
+(RankBitsPlayerWithoutTopTwoBits & 0b000100000000000) != 0 ? jack :
+(RankBitsPlayerWithoutTopTwoBits & 0b000010000000000) != 0 ? ten :
+(RankBitsPlayerWithoutTopTwoBits & 0b000001000000000) != 0 ? Nine :
+(RankBitsPlayerWithoutTopTwoBits & 0b000000100000000) != 0 ? Eight :
+(RankBitsPlayerWithoutTopTwoBits & 0b000000010000000) != 0 ? Seven :
+(RankBitsPlayerWithoutTopTwoBits & 0b000000001000000) != 0 ? Six :
+(RankBitsPlayerWithoutTopTwoBits & 0b000000000100000) != 0 ? Five :
+(RankBitsPlayerWithoutTopTwoBits & 0b000000000010000) != 0 ? Four :
+(RankBitsPlayerWithoutTopTwoBits & 0b000000000001000) != 0 ? Three :
+(RankBitsPlayerWithoutTopTwoBits & 0b000000000000100) != 0 ? Two :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
