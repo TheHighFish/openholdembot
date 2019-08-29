@@ -160,3 +160,83 @@ BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 (HighCardOfBestPossibleStraight == Seven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
 (HighCardOfBestPossibleStraight == Six)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
 HINT_Such_A_Straight_Does_Not_Exist
+
+;;
+;; Temp replacement for the srankbits-symbols
+//
+// To be replaced by a new symbol-engine
+//
+
+##UndefinedDominantSuit##
+// Using -2 here, so that it doesn't match the suit of "no card"
+-2
+
+##DominantSuit##
+WHEN BitCount(suitbitscommon_clubs)    + BitCount(suitbitsplayer_clubs)    >= 4 RETURN clubs    FORCE
+WHEN BitCount(suitbitscommon_diamonds) + BitCount(suitbitsplayer_diamonds) >= 4 RETURN diamonds FORCE
+WHEN BitCount(suitbitscommon_hearts)   + BitCount(suitbitsplayer_hearts)   >= 4 RETURN hearts   FORCE
+WHEN BitCount(suitbitscommon_spades)   + BitCount(suitbitsplayer_spades)   >= 4 RETURN spades   FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_clubs)    + BitCount(suitbitsplayer_clubs)    >= 3 RETURN clubs    FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_diamonds) + BitCount(suitbitsplayer_diamonds) >= 3 RETURN diamonds FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_hearts)   + BitCount(suitbitsplayer_hearts)   >= 3 RETURN hearts   FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_spades)   + BitCount(suitbitsplayer_spades)   >= 3 RETURN spades   FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##DominantSuitPlayer##
+WHEN SuitsInHand == 2 RETURN FirstHoleCardSuit FORCE
+WHEN FirstHoleCardSuit  == DominantSuit RETURN DominantSuit FORCE
+WHEN SecondHoleCardSuit == DominantSuit RETURN DominantSuit FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##DominantSuitCommon##
+// First real domination
+WHEN BitCount(suitbitscommon_clubs)    >= 3 RETURN clubs    FORCE
+WHEN BitCount(suitbitscommon_diamonds) >= 3 RETURN diamonds FORCE
+WHEN BitCount(suitbitscommon_hearts)   >= 3 RETURN hearts   FORCE
+WHEN BitCount(suitbitscommon_spades)   >= 3 RETURN spades   FORCE
+// Then nearly domination
+// There might be 2 times 2 card of 1 suits
+// We especially don't want to return this suit in case of 2 and 3,
+// that's why we have to handle real domination first.
+WHEN BitCount(suitbitscommon_clubs)    >= 2 RETURN clubs    FORCE
+WHEN BitCount(suitbitscommon_diamonds) >= 2 RETURN diamonds FORCE
+WHEN BitCount(suitbitscommon_hearts)   >= 2 RETURN hearts   FORCE
+WHEN BitCount(suitbitscommon_spades)   >= 2 RETURN spades   FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##TwoDominantSuitsOnBoard##
+WHEN BitCount(suitbitscommon_clubs)    == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_diamonds) == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_hearts)   == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_spades)   == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_clubs)    >= 3 RETURN false FORCE
+WHEN BitCount(suitbitscommon_diamonds) >= 3 RETURN false FORCE
+WHEN BitCount(suitbitscommon_hearts)   >= 3 RETURN false FORCE
+WHEN BitCount(suitbitscommon_spades)   >= 3 RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##SecondDominantSuitCommon##
+WHEN NOT TwoDominantSuitsOnBoard RETURN UndefinedDominantSuit FORCE
+WHEN NOT IsTurn RETURN UndefinedDominantSuit FORCE
+// At least one card of the 2nd dominant suit must be on the flop
+WHEN SuitOfFirstFlopCard  != DominantSuitCommon RETURN SuitOfFirstFlopCard  FORCE
+WHEN SuitOfSecondFlopCard != DominantSuitCommon RETURN SuitOfSecondFlopCard FORCE
+WHEN SuitOfThirdFlopCard  != DominantSuitCommon RETURN SuitOfThirdFlopCard  FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##RankbitsCommon_DominantSuit##
+      [(FirstFlopSuit == DominantSuit)  ? (1 << RankOfFirstFlopCard) : 0]
+BitOr [(SecondFlopSuit == DominantSuit) ? (1 << RankOfSecondFlopCard) : 0]
+BitOr [(ThirdFlopSuit == DominantSuit)  ? (1 << RankOfThirdFlopCard) : 0]
+BitOr [(TurnSuit == DominantSuit)       ? (1 << RankOfTurnCard) : 0]
+BitOr [(RiverSuit == DominantSuit)      ? (1 << RankOfRiverCard) : 0]
+
+##Rankbitsplayer_DominantSuit##
+      [(FirstHoleCardSuit == DominantSuit)  ? (1 << RankOfFirstHoleCard) : 0]
+BitOr [(SecondHoleCardSuit == DominantSuit) ? (1 << RankOfSecondHoleCard) : 0]
+BitOr [(ThirdHoleCardSuit == DominantSuit)  ? (1 << RankOfThirdHoleCard) : 0]
+BitOr [(FourthHoleCardSuit == DominantSuit) ? (1 << RankOfFourthHoleCardard) : 0]
+
+##Rankbits_DominantSuit##
+      RankbitsCommon_DominantSuit
+BitOr Rankbitsplayer_DominantSuit
