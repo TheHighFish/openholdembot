@@ -158,7 +158,7 @@ NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= Second
 // We have to discard everything above ace high
 // plus ace-low and the unused lowest bit.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19262
-((BITNOT Rankbits_DominantSuit) BITAND ConstAllRanksWithoutAceLow
+((BITNOT Rankbits_DominantSuit) BITAND ConstAllRanksWithoutAceLow)
 
 ##RankOfTopPairOnBoard##
 // Searching board pairs top down

@@ -161,8 +161,8 @@ BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
 (HighCardOfBestPossibleStraight == Six)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
 HINT_Such_A_Straight_Does_Not_Exist
 
-;;
-;; Temp replacement for the srankbits-symbols
+//
+// Temp replacement for the srankbits-symbols
 //
 // To be replaced by a new symbol-engine
 //
@@ -231,11 +231,11 @@ BitOr [(ThirdFlopSuit == DominantSuit)  ? (1 << RankOfThirdFlopCard) : 0]
 BitOr [(TurnSuit == DominantSuit)       ? (1 << RankOfTurnCard) : 0]
 BitOr [(RiverSuit == DominantSuit)      ? (1 << RankOfRiverCard) : 0]
 
-##Rankbitsplayer_DominantSuit##
+##RankbitsPlayer_DominantSuit##
       [(FirstHoleCardSuit == DominantSuit)  ? (1 << RankOfFirstHoleCard) : 0]
 BitOr [(SecondHoleCardSuit == DominantSuit) ? (1 << RankOfSecondHoleCard) : 0]
 BitOr [(ThirdHoleCardSuit == DominantSuit)  ? (1 << RankOfThirdHoleCard) : 0]
-BitOr [(FourthHoleCardSuit == DominantSuit) ? (1 << RankOfFourthHoleCardard) : 0]
+BitOr [(FourthHoleCardSuit == DominantSuit) ? (1 << RankOfFourthHoleCard) : 0]
 
 ##Rankbits_DominantSuit##
       RankbitsCommon_DominantSuit
@@ -243,7 +243,7 @@ BitOr RankbitsPlayer_DominantSuit
 
 ##RankHiPlayer_DominantSuit##
 // Holdem only aRM
-WHEN ((rankgiplayer == RankOfFirstHoleCard) AND (FirstHoleCardSuit == DominantSuit)) RETURN rankhiplayer FORCE
+WHEN ((rankhiplayer == RankOfFirstHoleCard) AND (FirstHoleCardSuit == DominantSuit)) RETURN rankhiplayer FORCE
 WHEN Others RETURN rankloplayer FORCE
 
 ##RankbitsCommon_DominantSuitCommon##
