@@ -239,4 +239,16 @@ BitOr [(FourthHoleCardSuit == DominantSuit) ? (1 << RankOfFourthHoleCardard) : 0
 
 ##Rankbits_DominantSuit##
       RankbitsCommon_DominantSuit
-BitOr Rankbitsplayer_DominantSuit
+BitOr RankbitsPlayer_DominantSuit
+
+##RankHiPlayer_DominantSuit##
+// Holdem only aRM
+WHEN ((rankgiplayer == RankOfFirstHoleCard) AND (FirstHoleCardSuit == DominantSuit)) RETURN rankhiplayer FORCE
+WHEN Others RETURN rankloplayer FORCE
+
+##RankbitsCommon_DominantSuitCommon##
+      [(FirstFlopSuit == DominantSuitCommon)  ? (1 << RankOfFirstFlopCard) : 0]
+BitOr [(SecondFlopSuit == DominantSuitCommon) ? (1 << RankOfSecondFlopCard) : 0]
+BitOr [(ThirdFlopSuit == DominantSuitCommon)  ? (1 << RankOfThirdFlopCard) : 0]
+BitOr [(TurnSuit == DominantSuitCommon)       ? (1 << RankOfTurnCard) : 0]
+BitOr [(RiverSuit == DominantSuitCommon)      ? (1 << RankOfRiverCard) : 0]
