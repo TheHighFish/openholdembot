@@ -12,6 +12,8 @@
 	- f$spd -> InButton
 	- f$spm -> InMiddleposition
 	- f$spe -> InEarlyPosition
+  * introducing f$callshort and f$raisshort
+    in order to support the old, removed symbols
   
 ##f$sitin##
 // SITIN RULE - Based on players 
@@ -1085,10 +1087,10 @@ betround>flop && (
 [((prwin*pot) + (prtie*(pot/2)))]
 
 ##f$value_to_call##
-[(((prwin * (pot+callshort))+(prtie * (pot+callshort/2)))-(prlos * call))]
+[(((prwin * (pot+f$callshort))+(prtie * (pot+f$callshort/2)))-(prlos * call))]
 
 ##f$value_to_raise##
-[(((prwin * (pot+raisshort))+(prtie * (pot+raisshort/2)))-(prlos * (call+bet)))]
+[(((prwin * (pot+f$raisshort))+(prtie * (pot+f$raisshort/2)))-(prlos * (call+bet)))]
 
 ##f$follow_thru##
    [nbetsround<1 && f$openboard && (rankhiplayer>rankhicommon||pokerval>onepair) && (
@@ -1172,26 +1174,26 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
 //Second Nut Flush Draw
 || [(IsFlop||IsTurn) && nsuited==4 
    && `((~srankbits&0x7fff)>>srankhiplayer)==1 
-   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
 
 //Third Nut Flush Draw
 || [(IsFlop||IsTurn) && nsuited==4 
    && `((~srankbits&0x7fff)>>srankhiplayer)==2 
-   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
 
 //Good Flush Draw
 || [(IsFlop||IsTurn) && nsuited==4 
    && nsuitedcommon==2 
-   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]//call good flush draws
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]//call good flush draws
 
 //Good Straight Draw
 || [(IsFlop||IsTurn) && nstraight==4 && nstraightcommon <= 2
-   && ((1.2/(prwin + prtie/2)-1) < ((pot + (callshort *.3))/call))]
+   && ((1.2/(prwin + prtie/2)-1) < ((pot + (f$callshort *.3))/call))]
 
 //Call draw that was raised
 || [(IsFlop||IsTurn) && (didrais||didcall) 
    && ((nsuited==4 && nsuitedcommon==2)||(nstraight==4 && nstraightcommon==2)) 
-   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
 
 //COMBOS DRAWS...pair and draw
 
@@ -1199,19 +1201,19 @@ IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting
 || [(IsFlop||IsTurn) && prwinnow >.40 
    && nsuited==4 && nsuited>nsuitedcommon 
    && isonepair && (pokervalcommon < onepair)
-   && (((1.5/prwin)-1) < ((pot + (callshort *.3))/call))]
+   && (((1.5/prwin)-1) < ((pot + (f$callshort *.3))/call))]
 
 //Pair and Straight Draw
 || [(IsFlop||IsTurn) && prwinnow >.40 
    && nstraight==4 && nstraight>nstraightcommon 
    && isonepair && (pokervalcommon < onepair)
-   && (((1.5/prwin)-1) < ((pot + (callshort *.3))/call))]
+   && (((1.5/prwin)-1) < ((pot + (f$callshort *.3))/call))]
 
 //Straight and Flush Draw
 || [(IsFlop||IsTurn) && nsuited==4 
    && nsuited>nsuitedcommon && nstraight==4 
    && nstraight>nstraightcommon 
-   && (((1.2/prwin)-1) < ((pot + (callshort *.3))/call))]
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
 
 ##f$kicker_rank##
 (nranked==2 && nrankedcommon==1) ? 
@@ -1406,3 +1408,18 @@ isthreeofakind && ispair
 
 // Round four.  We have been leaking a lot of big bets at the river calling hand call.  Our win percentage with less than a pair is near zero.
 || [IsRiver && randomround<.75 && pokerval<onepair && call>0] // add profiling
+
+##f$callshort##
+  [(playersplayingbits BitAnd 0b0000000001) ? (ncallbets * bet - currentbet0) : 0]  
++ [(playersplayingbits BitAnd 0b0000000010) ? (ncallbets * bet - currentbet1) : 0]  
++ [(playersplayingbits BitAnd 0b0000000100) ? (ncallbets * bet - currentbet2) : 0] 
++ [(playersplayingbits BitAnd 0b0000001000) ? (ncallbets * bet - currentbet3) : 0] 
++ [(playersplayingbits BitAnd 0b0000010000) ? (ncallbets * bet - currentbet4) : 0] 
++ [(playersplayingbits BitAnd 0b0000100000) ? (ncallbets * bet - currentbet5) : 0] 
++ [(playersplayingbits BitAnd 0b0001000000) ? (ncallbets * bet - currentbet6) : 0] 
++ [(playersplayingbits BitAnd 0b0010000000) ? (ncallbets * bet - currentbet7) : 0] 
++ [(playersplayingbits BitAnd 0b0100000000) ? (ncallbets * bet - currentbet8) : 0] 
++ [(playersplayingbits BitAnd 0b1000000000) ? (ncallbets * bet - currentbet9) : 0] 
+
+##f$raisshort##
+f$callshort + (bet * nplayersplaying)
