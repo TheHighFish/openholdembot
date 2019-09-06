@@ -14,6 +14,7 @@
 	- f$spe -> InEarlyPosition
   * introducing f$callshort and f$raisshort
     in order to support the old, removed symbols
+  * replaced a didswag by didrais, as this is a FL-bot
   
 ##f$sitin##
 // SITIN RULE - Based on players 
@@ -571,7 +572,7 @@ isonepair ?
 +(!f$NoEasyStraightDraw)*2
 +(nstraightfillcommon<=1 || nstraightcommon>=4)
 +(nopponentsplaying>2)
-+didswag
++didrais
 )
 
 : 0
