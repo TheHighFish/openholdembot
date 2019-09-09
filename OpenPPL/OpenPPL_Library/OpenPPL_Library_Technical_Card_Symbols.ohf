@@ -150,7 +150,6 @@ NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= Second
 NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= SecondFlopCard AND FirstFlopCard  <= SecondFlopCard ? SecondFlopCard :
 -1
 
-
 ##Srankbitsavailable##
 // Available suited cards for other players,
 // possibly contributing to a flush or straight flush
