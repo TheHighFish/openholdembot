@@ -394,8 +394,20 @@ NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 ##SecondTopFlopCardPairedOnTurn##
 (SecondTopFlopCard == TurnCard)
 
+##RankbitsOpponentsAndBoard_DominantSuitCommon##
+Srankbitsavailable BitOr RankbitsCommon_DominantSuitCommon
+
 ##StraightFlushPossibleByOthers##
-(nstraightflushfillcommon <= 2)
+   [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b11111000000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b11111000000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b01111100000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b01111100000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00111110000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00111110000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00011111000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00011111000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00001111100000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00001111100000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000111110000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000111110000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000011111000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000011111000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000001111100) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000001111100) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000000111110) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000000111110) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000000011111) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000000011111) == 5)]
 
 ##SuitsOnBoard##
 IsFlop  ? SuitsOnFlop :
@@ -422,16 +434,16 @@ WHEN (TurnSuit == ThirdFlopSuit)  RETURN SuitsOnFlop FORCE
 WHEN Others RETURN (SuitsOnFlop + 1) FORCE 
   
 ##StraightFlushPossible##
-WHEN (BitCount((srankbitscommon >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
-WHEN (BitCount((srankbitscommon >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
 
 ##StraightOnBoard##
 (nstraightcommon >= 5)

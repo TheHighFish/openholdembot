@@ -150,10 +150,6 @@ NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= Second
 NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= SecondFlopCard AND FirstFlopCard  <= SecondFlopCard ? SecondFlopCard :
 -1
 
-##Srankbitshero##
- (($$ps0==tsuit ? (RankOfFirstHoleCard!=ace ? 2**RankOfFirstHoleCard : 0b100000000000010) : 0)
-| ($$ps1==tsuit ? (RankOfSecondHoleCard!=ace ? 2**RankOfSecondHoleCard : 0b100000000000010) : 0))
-
 ##Srankbitsavailable##
 // Available suited cards for other players,
 // possibly contributing to a flush or straight flush
@@ -161,7 +157,7 @@ NOT PairOnFlop AND ThirdFlopCard  >= FirstFlopCard  AND ThirdFlopCard  >= Second
 // We have to discard everything above ace high
 // plus ace-low and the unused lowest bit.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19262
-(~(srankbitscommon | Srankbitshero)) & ConstAllRanksWithoutAceLow
+((BITNOT Rankbits_DominantSuit) BITAND ConstAllRanksWithoutAceLow)
 
 ##RankOfTopPairOnBoard##
 // Searching board pairs top down

@@ -368,8 +368,8 @@ ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard 
 ##HoldEm_HaveBackdoorFlushDrawContributingTwoCards##
     IsFlop
 AND (nsuited >= 3)
-AND ($$ps0 == tsuit)
-AND ($$ps1 == tsuit)
+AND (FirstHoleCardSuit  == DominantSuit)
+AND (SecondHoleCardSuit == DominantSuit)
 
 ##HoldEm_HaveBackdoorNutFlushDraw##
     IsFlop
@@ -1001,7 +1001,7 @@ WHEN (NumberOfInsideStraightDraws == 1) RETURN true FORCE
 // and at least 3 of these 5 cards must be at the board.
 isroyalflush ? false :
 NOT isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
-(BitCount((srankbitscommon >> srankhiplayer) & 0b111110) >= 3)
+(BitCount((RankbitsCommon_DominantSuit >> RankHiPlayer_DominantSuit) & 0b111110) >= 3)
 
 ##HoldEm_HaveNutStraightFlush##
 // nhandshi seems to be wrong for bottom straightflushes without an easy fix:
@@ -1239,7 +1239,7 @@ WHEN (nstraightfill == 1) RETURN true FORCE
 ##NumberOfUnknownSuitedOvercards##
 // Suited unknown overcards to holecards,
 // e.g. on Board Ah Th, in Hand Jh 9h => 2 suited overcards: Kh Qh.
-BitCount(Srankbitsavailable >> srankhiplayer)
+BitCount(Srankbitsavailable >> RankHiPlayer_DominantSuit)
 
 ##RankOfPairOfFullHouse##
 // The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)
@@ -1265,6 +1265,6 @@ ispair
 (IsRiver AND (nsuitedcommon == 3) AND (SuitsOnFlop != 1) AND (TurnSuit == RiverSuit))
 
 ##HoldEm_SuitsInHand##
-($$ps0 == $$ps1) ? 1 :
-($$ps0 != $$ps1) ? 2 :
+(FirstHoleCardSuit == SecondHoleCardSuit) ? 1 :
+(FirstHoleCardSuit != SecondHoleCardSuit) ? 2 :
 0
