@@ -168,6 +168,7 @@ Random * 30
 ##Gecko_6Max_FR_NL_BSS_Prefold##
 // A little bit of randomization for flesh-and-blood-players
 WHEN (Random < 10) RETURN false FORCE
+When PairInHand Return false FORCE
 // Prefold, depending on position
 WHEN IsPostflop    RETURN false FORCE
 WHEN (call < 0.01) RETURN false FORCE
