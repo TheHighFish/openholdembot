@@ -379,8 +379,17 @@ WHEN isomaha RETURN Omaha_HaveInsideStraightDraw FORCE
 WHEN Others RETURN HoldEm_HaveInsideStraightDraw FORCE
 
 ##HaveNuts##
-WHEN isomaha RETURN Omaha_HaveNuts FORCE
-WHEN Others RETURN HoldEm_HaveNuts FORCE
+WHEN HaveNutStraightFlush RETURN true FORCE
+WHEN StraightFlushPossibleByOthers RETURN false FORCE
+WHEN Omaha_HaveNutQuads RETURN true FORCE
+WHEN Omaha_HaveNutFullHouse RETURN true FORCE
+WHEN PairOnBoard RETURN false FORCE
+WHEN HaveNutFlush RETURN true FORCE
+WHEN FlushPossible RETURN false FORCE
+WHEN HaveNutStraight RETURN true FORCE
+WHEN StraightPossible RETURN false FORCE
+WHEN HaveTopSet RETURN true FORCE
+WHEN Others RETURN false FORCE
 
 ##HigherStraightFlushPossible##
 WHEN isomaha RETURN Omaha_HigherStraightFlushPossible FORCE
