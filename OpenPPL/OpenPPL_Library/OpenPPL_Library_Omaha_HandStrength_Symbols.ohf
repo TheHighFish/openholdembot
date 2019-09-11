@@ -390,20 +390,6 @@ Omaha_NutStraightDraw_Outs >= 4 AND Omaha_NutStraightDraw_Outs == Omaha_Straight
 ##Omaha_HaveInsideStraightDraw##
 Omaha_StraightDraw_Outs >= 4
 
-##Omaha_HaveNuts##
-WHEN HaveNutStraightFlush RETURN true FORCE
-WHEN StraightFlushPossible RETURN false FORCE
-WHEN Omaha_HaveNutQuads RETURN true FORCE
-WHEN Omaha_HaveNutFullHouse RETURN true FORCE
-WHEN PairOnBoard RETURN false FORCE
-WHEN HaveNutFlush RETURN true FORCE
-WHEN FlushPossible RETURN false FORCE
-WHEN HaveNutStraight RETURN true FORCE
-WHEN StraightPossible RETURN false FORCE
-WHEN HaveTopSet RETURN true FORCE
-WHEN Others RETURN false FORCE
-
-
 ##Omaha_HaveOpenEndedStraightDraw##
 Omaha_StraightDraw_Outs >= 8
 

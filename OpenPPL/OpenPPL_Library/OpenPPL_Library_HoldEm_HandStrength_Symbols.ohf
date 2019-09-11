@@ -988,9 +988,6 @@ AND NOT HaveStraight
 WHEN HaveDoubleGutshotDraw Return false FORCE
 WHEN (NumberOfInsideStraightDraws == 1) RETURN true FORCE
 
-##HoldEm_HaveNuts##
-(nhandshi == 0)
-
 ##HoldEm_HigherStraightFlushPossible##
 // Main idea:
 // I already use 3 (out of up to 5) SF-cards at the board.
