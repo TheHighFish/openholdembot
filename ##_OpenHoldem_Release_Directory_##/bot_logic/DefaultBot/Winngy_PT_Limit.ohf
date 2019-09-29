@@ -1405,4 +1405,11 @@ isthreeofakind && ispair
 ##f$raisshort##
 f$callshort + (bet * nplayersplaying)
 
+##f$OpponentIsLoosePassive##
+
+##f$OpponentIsSemiLoosePassiveAggressive##
+
+##f$OpponentIsLooseAggressive##
+
 ##Outs##
+//!!!
