@@ -2105,25 +2105,22 @@ pt_turn_af_headsupchair * pt_wtsd_headsupchair * 4
 
 ##f$ptype_raise_contibet_very_low##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
-// PT AUTORATE ICONS
 WHEN pt_flop_raise_cbet_raischair < 0.06 RETURN true FORCE
 
 ##f$ptype_raise_contibet_low##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
-// PT AUTORATE ICONS
 WHEN f$ptype_raise_contibet_very_low RETURN false FORCE
 WHEN pt_flop_raise_cbet_raischair < 0.12 RETURN true FORCE
 
 ##f$ptype_raise_contibet_normal##
-WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
-// PT AUTORATE ICONS
+// Too few hands counts as "normal", contrary to the other opponent types
+WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN true FORCE
 WHEN f$ptype_raise_contibet_very_low RETURN false FORCE
 WHEN f$ptype_raise_contibet_low RETURN false FORCE
 WHEN pt_flop_raise_cbet_raischair < 0.18 RETURN true FORCE
 
 ##f$ptype_raise_contibet_high##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
-// PT AUTORATE ICONS
 WHEN f$ptype_raise_contibet_very_low RETURN false FORCE
 WHEN f$ptype_raise_contibet_low RETURN false FORCE
 WHEN f$ptype_raise_contibet_normal RETURN false FORCE
@@ -2131,7 +2128,6 @@ WHEN pt_flop_raise_cbet_raischair < 0.24 RETURN true FORCE
 
 ##f$ptype_raise_contibet_very_high##
 WHEN pt_hands_raischair < f$pt_min_hands_for_opponent_modelling RETURN false FORCE
-// PT AUTORATE ICONS
 WHEN pt_flop_raise_cbet_raischair >= 0.24 RETURN true FORCE
 
 ##f$fold2cbet_normal##
