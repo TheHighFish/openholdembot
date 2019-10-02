@@ -2069,14 +2069,7 @@ void CManualModeDlg::OnAllin()
 void CManualModeDlg::OnBnClickedReset() 
 {
 	clear_scrape_areas();
-	istournament = false;
 	handnumber.Format("%i",atoi(handnumber) + 1);
-	sblind = "5";
-	bblind = "10";
-	bbet = "20";
-	ante = "0";
-	limit = LIMIT_NL;
-
 	InvalidateRect(NULL, true);
 }
 
@@ -2111,7 +2104,14 @@ void CManualModeDlg::OnBnClickedPplus()
 }
 
 void CManualModeDlg::OnBnClickedMacro() {
-	int	chair = -1;
+  // First clear the table view and give OH time to scrape.
+  // Just clicking "macro" over and over again might not trigger handresets.
+  OnBnClickedReset();
+  // https://stackoverflow.com/questions/2325894/difference-between-invalidaterect-and-redrawwindow
+  UpdateWindow();
+  Sleep(1500);
+  //
+	int	chair = kUndefined;
   int cards_seen = 0;
   int com_card=0;
   unsigned int c;

@@ -1,4 +1,17 @@
-﻿v﻿13.0.2 2017-05-02
+﻿v﻿13.1.3 2019-10-xx
+==================
+MAINTENANCE:
+- Clicking "Macro" causes now first a reset of the table
+  in order to "guarantee" a handreset, which could be missed
+  if the same situation was setup multiple times.
+  Thanks to Leviy for reporting.
+  [THF]
+- Clicking "Reset" now only clears the table-display,
+  it no longer resets "istournament" and the blinds.
+  [THF]
+
+
+v﻿13.0.2 2017-05-02
 ==================
 NEW STUFF:
 - Support for s§iXbuttondefaultlabel.
