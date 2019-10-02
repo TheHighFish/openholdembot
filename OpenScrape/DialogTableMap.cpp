@@ -211,6 +211,10 @@ BEGIN_MESSAGE_MAP(CDlgTableMap, CDialog)
 	ON_BN_CLICKED(IDC_CREATE_HASH3, &CDlgTableMap::OnBnClickedCreateHash3)
 END_MESSAGE_MAP()
 
+// Mandatory value for the spin-buttons.
+// Both the default (100) and the former value (1600) are no good.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=338&t=22799
+const int kTablemapMaxCoords = 32000;
 
 // CDlgTableMap message handlers
 BOOL CDlgTableMap::OnInitDialog()
@@ -225,22 +229,22 @@ BOOL CDlgTableMap::OnInitDialog()
 
 	// Setup text entry fields and spinners
 	m_Left.SetWindowText("0");
-	m_LeftSpin.SetRange(0, 1600);
+	m_LeftSpin.SetRange(0, kTablemapMaxCoords);
 	m_LeftSpin.SetPos(0);
 	m_LeftSpin.SetBuddy(&m_Left);
 
 	m_Top.SetWindowText("0");
-	m_TopSpin.SetRange(0, 1600);
+	m_TopSpin.SetRange(0, kTablemapMaxCoords);
 	m_TopSpin.SetPos(0);
 	m_TopSpin.SetBuddy(&m_Top);
 
 	m_Right.SetWindowText("0");
-	m_RightSpin.SetRange(0, 1600);
+	m_RightSpin.SetRange(0, kTablemapMaxCoords);
 	m_RightSpin.SetPos(0);
 	m_RightSpin.SetBuddy(&m_Right);
 
 	m_Bottom.SetWindowText("0");
-	m_BottomSpin.SetRange(0, 1600);
+	m_BottomSpin.SetRange(0, kTablemapMaxCoords);
 	m_BottomSpin.SetPos(0);
 	m_BottomSpin.SetBuddy(&m_Bottom);
 
