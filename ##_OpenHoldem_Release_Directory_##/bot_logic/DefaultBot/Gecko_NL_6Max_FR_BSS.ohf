@@ -227,8 +227,8 @@ pt_bb_fold_to_steal_headsupchair
 pt_sb_fold_to_steal_headsupchair
 
 ##f$pt_wtsd##
-// WHEN pt_hands_headsupchair < f$pt_min_hands_for_opponent_modelling RETURN 0 FORCE
-pt_wtsd_headsupchair
+WHEN pt_hands_headsupchair >= f$pt_min_hands_for_opponent_modelling RETURN pt_wtsd_headsupchair FORCE
+When Others Return 0.35 Force
 
 ##f$pt_hands##
 pt_hands_headsupchair
