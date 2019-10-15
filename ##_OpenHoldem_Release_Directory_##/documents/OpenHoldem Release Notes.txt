@@ -33,7 +33,8 @@ BUG FIXES:
   
 MAINTENANCE:
 - Title proprocessing: handling more special characters.
-  Thanks to Diku for the patch.
+  Thanks to Raise81, Eddo and Toto for reporting specual characters.
+  Thanks to Diku for a patch.
   [THF]
 - Title proprocessing: now silently logging unknown characxters,
   no longer shooting a replay-frame and no longer showing an error.message.
