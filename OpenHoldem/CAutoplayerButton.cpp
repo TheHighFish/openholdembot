@@ -175,7 +175,7 @@ bool CAutoplayerButton::IsLabelPrefold() {
 }
 
 bool CAutoplayerButton::IsNameI86() {
-  return (_technical_name.MakeLower().Left(3) == "i86");
+  return (_technical_name.Left(3).MakeLower() == "i86");
 }
 
 

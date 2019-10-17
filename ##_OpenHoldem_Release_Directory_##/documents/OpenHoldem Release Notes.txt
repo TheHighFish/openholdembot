@@ -41,6 +41,9 @@ BUG FIXES:
   [THF]
 - The symbol ishandup did not work.
   [Stars83]
+- Handling interface-buttons i86A..i86F did no longer work due to a MakeLower() in the code.
+  Thanks to Lick for reporting.
+  [THF]
   
 MAINTENANCE:
 - Title proprocessing: handling more special characters.
