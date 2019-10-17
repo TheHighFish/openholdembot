@@ -5,10 +5,21 @@ NEW STUFF:
   bigstackchair, smallstackchair.
   Thanks to Trish for the suggestion
   [THF]
-  
-"OpenPPL_Library_Tournament_Symbols.ohf",
-
-StartingStackSize
+- New symbol StartingBigBlindSize, meant for better recognition
+  of tournament levels.
+  [THF]
+- New tournament symbols
+	* PreBubble
+	* InTheMoney
+	* IsBubble
+	* TableIsThreeHanded
+	* TableIsShortHanded
+	* TableIsFullRing
+	* TableIsMultiTable
+	* PaidPlaces
+	* PlayersLeftInTournament
+	* PlayersLeftInMultiTableTournament
+  [Trish]
 
 BUG FIXES:
 - OpenEndedStraightDrawPossibleOnFlop did not consider 
@@ -26,10 +37,10 @@ BUG FIXES:
   [THF]
 - The function GetTableTitle() of the user.DLL incorrectly returned the title of Openholdem
   instead of the title of the table.
-  Thanks to plutus for reporting.
+  Thanks to Plutus for reporting.
   [THF]
 - The symbol ishandup did not work.
-  {Stars83]
+  [Stars83]
   
 MAINTENANCE:
 - Title proprocessing: handling more special characters.

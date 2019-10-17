@@ -64,8 +64,8 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 // Version
-#define VERSION_NUMBER			12.03
-#define VERSION_TEXT				"12.0.3.0"  // change version number in ManualMode.rc also, when needed
+#define VERSION_NUMBER			13.13
+#define VERSION_TEXT				"13.1.3.0"  // change version number in ManualMode.rc also, when needed
 
 #ifdef _UNICODE
 #if defined _M_IX86

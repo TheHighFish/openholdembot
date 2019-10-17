@@ -63,7 +63,7 @@
 // ======================================================================================
 
 // Version
-#define VERSION_NUMBER			13.1.3
+#define VERSION_NUMBER			13.13
 #define VERSION_TEXT				"13.1.3"  // change version number in OpenScrape.rc also, when needed
 
 #include "..\StructsDefines\structs_defines.h"
