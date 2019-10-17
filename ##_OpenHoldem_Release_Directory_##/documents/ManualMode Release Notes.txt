@@ -1,4 +1,4 @@
-﻿v﻿13.1.3 2019-10-xx
+﻿v﻿13.1.3 2019-10-17
 ==================
 MAINTENANCE:
 - Clicking "Macro" causes now first a reset of the table
