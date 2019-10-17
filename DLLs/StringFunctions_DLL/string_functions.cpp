@@ -501,8 +501,8 @@ double StringToMoney(const CString inStr) {
   int					     iValueWithCurrencySymbol = -1;
   bool				     currencySymbol = false;
 #ifdef OPENHOLDEM_PROGRAM
-  write_log(preferences.debug_scraper(),
-    "[CTransform] StringToMoney %s\n", inStr);
+  //!!!write_log(preferences.debug_scraper(),
+    ///"[CTransform] StringToMoney %s\n", inStr);
 #endif 
   if (strlen(inStr) == 0) {
     return kUndefinedZero;
@@ -618,7 +618,7 @@ void WarnAboutNonASCIICharacters(const CString *s) {
         "Please report to the developers\n"
         "http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20167",
         char_value, signed_char_value, s);
-      write_log(k_always_log_errors, message);
+      ///!!!write_log(k_always_log_errors, message);
     }
   }
 }
