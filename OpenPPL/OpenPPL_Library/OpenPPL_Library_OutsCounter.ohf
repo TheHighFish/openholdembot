@@ -1,7 +1,71 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+//
 // Based on the outs-counter by HTC, CiderTime and Winngy
+//
 // Technical changes
 //   * split code, introducing NOutsFlop and NOutsTurn
 //   * replaced f$rankhiflop by TopFlopCard, similar for mid and lo.
+//   * replaced f$bothcards by npcbits
+//
+//*****************************************************************************
 
 ##NOutd##
 WHEN IsFlop RETURN NOutsFlop FORCE
@@ -34,7 +98,7 @@ WHEN IsTurn RETURN NOutsTurn FORCE
   rankhiplayer-rankloplayer<=2 &&
   ((rankbits&16398) != 16398 && (rankbits&28674) != 28674)   )              ? 8 :
  nstraightfill==1 && nstraightfillcommon>=2 && !((ranklocommon>8 &&
- f$bothcards==1) && (islopair || ismidpair))                                ? 4 : 0)+
+ npcbits==1) && (islopair || ismidpair))                                ? 4 : 0)+
 
 //OVERCARD OUTS
 (rankloplayer>rankhicommon && rankloplayer>=11 && nopponentsplaying==1 &&
@@ -127,7 +191,6 @@ WHEN IsTurn RETURN NOutsTurn FORCE
 
 
 ##NOutsTurn##
-
 //2P OUTS cider
 (pokerval&twopair && nrankedcommon==1                                       ? 4 :
  pokerval&twopair && pokervalcommon<twopair && nrankedcommon>=2
@@ -220,46 +283,4 @@ WHEN IsTurn RETURN NOutsTurn FORCE
  nsuitedcommon==3 && nsuited>nsuitedcommon &&
  `((~srankbits&0x7ffe)>>srankhiplayer)<=2                                   ? 2 :
  nsuitedcommon==3                                                           ? 8 : 0):0}
-
  
- 
- 
- 
-##f$bothcards##
-// 2 means both my cards are used in my hand
-/*
-!(ispair) &&
-
-      (
-       ($$pr0==f$rankhiflop) || ($$pr0==f$rankmidflop) ||
-       ($$pr0==f$rankloflop) || ($$pr0==$$cr3)         ||
-       ($$pr0==$$cr4)                                    )
-
-       &&
-
-      (
-       ($$pr1==f$rankhiflop) || ($$pr1==f$rankmidflop) ||
-       ($$pr1==f$rankloflop) || ($$pr1==$$cr3)         ||
-       ($$pr1==$$cr4)                                    )
-
-
-       ? 2 :
-
-
-!(ispair) &&
-
-      (
-       ($$pr0==f$rankhiflop) || ($$pr0==f$rankmidflop) ||
-       ($$pr0==f$rankloflop) || ($$pr0==$$cr3)         ||
-       ($$pr0==$$cr4)                                    )
-
-       ||
-
-      (
-       ($$pr1==f$rankhiflop) || ($$pr1==f$rankmidflop) ||
-       ($$pr1==f$rankloflop) || ($$pr1==$$cr3)         ||
-       ($$pr1==$$cr4)                                    )
-
-       ? 1 :  0
-	   */
-	   npcbits
