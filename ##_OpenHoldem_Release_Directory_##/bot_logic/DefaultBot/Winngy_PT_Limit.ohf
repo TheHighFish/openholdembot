@@ -15,6 +15,9 @@
   * introducing f$callshort and f$raisshort
     in order to support the old, removed symbols
   * replaced a didswag by didrais, as this is a FL-bot
+  * replaced ot_icon by new functions:
+    f$OpponentIsLoosePassive, f$OpponentIsSemiLoosePassiveAggressive
+	and f$OpponentIsLooseAggressive
   
 ##f$sitin##
 // SITIN RULE - Based on players 
@@ -1406,7 +1409,12 @@ isthreeofakind && ispair
 f$callshort + (bet * nplayersplaying)
 
 ##f$OpponentIsLoosePassive##
+WHEN (nplayersdealt >  6) AND (pt_vpip_headsupchair > 0.25) AND (pt_total_af_headsupchair < 1.5) RETURN true FORCE
+WHEN (nplayersdealt <= 6) AND (pt_vpip_headsupchair > 0.30) AND (pt_total_af_headsupchair < 1.5) RETURN true FORCE
 
 ##f$OpponentIsSemiLoosePassiveAggressive##
+WHEN (pt_vpip_headsupchair - pt_pfr_headsupchair > 0.1) AND (pt_total_af_headsupchair > 2.0) RETURN true FORCE
 
 ##f$OpponentIsLooseAggressive##
+WHEN (nplayersdealt >  6) AND (pt_vpip_headsupchair > 0.25) AND (pt_total_af_headsupchair > 2.0) RETURN true FORCE
+WHEN (nplayersdealt <= 6) AND (pt_vpip_headsupchair > 0.30) AND (pt_total_af_headsupchair > 2.0) RETURN true FORCE
