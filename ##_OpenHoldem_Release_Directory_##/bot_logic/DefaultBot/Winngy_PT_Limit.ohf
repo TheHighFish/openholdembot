@@ -3,8 +3,10 @@
   * Removed unused lists (all two!)
   * OpenPPL-ification
     - introduced f$preflop .. f$river and split the original code accordingly
-    - Replaced all br==2 by Isflop, same for the other betting-rounds
-  * Turned WinGoldems f$play to f$sitin / f$sitout / f$leave
+	- replaced these functions further by Winngy_FixedLimit_Preflop, ...
+	  for integration as a default-bot.
+    - eeplaced all br==2 by Isflop, same for the other betting-rounds
+  * Turned WinHoldems f$play to f$sitin / f$sitout / f$leave
   * renamed f$P to f$prwin_number_of_opponents
   * Vebosity:
     - renamed f$NESTR -> f$NoEasyStraightDraw
@@ -18,6 +20,7 @@
   * replaced pt_icon by new functions:
     f$OpponentIsLoosePassive, f$OpponentIsSemiLoosePassiveAggressive
 	and f$OpponentIsLooseAggressive
+  * Simplified f$Raiser_pfr, which uses nowthe multiplexer
   
 ##f$sitin##
 // SITIN RULE - Based on players 
@@ -66,7 +69,7 @@ IsRiver   ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-d
 ##f$prwin_number_of_iterations##
 50000
 
-##f$preflop##
+##Winngy_FixedLimit_Preflop##
 WHEN NOT (f$Fold OR f$NoRaise)
    WHEN f$RaisePreflop RaiseMin FORCE
    WHEN ((f$defendblinds > 1) OR (f$stealblinds > 1)) RaiseMin FORCE
@@ -76,7 +79,7 @@ WHEN NOT f$Fold
 WHEN Others
    WHEN Others Fold FORCE
 
-##f$flop##
+##Winngy_FixedLimit_Flop##
 WHEN NOT (f$Fold OR f$NoRaise)
    WHEN f$RaisePostflop RaiseMin FORCE
    WHEN ((f$defendblinds > 1) OR (f$stealblinds > 1)) RaiseMin FORCE
@@ -86,7 +89,7 @@ WHEN NOT f$Fold
 WHEN Others
    WHEN Others Fold FORCE
 
-##f$turn##
+##Winngy_FixedLimit_Turn##
 WHEN NOT (f$Fold OR f$NoRaise)
    WHEN f$RaisePostflop RaiseMin FORCE
    WHEN ((f$defendblinds > 1) OR (f$stealblinds > 1)) RaiseMin FORCE
@@ -96,7 +99,7 @@ WHEN NOT f$Fold
 WHEN Others
    WHEN Others Fold FORCE
 
-##f$river##
+##Winngy_FixedLimit_River##
 WHEN NOT (f$Fold OR f$NoRaise)
    WHEN f$RaisePostflop RaiseMin FORCE
    WHEN f$RaiseRiver RaiseMin FORCE
@@ -622,16 +625,8 @@ dealposition==3 ? 3 : 0):  0
 (f$Raiser_pfr * 169 * 0.70)
 
 ##f$Raiser_pfr##
-[(raischair==0 ? pt_hands0<30 ? 0.10 : 0 : 
- raischair==1 ? pt_hands1<30 ? 0.10 : pt_pfr1 : 
- raischair==2 ? pt_hands2<30 ? 0.10 : pt_pfr2 : 
- raischair==3 ? pt_hands3<30 ? 0.10 : pt_pfr3 : 
- raischair==4 ? pt_hands4<30 ? 0.10 : pt_pfr4 : 
- raischair==5 ? pt_hands5<30 ? 0.10 : pt_pfr5 : 
- raischair==6 ? pt_hands6<30 ? 0.10 : pt_pfr6 : 
- raischair==7 ? pt_hands7<30 ? 0.10 : pt_pfr7 : 
- raischair==8 ? pt_hands8<30 ? 0.10 : pt_pfr8 : 
- raischair==9 ? pt_hands9<30 ? 0.10 : pt_pfr9 : 0) ]
+WHEN pt_hands_raischair < 30 RETURN 0.10 FORCE
+WHEN Others RETURN pt_pfr_raischair FORCE
 
 ##f$tight_openers##
 // OPENING HANDS TO RAISE (5 or less players on average flop)
@@ -1346,7 +1341,7 @@ isthreeofakind && ispair
 
 // You have one pair (not a pocket pair) and there is an ace on the board.  Your highest card is less than an ace.
 // You do not have a redraw.  Two or more opponents have bet and raised making it two bets to you.  Don't be stupid.
-|| [ br>=3 && !ispair && isonepair && nrankedcommon==1 && rankhicommon==14 && trank<=13 && nopponentsbetting>=2 && nbetsround>=2 && !f$DRAWS  ]
+|| [ IsTurn && !ispair && isonepair && nrankedcommon==1 && rankhicommon==14 && trank<=13 && nopponentsbetting>=2 && nbetsround>=2 && !f$DRAWS  ]
 
 // Round two.  You have pair (even top pair) and no kicker.  Opponents could have flush draw and possible backdoor straight.  
 || [ IsFlop && !f$DRAWS && isonepair && pokerval<twopair && nsuitedcommon==2 && nstraightfillcommon==3 && f$kicker_rank<1 && ncallbets>0 ] 
