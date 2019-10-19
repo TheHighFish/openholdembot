@@ -67,7 +67,7 @@
 //
 //*****************************************************************************
 
-##NOutd##
+##NOuts##
 WHEN IsFlop RETURN NOutsFlop FORCE
 WHEN IsTurn RETURN NOutsTurn FORCE
 
