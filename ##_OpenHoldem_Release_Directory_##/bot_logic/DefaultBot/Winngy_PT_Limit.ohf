@@ -775,7 +775,7 @@ WHEN Others RETURN pt_pfr_raischair FORCE
 || [IsFlop && dealposition<=2 && 
    (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
     didraisround1 && !didcallround1 && 
-    NOT f$OpponentIsLooseAggressive<11 && (
+    NOT f$OpponentIsLooseAggressive && (
         ispair
      || $Axs
      || rankloplayer>=10
