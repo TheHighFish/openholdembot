@@ -1,4 +1,12 @@
-﻿﻿v﻿13.1.3 2019-10-17
+﻿﻿v﻿14.0.0 2020-01-01
+==================
+BUG FIXES:
+- The technical symnol RankHiPlayer_DominantSuit was not accurate.
+  This could affect symbols like HaveNutFlush.
+  Thanks to Diku for reporting and for suggesting a fix.
+  [THF]
+
+﻿v﻿13.1.3 2019-10-17
 ==================
 NEW STUFF:
 - Additional postfixes for the multiplexer: 
