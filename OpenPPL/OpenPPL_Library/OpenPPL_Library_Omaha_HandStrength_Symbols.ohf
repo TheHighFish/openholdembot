@@ -94,7 +94,8 @@ hand$99 ? 9 :
 hand$TT ? 10 :   
 hand$JJ ? 11 :   
 hand$QQ ? 12 :   
-hand$KK ? 13 :   
+hand$KK ? 13 :
+hand$AA ? 14 :
 HINT_There_Is_No_Pair_In_Hand__MinusOne  	
 
 ##HINT_There_Is_No_Pair_In_Hand__MinusOne##
