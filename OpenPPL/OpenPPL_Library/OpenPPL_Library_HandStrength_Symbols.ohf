@@ -323,6 +323,11 @@ WHEN Others RETURN HoldEm_HaveGoodFlushDrawContributingOnlyOneCard FORCE
 WHEN isomaha RETURN Omaha_HaveFullHouse FORCE
 WHEN Others RETURN HoldEm_HaveFullHouse FORCE
 
+##HaveNutFullHouse##
+WHEN NOT HaveFullHouse RETURN false FORCE
+WHEN HaveTopSet RETURN true FORCE
+WHEN HaveOverTrips AND HaveTopTwoPair RETURN true FORCE
+
 ##HaveNothing##
 WHEN HaveOverPairOrBetter RETURN false FORCE
 WHEN HavePair RETURN false FORCE
@@ -379,10 +384,13 @@ WHEN isomaha RETURN Omaha_HaveInsideStraightDraw FORCE
 WHEN Others RETURN HoldEm_HaveInsideStraightDraw FORCE
 
 ##HaveNuts##
+WHEN ismyturn and (nhandshi == 0) RETURN true FORCE
+// Above code for not my turn
 WHEN HaveNutStraightFlush RETURN true FORCE
 WHEN StraightFlushPossibleByOthers RETURN false FORCE
-WHEN Omaha_HaveNutQuads RETURN true FORCE
-WHEN Omaha_HaveNutFullHouse RETURN true FORCE
+WHEN HaveNutQuads RETURN true FORCE
+WHEN QuadsPossibleByOthers RETURN false FORCE
+WHEN HaveNutFullHouse RETURN true FORCE
 WHEN PairOnBoard RETURN false FORCE
 WHEN HaveNutFlush RETURN true FORCE
 WHEN FlushPossible RETURN false FORCE
@@ -406,6 +414,10 @@ WHEN Others RETURN HoldEm_HaveOpenEndedStraightDraw FORCE
 ##HaveQuads##
 WHEN isomaha RETURN Omaha_HaveQuads FORCE
 WHEN Others RETURN HoldEm_HaveQuads FORCE
+
+##HaveNutQuads##
+WHEN isomaha RETURN Omaha_HaveNutQuads FORCE
+WHEN Others RETURN HoldEm_HaveNutQuads FORCE
 
 ##HaveOverPair##
 WHEN isomaha RETURN Omaha_HaveOverPair FORCE

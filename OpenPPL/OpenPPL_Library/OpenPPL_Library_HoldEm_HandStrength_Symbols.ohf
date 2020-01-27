@@ -1021,6 +1021,17 @@ OR ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT
 ##HoldEm_HaveQuads##
 [ isfourofakind AND (nrankedcommon < 4) ]
 
+##HoldEm_HaveNutQuads##
+WHEN NOT isfourofakind RETURN false FORCE
+WHEN PairInHand AND RankOfFirstHoleCard==RankOfTopPairOnBoard RETURN true FORCE
+WHEN NOT PairInHand AND TripsOnBoard AND TripsRank==RankOfTopPairOnBoard RETURN true FORCE
+WHEN NOT QuadsOnBoard RETURN false FORCE
+WHEN hand$A RETURN true FORCE
+WHEN hand$K AND RankOfTopPairOnBoard == ace RETURN true FORCE
+// Split pot scenarios
+WHEN RankOfTopPairOnBoard < ace AND BestBoardCard == ace RETURN true FORCE
+WHEN RankOfTopPairOnBoard == ace AND SecondBestBoardCard == king RETURN true FORCE
+
 ##HoldEm_HaveOverPair##
 ispair AND (rankhiplayer > rankhicommon)
 

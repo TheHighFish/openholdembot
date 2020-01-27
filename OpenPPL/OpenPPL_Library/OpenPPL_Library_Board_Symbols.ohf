@@ -397,17 +397,25 @@ NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 ##RankbitsOpponentsAndBoard_DominantSuitCommon##
 Srankbitsavailable BitOr RankbitsCommon_DominantSuitCommon
 
+##QuadsPossibleByOthers##
+WHEN NOT PairOnBoard  RETURN false FORCE
+WHEN RankOfTopPairOnBoard==RankOfBottomPairOnBoard AND HaveTrips RETURN false FORCE
+WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfFirstHoleCard==RankOfTopPairOnBoard AND RankOfSecondHoleCard==RankOfBottomPairOnBoard RETURN false FORCE
+WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfSecondHoleCard==RankOfTopPairOnBoard AND RankOfFirstHoleCard==RankOfBottomPairOnBoard RETURN false FORCE
+WHEN Others RETURN true FORCE
+
 ##StraightFlushPossibleByOthers##
-   [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b11111000000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b11111000000000) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b01111100000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b01111100000000) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00111110000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00111110000000) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00011111000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00011111000000) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00001111100000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00001111100000) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000111110000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000111110000) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000011111000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000011111000) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000001111100) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000001111100) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000000111110) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000000111110) == 5)]
-OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b00000000011111) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b00000000011111) == 5)]
+// .......................................................AKQJT98765432a-             ...............................................................AKQJT98765432a-       
+   [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b111110000000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b111110000000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b011111000000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b011111000000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b001111100000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b001111100000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000111110000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000111110000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000011111000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000011111000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000001111100000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000001111100000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000111110000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000111110000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000011111000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000011111000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000001111100) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000001111100) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000000111110) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000000111110) == 5)]
 
 ##SuitsOnBoard##
 IsFlop  ? SuitsOnFlop :

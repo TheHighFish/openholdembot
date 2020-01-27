@@ -356,16 +356,8 @@ Omaha_FlushDraw_Counter == 2
 OR (RankOfTopPairInHand > 0 AND TripsOnBoard)
 OR (HaveTrips AND BitCount(rankbitsplayer & rankbitscommon & ConstAllRanksWithoutAceLow)>=2)
 
-
-##Omaha_HaveNutFullHouse##
-WHEN IsPreflop RETURN false FORCE
-WHEN HaveTopTrips
-AND RankOfTopPairOnBoard == BestBoardCard
-AND HaveSecondTopPair RETURN true FORCE
-
 ##Omaha_NutFullHouseOrFourOfAKind##
 msgbox$NutFullHouseOrFourOfAKind_Unot_Uyet_Uimplemented_D
-
 
 ##Omaha_HaveNutStraight##
 WHEN NOT Omaha_HaveStraight RETURN false FORCE
@@ -418,6 +410,10 @@ WHEN RankOfTopPairOnBoard == RankOfTopPairInHand RETURN true FORCE
 WHEN RankOfTopPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
 WHEN RankOfBottomPairOnBoard == RankOfTopPairInHand RETURN true FORCE
 WHEN RankOfBottomPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
+
+##Omaha_HaveNutQuads##
+WHEN NOT Omaha_HaveQuads RETURN false FORCE
+WHEN HaveTopTrips RETURN true FORCE
 
 ##Omaha_HaveNutQuads##
 WHEN (HaveQuads AND TripsOnBoard) RETURN true FORCE
