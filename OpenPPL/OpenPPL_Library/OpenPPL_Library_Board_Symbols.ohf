@@ -397,11 +397,24 @@ NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
 ##RankbitsOpponentsAndBoard_DominantSuitCommon##
 Srankbitsavailable BitOr RankbitsCommon_DominantSuitCommon
 
+##RankTripsOnBoard##
+WHEN IsPreflop RETURN false FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == TurnCard AND TurnCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  SecondFlopCard FORCE
+WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  SecondFlopCard FORCE
+WHEN SecondFlopCard == TurnCard AND TurnCard == RiverCard RETURN  SecondFlopCard FORCE
+WHEN ThirdFlopCard == TurnCard AND TurnCard == RiverCard RETURN  ThirdFlopCard FORCE
+
+
 ##QuadsPossibleByOthers##
 WHEN NOT PairOnBoard  RETURN false FORCE
 WHEN RankOfTopPairOnBoard==RankOfBottomPairOnBoard AND HaveTrips RETURN false FORCE
-WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfFirstHoleCard==RankOfTopPairOnBoard AND RankOfSecondHoleCard==RankOfBottomPairOnBoard RETURN false FORCE
-WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfSecondHoleCard==RankOfTopPairOnBoard AND RankOfFirstHoleCard==RankOfBottomPairOnBoard RETURN false FORCE
+WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND HaveTopTrips AND HaveBottomTrips RETURN false FORCE
 WHEN Others RETURN true FORCE
 
 ##StraightFlushPossibleByOthers##

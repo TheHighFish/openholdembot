@@ -386,18 +386,6 @@ Omaha_StraightDraw_Outs >= 4
 ##Omaha_HaveOpenEndedStraightDraw##
 Omaha_StraightDraw_Outs >= 8
 
-##RankTripsOnBoard##
-WHEN IsPreflop RETURN false FORCE
-WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard RETURN  FirstFlopCard FORCE
-WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard RETURN  FirstFlopCard FORCE
-WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == RiverCard RETURN  FirstFlopCard FORCE
-WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  FirstFlopCard FORCE
-WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  FirstFlopCard FORCE
-WHEN FirstFlopCard == TurnCard AND TurnCard == RiverCard RETURN  FirstFlopCard FORCE
-WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  SecondFlopCard FORCE
-WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  SecondFlopCard FORCE
-WHEN SecondFlopCard == TurnCard AND TurnCard == RiverCard RETURN  SecondFlopCard FORCE
-WHEN ThirdFlopCard == TurnCard AND TurnCard == RiverCard RETURN  ThirdFlopCard FORCE
 
 ##Omaha_HaveQuads##
 WHEN NOT PairOnBoard RETURN false FORCE

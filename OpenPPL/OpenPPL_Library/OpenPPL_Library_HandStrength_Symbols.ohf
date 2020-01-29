@@ -327,6 +327,8 @@ WHEN Others RETURN HoldEm_HaveFullHouse FORCE
 WHEN NOT HaveFullHouse RETURN false FORCE
 WHEN HaveTopSet RETURN true FORCE
 WHEN HaveOverTrips AND HaveTopTwoPair RETURN true FORCE
+WHEN hand$AA AND RankTripsOnBoard==BestBoardCard RETURN true FORCE
+WHEN hand$KK AND RankTripsOnBoard==ace RETURN true FORCE
 
 ##HaveNothing##
 WHEN HaveOverPairOrBetter RETURN false FORCE
