@@ -170,10 +170,6 @@ WHEN ((FirstFlopSuit == SecondFlopSuit) AND (ThirdFlopSuit == TurnSuit) AND (Fir
 // Both ignored.
 -1
 
-##FourthTopPairRank##
-// ??? Unclear
-(RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard) ? FourthBestBoardCard : 0
-
 ##FullHouseOnBoard##
 (pokervalcommon & fullhouse)
 

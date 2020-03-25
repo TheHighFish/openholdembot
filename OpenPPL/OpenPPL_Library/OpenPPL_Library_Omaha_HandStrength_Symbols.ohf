@@ -262,22 +262,6 @@ WHEN hand$QQ AND (BestBoardCard < queen) RETURN true FORCE
 WHEN IsPreflop RETURN false FORCE
 WHEN (RankOfTopPairInHand < SecondBestBoardCard) AND (RankOfTopPairInHand > ThirdBestBoardCard) RETURN true FORCE
 
-
-##Omaha_TopPairRank##
-HaveTopPair ? BestBoardCard : 0
-
-##Omaha_SecondTopPairRank##
-HaveSecondTopPair ? SecondBestBoardCard : 0
-
-##Omaha_ThirdTopPairRank##
-HaveThirdTopPair ? ThirdBestBoardCard : 0
-
-##Omaha_FourthTopPairRank##
-HaveFourthTopPair ? FourthBestBoardCard : 0
-
-##Omaha_FifthTopPairRank##
-HaveFifthTopPair ? FifthBestBoardCard : 0
-
 ##Omaha_HaveThirdTopSet##
 WHEN IsPreflop RETURN false FORCE
 WHEN RankOfTopPairInHand > 0
@@ -549,7 +533,7 @@ WHEN SuitOfThirdFlopCard == SuitOfTurnCard
 	AND (SuitOfFirstFlopCard != SuitOfThirdFlopCard) RETURN true FORCE
 
 ##Omaha_SuitsInHand##
-  (suitbitsplayer_clubs    ? 1 : 0)
+   (suitbitsplayer_clubs  ? 1 : 0)
 + (suitbitsplayer_diamonds ? 1 : 0)
 + (suitbitsplayer_hearts   ? 1 : 0)
 + (suitbitsplayer_spades   ? 1 : 0)
