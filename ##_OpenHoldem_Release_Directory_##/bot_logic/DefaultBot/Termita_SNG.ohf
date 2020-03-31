@@ -750,7 +750,7 @@ When OpponentIsAllin And InSmallBlind And AmountToCall >= 2.5 Return true FORCE
 When OpponentIsAllin And AmountToCall >= 3 Return true FORCE
 
 ##f$Mzone##
-(balance / (bblind + sblind + ante))
+balance / (bblind + sblind + (ante*nplayersseated))
 
 ##f$TableMzone##
 ((f$TableAverageStackAtStartOfHand*bblind)  / (bblind + sblind + ante))
