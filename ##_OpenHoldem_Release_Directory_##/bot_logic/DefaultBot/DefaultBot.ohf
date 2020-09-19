@@ -43,8 +43,8 @@ WHEN Others RETURN Gecko_6Max_FR_NL_BSS_River FORCE
 
 ##f$prefold##
 WHEN isomaha RETURN false FORCE
+WHEN isfl RETURN Winngy_FixedLimit_Prefold FORCE
 WHEN istournament RETURN Termita_SNG_Prefold FORCE
-// No prefold for Winngy ATM
 WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Prefold FORCE
 
 //*****************************************************************************
