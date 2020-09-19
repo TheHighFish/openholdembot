@@ -184,6 +184,21 @@ WHEN Others RETURN HoldEm_HaveThirdOverPair FORCE
 ##HaveFifthTopPair##
 (((rankbitsplayer >> FifthBestBoardCard) BitAnd 1) == 1)
 
+##TopPairRank##
+HaveTopPair ? BestBoardCard : 0
+
+##SecondTopPairRank##
+HaveSecondTopPair ? SecondBestBoardCard : 0
+
+##ThirdTopPairRank##
+HaveThirdTopPair ? ThirdBestBoardCard : 0
+
+##FourthTopPairRank##
+HaveFourthTopPair ? FourthBestBoardCard : 0
+
+##FifthTopPairRank##
+HaveFifthTopPair ? FifthBestBoardCard : 0
+
 ##HaveThirdTopSet##
 WHEN isomaha RETURN Omaha_HaveThirdTopSet FORCE
 WHEN Others RETURN HoldEm_HaveThirdTopSet FORCE

@@ -1096,7 +1096,7 @@ IsTurn ? (f$OutOdds*1.2)>f$PotOdds : 0
 [ f$nOuts/46 ]
 
 ##f$PotOdds##
-[call / (EffectivePotSizeInDollars + f$ImpliedOdds)]
+[call / (EffectivePotSizeInDollars + call + f$ImpliedOdds)]
     
 ##f$ImpliedOdds##
 IsFlop ? ((nopponentsbetting*.50)*bet4*1.5) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4*1.25) : 

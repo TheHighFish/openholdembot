@@ -335,9 +335,6 @@ RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBo
 ##HoldEm_HaveFifthTopPair##
 RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard 
 
-##FifthTopPairRank##
-(RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard) ? FifthBestBoardCard: 0
-
 ##HoldEm_HaveThirdTopSet##
 ispair AND RankOfFirstHoleCard == ThirdBestBoardCard
 
@@ -1132,20 +1129,10 @@ OR [(betround >= flop) AND (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
 ##HoldEm_HaveTopPair##
 [ RankOfFirstHoleCard==rankhicommon OR RankOfSecondHoleCard==rankhicommon ]
 
-##TopPairRank##
-WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfFirstHoleCard  FORCE
-WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfSecondHoleCard FORCE
-WHEN Others RETURN 0 FORCE
-
 ##TopPairKickerRank##
 WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfSecondHoleCard  FORCE
 WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfFirstHoleCard FORCE
 WHEN Others RETURN 0 FORCE
-
-##SecondTopPairRank##
-HaveSecondTopPair AND RankOfFirstHoleCard  == SecondBestBoardCard ? RankOfFirstHoleCard :
-HaveSecondTopPair AND RankOfSecondHoleCard == SecondBestBoardCard ? RankOfSecondHoleCard :
-0
 
 ##HoldEm_HaveTopSet##
 (ispair AND (rankhiplayer == rankhicommon))

@@ -186,6 +186,7 @@
 //       f$nOuts_FlushDraw, f$nOuts_Overcards, f$nOuts_StraightDraw, f$nOuts_DrawingPair
 //       f$nOuts_DrawingTwoPair, f$nOuts_DrawingSets, f$nOuts_BackdoorDraws
 //   * Replaces "ispair" by "PairInHand"
+//   * Modified f$PotOdds Changed from strict PotOdds to reflect -- Required Equity To Call
 //
 // LOGICAL CHANGES:
 //   * Added f$allin_on_betsize_balance_ration to simplify betsizing.
