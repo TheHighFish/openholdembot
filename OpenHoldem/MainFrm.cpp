@@ -113,6 +113,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_MESSAGE(WMA_SETFLAG,       &COpenHoldemHopperCommunication::OnSetFlagMessage)
 	ON_MESSAGE(WMA_RESETFLAG,     &COpenHoldemHopperCommunication::OnResetFlagMessage)
 	ON_MESSAGE(WMA_ISREADY,       &COpenHoldemHopperCommunication::OnIsReadyMessage)
+	ON_MESSAGE(WMA_GETSYMBOL,     &COpenHoldemHopperCommunication::OnGetSymbolMessage)
 
 	// Flags
 	ON_BN_CLICKED(ID_NUMBER0,  &CMainFrame::OnClickedFlags)

@@ -131,3 +131,14 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 }
 
 
+LRESULT COpenHoldemHopperCommunication::OnGetSymbol(WPARAM, LPARAM symbol) {
+	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8008: OnGetSymbolMessage\n");
+	CString symbol = ;
+        write_log(Preferences()->debug_hopper_messages(), 
+			"Symbik: %s\n", symbol);
+	double value = kUndefined;
+	p_engine_container->EvaluateSymbol(symbol, &value);
+        write_log(Preferences()->debug_hopper_messages(), 
+			"Value: %.3f\n", value);
+	return value;
+}
