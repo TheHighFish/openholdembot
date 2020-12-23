@@ -21,6 +21,7 @@
 *.suo
 *.vspx
 ..bfg-report
+UpgradeLog*
 Debug
 DLLs/DLL_Template
 Documentation/OpenHoldem_Manual.chm
