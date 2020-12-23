@@ -66,6 +66,7 @@ When f$MiddleStage Return f$Termita_SNG_Preflop_MiddleStage FORCE
 When f$Stack_0_2 RaiseMax Force
 // Temp Out Trish
 //When f$HandRank2Way <= (2652*f$SS_Blind_HU_Log) RaiseMax FORCE
+When handrank2652 <= (2652*f$SS_Blind_HU_Log) RaiseMax FORCE
 
 WHEN InSmallBlind
    WHEN BotsLastAction = Raise AND f$Stack_12P AND listHUCat1 RaiseMax FORCE
