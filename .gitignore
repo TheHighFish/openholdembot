@@ -17,6 +17,7 @@
 *.manifest
 *.lastbuildstate
 *.opendb
+*.opensdf
 *.sdf
 *.suo
 *.vspx

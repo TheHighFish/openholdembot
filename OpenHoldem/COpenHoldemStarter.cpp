@@ -19,6 +19,7 @@
 
 #include "CSharedMem.h"
 #include "CSessionCounter.h"
+#include "CSymbolEngineCasino.h"
 #include "CSymbolEngineTime.h"
 #include "OpenHoldem.h"
 
@@ -58,6 +59,10 @@ void COpenHoldemStarter::StartNewInstanceIfNeeded() {
     // This might delay auto-starting until the first connection, which is OK.
     write_log(Preferences()->debug_autostarter(), "[COpenHoldemStarter] Not my business to start new instances.\n");
     return;
+  }
+  if (p_engine_container->symbol_engine_casino()->ConnectedToOHReplay()) {
+	  write_log(Preferences()->debug_autoconnector(), "[COpenHoldemStarter] Connected to OHReplay. Disabled for convenience.\n");
+	  return;
   }
   time(&_starting_time_of_last_instance);
   //! delay until next start
