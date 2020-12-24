@@ -40,7 +40,7 @@ public:
     LRESULT OnSetFlagMessage(WPARAM, LPARAM flag_to_set);
     LRESULT OnResetFlagMessage(WPARAM, LPARAM flag_to_reset);
     LRESULT OnIsReadyMessage(WPARAM, LPARAM);
-    LRESULT OnGetSymbol(WPARAM, LPARAM symbol);
+    LRESULT OnGetSymbolMessage(WPARAM, LPARAM symbol);
 protected:
 	DECLARE_MESSAGE_MAP()
 };
