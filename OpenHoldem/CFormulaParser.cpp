@@ -87,7 +87,6 @@ void CFormulaParser::InitNewParse() {
   COHScriptObject* _currently_parsed_function_or_list = NULL;
 }
 
-
 void CFormulaParser::LoadDefaultBot() {
   LoadOptionalFunctionLibrary(DefaultLogicDirectory() + "DefaultBot.ohf");
   LoadOptionalFunctionLibrary(DefaultLogicDirectory() + "Gecko_NL_6Max_FR_BSS.ohf");

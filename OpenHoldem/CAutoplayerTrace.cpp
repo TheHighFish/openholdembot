@@ -100,12 +100,12 @@ void CAutoplayerTrace::Add(CString symbol, double value, bool undefined /* = fal
   if (undefined) {
     // For empty functions with NULL parse-tree
     assert(value == kUndefinedZero);
-    new_message.Format("%s%s = %.3f [undefined]",
+    new_message.Format("%s%s = %.3f   [undefined]",
       Indentation(), symbol, value);
   } else if (COHScriptObject::IsFunction(symbol)
       || COHScriptObject::IsOpenPPLSymbol(symbol)) {
     // Function with known value a priori
-    new_message.Format("%s%s = %.3f [cached]",
+    new_message.Format("%s%s = %.3f   [cached]",
       Indentation(), symbol, value);
   } else {
     // "Normal" symbol
@@ -118,7 +118,7 @@ void CAutoplayerTrace::Add(CString symbol, double value, bool undefined /* = fal
 }
 
 void CAutoplayerTrace::BackPatchValueAndLine(
-    int index, double value, int starting_line_of_function) {
+    int index, double value, int starting_line_of_function, CString path) {
   assert(index >= 0);
   assert(index < _number_of_log_lines);
   // Starting line should be > 0, but auto-generated missing 
@@ -129,11 +129,12 @@ void CAutoplayerTrace::BackPatchValueAndLine(
   // Already done:
   // Indentation, symbol, " = "
   CString complete_message;
-  complete_message.Format("%s%.3f [Line %d/%d]", 
+  complete_message.Format("%s%.3f   [Line %d/%d, %s]", 
     _symboltrace_collection.GetAt(index),
     value,
     _last_evaluated_relative_line_number,
-    executed_absolute_line);
+    executed_absolute_line,
+    FilenameWithoutPath(path));
   _symboltrace_collection.SetAt(index, complete_message);
 }
 
