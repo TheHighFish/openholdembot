@@ -3,8 +3,10 @@
  AutoIt Version: 3.3.12.0
  Author:         TheHighFish
 
- Script Function:
-	Template AutoIt script.
+ Required software:
+  * AutoIT
+  * HTML Help Workshop
+  * 7-zip
 
 #ce ----------------------------------------------------------------------------
 
@@ -88,9 +90,8 @@ CreateArchive()
 MsgBox(0, "Next Step", "The new direcory is at your desktop. A zip-archive has been created. Test ""everything"", at least briefly that OH ""works"".")
 MsgBox(0, "Next Step", "Push everything to GitHub. Then tag the release on GitHub. Comment: ""Tagging OpenHoldem <version> for release"". Then attach the zip-file to the latest release at GitHub")
 ; Open release-notes for announcement
-ShellExecute($release_notes)
-Sleep(1000)
 MsgBox(0, "Next Step", "Announce the new download in ""OpenHoldem Stickies"" and post the release-notes.")
+ShellExecute($release_notes)
 
 Func CopyNeededFile($source_dir, $destination_dir, $name)
    Local $source = $source_dir & "\" & $name
@@ -101,7 +102,7 @@ Func CopyNeededFile($source_dir, $destination_dir, $name)
    EndIf
 EndFunc
 
-Func OpernHoldemVersion()
+Func OpenHoldemVersion()
    Local $version_data = FileReadToArray($version_file)
    Local $line_of_version = _ArraySearch($version_data, "ProductVersion", 0, UBound($version_data), 0, 1)
    Local $version = $version_data[$line_of_version]
@@ -113,7 +114,7 @@ Func OpernHoldemVersion()
 EndFunc
 
 Func NewOpenHoldemDir()
-   Return "OpenHoldem_" & OpernHoldemVersion()
+   Return "OpenHoldem_" & OpenHoldemVersion()
 EndFunc
 
 Func CreateArchive()
