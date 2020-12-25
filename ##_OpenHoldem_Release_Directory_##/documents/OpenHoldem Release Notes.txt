@@ -1,10 +1,27 @@
-﻿﻿v﻿14.0.0 2020-01-01
+﻿﻿v﻿14.0.0 2020-12-31
 ==================
+NEW STUFF:
+- Termita-SNG, a new defaukt bit that plays verious types of
+  sit-and-gi-tournaments out of the bix 
+  [Trish, THF]
+- Hopper-communication: new message GetSymbol, meant for
+    * more easy access to table-state for hopper
+    * automatic testing and quality assurance in the future
+  [THF]
+- Disabled autostarter when connected to OHReplay
+  for more convenience when tesing.
+  [THF]
+- Log-file contains now also file-names of the OpenPPL-library
+  in addition to the line-numbers in order to ease the understanding
+  of the autoplayer-trace.
+  [THF]
+
 BUG FIXES:
 - The technical symnol RankHiPlayer_DominantSuit was not accurate.
   This could affect symbols like HaveNutFlush.
   Thanks to Diku for reporting and for suggesting a fix.
   [THF]
+
 
 ﻿v﻿13.1.3 2019-10-17
 ==================
