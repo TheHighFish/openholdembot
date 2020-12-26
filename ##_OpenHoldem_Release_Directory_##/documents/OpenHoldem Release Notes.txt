@@ -1,8 +1,8 @@
 ﻿﻿v﻿14.0.0 2020-12-31
 ==================
 NEW STUFF:
-- Termita-SNG, a new defaukt bit that plays verious types of
-  sit-and-gi-tournaments out of the bix 
+- Termita-SNG, a new default bot that plays various types of
+  sit-and-go-tournaments out of the box 
   [Trish, THF]
 - Hopper-communication: new message GetSymbol, meant for
     * more easy access to table-state for hopper
