@@ -22,10 +22,10 @@ const int WMA_SETWINDOWTEXT	= WM_APP + 1;
 const int WMA_DOCONNECT		= WM_APP + 2;
 const int WMA_DODISCONNECT	= WM_APP + 3;
 const int WMA_CONNECTEDHWND	= WM_APP + 4;
-const int WMA_SETFLAG           = WM_APP + 5;
-const int WMA_RESETFLAG         = WM_APP + 6;
-const int WMA_ISREADY           = WM_APP + 7; 
-const int WMA_GETSYMBOL         = WM_APP + 8;
+const int WMA_SETFLAG       = WM_APP + 5;
+const int WMA_RESETFLAG     = WM_APP + 6;
+const int WMA_ISREADY       = WM_APP + 7; 
+const int WMA_GETSYMBOL     = WM_APP + 8;
 
 class COpenHoldemHopperCommunication: public CWnd
 {

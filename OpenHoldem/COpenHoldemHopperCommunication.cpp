@@ -25,15 +25,12 @@
 #include "MainFrm.h"
 #include "OpenHoldem.h"
 
-
 COpenHoldemHopperCommunication *p_openholdem_hopper_communication = NULL;
-
 
 //IMPLEMENT_DYNAMIC(COpenHoldemHopperCommunication, CWnd)
 
 BEGIN_MESSAGE_MAP(COpenHoldemHopperCommunication, CWnd)  
 END_MESSAGE_MAP()
-
 
 LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 {
@@ -52,13 +49,11 @@ LRESULT COpenHoldemHopperCommunication::OnSetWindowText(WPARAM, LPARAM title)
 	return true;
 }
 
-
 LRESULT COpenHoldemHopperCommunication::OnConnectMessage(WPARAM, LPARAM hwnd)
 {
 	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8002: OnConnectMessage\n");
 	return p_autoconnector->Connect((HWND)hwnd);
 }
-
 
 LRESULT COpenHoldemHopperCommunication::OnDisconnectMessage(WPARAM, LPARAM)
 {
@@ -67,13 +62,11 @@ LRESULT COpenHoldemHopperCommunication::OnDisconnectMessage(WPARAM, LPARAM)
 	return true;
 }
 
-
 LRESULT COpenHoldemHopperCommunication::OnConnectedHwndMessage(WPARAM, LPARAM)
 {
 	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8004: OnConnectedHwndMessage\n");
 	return (LRESULT) p_autoconnector->attached_hwnd();
 }
-
 
 LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_set)
 {
@@ -86,7 +79,6 @@ LRESULT COpenHoldemHopperCommunication::OnSetFlagMessage(WPARAM, LPARAM flag_to_
 	p_flags_toolbar->SetFlag(_flag_to_set, true);
 	return true;
 }
-
 
 LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_to_reset)
 {
@@ -103,6 +95,7 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 {
 	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8007: OnIsReadyMessage\n");
+    MessageBox("Debug", "UsReady", 0);
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
@@ -131,16 +124,26 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	}
 }
 
-LRESULT COpenHoldemHopperCommunication::OnGetSymbolMessage(WPARAM, LPARAM)
+LRESULT COpenHoldemHopperCommunication::OnGetSymbolMessage(WPARAM, LPARAM symbol)
 {
 	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8008: OnGetSymbolMessage\n");
-	CString symbol = "userchair";//!!!!!
+    MessageBox("Debug", "OnGetSymbolMessage", 0);
+	CString *p_symbol = (CString*)symbol;
+    MessageBox("Debug", *p_symbol, 0);
 	write_log(Preferences()->debug_hopper_messages(),
 		"Symbik: %s\n", symbol);
-	double value = kUndefined;
-	p_engine_container->EvaluateSymbol(symbol, &value);
+    // Attention!
+    // "value" is static, so that we can return (a pointer to) it easily.
+    // This is not thread-safe and only works, as long as exactly one
+    // process / thread calls this message and as long as every result
+    // is used before the next symbol gets queried.
+    // In our use-cases (table-hopper and regression-testing)
+    // this condition is true.
+	static double value = kUndefined;
+	p_engine_container->EvaluateSymbol(*p_symbol, &value);
+    MessageBox("Debug", "Evaluated", 0);
 	write_log(Preferences()->debug_hopper_messages(),
 		"Value: %.3f\n", value);
-	return value;
+	return (LRESULT)&value;
 }
 
