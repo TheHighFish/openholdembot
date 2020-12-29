@@ -384,10 +384,7 @@ WHEN RankOfBottomPairOnBoard == RankOfTopPairInHand RETURN true FORCE
 WHEN RankOfBottomPairOnBoard == RankOfBottomPairInHand RETURN true FORCE
 
 ##Omaha_HaveNutQuads##
-WHEN NOT Omaha_HaveQuads RETURN false FORCE
-WHEN HaveTopTrips RETURN true FORCE
-
-##Omaha_HaveNutQuads##
+WHEN NOT HaveQuads RETURN false FORCE
 WHEN (HaveQuads AND TripsOnBoard) RETURN true FORCE
 WHEN NOT PairInHand RETURN false FORCE
 WHEN (RankOfTopPairInHand == RankOfTopPairOnBoard) RETURN true FORCE
