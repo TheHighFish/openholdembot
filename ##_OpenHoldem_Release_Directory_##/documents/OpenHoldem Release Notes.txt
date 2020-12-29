@@ -1,19 +1,26 @@
 ﻿﻿v﻿14.0.0 2020-12-31
 ==================
 NEW STUFF:
-- Termita-SNG, a new defaukt bit that plays verious types of
-  sit-and-gi-tournaments out of the bix 
+- Termita_SNG, a new default bot that plays various types of
+  sit-and-go-tournaments out of the box. Similar to Gecko 
+  it can be used as a fallback-logic for other bots.
+  Please see he manual for more details.
   [Trish, THF]
+- Winngy_Fixed_Limit, a new default-bot for fixed-limit full-ring games.
+  [Winngy]
 - Hopper-communication: new message GetSymbol, meant for
-    * more easy access to table-state for hopper
+    * more easy access to table-state for hoppers
     * automatic testing and quality assurance in the future
   [THF]
 - Disabled autostarter when connected to OHReplay
-  for more convenience when tesing.
+  for more convenience when testing.
   [THF]
 - Log-file contains now also file-names of the OpenPPL-library
   in addition to the line-numbers in order to ease the understanding
   of the autoplayer-trace.
+  [THF]
+- Improved tournament-detection.
+  Thanks to Ravioli for providing replay-frames.
   [THF]
 
 BUG FIXES:
