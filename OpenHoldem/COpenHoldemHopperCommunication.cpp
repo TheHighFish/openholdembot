@@ -95,7 +95,7 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 {
 	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8007: OnIsReadyMessage\n");
-    MessageBox("Debug", "UsReady", 0);
+    MessageBox("Debug", "IsReady", 0);
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
@@ -126,20 +126,21 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 
 LRESULT COpenHoldemHopperCommunication::OnGetSymbolMessage(WPARAM, LPARAM symbol)
 {
-	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8008: OnGetSymbolMessage\n");
-    MessageBox("Debug0", "OnGetSymbolMessage", 0);
+    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: received 0x8008: \n");
+    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: pointer: 0x%Xi\n", (int)symbol);
+    const char *p_dummy = (char*)symbol;
+    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: char pointer works\n");
     char buffer[1000];
-    sprintf(buffer, "Pointer: 0x%Xi", symbol);
-    MessageBox("Debug1", buffer, 0);
-	//!!!!!
-    char *p_dummy = (char*)symbol;
-    MessageBox("Debug2a", "char pointer works", 0);
+    if (StrNCpy(buffer, p_dummy, 1000) > 0) { ///!!!!!))
+        write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: buffer initialized\n");
+    }
+    else {
+        write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: buffer NOT initialized\n");
+    }
+    MessageBox(buffer, "Symbol", 0);
     CString *p_symbol = (CString*)symbol;
-    MessageBox("Debug2b", *p_symbol, 0);
-    char c = *p_symbol[0];
-    MessageBox("Debug2c", *p_symbol, 0);
-	write_log(Preferences()->debug_hopper_messages(),
-		"Symbik: %s\n", symbol);
+    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: buffer initialized\n");
+    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: symbol: %s\n", p_symbol);
     // Attention!
     // "value" is static, so that we can return (a pointer to) it easily.
     // This is not thread-safe and only works, as long as exactly one
@@ -149,9 +150,8 @@ LRESULT COpenHoldemHopperCommunication::OnGetSymbolMessage(WPARAM, LPARAM symbol
     // this condition is true.
 	static double value = kUndefined;
 	p_engine_container->EvaluateSymbol(*p_symbol, &value);
-    MessageBox("Debug3", "Evaluated", 0);
-	write_log(Preferences()->debug_hopper_messages(),
-		"Value: %.3f\n", value);
+    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: evaluated\n");
+    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: value: %.3f\n", value);
 	return (LRESULT)&value;
 }
 

@@ -1,5 +1,5 @@
-#LyX 2.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 508
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
 \save_transient_properties true
@@ -26,6 +26,8 @@ figs-within-sections
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -55,6 +57,7 @@ figs-within-sections
 \suppress_date false
 \justification true
 \use_refstyle 0
+\use_minted 0
 \index Index
 \shortcut idx
 \color #008000
@@ -63,7 +66,10 @@ figs-within-sections
 \tocdepth -2
 \paragraph_separation indent
 \paragraph_indentation default
-\quotes_language english
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
@@ -77,7 +83,7 @@ figs-within-sections
 \begin_body
 
 \begin_layout Chapter*
-Other Demobots
+Other Default-bots
 \end_layout
 
 \begin_layout Section*
@@ -94,7 +100,7 @@ Back in the days when Ms Bunnybaker won an online-ticket to one of the main
  A guy called Winngy used it to build his first poker-bot.
  It played the so called low-stakes up to $10/$20 (big blind and big bet,
  not buyins).
- Casinos offered the same limits like real casinos these days; and all revreatio
+ Casinos offered the same limits like real casinos these days; and all recreatio
 nal players used to choose the same limits they were used to from their
  local casino.
  
@@ -104,7 +110,7 @@ nal players used to choose the same limits they were used to from their
 So Winngy enjoyed a nice win-rate and at a new online-casino an equally
  nice prop-deal of 120% rakeback for a player who always hangs around in
  order to get the games started.
- Unfortunately for Winngy the fixed-limit games were drying up and bacame
+ Unfortunately for Winngy the fixed-limit games were drying up and became
  less popular due to a company named PokerTragedy and their Chinese rakeback-sla
 ves.
  So Winngy counted his winnings and moved on to other game-types.
@@ -123,7 +129,7 @@ One day our member TheHighFish out of curiousity had a look at some Shanky
  THF immediately recognized its potential.
  The bot-logic was nicely written and well structured.
  It used dozens of user-variables in order to avoid code-clones and achieve
- a readable, sel-documenting code.
+ a readable, self-documenting code.
  Furthermore it could be configured to play various types of SNGs nearly
  out of the box.
 \end_layout
@@ -133,7 +139,7 @@ So THF asked the sole creator who was left, Termita, for allowance to include
  this bot as a default-bot for OpenHoldem.
  Termita agreed and so THF started to work, rewriting the entire bot.
  OpenHoldem symbols like StartingStackSize, StartingBigBlindSize and maxnplayers
-dealt made it possivle to get rid of the configuration section and detect
+dealt made it possible to get rid of the configuration section and detect
  the game-type automatically, be it 6-max, 9-max, 10-max, deep-stack, normal,
  turbo or hyper-turbo.
 \end_layout

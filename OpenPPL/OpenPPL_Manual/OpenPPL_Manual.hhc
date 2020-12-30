@@ -117,6 +117,10 @@
 			<param name="Local" value="Chapters\Gecko_our_default_bot.html.LyXconv\Gecko_our_default_bot.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Other Default-Bots">
+			<param name="Local" value="Chapters\Other_Demobots.html.LyXconv\Other_Demobots.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Debugging Your Code">
 			<param name="Local" value="Chapters\Debugging_Your_Code.html.LyXconv\Debugging_Your_Code.html">
 			</OBJECT>
