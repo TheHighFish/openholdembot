@@ -715,7 +715,7 @@ WHEN Others
 ##f$BetsizeTurnHeadsup##
 WHEN (AmountToCall <= 0)
    WHEN (PotSize <= 35) RaiseBy 70% FORCE
-   WHEN Others RaiseBy RaisePot FORCE
+   WHEN Others RaisePot FORCE
 WHEN (AmountToCall <= 2)
    WHEN (PotSize <= 25) RaisePot FORCE
    WHEN Others RaiseBy 65% FORCE
