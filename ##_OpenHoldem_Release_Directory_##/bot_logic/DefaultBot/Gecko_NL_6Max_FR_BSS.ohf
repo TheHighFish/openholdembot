@@ -138,7 +138,7 @@ WHEN [call<=bblind AND (EffectivePotSize > 6) AND (f$prwin > 0.50)] RETURN true 
 ##f$prwin_number_of_iterations##
 50000
 
-##f$prwin_number_of_opponents##
+##Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents##
 // Values will be rounded down, but we prefer to distinguish these cases
 nplayersplaying==2 AND nplayersround_flop<=2 ? 1.00 :
 nplayersplaying==2 AND nplayersround_flop==3 ? 1.50 :
