@@ -47,6 +47,13 @@ WHEN isfl RETURN Winngy_FixedLimit_Prefold FORCE
 WHEN istournament RETURN Termita_SNG_Prefold FORCE
 WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Prefold FORCE
 
+##f$prwin_number_of_opponents##
+WHEN isomaha RETURN 0 FORCE
+WHEN isfl And Winngy_Prwin_number_of_opponents != 0 RETURN Winngy_Prwin_number_of_opponents FORCE
+WHEN istournament And Termita_SNG_Prwin_number_of_opponents != 0 RETURN Termita_SNG_Prwin_number_of_opponents FORCE
+WHEN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents != 0 RETURN Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents FORCE
+When Others Return (nopponentsplaying+1) Force
+
 //*****************************************************************************
 //
 // Dummy functions
@@ -65,12 +72,16 @@ WHEN Others RETURN Gecko_6Max_FR_NL_BSS_Prefold FORCE
 ##Winngy_FixedLimit_Turn##
 ##Winngy_FixedLimit_River##
 ##Winngy_FixedLimit_Prefold##
+##Winngy_Prwin_number_of_opponents##
 
 ##Gecko_6Max_FR_NL_BSS_Preflop##
 ##Gecko_6Max_FR_NL_BSS_Flop##
 ##Gecko_6Max_FR_NL_BSS_Turn##
 ##Gecko_6Max_FR_NL_BSS_River##
 ##Gecko_6Max_FR_NL_BSS_Prefold##
+##Gecko_6Max_FR_NL_BSS_Prwin_number_of_opponents##
+
+##Termita_SNG_Prwin_number_of_opponents##
 
 ##Termita_SNG_Preflop##
 WHEN FallBackToGeckoIfTermitaSngNotFound RETURN Gecko_6Max_FR_NL_BSS_Preflop FORCE
