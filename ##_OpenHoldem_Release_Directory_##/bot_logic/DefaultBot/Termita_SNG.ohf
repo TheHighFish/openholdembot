@@ -745,6 +745,9 @@ When Calls = 0 And Raises = 0 And balance_bigblindchair <= (bblind*2) Return fal
 When (BigBlindSittingOut Or StackSize <= 4) Return false Force
 When listbad Return true FORCE
 
+// ##Termita_SNG_Prwin_number_of_opponents##
+// For future use defaults to Gecko for now
+
 ##f$OpponentSignificantAllin##
 When OpponentIsAllin And InBigBlind And AmountToCall >= 2 Return true FORCE
 When OpponentIsAllin And InSmallBlind And AmountToCall >= 2.5 Return true FORCE

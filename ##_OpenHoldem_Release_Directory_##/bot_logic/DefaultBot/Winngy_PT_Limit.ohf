@@ -7,7 +7,7 @@
 	  for integration as a default-bot.
     - eeplaced all br==2 by Isflop, same for the other betting-rounds
   * Turned WinHoldems f$play to f$sitin / f$sitout / f$leave
-  * renamed f$P to f$prwin_number_of_opponents
+  * renamed f$P to Winngy_Prwin_number_of_opponents
   * Vebosity:
     - renamed f$NESTR -> f$NoEasyStraightDraw
 	- f$spl -> InCutOff
@@ -59,7 +59,7 @@ OR
   && (IsFlop || IsTurn)                 // flop or turn  
 ]
 
-##f$prwin_number_of_opponents##
+##Winngy_Prwin_number_of_opponents##
 (nopponentsplaying<=1) ? 1 :
 IsPreflop ? nopponentsdealt :
 IsFlop    ? ((nplayersround2-1)+((ncallbets*2)-(didraisround2*2))+((nbetsround1-didraisround1)*.8)) :
