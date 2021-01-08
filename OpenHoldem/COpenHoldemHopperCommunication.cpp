@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "COpenHoldemHopperCommunication.h"
 
+#include <atlstr.h>
 #include "CAutoConnector.h"
 #include "CEngineContainer.h"
 #include "CFlagsToolbar.h"
@@ -95,7 +96,6 @@ LRESULT COpenHoldemHopperCommunication::OnResetFlagMessage(WPARAM, LPARAM flag_t
 LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 {
 	write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] Received 0x8007: OnIsReadyMessage\n");
-    MessageBox("Debug", "IsReady", 0);
 	// 0 = Not ready, because of either
 	//   * no formula
 	//   * no tablemap
@@ -124,34 +124,33 @@ LRESULT COpenHoldemHopperCommunication::OnIsReadyMessage(WPARAM, LPARAM)
 	}
 }
 
-LRESULT COpenHoldemHopperCommunication::OnGetSymbolMessage(WPARAM, LPARAM symbol)
+LRESULT COpenHoldemHopperCommunication::OnGetSymbolMessage(WPARAM, LPARAM lparam)
 {
-    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: received 0x8008: \n");
-    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: pointer: 0x%Xi\n", (int)symbol);
-    const char *p_dummy = (char*)symbol;
-    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: char pointer works\n");
-    char buffer[1000];
-    if (StrNCpy(buffer, p_dummy, 1000) > 0) { ///!!!!!))
-        write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: buffer initialized\n");
-    }
-    else {
-        write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: buffer NOT initialized\n");
-    }
-    MessageBox(buffer, "Symbol", 0);
-    CString *p_symbol = (CString*)symbol;
-    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: buffer initialized\n");
-    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: symbol: %s\n", p_symbol);
-    // Attention!
-    // "value" is static, so that we can return (a pointer to) it easily.
-    // This is not thread-safe and only works, as long as exactly one
-    // process / thread calls this message and as long as every result
-    // is used before the next symbol gets queried.
-    // In our use-cases (table-hopper and regression-testing)
-    // this condition is true.
-	static double value = kUndefined;
-	p_engine_container->EvaluateSymbol(*p_symbol, &value);
-    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: evaluated\n");
-    write_log(true, "[COpenHoldemHopperCommunication] OnGetSymbolMessage: value: %.3f\n", value);
-	return (LRESULT)&value;
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: received 0x8008: \n");
+    // Get the copy-data-structure
+    COPYDATASTRUCT* pcds = (COPYDATASTRUCT*)lparam;
+    int magic_number = pcds->dwData;
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: magic number: %i\n", magic_number);
+    int data_size = pcds->cbData;
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: data_size: %i\n", data_size);
+    LPCTSTR lpszString = (LPCTSTR)pcds->lpData;
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: data pointer: %8X\n", (int)lpszString);
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: symbol: %s\n", lpszString);
+	double dresult = kUndefined;
+	p_engine_container->EvaluateSymbol(lpszString, &dresult);
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: evaluated\n");
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: value (double): %.3f\n", dresult);
+    // Our return-type is LRESULT, 4 bytes, too much for a double,
+    // therefore we use a float
+    float fresult = (float)dresult;
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication] OnGetSymbolMessage: value (float):  %.3f\n", fresult);
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication]  sizeof float: %i\n", sizeof(float));
+    write_log(Preferences()->debug_hopper_messages(), "[COpenHoldemHopperCommunication]  sizeof LRESULT: %i\n", sizeof(LRESULT));
+    //return LRESULT(3.14);//!!!!fresult;
+    return static_cast<LRESULT>(fresult);
+    return (LRESULT)float(3.14);
+    //return reinterpret_cast<LRESULT>(fresult);  //(float(3.14));
+    //return *reinterpret_cast<LRESULT const *>(&fresult);
+    //return reinterpret_cast<LRESULT >(fresult);
 }
 

@@ -25,7 +25,7 @@ const int WMA_CONNECTEDHWND	= WM_APP + 4;
 const int WMA_SETFLAG       = WM_APP + 5;
 const int WMA_RESETFLAG     = WM_APP + 6;
 const int WMA_ISREADY       = WM_APP + 7; 
-const int WMA_GETSYMBOL     = WM_APP + 8;
+// WMA_GETSYMBOL = WM_COPYDATA and 424242 magic-number and WM_COPYDATA-structure
 
 class COpenHoldemHopperCommunication: public CWnd
 {
@@ -40,7 +40,7 @@ public:
     LRESULT OnSetFlagMessage(WPARAM, LPARAM flag_to_set);
     LRESULT OnResetFlagMessage(WPARAM, LPARAM flag_to_reset);
     LRESULT OnIsReadyMessage(WPARAM, LPARAM);
-    LRESULT OnGetSymbolMessage(WPARAM, LPARAM symbol);
+    LRESULT OnGetSymbolMessage(WPARAM, LPARAM lparam);
 protected:
 	DECLARE_MESSAGE_MAP()
 };

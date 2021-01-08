@@ -113,7 +113,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_MESSAGE(WMA_SETFLAG,       &COpenHoldemHopperCommunication::OnSetFlagMessage)
 	ON_MESSAGE(WMA_RESETFLAG,     &COpenHoldemHopperCommunication::OnResetFlagMessage)
 	ON_MESSAGE(WMA_ISREADY,       &COpenHoldemHopperCommunication::OnIsReadyMessage)
-	ON_MESSAGE(WMA_GETSYMBOL,     &COpenHoldemHopperCommunication::OnGetSymbolMessage)
+    // Receiving strings requires a WM_COPYDATA-message and a special WM_COPYDATA-structure
+	ON_MESSAGE(WM_COPYDATA,       &COpenHoldemHopperCommunication::OnGetSymbolMessage)
 
 	// Flags
 	ON_BN_CLICKED(ID_NUMBER0,  &CMainFrame::OnClickedFlags)
