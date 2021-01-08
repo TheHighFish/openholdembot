@@ -20,6 +20,7 @@
 *.opensdf
 *.sdf
 *.suo
+*.swp
 *.vspx
 ..bfg-report
 UpgradeLog*
