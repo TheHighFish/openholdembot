@@ -17,6 +17,8 @@
 #include <assert.h>
 #include "CEngineContainer.h"
 #include "COpenHoldemStatusbar.h"
+#include "CWhiteInfoBox.h"
+#include "RtaWindow.h"
 #include "CScraper.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePrwin.h"
@@ -113,6 +115,8 @@ void CSymbolEngineHandrank::CalculateHandrank() {
     }
   }
   p_openholdem_statusbar->SetHandrank(_handrank169);
+  p_white_info_box->SetHandrank(_handrank169);
+  p_rta_window->SetHandrank(_handrank169);
   _handrank1326 = _handrank2652 / 2;
   _handrank1000 = 1000 * _handrank2652 / 2652;
   _handrankp = 2652.0 / (1.0 + (double)nopponents);
