@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CBETROUNDCALCULATOR_H
 #define INC_CBETROUNDCALCULATOR_H
@@ -29,14 +29,8 @@ public:
 public:
 	void OnNewHeartbeat();
 public:
-	int betround()			
-	{ 
-		// Betround is very important and gets used as an index at various places
-		// so we always make sure that it is not out of range.
-		assert(_betround >= kBetroundPreflop);
-		assert(_betround <= kBetroundRiver);
-		return _betround; 
-	}
+  int betround();
+  int PreviousRound();
 public:
 	bool IsNewBetround();
 private:

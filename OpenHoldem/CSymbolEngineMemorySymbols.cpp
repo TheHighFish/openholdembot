@@ -1,22 +1,24 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEngineMemorySymbols.h"
-#include "CParseTreeNode.h"
-#include "CPreferences.h"
 
-CSymbolEngineMemorySymbols *p_symbol_engine_memory_symbols = NULL;
+#include "CParseErrors.h"
+#include "CParseTreeTerminalNode.h"
+#include "CParseTreeTerminalNodeIdentifier.h"
+
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CSymbolEngineMemorySymbols::CSymbolEngineMemorySymbols() {
 }
@@ -28,69 +30,186 @@ CSymbolEngineMemorySymbols::~CSymbolEngineMemorySymbols() {
 void CSymbolEngineMemorySymbols::InitOnStartup() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnConnection() {
+void CSymbolEngineMemorySymbols::UpdateOnConnection() {
   _memory_symbols.clear();
 }
 
-void CSymbolEngineMemorySymbols::ResetOnHandreset() {
+void CSymbolEngineMemorySymbols::UpdateOnHandreset() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnNewRound() {
+void CSymbolEngineMemorySymbols::UpdateOnNewRound() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnMyTurn() {
+void CSymbolEngineMemorySymbols::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineMemorySymbols::ResetOnHeartbeat() {
+void CSymbolEngineMemorySymbols::UpdateOnHeartbeat() {
+}
+
+void CSymbolEngineMemorySymbols::ErrorInvalidMemoryStoreCommand(CString command) {
+  // Handles wrong me_st_ commands.
+  CString message;
+  message.Format("Invalid memory-symbol: %s\n"
+    "Memory-store-commands must contain\n"
+    "  * the prefix me_st_\n"
+    "  * the name of the variable\n"
+    "  * another underscore\n"
+    "  * a value\n"
+    " Example: me_st_Pi_3_141592653\n",
+    command);
+  CParseErrors::MessageBox_Formula_Error(message, "Error");
+}
+
+void CSymbolEngineMemorySymbols::ErrorUnnamedMemorySymbol(CString command) {
+  // Handles wrong me_re_ and me_inc_ commands
+  // but not me_st_.
+  CString message;
+  message.Format("Invalid memory-symbol: %s\n"
+    "Missing variable name.\n"
+    "Memory-recall and memory-increment commands must contain\n"
+    "  * the prefix me_re_ or me_inc_\n"
+    "  * the name of the variable\n"
+    " Example: me_inc_ContiBetsRaised\n",
+    command);
+  CParseErrors::MessageBox_Formula_Error(message, "Error");
 }
 
 void CSymbolEngineMemorySymbols::Store(CString command) {
   assert(command.Left(6) == "me_st_");
-  CString command_without_prefix = command.Mid(6); 
-  // Get the name of the symbol, up to the next underscore
-  int position_of_first_underscore = command_without_prefix.Find('_');
-  CString symbol_name = command_without_prefix.Left(position_of_first_underscore);
-  // Get the right hand value after the underscore
-  CString right_hand_value = command_without_prefix.Mid(position_of_first_underscore + 1);
-  double result = EvaluateRightHandExpression(right_hand_value);
-  _memory_symbols[symbol_name] = result;
+  CString right_hand_side = RightHandSide(command);
+  CString left_hand_side = LeftHandSide(command);
+  assert(right_hand_side != "");
+  assert(left_hand_side != "");
+  double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
+  _memory_symbols[LowerCaseKey(left_hand_side)] = evaluated_right_hand_side;
+}
+
+void CSymbolEngineMemorySymbols::Add(CString command) {
+  assert(command.Left(7) == "me_add_");
+  CString right_hand_side = RightHandSide(command);
+  CString left_hand_side = LeftHandSide(command);
+  assert(right_hand_side != "");
+  assert(left_hand_side != "");
+  double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
+  _memory_symbols[LowerCaseKey(left_hand_side)] += evaluated_right_hand_side;
+}
+
+void CSymbolEngineMemorySymbols::Sub(CString command) {
+  assert(command.Left(7) == "me_sub_");
+  CString right_hand_side = RightHandSide(command);
+  CString left_hand_side = LeftHandSide(command);
+  assert(right_hand_side != "");
+  assert(left_hand_side != "");
+  double evaluated_right_hand_side = EvaluateRightHandExpression(right_hand_side);
+  _memory_symbols[LowerCaseKey(left_hand_side)] -= evaluated_right_hand_side;
+}
+
+void CSymbolEngineMemorySymbols::Increment(CString command) {
+  assert(command.Left(7) == "me_inc_");
+  CString left_hand_side = LeftHandSide(command);
+  assert(left_hand_side != "");
+  ++_memory_symbols[LowerCaseKey(left_hand_side)];
+}
+
+double CSymbolEngineMemorySymbols::Recall(CString command) {
+  assert(command.Left(6) == "me_re_");
+  CString left_hand_side = LeftHandSide(command);
+  assert(left_hand_side != "");
+  return _memory_symbols[LowerCaseKey(left_hand_side)];
+}
+
+// Finds the Nth occurance of a char in a string
+// Returns -1 if not found or found less than N times.
+int FindNth(CString s, char c, int nth_occurance_to_find) {
+  int next_position = 0;
+  for (int i = 0; i < nth_occurance_to_find; ++i) {
+    next_position = s.Find(c, next_position);
+    if (next_position < 0) {
+      // Not found
+      return kUndefined;
+    }
+    // Advance to first char after finding
+    ++next_position;
+  }
+  // Move back to last finding
+  --next_position;
+  return next_position;
+
+}
+
+CString CSymbolEngineMemorySymbols::RightHandSide(CString command) {
+  assert(command.Left(3) == "me_");
+  assert(command.GetLength() > 6);
+  int third_underscore = FindNth(command, '_', 3);
+  if (third_underscore < 0) {
+    ErrorInvalidMemoryStoreCommand(command);
+    return "error";
+  }
+  CString result = command.Mid(third_underscore + 1);
+  if (result == "") {
+    ErrorInvalidMemoryStoreCommand(command);
+    return "error";
+  }
+  return result;
+}
+
+CString CSymbolEngineMemorySymbols::LeftHandSide(CString command) {
+  assert(command.Left(3) == "me_");
+  assert(command.GetLength() > 6);
+  int second_underscore = FindNth(command, '_', 2);
+  int third_underscore = FindNth(command, '_', 3);
+  if (second_underscore < 0) {
+    ErrorInvalidMemoryStoreCommand(command);
+    return "error";
+  }
+  CString result;
+  if (third_underscore < 0) {
+    // No right-hand-side argument
+    // Left-hand-side starts at second under-score till the very end.
+    result = command.Mid(second_underscore + 1);
+  }
+  else {
+    int left_length = third_underscore - second_underscore - 1;
+    result = command.Mid(second_underscore + 1, left_length);
+  }
+  if (result == "") {
+    ErrorInvalidMemoryStoreCommand(command);
+    return "error";
+  }
+  return result;
 }
 
 double CSymbolEngineMemorySymbols::EvaluateRightHandExpression(CString right_hand_value) {
-  // Possible use-case
+  // Possible use-cases
   //   * constants        me_st_x_3_141
   //   * functions        me_st_x_f$myfunc
   //   * symbols          me_st_x_userchair
   //   * memory-symbols   me_st_x_re_re_y
   // Already removed: "me_st_x_"
-  // All we have is the oure right-hand-side
+  // All we have is the pure right-hand-side
+  double result = kUndefinedZero;
   if (isdigit(right_hand_value[0])) {
     // Constant
     // Remove possible underscore by decimal point
     right_hand_value.Replace('_', '.');
-    return atof(right_hand_value);
+    result = atof(right_hand_value);
+  } else {
+    result = CParseTreeTerminalNodeIdentifier::EvaluateIdentifier(
+      right_hand_value, true); // !!! Needs function parameter
   }
-  return CParseTreeNode::EvaluateIdentifier(right_hand_value, 
-    preferences.trace_enabled());
+  write_log(Preferences()->debug_memorysymbols(), 
+    "[CSymbolEngineMemorySymbols] Evaluating %s -> %.3f\n",
+    right_hand_value, result);
+  return result;
 }
 
-void CSymbolEngineMemorySymbols::Increment(CString command) {
-  assert(command.Left(7) == "me_inc_");
-  CString symbol_name = command.Mid(7);
-  ++_memory_symbols[symbol_name];
-}
-
-double CSymbolEngineMemorySymbols::Recall(CString command) {
-  assert(command.Left(6) == "me_re_");
-  CString symbol_name = command.Mid(6);
-  return _memory_symbols[symbol_name];
-}
-
-bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineMemorySymbols::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // memory-commands
   // "name" = query
   FAST_EXIT_ON_OPENPPL_SYMBOLS(name);
   if (memcmp(name, "me_", 3) == 0) {
+    write_log(Preferences()->debug_memorysymbols(), 
+      "[CSymbolEngineMemorySymbols] EvaluateSymbol(%s)\n", name);
     if (memcmp(name, "me_st_", 6) == 0) {  
       Store(name);
       *result = kUndefinedZero;
@@ -102,13 +221,27 @@ bool CSymbolEngineMemorySymbols::EvaluateSymbol(const char *name, double *result
       Increment(name);
       *result = kUndefinedZero;
       return true;
-    } else {
+    } else if (memcmp(name, "me_add_", 7) == 0) {
+      Add(name);
+      *result = kUndefinedZero;
+      return true;
+    } else if (memcmp(name, "me_sub_", 7) == 0) {
+      Sub(name);
+      *result = kUndefinedZero;
+      return true;
+    } 
+    else {
     // Looks like a memory-command, but is invalid
     return false;
     }
   }
   // Not a memory symbol
   return false;
+}
+
+CString CSymbolEngineMemorySymbols::LowerCaseKey(CString symbol) {
+  CString new_key = symbol.MakeLower();
+  return new_key;
 }
 
 // SymbolsProvided() does not make much sense here

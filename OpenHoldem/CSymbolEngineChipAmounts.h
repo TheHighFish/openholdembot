@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CSYMBOLENGINECHIPAMOUNTS_H
 #define INC_CSYMBOLENGINECHIPAMOUNTS_H
@@ -18,7 +18,8 @@
 #include "assert.h"
 #include "CSymbolEngineUserChair.h"
 #include "CSymbolEngineTableLimits.h"
-#include "MagicNumbers.h"
+#include "CTableState.h"
+
 
 class CSymbolEngineChipAmounts: public CVirtualSymbolEngine
 {
@@ -28,14 +29,14 @@ public:
 public:
 	// Mandatory reset-functions
 	void InitOnStartup();
-	void ResetOnConnection();
-	void ResetOnHandreset();
-	void ResetOnNewRound();
-	void ResetOnMyTurn();
-	void ResetOnHeartbeat();
+	void UpdateOnConnection();
+	void UpdateOnHandreset();
+	void UpdateOnNewRound();
+	void UpdateOnMyTurn();
+	void UpdateOnHeartbeat();
 public:
 	// Public accessors
-	bool EvaluateSymbol(const char *name, double *result, bool log = false);
+	bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided();
 public:
 	double maxbalance()					{ return _maxbalance; }
@@ -43,34 +44,19 @@ public:
 public:
 	double stack(int nth_best) {
 		assert(nth_best >= 0);
-		assert(nth_best < k_max_number_of_players);
+		assert(nth_best < kMaxNumberOfPlayers);
 		return _stack[nth_best];
 	}
 
 	double stacks_at_hand_start(const int chair) { 
 		assert((chair >= 0) || (chair == kUndefined));
-		assert(chair < k_max_number_of_players);
+		assert(chair < kMaxNumberOfPlayers);
 		if (chair == kUndefined)	{
 			return 0;
 		}
 		return _stacks_at_hand_start[chair]; 
 	}
-
-	double currentbet(int player)	{
-		assert((player >= 0) || (player == kUndefined));
-		assert(player < k_max_number_of_players);
-		if (player == kUndefined) {
-			return 0;
-		}
-		return _currentbet[player];
-	}
-
-	double ncurrentbets()	{
-		if (p_symbol_engine_tablelimits->bet() == 0)		{
-			return 0;
-		}
-		return (currentbet(p_symbol_engine_userchair->userchair()) / p_symbol_engine_tablelimits->bet());
-	}
+  double ncurrentbets();
  public:
 	double pot()		    	{ return _pot; }
 	double potcommon()		{ return _potcommon; }
@@ -85,6 +71,7 @@ public:
 	double nraisbets()		{ return _nraisbets;	}
  public:
   double SortedBalance(const int rank);
+  double MaxActiveOpponentStack();
  private:
 	// private setters
 	void SetBalance(const int player, const double d);
@@ -92,7 +79,6 @@ public:
 	void SetBalanceAtStartOfSessionConditionally();
  private:
 	void CalculateStacks();
-	void CalculateCurrentbets();
 	void CalculatePots();
 	void CalculateAmountsToCallToRaise();
 	void CalculateBetsToCallToRaise();
@@ -101,12 +87,11 @@ public:
  private:			
 	double _maxbalance;
 	double _balanceatstartofsession;
-	double _stack[k_max_number_of_players];
-	double _currentbet[k_max_number_of_players];	
+	double _stack[kMaxNumberOfPlayers];	
  private:
 	// Used in ICM calculator - ICM needs stacks at beginning of hand
-	double _stacks_at_hand_start[k_max_number_of_players];	
-	double _pot;
+	double _stacks_at_hand_start[kMaxNumberOfPlayers];	
+	double _pot; 
 	double _potcommon;
 	double _potplayer;
  private:
@@ -120,7 +105,5 @@ public:
 	double _ncallbets;
 	double _nraisbets;
 };
-
-extern CSymbolEngineChipAmounts *p_symbol_engine_chip_amounts;
 
 #endif INC_CSYMBOLENGINECHIPAMOUNTS_H

@@ -1,9 +1,9 @@
 //***************************************************************************** 
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //***************************************************************************** 
 //
@@ -15,24 +15,22 @@
 #include "CSymbolEngineTableStats.h"
 
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CHandresetDetector.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
-#include "CScraperAccess.h"
 #include "CStringMatch.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
-#include "MagicNumbers.h"
 
-CSymbolEngineTableStats *p_symbol_engine_table_stats = NULL;
 
 CSymbolEngineTableStats::CSymbolEngineTableStats() {
 	// The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-  assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_chip_amounts != NULL);
-  ResetOnConnection();
+  assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+  UpdateOnConnection();
 }
 
 CSymbolEngineTableStats::~CSymbolEngineTableStats() {
@@ -41,7 +39,7 @@ CSymbolEngineTableStats::~CSymbolEngineTableStats() {
 void CSymbolEngineTableStats::InitOnStartup() {
 }
 
-void CSymbolEngineTableStats::ResetOnConnection() {
+void CSymbolEngineTableStats::UpdateOnConnection() {
   for (int i=0; i<=kNumberOfHands; ++i) {
     seen_flop[i] = 0;
     seen_turn[i] = 0;
@@ -52,17 +50,17 @@ void CSymbolEngineTableStats::ResetOnConnection() {
   }
 }
 
-void CSymbolEngineTableStats::ResetOnHandreset() {
+void CSymbolEngineTableStats::UpdateOnHandreset() {
   ShiftOldestDataAway();
 }
 
-void CSymbolEngineTableStats::ResetOnNewRound() {
+void CSymbolEngineTableStats::UpdateOnNewRound() {
 }
 
-void CSymbolEngineTableStats::ResetOnMyTurn() {
+void CSymbolEngineTableStats::UpdateOnMyTurn() {
 }
 
-void CSymbolEngineTableStats::ResetOnHeartbeat() {
+void CSymbolEngineTableStats::UpdateOnHeartbeat() {
   UpdateData();
 }
 
@@ -86,9 +84,9 @@ void CSymbolEngineTableStats::ShiftOldestDataAway() {
 void CSymbolEngineTableStats::UpdateData() {
   switch (BETROUND) {
     case kBetroundPreflop:
-      dealt_players[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nplayersdealt();
-      bets_preflop[kIndexCurrentHand] = p_symbol_engine_chip_amounts->ncallbets();
-      if (p_symbol_engine_chip_amounts->ncallbets() > 1) {
+      dealt_players[kIndexCurrentHand] = p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt();
+      bets_preflop[kIndexCurrentHand] = p_engine_container->symbol_engine_chip_amounts()->ncallbets();
+      if (p_engine_container->symbol_engine_chip_amounts()->ncallbets() > 1) {
         // raised_preflop is a "counter" with state 0/1
         // so that we can use SumUp().
         raised_preflop[kIndexCurrentHand] = 1;
@@ -96,17 +94,17 @@ void CSymbolEngineTableStats::UpdateData() {
       break;
     case kBetroundFlop:
       if (seen_flop[kIndexCurrentHand] == 0) {
-        seen_flop[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+        seen_flop[kIndexCurrentHand] = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying();
       }
       break;
     case kBetroundTurn:
       if (seen_turn[kIndexCurrentHand] == 0) {
-        seen_turn[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+        seen_turn[kIndexCurrentHand] = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying();
       }
       break;
     case kBetroundRiver:
       if (seen_river[kIndexCurrentHand] == 0) {
-        seen_river[kIndexCurrentHand] = p_symbol_engine_active_dealt_playing->nopponentsplaying();
+        seen_river[kIndexCurrentHand] = p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying();
       }
       break;
   }
@@ -114,7 +112,7 @@ void CSymbolEngineTableStats::UpdateData() {
 
 double CSymbolEngineTableStats::SumUp(int *data_set_for_n_hands) {
   // Return-tzpe is double, not int.
-  // This waz we easily avoid the unexpected effects of integer-division.
+  // This way we easily avoid the unexpected effects of integer-division.
   int sum = 0;
   for (int i=0; i<kNumberOfHands; ++i) {
     sum += data_set_for_n_hands[i];
@@ -139,7 +137,7 @@ int CSymbolEngineTableStats::NumberOfHandsStored() {
 }
 
 double CSymbolEngineTableStats::FlopTurnRiverPct(int betround) {
-  switch (BETROUND) {
+  switch (betround) {
     case kBetroundFlop:
       return SumUp(seen_flop) / SumUp(dealt_players);
     case kBetroundTurn:
@@ -151,7 +149,6 @@ double CSymbolEngineTableStats::FlopTurnRiverPct(int betround) {
   }
 }
 
-
 double CSymbolEngineTableStats::AvgBetsPf() {
 	return SumUp(bets_preflop) / NumberOfHandsStored();
 }
@@ -160,7 +157,7 @@ double CSymbolEngineTableStats::TablePfr() {
 	return SumUp(raised_preflop) / NumberOfHandsStored();
 }
 
-bool CSymbolEngineTableStats::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CSymbolEngineTableStats::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   if (memcmp(name, "floppct", 7)==0 && strlen(name)==7) {  				
     *result = FlopTurnRiverPct(kBetroundFlop);
     return true;

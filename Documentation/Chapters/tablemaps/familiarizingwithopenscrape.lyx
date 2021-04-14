@@ -178,11 +178,11 @@ Duplicate Region: This option will allow you to easily duplicate Regions.
 \end_layout
 
 \begin_layout Itemize
-Clone Regions: This option will clone all regions oif player 0 at once and
+Clone Regions: This option will clone all regions of player 0 at once and
  even distribute them to reasonable positions at the table.
- All you have to do afterwards is fine-tuning the positions a little bit.
+ All you have to do afterwards is fine-tune the positions a little bit.
  Prerequisite: the balance-regions of the other players must be defined
- in able to determine the positions for the cloned regions.
+ in order to be able to determine the positions for the cloned regions.
 \end_layout
 
 \begin_layout Subsection
@@ -333,9 +333,10 @@ Control + U – Update Hashes
 \end_layout
 
 \begin_layout Standard
-Table Map: Buttons/fields The Table Map Editor window has a plethora of
- information on it, and various fields and controls will become enabled
- or disabled, depending on the type of map record selected.
+Table Map: Buttons/fields.
+ The Table Map Editor window has a plethora of information on it, and various
+ fields and controls will become enabled or disabled, depending on the type
+ of map record selected.
 \end_layout
 
 \begin_layout Standard

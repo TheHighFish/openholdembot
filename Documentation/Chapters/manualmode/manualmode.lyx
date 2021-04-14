@@ -237,8 +237,9 @@ There are some shortcuts built into ManualMode to allow easier setup of
  Players will be added from chair 0 to chair 9, depending on what is open,
  and removed in reverse order.
  for a string to be entered.
- The format of the macro string is described here: {Macros} Betting: Left-clicki
-ng (right click to set a specific SWAG).
+ The format of the macro string is described here at the bottom of this
+ page.
+ Betting: Left-clicking (right click to set a specific bet amount).
  
 \end_layout
 

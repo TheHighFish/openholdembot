@@ -95,23 +95,8 @@ Since you do not have an installer to do the work for you, there are several
 Create your “OpenHoldem” base directory.
  For purposes of this walkthrough, we will create this directory as “c:
 \backslash
-mpb” (“My Poker Bot” – clever, eh?).
+mpb” (“My Poker Bot” -- clever, eh?).
  You can make this directory anything you want, however
-\end_layout
-
-\begin_layout Enumerate
-Under c:
-\backslash
-mpb, create another directory “c:
-\backslash
-mpb
-\backslash
-scraper”; this directory is used by the “Green Circle Button” to automagically
- connect OpenHoldem to a poker table.
- More on this later.
- There is a non-automagic way to connect to tables, but at this point, you
- probably want this directory.
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -122,9 +107,8 @@ Download the compiled binary packages.
 \begin_layout Enumerate
 Extract all the files from the compiled binary packages into the c:
 \backslash
-mpb directory.
- When done, your directory should look something like this, depending of
- course, on which programs you chose to extract.
+mpb directory, using WinRar, 7-zip or similar software.
+ When done, your directory should look something like below.
 \begin_inset Float figure
 wide false
 sideways false
@@ -146,6 +130,26 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Enumerate
+OpenHoldem got created with MicroSoft Visual Studio 2015 Community Edition
+ and needs some extra MicroSoft DLLs (dynamic link libraries).
+ Therefore you have to install the redistributable runtime-library from
+ MicroSoft: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.microsoft.com/en-us/download/details.aspx?id=48145
+\end_layout
+
+\end_inset
+
+.
+ You need the 32-bit-version, even if you have a 64-bit-system, because
+ OpenHoldem still supports older machines with 32 bits.
 \end_layout
 
 \end_body

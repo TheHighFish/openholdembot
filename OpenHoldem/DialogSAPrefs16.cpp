@@ -1,23 +1,23 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DlgSAPrefs16.cpp : implementation file
 //
 
 #include "stdafx.h"
-#include "CPreferences.h"
+
 #include "DialogSAPrefs16.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "SAPrefsSubDlg.h"
 
 // CDlgSAPrefs16 dialog
@@ -60,17 +60,17 @@ BOOL CDlgSAPrefs16::OnInitDialog()
 
 	CSAPrefsSubDlg::OnInitDialog();
 
-	_rebuy_condition_no_cards_Button.SetCheck(preferences.rebuy_condition_no_cards());
-	_rebuy_condition_change_in_handnumber_Button.SetCheck(preferences.rebuy_condition_change_in_handnumber());
-	_rebuy_condition_heuristic_check_for_occlusion_Button.SetCheck(preferences.rebuy_condition_heuristic_check_for_occlusion());
+	_rebuy_condition_no_cards_Button.SetCheck(Preferences()->rebuy_condition_no_cards());
+	_rebuy_condition_change_in_handnumber_Button.SetCheck(Preferences()->rebuy_condition_change_in_handnumber());
+	_rebuy_condition_heuristic_check_for_occlusion_Button.SetCheck(Preferences()->rebuy_condition_heuristic_check_for_occlusion());
 
-	text.Format("%d", preferences.rebuy_minimum_time_to_next_try());
+	text.Format("%d", Preferences()->rebuy_minimum_time_to_next_try());
 	_rebuy_minimum_time_to_next_try_Edit.SetWindowText(text);
 	_rebuy_minimum_time_to_next_try_Spin.SetRange(0, (short)MAX_MINIMUM_DELAY_TO_NEXT_REBUY);
-	_rebuy_minimum_time_to_next_try_Spin.SetPos(preferences.rebuy_minimum_time_to_next_try());
+	_rebuy_minimum_time_to_next_try_Spin.SetPos(Preferences()->rebuy_minimum_time_to_next_try());
 	_rebuy_minimum_time_to_next_try_Spin.SetBuddy(&_rebuy_minimum_time_to_next_try_Edit);
 
-	_rebuy_script_Edit.SetWindowText(preferences.rebuy_script());
+	_rebuy_script_Edit.SetWindowText(Preferences()->rebuy_script());
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -80,20 +80,20 @@ void CDlgSAPrefs16::OnOK()
 {
 	CString text = "";
 	
-	preferences.SetValue(k_prefs_rebuy_condition_no_cards, _rebuy_condition_no_cards_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_rebuy_condition_change_in_handnumber, _rebuy_condition_change_in_handnumber_Button.GetCheck() == true);
-	preferences.SetValue(k_prefs_rebuy_condition_heuristic_check_for_occlusion, _rebuy_condition_heuristic_check_for_occlusion_Button.GetCheck() == true);
+	Preferences()->SetValue(k_prefs_rebuy_condition_no_cards, _rebuy_condition_no_cards_Button.GetCheck() == BST_CHECKED ? true : false);
+	Preferences()->SetValue(k_prefs_rebuy_condition_change_in_handnumber, _rebuy_condition_change_in_handnumber_Button.GetCheck() == BST_CHECKED ? true : false);
+	Preferences()->SetValue(k_prefs_rebuy_condition_heuristic_check_for_occlusion, _rebuy_condition_heuristic_check_for_occlusion_Button.GetCheck() == BST_CHECKED ? true : false);
 
 	_rebuy_minimum_time_to_next_try_Edit.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_MINIMUM_DELAY_TO_NEXT_REBUY) 
 	{
-		OH_MessageBox_Interactive("Invalid minimum time to next rebuy", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid minimum time to next rebuy", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_rebuy_minimum_time_to_next_try, strtoul(text.GetString(), 0, 10));
+	Preferences()->SetValue(k_prefs_rebuy_minimum_time_to_next_try, strtoul(text.GetString(), 0, 10));
 
 	_rebuy_script_Edit.GetWindowText(text);
-	preferences.SetValue(k_prefs_rebuy_script, text);
+	Preferences()->SetValue(k_prefs_rebuy_script, text);
 	
 	CSAPrefsSubDlg::OnOK();
 }

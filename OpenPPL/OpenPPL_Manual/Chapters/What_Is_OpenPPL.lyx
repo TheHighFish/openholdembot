@@ -78,10 +78,6 @@ figs-within-sections
 What Is OpenPPL
 \end_layout
 
-\begin_layout Section*
-What Is (Open)PPL?
-\end_layout
-
 \begin_layout Standard
 PPL is an acronym for
 \emph on
@@ -190,7 +186,7 @@ you can contribute to the project to make it even better.
 
 \begin_layout Itemize
 it's all for free.
- Well - nearly free; of course it requires a bit of learning and some work
+ Well -- nearly free; of course it requires a bit of learning and some work
  to become a master.
 \end_layout
 

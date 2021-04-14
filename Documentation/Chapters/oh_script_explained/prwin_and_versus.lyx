@@ -501,6 +501,45 @@ Versus is a capability introduced into WinHoldem in 2005 (and implemented
 \end_layout
 
 \begin_layout Standard
+Especially useful is the multiplexer-function 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+vs$multiplex$X$prwin  // or prlos, prtie
+\end_layout
+
+\end_inset
+
+that looks up a numbered list depending on a range-function.
+ For example the calculation of allin-equity could become as simple as 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+##f$allin_equity_against_bigblind##
+\end_layout
+
+\begin_layout Plain Layout
+
+vs$multiplex$f$bigblind_calling_range$prwin
+\end_layout
+
+\begin_layout Plain Layout
+
++ 0.5 * vs$multiplex$f$bigblind_calling_range$prtie
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Against multiple opponents its utility is much reduced, since the existence
  of the same cards in different opponent handlists is not allowed for the
  versus calculation, and combining the results from several independent

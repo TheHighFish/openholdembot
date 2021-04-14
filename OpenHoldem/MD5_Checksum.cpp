@@ -1,17 +1,17 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //                  CPOL:   http://www.codeproject.com/info/cpol10.aspx
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: calculating a MD5 checksum of OpenHoldem for the logs
 //   to verify that we have an "official" file and sort out some PEBKACs.
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Original sources: http://www.codeproject.com/Articles/32202/MD5-File-Creation-and-Verification
 //                   http://www.rohitab.com/discuss/topic/21740-md5-hashing/
@@ -19,7 +19,7 @@
 //                   "Napalm"
 // Slight simplifications (and all the bugs): TheHighFish
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "MD5_Checksum.h"
@@ -29,7 +29,13 @@
 HCRYPTPROV hCryptProv;
 typedef struct {
 	unsigned char digest[16];
-	unsigned long hHash;
+#ifdef _WIN64
+  // http://www.maxinmontreal.com/forums/viewtopic.php?f=270&t=19676
+  // http://stackoverflow.com/questions/8672887/is-there-a-define-for-64-bit-in-visual-studio-2010
+	unsigned long long hHash;
+#else
+  unsigned long hHash;
+#endif
 } MD5Context;
 
 

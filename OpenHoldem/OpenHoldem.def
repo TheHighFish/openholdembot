@@ -1,0 +1,9 @@
+LIBRARY	OpenHoldem
+EXPORTS
+GetSymbol
+GetPrw1326
+GetHandnumber
+ParseHandList
+ScrapeTableMapRegion
+SendChatMessage
+WriteLog

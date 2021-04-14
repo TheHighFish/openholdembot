@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -24,7 +24,6 @@ IMPLEMENT_DYNAMIC(CDlgSelectTable, CDialog)
 
 CDlgSelectTable::CDlgSelectTable(CWnd* pParent /*=NULL*/) : CDialog(CDlgSelectTable::IDD, pParent) 
 {
-    __SEH_SET_EXCEPTION_HANDLER	
 }
 
 CDlgSelectTable::~CDlgSelectTable() 
@@ -57,8 +56,7 @@ void CDlgSelectTable::OnBnClickedOk()
 
 BOOL CDlgSelectTable::OnInitDialog() 
 {
-	int		i, N;
-
+	int		 N;
 	CDialog::OnInitDialog();
 
 	selected_item = -1;

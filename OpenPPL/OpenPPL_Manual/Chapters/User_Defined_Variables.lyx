@@ -91,16 +91,9 @@ Most probably you need some game-history to take your decision; then you
 
 \begin_layout Standard
 
-\series bold
-User-defined variables need to be prefixed with the word 
-\begin_inset Quotes eld
-\end_inset
-
-user
-\begin_inset Quotes erd
-\end_inset
-
-, and the word Set when you give them a value.
+\emph on
+User-defined variables need to be prefixed with the word “user”, and the
+ word Set when you give them a value.
 \end_layout
 
 \begin_layout Standard
@@ -208,7 +201,7 @@ status open
 \end_layout
 
 \begin_layout Section*
-Expert Tricks (MEMORY SYMBOLS)
+Expert Tricks (Memory Symbols)
 \end_layout
 
 \begin_layout Standard

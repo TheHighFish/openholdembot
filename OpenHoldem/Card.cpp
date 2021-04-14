@@ -1,11 +1,11 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Scraping the poker-table and providing access to the scraped data.
 //  As the CScraper is low-level and quite large we created 
@@ -13,7 +13,7 @@
 //  like "UserHasCards()".
 //  Better use that interface to access scraper-data whenever possible.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "Card.h"
@@ -119,4 +119,39 @@ bool Card::IsAnyCard() {
 
 CString Card::ToString() {
   return StdDeck_cardString(_value);  
+}
+
+CString Card::ToHTML() {
+  // code extracted from former CReplayFrame.cpp
+  CString suit, color, rank, final;
+  if (IsCardBack()) {
+    rank = "*";
+    suit = "*";
+    color = "black";
+  } else if (IsNoCard()) {
+    rank = "&nbsp";
+    suit = "&nbsp";
+    color = "black";
+  } else if (StdDeck_SUIT(_value) == Suit_CLUBS) {
+    suit = "&clubs;";
+    color = "green";
+  } else if (StdDeck_SUIT(_value) == Suit_DIAMONDS) {
+    suit = "&diams;";
+    color = "blue";
+  } else if (StdDeck_SUIT(_value) == Suit_HEARTS) {
+    suit = "&hearts;";
+    color = "red";
+  } else if (StdDeck_SUIT(_value) == Suit_SPADES) {
+    suit = "&spades;";
+    color = "black";
+  } else {
+    rank = "&nbsp";
+    suit = "&nbsp";
+    color = "black";
+  }
+  if (IsKnownCard()) {
+    rank.Format("%c", GetRankCharacter());
+  }
+  final.Format("<font color=%s>%s%s</font>", color, rank, suit);
+  return final;
 }

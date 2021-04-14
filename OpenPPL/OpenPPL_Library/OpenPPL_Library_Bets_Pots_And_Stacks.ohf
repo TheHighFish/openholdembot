@@ -1,0 +1,145 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Betsizes and StackSizes
+//
+//*****************************************************************************
+
+##AmountToCall##
+WHEN (bblind > 0) RETURN (DollarsToCall / bblind) FORCE 
+WHEN Others RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE
+
+##BetSize##
+ncallbets
+
+##BigBlindSize##
+bet_preflop
+	
+##MaxOpponentsLeftStackSize##
+// We believe MaxOpponentsLeftStackSize is better than MaxStacksizeOfActiveOpponents
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=18924
+MaxStacksizeOfActiveOpponents
+
+##MaxStacksizeOfActiveOpponents##
+WHEN (bblind <= 0) RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE 
+WHEN (stack0 == balance) RETURN (stack1 / bblind) FORCE 
+WHEN Others RETURN (stack0 / bblind) FORCE 
+
+##EffectiveMaxStacksizeOfActiveOpponents##
+(StackSize <= MaxStacksizeOfActiveOpponents) ? StackSize : MaxStacksizeOfActiveOpponents
+
+##MaxStillToActStackSize##
+// Per definition for first orbit preflop only
+userchair == bigblindchair        ? 0 :
+userchair == smallblindchair      ? MaxStillToActStackSizeAfterSmallBlind      :
+userchair == buttonchair          ? MaxStillToActStackSizeAfterButton          :
+userchair == cutoffchair          ? MaxStillToActStackSizeAfterCutOff          :
+userchair == mp3chair ? MaxStillToActStackSizeAfterMiddlePosition3 :
+userchair == mp2chair ? MaxStillToActStackSizeAfterMiddlePosition2 :
+userchair == mp1chair ? MaxStillToActStackSizeAfterMiddlePosition1 :
+userchair == ep3chair  ? MaxStillToActStackSizeAfterEarlyPosition3  :
+userchair == ep2chair  ? MaxStillToActStackSizeAfterEarlyPosition2  :
+userchair == ep1chair  ? MaxStillToActStackSizeAfterEarlyPosition1  :
+HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
+
+##MinStillToActStackSize##
+userchair == bigblindchair        ? 0:
+userchair == smallblindchair      ? MinStillToActStackSizeAfterSmallBlind      :
+userchair == buttonchair          ? MinStillToActStackSizeAfterButton          :
+userchair == cutoffchair          ? MinStillToActStackSizeAfterCutOff          :
+userchair == mp3chair ? MinStillToActStackSizeAfterMiddlePosition3 :
+userchair == mp2chair ? MinStillToActStackSizeAfterMiddlePosition2 :
+userchair == mp1chair ? MinStillToActStackSizeAfterMiddlePosition1 :
+userchair == ep3chair  ? MinStillToActStackSizeAfterEarlyPosition3  :
+userchair == ep2chair  ? MinStillToActStackSizeAfterEarlyPosition2  :
+userchair == ep1chair  ? MinStillToActStackSizeAfterEarlyPosition1  :
+HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated
+
+##PotSize##
+// Considering effective potside
+(bblind > 0) ? (pot / bblind) - SidePot: ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StackSize##
+(bblind > 0) ? (balance / bblind) : ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StackSizeAtBeginningOfCurrentRound##
+StackSize + TotalInvestedThisRound
+
+##StackUnknown##
+// Only for Shanky-compatibility needed
+WHEN ismyturn AND (StackSize <= 0) RETURN true FORCE
+WHEN Others RETURN false FORCE
+
+##StartingBigBlindSize##
+WHEN (me_re_MemStartingBigBlindSize > 0) RETURN me_re_MemStartingBigBlindSize FORCE
+WHEN Others RETURN BigBlindSize FORCE
+
+##TotalInvested##
+WHEN IsPreflop RETURN (Ante + ncurrentbets) FORCE
+WHEN IsFlop    RETURN (Ante + nbetsround_preflop + ncurrentbets) FORCE
+WHEN IsTurn    RETURN (Ante + nbetsround_preflop + nbetsround_flop + ncurrentbets) FORCE
+WHEN IsRiver   RETURN (Ante + nbetsround_preflop + nbetsround_flop + nbetsround_turn + ncurrentbets) FORCE 
+WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
+
+##TotalInvestedThisRound##
+WHEN IsPreflop RETURN (ncurrentbets + Ante) FORCE 
+WHEN Others RETURN ncurrentbets FORCE 

@@ -93,21 +93,12 @@ Description
 
 \begin_layout Standard
 OHReplay is an application for displaying Replay Frames.
- The nice thing is that OHReplay displays frames exactly as they are displayed
+ The nice thing is that OHReplay displays frames exactly as they have been
+ displayed by the casino.
  That means that once a frame is displayed by OHReplay, you can connect
  OpenHoldem to that displayed frame just as if you were connecting to the
  native poker client window.
- This allows for easy debugging of your 
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-Table Map
-\end_layout
-
-\end_inset
-
-Table Map and bot logic while offline.
+ This allows for easy debugging of your Table Map and bot logic while offline.
 \end_layout
 
 \begin_layout Section

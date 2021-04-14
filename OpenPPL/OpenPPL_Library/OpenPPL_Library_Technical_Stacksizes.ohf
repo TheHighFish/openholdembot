@@ -1,0 +1,419 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - StackSizes - supporting technical functions
+//
+// The stacksize-symbols are accessible by the multiplexer-engine
+// e.g. as StartingStackSize_dealerchair or Stack_raischair.
+//
+//*****************************************************************************
+
+##StartingStackSize0##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance0 + currentbet0 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize1##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance1 + currentbet1 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize2##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance2 + currentbet2 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize3##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance3 + currentbet3 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize4##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance4 + currentbet4 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize5##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance5 + currentbet5 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize6##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance6 + currentbet6 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize7##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance7 + currentbet7 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize8##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance8 + currentbet8 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##StartingStackSize9##
+// StartingStackSize of chair X,
+// to be used by the multiplexer e.g as "StartingStackSize_dealerchair"
+// Amount in bets (big blinds for preflop).
+// Works preflop only.
+(bet > 0) ? ((balance9 + currentbet9 + ante) / bet) :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##MaxStillToActStackSizeAfterSmallBlind##
+// Only one player behind SB, so it is easy
+// Per definition for first orbit preflop only.
+StartingStackSize_bigblindchair
+
+##MaxStillToActStackSizeAfterButton##
+// Per definition for first orbit preflop only
+StartingStackSize_smallblindchair > MaxStillToActStackSizeAfterSmallBlind ?
+  StartingStackSize_smallblindchair : MaxStillToActStackSizeAfterSmallBlind
+
+##MaxStillToActStackSizeAfterCutOff##
+// Per definition for first orbit preflop only
+StartingStackSize_buttonchair > MaxStillToActStackSizeAfterButton ?
+  StartingStackSize_buttonchair : MaxStillToActStackSizeAfterButton
+
+##MaxStillToActStackSizeAfterMiddlePosition3##
+// Per definition for first orbit preflop only
+StartingStackSize_cutoffchair > MaxStillToActStackSizeAfterCutOff?
+  StartingStackSize_cutoffchair : MaxStillToActStackSizeAfterCutOff
+
+##MaxStillToActStackSizeAfterMiddlePosition2##
+// Per definition for first orbit preflop only
+StartingStackSize_mp3chair > MaxStillToActStackSizeAfterMiddlePosition3 ?
+  StartingStackSize_mp3chair : MaxStillToActStackSizeAfterMiddlePosition3
+
+##MaxStillToActStackSizeAfterMiddlePosition1##
+// Per definition for first orbit preflop only
+StartingStackSize_mp2chair > MaxStillToActStackSizeAfterMiddlePosition2 ?
+  StartingStackSize_mp2chair : MaxStillToActStackSizeAfterMiddlePosition2
+
+##MaxStillToActStackSizeAfterEarlyPosition3##
+// Per definition for first orbit preflop only
+StartingStackSize_mp1chair > MaxStillToActStackSizeAfterMiddlePosition1 ?
+  StartingStackSize_mp1chair : MaxStillToActStackSizeAfterMiddlePosition1
+
+##MaxStillToActStackSizeAfterEarlyPosition2##
+// Per definition for first orbit preflop only
+StartingStackSize_ep3chair > MaxStillToActStackSizeAfterEarlyPosition3 ?
+  StartingStackSize_ep3chair : MaxStillToActStackSizeAfterEarlyPosition3
+
+##MaxStillToActStackSizeAfterEarlyPosition1##
+// Per definition for first orbit preflop only
+StartingStackSize_ep2chair > MaxStillToActStackSizeAfterEarlyPosition2 ?
+  StartingStackSize_ep2chair : MaxStillToActStackSizeAfterEarlyPosition2
+
+##MinStillToActStackSizeAfterSmallBlind##
+// Only one player behind SB, so it is easy
+StartingStackSize_bigblindchair
+
+##MinStillToActStackSizeAfterButton##
+StartingStackSize_smallblindchair < MinStillToActStackSizeAfterSmallBlind ?
+  StartingStackSize_smallblindchair : MinStillToActStackSizeAfterSmallBlind
+
+##MinStillToActStackSizeAfterCutOff##
+StartingStackSize_buttonchair < MinStillToActStackSizeAfterButton ?
+  StartingStackSize_buttonchair : MinStillToActStackSizeAfterButton
+
+##MinStillToActStackSizeAfterMiddlePosition3##
+StartingStackSize_cutoffchair < MinStillToActStackSizeAfterCutOff ?
+  StartingStackSize_cutoffchair : MinStillToActStackSizeAfterCutOff
+
+##MinStillToActStackSizeAfterMiddlePosition2##
+StartingStackSize_mp3chair < MinStillToActStackSizeAfterMiddlePosition3 ?
+  StartingStackSize_mp3chair : MinStillToActStackSizeAfterMiddlePosition3
+
+##MinStillToActStackSizeAfterMiddlePosition1##
+StartingStackSize_mp2chair < MinStillToActStackSizeAfterMiddlePosition2 ?
+  StartingStackSize_mp2chair : MinStillToActStackSizeAfterMiddlePosition2
+
+##MinStillToActStackSizeAfterEarlyPosition3##
+StartingStackSize_mp1chair < MinStillToActStackSizeAfterMiddlePosition1 ?
+  StartingStackSize_mp1chair : MinStillToActStackSizeAfterMiddlePosition1
+
+##MinStillToActStackSizeAfterEarlyPosition2##
+StartingStackSize_ep3chair < MinStillToActStackSizeAfterEarlyPosition3 ?
+  StartingStackSize_ep3chair : MinStillToActStackSizeAfterEarlyPosition3
+
+##MinStillToActStackSizeAfterEarlyPosition1##
+StartingStackSize_ep2chair < MinStillToActStackSizeAfterEarlyPosition2 ?
+  StartingStackSize_ep2chair : MinStillToActStackSizeAfterEarlyPosition2
+
+##CalculateMaxOpponentStackSize##
+WHEN (nopponentsseated <= 0) RETURN 0 FORCE
+WHEN (bblind <= 0) RETURN ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap FORCE
+WHEN (balance_rank0 == (MyTotalMoney)) RETURN (balance_rank1 / bblind) FORCE
+WHEN Others RETURN (balance_rank0 / bblind) FORCE
+
+##CalculateMinOpponentStackSize##
+(nopponentsseated <= 0) ? 0 :
+(bblind <= 0) ? ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap :
+[ 1 / bblind *
+[ nplayersdealt == 10 ?
+    (balance_rank9 == (MyTotalMoney) ? balance_rank8 : balance_rank9) :
+  nplayersdealt == 9 ?
+    (balance_rank8 == (MyTotalMoney) ? balance_rank7 : balance_rank8) :
+  nplayersdealt == 8 ?
+    (balance_rank7 == (MyTotalMoney) ? balance_rank6 : balance_rank7) :
+  nplayersdealt == 7 ?
+    (balance_rank6 == (MyTotalMoney) ? balance_rank5 : balance_rank6) :
+  nplayersdealt == 6 ?
+    (balance_rank5 == (MyTotalMoney) ? balance_rank4 : balance_rank5) :
+  nplayersdealt == 5 ?
+    (balance_rank4 == (MyTotalMoney) ? balance_rank3 : balance_rank4) :
+  nplayersdealt == 4 ?
+    (balance_rank3 == (MyTotalMoney) ? balance_rank2 : balance_rank3) :
+  nplayersdealt == 3 ?
+    (balance_rank2 == (MyTotalMoney) ? balance_rank1 : balance_rank2) :
+  nplayersdealt == 2 ?
+    (balance_rank1 == (MyTotalMoney) ? balance_rank0 : balance_rank1) :
+ERROR_No_Opponents_Detected__Check_Your_TableMap]]
+
+##Stack0##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+// To be renamed to StackChair0?
+[bblind > 0] ? [balance0 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack1##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance1 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack2##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance2 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack3##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance3 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack4##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance4 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack5##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance5 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack6##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance6 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack7##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance7 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack8##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance8 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+##Stack9##
+// Stacks are Shanky-style in big-blinds
+// Balances are OH-style in dollars
+[bblind > 0] ? [balance9 / bblind] :
+ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap
+
+//
+// 'Synonyms for StackX to avoid confusion
+//
+##StackSize0##
+Stack0
+
+##StackSize1##
+Stack1
+
+##StackSize2##
+Stack2
+
+##StackSize3##
+Stack3
+
+##StackSize4##
+Stack4
+
+##StackSize5##
+Stack5
+
+##StackSize6##
+Stack6
+
+##StackSize7##
+Stack7
+
+##StackSize8##
+Stack8
+
+##StackSize9##
+Stack9
+
+
+
+
+
+
+
+// !!!! Move to separate file Technical Betsizee!
+
+
+
+##EffectiveBetsizeInDollars0##
+WHEN (currentbet0 <= MyTotalMoney) RETURN currentbet0 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars1##
+WHEN (currentbet1 <= MyTotalMoney) RETURN currentbet1 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars2##
+WHEN (currentbet2 <= MyTotalMoney) RETURN currentbet2 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars3##
+WHEN (currentbet3 <= MyTotalMoney) RETURN currentbet3 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars4##
+WHEN (currentbet4 <= MyTotalMoney) RETURN currentbet4 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars5##
+WHEN (currentbet5 <= MyTotalMoney) RETURN currentbet5 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars6##
+WHEN (currentbet6 <= MyTotalMoney) RETURN currentbet6 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars7##
+WHEN (currentbet7 <= MyTotalMoney) RETURN currentbet7 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars8##
+WHEN (currentbet8 <= MyTotalMoney) RETURN currentbet8 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectiveBetsizeInDollars9##
+WHEN (currentbet9 <= MyTotalMoney) RETURN currentbet9 FORCE
+WHEN Others RETURN MyTotalMoney FORCE
+
+##EffectivePotSizeInDollars##
+  potcommon
++ EffectiveBetsizeInDollars0
++ EffectiveBetsizeInDollars1
++ EffectiveBetsizeInDollars2
++ EffectiveBetsizeInDollars3
++ EffectiveBetsizeInDollars4
++ EffectiveBetsizeInDollars5
++ EffectiveBetsizeInDollars6
++ EffectiveBetsizeInDollars7
++ EffectiveBetsizeInDollars8
++ EffectiveBetsizeInDollars9
+
+##EffectivePotSize##
+(BigBlindSize > 0) ? (EffectivePotSizeInDollars / BigBlindSize) : EffectivePotSizeInDollars 

@@ -79,7 +79,7 @@ OpenPPL-Mode
 \end_layout
 
 \begin_layout Standard
-OpenHoldem uses per default the main autoplayer functions (f$alli, f$betsize,
+OpenHoldem uses per default the main autoplayer functions (f$allin, f$betsize,
  etc.).
  We call this default mode OH-script-mode.
  It is more or less compatibel to the former WinHoldem behaviour.

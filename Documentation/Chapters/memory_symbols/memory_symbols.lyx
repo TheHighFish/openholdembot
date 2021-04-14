@@ -264,7 +264,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-to reset these two values on handreset to zero (which means false in tzhe
+to reset these two values on handreset to zero (which means false in the
  second case).
 \end_layout
 
@@ -297,7 +297,7 @@ betround == 2 ?
 \end_layout
 
 \begin_layout Standard
-Id it is on the flop then we will store the values of the functions f$stpr
+If it is on the flop then we will store the values of the functions f$stpr
  and f$slowplay at that moment.
  
 \end_layout
@@ -367,7 +367,7 @@ STEP 3 Retrieve and use the memory.
 \end_layout
 
 \begin_layout Standard
-In f$alli we put 
+In f$allin we put 
 \end_layout
 
 \begin_layout Standard

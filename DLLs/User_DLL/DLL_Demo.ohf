@@ -1,0 +1,40 @@
+##f$test##
+ 
+
+##f$debug##
+= userchair
+= AmountToCall
+= dll$random
+
+
+##list_random_crap##
+KK JJ 66 33 
+A8s A3s KTs K7s K4s Q8s Q7s Q3s J8s J5s T7s 96s 94s 93s 85s 82s 63s 53s 
+A6o KTo K8o K5o QJo Q8o Q3o JTo J5o T6o 92o 87o 85o 84o 62o 43o 
+
+
+##f$preflop##
+// Simple demo that uses OpenPPL and a user.DLL-extension.
+// The user.DLL will be loaded automatically at startup.
+// It will handle the dll$-symbols like dll%random.
+WHEN hand$AA RaiseMax FORCE
+WHEN dll$random < 0.50 RaisePot FORCE
+WHEN dll$test > 20 RaiseMin FORCE
+WHEN list_random_crap Call FORCE
+WHEN Others Fold FORCE
+
+
+##f$flop##
+// Fill in your strategy
+// Unspecified situations will be handled
+// by the Gecko default-bot
+
+##f$turn##
+// Fill in your strategy
+// Unspecified situations will be handled 
+// by the Gecvko default-bot
+
+##f$river##
+// Fill in your strategy
+// Unspecified situations will be handled 
+// by the Gecvko default-bot

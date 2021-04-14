@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_DIALOGSAPREFS7_H
 #define INC_DIALOGSAPREFS7_H
@@ -36,6 +36,7 @@ protected:
 
 	enum { IDD = IDD_SAPREFS7 };
 	CEdit m_ICM1, m_ICM2, m_ICM3, m_ICM4, m_ICM5;
+  CEdit m_ICM6, m_ICM7, m_ICM8, m_ICM9;
 
 	DECLARE_MESSAGE_MAP()
 };

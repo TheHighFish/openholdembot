@@ -1,30 +1,33 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CLazyScraper.h"
 
 #include "CAutoplayer.h"
+#include "CCasinoInterface.h"
+#include "CEngineContainer.h"
 #include "CHandresetDetector.h"
-#include "CPreferences.h"
+
 #include "CScraper.h"
-#include "CScraperAccess.h"
+#include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineHistory.h"
 #include "CSymbolEngineIsTournament.h"
 #include "CSymbolEngineGameType.h"
+#include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableState.h"
-#include "debug.h"
+
 
 CLazyScraper *p_lazyscraper = NULL;
 
@@ -53,7 +56,7 @@ CLazyScraper::~CLazyScraper() {
 //   * slider
 // (only if the game-type is NL or PL)
 //
-// Once per everyheartbeat (cash-game):
+// Once per every heartbeat (cash-game):
 //   * scrape "seated" for all chairs
 //   * scrape "active" for all seated chairs
 //   * scrape cards for all active chairs
@@ -81,12 +84,12 @@ void CLazyScraper::DoScrape() {
 	}
   _is_identical_scrape = false;
 	p_scraper->ScrapeLimits();
-	if (NeedDealerChair()) {
+	if (NeedDealerChair()) { 
 		p_scraper->ScrapeDealer();
 	}
 	if (NeedUsersCards())	{
-		assert(p_symbol_engine_userchair->userchair_confirmed());
-		p_scraper->ScrapePlayerCards(p_symbol_engine_userchair->userchair());
+		assert(p_engine_container->symbol_engine_userchair()->userchair_confirmed());
+		p_scraper->ScrapePlayerCards(p_engine_container->symbol_engine_userchair()->userchair());
 	}
 	p_scraper->ScrapeSeatedActive();
 	if (NeedAllPlayersCards()) {
@@ -143,7 +146,7 @@ bool CLazyScraper::NeedHandNumber() {
 }
 
 bool CLazyScraper::NeedUsersCards() {
-	return (p_symbol_engine_userchair->userchair_confirmed());
+	return (p_engine_container->symbol_engine_userchair()->userchair_confirmed());
 }
 
 bool CLazyScraper::NeedAllPlayersCards() {
@@ -168,8 +171,8 @@ bool CLazyScraper::NeedInterfaceButtons() {
 }
 
 bool CLazyScraper::NeedBetpotButtons() {
-	return (p_scraper_access->IsMyTurn()
-		&& (p_symbol_engine_gametype->isnl() || p_symbol_engine_gametype->ispl()));
+	return (p_casino_interface->IsMyTurn()
+		&& (p_engine_container->symbol_engine_gametype()->isnl() || p_engine_container->symbol_engine_gametype()->ispl()));
 }
 
 bool CLazyScraper::NeedSlider() {
@@ -185,7 +188,17 @@ bool CLazyScraper::NeedAllPlayerNames() {
 	// It is enough if we do this until our turn, because
 	// * at our turn we have stable frames
 	// * new players after our turn can't affect the current hand
-	return (!p_symbol_engine_history->DidActThisHand());
+  if (p_engine_container->symbol_engine_history()->DidActThisHand()) {
+    return false;
+  }
+  // We can also stop scraping names if we see new cards 
+  // after a hand-reset because then a poterntial new player
+  // can no longer join the game.
+  if ((p_engine_container->symbol_engine_time()->elapsedhand() > 2)
+      && (p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt() >= 2)) {
+    return false;
+  }
+  return true;
 }
 
 bool CLazyScraper::NeedUnknownPlayerNames() {
@@ -201,8 +214,8 @@ bool CLazyScraper::NeedCommunityCards() {
 
 void CLazyScraper::ScrapeUnknownPlayerNames() {
 	for (int i=0; i<p_tablemap->nchairs(); i++) {
-		if (p_scraper_access->IsPlayerSeated(i) 
-			  && (p_table_state->_players[i]._name == "")) {
+		if (p_table_state->Player(i)->seated()
+			  && (p_table_state->Player(i)->name() == "")) {
 			p_scraper->ScrapeName(i);
 		}
 	}
@@ -211,13 +224,13 @@ void CLazyScraper::ScrapeUnknownPlayerNames() {
 bool CLazyScraper::NeedColourCodes() {
   // Scrape colour-codes at the beginning of a session 
   // and at my turn -- that's enough.
-  return (p_scraper_access->IsMyTurn()
+  return (p_casino_interface->IsMyTurn()
     || (p_handreset_detector->hands_played() <= 1));
 }
 
 bool CLazyScraper::NeedMTTRegions() {
   // return when it is our turn
   // or if we have played less than 3 hands (for possible mtt detect)
-  return (p_scraper_access->IsMyTurn()
+  return (p_casino_interface->IsMyTurn()
 	  || p_handreset_detector->hands_played() < 3);
 }

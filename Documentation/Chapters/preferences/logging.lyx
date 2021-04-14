@@ -232,7 +232,7 @@ status open
 Autoplayer Traces
 \emph default
 : This option tells OpenHoldem to log the evaluation of formulas that lead
- to autoplayer actions, i.e the functions f$alli, f$betsize, f$call for OH-script
+ to autoplayer actions, i.e the functions f$allin, f$betsize, f$call for OH-script
 , the functions f$preflop, f$flop, f$turn and f$river for OpenPPL and also
  the evaluation of secondary functions like f$sitout and f$close.
  This information is very detailed and its interpretation will be discussed

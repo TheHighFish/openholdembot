@@ -96,7 +96,7 @@ double getsym( int chair, const char* name, bool& iserr )
 #ifdef WIN32
 #ifndef OH_2
    //FIXME: user 0 for chair all the time
-   return GetSymbolFromDll(chair, name, iserr);
+   return GetSymbol(name);
 #else //is OH_2
    return (*p_get_symbol)(chair,name,iserr);
 #endif //OH_2

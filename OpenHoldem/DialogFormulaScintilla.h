@@ -1,19 +1,20 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_DIALOGFORMULASCINTILLA_H
 #define INC_DIALOGFORMULASCINTILLA_H
 
+#include "resource.h"
 #include "ScintillaWnd.h"
 #include "WinMgr.h"
 #include "SizerBar.h"
@@ -68,12 +69,10 @@
 #define SCE_C_GLOBALCLASS 19
 #define MAX_STYLE_NUM 19
 
-
 // mandatory to use toolTip : "http://forums.codeguru.com/showthread.php?231227-MFC-Tree-Control-How-to-use-SetItemData()-and-GetItemData()"
 struct toolTipData {
 	CString* description;
 };
-
 
 class CScintillaInfo {
  public:

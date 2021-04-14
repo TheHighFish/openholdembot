@@ -1,16 +1,15 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
 // Purpose:
 //
 //******************************************************************************
-
 
 // OpenScrapeView.cpp : implementation of the COpenScrapeView class
 //
@@ -23,7 +22,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 // COpenScrapeView
 
@@ -41,8 +39,6 @@ END_MESSAGE_MAP()
 
 COpenScrapeView::COpenScrapeView()
 {
-    __SEH_SET_EXCEPTION_HANDLER
-
 	black_pen.CreatePen(PS_SOLID, 1, COLOR_BLACK);
 	green_pen.CreatePen(PS_SOLID, 1, COLOR_GREEN);
 	red_pen.CreatePen(PS_SOLID, 1, COLOR_RED);
@@ -479,30 +475,25 @@ BOOL COpenScrapeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void COpenScrapeView::blink_rect(void)
 {
-	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
-	CString				sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
+	COpenScrapeDoc *pDoc = COpenScrapeDoc::GetDocument();
+	CString				 sel = theApp.m_TableMapDlg->m_TableMapTree.GetItemText(theApp.m_TableMapDlg->m_TableMapTree.GetSelectedItem());	
+	CDC					   *pDC = GetDC();
+	CPen				   *pTempPen, oldpen;
+	CBrush				 *pTempBrush, oldbrush;	
 
-	CDC					*pDC = GetDC();
-	CPen				*pTempPen, oldpen;
-	CBrush				*pTempBrush, oldbrush;	
-
-	if (dragging)  return;
-
-
-	// Set pen and brush
+  if (dragging) {
+    return;
+  }
+  // Set pen and brush
 	pTempPen = (CPen*)pDC->SelectObject(pDoc->blink_on ? green_pen : red_pen);
 	oldpen.FromHandle((HPEN)pTempPen);					// Save old pen
 	pTempBrush = (CBrush*)pDC->SelectObject(GetStockObject(NULL_BRUSH));
 	oldbrush.FromHandle((HBRUSH)pTempBrush);			// Save old brush
 
-	if (!dragging)
-	{
-		RMapCI r_iter=p_tablemap->r$()->find(sel.GetString());
-
-		if (r_iter != p_tablemap->r$()->end())
-			pDC->Rectangle(r_iter->second.left-1, r_iter->second.top-1, r_iter->second.right+2, r_iter->second.bottom+2);
-	}
-
+	RMapCI r_iter=p_tablemap->r$()->find(sel.GetString());
+  if (r_iter != p_tablemap->r$()->end()) {
+    pDC->Rectangle(r_iter->second.left - 1, r_iter->second.top - 1, r_iter->second.right + 2, r_iter->second.bottom + 2);
+  }
 	// Clean up
 	pDC->SelectObject(oldpen);
 	pDC->SelectObject(oldbrush);

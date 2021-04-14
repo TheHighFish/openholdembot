@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CSYMBOLENGINETIME_H
 #define INC_CSYMBOLENGINETIME_H
@@ -23,33 +23,32 @@ class CSymbolEngineTime: public CVirtualSymbolEngine {
  public:
   // Mandatory reset-functions
   void InitOnStartup();
-  void ResetOnConnection();
-  void ResetOnHandreset();
-  void ResetOnNewRound();
-  void ResetOnMyTurn();
-  void ResetOnHeartbeat();
+  void UpdateOnConnection();
+  void UpdateOnHandreset();
+  void UpdateOnNewRound();
+  void UpdateOnMyTurn();
+  void UpdateOnHeartbeat();
  public:
-  void ResetOnAutoPlayerAction();
+  void UpdateOnAutoPlayerAction();
  public:
   // Public accessors
-  bool EvaluateSymbol(const char *name, double *result, bool log = false);
+  bool EvaluateSymbol(const CString name, double *result, bool log = false);
   CString SymbolsProvided();
  public:
-  double elapsed()		{ return _elapsed; }
-  double elapsedhand()	{ return _elapsedhand; }
-  double elapsedauto()	{ return _elapsedauto; }
-  double elapsedtoday()	{ return _elapsedtoday; }
+  double elapsed(); 
+  double elapsedhand(); 
+  double elapsedauto(); 
+  double elapsedtoday(); 
+ public:
+  // for the f$delay-function
+  double elapsedmyturn();
  private:
-  double _elapsed;
-  double _elapsedhand;
-  double _elapsedauto;
-  double _elapsedtoday;
+  time_t _elapsedautohold;	 // The last time autoplayer acted
+  time_t _elapsedhold;		   // The time we "sat down"
+  time_t _elapsedhandhold;	 // The time since start of last hand
+  time_t _elapsedmyturnhold;// The time when my turn started
  private:
-  time_t _elapsedautohold;	// The last time autoplayer acted
-  time_t _elapsedhold;		// The time we "sat down"
-  time_t _elapsedhandhold;	// The time since start of last hand
+  bool _last_heartbeat_was_my_turn;
 };
-
-extern CSymbolEngineTime *p_symbol_engine_time;
 
 #endif INC_CSYMBOLENGINETIME_H

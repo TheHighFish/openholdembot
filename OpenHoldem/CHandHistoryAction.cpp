@@ -1,22 +1,22 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CHandHistoryAction.h"
 
-#include "CPreferences.h"
+
 #include "CScraper.h"
-#include "MagicNumbers.h"
+
 
 CHandHistoryAction *p_handhistory_action = NULL;
 
@@ -34,22 +34,22 @@ CHandHistoryAction::~CHandHistoryAction() {
 void CHandHistoryAction::InitOnStartup() {
 }
 
-void CHandHistoryAction::ResetOnConnection() {
+void CHandHistoryAction::UpdateOnConnection() {
 }
 
-void CHandHistoryAction::ResetOnHandreset() {
+void CHandHistoryAction::UpdateOnHandreset() {
 }
 
-void CHandHistoryAction::ResetOnNewRound() {
+void CHandHistoryAction::UpdateOnNewRound() {
 }
 
-void CHandHistoryAction::ResetOnMyTurn() {
+void CHandHistoryAction::UpdateOnMyTurn() {
 }
 
-void CHandHistoryAction::ResetOnHeartbeat() {
+void CHandHistoryAction::UpdateOnHeartbeat() {
 }
 
-bool CHandHistoryAction::EvaluateSymbol(const char *name, double *result, bool log /* = false */) {
+bool CHandHistoryAction::EvaluateSymbol(const CString name, double *result, bool log /* = false */) {
   // No symbols provided
 	return false;
 }

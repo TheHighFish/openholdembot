@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs10.cpp : implementation file
 //
@@ -18,8 +18,8 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs10.h"
-#include "CPreferences.h"
-#include "OH_MessageBox.h"
+
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 #define MAX_DELAY 1000000
 
@@ -51,16 +51,16 @@ BOOL CDlgSAPrefs10::OnInitDialog()
 	CSAPrefsSubDlg::OnInitDialog();
 	CString		text = "";
 
-	text.Format("%d", preferences.chat_min_delay());
+	text.Format("%d", Preferences()->chat_min_delay());
 	m_MinimumDelay.SetWindowText(text);
 	m_MinimumDelay_Spin.SetRange(0, (short) MAX_DELAY);
-	m_MinimumDelay_Spin.SetPos(preferences.chat_min_delay());
+	m_MinimumDelay_Spin.SetPos(Preferences()->chat_min_delay());
 	m_MinimumDelay_Spin.SetBuddy(&m_MinimumDelay);
 
-	text.Format("%d", preferences.chat_random_delay());
+	text.Format("%d", Preferences()->chat_random_delay());
 	m_RandomDelay.SetWindowText(text);
 	m_RandomDelay_Spin.SetRange(0, (short) MAX_DELAY);
-	m_RandomDelay_Spin.SetPos(preferences.chat_random_delay());
+	m_RandomDelay_Spin.SetPos(Preferences()->chat_random_delay());
 	m_RandomDelay_Spin.SetBuddy(&m_RandomDelay);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -73,17 +73,17 @@ void CDlgSAPrefs10::OnOK()
 
 	m_MinimumDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
-		OH_MessageBox_Interactive("Invalid minimum Chat Delay", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid minimum Chat Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_chat_min_delay, strtoul(text.GetString(), 0, 10));
+	Preferences()->SetValue(k_prefs_chat_min_delay, strtoul(text.GetString(), 0, 10));
 
 	m_RandomDelay.GetWindowText(text);
 	if (strtoul(text.GetString(), 0, 10)<0 || strtoul(text.GetString(), 0, 10)>MAX_DELAY) {
-		OH_MessageBox_Interactive("Invalid random Chat Delay", "ERROR", MB_OK);
+		MessageBox_Interactive("Invalid random Chat Delay", "ERROR", MB_OK);
 		return;
 	}
-	preferences.SetValue(k_prefs_chat_random_delay, strtoul(text.GetString(), 0, 10));
+	Preferences()->SetValue(k_prefs_chat_random_delay, strtoul(text.GetString(), 0, 10));
 
 	CSAPrefsSubDlg::OnOK();
 }

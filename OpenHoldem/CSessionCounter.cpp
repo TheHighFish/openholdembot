@@ -1,20 +1,20 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSessionCounter.h"
-#include "CPreferences.h"
-#include "OH_MessageBox.h"
+
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 // Global instantiation of CSessionCounter class
 CSessionCounter *p_sessioncounter = NULL;
@@ -27,7 +27,7 @@ CSessionCounter::CSessionCounter()
 	for (int i=0; i<MAX_SESSION_IDS; i++)
 	{
 		// Name the mutexes A..Y
-		CString mutex_name = preferences.mutex_name() + "_" + CString(char('A' + i));
+		CString mutex_name = CString(Preferences()->mutex_name()) + "_" + CString(char('A' + i));
 		hMutex = CreateMutex(0, FALSE, mutex_name);
 		if (GetLastError() != ERROR_ALREADY_EXISTS)
 		{
@@ -41,10 +41,9 @@ CSessionCounter::CSessionCounter()
 	}
 
 	// Otherwise: We failed. No ID available.
-	OH_MessageBox_Error_Warning("Could not grab a session ID.\n"
+	MessageBox_Error_Warning("Could not grab a session ID.\n"
 		"Too many instances of OpenHoldem\n",
 		"SessionCounter Error");
-
 	PostQuitMessage(-1);
 }
 

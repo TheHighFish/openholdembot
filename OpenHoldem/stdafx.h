@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_STDAFX_H
 #define INC_STDAFX_H
@@ -28,7 +28,7 @@
 
 // Modify the following defines if you have to target a platform prior to the ones specified below.
 // Refer to MSDN for the latest info on corresponding values for different platforms.
-#ifndef WINVER				// Allow use of features specific to Windows XP or later.
+#ifndef WINVER				  // Allow use of features specific to Windows XP or later.
 #define WINVER 0x0501		// Change this to the appropriate value to target other versions of Windows.
 #endif
 
@@ -45,23 +45,66 @@
 #endif
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+#define _CRT_SECURE_NO_DEPRECATE 1          // secure functions with checks for buffer size 
 
 // Turn some warnings off, because we consider them harmless
-// and don't see an easy way to fix or avoid them.
-#define _CRT_SECURE_NO_DEPRECATE 1  // secure functions with checks for buffer size 
-#pragma warning(disable:4229)		// anachronism used : modifiers on data are ignored
-#pragma warning(disable:4312)		// conversion from 'type1' to 'type2' of greater size
-#pragma warning(disable:4319)   // zero extending 'unsigned long' to 'double' of greater size
-#pragma warning(disable:4800)   // forcing value to bool 'true' or 'false' (performance warning)
-#pragma warning(disable:4805)		// unsafe mix of type X and type 'bool' in operation
+//
+// https://www.google.de/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0ahUKEwjqmYHZnMHMAhVHiywKHaB5DWUQFggiMAE&url=https%3A%2F%2Fmsdn.microsoft.com%2Fen-us%2Flibrary%2Faa233834%28v%3Dvs.60%29.aspx&usg=AFQjCNGv_QKRcNSaYPR7j5rYxWxvP7j3Nw&sig2=gvKmaviDIOuyH1_Di0bpWA
+// identifier1' has C-linkage specified, but returns UDT 'identifier2' which is incompatible with C
+// This warning gets caused by the PT-query-definitions-DLL
+// which returns CString instead of char* (inconvenient memory-menagement and string building).
+// This is OK, as long as we call the DL from C / C++.
+#pragma warning(disable:4190)   
+// https://msdn.microsoft.com/en-us/library/b6801kcy%28v=vs.100%29.aspx
+// forcing value to bool 'true' or 'false' (performance warning)
+// Harmless and impossible to be fixed (7691 cases of c4800)
+#pragma warning(disable:4800) 
 
-// Turn some warnings on, because we consider them helpful
-// http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
+// Turn some warnings to errors, because we consider them helpful
+//
+// https://msdn.microsoft.com/en-us/library/aa231853%28v=vs.60%29.aspx
+// macro redefinition
+#pragma warning(error:4005)   
+// https://msdn.microsoft.com/en-us/library/aa231864%28v=vs.60%29.aspx
+// signed/unsigned mismatch
+#pragma warning(error:4018) 
+// https://msdn.microsoft.com/en-us/library/aa733780%28v=vs.60%29.aspx
+// 'extended-attribute' : ignored on left of 'type' when no variable is declared
+#pragma warning(error:4091)   
+// https://msdn.microsoft.com/en-us/library/aa733790%28v=vs.60%29.aspx
+// unreferenced local variable
+#pragma warning(error:4101)
+// https://msdn.microsoft.com/en-us/library/aa733807%28v=vs.60%29.aspx
+// pragma not supported during fast compile
+#pragma warning(error:4118)   
+// https://msdn.microsoft.com/en-us/library/ew69e79d.aspx
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19656
+// unrecognized character escape sequence
+#pragma warning(error:4129)   
 // http://msdn.microsoft.com/en-US/library/23k5d385%28v=VS.80%29.aspx
-#pragma warning(error:6246)		// warning C6246: Local declaration of <variable> hides declaration of same name in outer scope.
-#pragma warning(error:4229)		// warning C6244: local declaration of <variable> hides previous declaration at <line> of <file>
-#pragma warning(error:4715)   // warning Ce715: not all control paths return a value	c:\documents and settings\administrator\desktop\trunk2\openholdem\cstringmatch.cpp	218
-
+// local declaration of <variable> hides previous declaration at <line> of <file>
+#pragma warning(error:4229)		
+// https://blogs.msdn.microsoft.com/vcblog/2015/06/22/format-specifiers-checking/
+// Format specifiers checking (various errors)
+#pragma warning(error:4477)		
+// https://msdn.microsoft.com/en-us/library/k64a6he5.aspx
+// expression has no effect; expected expression with side-effect
+#pragma warning(error:4555)
+// https://msdn.microsoft.com/en-us/library/axhfhh6x.aspx
+// uninitialized local variable - Stack Overflow
+#pragma warning(error:4700)
+// https://msdn.microsoft.com/pl-pl/library/c26da40e%28v=vs.71%29.aspx
+// unreachable code
+//#pragma warning(error:4702)
+// https://msdn.microsoft.com/en-us/library/aa734012%28v=vs.60%29.aspx
+// not all control paths return a value
+#pragma warning(error:4715)   
+// https://msdn.microsoft.com/en-us/library/aa266195%28v=vs.60%29.aspx
+// unsafe mix of type X and type 'bool' in operation
+#pragma warning(error:4805)		
+// http://msdn.microsoft.com/en-us/library/2c8f766e(v=vs.80).aspx
+// Local declaration of <variable> hides declaration of same name in outer scope.
+#pragma warning(error:6246)	
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
 #define _AFX_ALL_WARNINGS
@@ -88,26 +131,35 @@
 
 #include <windows.h>
 #include <stdlib.h>
-#include <string.h>
+
+#define OPENHOLDEM_PROGRAM
 
 // Version
-#define VERSION_NUMBER			7.72
-#define VERSION_TEXT				"7.7.2"  // change version number in OpenHoldem.rc also, when needed
+#define VERSION_NUMBER			14.10
+#define VERSION_TEXT				"14.0.1.0"  // change version number in OpenHoldem.rc also, when needed
 
 // PokerEval
 #include "poker_defs.h"
 #include "pokereval_export.h"
 #include "evx_defs.h"
-//#include "inlines/evx_inlines.h"
 
 // Assertions
 #include <assert.h>
 
 // Important project headers
 #include "CValidator.h"
-#include "debug.h"
 #include "FloatingPoint_Comparisions.h"
-#include "MagicNumbers.h"
+#include "NumericalFunctions.h"
+#include "..\DLLs\Debug_DLL\debug.h"
+#include "..\DLLs\Files_DLL\files.h"
+#include "..\DLLs\Globals_DLL\globals.h"
+#include "..\DLLs\Preferences_DLL\Preferences.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
+#include "..\Shared\CCritSec\CCritSec.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "..\StructsDefines\structs_defines.h"
+
+// To avoid some race-conditions
+#define WAIT_FOR_CONDITION(condition) { while (!(condition)) { Sleep(250); } }
 
 #endif //INC_STDAFX_H

@@ -215,22 +215,36 @@ enum {
 
 \begin_layout Plain Layout
 
-	// 18 :)
+    // 18 :)
 \end_layout
 
 \begin_layout Plain Layout
 
-	simple_Chat_happy,
+    simple_Chat_happy,
 \end_layout
 
 \begin_layout Plain Layout
 
-	// 19 :(
+    // 19 :(
 \end_layout
 
 \begin_layout Plain Layout
 
-	simple_Chat_sad
+    simple_Chat_sad
+\end_layout
+
+\begin_layout Plain Layout
+
+    // 20: 
+\backslash
+o/
+\end_layout
+
+\begin_layout Plain Layout
+
+    // 21: /o
+\backslash
+
 \end_layout
 
 \begin_layout Plain Layout

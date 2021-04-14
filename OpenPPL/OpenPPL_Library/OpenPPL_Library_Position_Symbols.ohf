@@ -1,0 +1,241 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+ 
+//*****************************************************************************
+//
+// OpenPPL - Position Symbols
+//
+//*****************************************************************************
+
+// Standard PPL accepts two spellings for the position symbols
+// "In BigBlind" and "InBigBlind", "In Button" and "InButton", ...
+// Our parser is able to ignore the fillerword "In ",
+// but to be more user-friendly and to simplify the converter (less error-handling)
+// we decided to provide both forms of naming in the library.
+
+##SmallBlind##
+WHEN (userchair < 0) RETURN false FORCE
+WHEN (userchair == smallblindchair) RETURN true FORCE
+
+##BigBlind##
+WHEN (userchair < 0) RETURN false FORCE
+WHEN (userchair == bigblindchair) RETURN true FORCE
+
+##Button##
+// If the game in not 10-handed, some positions would be both "normal" and in the blinds.
+// E.g. for a 9-handed game big-blind would also be counted as EarlyPosition1.
+// Therefore we check for "Not InTheBlinds", except for button,
+// because "InButton" makes sense even if the game is headsup.
+(dealposition == nplayersdealt)
+
+##CutOff##
+[(dealposition == nplayersdealt - 1) AND NOT InTheBlinds]
+
+##MiddlePosition3##
+[(dealposition == nplayersdealt - 2) AND NOT InTheBlinds]
+
+##MiddlePosition2##
+[(dealposition == nplayersdealt - 3) AND NOT InTheBlinds]
+
+##MiddlePosition1##
+[(dealposition == nplayersdealt - 4) AND NOT InTheBlinds]
+
+##EarlyPosition3##
+[(dealposition == nplayersdealt - 5) AND NOT InTheBlinds]
+
+##EarlyPosition2##
+[(dealposition == nplayersdealt - 6) AND NOT InTheBlinds]
+
+##EarlyPosition1##
+[(dealposition == nplayersdealt - 7) AND NOT InTheBlinds]
+
+##UTG##
+// Under the gun - first to act preflop, 
+// independent of the players at the table (at least 3).
+// This symbols is especially useful to sitout 
+// after the last hand of a session (before the next blind).
+WHEN (userchair < 0) RETURN false FORCE
+WHEN (userchair == utgchair) RETURN true FORCE
+
+##InSmallBlind##
+SmallBlind
+
+##InBigBlind##
+BigBlind
+
+##TheBlinds##
+// To be used: In TheBlinds
+InTheBlinds
+
+##InTheBlinds##
+(InSmallBlind OR InBigBlind)
+
+##EarlyPosition##
+InEarlyPosition
+
+##InEarlyPosition##
+(InEarlyPosition1 OR InEarlyPosition2 OR InEarlyPosition3)
+
+##MiddlePosition##
+InMiddlePosition
+
+##InMiddlePosition##
+(InMiddlePosition1 OR InMiddlePosition2 OR InMiddlePosition3)
+
+##LatePosition##
+InLatePosition
+
+##InLatePosition##
+(InCutOff OR InButton)
+
+##InButton##
+Button
+
+##InCutOff##
+CutOff
+
+##InMiddlePosition3##
+MiddlePosition3
+
+##InMiddlePosition2##
+MiddlePosition2
+
+##InMiddlePosition1##
+MiddlePosition1
+
+##InEarlyPosition3##
+EarlyPosition3
+
+##InEarlyPosition2##
+EarlyPosition2
+
+##InEarlyPosition1##
+EarlyPosition1
+
+##InUTG##
+UTG
+
+##First##
+0
+
+##Middle##
+1
+
+##Last##
+2
+
+##Position##
+(betposition == 1) ? First :
+(betposition == nplayersplaying) ? Last :
+Middle
+
+##FirstCallerPosition##
+// We have to search starting from early positions,
+// as we want to detect the first one.
+EarlyPosition1Calling  ? 9 :
+EarlyPosition2Calling  ? 8 :
+EarlyPosition3Calling  ? 7 :
+MiddlePosition1Calling ? 6 :
+MiddlePosition2Calling ? 5 :
+MiddlePosition3Calling ? 4 :
+CutOffCalling          ? 3 :
+ButtonCalling          ? 2 :
+SmallBlindCalling      ? 1 :
+// Can't be big blind (0), as it is for the first orbit preflop only
+HINT_No_FirstCaller
+
+##FirstRaiserPosition##
+// We have to search starting from early positions,
+// as we want to detect the first one.
+EarlyPosition1Raising  ? 9 :
+EarlyPosition2Raising  ? 8 :
+EarlyPosition3Raising  ? 7 :
+MiddlePosition1Raising ? 6 :
+MiddlePosition2Raising ? 5 :
+MiddlePosition3Raising ? 4 :
+CutOffRaising          ? 3 :
+ButtonRaising          ? 2 :
+SmallBlindRaising ? 1 :
+// Can't be big blind (0), as it is for the first orbit preflop only
+HINT_No_FirstRaiser
+
+##LastCallerPosition##
+// Can't be big blind (0), as it is for the first orbit preflop only
+SmallBlindCalling      ? 1 :
+ButtonCalling          ? 2 :
+CutOffCalling          ? 3 :
+MiddlePosition3Calling ? 4 :
+MiddlePosition2Calling ? 5 :
+MiddlePosition1Calling ? 6 :
+EarlyPosition3Calling  ? 7 :
+EarlyPosition2Calling  ? 8 :
+EarlyPosition1Calling  ? 9 :
+HINT_No_LastCaller
+
+##LastRaiserPosition##
+// Handling the case of blind-raisers only first
+[IsPreflop AND (ncallbets <= 1)] ? HINT_There_Are_No_true_Raisers :
+// Big blind = 0
+BigBlindRaising ? 0 :
+// Small blind = 1
+SmallBlindRaising ? 1 :
+// Normal players:
+// Button = 2, CutOff = 3, ...
+(nplayersdealt - DealPositionLastRaiser + 2)

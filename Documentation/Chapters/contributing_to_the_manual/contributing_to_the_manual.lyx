@@ -1,7 +1,9 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
 \begin_document
 \begin_header
+\save_transient_properties true
+\origin unavailable
 \textclass amsbook
 \use_default_options true
 \begin_modules
@@ -14,16 +16,16 @@ figs-within-sections
 \language_package default
 \inputencoding auto
 \fontencoding global
-\font_roman default
-\font_sans default
-\font_typewriter default
-\font_math auto
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -113,7 +115,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://code.google.com/p/openholdembot/source/browse/trunk/Documentation/
+https://github.com/OpenHoldem/openholdembot/tree/master/Documentation
 \end_layout
 
 \end_inset
@@ -122,14 +124,18 @@ http://code.google.com/p/openholdembot/source/browse/trunk/Documentation/
 \end_layout
 
 \begin_layout Itemize
-to edit the sources we use LyX version 2.0.3.
- LyX is a graphical frontent for the mathematical type-setting-system LaTeX,
- but don't get frightened: it is simply a what-you-
+to edit the sources we use \SpecialChar LyX
+ version 2.2.4.
+ \SpecialChar LyX
+ is a graphical frontent for the mathematical type-setting-system \SpecialChar LaTeX
+, but
+ don't get frightened: it is simply a what-you-
 \emph on
 mean
 \emph default
 -is-what-you-get editor.
- LyX is available at: 
+ \SpecialChar LyX
+ is available at: 
 \begin_inset Flex URL
 status open
 
@@ -144,7 +150,8 @@ www.lyx.org/
 \end_layout
 
 \begin_layout Itemize
-LyX usually creates PDF, PS or DVI-files.
+\SpecialChar LyX
+ usually creates PDF, PS or DVI-files.
  However we export everything to HTML (File -> Export -> HTML).
 \end_layout
 

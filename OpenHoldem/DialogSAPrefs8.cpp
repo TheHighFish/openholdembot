@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs8.cpp : implementation file
 //
@@ -19,7 +19,7 @@
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs8.h"
 
-#include "CPreferences.h"
+
 
 // CDlgSAPrefs8 dialog
 
@@ -51,7 +51,7 @@ BOOL CDlgSAPrefs8::OnInitDialog() {
   CSAPrefsSubDlg::OnInitDialog();
   // Starting with 3 to avoid confusion with old values (on off)
   // and defaulting to off
-	switch (preferences.replay_record()) {
+	switch (Preferences()->replay_record()) {
     case kShootReplyFramesOnMyTurn:
       m_RecordMyTurn.SetCheck(BST_CHECKED);
       break;
@@ -66,10 +66,10 @@ BOOL CDlgSAPrefs8::OnInitDialog() {
       m_RecordNever.SetCheck(BST_CHECKED);
       break;
   }
-	text.Format("%d", preferences.replay_max_frames());
+	text.Format("%d", Preferences()->replay_max_frames());
 	m_MaxFrames.SetWindowText(text.GetString());
 	m_MaxFramesSpin.SetRange(1, 1000);
-	m_MaxFramesSpin.SetPos(preferences.replay_max_frames());
+	m_MaxFramesSpin.SetPos(Preferences()->replay_max_frames());
 	m_MaxFramesSpin.SetBuddy(&m_MaxFrames);
   return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -78,20 +78,20 @@ BOOL CDlgSAPrefs8::OnInitDialog() {
 void CDlgSAPrefs8::OnOK() {
 	CString			text = "";
   if (m_RecordMyTurn.GetCheck() == BST_CHECKED){
-		preferences.SetValue(k_prefs_replay_record, 
+		Preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesOnMyTurn);
 	} else if (m_RecordEveryChangePlaying.GetCheck() == BST_CHECKED){
-		preferences.SetValue(k_prefs_replay_record, 
+		Preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesOnEveryChangeWhilePlaying);
 	} else if (m_RecordEveryChange.GetCheck() == BST_CHECKED){
-		preferences.SetValue(k_prefs_replay_record, 
+		Preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesOnEveryChange);
 	} else {
     // default off
-    preferences.SetValue(k_prefs_replay_record, 
+    Preferences()->SetValue(k_prefs_replay_record, 
       kShootReplyFramesNever);
   }
   m_MaxFrames.GetWindowText(text);
-	preferences.SetValue(k_prefs_replay_max_frames, atoi(text.GetString()));
+	Preferences()->SetValue(k_prefs_replay_max_frames, atoi(text.GetString()));
   CSAPrefsSubDlg::OnOK();
 }

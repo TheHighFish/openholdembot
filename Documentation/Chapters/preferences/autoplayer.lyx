@@ -164,10 +164,10 @@ This setting contriols the delay (in milliseconds) between multpile button
 \emph on
 Select to delete
 \emph default
-: For SWAG actions, this setting determines how long (in milliseconds) that
- OpenHoldem will pause after performing the SWAG Select action as specified
- in the Table Map, and prior to performing the SWAG Delete action as specified
- in the Table Map.
+: For betsize actions, this setting determines how long (in milliseconds)
+ that OpenHoldem will pause after performing the betsize select action as
+ specified in the Table Map, and prior to performing the betsize delete
+ action as specified in the Table Map.
  These preferences are not set in the Table Map itself, as these are highly
  dependent on your CPU and network capacity and utilization, and thus are
  largely specific to your particular computing environment.
@@ -179,9 +179,9 @@ Select to delete
 \emph on
 Delete to entry
 \emph default
-: For SWAG actions, this setting determines how long (in milliseconds) that
- OpenHoldem will pause after performing the SWAG Delete action as specified
- in the Table Map and prior to performing the SWAG Entry action.
+: For betsize actions, this setting determines how long (in milliseconds)
+ that OpenHoldem will pause after performing the betsize delete action as
+ specified in the Table Map and prior to performing the betsize entry action.
  These preferences are not set in the Table Map itself, as these are highly
  dependent on your CPU and network capacity and utilization, and thus are
  largely specific to your particular computing environment.
@@ -193,9 +193,10 @@ Delete to entry
 \emph on
 Entry to confirm
 \emph default
-: For SWAG actions, this setting determines how long (in milliseconds) that
- OpenHoldem will pause after performing the SWAG Entry action, and prior
- to performing the SWAG Confirm action as specified in the Table Map.
+: For betsize actions, this setting determines how long (in milliseconds)
+ that OpenHoldem will pause after performing the betsize entry action, and
+ prior to performing the betsize confirm action as specified in the Table
+ Map.
  These preferences are not set in the Table Map itself, as these are highly
  dependent on your CPU and network capacity and utilization, and thus are
  largely specific to your particular computing environment.

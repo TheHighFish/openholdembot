@@ -1,21 +1,21 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 
 #include "CConfigurationCheck.h"
-#include "CPreferences.h"
-#include "OH_MessageBox.h"
+
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 
 CConfigurationCheck *p_configurationcheck = 0;
@@ -26,35 +26,35 @@ const TCHAR k_KeyboardLayout_UK_US_English[KL_NAMELENGTH] = "00000409";
 
 CConfigurationCheck::CConfigurationCheck()
 {
-	CheckEverything();
+  CheckEnabledConfigurationChecks(false);
 }
 
 CConfigurationCheck::~CConfigurationCheck()
 {}
 
-void CConfigurationCheck::CheckEverything()
+void CConfigurationCheck::ForceAllConfigurationChercks() {
+  CheckEnabledConfigurationChecks(true);
+}
+
+void CConfigurationCheck::CheckEnabledConfigurationChecks(bool force_all)
 {
 	// Check really critical settings in any case.
 	// OpenHoldem will never work, if these are not right.
 	CheckColourDepth();
 	CheckForSwapMouseBtns();
-
 	// OpenHoldem may or may not work, if these are not right.
-	if (preferences.configurationcheck_input_settings())
+	if (Preferences()->configurationcheck_input_settings() || force_all)
 	{
 		CheckInputSettings();
 	}
-
-	if (preferences.configurationcheck_theme_settings())
-	{
-		CheckForClassicalTheme();
-	}
-
-	if (preferences.configurationcheck_font_settings())
+	// No longer checking CheckForClassicalTheme();
+  // as now (9.1.3) all themes (probably) are supported
+  // out of the box with the same tablemaps.
+	if (Preferences()->configurationcheck_font_settings() || force_all)
 	{
 		CheckForFontSmoothing();
 	}
-  // !!! Might be reused for MSVCRT 2010
+  // !! Might be reused for MSVCRT 2010
 	//CheckForMissingMSVCRT();
 }
 
@@ -140,7 +140,7 @@ void CConfigurationCheck::CheckColourDepth()
 	CWindowDC dc(NULL);
 	int nBitsPerPixel = dc.GetDeviceCaps(PLANES) * dc.GetDeviceCaps(BITSPIXEL);
 	if (nBitsPerPixel < 24)
-		OH_MessageBox_Error_Warning("It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
+		MessageBox_Error_Warning("It appears that your Display settings are not configured according to OpenHoldem specifications.\n"
 				"24 bit color or higher is needed to reliably extract information from the poker client.\n\n"
 				"For more info, look at the manual and the user forums",
 				"Caution: Color Depth Too Low");
@@ -153,7 +153,7 @@ void CConfigurationCheck::CheckInputSettings()
 
 	if (Success && (_tcscmp(KeyboardLayout, k_KeyboardLayout_UK_US_English) != 0))
 	{
-		OH_MessageBox_Error_Warning("You seem to have non-english keyboard settings.\n"
+		MessageBox_Error_Warning("You seem to have non-english keyboard settings.\n"
 				"Keyboard settings affect especially the decimal point in numbers\n"
 				"and therefore the scraper-engine and the auto-player.\n"
 				"If you continue, OpenHoldem may or may not work as expected.\n"
@@ -179,7 +179,7 @@ void CConfigurationCheck::CheckForSwapMouseBtns()
 
 	if (SwapBtns == true)
 	{
-		OH_MessageBox_Error_Warning("It appears that your Mouse settings are not configured according to OpenHoldem specifications.\n\n"
+		MessageBox_Error_Warning("It appears that your Mouse settings are not configured according to OpenHoldem specifications.\n\n"
 			
 			"The autoplayer has to generate mouse-events via a very low-level system-interface,\n"
 			"and windows might/will swap these hardware-events for their inverse logical responses.\n\n"
@@ -190,43 +190,6 @@ void CConfigurationCheck::CheckForSwapMouseBtns()
 			"Caution: Swap Mouse Buttons Activated");
 	}
 }
-
-void CConfigurationCheck::CheckForClassicalTheme()
-{
-	CString p_szKeyThemeActive = "Software\\Microsoft\\Windows\\CurrentVersion\\ThemeManager\\";
-	CString p_szKeyWinVersion = "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\";
-
-	CString p_szNameThemeActive = "ThemeActive";
-	CString p_szNameWinVersion = "CurrentVersion";
-
-	bool classic_theme = false;
-
-	CString win_Vs = GetValue("HKLM", 1, p_szKeyWinVersion, p_szNameWinVersion);
-
-	CString WIN_2000 = "5.0";
-	CString SRV_2003 = "5.2";
-
-	if(win_Vs == WIN_2000 || win_Vs == SRV_2003)
-	{
-		classic_theme = true;
-	}
-
-	else if (atoi(GetValue("HKCU", 1, p_szKeyThemeActive, p_szNameThemeActive)) == 0)
-	{
-		classic_theme = true;
-	}
-
-	if (classic_theme == false)
-	{
-		OH_MessageBox_Error_Warning("Classical Theme Not Found\n"
-			"Settings deviate from recommended defaults.\n"
-			"\n"
-			"Please enable windows classical theme.\n"
-			"for optimum compatibility \n",
-			"Caution: Classical Theme Disabled");
-	}
-}
-
 
 void CConfigurationCheck::CheckForFontSmoothing()
 {
@@ -252,7 +215,7 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 			if (FontSmoothType == 2)
 			{
-				OH_MessageBox_Error_Warning("It appears that Cleartype font smoothing is enabled.\n"
+				MessageBox_Error_Warning("It appears that Cleartype font smoothing is enabled.\n"
 							"\n"
 							"In order for OpenHoldem to reliably\n"
 							"extract information from the poker client\n"
@@ -262,7 +225,7 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 			else if (FontSmoothType == 1)
 			{
-				OH_MessageBox_Error_Warning("It appears that Standard font smoothing is enabled.\n"
+				MessageBox_Error_Warning("It appears that Standard font smoothing is enabled.\n"
 							"\n"
 							"In order for OpenHoldem to reliably\n"
 							"extract information from the poker client\n"
@@ -287,7 +250,7 @@ void CConfigurationCheck::CheckForFontSmoothing()
 
 	if (installed == false)
 	{
-		OH_MessageBox_Error_Warning("Unable to detect\n"
+		MessageBox_Error_Warning("Unable to detect\n"
 			"Microsoft Visual C++ 2005 redistributable runtime library.\n"
 			"\n"
 			"This library is necessary for Perl users.\n"

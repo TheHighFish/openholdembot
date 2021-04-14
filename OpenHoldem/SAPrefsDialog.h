@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef AFX_PREFSDIALOG_H__1B15B002_9152_11D3_A10C_00500402F30B__INCLUDED_
 #define AFX_PREFSDIALOG_H__1B15B002_9152_11D3_A10C_00500402F30B__INCLUDED_
@@ -133,8 +133,8 @@ protected:
 	afx_msg void OnPhelp();
 	afx_msg void OnSelchangingPageTree(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
-	afx_msg long OnChangePage(WPARAM w, LPARAM l);
-	afx_msg long OnSetFocusWnd(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnChangePage(WPARAM w, LPARAM l);
+	afx_msg LRESULT OnSetFocusWnd(WPARAM w, LPARAM l);
 	DECLARE_MESSAGE_MAP()
 
    CPtrArray   m_pages;
@@ -149,7 +149,7 @@ protected:
    // store info about *pDlgs that have been added to 
    // the tree - used for quick lookup of parent nodes
    // DWORDs are used because HTREEITEMs can't be... blame Microsoft
-   CMap< CSAPrefsSubDlg *, CSAPrefsSubDlg *, UINT, UINT&  > m_dlgMap;
+   CMap< CSAPrefsSubDlg *, CSAPrefsSubDlg *, UINT_PTR, UINT_PTR&  > m_dlgMap;
 
 };
 

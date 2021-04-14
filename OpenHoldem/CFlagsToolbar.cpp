@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CFlagsToolbar.h"
@@ -37,7 +37,7 @@ CFlagsToolbar::CFlagsToolbar(CFrameWnd *parent_window)
 	bool to_be_enabled_or_not = p_autoplayer->autoplayer_engaged();
 	//p_flags_toolbar->
 	m_MainToolBar.GetToolBarCtrl().CheckButton(ID_MAIN_TOOLBAR_AUTOPLAYER, to_be_enabled_or_not);
-	for (int i=0; i<k_number_of_flags; i++)
+	for (int i=0; i<kNumberOfFlags; i++)
 	{
 		SetFlag(i, false);
 	}
@@ -77,7 +77,7 @@ void CFlagsToolbar::ResetButtonsOnAutoplayerOff() {
 bool CFlagsToolbar::GetFlag(int flag_number)
 {
 	ENT
-	if (flag_number>=0 && flag_number<k_number_of_flags) 
+	if (flag_number>=0 && flag_number<kNumberOfFlags) 
 	{
 		return _flags[flag_number]; 
 	}
@@ -90,7 +90,7 @@ bool CFlagsToolbar::GetFlag(int flag_number)
 int CFlagsToolbar::GetFlagMax()
 {
 	int flag_max = -1;
-	for (int i=0; i<k_number_of_flags; i++)
+	for (int i=0; i<kNumberOfFlags; i++)
 	{
 		if (_flags[i])
 		{
@@ -103,7 +103,7 @@ int CFlagsToolbar::GetFlagMax()
 long int CFlagsToolbar::GetFlagBits()
 {
 	long int flag_bits = 0;
-	for (int i=0; i<k_number_of_flags; i++)
+	for (int i=0; i<kNumberOfFlags; i++)
 	{
 		if (_flags[i])
 		{
@@ -122,7 +122,7 @@ void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 	// No further assertion and no error-message here, only a range-check,
 	// as this function might get called by external programs
 	// via window-messages.
-	if (flag_number>=0 && flag_number<k_number_of_flags) 
+	if (flag_number>=0 && flag_number<kNumberOfFlags) 
 	{
 		_flags[flag_number] = new_value; 
 		switch (flag_number)
@@ -151,8 +151,7 @@ void CFlagsToolbar::SetFlag(int flag_number, bool new_value)
 	}
 }
 
-void CFlagsToolbar::OnClickedFlags() 
-{
+void CFlagsToolbar::OnClickedFlags() {
 	assert((void*)_tool_bar != NULL);
 	SetFlag(0,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER0));
 	SetFlag(1,  _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER1));
@@ -174,8 +173,11 @@ void CFlagsToolbar::OnClickedFlags()
 	SetFlag(17, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER17));
 	SetFlag(18, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER18));
 	SetFlag(19, _tool_bar.GetToolBarCtrl().IsButtonChecked(ID_NUMBER19));
-
-	p_engine_container->EvaluateAll();
+	// No longer calling p_engine_container->EvaluateAll();
+  // It might cause unexpected side-effects,
+  // if we evaluate multiple times during one heartbeat.
+  // The effect of this button-click will have to wait
+  // till the next heartbeat starts.
 }
 
 void CFlagsToolbar::CreateMainToolbar(void)
@@ -248,12 +250,9 @@ void CFlagsToolbar::CreateFlagsToolbar(void)
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER17, &tbi);
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER18, &tbi);
 	_tool_bar.GetToolBarCtrl().SetButtonInfo(ID_NUMBER19, &tbi);
-	_tool_bar.EnableDocking(CBRS_ALIGN_ANY);
 	_tool_bar.EnableDocking(CBRS_ALIGN_TOP);
-
 	// Title of floating flags toolbar
 	_tool_bar.SetWindowText("Flags");
-
 	assert((void*)_tool_bar != NULL);
 }
 

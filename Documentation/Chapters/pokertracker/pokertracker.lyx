@@ -236,15 +236,11 @@ site id”.
 \end_layout
 
 \begin_layout Standard
-If one of the below character strings cannot be found in either the sitename
+If one of the below character strings can be found in either the sitename
  or network strings, as specified in your Table Map file, using a case-insensiti
-ve substring search, then OpenHoldem will not be able to lookup statistics
- for the players playing at your table.
- 
-\end_layout
-
-\begin_layout Standard
-As a note, the sitename string is searched first, and if a match cannot
+ve substring search, then OpenHoldem will be able to lookup statistics for
+ the players playing at your table.
+ As a note, the sitename string is searched first, and if a match cannot
  be found there, then the network string is searched.
  
 \end_layout
@@ -347,6 +343,10 @@ ENet
 
 \begin_layout Itemize
 Barriere
+\end_layout
+
+\begin_layout Itemize
+Peoples
 \end_layout
 
 \begin_layout Section

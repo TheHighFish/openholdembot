@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -27,16 +27,26 @@
 #define LIMIT_FL		2
 
 // Window Size
-#define MM_WIDTH		580
-#define MM_HEIGHT		360
+// Defaults for Windows 10
+// GUI will be resized later for perfect clientsize
+#define MM_WIDTH		590
+#define MM_HEIGHT		374
 
 // Startup path
 extern char	startup_path[MAX_PATH];
 
 
 enum {
-	P0C0, P0C1, P1C0, P1C1, P2C0, P2C1, P3C0, P3C1, P4C0, P4C1, 
-	P5C0, P5C1,	P6C0, P6C1, P7C0, P7C1, P8C0, P8C1, P9C0, P9C1,
+	P0C0, P0C1, P0C2, P0C3, 
+  P1C0, P1C1, P1C2, P1C3,
+  P2C0, P2C1, P2C2, P2C3,
+  P3C0, P3C1, P3C2, P3C3,
+  P4C0, P4C1, P4C2, P4C3,
+	P5C0, P5C1, P5C2, P5C3,
+  P6C0, P6C1, P6C2, P6C3,
+  P7C0, P7C1, P7C2, P7C3,
+  P8C0, P8C1, P8C2, P8C3,
+  P9C0, P9C1, P9C2, P9C3,
 	CC0, CC1, CC2, CC3, CC4,
 	PN0, PN1, PN2, PN3, PN4, PN5, PN6, PN7, PN8, PN9,
 	PB0, PB1, PB2, PB3, PB4, PB5, PB6, PB7, PB8, PB9,
@@ -58,33 +68,34 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	HICON		m_hIcon;
 	CPen		black_pen, green_pen, red_pen, blue_pen, white_dot_pen, white_pen, null_pen;
-	CBrush		white_brush, gray_brush, red_brush, yellow_brush;
-	LOGFONT		lf;
+	CBrush	white_brush, gray_brush, red_brush, yellow_brush;
+	LOGFONT	lf;
 	CFont		cFont, cFont_sm;
 
 	CardMask			used_cards;
-	unsigned int		card[25];  // aligns with enum above 0-19 player cards, 20-24 common cards
-	bool				seated[10], active[10];
-	bool				dealer[10];
+	unsigned int	card[45];  // aligns with enum above 0-39 player cards, 40-44 common cards
+	bool			    seated[10], active[10];
+	bool				  dealer[10];
 	CString				playername[10];
 	CString				playerbalance[10];
 	CString				playerbet[10];
 	double				pot;
-	bool				buttonstate[10]; // fold, call, check, raise, allin, sotout, leave table, prefold, autopost
+	bool				  buttonstate[10]; // fold, call, check, raise, allin, sotout, leave table, prefold, autopost
 	CString				handnumber;
 	CString				sblind;
 	CString				bblind;
 	CString				bbet;
 	CString				ante;
-	int					limit;
+	int					  limit;
 	CString				network;
-	bool				istournament;
+	bool				  istournament;
+  bool				  isomaha;
 
 	double				raise_amount;
 
 	// For tracking right click locations
-	int					click_loc;
-	int					click_chair;
+	int					  click_loc;
+	int					  click_chair;
 
 	CBitmap				all_cards;
 	CString				macro_text;
@@ -211,4 +222,13 @@ private:
 	void SetAllPossibleButtons();
 	void HandleButtonClick(int click_loc);
 	void ExecuteSwag();
+  void SetDealerPosition(int chair);
+private:
+  bool IsOmaha();
+  int NumberOfCardsPerPlayer();
+  void SetPlayerCard(int chair, int index, int card_value);
+  int GetPlayerCard(int chair, int index);
+private:
+  int PlayerCardLeft(int chair, int index);
+  int PlayerCardTop(int chair);
 };

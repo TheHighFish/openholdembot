@@ -1,0 +1,389 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+//  Predefined action constants
+//  ===========================
+//
+//  Positive values mean:  betsizes (in big-blinds)
+//  Small negative values: percentaged potsized bets
+//  Large negative values: action constants
+//
+//*****************************************************************************
+
+##Check##
+// Check (as an exception) used 0 and not a large negative number,
+// because 0 is also the value for false and the evaluation 
+// of non-existing functions.
+// This fits together perfectly.
+0
+
+##Beep##
+-1000000
+
+##Fold##
+-1000001
+
+##Undefined_BetSize_Probably_Due_To_Misscraped_Pot_Defaulting_To_Minraise##
+-1000002
+
+##RaiseMin##
+Raise
+
+##RaiseFourthPot##
+-1000003
+
+##RaiseThirdPot##
+-1000004
+
+##RaiseHalfPot##
+-1000005
+
+##RaiseTwoThirdPot##
+-1000006
+
+##RaiseThreeFourthPot##
+-1000007
+
+##RaisePot##
+-1000008
+
+##RaiseMax##
+-1000009
+
+##Call##
+-1000010
+
+##Play##
+Call
+
+##Bet##
+Raise
+
+##BetMin##
+Bet
+
+##BetFourthPot##
+RaiseFourthPot
+
+##BetThirdPot##
+RaiseThirdPot
+
+##BetHalfPot##
+RaiseHalfPot
+
+##BetTwoThirdPot##
+RaiseTwoThirdPot
+
+##BetThreeFourthPot##
+RaiseThreeFourthPot
+
+##BetPot##
+RaisePot
+
+##BetMax##
+RaiseMax
+
+##Allin##
+RaiseMax
+
+##None##
+-1000011
+
+##Raise##
+-1000012
+
+##SitOut##
+// SitOut and Close no longer supported by OpenPPL 7.x
+// Because we have separate functions for that.
+//
+// This symbol however provides Partial support for Shanky-style sitout,
+// i.e. folding, but without sitting out thereafter
+Fold
+
+//*****************************************************************************
+//
+//  OpenPPL - Card Constants
+//  ===========================
+//  
+//  Both ranks and suits according to the OpenHoldem docu
+//
+//*****************************************************************************
+//
+// ace..ten are built-in OpenHoldem constants
+// We only need named constants for 2..9 for more verbosity
+
+##Nine##
+9	
+
+##Eight##
+8
+
+##Seven##
+7
+
+##Six##
+6
+
+##Five##
+5
+
+##Four##
+4
+
+##Three##
+3
+
+##Two##
+2
+
+##ConstAllRanksWithoutAceLow##
+// AKQJT98765432a-
+0b0111111111111100
+
+//*****************************************************************************
+//
+// OpenPPL - verbose errors and warning
+//
+// Instead of returning just -1 we define constants like
+// "HINT_EarlyPosition1_Does_Not_Exist"
+// This way we get a verbose explanation in the log-file.
+//
+//*****************************************************************************
+
+##ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY##
+-1
+
+##ERROR_Blinds_Not_Recognized_Correctly__Check_Your_TableMap##
+-1
+
+##ERROR_Raises_Is_Negative__Trying_To_Adapt_In_A_Reasonable_Way##
+0
+
+##ERROR_Suit_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap##
+-1
+ 
+##ERROR_Rank_Of_Card_Not_Recognized_Correctly__Check_Your_TableMap##
+-1
+
+##ERROR_Betround_Out_Of_Range##
+-1
+
+##ERROR_BotsActionsOnThisRound_Out_Of_Range##
+-1
+
+##ERROR_buttonchair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_cutoffchair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_mp3chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_mp2chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_mp1chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_ep3chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_ep2chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_ep1chair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_smallblindchair_Not_Recognized__Check_Your_TableMap##
+-1
+
+##ERROR_Dealposition_Out_Of_Range__Check_Your_TableMap##
+-1
+
+##ERROR_We_Dont_Have_Any_Straight__Do_Not_Call_This_Function##
+-1
+
+##ERROR_Board_Does_Not_Have_Any_Straight__Do_Not_Call_This_Function##
+-1
+
+##ERROR_No_Opponents_Detected__Check_Your_TableMap##
+// Returning -bblind, because we divide by bblind to -1.
+(0 - bblind)
+
+##ERROR_Game_Is_Not_HeadsUp##
+-1
+
+##ERROR_You_Dont_Have_Any_Kicker##
+0
+
+##ERROR_IncorrectBotsLastAction##
+-1
+
+##HINT_We_Dont_Have_A_FullHouse_At_All##
+// Docu says: this case is 0; and this special case needs extra care.
+// However returning a high number instead of 0 seems better to us,
+// as it indicates the weakness and avoids any pitfalls.
+999
+
+##HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function##
+-1
+
+##HINT_There_Are_No_true_Raisers##
+-1
+
+##HINT_Such_A_Straight_Does_Not_Exist##
+-1
+
+##HINT_Something_Is_Wrong__It_Seems_You_Are_Not_Even_Seated##
+-1
+
+##HINT_EarlyPosition1_Does_Not_Exist##
+-1
+
+##HINT_EarlyPosition2_Does_Not_Exist##
+-1
+
+##HINT_EarlyPosition3_Does_Not_Exist##
+-1
+
+##HINT_MiddlePosition1_Does_Not_Exist##
+-1
+
+##HINT_MiddlePosition2_Does_Not_Exist##
+-1
+
+##HINT_MiddlePosition3_Does_Not_Exist##
+-1
+
+##HINT_CutOff_Does_Not_Exist##
+-1
+
+##HINT_There_Is_No_SmallBlind_In_This_Game##
+-1 
+
+##HINT_There_Is_No_Raiser_Therefore_No_CurrentBet##
+0
+
+##HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise##
+0
+
+##HINT_There_Is_No_Pair_On_The_Board##
+-1
+
+##HINT_There_Is_No_Set_On_The_Board##
+-1
+
+##HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw##
+false
+
+##HINT_SuitsOnBoard_Undefined_For_This_Betting_Round##
+0
+
+##HINT_StillToAct_Is_Only_Valid_On_First_Orbit##
+0
+
+##HINT_There_Are_No_Common_Cards_Preflop##
+-1
+
+##HINT_All_Opponents_Allin##
+// Returning the stacksize of our last opponent
+0
+
+##HINT_No_Oppponent_Or_Not_Headsup##
+-1
+
+##HINT_No_FirstCaller##
+-1
+
+##HINT_No_LastCaller##
+-1
+
+##HINT_No_FirstRaiser##
+-1
+
+##HINT_No_Last_Raiser##
+-1
+
+##HINT_No_Last_Raiser_Or_Not_Enough_Hands##
+-1
+
+##HINT_We_Wont_Close_The_Table_While_Not_Sitting_Out##
+false
+
+##HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions##
+false
+
+##HINT_UnknownPaidPlacesMultiTable##
+// Return a reasonable number
+10
+
+##HINT_PlayersLeftInMultiTableTournament##
+// Return a reasonable number
+999
+
+##HINT_unknoiwn_AverageStackSize_MultiTable##
+// Return a reasonable number
+99

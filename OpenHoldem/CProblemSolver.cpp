@@ -1,28 +1,31 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include <stdafx.h>
 #include "CProblemSolver.h"
 
 #include "CAutoConnector.h"
-#include "CScraperAccess.h"
+#include "CCasinoInterface.h"
+#include "CConfigurationCheck.h"
+#include "CEngineContainer.h"
+
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEnginePokerval.h"
 #include "CSymbolEngineTime.h"
 #include "CSymbolEngineUserchair.h"
 #include "CTableMapLoader.h"
 #include "CTableState.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 
 CProblemSolver::CProblemSolver()
 {}
@@ -39,23 +42,24 @@ bool CProblemSolver::NoTableMapsInScraperFolder()
 
 bool CProblemSolver::NotConnected()
 {
-	return (p_autoconnector->IsConnected() == false);
+  write_log(Preferences()->debug_alltherest(), "[CProblemSolver] location Johnny_9\n");
+	return (p_autoconnector->IsConnectedToAnything() == false);
 }
 
 bool CProblemSolver::UserChairUnknown()
 {
-	return (p_symbol_engine_userchair->userchair_confirmed() == false);
+	return (p_engine_container->symbol_engine_userchair()->userchair_confirmed() == false);
 }
 
 bool CProblemSolver::NoOpponents()
 {
-	return (p_symbol_engine_active_dealt_playing->nopponentsplaying() == 0);
+	return (p_engine_container->symbol_engine_active_dealt_playing()->nopponentsplaying() == 0);
 }
 
 bool CProblemSolver::AutoPlayerDidActAtLeastOnce()
 {
 	// We compare the time since connection to the time since last action.
-	return (p_symbol_engine_time->elapsed() != p_symbol_engine_time->elapsedauto());
+	return (p_engine_container->symbol_engine_time()->elapsed() != p_engine_container->symbol_engine_time()->elapsedauto());
 }
 
 bool CProblemSolver::NoCardsVisible()
@@ -63,18 +67,18 @@ bool CProblemSolver::NoCardsVisible()
 	return (!p_table_state->User()->HasKnownCards());
 }
 
-bool CProblemSolver::NotEnoughButtonsVisible()
-{
+bool CProblemSolver::NotEnoughButtonsVisible() {
 	// We need at least 2 visible buttons to play
-	return (p_scraper_access->NumberOfVisibleButtons() < 2);
+	return (p_casino_interface->NumberOfVisibleAutoplayerButtons() < 2);
 }
 
 
 void CProblemSolver::TryToDetectBeginnersProblems()
 {
+  p_configurationcheck->ForceAllConfigurationChercks();
 	if (NoTableMapsInScraperFolder())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"BAD NEWS:\n"
 			"    - No tablemaps in scraper folder.\n"
 			"\n"
@@ -84,7 +88,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	}
 	else if (NotConnected())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
 			"\n"
@@ -92,15 +96,16 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 			"    - You are not connected to a table.\n"
 			"\n"
 			" To connect to a table three conditions must be met:\n"
-			"    - You need a tablemap for that casino and game-type.\n"
-			"    - The tablesize must be right.\n"
-			"    - The titlestring must match.\n"
+			"    - You need a tablemap for this casino and game-type.\n"
+			"    - The table must match z$clientsizemin and z$clientsizemax.\n"
+      "         OpenScrape -> Menu -> View\n"
+			"    - The s$titletext must match.\n"
 			"If OpenHoldem does not connect, then you have to fix your tablemap.",
 			k_title_string, 0);
 	}
 	else if (NoOpponents())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n."
 			"    - You are connected to a table.\n"
@@ -116,7 +121,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	}
 	else if (UserChairUnknown())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
 			"    - You are connected to a table.\n"
@@ -135,7 +140,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	else if (AutoPlayerDidActAtLeastOnce())
 	{
 		// This is the GOOD case!
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"REALLY GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder.\n"
 			"    - You are connected to a table.\n"
@@ -156,7 +161,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	// even if everything is ok.
 	else if (NoCardsVisible())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
 			"    - You are connected to a table.\n"
@@ -172,7 +177,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	}
 	else if (NotEnoughButtonsVisible())
 	{
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
 			"    - You are connected to a table.\n"
@@ -191,7 +196,7 @@ void CProblemSolver::TryToDetectBeginnersProblems()
 	{
 		// This should not happen.
 		// No error detected, but autoplayer did not yet act.
-		OH_MessageBox_Interactive(
+		MessageBox_Interactive(
 			"GOOD NEWS:\n"
 			"    - At least one tablemap in scraper folder\n."
 			"    - You are connected to a table\n"

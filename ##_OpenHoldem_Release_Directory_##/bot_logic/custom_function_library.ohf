@@ -1,0 +1,14 @@
+##f$custom_library_notes##
+//*****************************************************************************
+//
+// This library is for custom user-defined functions.
+//   * to keep the bot-logic clean
+//   * to keep the standardized OpenPL-library as is.
+//   * to share technical functions between multiple bots without copy-and-paste.
+//
+// This file will be loaded after the OpenPPL-library and before user-defined bot-logic.
+//
+// The functions in this library will be read-only. They will be loaded once,
+// won't be shown in the editor and won't be saved on exit (similar to OpenPPL).
+//
+//*****************************************************************************

@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CARDFUNCTIONS_H
 #define INC_CARDFUNCTIONS_H
@@ -40,23 +40,19 @@ bool IsCardInCollection(int card, int col_card_0, int col_card_1,
 						int opt_col_card_3 = CARD_UNDEFINED, 
 						int opt_col_card_4 = CARD_UNDEFINED);
 
-inline bool IsCardSuitCharacter(char c)
-{
+inline bool IsCardSuitCharacter(char c) {
 	return ((c == 'c') || c == 'd' || c == 'h' || c == 's'
 		|| c == 'C' || c == 'D' || c == 'H' || c == 'S');
 }
 
-inline bool IsCardRankCharacter(char c)
-{
+inline bool IsCardRankCharacter(char c) {
 	return (isdigit(c)  || c == 'T' || c == 'J'
 		 || c == 'Q' || c == 'K' || c == 'A' || c == 't'
 		 || c == 'j' || c == 'q' || c == 'k' || c == 'a');
 }
 
-inline int CardRankCharacterToCardRank(char rank)
-{
-	switch (rank)
-	{
+inline int CardRankCharacterToCardRank(char rank) {
+	switch (rank)	{
 		case '2': return  2;
 		case '3': return  3;
 		case '4': return  4;
@@ -76,10 +72,11 @@ inline int CardRankCharacterToCardRank(char rank)
 		case 'A': return 14;
 		case 'a': return 14;
 		default: 
-          // Just accept silently
-		  // We might get input like "Ac3d" or "KJTsuited"
-		  assert(false);
-		  return -1;
+      // Just accept silently and handle the error later.
+		  // We also might get input like "Ac3d" or "KJTsuited"
+      // The input might also contain "10" (incorrect for "T")
+		  // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19774
+		  return kUndefined;
 	}
 }
 

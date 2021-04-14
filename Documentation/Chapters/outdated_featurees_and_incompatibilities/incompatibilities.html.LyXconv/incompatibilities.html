@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-01-22"/>
+<meta name="create-date" content="2016-08-20"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -14,13 +14,23 @@
 <a class="toc" name="toc-Chapter-1"></a>Outdated Features and Incompatibilities between OpenHoldem and WinHoldem
 </h1>
 <div class="Unindented">
-The original main goal of the OpenHoldem development team was the attempt to create a WinHoldem-compatible botting-platform to support existing bots, DLLs and TableMaps. However there has been functionality such as &ldquo;Teaming&rdquo;, that always has been a tabu for the OpenHoldem development team. Other functionality did never get implemented due to lack of documentation and practical relevance. And now that OpenHoldem is far more advanced and WinHoldem is practically dead, backward-compatibility is no longer such an important issue. Recently the development team does revisit some features that look a bit mal-designed and tries to improve them carefully, trying to affect the end-user as little as possible. This chapter will tell you about such incompatibilities.
+The original main goal of the OpenHoldem development team was the attempt to create a WinHoldem-compatible botting-platform to support existing bots, DLLs and TableMaps. However there has been functionality such as &ldquo;Teaming&rdquo;, that always has been a tabu for the OpenHoldem development team. Other functionality did never get implemented due to lack of documentation and practical relevance. And now that OpenHoldem is far more advanced and WinHoldem is practically dead, backward-compatibility is no longer such an important issue. Recently the development team revisits some features that look a bit mal-designed and tries to improve them carefully, trying to affect the end-user as little as possible. This chapter will tell you about such incompatibilities.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-1"></a>No Collusion aka &ldquo;Teaming&rdquo;
 </h2>
 <div class="Unindented">
 OpenHoldem does not support any kind of collusion. There is no support for WinHoldems WinTellem-server and card-sharing either because such activities are simply illegal in every country of the world, and — even more important — because we consider them unfair too.
+</div>
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="images/winholdem_table.png" alt="figure images/winholdem_table.png" style="max-width: 800px; max-height: 394px;"/>
+
+</div>
+
+</div>
+
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-2"></a>TableMaps
@@ -32,7 +42,7 @@ Table Maps are in a different format due to hypothetical copyright-issues. For s
 <a class="toc" name="toc-Section-3"></a>Formula-File-Format
 </h2>
 <div class="Unindented">
-The formula is saved in a single file instead of two. It uses the extension *.ohf instead of *.whf and *.whx. Old WH-formulae could be converted for some time, but as there was no longer any demand for that feature we were happy to simplify OpenHoldems code. OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited using your favourite text-editor. or the built-in formula-editor.
+The formula is saved in a single file instead of two. It uses the extension *.ohf instead of *.whf and *.whx. Old WH-formulae could be converted for some time, but as there was no longer any demand for this feature we were happy to simplify OpenHoldems code. OpenHoldem does still use a plain-text-format, so *.ohf-files can be edited using your favourite text-editor. or the built-in formula-editor.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-4"></a>ManualMode
@@ -116,10 +126,10 @@ the largest possible raise.
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 65%;">
-\strikeout off\uuline off\uwave offsraiprev	
+sraiprev
 </td>
 <td align="left" valign="top" style="width: 65%;">
-\strikeout off\uuline off\uwave offthe difference between the two largest unique wagers
+the difference between the two largest unique wagers
 </td>
 
 </tr>
@@ -128,7 +138,58 @@ the largest possible raise.
 
 </div>
 <div class="Indented">
-All these computations had to be done by the user at the formula level. With OpenHoldem 4.0.0 this mess got replaced by a single function f$betsize and OpenHoldem cares about all the rest automatically (depending on the swagtextmethod specified in your tablemap, but that is all work that’s left).
+All these computations had to be done by the user at the formula level. With OpenHoldem 4.0.0 this mess got replaced by a single function f$betsize and OpenHoldem cares about all the rest automatically (depending on the swagtextmethod specified in your tablemap, but that is all work that’s left). The supporting tablemap symbols got renamed.
+</div>
+<div class="Indented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+Former TM-symbol
+</td>
+<td align="left" valign="top" style="width: 40%;">
+New TM-symbol
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagselectionmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizeselectionmethod
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagdeletionmethodmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizedeletionmethodmethod
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagconfirmationmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizeconfirmationmethod
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 40%;">
+swagtextmethod
+</td>
+<td align="left" valign="top" style="width: 40%;">
+betsizeinterpretationmethod
+</td>
+
+</tr>
+
+</table>
+
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-8"></a>Statistic-Symbols: &ldquo;risk of ruin&rdquo;
@@ -160,7 +221,7 @@ Symbol
 <td align="left" valign="top" style="width: 30%;">
 Explanation
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Reason for removal
 </td>
 
@@ -172,7 +233,7 @@ nfriendsdealt
 <td align="left" valign="top" style="width: 30%;">
 1 if you are dealt, 0 otherwise (0-1) 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 OpenHoldem does not support any kind of collusion, so the friend-symbols are completely meaningless. Only nfriendsseated, nfriendsactive and nfriendsplaying got kept for some time for backward-compatibility, as they were quite convenient to use in the f$sitin, f$sitout and f$leave-formulas. They did consider hero as the one and only &ldquo;friend&rdquo;. The last friend symbols (with the same restricted meaning) got removed from the code-base in OpenHoldem 4.0.0. We simply don’t want that sh**, not even for backward-compatibility to WinHoldem.
 </td>
 
@@ -184,7 +245,7 @@ nfriendsblind
 <td align="left" valign="top" style="width: 30%;">
 1 if you are in a blind, 0 otherwise (0-1) 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -196,7 +257,7 @@ friendsseatedbits
 <td align="left" valign="top" style="width: 30%;">
 bits 9-0: 1=seated 0=unseated, you only
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -208,7 +269,7 @@ friendsactivebits
 <td align="left" valign="top" style="width: 30%;">
 bits 9-0: 1=active 0=inactive, you only
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -220,7 +281,7 @@ friendsdealtbits
 <td align="left" valign="top" style="width: 30%;">
 bits 9-0: 1=dealt 0=notdealt, you only 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -232,7 +293,7 @@ friendsplayingbits
 <td align="left" valign="top" style="width: 30%;">
 bits 9-0: 1=playing 0=notplaying, you only
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -244,7 +305,7 @@ friendsblindbits
 <td align="left" valign="top" style="width: 30%;">
 bits 9-0: 1=blind 0=notblind, you only 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -254,10 +315,10 @@ bits 9-0: 1=blind 0=notblind, you only
 swagdelay
 </td>
 <td align="left" valign="top" style="width: 30%;">
-Autoplayer delay in milliseconds between swag keystrokes and button click as defined in Preferences (formerly TableMap); to be removed soon as there is no need for it at the formula level
+Autoplayer delay in milliseconds between swag keystrokes and button click as defined in Preferences (formerly TableMap)
 </td>
-<td align="left" valign="top" style="width: 35%;">
-
+<td align="left" valign="middle" style="width: 35%;">
+Some tablemap symbols have been exposed to the scripting level without necessity. They got removed in OpenHoldem 2.2.0 and are now only accessible internally.
 </td>
 
 </tr>
@@ -266,39 +327,9 @@ Autoplayer delay in milliseconds between swag keystrokes and button click as def
 allidelay
 </td>
 <td align="left" valign="top" style="width: 30%;">
-Autoplayer delay in milliseconds between alli slider jam and button click as defined in Preferences (formerly TableMap); to be removed soon as there is no need for it at the formula level
+Autoplayer delay in milliseconds between alli slider jam and button click as defined in Preferences (formerly TableMap); 
 </td>
-<td align="left" valign="top" style="width: 35%;">
-Some tablemap symbols have been exposed to the scripting level without necessity. They got removed in OpenHoldem 2.2.0 and are now only accessible internally.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 30%;">
-swagtextmethod
-</td>
-<td align="left" valign="top" style="width: 30%;">
-<div class="PlainVisible">
-the site interpretation for swag edit text (Table Map symbol) 
-</div>
-<ol>
-<li>
-f$srai 
-</li>
-<li>
-f$srai+call 
-</li>
-<li>
-f$srai+call+currentbet; 
-</li>
-
-</ol>
-<div class="PlainVisible">
-Default: 3
-</div>
-
-</td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -310,7 +341,7 @@ allinmethod
 <td align="left" valign="top" style="width: 30%;">
 used to detrmine which method to use for allin
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 <div class="PlainVisible">
 OpenHoldem will now automatically chose an appropriate method 
 </div>
@@ -340,7 +371,7 @@ islistcall
 <td align="left" valign="top" style="width: 30%;">
 true if your hand is in list 0 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 The list symbols below seem to be mis-conceptions by WinHoldems author and — to our best knowledge — have never been used in any serious poker bot. They finally got removed from the code base in version 4.0.0 of OpenHoldem.
 </td>
 
@@ -352,7 +383,7 @@ islistrais
 <td align="left" valign="top" style="width: 30%;">
 true if your hand is in list 1
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -364,7 +395,7 @@ islistalli
 <td align="left" valign="top" style="width: 30%;">
 true if your hand is in list 7 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -376,7 +407,7 @@ isemptylistcall
 <td align="left" valign="top" style="width: 30%;">
 true if the call list is empty 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -388,7 +419,7 @@ isemptylistrais
 <td align="left" valign="top" style="width: 30%;">
 true if the rais list is empty 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -400,7 +431,7 @@ isemptylistalli
 <td align="left" valign="top" style="width: 30%;">
 true if the alli list is empty 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -412,7 +443,7 @@ nlistmax
 <td align="left" valign="top" style="width: 30%;">
 highest list number in which your hand is listed
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -424,7 +455,7 @@ nlistmin
 <td align="left" valign="top" style="width: 30%;">
 lowest list number in which your hand is listed 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -436,19 +467,25 @@ handnumber
 <td align="left" valign="top" style="width: 30%;">
 the site hand number if available 
 </td>
-<td align="left" valign="top" style="width: 35%;">
-Removing formula symbol "handnumber" for various reasons from the formula level: <ul>
+<td align="left" valign="middle" style="width: 35%;">
+<div class="PlainVisible">
+Removing formula symbol "handnumber" for various reasons from the formula level: 
+</div>
+<ul>
 <li>
 there is no need for it at the formula level. 
 </li>
 <li>
-it may contain characters and therefore doesn’t fit into a double. 
+it may contain characters and therefore doesn’t fit into a variable of type double. 
 </li>
 <li>
-its length may exceed the precision of double. "Handnumber" gets now used only internally to trigger handresets.
+its length may exceed the precision of double. 
 </li>
 
 </ul>
+<div class="PlainVisible">
+"Handnumber" gets now used only internally to trigger handresets.
+</div>
 
 </td>
 
@@ -460,7 +497,7 @@ isfiveofakind
 <td align="left" valign="top" style="width: 30%;">
 true when you have a five of a kind
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed, as never used in Texas Hold’em
 </td>
 
@@ -472,7 +509,7 @@ fiveofakind
 <td align="left" valign="top" style="width: 30%;">
 0xff000000 (pokerval constant)
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -484,7 +521,7 @@ isppro
 <td align="left" valign="top" style="width: 30%;">
 true if you’re connected to a ppro server
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed together with the support for WinHoldem PokerPro-server, which did not get used and did no longer work due to undocumented changes in the network-protocal.
 </td>
 
@@ -496,7 +533,7 @@ site
 <td align="left" valign="top" style="width: 30%;">
 0=user/ppro 1=scraped 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -508,7 +545,7 @@ bankroll
 <td align="left" valign="top" style="width: 30%;">
 the user defined, real world bankroll
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed, as these symbols have rarely been used and should better get handled by a user-defined formula.
 </td>
 
@@ -520,7 +557,7 @@ rake
 <td align="left" valign="top" style="width: 30%;">
 percentage amount added/subtracted to/from the pot
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -537,13 +574,13 @@ defcon
 
 </div>
 <div class="PlainVisible">
-	defense level is typically used in the f$P formula, which defines the adapted number of opponents to be used in standard prwin. defcon therefore controls the optimism of the prwin-simulation. <br/>
+defense level is typically used in the f$P formula, which defines the adapted number of opponents to be used in standard prwin. defcon therefore controls the optimism of the prwin-simulation. <br/>
 0.000=maxoffense 1.000=maxdefense<br/>
 The Formula Editor parameters dialog uses values 0-10
 </div>
 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Defcon looked like a WinHoldem-misconception which has been very rarely (if ever) used. People who need it can create a UDF for that, but it clearly is not necessary for the majority of users and does not deserve symbols and an extra settings dialog.
 </td>
 
@@ -555,7 +592,7 @@ isdefmode
 <td align="left" valign="top" style="width: 30%;">
 true when defcon is at max
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -567,7 +604,7 @@ isaggmode
 <td align="left" valign="top" style="width: 30%;">
 true when defcon is at min 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -579,7 +616,7 @@ clocks
 <td align="left" valign="top" style="width: 30%;">
 number of CPU clocks since the last screen scrape
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Useless information and always a fraction of a second
 </td>
 
@@ -591,7 +628,7 @@ nclockspersecond
 <td align="left" valign="top" style="width: 30%;">
 number of CPU clocks per second 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Simply never used
 </td>
 
@@ -603,7 +640,7 @@ ncps
 <td align="left" valign="top" style="width: 30%;">
 synonym for nclockspersecond
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -615,7 +652,7 @@ nflopc
 <td align="left" valign="top" style="width: 30%;">
 short for ncommoncardsknow
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed, because duplicate functionality and lack of verbosity are bad software-engineering
 </td>
 
@@ -627,7 +664,7 @@ br
 <td align="left" valign="top" style="width: 30%;">
 short for betround
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -639,7 +676,7 @@ ncps
 <td align="left" valign="top" style="width: 30%;">
 short for nclockspersecond
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -651,7 +688,7 @@ oppdealt
 <td align="left" valign="top" style="width: 30%;">
 short for nopponentsdealt
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -661,9 +698,9 @@ short for nopponentsdealt
 isbring 
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	true if OpenHoldem is attached to a Bring client window
+true if OpenHoldem is attached to a Bring client window
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed, because there is no need for that info at the formula-level
 </td>
 
@@ -675,7 +712,7 @@ ismanual
 <td align="left" valign="top" style="width: 30%;">
 true if you’re in manual mode, false otherwise
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -687,7 +724,7 @@ handrank
 <td align="left" valign="top" style="width: 30%;">
 one of the handrank-symbols based on the option specified in preferences
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Getting rid of the symbol handrank and the option symbols-&gt;Value of Handrank. We have handrank169, handrank1000, handrank1326, handrank2625 and handrankp at the formula level. So the user can clearly specify what he wants. But these symbols can hardly get used interchangeably, so this option was only confusing and superfluos.
 </td>
 
@@ -697,9 +734,9 @@ Getting rid of the symbol handrank and the option symbols-&gt;Value of Handrank.
 randomround1 ... randomround4	
 </td>
 <td align="left" valign="top" style="width: 30%;">
-random number between [0.000-1.000) for round 1 - 4. Value is calculated only once in that round. 
+random number in the range [0.000..1.000) for round 1 - 4. Value is calculated only once in that round. 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed the symbols randomround1..randomround4 from the codebase, because we have randomround for the current betting round and additionally randomhand, randomheartbeat and random, which gets calculated each time new. This simplified the code and looks more clean.
 </td>
 
@@ -711,7 +748,7 @@ callshort
 <td align="left" valign="top" style="width: 30%;">
 total amount that will be added to the pot if all players call
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 The symbols "callshort" and "raisshort" got removed from the code-base because they got designed for Fixed-Limit no-foldem Hold’em only. Better use a function to estimate future pot-sizes.
 </td>
 
@@ -723,7 +760,7 @@ raisshort
 <td align="left" valign="top" style="width: 30%;">
 callshort + bet * nplayersplaying
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -733,10 +770,10 @@ callshort + bet * nplayersplaying
 seatposition
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	your seat position relative to the dealer
+your seat position relative to the dealer
 </td>
-<td align="left" valign="top" style="width: 35%;">
-Removing the symbol seatposition which counted both active and inactive players and was of no real use for practical play.
+<td align="left" valign="middle" style="width: 35%;">
+Removing the symbol seatposition which counted both active and inactive players and even empty chairs and was of no real use for practical play.
 </td>
 
 </tr>
@@ -747,7 +784,7 @@ elapsed1970
 <td align="left" valign="top" style="width: 30%;">
 time in seconds since 1970-01-01 00:00:00 GMT (Thursday)
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removing the symbol elapsed1970 because there was no real use for it.
 </td>
 
@@ -757,9 +794,9 @@ Removing the symbol elapsed1970 because there was no real use for it.
 ncommoncardspresent
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	number of common cards present (normal or highlighted)
+number of common cards present (normal or highlighted)
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removing the symbol "ncommoncardspresent", because it was never implemented correctly, but always had the same value as "ncommoncardsknown". Furthermore its value would only differ at some casinos and at showdown (highlighted cards / bad scrapes), but this point of time is pretty meaningless for both OH-script and OpenPPL, which evaluate mainly on the users turn, whereas DLLers still have access to all info. 
 </td>
 
@@ -769,9 +806,30 @@ Removing the symbol "ncommoncardspresent", because it was never implemented corr
 ac_pf_bets
 </td>
 <td align="left" valign="top" style="width: 30%;">
-	1 for no callers or blinds only 2 for Called Pot - 1 bet to call 3 for Raised Back - 1 more bet to call because someone behind you raised after you’ve already bet/called/raised 4 for Raised Pot - 2 bets to call 5 for Reraised Pot - 3+ bets to call NOTE: Only valid when betround==1 
+<ol>
+<li>
+no callers or blinds only 
+</li>
+<li>
+called Pot — 1 bet to call 
+</li>
+<li>
+raised Back — 1 more bet to call because someone behind you raised after you’ve already bet/called/raised 
+</li>
+<li>
+raised Pot — 2 bets to call 
+</li>
+<li>
+reraised Pot — 3+ bets to call 
+</li>
+
+</ol>
+<div class="Remark*">
+Only valid when betround == 1 
+</div>
+
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed the symbols ac_pf_bets, because it was for fixed limit only, worked only on the first orbit preflop, because that task can be done with other symbols and finally we have the OpenPPL-library, so there is really no longer any need for that.
 </td>
 
@@ -783,8 +841,68 @@ ac_aggressor
 <td align="left" valign="top" style="width: 30%;">
 which chair was aggressor (might be from previous round)
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed, as it was duplicate functionality to raischair
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+nplayersblind
+</td>
+<td align="left" valign="top" style="width: 30%;">
+number of players blind (including you) (0-10)
+</td>
+<td align="left" valign="middle" style="width: 35%;">
+Removed with the introduction of of the more practical symbols smallbindchair and bigblindchair
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+nopponentsblind
+</td>
+<td align="left" valign="top" style="width: 30%;">
+number of opponents blind (not including you) (0-9) 
+</td>
+<td align="left" valign="middle" style="width: 35%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+playersblindbits
+</td>
+<td align="left" valign="top" style="width: 30%;">
+bits 9-0: 1=blind 0=not blind 
+</td>
+<td align="left" valign="middle" style="width: 35%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+opponentsblindbits
+</td>
+<td align="left" valign="top" style="width: 30%;">
+bits 9-0: 1=blind 0=not blind 
+</td>
+<td align="left" valign="middle" style="width: 35%;">
+
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+bblindbits
+</td>
+<td align="left" valign="top" style="width: 30%;">
+bits 9-0: 1=big blind 0=not big blind 
+</td>
+<td align="left" valign="middle" style="width: 35%;">
+
 </td>
 
 </tr>
@@ -795,7 +913,7 @@ ron$ / run$ symbols
 <td align="left" valign="top" style="width: 30%;">
 These symbols report the total number of possible river endings for the opponent (ron$) and the user (run$). A value of zero means that type of poker hand is not possible. Any non-zero value means that type of poker hand will be seen that many times
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 Removed the run$/ron$-symbols, because they looked like a mis-conception, nobody used them, some numbers were wrong and the code was unfixable (1000s of undocumented number)
 </td>
 
@@ -807,7 +925,7 @@ ron$royfl
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible royal flush 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -819,7 +937,7 @@ ron$strfl
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible straight flush 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -831,7 +949,7 @@ ron$4kind
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible four of a kind 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -843,7 +961,7 @@ ron$fullh
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible full house
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -855,7 +973,7 @@ ron$flush
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible flush 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -867,7 +985,7 @@ ron$strai
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible straight 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -879,7 +997,7 @@ ron$3kind
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible three of a kind
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -891,7 +1009,7 @@ ron$2pair
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible two pair
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -903,7 +1021,7 @@ ron$1pair
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible one pair 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -915,7 +1033,7 @@ ron$hcard
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : possible high card 
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -927,7 +1045,7 @@ ron$total
 <td align="left" valign="top" style="width: 30%;">
 river opponent number : sum of all possible river endings
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -939,7 +1057,7 @@ ron$pokervalmax
 <td align="left" valign="top" style="width: 30%;">
 the maximum possible pokerval for the opponent
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -951,7 +1069,7 @@ ron$prnuts
 <td align="left" valign="top" style="width: 30%;">
 opponent chances of hitting the nuts on or before the river
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -963,7 +1081,7 @@ ron$prbest
 <td align="left" valign="top" style="width: 30%;">
 opponent chances of hitting pokervalmax on or before the river
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -975,7 +1093,7 @@ ron$clocks
 <td align="left" valign="top" style="width: 30%;">
 total number of cpu clocks used to calculate the ron$ symbols
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
 </td>
 
@@ -987,29 +1105,8 @@ run$...
 <td align="left" valign="top" style="width: 30%;">
 similar like the ron$symbols above, just for the user
 </td>
-<td align="left" valign="top" style="width: 35%;">
+<td align="left" valign="middle" style="width: 35%;">
 
-</td>
-
-</tr>
-
-</table>
-
-</div>
-<h2 class="Section">
-<a class="toc" name="toc-Section-10"></a>TablePoints
-</h2>
-<div class="Unindented">
-Tablepoints got removed, because nobody used them. They never got implemented correctly and nobody noticed it for 3 years.
-</div>
-<div class="Indented">
-<table>
-<tr>
-<td align="left" valign="top" style="width: 30%;">
-tablepointNNN
-</td>
-<td align="left" valign="top" style="width: 65%;">
-These regions were used when the "Green Circle Button" was clicked on the OpenHoldem toolbar to "automagically" find a table to connect to. These regions must be one pixel wide by one pixel tall and must use a color transform. All tablepoint records must match the pixel colors on the casino window for it to be recognized on a connect. See {How the “Green Circle Button” finds tables} for more details. 
 </td>
 
 </tr>
@@ -1021,7 +1118,7 @@ These regions were used when the "Green Circle Button" was clicked on the OpenHo
 	
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-11"></a>PrWin-functions
+<a class="toc" name="toc-Section-10"></a>PrWin-functions
 </h2>
 <div class="Unindented">
 Some supporting functions and symbols for the PrWin-simulations got renamed in OpenHoldem 4.0.0 to achieve more verbosity and better formula-grouping in the editor.
@@ -1096,10 +1193,6 @@ f$prwin_wontplay
 
 </div>
 
-<hr class="footer"/>
-<div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-01-22T01:51:06.153000</span>
-</div>
 </div>
 </body>
 </html>

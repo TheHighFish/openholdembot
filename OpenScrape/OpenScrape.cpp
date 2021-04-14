@@ -1,16 +1,15 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
 // Purpose:
 //
 //******************************************************************************
-
 
 // OpenScrape.cpp : Defines the class behaviors for the application.
 //
@@ -42,11 +41,8 @@ END_MESSAGE_MAP()
 // COpenScrapeApp construction
 COpenScrapeApp::COpenScrapeApp()
 {
-    __SEH_SET_EXCEPTION_HANDLER
-
     // Save startup directory
     ::GetCurrentDirectory(MAX_PATH - 1, _startup_path);
-
 }
 
 // The one and only COpenScrapeApp object

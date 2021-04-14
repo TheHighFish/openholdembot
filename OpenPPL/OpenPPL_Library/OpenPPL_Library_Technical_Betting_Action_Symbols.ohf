@@ -1,0 +1,191 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+##PrevActionWasAllin##
+   (prevaction == 4) // Allin
+OR (prevaction == 5) // Jamming the slider
+
+##PlayersRaisingOrColdCallingTheLastRaise##
+// Counting the last raiser + all cold callers
+(currentbet_lastraiserchair <= 0) ? 0 :
+  (currentbet0 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet1 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet2 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet3 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet4 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet5 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet6 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet7 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet8 == currentbet_lastraiserchair ? 1 : 0)
++ (currentbet9 == currentbet_lastraiserchair ? 1 : 0)
+
+##ChecksAfterHero##
+// No checks preflop. Not even big blind can check (game over).
+// We ignore additional blind-posters however.
+WHEN IsPreflop RETURN 0 FORCE
+// We called or raised, therefore no longer any checks possible
+WHEN (currentbet > 0) RETURN 0 FORCE
+// We did not yet act, therefore no checks behind us possible
+WHEN ((BotsActionsOnThisRoundIncludingChecks == 0) AND (currentbet == 0)) RETURN 0 FORCE
+// A bet to call and the first bettor must sit behind us.
+// Consider all playing players between the user 
+// and the first bettor.
+WHEN (AmountToCall > 0) RETURN (BetPositionFirstRaiser - betposition - 1) FORCE
+// Nobody betting.
+// Consider all playing players behind the user.
+// Potentially counting players who did not yet act,
+// but this is acceptable for a remporary result.
+WHEN Others RETURN (nplayersplaying - betposition) FORCE
+
+##ChecksInFrontOfHero##
+// No checks preflop. Not even big blind can check (game over).
+// We ignore additional blind-posters however.
+WHEN IsPreflop RETURN 0 FORCE
+// I did already act, so no longer any posters in front of me
+// (at my 2nd turn)
+WHEN (currentbet > 0) RETURN 0 FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
+// A bet to call, consider all playing players in front of the first bettor
+WHEN (AmountToCall > 0) RETURN (BetPositionFirstRaiser - 1) FORCE
+// All players before us checked, not even open-folds can throw this logic off.
+WHEN Others RETURN [betposition - 1] FORCE
+
+##BetPositionFirstRaiser##
+WHEN (firstraiserchair < 0) RETURN HINT_No_FirstRaiser FORCE
+WHEN (firstraiserchair == 0) RETURN ac_betpos0 FORCE
+WHEN (firstraiserchair == 1) RETURN ac_betpos1 FORCE
+WHEN (firstraiserchair == 2) RETURN ac_betpos2 FORCE
+WHEN (firstraiserchair == 3) RETURN ac_betpos3 FORCE
+WHEN (firstraiserchair == 4) RETURN ac_betpos4 FORCE
+WHEN (firstraiserchair == 5) RETURN ac_betpos5 FORCE
+WHEN (firstraiserchair == 6) RETURN ac_betpos6 FORCE
+WHEN (firstraiserchair == 7) RETURN ac_betpos7 FORCE
+WHEN (firstraiserchair == 8) RETURN ac_betpos8 FORCE
+WHEN (firstraiserchair == 9) RETURN ac_betpos9 FORCE
+
+##NoVillainBetOrRaisedOnFlop##
+((raisbits_flop & ~(1<<userchair)) == 0)
+
+##NoVillainBetOrRaisedOnTurn##
+((raisbits_turn & ~(1<<userchair)) == 0)
+
+##RaisesBeforeOurFirstActionThisRoundPostflop##
+(nopponentstruelyraising > 0) ? (nopponentstruelyraising - 1) : 0
+
+##AntesPresent##
+// First orbit preflop only,
+// as this function tries to guess the antes from the bets.
+   [(currentbet0 > 0) AND (currentbet0 < sblind) AND (balance0 > 0)]
+OR [(currentbet1 > 0) AND (currentbet1 < sblind) AND (balance1 > 0)]
+OR [(currentbet2 > 0) AND (currentbet2 < sblind) AND (balance2 > 0)]
+OR [(currentbet3 > 0) AND (currentbet3 < sblind) AND (balance3 > 0)]
+OR [(currentbet4 > 0) AND (currentbet4 < sblind) AND (balance4 > 0)]
+OR [(currentbet5 > 0) AND (currentbet5 < sblind) AND (balance5 > 0)]
+OR [(currentbet6 > 0) AND (currentbet6 < sblind) AND (balance6 > 0)]
+OR [(currentbet7 > 0) AND (currentbet7 < sblind) AND (balance7 > 0)]
+OR [(currentbet8 > 0) AND (currentbet8 < sblind) AND (balance8 > 0)]
+OR [(currentbet9 > 0) AND (currentbet9 < sblind) AND (balance9 > 0)]
+
+##NumberOfOpponentsLimpingPreflop##
+// First orbit preflop only
+// Does not count the user
+// Does not count the big-blind, who can't limp
+  [(currentbet0 == bblind) AND (userchair != 0) AND (bigblindchair != 0) ? 1 : 0]
++ [(currentbet1 == bblind) AND (userchair != 1) AND (bigblindchair != 1) ? 1 : 0]
++ [(currentbet2 == bblind) AND (userchair != 2) AND (bigblindchair != 2) ? 1 : 0]
++ [(currentbet3 == bblind) AND (userchair != 3) AND (bigblindchair != 3) ? 1 : 0]
++ [(currentbet4 == bblind) AND (userchair != 4) AND (bigblindchair != 4) ? 1 : 0]
++ [(currentbet5 == bblind) AND (userchair != 5) AND (bigblindchair != 5) ? 1 : 0]
++ [(currentbet6 == bblind) AND (userchair != 6) AND (bigblindchair != 6) ? 1 : 0]
++ [(currentbet7 == bblind) AND (userchair != 7) AND (bigblindchair != 7) ? 1 : 0]
++ [(currentbet8 == bblind) AND (userchair != 8) AND (bigblindchair != 8) ? 1 : 0]
++ [(currentbet9 == bblind) AND (userchair != 9) AND (bigblindchair != 9) ? 1 : 0]
+
+##RaisesBeforeOurFirstAction##
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
+WHEN (betround > preflop) RETURN RaisesBeforeOurFirstActionThisRoundPostflop FORCE
+WHEN  Others RETURN nopponentstruelyraising FORCE
+
+##RaisesSinceLastPlayOnOurSecondAction##
+// If we checked the first time the bettor sits behind us.
+[didchec AND (nopponentstruelyraising > 0) ] ? (nopponentstruelyraising - 1) :
+[didchec AND (nopponentstruelyraising == 0)] ? 0 :
+// Otherwise: either we were the first bettor
+// or there was a bet and maybe raises in front of us,
+// so all technical "raises" behind us are true raises
+nopponentstruelyraising
+
+##RaisesSinceLastPlayAfterOurSecondAction##
+// Now all technical raises are true raises, no bettors possible
+nopponentstruelyraising
+
+##OpponentsWithHigherStack##
+// No need to tinker with memory symbols here,
+// this logic is valid for all betting rounds.
+  (((balance0 + currentbet0) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance1 + currentbet1) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance2 + currentbet2) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance3 + currentbet3) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance4 + currentbet4) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance5 + currentbet5) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance6 + currentbet6) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance7 + currentbet7) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance8 + currentbet8) > MaximumPossibleBetsizeInDollars) ? 1: 0)
++ (((balance9 + currentbet9) > MaximumPossibleBetsizeInDollars) ? 1: 0)

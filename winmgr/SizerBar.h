@@ -1,16 +1,10 @@
-//*******************************************************************************
+////////////////////////////////////////////////////////////////
+// MSDN Magazine -- July 2001
+// If this code works, it was written by Paul DiLascia.
+// If not, I don't know who wrote it.
+// Compiles with Visual C++ 6.0. Runs on Win 98 and probably Win 2000 too.
+// Set tabsize = 3 in your editor.
 //
-// This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
-//
-//*******************************************************************************
-//
-// Purpose:
-//
-//*******************************************************************************
-
 #ifndef INC_SIZERBAR_H
 #define INC_SIZERBAR_H
 

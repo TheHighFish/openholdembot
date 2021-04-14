@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2015-04-26"/>
+<meta name="create-date" content="2019-02-26"/>
 <link rel="stylesheet" href="http://elyxer.nongnu.org/lyx.css" type="text/css" media="all"/>
 <title>Converted document</title>
 </head>
@@ -17,7 +17,10 @@
 This section is largely based on the information originally written by Ray Bornert (<a class="FlexURL" href="http://www.winholdem.net/help/help-formula.html#symbols">http://www.winholdem.net/help/help-formula.html#symbols</a>) and extended to include OpenHoldem-specific symbols.  
 </div>
 <div class="Indented">
-These symbols take output from the scraper engine, from Table Map parameters, and from your formula functions to derive various bits of data that are useful when instructing the OpenHoldem Autoplayer how to act. The set of symbols got extended over time - not all of them are available for all versions of OpenHoldem. This list reflects the state of the latest version. Some old WinHoldem symbols got never implemented due to lack of documentation and practical relevance. Others got replaced or removed over time. Please refer to the chapter &ldquo;Outdated Features and Incompatibilities between OpenHoldem and WinHoldem&rdquo; for more information.
+These symbols take output from the scraper engine, from Table Map parameters, and from your formula functions to derive various bits of data that are useful when instructing the OpenHoldem Autoplayer how to act. The set of symbols got extended over time — not all of them are available for all versions of OpenHoldem. This list reflects the state of the latest version. Some old WinHoldem symbols got never implemented due to lack of documentation and practical relevance. Others got replaced or removed over time. Please refer to the chapter &ldquo;Outdated Features and Incompatibilities between OpenHoldem and WinHoldem&rdquo; for more information.
+</div>
+<div class="Indented">
+As you already might have noticed some of these symbols are of rather technical nature, A set of several hundred more poker-logical symbols is included in the OpenPPL-library that gets discussed in the seeparate OpenPPL-manual. Both languages can be mixed in nearly any way however, so please read on. Here you will find some valuable symbols that you might be miss in OpenPPL.
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-1"></a>General
@@ -87,15 +90,6 @@ Provided for DLL- and Perl-devlopers who can now directly access the poker-table
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-isfinaltable
-</td>
-<td align="left" valign="top" style="width: 65%;">
-true, if you are sitting at the final table of a multi-table tournament. Needs to be supported by the table-map.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
 nchairs 
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -118,6 +112,33 @@ sitename$abc
 </td>
 <td align="left" valign="top" style="width: 65%;">
 true if user defined string “abc” appears within the Table Map symbol s$sitename; case-sensitive; lower-cases are expected
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+title$abc
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if user defined string “abc” appears within the title of the attached poker-table; case-sensitive;
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+islobby
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if the tablemap is designed to connect to the lobby
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+ispopup
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if the tablemap is designed to connect to known popup windows
 </td>
 
 </tr>
@@ -189,7 +210,7 @@ the current table limit 0=NL 1=PL 2=FL
 isnl
 </td>
 <td align="left" valign="top" style="width: 65%;">
-(lim == 0)
+(lim == 0) No Limit
 </td>
 
 </tr>
@@ -198,7 +219,7 @@ isnl
 ispl
 </td>
 <td align="left" valign="top" style="width: 65%;">
-(lim == 1)
+(lim == 1) Pot Limit
 </td>
 
 </tr>
@@ -207,16 +228,7 @@ ispl
 isfl 
 </td>
 <td align="left" valign="top" style="width: 65%;">
-(lim == 2)
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-istournament
-</td>
-<td align="left" valign="top" style="width: 65%;">
-true if a tournament table is detected. This feature works automatically, based on title-strings of the poker-table, blind-levels, sum of chips at the table, etc.
+(lim == 2) Fixed Limit
 </td>
 
 </tr>
@@ -270,10 +282,28 @@ All tournaments that can’t be recognized neither as MTT nor as DON will qualif
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
+istournament
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if any type of tournament table is detected. This feature works automatically, based on title-strings of the poker-table, blind-levels, sum of chips at the table, etc.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
 isfinaltable
 </td>
 <td align="left" valign="top" style="width: 65%;">
 true if you play the final table of a MTT, depending on the tablemap region r$c0isfinaltable
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+islobby
+</td>
+<td align="left" valign="top" style="width: 65%;">
+true if OpenHoldem is connected to a lobby window (for window placement and shutdown). Depends on the TM-symbol s$islobby
 </td>
 
 </tr>
@@ -442,7 +472,7 @@ your pocket holdem hand rank 4-1000 (1000*handrank2652/2652)
 handrankp
 </td>
 <td align="left" valign="top" style="width: 65%;">
-2652 / (1+f$prwin_number_of_opponents) ???
+2652 / (1+f$prwin_number_of_opponents) 
 </td>
 
 </tr>
@@ -460,13 +490,10 @@ Please note OpenHoldem needs to see player-cards in a non-showdown-situation to 
 <table>
 <tr>
 <td align="left" valign="top">
-
+Symbol
 </td>
 <td align="left" valign="top">
-
-</td>
-<td align="left" valign="top">
-Limitations
+Meaning
 </td>
 
 </tr>
@@ -475,10 +502,34 @@ Limitations
 userchair
 </td>
 <td align="left" valign="top">
-user chair number (0-9), 0 is usually top right
+user cha<span class="formula"></span>ir number (0-9), 0 is usually top right
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+headsupchair
 </td>
 <td align="left" valign="top">
+chair number of the one and only opponent headsup (0-9)
+</td>
 
+</tr>
+<tr>
+<td align="left" valign="top">
+bigblindchair
+</td>
+<td align="left" valign="top">
+big blind chair number(0 - 9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+smallblindchair
+</td>
+<td align="left" valign="top">
+small blind chair number (0-9)
 </td>
 
 </tr>
@@ -489,8 +540,113 @@ dealerchair
 <td align="left" valign="top">
 dealer chair number (0-9)
 </td>
-<td align="left" valign="top">
 
+</tr>
+<tr>
+<td align="left" valign="top">
+cutoffchair
+</td>
+<td align="left" valign="top">
+cut off chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+mp3chair
+</td>
+<td align="left" valign="top">
+middle position 3 chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+mp2chair
+</td>
+<td align="left" valign="top">
+middle position 2 chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+mp1chair
+</td>
+<td align="left" valign="top">
+middle position 1 chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+ep3chair
+</td>
+<td align="left" valign="top">
+early position 3 chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+ep2chair
+</td>
+<td align="left" valign="top">
+early position 2 chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+ep1chair
+</td>
+<td align="left" valign="top">
+early position 1 chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+utgchair
+</td>
+<td align="left" valign="top">
+under the gun chair number (0-9)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+firstcallerchair
+</td>
+<td align="left" valign="top">
+the chair of the first caller in front of you (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+lastcallerchair
+</td>
+<td align="left" valign="top">
+the chair of the last caller in front of you (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+firstraiserchair
+</td>
+<td align="left" valign="top">
+the chair of the first raiser in front of you (0-9), current orbit only
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+lastraiserchair
+</td>
+<td align="left" valign="top">
+the chair of the last raiser in front of you (0-9), current orbit only
 </td>
 
 </tr>
@@ -499,94 +655,25 @@ dealer chair number (0-9)
 raischair
 </td>
 <td align="left" valign="top">
-raising chair number (0-9)
-</td>
-<td align="left" valign="top">
-Valid only at our turn.
+synonym for lastraiserchair
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top">
-smallblind_chair
+bigstackchair
 </td>
 <td align="left" valign="top">
-the chair of the small-blind (0-9)
-</td>
-<td align="left" valign="top">
-
+the chair of the playing opponent with the biggest stack (0-9)
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top">
-bigblind_chair
+smallstackchair
 </td>
 <td align="left" valign="top">
-the chair of the big-blind (0-9)
-</td>
-<td align="left" valign="top">
-
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-cutoff_chair
-</td>
-<td align="left" valign="top">
-the chair of the cut-off (0-9)
-</td>
-<td align="left" valign="top">
-
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-firstcaller_chair
-</td>
-<td align="left" valign="top">
-the chair of the first caller (0-9), current orbit only
-</td>
-<td align="left" valign="top">
-Valid only at our turn.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-lastcaller_chair
-</td>
-<td align="left" valign="top">
-the chair of the last caller (0-9), current orbit only
-</td>
-<td align="left" valign="top">
-Valid only at our turn.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-firstraiser_chair
-</td>
-<td align="left" valign="top">
-the chair of the first raiser (0-9), current orbit only
-</td>
-<td align="left" valign="top">
-Valid only at our turn.
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top">
-opponent_chair_headsup
-</td>
-<td align="left" valign="top">
-the chair of your single opponent (0-9) if the game is or became headsup
-</td>
-<td align="left" valign="top">
-
+the chair of the playing opponent with the smallest stack (0-9)
 </td>
 
 </tr>
@@ -595,10 +682,7 @@ the chair of your single opponent (0-9) if the game is or became headsup
 chair$abc
 </td>
 <td align="left" valign="top">
-player “abc” chair number (0-9); -1 if not found
-</td>
-<td align="left" valign="top">
-
+player “abc” chair number (0-9); -1 if not found, case-sensitive
 </td>
 
 </tr>
@@ -607,10 +691,7 @@ player “abc” chair number (0-9); -1 if not found
 chairbit$abc
 </td>
 <td align="left" valign="top">
-player “abc” chairbit (1 &lt;&lt; chair$abc); 0 if not found 
-</td>
-<td align="left" valign="top">
-
+player “abc” chairbit (1 &lt;&lt; chair$abc); 0 if not found, case-sensitive
 </td>
 
 </tr>
@@ -648,9 +729,6 @@ Symbol
 <td align="left" valign="top" style="width: 35%;">
 Meaning
 </td>
-<td align="left" valign="top">
-Limitations
-</td>
 
 </tr>
 <tr>
@@ -660,8 +738,59 @@ betround
 <td align="left" valign="top" style="width: 35%;">
 betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river
 </td>
-<td align="left" valign="top">
 
+</tr>
+<tr>
+<td align="left" valign="top">
+currentround
+</td>
+<td align="left" valign="top" style="width: 35%;">
+synonym for betround
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+previousround
+</td>
+<td align="left" valign="top" style="width: 35%;">
+the previous betting round (1-3, 1 if the current round is preflop)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+preflop
+</td>
+<td align="left" valign="top" style="width: 35%;">
+verbose constant for the 1st betting round
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+flop
+</td>
+<td align="left" valign="top" style="width: 35%;">
+verbose constant for the 2nd betting round
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+turn
+</td>
+<td align="left" valign="top" style="width: 35%;">
+verbose constant for the 3rd betting round
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top">
+river
+</td>
+<td align="left" valign="top" style="width: 35%;">
+verbose constant for the 4th betting round
 </td>
 
 </tr>
@@ -670,10 +799,7 @@ betting round (1-4) 1=preflop, 2=flop, 3=turn, 4=river
 betposition
 </td>
 <td align="left" valign="top" style="width: 35%;">
-your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer); betposition will change as players fold in front of you.
-</td>
-<td align="left" valign="top">
-
+your bet position (1=left to the dealer=usually sblind, 2=bblind, ..., nplayersdealt=dealer); contrary to dealposition betposition will change as players fold in front of you.
 </td>
 
 </tr>
@@ -682,10 +808,7 @@ your bet position (1=sblind,2=bblind,...,nplayersdealt=dealer); betposition will
 dealposition
 </td>
 <td align="left" valign="top" style="width: 35%;">
-your deal position 1 = left to the dealer, usually small blind2 = 2 left to the dealer, usually big blind ... nplayersdealt = dealer dealposition will not change as players foldIn headsup situations the player to the dealers left is usually big-blind and in other situations the small blind might be missing. But it is your duty to consider these special case, dealposition does not magically auto-adapt to comply with the usual values for full-ring.
-</td>
-<td align="left" valign="top">
-
+your deal position 1 = left to the dealer, usually small blind2 = 2 left to the dealer, usually big blind ... nplayersdealt = dealer. dealposition will not change as players fold. Dealposition does not magically auto-adapt for special cases like a missing small-blind. If you want to figure out chairs better use the more modern chair symbols.
 </td>
 
 </tr>
@@ -696,9 +819,6 @@ callposition
 <td align="left" valign="top" style="width: 35%;">
 your numbered offset from the raising player (who is 0)
 </td>
-<td align="left" valign="top">
-Valid only on our turn
-</td>
 
 </tr>
 <tr>
@@ -708,9 +828,6 @@ dealpositionrais
 <td align="left" valign="top" style="width: 35%;">
 the deal position of the raising player (1-10)
 </td>
-<td align="left" valign="top">
-Valid only on our turn
-</td>
 
 </tr>
 <tr>
@@ -719,9 +836,6 @@ betpositionrais
 </td>
 <td align="left" valign="top" style="width: 35%;">
 the bet position of the raising player (1-10)
-</td>
-<td align="left" valign="top">
-Valid only on our turn
 </td>
 
 </tr>
@@ -1101,7 +1215,7 @@ Meaning
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-islistXYZ
+listXYZ
 </td>
 <td align="left" valign="top" style="width: 65%;">
 <div class="PlainVisible">
@@ -1326,16 +1440,16 @@ Meaning
 $CCc
 </td>
 <td align="left" valign="top" style="width: 65%;">
-references a hand symbol - see the {Hand Symbols} section below for details
+references a hand symbol - see the <i>Hand Symbols</i> section below for details
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-$$AB# 
+$$CCc
 </td>
 <td align="left" valign="top" style="width: 65%;">
-references a card symbol - see the {Card Symbols} section below for details
+references a card symbol - see the <i>Card Symbol</i>s section below for details
 </td>
 
 </tr>
@@ -1447,6 +1561,24 @@ true when you have a royal flush
 </td>
 
 </tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nutfullhouseorfourofakind
+</td>
+<td align="left" valign="top" style="width: 65%;">
+OpenPPL symbol that ranks the strength of quads and full houses, 1 = best, 999 = not at all
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+nutfullhouseorfourofakind_ntotal
+</td>
+<td align="left" valign="top" style="width: 65%;">
+total number of currently possible quads and full houses, for comparison
+</td>
+
+</tr>
 
 </table>
 
@@ -1455,7 +1587,40 @@ true when you have a royal flush
 <a class="toc" name="toc-Section--1"></a>Hand and Board-Expressions
 </h2>
 <div class="Unindented">
-!!!???
+<table>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+hand$XYZ
+</td>
+<td align="left" valign="top" style="width: 60%;">
+true, if your hand contains XYZ. The expression may contain 1 or 2 cards, optionally concrete suits or optionally the postfix &ldquo;Suited&rdquo;.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 30%;">
+board$XYZ
+</td>
+<td align="left" valign="top" style="width: 60%;">
+true, The expression may contain 1 up to 5 cards, optionally concrete suits or optionally the postfix &ldquo;Suited&rdquo;.
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<div class="Indented">
+Hand and board expressions got implemented for OpenPPL, but of course they can be also used for OH-script. Especially board-expressions are in most cases more intuitive than rankbits(common). Some examples for hand and board-expressions (OpenPPL)<div class="listing">
+<pre class="listing">WHEN hand$AA RaiseMax FORCE
+WHEN hand$AKSuited RaisePot FORCE
+// We love playing hearts...
+WHEN hand$Ah Call FORCE
+// ...but fear the devil
+WHEN board$666 Fold FORCE
+</pre>
+</div>
+
 </div>
 <h2 class="Section">
 <a class="toc" name="toc-Section-16"></a>Pocket Tests 
@@ -1521,7 +1686,7 @@ Meaning
 ishipair
 </td>
 <td align="left" valign="top" style="width: 65%;">
-true when you have hi pair (0-1)
+true when you have a pair with the highest board-card or an overpaor
 </td>
 
 </tr>
@@ -1530,7 +1695,7 @@ true when you have hi pair (0-1)
 islopair
 </td>
 <td align="left" valign="top" style="width: 65%;">
-true when you have lo pair (0-1)
+true when you have a pair with the lowest board-card or an underpair
 </td>
 
 </tr>
@@ -1539,7 +1704,7 @@ true when you have lo pair (0-1)
 ismidpair
 </td>
 <td align="left" valign="top" style="width: 65%;">
-true when you have mid pair (0-1) 
+true when you have a pair that is neither hipair nor lopair
 </td>
 
 </tr>
@@ -1636,15 +1801,6 @@ number of players playing (including you) (0-10)
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-nplayersblind
-</td>
-<td align="left" valign="top" style="width: 65%;">
-number of players blind (including you) (0-10)
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
 nfriendsseated
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -1685,15 +1841,6 @@ nopponentsplaying
 </td>
 <td align="left" valign="top" style="width: 65%;">
 number of opponents playing (not including you) (0-9)
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-nopponentsblind
-</td>
-<td align="left" valign="top" style="width: 65%;">
-number of opponents blind (not including you) (0-9) 
 </td>
 
 </tr>
@@ -1807,15 +1954,6 @@ bits 9-0: 1=playing 0=notplaying
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-playersblindbits
-</td>
-<td align="left" valign="top" style="width: 65%;">
-bits 9-0: 1=blind 0=notblind 
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
 opponentsseatedbits
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -1847,15 +1985,6 @@ opponentsplayingbits
 </td>
 <td align="left" valign="top" style="width: 65%;">
 bits 9-0: 1=playing 0=notplaying
-</td>
-
-</tr>
-<tr>
-<td align="left" valign="top" style="width: 35%;">
-opponentsblindbits 
-</td>
-<td align="left" valign="top" style="width: 65%;">
-bits 9-0: 1=blind 0=notblind 
 </td>
 
 </tr>
@@ -1911,7 +2040,7 @@ flag button bits 19-0 - 1=pressed 0=notpressed
 <div class="Indented">
 <div class="float">
 <div class="figure">
-<img class="embedded" src="flags_toolbar.png" alt="figure flags_toolbar.png" style="max-width: 692px; max-height: 46px;"/>
+<img class="embedded" src="gui/images/flags_toolbar.png" alt="figure gui/images/flags_toolbar.png" style="max-width: 692px; max-height: 46px;"/>
 
 </div>
 
@@ -2105,7 +2234,7 @@ total number of same suited cards in the middle (1-5)
 tsuit
 </td>
 <td align="left" valign="top" style="width: 65%;">
-specific card suit for nsuited (1-4) 
+specific card suit for nsuited (0-3) 
 </td>
 
 </tr>
@@ -2114,7 +2243,7 @@ specific card suit for nsuited (1-4)
 tsuitcommon
 </td>
 <td align="left" valign="top" style="width: 65%;">
-specific card suit for nsuitedcommon (1-4)
+specific card suit for nsuitedcommon (0-3)
 </td>
 
 </tr>
@@ -2234,7 +2363,7 @@ total number of cards needed to fill a common straightflush (0-5)
 <a class="toc" name="toc-Section-24"></a>Rank Bits 
 </h2>
 <div class="Unindented">
-Please note: aces are both hi and lo.
+Rankbits are used in the following order AKQJT98765432a-. The last bit is unused by WinHoldem definition. Aces can be high, low or both, depending on our hand.
 </div>
 <div class="Indented">
 <table>
@@ -2316,6 +2445,24 @@ srankbitspoker
 </td>
 <td align="left" valign="top" style="width: 65%;">
 bit list of suited card ranks (pokerval tsuit) 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+suitbitsplayerN
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of card ranks(yours) for suit N (N = 0..3), especially meant for Omaha
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+suitbitscommonN
+</td>
+<td align="left" valign="top" style="width: 65%;">
+bit list of card ranks(common) for suit N (N = 0..3), especially meant for Omaha
 </td>
 
 </tr>
@@ -2510,7 +2657,61 @@ lowest suited card rank (14-2) (pokerval tsuit)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-27"></a>Time 
+<a class="toc" name="toc-Section-27"></a>Suit Constants
+</h2>
+<div class="Unindented">
+<table>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+Symbol
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Meaning
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+clubs
+</td>
+<td align="left" valign="top" style="width: 65%;">
+verbose constant to access suit symbols (value = 2), especially meant for use with the multiplexer-engine, e.g. &ldquo;suitbitscommon_clubs&rdquo;
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+diamonds
+</td>
+<td align="left" valign="top" style="width: 65%;">
+verbose constant to access suit symbols (value = 1)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+hearts
+</td>
+<td align="left" valign="top" style="width: 65%;">
+verbose constant to access suit symbols (value = 0)
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+spades
+</td>
+<td align="left" valign="top" style="width: 65%;">
+verbose constant to access suit symbols (value = 3)
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-28"></a>Time 
 </h2>
 <div class="Unindented">
 <table>
@@ -2564,7 +2765,7 @@ time in seconds since midnight GMT
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-28"></a>Autoplayer 
+<a class="toc" name="toc-Section-29"></a>Autoplayer 
 </h2>
 <div class="Unindented">
 <table>
@@ -2591,13 +2792,7 @@ ismyturn
 myturnbits
 </td>
 <td align="left" valign="top" style="width: 65%;">
-<div class="PlainVisible">
-a bit-vector that tells you what buttons are visible
-</div>
-<div class="PlainVisible">
-bits 43210 correspond to buttons KARCF (check alli rais call fold). Bit 4 (check) was added in OpenHoldem 2.0, that’s why it is &ldquo;out of order&rdquo;
-</div>
-
+ bit-vector that tells you what buttons are visible. The bits 43210 correspond to the buttons ARKCF (allin, raise, check, call fold), the legendary FCKRA in revered order, allin has the highest value. 
 </td>
 
 </tr>
@@ -2649,7 +2844,7 @@ true when autoplayer preparing to act; false any other time.
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-29"></a>History (I)
+<a class="toc" name="toc-Section-30"></a>History (I)
 </h2>
 <div class="Remark">
 The action-symbols (didrais, didcall, etc.) mean: what the autoplayer did, not what the user did or what happened in the hand. That does regularly confuse new users and causes problem when simulating hands at ManualMode or with Replay Frames.
@@ -2704,7 +2899,7 @@ record of previously attempted autoplayer action. <div class="Description">
 <span class="Description-entry">2</span> = raise
 </div>
 <div class="Description">
-<span class="Description-entry">3</span> = swag 
+<span class="Description-entry">3</span> = betsize 
 </div>
 <div class="Description">
 <span class="Description-entry">4</span> = allin
@@ -2745,16 +2940,16 @@ the number of times the autoplayer has called during the current round
 didrais
 </td>
 <td align="left" valign="top" style="width: 65%;">
-the number of times the autoplayer has raised during the current round
+the number of times the autoplayer has raised during the current round, i.e clicked the min-raise-button
 </td>
 
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-didswag
+didbetsize
 </td>
 <td align="left" valign="top" style="width: 65%;">
-the number of times the autoplayer has swag’d during the current round 
+the number of times the autoplayer has betsized during the current round, i.e. used f$betsize or one of the betpot-functions
 </td>
 
 </tr>
@@ -2823,10 +3018,10 @@ true if userchair raised during round 1 - round 4
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-didswaground1..idswaground4
+didbetsizeround1..didbetsizeround4
 </td>
 <td align="left" valign="top" style="width: 65%;">
-true if userchair swag’d during round 1 - round 4
+true if userchair betsized during round 1 - round 4
 </td>
 
 </tr>
@@ -2844,7 +3039,7 @@ true if userchair went allin during round 1 - round 4
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-30"></a>Versus 
+<a class="toc" name="toc-Section-31"></a>Versus 
 </h2>
 <div class="Unindented">
 <table>
@@ -3057,6 +3252,33 @@ Probability (0.000 - 1.000) of a tie versus hand list X
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
+vs$multiplex$X$prwin
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of winnning versus the list specified by function X. The function X (e.g. f$raisersrange) must return an intereger number, e.g. 0..100 and then versus will take the corresponging list (list0..list100). 
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$multiplex$X$prlos
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of chopping versus the list specified by function X.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
+vs$multiplex$X$prtie
+</td>
+<td align="left" valign="top" style="width: 65%;">
+Probability (0.000 - 1.000) of losing versus the list specified by function X.
+</td>
+
+</tr>
+<tr>
+<td align="left" valign="top" style="width: 35%;">
 vs$prwinhinow
 </td>
 <td align="left" valign="top" style="width: 65%;">
@@ -3141,7 +3363,7 @@ Probability (0.000 - 1.000) of losing versus currently lower opponent hands
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-31"></a>History (II)
+<a class="toc" name="toc-Section-32"></a>History (II)
 </h2>
 <div class="Unindented">
 hi_&lt;sym&gt;x (x=1-4) the value of the symbol &lt;sym&gt; as of your last turn in betting round x. Example: hi_prwin1 would return prwin as of your last turn in br1. 
@@ -3262,7 +3484,7 @@ ranklo, ranklocommon, rankloplayer, ranklopoker, sranklo, sranklocommon, sranklo
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-32"></a>Table statistics 
+<a class="toc" name="toc-Section-33"></a>Table statistics 
 </h2>
 <div class="Unindented">
 Table statistics for the last 15 minutes.
@@ -3337,7 +3559,7 @@ my highest balance during the session
 handsplayed
 </td>
 <td align="left" valign="top" style="width: 65%;">
-number of hands played this session by this OpenHoldem instance
+number of hands played this session by this OpenHoldem instance. The value will be 0 after connection and increase on handreset if the userchair is known.
 </td>
 
 </tr>
@@ -3364,7 +3586,7 @@ ranked list of player balances (includes players not currently in hand, and incl
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-33"></a>Colourcodes
+<a class="toc" name="toc-Section-34"></a>Colourcodes
 </h2>
 <div class="Unindented">
 Colourcodes for player-profiling if a casino is not supported by PokerTracker. Can also be used for easy adaption against regulars and other friends.
@@ -3394,7 +3616,7 @@ The scraped colourcode for playerX, depending on the tablemap region r$pXcolourc
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-34"></a>Betting Action 
+<a class="toc" name="toc-Section-35"></a>Betting Action 
 </h2>
 <div class="Remark*">
 Betting action symbols depend on game-history, They get updated once per orbit at our turn and can therefore only used at our turn; otherwise they are undefined.
@@ -3514,7 +3736,7 @@ returns deal position of specified chair
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-35"></a>Logging 
+<a class="toc" name="toc-Section-36"></a>Logging 
 </h2>
 <div class="Unindented">
 <table>
@@ -3532,7 +3754,14 @@ Meaning
 log$YourTextGoesHere
 </td>
 <td align="left" valign="top" style="width: 65%;">
-log$YourTextGoesHere When executed, adds your specified text to the log.
+<div class="PlainVisible">
+
+</div>
+<div class="PlainVisible">
+When executed, adds your specified text to the autoplayer-trace and to the white box in the GUI.<br/>
+The symbol will be evaluated to 1.
+</div>
+
 </td>
 
 </tr>
@@ -3541,11 +3770,11 @@ log$YourTextGoesHere When executed, adds your specified text to the log.
 
 </div>
 <div class="Indented">
-For example if you have the following f$rais-formula,
+For example if you have the following f$raise-formula,
 </div>
 <div class="Indented">
 <div class="listing">
-<pre class="listing">##f$rais##
+<pre class="listing">##f$raise##
 [ betround == 2 &amp;&amp; (nsuited == 3 || nstraight == 3) &amp;&amp; log$ItLives ]
 </pre>
 </div>
@@ -3554,7 +3783,17 @@ For example if you have the following f$rais-formula,
 <div class="Indented">
 and you flop a backdoor flush draw, then OpenHoldem will raise and also add the text "ItLives" to the log file, just before the RAIS line. Everytime a log$ symbol is accessed it will be flagged for logging. You can use this to track which part of your formula is to blame for the action taken by OpenHoldem. 
 </div>
-<div class="Remark">
+<div class="Indented">
+<div class="float">
+<div class="figure">
+<img class="embedded" src="Images/log$_symbol.png" alt="figure Images/log$_symbol.png" style="max-width: 283px; max-height: 350px;"/>
+
+</div>
+
+</div>
+
+</div>
+<div class="Remark*">
 Note: You want to use the log$ symbol at the end of a logic block, to make sure it only gets flagged when all the previous statements are true. 
 </div>
 <div class="Unindented">
@@ -3563,11 +3802,11 @@ Note: You want to use the log$ symbol at the end of a logic block, to make sure 
 </div>
 
 </div>
-<div class="Remark">
-Note: You have to turn on Log Symbols in the preferences. You can also dictate the maximum number of log symbols that will be logged per action. When enabled, up to 4 log symbols will be displayed in OpenHoldem’s main window. 
+<div class="Remark*">
+As the log$-symbols modify the autoplayer-trace they require the autoplayer to be engaged.
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-36"></a>MessageBoxes with Info
+<a class="toc" name="toc-Section-37"></a>MessageBoxes with Info
 </h2>
 <div class="Unindented">
 In addition to logging it might be useful to notify the user at run-time and pause script-execution, mainly in a debugging session. For this usecase OpenHoldem provides a symbol msgbox$TEXT, that — surprise — will show a messagebox with text. As the character-set in symbols is slightly limited the following replacements will take place.
@@ -3609,7 +3848,7 @@ WHEN Others RETURN (Call + msgbox$WOOHOO_NPreflop_Bworks_D) FORCE
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-37"></a>ICM calculator
+<a class="toc" name="toc-Section-38"></a>ICM calculator
 </h2>
 <div class="Unindented">
 An overview of basic ICM push/fold decisions and how they work with OpenHoldem can be found here: <a class="FlexURL" href="http://www.maxinmontreal.com/wiki/index.php5?title=ICM">http://www.maxinmontreal.com/wiki/index.php5?title=ICM</a>.
@@ -3623,7 +3862,7 @@ UTG in a symbols name does always mean the first player after BB at a full-ring 
 </div>
 
 </div>
-<div class="Remark">
+<div class="Remark*">
 The ICM symbols will always assume, that you win against the player with the smallest stack or lose against the player with the biggest stack of the remaining non-folded players (or against N players with the N smallest stacks), so the ICM-symbols will be slightly too pessimistic in multiway-situations. For headsup (including blind-battle) and against concrete players (e.g. icm_alliwinUTG ) the symbols are accurate.
 </div>
 <div class="Unindented">
@@ -4002,7 +4241,7 @@ my tournament equity if I push all-in and lose against the dealer
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-38"></a>Hand multiplexor
+<a class="toc" name="toc-Section-39"></a>Hand multiplexor
 </h2>
 <div class="Unindented">
 The purpose of the hand multiplexor is to transfer control to a specific named formula based on your actual 2 card hand. Note that the X’s and x’s are not case sensitive.
@@ -4063,7 +4302,7 @@ OpenHoldem will then evaluate the corresponding user defined function and return
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-39"></a>Memory Symbols 
+<a class="toc" name="toc-Section-40"></a>Memory Symbols 
 </h2>
 <div class="Unindented">
 The purpose of these symbols is to provide storage for values in order to reuse them at some later time. They once got invented as a substitute for left-hand-side-expressions (assignments of variables), that did not exist in the WinHoldem-scripting-language, but in reality, this is a bit a kludge???. A much better choice for LHS expressions is Perl or via the user-DLL extension. Please see the {Memory Symbols} section for more information.
@@ -4124,7 +4363,7 @@ Retrieves a previously stored value. Example: me_re_abc - retrieves the value fr
 me_inc_
 </td>
 <td align="left" valign="top" style="width: 65%;">
-Increments a memory_symbol
+Increments a memory_symbol by 1. It is used mostly for keeping a running counter of events that happen one at a time.
 </td>
 
 </tr>
@@ -4133,7 +4372,7 @@ Increments a memory_symbol
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-40"></a>Hand Symbols 
+<a class="toc" name="toc-Section-41"></a>Hand Symbols 
 </h2>
 <div class="Unindented">
 You can reference your dealt hand (hole cards) directly by using the $ symbols. The general form of the $ hand symbols are: $RRs. The $ character is required, followed by 1 or 2 standard card rank characters. The hand symbols are not case sensitive. A,K,Q,J,T,9-2 or by X or x which is a wild card that will match any rank. This is followed by an optional suit indicator: s - suited, o - offsuit. If the suit indicator is omitted then suit does not matter. 
@@ -4238,10 +4477,10 @@ true if you were dealt queen two
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-41"></a>Card Symbols 
+<a class="toc" name="toc-Section-42"></a>Card Symbols 
 </h2>
 <div class="Unindented">
-The actual card value or rank/suit value for both your hand and the board can be referenced using card symbols. The general form of the $$ card symbols are: $$AB#. The card symbols are not case sensitive. $$ is required. A - is p for player, c for common B - is c for card, r for rank, s for suit # - is the card number (player 0-1, common 0-4) 
+The actual card value or rank/suit value for both your hand and the board can be referenced using card symbols. The general form of the $$ card symbols are: $$AB#. The card symbols are not case sensitive. $$ is required. A - is p for player, c for common B - is c for card, r for rank, s for suit # - is the card number (player 0-1 for Holdem and 0-3 for Omaha, common 0-4) 
 </div>
 <div class="Indented">
 Examples 
@@ -4268,10 +4507,10 @@ the card value for player card zero (1st dealt card)
 </tr>
 <tr>
 <td align="left" valign="top" style="width: 35%;">
-$$pr1
+$$pr3
 </td>
 <td align="left" valign="top" style="width: 65%;">
-the rank value of player card one (2nd dealt card)
+the rank value of player card three (4th dealt card, Omaha)
 </td>
 
 </tr>
@@ -4316,7 +4555,7 @@ the suit value of common card four (5th common card dealt - river)
 
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-42"></a>Card Values 
+<a class="toc" name="toc-Section-43"></a>Card Values 
 </h2>
 <div class="Unindented">
 The rank values are 2..14 for 2..ace (high), the suit values are 0..3 (indentical to the values of the poker-eval-library) and -1 for undefined. Again the representations of cards are the same as the ones used by the internally used by the poker-eval-library, plus 253..255 for cardback / no-card / undefined.
@@ -4466,10 +4705,6 @@ Spades
 
 </div>
 
-<hr class="footer"/>
-<div class="footer" id="generated-by">
-Document generated by <a href="http://elyxer.nongnu.org/">eLyXer 1.2.5 (2013-03-10)</a> on <span class="create-date">2015-04-26T14:24:49.859000</span>
-</div>
 </div>
 </body>
 </html>

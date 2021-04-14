@@ -1,0 +1,136 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+
+##DealPositionLastRaiser##
+// This function does also count blind-raisers.
+(AggressorChair == 0) ? ac_dealpos0 :
+(AggressorChair == 1) ? ac_dealpos1 :
+(AggressorChair == 2) ? ac_dealpos2 :
+(AggressorChair == 3) ? ac_dealpos3 :
+(AggressorChair == 4) ? ac_dealpos4 :
+(AggressorChair == 5) ? ac_dealpos5 :
+(AggressorChair == 6) ? ac_dealpos6 :
+(AggressorChair == 7) ? ac_dealpos7 :
+(AggressorChair == 8) ? ac_dealpos8 :
+(AggressorChair == 9) ? ac_dealpos9 :
+HINT_There_Are_No_true_Raisers
+
+##EarlyPosition1Calling##
+(callbits_preflop >> ep1chair) & 1 == 1
+
+##EarlyPosition2Calling##
+(callbits_preflop >> ep2chair) & 1 == 1
+
+##EarlyPosition3Calling##
+(callbits_preflop >> ep3chair) & 1 == 1
+
+##MiddlePosition1Calling##
+(callbits_preflop >> mp1chair) & 1 == 1
+
+##MiddlePosition2Calling##
+(callbits_preflop >> mp2chair) & 1 == 1
+
+##MiddlePosition3Calling##
+(callbits_preflop >> mp3chair) & 1 == 1
+
+##CutOffCalling##
+(callbits_preflop >> cutoffchair) & 1 == 1
+
+##ButtonCalling##
+(callbits_preflop >> buttonchair) & 1 == 1
+
+##SmallBlindCalling##
+(callbits_preflop >> smallblindchair) & 1 == 1
+
+##BigBlindCalling##
+(callbits_preflop >> bigblindchair) & 1 == 1
+
+##EarlyPosition1Raising##
+[(raisbits_preflop >> ep1chair) & 1 == 1]
+
+##EarlyPosition2Raising##
+[(raisbits_preflop >> ep2chair) & 1 == 1]
+
+##EarlyPosition3Raising##
+[(raisbits_preflop >> ep3chair) & 1 == 1]
+
+##MiddlePosition1Raising##
+[(raisbits_preflop >> mp1chair) & 1 == 1]
+
+##MiddlePosition2Raising##
+[(raisbits_preflop >> mp2chair) & 1 == 1]
+
+##MiddlePosition3Raising##
+[(raisbits_preflop >> mp3chair) & 1 == 1]
+
+##CutOffRaising##
+[(raisbits_preflop >> cutoffchair) & 1 == 1]
+
+##ButtonRaising##
+[(raisbits_preflop >> buttonchair) & 1 == 1]
+
+##SmallBlindRaising##
+    [(raisbits_preflop >> smallblindchair) & 1 == 1]
+AND [SmallBlindCurrentBet >= 1.01]
+
+##BigBlindRaising##
+    [(raisbits_preflop >> bigblindchair) & 1 == 1]
+AND [BigBlindCurrentBet >= 1.01]

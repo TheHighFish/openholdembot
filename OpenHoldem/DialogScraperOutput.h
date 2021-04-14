@@ -1,21 +1,20 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_DIALOGSCRAPEROUTPUT_H
 #define INC_DIALOGSCRAPEROUTPUT_H
 
 #include "..\CTablemap\CTablemap.h"
-#include "WinMgr.h"
 #include "SizerBar.h"
 #include "Resource.h"
 
@@ -47,12 +46,8 @@ class CDlgScraperOutput : public CDialog {
 	afx_msg void OnLbnSelchangeRegionlist();
 	afx_msg void OnCbnSelchangeZoom();
 	afx_msg void OnPaint();
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg LRESULT OnWinMgr(WPARAM wp, LPARAM lp);
 	void DoBitblt(HBITMAP bitmap, RMapCI r_iter);
 
-	CWinMgr			m_winMgr;				// window manager
-	CSizerBar		m_winMgrSizerBar;		// sizer bar
 	CListBox		m_RegionList;
 	CStatic			m_ScraperBitmap;
 	CComboBox		m_Zoom;

@@ -33,6 +33,7 @@
 #define IDC_BIG_BET                     1079
 #define IDC_ANTE                        1080
 #define IDC_GAME_TYPE                   1081
+#define IDC_HOLDEM_OMAHA                1082
 #define ID_POPUP_A                      32771
 #define ID_POPUP_2                      32772
 #define ID_POPUP_3                      32773
@@ -129,7 +130,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        137
 #define _APS_NEXT_COMMAND_VALUE         32860
-#define _APS_NEXT_CONTROL_VALUE         1009
+#define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

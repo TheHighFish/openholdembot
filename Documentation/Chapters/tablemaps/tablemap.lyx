@@ -216,17 +216,17 @@ s$sitename                  openholdem
 
 \begin_layout Plain Layout
 
-s$swagconfirmationmethod    Click Bet 
+s$betsizeconfirmationmethod    Click Bet 
 \end_layout
 
 \begin_layout Plain Layout
 
-s$swagdeletionmethod        Nothing 
+s$betsizedeletionmethod        Nothing 
 \end_layout
 
 \begin_layout Plain Layout
 
-s$swagtextmethod            3 
+s$betsizeinterpretationmethod  3 
 \end_layout
 
 \begin_layout Plain Layout

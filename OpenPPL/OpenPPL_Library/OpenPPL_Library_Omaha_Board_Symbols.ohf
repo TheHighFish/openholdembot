@@ -1,0 +1,105 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq 
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Board smbols for Omaha
+//
+//*****************************************************************************
+
+##LowPossible##
+
+##LowPossibleOnFlop##
+
+##LowPossibleOnTurn##
+
+##Omaha_TripsOnBoard##
+WHEN IsPreflop RETURN false FORCE
+WHEN  (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard )
+OR ( FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard )
+OR ( FirstFlopCard == SecondFlopCard AND SecondFlopCard == RiverCard )
+OR ( FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard )
+OR ( FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard )
+OR ( FirstFlopCard == TurnCard AND TurnCard == RiverCard )
+OR ( SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard )
+OR ( SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard )
+OR ( SecondFlopCard == TurnCard AND TurnCard == RiverCard )
+OR ( ThirdFlopCard == TurnCard AND TurnCard == RiverCard ) RETURN true FORCE
+
+##Omaha_QuadsOnBoard##
+WHEN IsPreflop RETURN false FORCE
+WHEN  (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
+OR (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard)
+OR (FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard AND TurnCard == RiverCard)
+OR (FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard AND TurnCard == RiverCard)
+OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard AND TurnCard == RiverCard) RETURN true FORCE
+
+##Omaha_FlushPossible##
+   BitCount(suitbitscommon_clubs   & ConstAllRanksWithoutAceLow) >= 3
+OR BitCount(suitbitscommon_diamonds & ConstAllRanksWithoutAceLow) >= 3
+OR BitCount(suitbitscommon_hearts  & ConstAllRanksWithoutAceLow) >= 3
+OR BitCount(suitbitscommon_spades  & ConstAllRanksWithoutAceLow) >= 3
+
+##Omaha_FlushDrawPossible##
+   BitCount(suitbitscommon_clubs    & ConstAllRanksWithoutAceLow) == 2
+OR BitCount(suitbitscommon_diamonds & ConstAllRanksWithoutAceLow) == 2
+OR BitCount(suitbitscommon_hearts   & ConstAllRanksWithoutAceLow) == 2
+OR BitCount(suitbitscommon_spades   & ConstAllRanksWithoutAceLow) == 2
+

@@ -157,8 +157,8 @@ Below are 3 functions you'll need if you plan to avoid OH and hopper "collisions
 " over mouse and keyboard inputs.
  As you may know, OH ensures it can act on the table in a consistent manner
  by seizing control of mouse / keyboard input (system wide mutex), performing
- its actions (clicking buttons, entering text in swag field etc.) and then
- releasing mutex so other applications can perform their tasks.
+ its actions (clicking buttons, entering the betsize in text field etc.)
+ and then releasing mutex so other applications can perform their tasks.
 \end_layout
 
 \begin_layout Quotation

@@ -1,20 +1,20 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Determining hand-ranges for weighted PrWin
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "PrWinHandranges.h"
 
-#include "NumericalFunctions.h"
+
 
 bool IsHandInWeightedRange(const int card1, const int card2, 
 							const int willplay, const int wontplay, 

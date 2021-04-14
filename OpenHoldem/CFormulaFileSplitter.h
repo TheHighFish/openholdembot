@@ -1,48 +1,51 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
-// Purpose:
+// Purpose: Extract functions from an input-file
+//   and put them into the function-collection (not yet parsed)
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CFORMULAFILESPLITTER_H
 #define INC_CFORMULAFILESPLITTER_H
 
-#define _AFXDLL 
-
 #include "afx.h"
 #include "atlstr.h"
+#include "COHScriptObject.h"
 
 class CFormulaFileSplitter {
  public:
   CFormulaFileSplitter();
   ~CFormulaFileSplitter();
  public:
+  void SplitFile(CArchive &formula_file);
+ private:
+  void SkipShankyOptionSettings(CArchive &formula_file);
+ private:
+  COHScriptObject* GetNextObject(CArchive &formula_file);
   void ScanForNextFunctionOrList(CArchive &formula_file);
-  // For debug-tab, which has to parse line by line
-  void SetInput(CString line_of_debug_tab);
-  void InitNewParse();
- public:
-  CString GetFunctionHeader()   { return _function_header; }
-  CString GetFunctionText()     { return _function_text; }
- public:
-   int starting_line_of_current_function() { return _starting_line_of_current_function; }
+  CString ExtractFunctionName(const CString function_header);
  private:
-  bool IsFunctionHeader(CString line_of_code);
+  inline bool IsFunctionHeader(CString line_of_code);
+  // Returns 0 / false if no Shanky-style betround-function
+  // Returns 1..4 for preflop..river
+  inline int IsShankyFunction(CString line_of_code);
+  void SanityChecksForWrongFileTypes();
  private:
-  CString _function_header;
+  CString _function_name;
   CString _function_text;
   CString _next_line;
  private:
   bool _first_function_processed;
-  int _total_line_processed;
-  int _starting_line_of_current_function;
+  int _total_lines_processed;
+  int _starting_line_of_next_function;
+  bool _splitting_shanky_ppl;
 };
 
 #endif INC_CFORMULAFILESPLITTER_H

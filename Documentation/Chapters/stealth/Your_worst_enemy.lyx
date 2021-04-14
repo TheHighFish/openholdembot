@@ -107,6 +107,34 @@ some
  good customers:
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename images/robostars.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Itemize
 botters provide traffic and playing opportunities for the recreational players
 \end_layout
@@ -155,13 +183,43 @@ The Players at your Table?
 \end_layout
 
 \begin_layout Standard
-Some poker sites disabled support for tracking-software; others even invented
- anonymous tables to protect their fish -- and to protect their botters
- too.
+Getting reported by your opponents is a serious threat.
+ Then casinos have to react, no matter how much they like botters.
+ Some casinos tried to reduce this risk and disabled support for tracking-softwa
+re; others even invented anonymous tables to protect their fish -- and to
+ protect their botters too.
+\end_layout
+
+\begin_layout Standard
+Considering these points it becomes obvious who is your worst opponent:
 \end_layout
 
 \begin_layout Section*
-You
+You!
+\end_layout
+
+\begin_layout Standard
+The main threat for your botting-success is your own bot-like behaviour.
+ In a certain botting-forum people advise to play 
+\begin_inset Quotes eld
+\end_inset
+
+not more than human-like 12-16 hours a day
+\begin_inset Quotes erd
+\end_inset
+
+ and newbies ask if they can play 
+\begin_inset Quotes eld
+\end_inset
+
+human-like 18 hours
+\begin_inset Quotes erd
+\end_inset
+
+ too.
+ Others run multiple cashgame bots with exactly the same stats.
+ Simply sorting your opponents by PokerTracker-stats will reveal everything.
+ It is always the same story:
 \end_layout
 
 \begin_layout Standard

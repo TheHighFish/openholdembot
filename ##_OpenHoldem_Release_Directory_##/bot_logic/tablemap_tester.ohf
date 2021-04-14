@@ -1,0 +1,104 @@
+##f$notes##
+//*****************************************************************************
+//
+// Tablemap Tester
+//   This "bot" enables the user to play manually with the flag-buttons
+//   in order to test the autoplayer-interface of a tablemap.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 13.0.0 or later
+//
+//*****************************************************************************
+// 
+// Flag buttons
+// ============
+//   f0  f$close
+//   f1  Show help 
+//   f2  f$sitin
+//   f3  f4sitout
+//   f4  f$prefold
+//   f5  f$fold
+//   f6  f$call / f$check
+//   f7  f$rais
+//   f8  f$betsize, RaiseTo 4
+//   f9  reserved (X2, not yet supported) 
+//   f10 reserved (X3, not yet supported)
+//   f11 reserved (X4, not yet supported)
+//   f12 betpot_1_4
+//   f13 betpot_1_3
+//   f14 betpot_1_2
+//   f15 betpot_2_3
+//   f16 betpot_3_4
+//   f17 betpot_1_1
+//   f18 reserved (betpot_2_1,not yet supported by OpenPPL)
+//   f19 f$alli
+//
+//*****************************************************************************
+
+##f$preflop##
+f$manual_decision
+
+##f$flop##
+f$manual_decision
+
+##f$turn##
+f$manual_decision
+
+##f$river##
+f$manual_decision
+
+##f$manual_decision##
+// If no flag is pressed we beep after some seconds 
+// (when we have stable frames).
+// We don't want the default-bot to act unexpectedly
+// if the user is slow with his action.
+WHEN (flagbits <= 0) Beep FORCE
+WHEN f19 RaiseMax FORCE
+WHEN f17 RaisePot FORCE
+WHEN f16 RaiseThreeFourthPot FORCE
+WHEN f15 RaiseTwoThirdPot FORCE
+WHEN f14 RaiseHalfPot FORCE
+WHEN f13 RaiseThirdPot FORCE
+WHEN f12 RaiseFourthPot FORCE
+WHEN f8 RaiseTo 4 FORCE
+WHEN f7 RaiseMin FORCE
+WHEN (f6 AND (AmountToCall > 0)) Call FORCE
+WHEN (f6 AND (AmountToCall == 0)) Check FORCE
+WHEN f5 Fold FORCE
+
+##f$close##
+WHEN f0 RETURN true FORCE
+
+##f$sitin##
+WHEN (f2 AND issittingout) RETURN true FORCE
+
+##f$sitout##
+WHEN (f3 AND issittingin) RETURN true FORCE
+
+##f$prefold##
+WHEN f4 RETURN true FORCE
+
+##f$ini_function_on_startup##
+msgbox$This_Bis_Ba_Bmanual_Bbot_Bfor_Btablemap_Btesting_D_NUse_Bthe_Bflag_Bbuttons_Bto_Bplay_D_NPress_Bflag_B1_Bfor_Bhelp_D
+
+##f$ini_function_on_heartbeat##
+WHEN f1 RETURN f$show_help FORCE
+
+##f$show_help##
+  msgbox$f0_Bclose_Nf1_Bshow_Bhelp_Nf2_Bsitin_Nf3_Bsitout_Nf4_Bprefold_N
++ msgbox$f5_Bfold_Nf6_Bcall_C_Bcheck_Nf7_Bminraise_Nf8_Bbetsize_C_Braise_Bto_B4_N
++ msgbox$f12_Bbetpot_U1_U4_Nf13_Bbetpot_U1_U3_Nf14_Bbetpot_U1_U2_Nf15_Bbetpot_U2_U3_N
++ msgbox$f16_Bbetpot_U3_U4_Nf17_Bbetpot_U1_U1_Nf19_Ballin_N
+
+##f$delay##
+// If no flag is pressed then give the user some time to act
+// before we beep.
+WHEN (flagbits <= 0) RETURN 5000 FORCE

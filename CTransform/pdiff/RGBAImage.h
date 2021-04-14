@@ -34,7 +34,8 @@ public:
 	unsigned char Get_Red(unsigned int i) { return (Data[i] & 0xFF); }
 	unsigned char Get_Green(unsigned int i) { return ((Data[i]>>8) & 0xFF); }
 	unsigned char Get_Blue(unsigned int i) { return ((Data[i]>>16) & 0xFF); }
-	unsigned char Get_Alpha(unsigned int i) { return ((Data[i]>>24) & 0xFF); }
+    //unsigned char Get_Alpha(unsigned int i) { return ((Data[i] >> 24) & 0xFF); }
+    unsigned char Get_Alpha(unsigned int i) { return kAlphaNoTransparency; }
 	void Set(unsigned char r, unsigned char g, unsigned char b, unsigned char a, unsigned int i)
 	{ Data[i] = r | (g << 8) | (b << 16) | (a << 24); }
 	int Get_Width(void) const { return Width; }
@@ -42,7 +43,7 @@ public:
 	void Set(int x, int y, unsigned int d) { Data[x + y * Width] = d; }
 	unsigned int Get(int x, int y) const { return Data[x + y * Width]; }
 	unsigned int Get(int i) const { return Data[i]; }
-	const std::string &Get_Name(void) const { return Name; }
+  const std::string &Get_Name(void) const { return Name; }
 	
 	bool WritePPM();
 #ifdef NOT_OPENHOLDEM
@@ -52,7 +53,7 @@ public:
 protected:
 	int Width;
 	int Height;
-	std::string Name;
+  std::string Name;
 	unsigned int *Data;
 };
 

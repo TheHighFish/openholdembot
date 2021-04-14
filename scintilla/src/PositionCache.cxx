@@ -428,7 +428,6 @@ int BreakFinder::Next() {
 	} else {
 		int lastGoodBreak = -1;
 		int lastOKBreak = -1;
-		int j;
 		for (int j = subBreak + 1; j <= nextBreak; j++) {
 			if (IsSpaceOrTab(ll->chars[j - 1]) && !IsSpaceOrTab(ll->chars[j])) {
 				lastGoodBreak = j;
@@ -552,10 +551,10 @@ void PositionCache::SetSize(size_t size_) {
 	pces = new PositionCacheEntry[size];
 }
 
-// In the past the lexer could crash due to non-normalized modul,
+// In the past the lexer could crash due to non-normalized modulo,
 // leading to negative array-indices and bogus data used later.
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=114&t=17582
-int NormailzedModulo(int divident,int divisor) {
+int NormalizedModulo(int divident,int divisor) {
   if (divisor == 0) return 0;
   if (divisor < 0) divisor = 0 - divisor;
   assert(divisor > 0);
@@ -585,11 +584,11 @@ void PositionCache::MeasureWidths(Surface *surface, ViewStyle &vstyle, unsigned 
 
 		// Two way associative: try two probe positions.
 		int hashValue = PositionCacheEntry::Hash(styleNumber, s, len);
-		probe = NormailzedModulo(hashValue, size);
+		probe = NormalizedModulo(hashValue, size);
 		if (pces[probe].Retrieve(styleNumber, s, len, positions)) {
 			return;
 		}
-		int probe2 = NormailzedModulo((hashValue * 37), size);
+		int probe2 = NormalizedModulo((hashValue * 37), size);
 		if (pces[probe2].Retrieve(styleNumber, s, len, positions)) {
 			return;
 		}

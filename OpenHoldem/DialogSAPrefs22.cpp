@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs22.cpp : implementation file
 //
@@ -18,7 +18,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs22.h"
-#include "CPreferences.h"
+
 
 
 // DialogSAPrefs22 dialog
@@ -37,7 +37,6 @@ CDlgSAPrefs22::~CDlgSAPrefs22()
 void CDlgSAPrefs22::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-
 	DDX_Control(pDX, IDC_RADIO_POPUP_DISABLED, _popup_disabled);
 	DDX_Control(pDX, IDC_RADIO_POPUP_MINIMIZE, _popup_minimize);
 	DDX_Control(pDX, IDC_RADIO_POPUP_KILL, _popup_kill);
@@ -54,11 +53,11 @@ BOOL CDlgSAPrefs22::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
 
-	if (preferences.popup_blocker() == k_popup_minimize)
+	if (Preferences()->popup_blocker() == k_popup_minimize)
 	{
 		_popup_minimize.SetCheck(true);
 	}
-	else if (preferences.popup_blocker() == k_popup_kill)
+	else if (Preferences()->popup_blocker() == k_popup_kill)
 	{
 		_popup_kill.SetCheck(true);
 	}
@@ -76,15 +75,15 @@ void CDlgSAPrefs22::OnOK()
 {
 	if (bool(_popup_minimize.GetCheck()) == true)
 	{
-		preferences.SetValue(k_prefs_popup_blocker, k_popup_minimize);
+		Preferences()->SetValue(k_prefs_popup_blocker, k_popup_minimize);
 	}
 	else if (bool(_popup_kill.GetCheck()) == true)
 	{
-		preferences.SetValue(k_prefs_popup_blocker, k_popup_kill);
+		Preferences()->SetValue(k_prefs_popup_blocker, k_popup_kill);
 	}
 	else // _popup_disabled.GetCheck() == true
 	{
-		preferences.SetValue(k_prefs_popup_blocker, k_popup_disabled);
+		Preferences()->SetValue(k_prefs_popup_blocker, k_popup_disabled);
 	}
 
 	CSAPrefsSubDlg::OnOK();

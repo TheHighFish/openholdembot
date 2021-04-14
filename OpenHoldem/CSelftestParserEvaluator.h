@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: 
 //
-//*******************************************************************************
+//******************************************************************************
 
 // Selftest-function
 // Upper-case to make it an invisible "OpenPPL"-function
@@ -23,8 +23,30 @@ const char* const kSelftestFunction =
   "WHEN 0\n"
   "   // This should not get called either\n"
   "   WHEN 1 RETURN 10 FORCE\n"
-  "// The next OEWC has to be evaluated\n"
+  "// Testing user-defined variables (I)\n"
+  "WHEN user_not_true\n"
+  "   // This should not get called\n"
+  "   WHEN 1 RETURN 11 FORCE\n"
+  "// Testing user-defined variables (II)\n"
   "WHEN 1\n"
+  "   // Both variables should be set\n"
+  "   // Then OpenHoldem should continue\n"
+  "   WHEN 1 SET user_asdf\n"
+  "   WHEN 1 SET user_true\n"
+  "   WHEN NOT user_asdf RETURN 12 FORCE\n"
+  "   WHEN NOT user_true RETURN 13 FORCE\n"
+  "WHEN 1\n"
+  "// Testing memory-commands\n"
+  "// as there was a bug with me_inc and OpenPPL\n"
+  "// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=20031"
+  "   WHEN 1 SET me_st_pi_2_141\n"
+  "   WHEN 1 SET me_inc_pi\n"
+  // !!!!! Code below works in f$test but not in SelfTest
+  // All OK in debug-mode, but returns 14 in release-optimized
+  "//   WHEN (me_re_pi < 3.1) RETURN 14 FORCE\n"
+  "//   WHEN (me_re_pi > 3.2) RETURN 15 FORCE\n"
+  "// The next OEWC has to be evaluated\n"
+  "WHEN user_asdf AND user_true\n"
   "   // Next: testing inequality and negationfirst\n" 
   "   // which will be used heavily soon.\n"
   "   WHEN 0 != 0 RETURN 20 FORCE\n"
