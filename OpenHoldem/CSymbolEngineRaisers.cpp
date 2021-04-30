@@ -209,6 +209,9 @@ double CSymbolEngineRaisers::MinimumStartingBetCurrentOrbit(bool searching_for_r
 void CSymbolEngineRaisers::CalculateRaisers() {
 	_nopponentstruelyraising = 0;
   _temp_raisbits_current_orbit = 0;
+  if (BETROUND > 1 && !p_engine_container->symbol_engine_history()->DidAct() && p_engine_container->symbol_engine_history()->prevaction() > 1 && p_engine_container->symbol_engine_autoplayer()->ismyturn()) {
+	  _lastraised[BETROUND - 1] = p_engine_container->symbol_engine_userchair()->userchair();
+  }
   if (p_engine_container->symbol_engine_chip_amounts()->call() <= 0.0) {
     // There are no bets and raises.
     // Skip the calculations to keep the raischair of the previous round.
