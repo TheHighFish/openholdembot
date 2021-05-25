@@ -23,6 +23,8 @@
   * Simplified f$Raiser_pfr, which uses nowthe multiplexer
   
 ##f$sitin##
+!isfl ? 0 :
+nchairs < 9 ? 0 :
 // SITIN RULE - Based on players 
 1                                   // 0=off 1=on 
 && issittingout                     // sitting out
@@ -31,6 +33,8 @@
 && nopponentsdealt>=5               // 5 or more opponents
 
 ##f$sitout##
+!isfl ? 0 :
+nchairs < 9 ? 0 :
 // SITOUT RULE - Based on players 
 [ 1                                   // 0=off 1=on 
   && issittingin                      // sitting in
@@ -44,6 +48,8 @@
 ]
 
 ##f$leave##
+!isfl ? 0 :
+nchairs < 9 ? 0 :
 // LEAVE RULE - Game broken up 
 [ 1                                   // 0=off 1=on 
   && issittingout                     // sitting out 
