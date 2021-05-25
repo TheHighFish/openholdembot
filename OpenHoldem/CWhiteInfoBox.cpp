@@ -224,7 +224,7 @@ CString CWhiteInfoBox::GtoText() {
 		//else
 			_info_handrank.Format("\n\n\n\n  %s\n  Rank:  %i/169  ", LastAction().Right(LastAction().GetLength()-2).MakeUpper(), _handrank);
 		// PrWin: percentages instead of probabilities
-		_info_gto.Format("  PrWin:  %3.1f/%3.1f/%3.1f\n  Outs:  %i    Out Odds:  %3.1f\n  Implied Odds:  %3.1f    PotOdds:  %3.1f\n  My Equity:  %3.1f    Pot Equity:  %3.1f",
+		_info_gto.Format("  PrWin:  %3.1f/%3.1f/%3.1f\n  Outs:  %i    Out Odds:  %3.1f\n  Implied Odds:  %3.1f    PotOdds:  %3.1f\n  My Equity:  %3.1f
 			100 * _prwin, 100 * _prtie, 100 * _prlos, _nouts, 100 * _outodds, _impliedodds, 100 * _potodds, _myequity, _potequity);
 	}
 	result.Append(_info_handrank);

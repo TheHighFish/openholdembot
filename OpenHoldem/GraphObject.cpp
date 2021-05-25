@@ -1,4 +1,5 @@
-﻿// GraphObject.cpp : implementation file
+
+// GraphObject.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -132,6 +133,7 @@ BEGIN_MESSAGE_MAP(CGraphObject, CWnd)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+
 void CGraphObject::DoDataExchange(CDataExchange* pDX)
 {
 	//CWnd::DoDataExchange(pDX);
@@ -198,7 +200,7 @@ BOOL CGraphObject::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 		m_Link.SetFire(TRUE); 
 		init = FALSE;
 	}
-
+  
 	return CWnd::Create(NULL, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | WS_CLIPSIBLINGS, rectGraph, pParentWnd, nID, NULL);
 }
 
@@ -512,7 +514,7 @@ void CGraphObject::OnPaint()
 			if (m_GraphAlertString.GetLength()>10)
 				m_GraphDC->TextOut(int(m_Size.cx*0.42), int(m_Size.cy*0.28), m_GraphAlertString, m_GraphAlertString.GetLength());
 			else
-				m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.28), m_GraphAlertString, m_GraphAlertString.GetLength());			
+				m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.28), m_GraphAlertString, m_GraphAlertString.GetLength());
 			m_GraphDC->SetBkMode(OPAQUE);
 			m_GraphDC->SelectObject(pOldFont);
 			m_GraphDC->SetBkColor(oldBkColor);

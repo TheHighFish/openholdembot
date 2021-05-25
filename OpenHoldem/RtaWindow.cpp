@@ -101,7 +101,7 @@ void CRtaWindow::Init(CWnd * pWnd)
 		// Size and position
 		//CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 		0, 0, 350, 700,
-		pWnd->m_hWnd,       // Parent window   
+		pWnd->m_hWnd,       // Parent window 
 		NULL				// Menu
 	);
 
@@ -244,7 +244,6 @@ CString CRtaWindow::LastAction() {
 	// especially at different heartbeats.
 	return _last_action;
 }
-
 
 void CRtaWindow::SetGto(double prwin, double prtie, double prlos, int nouts, double outodds, double impliedodds, double potodds, double myequity, double potequity, bool prwin_mustplay) {
 	_prwin = prwin;

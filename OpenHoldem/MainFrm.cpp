@@ -607,6 +607,21 @@ void CMainFrame::OnHelpProblemSolver() {
 	CProblemSolver my_problem_solver;
 	my_problem_solver.TryToDetectBeginnersProblems();
 }
+void CMainFrame::OnViewRta() {
+
+	// Instruct to open RTA window
+	assert(p_rta_window != NULL);
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_VIEW_RTA, MF_BYCOMMAND);
+	if (!(fdwMenu & MF_CHECKED))
+	{
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_VIEW_RTA, MF_CHECKED);
+		p_rta_window->Init(this);
+	}
+	else {
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_VIEW_RTA, MF_UNCHECKED);
+		p_rta_window->Close();
+	}
+}
 
 void CMainFrame::OnToolsAddActions() {
 	COpenHoldemDoc *pDoc = (COpenHoldemDoc *)this->GetActiveDocument();
