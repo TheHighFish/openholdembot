@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "CHyperLink.h"
 
-#include"OpenHoldem.h"
+#include "OpenHoldem.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

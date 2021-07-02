@@ -438,7 +438,7 @@ void CMainFrame::OnFileOpen() {
 	CFileDialog			cfd(true);
   cfd.m_ofn.lpstrInitialDir = "";
   // http://msdn.microsoft.com/en-us/library/windows/desktop/ms646839%28v=vs.85%29.aspx
-  cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.ohfd, *.oppl, *.txt)\0*.ohf;*.ohfd;*.oppl;*.txt\0All files (*.*)\0*.*\0\0";
+  cfd.m_ofn.lpstrFilter = "OpenHoldem Formula Files (*.ohf, *.ohfd, *.oppl, *.oppld, *.txt, *.txtd)\0*.ohf;*.ohfd;*.oppl;*.oppld;*.txt;*.txtd\0All files (*.*)\0*.*\0\0";
 	cfd.m_ofn.lpstrTitle = "Select Formula file to OPEN";
 	if (cfd.DoModal() == IDOK) {				
 		pDoc->OnOpenDocument(cfd.GetPathName());
@@ -741,22 +741,6 @@ void CMainFrame::OnToolsAddActions() {
 			p_autoplayer->EngageAutoplayer(TRUE);
 			autoplayer_stopped = FALSE;
 		}
-	}
-}
-
-void CMainFrame::OnViewRta() {
-
-	// Instruct to open RTA window
-	assert(p_rta_window != NULL);
-	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_VIEW_RTA, MF_BYCOMMAND);
-	if (!(fdwMenu & MF_CHECKED))
-	{
-		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_VIEW_RTA, MF_CHECKED);
-		p_rta_window->Init(this);
-	}
-	else {
-		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_VIEW_RTA, MF_UNCHECKED);
-		p_rta_window->Close();
 	}
 }
 

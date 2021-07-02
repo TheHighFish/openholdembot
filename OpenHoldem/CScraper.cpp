@@ -791,20 +791,15 @@ void CScraper::CreateBitmaps(void) {
 	RECT			cr = {0};
 	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
 	_entire_window_last = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
-    //ClearAlphaChannel(_entire_window_last, false);
 	_entire_window_cur = CreateCompatibleBitmap(hdcScreen, cr.right, cr.bottom);
-    //ClearAlphaChannel(_entire_window_cur, false);
 
 	// r$regions
 	for (RMapI r_iter=p_tablemap->set_r$()->begin(); r_iter!=p_tablemap->set_r$()->end(); r_iter++)
 	{
 		int w = r_iter->second.right - r_iter->second.left + 1;
 		int h = r_iter->second.bottom - r_iter->second.top + 1;
-        //!!! Looks wromg, last and current are identical!
 		r_iter->second.last_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
-        //ClearAlphaChannel(r_iter->second.last_bmp, false);
 		r_iter->second.cur_bmp = CreateCompatibleBitmap(hdcScreen, w, h);
-        //ClearAlphaChannel(r_iter->second.cur_bmp, false);
 	}
 
 	DeleteDC(hdcScreen);

@@ -8,7 +8,6 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "afxres.h"
-#include "WaitRsc.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -435,8 +434,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 14.1.0,0
- PRODUCTVERSION 14.1.0,0
+ FILEVERSION 13,1,3,0
+ PRODUCTVERSION 13,1,3,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -451,9 +450,9 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileVersion", "14.1.0.0"
+            VALUE "FileVersion", "11.2.0.0"
             VALUE "LegalCopyright", "Licensed under GPLv3"
-            VALUE "ProductVersion", "14.1.0.0"
+            VALUE "ProductVersion", "11.2.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -529,10 +528,6 @@ BEGIN
 
     IDD_WAITDIALOG, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 186
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 69
     END
 END
 #endif    // APSTUDIO_INVOKED
