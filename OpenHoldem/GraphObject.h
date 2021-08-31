@@ -84,8 +84,7 @@ public:
 	void Update2DPieGraphSegment( int s_index, double s_percent, COLORREF s_color, CString s_text );
 	void SetGraphSubtitle( CString g_subtitle );
 	void SetGraphTitle( CString g_title );
-	void SetGraphAlert(BOOL g_alert);
-	void SetGraphAlert(CString g_action_string, CString g_action_line);
+	void SetGraphInfos(CString g_custom_log, CString g_action_string, CString g_action_line);
 	COLORREF GetGraphBackgroundColor();
 	void SetGraphBackgroundColor(COLORREF g_bgcolor);
 	BOOL GetGraphAnimation();
@@ -121,10 +120,10 @@ private:
 	CFont* m_GraphSubtitleFont;
 	CFont* m_GraphAlertFont;
 	CFont* m_GraphAlertFontTrue;
+	CFont* m_GraphAlertLogFont;
 	CFont* m_GraphAlertLineFont;
 	CString m_GraphSubtitle;
-	BOOL m_GraphAlert;
-	CString m_GraphAlertString, m_GraphAlertLine;
+	CString m_GraphCustomLog, m_GraphActionString, m_GraphActionLine;
 	CBitmap* m_GradientBitmap;
 	CDC* m_GradientDC;
 	CBitmap* m_GraphBitmap;

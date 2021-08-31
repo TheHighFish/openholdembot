@@ -133,7 +133,6 @@ void CRtaWindow::Init(CWnd * pWnd)
 	m_pPieGraphObject->SetGraphTitleColor(RGB(0, 0, 255));
 	m_pPieGraphObject->SetGraphSubtitleColor(RGB(96, 96, 96));
 	m_pPieGraphObject->SetGraphLegendBackgroundColor(RGB(208, 208, 208));
-	m_pPieGraphObject->SetGraphAlert(FALSE);
 	// Add graph segments
 	m_pPieGraphObject->Add2DPieGraphSegment(0.01, RGB(0, 255, 0), "Prwin");
 	m_pPieGraphObject->Add2DPieGraphSegment(0.01, RGB(0, 0, 255), "Prtie");
@@ -203,19 +202,14 @@ void CRtaWindow::Draw() {
 			m_pPieGraphObject->Update2DPieGraphSegment(2, 100 * _prtie, RGB(0, 0, 255), "Prtie");
 			m_pPieGraphObject->Update2DPieGraphSegment(3, 100 * _prlos, RGB(255, 0, 0), "Prlos");
 
-			// Must Play
-			//m_pPieGraphObject->SetGraphAlert(_prwin_mustplay);
-
-			// All-in
-			//if (LastAction() == "f$allin")				// For 1st version of SetGraphAlert() otherwise comment it
-			//	m_pPieGraphObject->SetGraphAlert(TRUE);		// For 1st version of SetGraphAlert() otherwise comment it
-					// For 2nd version of SetGraphAlert() otherwise comment it
-				DWORD fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_ADDACTIONS, MF_BYCOMMAND);
-				if (fdwMenu & MF_CHECKED)
-					_custom_log_message.Replace("log$_", "Line: "); _custom_log_message.Replace("_", " / ");
-				m_pPieGraphObject->SetGraphAlert(LastAction().Right(LastAction().GetLength() - 2).MakeUpper(), _custom_log_message);
-			//else m_pPieGraphObject->SetGraphAlert(FALSE);	// For 1st version of SetGraphAlert() otherwise comment it
-
+			DWORD fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_ADDACTIONS, MF_BYCOMMAND);
+			if (fdwMenu & MF_CHECKED) {
+				_actiontrace_log_message.Replace("log$_", "Line: "); _actiontrace_log_message.Replace("_", " / ");
+				m_pPieGraphObject->SetGraphInfos(_custom_log_message, LastAction().Right(LastAction().GetLength() - 2).MakeUpper(), _actiontrace_log_message);
+			}			
+			else {
+				m_pPieGraphObject->SetGraphInfos(_custom_log_message, LastAction().Right(LastAction().GetLength() - 2).MakeUpper(), "");
+			}
 			// nOuts
 			_info_nouts.Format("%i", _nouts);
 			m_pBarGraphObject->SetGraphTitle(_info_nouts);

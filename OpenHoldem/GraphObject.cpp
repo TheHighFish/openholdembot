@@ -21,8 +21,7 @@ CGraphObject::CGraphObject()
 	// Set default graph title and subtitle
 	m_GraphTitle = "Add graph title here";
 	m_GraphSubtitle = "Add graph subtitle here";
-	m_GraphAlertString = "", m_GraphAlertLine = "";
-	m_GraphAlert = FALSE;
+	m_GraphCustomLog = "", m_GraphActionString = "", m_GraphActionLine = "";
 
 	// Set default graph type
 	m_GraphType = -1;
@@ -104,6 +103,9 @@ CGraphObject::~CGraphObject()
 	m_GraphAlertFontTrue->DeleteObject();
 	delete m_GraphAlertFontTrue;
 	m_GraphAlertFontTrue = NULL;
+	m_GraphAlertLogFont->DeleteObject();
+	delete m_GraphAlertLogFont;
+	m_GraphAlertLogFont = NULL;
 	m_GraphAlertLineFont->DeleteObject();
 	delete m_GraphAlertLineFont;
 	m_GraphAlertLineFont = NULL;
@@ -185,6 +187,11 @@ BOOL CGraphObject::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD d
 	// Set graph alert font true
 	m_GraphAlertFontTrue = new CFont();
 	m_GraphAlertFontTrue->CreateFont(int(m_Size.cy*0.08), int(m_Size.cx*0.04), 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
+		DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial");
+
+	// Set graph alert log font
+	m_GraphAlertLogFont = new CFont();
+	m_GraphAlertLogFont->CreateFont(int(m_Size.cy * 0.058), int(m_Size.cx * 0.018), 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE,
 		DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial");
 
 	// Set graph alert line font
@@ -396,31 +403,28 @@ void CGraphObject::OnPaint()
 
 		// Draw graph alert
 		COLORREF oldBkColor = m_GraphDC->SetBkColor(m_GraphBackgroundColor);
-		oldBkColor = m_GraphDC->SetBkColor(m_GraphBackgroundColor);
-		oldTextColor = m_GraphDC->SetTextColor(m_GraphAlertColor);
-		pOldFont = m_GraphDC->SelectObject(m_GraphAlertFont);
+		oldTextColor = m_GraphDC->SetTextColor(m_GraphSubtitleColor);
+		pOldFont = m_GraphDC->SelectObject(m_GraphAlertLogFont);
 		m_GraphDC->SetBkMode(TRANSPARENT);
-		if (m_GraphAlert == TRUE)
-		{
-			oldTextColor = m_GraphDC->SetTextColor(RGB(255, 0, 0));
-			pOldFont = m_GraphDC->SelectObject(m_GraphAlertFontTrue);
-			m_GraphAlert = FALSE;
-		}
-		if (m_GraphAlertString.GetLength() > 10)
-			m_GraphDC->TextOut(int(m_Size.cx*0.42), int(m_Size.cy*0.28), m_GraphAlertString, m_GraphAlertString.GetLength());
+		m_GraphDC->TextOut(int(m_Size.cx * 0.51), int(m_Size.cy * 0.18), m_GraphCustomLog, m_GraphCustomLog.GetLength());
+		
+		oldTextColor = m_GraphDC->SetTextColor(RGB(255, 0, 0));
+		pOldFont = m_GraphDC->SelectObject(m_GraphAlertFontTrue);
+		
+		if (m_GraphActionString.GetLength() > 10)
+			m_GraphDC->TextOut(int(m_Size.cx*0.42), int(m_Size.cy*0.28), m_GraphActionString, m_GraphActionString.GetLength());
 		else
-			m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.28), m_GraphAlertString, m_GraphAlertString.GetLength());
+			m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.28), m_GraphActionString, m_GraphActionString.GetLength());
 		m_GraphDC->SetBkMode(OPAQUE);
 		m_GraphDC->SelectObject(pOldFont);
 		m_GraphDC->SetBkColor(oldBkColor);
 		m_GraphDC->SetTextColor(oldTextColor);
-
-		// For 2nd version of SetGraphAlert() otherwise comment it
+				
 		oldBkColor = m_GraphDC->SetBkColor(m_GraphBackgroundColor);
 		oldTextColor = m_GraphDC->SetTextColor(m_GraphSubtitleColor);
 		pOldFont = m_GraphDC->SelectObject(m_GraphAlertLineFont);
 		m_GraphDC->SetBkMode(TRANSPARENT);
-		m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.38), m_GraphAlertLine, m_GraphAlertLine.GetLength());
+		m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.38), m_GraphActionLine, m_GraphActionLine.GetLength());
 		m_GraphDC->SetBkMode(OPAQUE);
 		m_GraphDC->SelectObject(pOldFont);
 		m_GraphDC->SetBkColor(oldBkColor);
@@ -428,10 +432,10 @@ void CGraphObject::OnPaint()
 
 		WINDOWPLACEMENT wndpl;
 		m_Link.GetWindowPlacement(&wndpl);
-		wndpl.rcNormalPosition.left = mLinkRect.left + m_GraphAlertLine.GetLength() * 3.5;
+		wndpl.rcNormalPosition.left = mLinkRect.left + m_GraphActionLine.GetLength() * 3.5;
 		wndpl.rcNormalPosition.right = wndpl.rcNormalPosition.left + 40;
 		m_Link.SetWindowPlacement(&wndpl);
-		m_Link.SetLinkText(m_GraphAlertLine, FALSE);
+		m_Link.SetLinkText(m_GraphActionLine, FALSE);
 
 		// Check legend flag
 		if ( m_ShowLegend == TRUE )
@@ -502,30 +506,28 @@ void CGraphObject::OnPaint()
 
 			// Draw graph alert
 			oldBkColor = m_GraphDC->SetBkColor(m_GraphBackgroundColor);
-			oldTextColor = m_GraphDC->SetTextColor(m_GraphAlertColor);
-			pOldFont = m_GraphDC->SelectObject(m_GraphAlertFont);
+			oldTextColor = m_GraphDC->SetTextColor(m_GraphSubtitleColor);
+			pOldFont = m_GraphDC->SelectObject(m_GraphAlertLogFont);
 			m_GraphDC->SetBkMode(TRANSPARENT);
-			if (m_GraphAlert == TRUE)
-			{
-				oldTextColor = m_GraphDC->SetTextColor(RGB(255, 0, 0));
-				pOldFont = m_GraphDC->SelectObject(m_GraphAlertFontTrue);
-				m_GraphAlert = FALSE;
-			}
-			if (m_GraphAlertString.GetLength()>10)
-				m_GraphDC->TextOut(int(m_Size.cx*0.42), int(m_Size.cy*0.28), m_GraphAlertString, m_GraphAlertString.GetLength());
+			m_GraphDC->TextOut(int(m_Size.cx * 0.51), int(m_Size.cy * 0.18), m_GraphCustomLog, m_GraphCustomLog.GetLength());
+			
+			oldTextColor = m_GraphDC->SetTextColor(RGB(255, 0, 0));
+			pOldFont = m_GraphDC->SelectObject(m_GraphAlertFontTrue);
+			
+			if (m_GraphActionString.GetLength()>10)
+				m_GraphDC->TextOut(int(m_Size.cx*0.42), int(m_Size.cy*0.28), m_GraphActionString, m_GraphActionString.GetLength());
 			else
-				m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.28), m_GraphAlertString, m_GraphAlertString.GetLength());
+				m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.28), m_GraphActionString, m_GraphActionString.GetLength());
 			m_GraphDC->SetBkMode(OPAQUE);
 			m_GraphDC->SelectObject(pOldFont);
 			m_GraphDC->SetBkColor(oldBkColor);
 			m_GraphDC->SetTextColor(oldTextColor);
 			
-			// For 2nd version of SetGraphAlert() otherwise comment it
 			oldBkColor = m_GraphDC->SetBkColor(m_GraphBackgroundColor);
 			oldTextColor = m_GraphDC->SetTextColor(m_GraphSubtitleColor);
 			pOldFont = m_GraphDC->SelectObject(m_GraphAlertLineFont);
 			m_GraphDC->SetBkMode(TRANSPARENT);
-			m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.38), m_GraphAlertLine, m_GraphAlertLine.GetLength());
+			m_GraphDC->TextOut(int(m_Size.cx*0.51), int(m_Size.cy*0.38), m_GraphActionLine, m_GraphActionLine.GetLength());
 			m_GraphDC->SetBkMode(OPAQUE);
 			m_GraphDC->SelectObject(pOldFont);
 			m_GraphDC->SetBkColor(oldBkColor);
@@ -533,10 +535,10 @@ void CGraphObject::OnPaint()
 
 			WINDOWPLACEMENT wndpl;
 			m_Link.GetWindowPlacement(&wndpl);
-			wndpl.rcNormalPosition.left = mLinkRect.left + m_GraphAlertLine.GetLength() * 3;
+			wndpl.rcNormalPosition.left = mLinkRect.left + m_GraphActionLine.GetLength() * 3;
 			wndpl.rcNormalPosition.right = wndpl.rcNormalPosition.left + 50;
 			m_Link.SetWindowPlacement(&wndpl);
-			m_Link.SetLinkText(m_GraphAlertLine, FALSE);
+			m_Link.SetLinkText(m_GraphActionLine, FALSE);
 
 			// Check legend flag
 			if ( m_ShowLegend == TRUE )
@@ -795,25 +797,12 @@ void CGraphObject::SetGraphSubtitle(CString g_subtitle)
 	Invalidate( TRUE );
 }
 
-void CGraphObject::SetGraphAlert(BOOL g_alert)
+void CGraphObject::SetGraphInfos(CString g_custom_log, CString g_action_string, CString g_action_line)
 {
 	// Set graph alert
-	m_GraphAlert = g_alert;
-	//m_GraphAlertString = "MUST PLAY !";
-	//m_GraphAlertString = "PUSH !";
-
-	// Set update flag
-	m_Update = TRUE;
-
-	Invalidate( TRUE );
-}
-
-void CGraphObject::SetGraphAlert(CString g_action_string, CString g_action_line)
-{
-	// Set graph alert
-	m_GraphAlert = TRUE;
-	m_GraphAlertString = g_action_string;
-	m_GraphAlertLine = g_action_line;
+	m_GraphCustomLog = g_custom_log;
+	m_GraphActionString = g_action_string;
+	m_GraphActionLine = g_action_line;
 
 	// Set update flag
 	m_Update = TRUE;
@@ -907,12 +896,16 @@ void CGraphObject::SetGraphSize(CSize g_size)
 	m_GraphAlertFontTrue->DeleteObject();
 	delete m_GraphAlertFontTrue;
 	m_GraphAlertFontTrue = new CFont();
-	// For 1st version of SetGraphAlert() otherwise comment it
-	//m_GraphAlertFontTrue->CreateFont(int(m_Size.cy*0.08), int(m_Size.cx*0.04), 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
-	//	DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial");
-	// For 2nd version of SetGraphAlert() otherwise comment it
 	m_GraphAlertFontTrue->CreateFont(int(m_Size.cy*0.07), int(m_Size.cx*0.03), 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
 		DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial");
+
+	// Set graph alert log font
+	m_GraphAlertLogFont->DeleteObject();
+	delete m_GraphAlertLogFont;
+	m_GraphAlertLogFont = new CFont();
+	m_GraphAlertLogFont->CreateFont(int(m_Size.cy * 0.058), int(m_Size.cx * 0.018), 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE,
+		DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Arial");
+
 
 	// Set graph alert line font
 	m_GraphAlertLineFont->DeleteObject();

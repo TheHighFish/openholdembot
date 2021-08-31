@@ -123,8 +123,13 @@ bool CSymbolEngineVariousDataLookup::EvaluateSymbol(const CString name, double *
     if (!p_formula_parser->IsParsing()) {
       write_log(Preferences()->debug_auto_trace(), 
         "[CSymbolEngineVariousDataLookup] %s -> 0.000 [just logged]\n", name);
+      if ((memcmp(name, "log$_", 5) == 0) && (strlen(name) > 5)) {
+          p_white_info_box->SetActionTraceLogMessage(name);
+          p_rta_window->SetActionTraceLogMessage(name);
+      } else {
       p_white_info_box->SetCustomLogMessage(name);
 	  p_rta_window->SetCustomLogMessage(name);
+      }
     }
     // True (1) is convenient in sequences of ANDed conditions
     // http://www.maxinmontreal.com/forums/viewtopic.php?f=110&t=19421

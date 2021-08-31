@@ -29,6 +29,7 @@ protected:
     CPen *black_pen, CBrush *white_brush);
   // For log$-symbols
   void SetCustomLogMessage(CString message) { _custom_log_message = message; }
+  void SetActionTraceLogMessage(CString message) { _actiontrace_log_message = message; }
 
   void SetLastAction(CString action) { _last_action = action; }
   void SetHandrank(int handrank) { _handrank = handrank; }
@@ -48,6 +49,7 @@ protected:
   CHyperLink	m_Link;
   CRect			mLinkRect;
   CString		_custom_log_message;
+  CString		_actiontrace_log_message;
 
   int _handrank;
   double _prwin;

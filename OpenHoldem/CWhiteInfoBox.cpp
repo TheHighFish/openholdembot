@@ -183,27 +183,28 @@ CString CWhiteInfoBox::InfoText() {
 		DWORD fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_ADDACTIONS, MF_BYCOMMAND);
 		if (fdwMenu & MF_CHECKED)
 		{
-			_custom_log_message.Replace("log$_", "Line: "); _custom_log_message.Replace("_", " / ");
-			WINDOWPLACEMENT wndpl;
-			m_Link.GetWindowPlacement(&wndpl);
-			wndpl.rcNormalPosition.right = mLinkRect.left + _custom_log_message.GetLength() * 8;
-			m_Link.SetWindowPlacement(&wndpl);
-			m_Link.SetLinkText(_custom_log_message);
-			//m_Link.SetWindowText(_custom_log_message);
+				_actiontrace_log_message.Replace("log$_", "Line: "); _actiontrace_log_message.Replace("_", " / ");
+				WINDOWPLACEMENT wndpl;
+				m_Link.GetWindowPlacement(&wndpl);
+				wndpl.rcNormalPosition.right = mLinkRect.left + _actiontrace_log_message.GetLength() * 8;
+				m_Link.SetWindowPlacement(&wndpl);
+				m_Link.SetLinkText(_actiontrace_log_message);
+				//m_Link.SetWindowText(_actiontrace_log_message);
 
-			LRESULT copyData;  //copyDataResult has value returned by OpenPad 
-			HWND hOpenPadWnd = ::FindWindow("OpenPadClass", NULL);
+				LRESULT copyData;  //copyDataResult has value returned by OpenPad 
+				HWND hOpenPadWnd = ::FindWindow("OpenPadClass", NULL);
 
-			CString abs_line_number = _custom_log_message.Mid(_custom_log_message.ReverseFind('/') + 2);
-			if (hOpenPadWnd)
-			{
-				COPYDATASTRUCT cpd; // The structure mentioned above
-				cpd.dwData = 0;
-				cpd.cbData = abs_line_number.GetLength() + sizeof(wchar_t); // sizeof (wchar_t) refers to the length of \ 0.     
-				cpd.lpData = (void*)abs_line_number.GetBuffer(cpd.cbData);
-				copyData = ::SendMessage(hOpenPadWnd, WM_COPYDATA, (WPARAM)AfxGetMainWnd()->GetSafeHwnd(), (LPARAM)(LPVOID)&cpd);
-				abs_line_number.ReleaseBuffer();
-			}
+				CString abs_line_number = _actiontrace_log_message.Mid(_actiontrace_log_message.ReverseFind('/') + 2);
+				if (hOpenPadWnd)
+				{
+					COPYDATASTRUCT cpd; // The structure mentioned above
+					cpd.dwData = 0;
+					cpd.cbData = abs_line_number.GetLength() + sizeof(wchar_t); // sizeof (wchar_t) refers to the length of \ 0.     
+					cpd.lpData = (void*)abs_line_number.GetBuffer(cpd.cbData);
+					copyData = ::SendMessage(hOpenPadWnd, WM_COPYDATA, (WPARAM)AfxGetMainWnd()->GetSafeHwnd(), (LPARAM)(LPVOID)&cpd);
+					abs_line_number.ReleaseBuffer();
+				}
+				result.Append("                                    " + _custom_log_message);
 		}
 		else result.Append("  " + _custom_log_message);
 	}
@@ -216,15 +217,9 @@ CString CWhiteInfoBox::GtoText() {
 
 	//gto
 	if (p_table_state->User()->HasKnownCards()) {
-		// Format data for display
-		// Handrank
-		//if (LastAction() == "f$allin")
-		//	_info_handrank.Format("\n\n\n  Handrank:  %i / 169   MUST PLAY !\n", _handrank);
-		//	_info_handrank.Format("\n\n\n\n  Handrank:  %i / 169           PUSH !\n", _handrank);
-		//else
-			_info_handrank.Format("\n\n\n\n  %s\n  Rank:  %i/169  ", LastAction().Right(LastAction().GetLength()-2).MakeUpper(), _handrank);
+		_info_handrank.Format("\n\n\n\n  %s\n  Rank:  %i/169  ", LastAction().Right(LastAction().GetLength()-2).MakeUpper(), _handrank);
 		// PrWin: percentages instead of probabilities
-		_info_gto.Format("  PrWin:  %3.1f/%3.1f/%3.1f\n  Outs:  %i    Out Odds:  %3.1f\n  Implied Odds:  %3.1f    PotOdds:  %3.1f\n  My Equity:  %3.1f",
+		_info_gto.Format("  PrWin:  %3.1f/%3.1f/%3.1f\n  Outs:  %i    Out Odds:  %3.1f\n  Implied Odds:  %3.1f    PotOdds:  %3.1f\n  My Equity:  %3.1f    Pot Equity:  %3.1f",
 			100 * _prwin, 100 * _prtie, 100 * _prlos, _nouts, 100 * _outodds, _impliedodds, 100 * _potodds, _myequity, _potequity);
 	}
 	result.Append(_info_handrank);

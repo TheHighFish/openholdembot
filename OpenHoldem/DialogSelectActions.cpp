@@ -79,8 +79,14 @@ void CDlgSelectActions::OnBnClickedOk()
 		" RaiseFourthPot FORCE"," Bet FORCE"," Beep FORCE"
 	};
 	for (int i = 0; i < kNbOfActions; i++) {
-		if (m_Check[i].GetCheck() & BST_CHECKED)
+		if (m_Check[i].GetCheck() & BST_CHECKED) {
 			arrActionStrings.Add(strActionStrings[i]);
+			CString strForce = strActionStrings[i];
+			if (strForce.Find("FORCE") > -1) {
+				strForce.Replace("FORCE", "Force");
+				arrActionStrings.Add(strForce);
+			}
+		}
 	}
 	CDialog::OnOK();
 }

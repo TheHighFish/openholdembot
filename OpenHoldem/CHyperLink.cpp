@@ -316,21 +316,12 @@ BOOL CHyperLink::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 void CHyperLink::Fire() {
 
 	CString profile_file = theApp.GetUsedProfilePath();
-
-	SHELLEXECUTEINFO ExecuteInfo;
-	memset(&ExecuteInfo, 0, sizeof(ExecuteInfo));
-
-	ExecuteInfo.cbSize = sizeof(ExecuteInfo);
-	ExecuteInfo.fMask = 0;
-	ExecuteInfo.hwnd = 0;						    // Pointer to parent window; not needed
-	ExecuteInfo.lpVerb = "open";		            // "open" == "execute" for an executable
-	ExecuteInfo.lpFile = ToolsDirectory() + "\\OpenPad.exe";
-	ExecuteInfo.lpParameters = profile_file;		// Parameters
-	ExecuteInfo.lpDirectory = ToolsDirectory();		// Working directory, location of OpenPad
-	ExecuteInfo.nShow = SW_SHOWNORMAL;				// Active window, default size
-	ExecuteInfo.hInstApp = 0;
-
-	if (!ShellExecuteEx(&ExecuteInfo))
+		
+	if (!ShellExecute(NULL, "open", 
+		ToolsDirectory() + "\\OpenPad.exe",
+		'"' + profile_file + '"',
+		NULL,
+		SW_SHOW))
 		MessageBox("Unable to find OpenPad.\nMake sure you put OpenPad on tools directory and try again.", "Error");
 	
 	Sleep(300);
