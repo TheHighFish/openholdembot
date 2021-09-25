@@ -168,15 +168,16 @@ CString CWhiteInfoBox::InfoText() {
 		sym_sblind, sym_bblind, p_engine_container->symbol_engine_tablelimits()->bigbet());
 	result.Append(s);
 
-	// ante
+	// ante + pot
 	if (sym_ante != 0) {
-		s.Format("  Ante: %s\n", Number2CString(sym_ante));
+		s.Format("  Ante: %s  Pot: %s\n", Number2CString(sym_ante), Number2CString(sym_pot));
 		result.Append(s);
 	}
-
+	else {
 	// Pot
 	s.Format("  Pot: %s\n", Number2CString(sym_pot));
 	result.Append(s);
+	}
 
 	// logged symbols
 	if (kMaxLogSymbolsForWhiteBox > 0) {
