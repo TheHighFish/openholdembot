@@ -594,7 +594,7 @@ void CScraper::ScrapeName(int chair) {
 	s.Format("u%dname", chair);
 	EvaluateRegion(s, &result);	
 	write_log(Preferences()->debug_scraper(), "[CScraper] u%dname, result %s\n", chair, result.GetString());
-	if (result != "")	{
+	if (result != "" && result.Find(Preferences()->unwanted_scrape()) == -1)	{
     p_table_state->Player(chair)->set_name(result);
 		return;
 	}
@@ -602,7 +602,7 @@ void CScraper::ScrapeName(int chair) {
 	s.Format("p%dname", chair);
 	EvaluateRegion(s, &result);
 	write_log(Preferences()->debug_scraper(), "[CScraper] p%dname, result %s\n", chair, result.GetString());
-	if (result != "") {
+	if (result != "" && result.Find(Preferences()->unwanted_scrape()) == -1) {
 		p_table_state->Player(chair)->set_name(result);
     return;
 	}
