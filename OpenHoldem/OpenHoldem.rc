@@ -161,8 +161,6 @@ BEGIN
         MENUITEM "&View Log-File\tF6",          ID_EDIT_VIEWLOG
         MENUITEM "&Clear Log-File",             ID_EDIT_CLEARLOG
         MENUITEM SEPARATOR
-        MENUITEM "&Switch to  Action Trace Profile\tF9", ID_TOOLS_ADDACTIONS
-        MENUITEM "&Real Time Advisor\tF10",     ID_VIEW_RTA
         MENUITEM "View Scraper &Output\tF11",   ID_VIEW_SCRAPEROUTPUT
         MENUITEM "Shoot &Replay Frame\tF12",    ID_VIEW_SHOOTREPLAYFRAME
     END
@@ -235,6 +233,7 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
+    "H",            ID_HELP_HELP,           VIRTKEY, SHIFT, CONTROL, NOINVERT
     "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
@@ -243,10 +242,8 @@ BEGIN
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
     "P",            ID_EDIT_PREFERENCES,    VIRTKEY, CONTROL, NOINVERT
-    VK_F5,          ID_EDIT_TAGLOG,         VIRTKEY, NOINVERT
     VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
     "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
-    VK_F6,          ID_EDIT_VIEWLOG,        VIRTKEY, NOINVERT
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
@@ -257,14 +254,13 @@ BEGIN
     "Y",            ID_FORMULA_EDIT_REDO,   VIRTKEY, CONTROL, NOINVERT
     "A",            ID_FORMULA_EDIT_SELECTALL, VIRTKEY, CONTROL, NOINVERT
     "Z",            ID_FORMULA_EDIT_UNDO,   VIRTKEY, CONTROL, NOINVERT
-    "H",            ID_HELP_HELP,           VIRTKEY, SHIFT, CONTROL, NOINVERT
-    VK_F1,          ID_HELP_HELP,           VIRTKEY, NOINVERT
+    "T",            ID_MAIN_TOOLBAR_TAGLOGFILE, VIRTKEY, CONTROL, NOINVERT
     "R",            ID_HELP_PROBLEMSOLVER,  VIRTKEY, CONTROL, NOINVERT
     VK_F1,          ID_MAIN_TOOLBAR_HELP,   VIRTKEY, CONTROL, NOINVERT
-    "T",            ID_MAIN_TOOLBAR_TAGLOGFILE, VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          ID_EDIT_TAGLOG,         VIRTKEY, NOINVERT
+    VK_F6,          ID_EDIT_VIEWLOG,        VIRTKEY, NOINVERT
     VK_F12,         ID_VIEW_SHOOTREPLAYFRAME, VIRTKEY, NOINVERT
-    VK_F9,          ID_TOOLS_ADDACTIONS,    VIRTKEY, NOINVERT
-    VK_F10,         ID_VIEW_RTA,            VIRTKEY, NOINVERT
+    VK_F1,          ID_HELP_HELP,           VIRTKEY, NOINVERT
 END
 
 
@@ -278,7 +274,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "About this program"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
     LTEXT           "OpenHoldem",IDC_STATIC,32,10,208,8,SS_NOPREFIX
     LTEXT           "Version 14.0.1",IDC_STATIC,32,22,208,8,SS_NOPREFIX
     LTEXT           "Licensed under GPLv3",IDC_STATIC,32,34,208,8
@@ -404,6 +400,8 @@ BEGIN
     LTEXT           "Scrape delay (100-5000 ms)",IDC_STATIC,4,12,90,8
     EDITTEXT        IDC_SCRAPEDELAY,120,10,69,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SCRAPEDELAY_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,189,10,11,12
+    LTEXT           "Countermeasure of player names scraping (put unwanted string to scrape like ""Time"" on Ipoker Networks for example)",IDC_STATIC,3,32,102,33
+    EDITTEXT        IDC_UNWANTEDSCRAPE,120,33,80,13,ES_AUTOHSCROLL
 END
 
 IDD_SAPREFS6 DIALOGEX 0, 0, 219, 155
@@ -915,67 +913,6 @@ BEGIN
     LTEXT           "OpenHoldem windows will be ignored. See Preferences -> GUI.",IDC_STATIC,4,145,217,15
 END
 
-IDD_SELECTACTIONS DIALOGEX 0, 0, 251, 226
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Select Action Traces to Add"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "Select All",IDSELECTALL,136,10,50,14
-    DEFPUSHBUTTON   "Clear",IDCLEAR,190,10,50,14
-    CONTROL         "",IDC_CHECK0,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,15,33,8,10
-    CONTROL         "",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,68,33,8,10
-    CONTROL         "",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,120,33,8,10
-    CONTROL         "",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,182,33,8,10
-    CONTROL         "",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,15,57,8,10
-    CONTROL         "",IDC_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,67,57,8,10
-    CONTROL         "",IDC_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,57,8,10
-    CONTROL         "",IDC_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,181,57,8,10
-    CONTROL         "",IDC_CHECK8,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,15,80,8,10
-    CONTROL         "",IDC_CHECK9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,67,80,8,10
-    CONTROL         "",IDC_CHECK10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,119,80,8,10
-    CONTROL         "",IDC_CHECK11,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,181,80,8,10
-    CONTROL         "",IDC_CHECK12,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,15,103,8,10
-    CONTROL         "",IDC_CHECK13,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,67,103,8,10
-    CONTROL         "",IDC_CHECK14,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,147,103,8,10
-    CONTROL         "",IDC_CHECK15,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,15,127,8,10
-    CONTROL         "",IDC_CHECK16,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,90,127,8,10
-    CONTROL         "",IDC_CHECK17,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,169,127,8,10
-    CONTROL         "",IDC_CHECK18,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,15,151,8,10
-    CONTROL         "",IDC_CHECK19,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,90,151,8,10
-    CONTROL         "",IDC_CHECK20,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,169,151,8,10
-    CONTROL         "",IDC_CHECK21,"Button",BS_AUTOCHECKBOX | BS_FLAT | WS_TABSTOP,16,177,8,10
-    CONTROL         "",IDC_CHECK22,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,90,177,8,10
-    CONTROL         "",IDC_CHECK23,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,159,177,8,10
-    CONTROL         "",IDC_CHECK24,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,201,177,8,10
-    DEFPUSHBUTTON   "OK",IDOK,64,205,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,131,205,50,14
-    LTEXT           "RaiseTo",IDC_STATIC_1,27,33,26,8
-    LTEXT           "RaiseBy",IDC_STATIC_2,80,33,26,8,0,WS_EX_RIGHT
-    LTEXT           "Call FORCE",IDC_STATIC_3,132,33,36,8
-    LTEXT           "Fold FORCE",IDC_STATIC_4,194,33,40,8
-    LTEXT           "RaiseMax FORCE",IDC_STATIC_5,27,54,32,15
-    LTEXT           "Check FORCE",IDC_STATIC_6,79,53,27,15
-    LTEXT           "Raise FORCE",IDC_STATIC_7,131,53,29,17
-    LTEXT           "BetPot FORCE",IDC_STATIC_8,193,53,40,16
-    LTEXT           "RaisePot FORCE",IDC_STATIC_9,27,76,29,15
-    LTEXT           "BetMax FORCE",IDC_STATIC_10,79,76,26,15,0,WS_EX_RIGHT
-    LTEXT           "BetMin FORCE",IDC_STATIC_11,131,76,36,15
-    LTEXT           "RaiseMin FORCE",IDC_STATIC_12,193,76,40,15
-    LTEXT           "Allin FORCE",IDC_STATIC_13,27,99,26,16
-    LTEXT           "BetThreeFourthPot FORCE",IDC_STATIC_14,79,99,64,16
-    LTEXT           "RaiseThreeFourthPot FORCE",IDC_STATIC_15,159,99,72,17
-    LTEXT           "BetTwoThirdPot FORCE",IDC_STATIC_16,27,123,52,16
-    LTEXT           "RaiseTwoThirdPot FORCE",IDC_STATIC_17,102,123,59,16
-    LTEXT           "BetHalfPot FORCE",IDC_STATIC_18,181,123,40,16
-    LTEXT           "RaiseHalfPot FORCE",IDC_STATIC_19,27,147,42,16
-    LTEXT           "BetThirdPot FORCE",IDC_STATIC_20,102,147,46,17
-    LTEXT           "RaiseThirdPot FORCE",IDC_STATIC_21,181,147,47,16
-    LTEXT           "BetFourthPot FORCE",IDC_STATIC_22,28,172,42,16
-    LTEXT           "RaiseFourthPot FORCE",IDC_STATIC_23,102,172,52,17
-    LTEXT           "Bet FORCE",IDC_STATIC_24,171,173,24,17
-    LTEXT           "Beep FORCE",IDC_STATIC_25,213,173,24,17
-END
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1128,10 +1065,6 @@ BEGIN
         HORZGUIDE, 64
     END
 
-    IDD_SAPREFS9, DIALOG
-    BEGIN
-    END
-
     IDD_SAPREFS10, DIALOG
     BEGIN
         VERTGUIDE, 16
@@ -1281,14 +1214,6 @@ BEGIN
         VERTGUIDE, 11
         BOTTOMMARGIN, 158
     END
-
-    IDD_SELECTACTIONS, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 244
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 219
-    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -1303,23 +1228,10 @@ BEGIN
     0
 END
 
-IDD_SELECTACTIONS AFX_DIALOG_LAYOUT
+IDD_SAPREFS4 AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
-
-IDD_ABOUTBOX AFX_DIALOG_LAYOUT
-BEGIN
-    0
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Cursor
-//
-
-IDC_CURSOR_HAND         CURSOR                  "res\\idc_cursor_hand.cur"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1372,8 +1284,6 @@ BEGIN
     ID_EDIT_VIEWLOG         "View the log-file of the current OpenHoldem-instance\nView log file"
     ID_EDIT_TAGLOG          "Leave a stamp in the log-file for more easy review\nTag log-file"
     ID_EDIT_CLEARLOG        "Empties the log-file  of the current OpenHoldem-instance\nClear log-file"
-    ID_TOOLS_ADDACTIONS     "Switch to Action Trace Profile"
-    ID_VIEW_RTA             "Enable Real Time Advisor"
 END
 
 STRINGTABLE
