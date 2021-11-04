@@ -208,15 +208,16 @@ double CSymbolEngineRaisers::MinimumStartingBetCurrentOrbit(bool searching_for_r
 
 void CSymbolEngineRaisers::CalculateRaisers() {
 	_nopponentstruelyraising = 0;
-  _temp_raisbits_current_orbit = 0;
-  if (p_engine_container->symbol_engine_chip_amounts()->call() <= 0.0) {
-    // There are no bets and raises.
-    // Skip the calculations to keep the raischair of the previous round.
-    // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
-    write_log(Preferences()->debug_symbolengine(),
-      "[CSymbolEngineRaisers] No bet to call, therefore no raises\n");
-    return;
-  }
+
+	_temp_raisbits_current_orbit = 0;
+	if (p_engine_container->symbol_engine_chip_amounts()->call() <= 0.0) {
+		// There are no bets and raises.
+		// Skip the calculations to keep the raischair of the previous round.
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=16806
+		write_log(Preferences()->debug_symbolengine(),
+			"[CSymbolEngineRaisers] No bet to call, therefore no raises\n");
+		return;
+	}
 	int first_possible_raiser = FirstPossibleActor();
 	int last_possible_raiser  = LastPossibleActor();
   assert(last_possible_raiser > first_possible_raiser);
