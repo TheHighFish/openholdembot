@@ -135,6 +135,9 @@
     <ClCompile Include="HScrollListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DeviceContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CRegionCloner.h">
@@ -237,6 +240,9 @@
       <Filter>Header Files\OpenHoldem_Functions</Filter>
     </ClInclude>
     <ClInclude Include="HScrollListBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
