@@ -139,6 +139,7 @@
     <ClCompile Include="CTablemap_TroubleChecking.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="DeviceContext.cpp" />
     <ClCompile Include="DialogCopyRegion.cpp" />
     <ClCompile Include="DialogEdit.cpp" />
     <ClCompile Include="DialogEditFont.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="..\OpenHoldem\CTableTitle.h" />
     <ClInclude Include="..\OpenHoldem\CTitleEvaluator.h" />
     <ClInclude Include="CRegionCloner.h" />
+    <ClInclude Include="DeviceContext.h" />
     <ClInclude Include="DialogCopyRegion.h" />
     <ClInclude Include="DialogEdit.h" />
     <ClInclude Include="DialogEditFont.h" />

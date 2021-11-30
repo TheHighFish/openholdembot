@@ -37,6 +37,7 @@
 #include "CTitleEvaluator.h"
 #include "..\CTransform\CTransform.h"
 #include "..\CTransform\hash\lookup3.h"
+#include "DeviceContext.h"
 
 #include "MainFrm.h"
 #include "OpenHoldem.h"
@@ -44,7 +45,9 @@
 CScraper *p_scraper = NULL;
 
 #define __HDC_HEADER 		HBITMAP		old_bitmap = NULL; \
-	HDC				hdc = GetDC(p_autoconnector->attached_hwnd()); \
+	HWND targeted_DC = CheckIfDCReturnsBlackScreen(p_autoconnector->attached_hwnd()) ? \
+		HWND_DESKTOP : p_autoconnector->attached_hwnd(); \
+	HDC				hdc = GetDC(targeted_DC); \
 	HDC				hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL); \
 	HDC				hdcCompatible = CreateCompatibleDC(hdcScreen); \
   ++_leaking_GDI_objects;
@@ -52,7 +55,7 @@ CScraper *p_scraper = NULL;
 #define __HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK \
   DeleteDC(hdcCompatible); \
 	DeleteDC(hdcScreen); \
-	ReleaseDC(p_autoconnector->attached_hwnd(), hdc); \
+	ReleaseDC(targeted_DC, hdc); \
   --_leaking_GDI_objects;
 
 CScraper::CScraper(void) {
@@ -87,18 +90,20 @@ bool CScraper::ProcessRegion(RMapCI r_iter) {
 	__HDC_HEADER
 	// Get "current" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.cur_bmp);
-	BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
-							    r_iter->second.bottom - r_iter->second.top + 1, 
-								hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
+	BitBltFromClientOrDesktopDC(hdcCompatible,
+		r_iter->second.right - r_iter->second.left + 1,
+		r_iter->second.bottom - r_iter->second.top + 1,
+		hdc, r_iter->second.left, r_iter->second.top, p_autoconnector->attached_hwnd());
 	SelectObject(hdcCompatible, old_bitmap);
 
 	// If the bitmaps are different, then continue on
 	if (!BitmapsAreEqual(r_iter->second.last_bmp, r_iter->second.cur_bmp)) {
     // Copy into "last" bitmap
 		old_bitmap = (HBITMAP) SelectObject(hdcCompatible, r_iter->second.last_bmp);
-		BitBlt(hdcCompatible, 0, 0, r_iter->second.right - r_iter->second.left + 1, 
-									r_iter->second.bottom - r_iter->second.top + 1, 
-									hdc, r_iter->second.left, r_iter->second.top, SRCCOPY);
+		BitBltFromClientOrDesktopDC(hdcCompatible,
+			r_iter->second.right - r_iter->second.left + 1,
+			r_iter->second.bottom - r_iter->second.top + 1,
+			hdc, r_iter->second.left, r_iter->second.top, p_autoconnector->attached_hwnd());
 		SelectObject(hdcCompatible, old_bitmap);  
 		__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
 		return true;
@@ -900,7 +905,8 @@ const double CScraper::DoChipScrape(RMapCI r_iter) {
 	GetClientRect(p_autoconnector->attached_hwnd(), &rect);
 	HBITMAP attached_bitmap = CreateCompatibleBitmap(hdcScreen, rect.right, rect.bottom);
 	HBITMAP	old_bitmap = (HBITMAP) SelectObject(hdcCompat, attached_bitmap);
-	BitBlt(hdcCompat, 0, 0, rect.right, rect.bottom, hdc, 0, 0, SRCCOPY);
+	BitBltFromClientOrDesktopDC(hdcCompat, rect.right, rect.bottom, hdc, 
+		rect.left, rect.top, p_autoconnector->attached_hwnd());
 	
 	// Get chipscrapemethod option from tablemap, if specified
 	CString res = p_tablemap->chipscrapemethod();
@@ -1042,7 +1048,8 @@ bool CScraper::IsIdenticalScrape() {
 	GetClientRect(p_autoconnector->attached_hwnd(), &cr);
 
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_cur);
-	BitBlt(hdcCompatible, 0, 0, cr.right, cr.bottom, hdc, cr.left, cr.top, SRCCOPY);
+	BitBltFromClientOrDesktopDC(hdcCompatible, cr.right, cr.bottom, hdc, 
+		cr.left, cr.top, p_autoconnector->attached_hwnd());
 	SelectObject(hdcCompatible, old_bitmap);
 
   p_table_state->TableTitle()->UpdateTitle();
@@ -1061,7 +1068,8 @@ bool CScraper::IsIdenticalScrape() {
 	}
 	// Copy into "last" bitmap
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, _entire_window_last);
-	BitBlt(hdcCompatible, 0, 0, cr.right-cr.left+1, cr.bottom-cr.top+1, hdc, cr.left, cr.top, SRCCOPY);
+	BitBltFromClientOrDesktopDC(hdcCompatible, cr.right - cr.left + 1, cr.bottom - cr.top + 1,
+		hdc, cr.left, cr.top, p_autoconnector->attached_hwnd());
 	SelectObject(hdc, old_bitmap);
 
 	__HDC_FOOTER_ATTENTION_HAS_TO_BE_CALLED_ON_EVERY_FUNCTION_EXIT_OTHERWISE_MEMORY_LEAK
