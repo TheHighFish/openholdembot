@@ -201,9 +201,6 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter) {
 	CTransform	trans;
 
 	if (in_startup)	{
-		DeleteObject(hbm2);
-		DeleteObject(old_bitmap1);
-		DeleteObject(old_bitmap2);
 		DeleteDC(hdcCompat1);
 		DeleteDC(hdcCompat2);
 		DeleteDC(hdcScreen);
@@ -226,9 +223,6 @@ void CDlgScraperOutput::DoBitblt(HBITMAP bitmap, RMapCI r_iter) {
 
 	// return if all we needed to do was erase display
 	if (bitmap == NULL)	{
-		DeleteObject(hbm2);
-		DeleteObject(old_bitmap1);
-		DeleteObject(old_bitmap2);
 		DeleteDC(hdcCompat1);
 		DeleteDC(hdcCompat2);
 		DeleteDC(hdcScreen);

@@ -20,7 +20,6 @@
 #include "CScraper.h"
 #include "CTableMapLoader.h"
 #include "..\CTransform\CTransform.h"
-#include "DeviceContext.h"
 
 int CTablepointChecker::_number_of_mismatches_the_last_N_heartbeats = 0;
 
@@ -43,7 +42,6 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
   HDC	    hdcScreen = NULL, hdcCompatible = NULL;
   HBITMAP	hbmScreen = NULL, hOldScreenBitmap = NULL;
   CTransform	trans;
-  HWND targeted_DC = NULL;
   if (tablemap_connection_data[tablemap_index].TablePointCount > 0) {
     RECT crect;
     GetClientRect(window_candidate, &crect);
@@ -55,14 +53,11 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
       // Check table points for match
       width = crect.right - crect.left;
       height = crect.bottom - crect.top;
-      targeted_DC = CheckIfDCReturnsBlackScreen(window_candidate) ? 
-		  HWND_DESKTOP : window_candidate;
-      hdcScreen = ::GetDC(targeted_DC);
+      hdcScreen = GetDC(window_candidate);
       hdcCompatible = CreateCompatibleDC(hdcScreen);
       hbmScreen = CreateCompatibleBitmap(hdcScreen, width, height);
       hOldScreenBitmap = (HBITMAP)SelectObject(hdcCompatible, hbmScreen);
-      BitBltFromClientOrDesktopDC(hdcCompatible, width, height, hdcScreen, 
-		  crect.left, crect.top, window_candidate);
+      BitBlt(hdcCompatible, 0, 0, width, height, hdcScreen, 0, 0, SRCCOPY);
       // Populate BITMAPINFOHEADER
       bmi->bmiHeader.biSize = sizeof(bmi->bmiHeader);
       bmi->bmiHeader.biBitCount = 0;
@@ -115,7 +110,7 @@ bool CTablepointChecker::CheckTablepoints(HWND window_candidate, int tablemap_in
       SelectObject(hdcCompatible, hOldScreenBitmap);
       DeleteObject(hbmScreen);
       DeleteDC(hdcCompatible);
-      ReleaseDC(targeted_DC, hdcScreen);
+      ReleaseDC(window_candidate, hdcScreen);
       if (!good_table_points) {
         write_log(Preferences()->debug_tablepoints(), "[CTablepointChecker] Not all tablepoints match.\n");
         return false;

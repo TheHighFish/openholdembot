@@ -198,7 +198,6 @@
     <ClCompile Include="COHScriptList.cpp" />
     <ClCompile Include="COHScriptObject.cpp" />
     <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
-    <ClCompile Include="DeviceContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllinAdjustment.h" />
@@ -431,7 +430,6 @@
     <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
     <ClInclude Include="AlphaChannel.h" />
-    <ClInclude Include="DeviceContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc" />

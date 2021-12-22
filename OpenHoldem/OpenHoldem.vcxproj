@@ -271,7 +271,6 @@
     <ClCompile Include="CTitleEvaluator.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="CWhiteInfoBox.cpp" />
-    <ClCompile Include="DeviceContext.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MD5_Checksum.cpp" />
     <ClCompile Include="Median.cpp" />
@@ -559,7 +558,6 @@
     <ClInclude Include="CTitleEvaluator.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="CWhiteInfoBox.h" />
-    <ClInclude Include="DeviceContext.h" />
     <ClInclude Include="MD5_Checksum.h" />
     <ClInclude Include="Median.h" />
     <ClInclude Include="MemoryLogging.h" />

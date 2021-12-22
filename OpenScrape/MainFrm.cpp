@@ -23,7 +23,6 @@
 #include "MainFrm.h"
 
 #include "CRegionCloner.h"
-#include "DeviceContext.h"
 #include "DialogCopyRegion.h"
 #include "DialogSelectTable.h"
 #include "global.h"
@@ -764,7 +763,6 @@ void CMainFrame::SaveBmpPbits(void)
 	HBITMAP				old_bitmap;
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	int					width, height;
-	HWND				targeted_DC;
 
 	// Clean up from a previous connect, if needed
 	if (pDoc->attached_bitmap != NULL)
@@ -779,18 +777,16 @@ void CMainFrame::SaveBmpPbits(void)
 		pDoc->attached_pBits = NULL;
 	}
 
-	// Get DC for connected window or desktop
-	targeted_DC = CheckIfDCReturnsBlackScreen(pDoc->attached_hwnd) ? 
-		HWND_DESKTOP : pDoc->attached_hwnd;
-	hdc = ::GetDC(targeted_DC);
+	// Get DC for connected window
+	hdc = ::GetDC(pDoc->attached_hwnd);
 
 	// Save bitmap of connected window
 	width = pDoc->attached_rect.right - pDoc->attached_rect.left;
 	height = pDoc->attached_rect.bottom - pDoc->attached_rect.top;
 	pDoc->attached_bitmap = CreateCompatibleBitmap(hdcScreen, width, height);
 	old_bitmap = (HBITMAP) SelectObject(hdcCompatible, pDoc->attached_bitmap);
-	BitBltFromClientOrDesktopDC(hdcCompatible, width, height, hdc, 
-		   pDoc->attached_rect.left, pDoc->attached_rect.top, pDoc->attached_hwnd);
+	BitBlt(hdcCompatible, 0, 0, width, height, hdc, 
+		   pDoc->attached_rect.left, pDoc->attached_rect.top, SRCCOPY);
 
 	// Get pBits of connected window
 	// Allocate heap space for BITMAPINFO
@@ -811,7 +807,7 @@ void CMainFrame::SaveBmpPbits(void)
 	// Clean up
 	HeapFree(GetProcessHeap(), NULL, bmi);
 	SelectObject(hdcCompatible, old_bitmap);
-	::ReleaseDC(targeted_DC, hdc);
+	::ReleaseDC(pDoc->attached_hwnd, hdc);
 	DeleteDC(hdcCompatible);
 	DeleteDC(hdcScreen);
 }
