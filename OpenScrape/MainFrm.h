@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -30,26 +30,27 @@ class CMainFrame : public CFrameWnd {
 	afx_msg void OnViewPrev();
 	afx_msg void OnViewNext();
 	afx_msg void OnToolsCloneRegions();
+	afx_msg void OnToolsCollectFonts();
 	afx_msg void OnEditUpdatehashes();
 	afx_msg void OnEditDuplicateregion();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnGroupregionsBytype();
 	afx_msg void OnGroupregionsByname();
-	afx_msg void OnViewUngroupregions();
 	afx_msg void OnUpdateViewCurrentwindowsize(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateEditDuplicateregion(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateGroupregionsBytype(CCmdUI *pCmdUI);
 	afx_msg void OnUpdateGroupregionsByname(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateViewUngroupregions(CCmdUI *pCmdUI);
 	void SaveBmpPbits(void);
 	DECLARE_MESSAGE_MAP()
 
-	CStatusBar	m_wndStatusBar;
+	CStatusBar		m_wndStatusBar;
 	CToolBar		m_wndToolBar;
+	CComboBox		m_Transform;
  public:
 	virtual BOOL DestroyWindow();
 	afx_msg void OnViewConnecttowindow();
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	int					region_grouping;
 	virtual ~CMainFrame();
  private:
 	bool CreateToolbar();
@@ -58,6 +59,7 @@ class CMainFrame : public CFrameWnd {
 	void ResizeWindow(COpenScrapeDoc *pDoc);
 	void BringOpenScrapeBackToFront();
 	void SetTablemapSizeIfUnknown(int size_x, int size_y);
+  void CheckIfOHReplayRunning();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

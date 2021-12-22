@@ -1,0 +1,261 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - BettingAction Symbols
+//
+//*****************************************************************************
+
+##AggressorChair##
+// raischair (formerly ac_aggressor) alone is somewhat unreliable, as it gets scraped (by bets).
+// But if we raise and there are super-fast calls behind us (e.g. at PokerAcademy),
+// then we don't have stable frames and soon we will switch to the next betting round.
+// (There are however no problems, if somebody else raises,
+// because we always get stable frames at out turn.)
+// So we also check for our last action and the amount to call.
+// (-1 = fold 0 = check 1 = call 2 = raise e3 = betsize 4 = allin)
+(((prevaction ==  2) OR (prevaction == 3)) AND (AmountToCall == 0)) ? userchair :
+raischair
+
+##BigBlindSittingOut##
+(bigblindchair < 0) ? ERROR_bigblindchair_Not_Recognized__Check_Your_TableMap :
+((playersactivebits >> bigblindchair & 1) == 0)
+
+##SmallBlindSittingOut##
+// No error if smallblind chair is unknown, it may be nissing.
+(smallblindchair < 0) ? false :
+((playersactivebits >> smallblindchair & 1) == 0)
+
+##OpponentsLeftSittingOut##
+(opponentsactivebits & opponentsplayingbits) == 0
+
+##BotCalledBeforeFlop##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didcallround_preflop
+
+##BotCalledOnFlop##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didcallround_flop
+
+##BotCalledOnTurn##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR (didcallround_turn > 0)
+
+##BotCalledOnRiver##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didcallround_river
+
+##BotCheckedPreflop##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_preflop
+
+##BotCheckedOnFlop##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_flop
+
+##BotCheckedOnTurn##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_turn
+
+##BotCheckedOnRiver##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didchecround_river
+
+##BotIsLastRaiser##
+(AggressorChair==userchair)
+
+##BotRaisedBeforeFlop##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR (didraisround_preflop > 0)
+OR (didbetsizeround_preflop > 0)
+
+##BotRaisedOnFlop##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR (didraisround_flop > 0)
+OR (didbetsizeround_flop > 0)
+
+##BotRaisedOnTurn##
+   (sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : false)
+OR didraisround_turn 
+OR didbetsizeround_turn
+
+##BotsActionsOnFlop##
+WHEN IsFlop RETURN BotsActionsOnThisRound FORCE
+WHEN Others RETURN
+  ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+  // Checks are not counted
+  + didcallround_flop 
+  + didraisround_flop 
+  + didbetsizeround_flop) FORCE
+
+##BotsActionsOnTurn##
+WHEN IsTurn RETURN BotsActionsOnThisRound FORCE
+WHEN Others RETURN
+  ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+  // Checks are not counted
+  + didcallround_turn 
+  + didraisround_turn 
+  + didbetsizeround_turn) FORCE
+  
+##ActionCounterCorrectionForUpdateInProgress##
+// If we update OpenPPL memory symbols after an autoplayer-action
+// then OpenHoldems autoplayer-symbols already are updated
+// and the sum of actions is "one ahead" 
+// (compared to the situation when we took a decision)
+// That's why we need a correction
+WHEN me_re_MemUpdateOfOpenPPLMemorySymbolsInProgress RETURN -1 FORCE
+WHEN Others RETURN 0 FORCE
+
+##BotsActionsOnThisRound##
+// Special condition to ease simulations at Manualmode 
+// without the need for hand-resets
+WHEN (IsPreflop AND (currentbet < bblind)) RETURN 0 FORCE
+WHEN ((betround > preflop) AND (currentbet == 0)) RETURN 0 FORCE
+WHEN (BotsActionsOnThisRoundAdapted < 0) RETURN 0 FORCE
+WHEN Others RETURN BotsActionsOnThisRoundAdapted FORCE
+ 
+##BotsActionsOnThisRoundIncludingChecks##
+// Special condition to ease simulations at Manualmode 
+// without the need for hand-resets
+WHEN (IsPreflop AND (currentbet < bblind)) RETURN 0 FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecksAdapted < 0) RETURN 0 FORCE
+WHEN Others RETURN BotsActionsOnThisRoundIncludingChecksAdapted FORCE
+
+##BotsActionsOnThisRoundAdapted##
+[(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+// Checks are not counted per definition.
+// Folds and allins are not relevant, as then the hand is over for us.
++ didcall 
++ didrais 
++ didbetsize
++ ActionCounterCorrectionForUpdateInProgress]
+   
+##BotsActionsOnThisRoundIncludingChecksAdapted##
+[(sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+// Folds and allins are not relevant, as then the hand is over for us.
++ didchec 
++ didcall 
++ didbetsize 
++ didrais
++ ActionCounterCorrectionForUpdateInProgress]
+
+##BotsActionsPreflop##
+WHEN IsPreflop RETURN BotsActionsOnThisRound FORCE
+WHEN Others RETURN
+  ((sitename$openholdem ? HINT_Counting_Only_Autoplayer_Actions_Not_Manual_User_Actions : 0)
+  // Checks are not counted per definition
+  // and we can't check preflop without posting a blind out of order (first hand only).
+  + didcallround_preflop 
+  + didraisround_preflop 
+  + didbetsizeround_preflop) FORCE
+
+##CallsBeforeOurFirstAction##
+WHEN (BotsActionsOnThisRoundIncludingChecks > 0) RETURN 0 FORCE
+WHEN Others RETURN nopponentscalling FORCE
+
+##CallsSinceLastPlay##
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN 0 FORCE
+WHEN Others RETURN nopponentscalling FORCE
+
+##CallsSinceLastRaise##
+WHEN (PlayersRaisingOrColdCallingTheLastRaise <= 0) RETURN HINT_There_Is_No_Raiser_Therefore_No_CallsSinceLastRaise FORCE
+WHEN Others RETURN (PlayersRaisingOrColdCallingTheLastRaise - 1) FORCE
+
+##Folds##
+WHEN IsPreflop RETURN (nplayersdealt  - nopponentsplaying - 1) FORCE
+WHEN IsFlop    RETURN (nplayersround_flop - nopponentsplaying - 1) FORCE
+WHEN IsTurn    RETURN (nplayersround_turn - nopponentsplaying - 1) FORCE
+WHEN IsRiver   RETURN (nplayersround_river - nopponentsplaying - 1) FORCE
+WHEN Others RETURN ERROR_Betround_Out_Of_Range FORCE
+
+##LastAggressorActsAfterUs##		
+   ac_agchair_after 
+AND NOT BotIsLastRaiser
+
+##NoBettingOnFlop##
+(nbetsround_flop == 0)
+AND NOT didraisround_flop
+AND NOT didbetsizeround_flop
+AND NOT didalliround_flop
+
+##NoBettingOnTurn##
+(nbetsround_turn == 0)
+AND NOT didraisround_turn
+AND NOT didbetsizeround_turn
+AND NOT didalliround_turn
+
+##OpponentCalledOnFlop##
+    (betround > flop)
+AND ((didraisround_flop + didbetsizeround_flop) == 1)
+AND NOT didchecround_flop
+AND NOT didcallround_flop
+AND NoVillainBetOrRaisedOnFlop
+
+##OpponentCalledOnTurn##
+    (betround > turn)
+AND ((didraisround_turn + didbetsizeround_turn) == 1)
+AND NOT didchecround_turn
+AND NOT didcallround_turn
+AND NoVillainBetOrRaisedOnTurn
+
+##RaisesSinceLastPlay##
+WHEN (BotsActionsOnThisRoundIncludingChecks == 0) RETURN RaisesBeforeOurFirstAction FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks == 1) RETURN RaisesSinceLastPlayOnOurSecondAction FORCE
+WHEN (BotsActionsOnThisRoundIncludingChecks >= 2) RETURN RaisesSinceLastPlayAfterOurSecondAction FORCE
+WHEN Others RETURN ERROR_BotsActionsOnThisRound_Out_Of_Range FORCE

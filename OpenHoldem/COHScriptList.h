@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_COHSCRIPTLIST_H
 #define INC_COHSCRIPTLIST_H
@@ -35,11 +35,15 @@ typedef bool THandListMatrix[k_number_of_ranks_per_deck][k_number_of_ranks_per_d
 class COHScriptList: public COHScriptObject {
   friend class DialogHandList;
  public:
+  COHScriptList(
+    CString new_name,
+    CString new_function_text);
   COHScriptList( 
-    CString *new_name, 
-    CString *new_function_text,
+    CString new_name, 
+    CString new_function_text,
+    CString file_path,
     int absolute_line);
-  ~COHScriptList();
+  virtual ~COHScriptList();
  public:
   void Clear();
   virtual CString function_text();
@@ -52,6 +56,8 @@ class COHScriptList: public COHScriptObject {
   // Actually Evaluate() returns true/false if our hand is in the list or not
   // but the function is inheritzed from the base-class.
   double Evaluate(bool log = false);
+ public:
+  virtual void Parse();
  public:
   void Set(int first_rank, int second_rank, bool suited);
   // For Hand list editor: higher card first: suited, otherwise offsuited

@@ -79,7 +79,7 @@ How the Interface-Buttons work
 \end_layout
 
 \begin_layout Standard
-The holdem scraper has the concept of interface region(s), that can be clicked
+The holdem scraper has the concept of interface regions, that can be clicked
  by the autoplayer to interact with the casino.
  Such an interface region consists of three components:
 \end_layout
@@ -136,7 +136,7 @@ iXstate
 
 \begin_layout Plain Layout
 Visibility of the button.
- If the button is visible it can be clicked by the autoiplayer.
+ If the button is visible it can be clicked by the autoplayer.
  If not then the action will be skipped or a backup-action will be chosen.
 \end_layout
 
@@ -273,7 +273,15 @@ raise
 \end_layout
 
 \begin_layout Itemize
-swag 
+betsize (and 
+\begin_inset Quotes eld
+\end_inset
+
+swag
+\begin_inset Quotes erd
+\end_inset
+
+ for backward compatibility)
 \end_layout
 
 \begin_layout Itemize
@@ -443,7 +451,7 @@ Notice that this is evaluated every heartbeat, so OH is very fast at closing
 \end_layout
 
 \begin_layout Section
-The swag interface 
+The betsize interface 
 \end_layout
 
 \begin_layout Standard
@@ -461,11 +469,19 @@ If we play NoLimit or PotLimit games we need a way to enter betsizes.
 \begin_inset Quotes eld
 \end_inset
 
+betsizing
+\begin_inset Quotes erd
+\end_inset
+
+ (formerly 
+\begin_inset Quotes eld
+\end_inset
+
 swagging
 \begin_inset Quotes erd
 \end_inset
 
- (WinHoldems abbreviation for 
+, WinHoldems abbreviation for 
 \series bold
 
 \begin_inset Quotes eld
@@ -482,7 +498,7 @@ er
 \end_inset
 
 ).
- To make swag work you need to configure several things:
+ To make betsizing work you need to configure several things:
 \end_layout
 
 \begin_layout Itemize
@@ -503,9 +519,9 @@ before we can enter the text into i3edit we should delete the old one or
 
 \begin_deeper
 \begin_layout Itemize
-
+betsize
 \emph on
-swagselectionmethod
+selectionmethod
 \emph default
 , the supported methods for selection are: 
 \emph on
@@ -529,9 +545,9 @@ Triple Click
 \end_layout
 
 \begin_layout Itemize
-
+betsize
 \emph on
-swagdeletionmethod
+deletionmethod
 \emph default
 , the supported methods for deletion are: 
 \emph on
@@ -550,9 +566,9 @@ Nothing
 \begin_layout Itemize
 once the i3edit-field got cleared the autoplayer can enter the new bet and
  confirm it.
- To confirm the bet two methods are supported (
+ To confirm the bet two methods are supported (betsize
 \emph on
-swagconfirmationmethod
+confirmationmethod
 \emph default
 ):
 \end_layout
@@ -582,7 +598,7 @@ raise
 
 \end_deeper
 \begin_layout Standard
-This is basically how swagging works.
+This is basically how NL-betsizing works.
  Every casino is a little bit different.
  You have to play around a bit and identify which sequence works, then you
  can specify the usual i3edit, i3state, i3button, i3label and the methods
@@ -591,7 +607,7 @@ This is basically how swagging works.
 \end_layout
 
 \begin_layout Section*
-Interpreting the swagged amount
+Interpreting the betsize
 \end_layout
 
 \begin_layout Standard
@@ -604,20 +620,21 @@ Let’s assume the following situation: you sit in the big blind and had to
 \end_layout
 
 \begin_layout Itemize
-at some casinos $90 will be your final betsize (swagtextmethod = 3).
- The swagged amount will be identical to OpenHoldems f$betsize function
+at some casinos $90 will be your final betsize (betsizeinterpretationmethod
+ = 3).
+ The entered amount will be identical to OpenHoldems f$betsize function
  or to the RaiseTo-amount of OpenPPL.
 \end_layout
 
 \begin_layout Itemize
 other casinos will add $90 to the $10 you already posted, so the final betsize
- will be $100.(swagtextmethod = 2) 
+ will be $100.(betsizeinterpretationmethod = 2) 
 \end_layout
 
 \begin_layout Itemize
 and finally some other casinos will add these $90 to the $30 of the last
- raiser, so the final betsize will be $120 (swagtextmethod = 1, RaiseBy
- in OpenPPL) 
+ raiser, so the final betsize will be $120 (betsizeinterpretationmethod
+ = 1, RaiseBy in OpenPPL) 
 \end_layout
 
 \begin_layout Standard

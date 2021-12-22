@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_COPENHOLDEMHOPPERCOMMUNICATION_H
 #define INC_COPENHOLDEMHOPPERCOMMUNICATION_H
@@ -24,8 +24,8 @@ const int WMA_DODISCONNECT	= WM_APP + 3;
 const int WMA_CONNECTEDHWND	= WM_APP + 4;
 const int WMA_SETFLAG       = WM_APP + 5;
 const int WMA_RESETFLAG     = WM_APP + 6;
-const int WMA_ISREADY       = WM_APP + 7;
-
+const int WMA_ISREADY       = WM_APP + 7; 
+// WMA_GETSYMBOL = WM_COPYDATA and 424242 magic-number and WM_COPYDATA-structure
 
 class COpenHoldemHopperCommunication: public CWnd
 {
@@ -33,13 +33,14 @@ public:
 	COpenHoldemHopperCommunication();
 	~COpenHoldemHopperCommunication();
 public:
-	LRESULT OnSetWindowText(WPARAM, LPARAM title);
-	LRESULT OnConnectMessage(WPARAM, LPARAM hwnd);
-	LRESULT OnDisconnectMessage(WPARAM, LPARAM);
-	LRESULT OnConnectedHwndMessage(WPARAM, LPARAM);
-	LRESULT OnSetFlagMessage(WPARAM, LPARAM flag_to_set);
-	LRESULT OnResetFlagMessage(WPARAM, LPARAM flag_to_reset);
-	LRESULT OnIsReadyMessage(WPARAM, LPARAM);
+    LRESULT OnSetWindowText(WPARAM, LPARAM title);	
+    LRESULT OnConnectMessage(WPARAM, LPARAM hwnd);
+    LRESULT OnDisconnectMessage(WPARAM, LPARAM);
+    LRESULT OnConnectedHwndMessage(WPARAM, LPARAM);
+    LRESULT OnSetFlagMessage(WPARAM, LPARAM flag_to_set);
+    LRESULT OnResetFlagMessage(WPARAM, LPARAM flag_to_reset);
+    LRESULT OnIsReadyMessage(WPARAM, LPARAM);
+    LRESULT OnGetSymbolMessage(WPARAM, LPARAM lparam);
 protected:
 	DECLARE_MESSAGE_MAP()
 };

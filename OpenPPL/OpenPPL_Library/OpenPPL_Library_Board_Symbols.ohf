@@ -1,0 +1,593 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - Board Symbols
+//
+//*****************************************************************************
+
+##AcePresentOnFlop##
+WHEN (FirstFlopCard == ace)  RETURN true FORCE
+WHEN (SecondFlopCard == ace) RETURN true FORCE
+WHEN (ThirdFlopCard == ace)  RETURN true FORCE
+
+##AcePresentOnTurn##
+WHEN AcePresentOnFlop RETURN true FORCE
+WHEN (TurnCard == ace) RETURN true FORCE
+
+##BestBoardCard##
+rankhicommon
+
+##DoubleGutShotOnBoard##
+((rankbitscommon >> 8) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 7) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 6) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 5) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 4) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 3) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 2) & 0x7f) == 0x5d ? 1 :
+((rankbitscommon >> 1) & 0x7f) == 0x5d ? 1 : 0
+
+##DoubleFlushDrawPossible##
+WHEN betround < turn RETURN false FORCE
+WHEN SuitsOnTurn == 2 AND NOT FlushPossibleOnTurn RETURN true FORCE
+
+##ExactlyOneStraightPossibleOnFlop##
+   [StraightPossibleOnFlop AND AcePresentOnFlop]
+OR [StraightPossibleOnFlop AND (TopFlopCard - LowestFlopCard == 4)]
+
+##FifthBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopFourBits & 0b100000000000000) != 0 ? ace :
+(RankBitsCommonWithoutTopFourBits & 0b010000000000000) != 0 ? king :
+(RankBitsCommonWithoutTopFourBits & 0b001000000000000) != 0 ? queen :
+(RankBitsCommonWithoutTopFourBits & 0b000100000000000) != 0 ? jack :
+(RankBitsCommonWithoutTopFourBits & 0b000010000000000) != 0 ? ten :
+(RankBitsCommonWithoutTopFourBits & 0b000001000000000) != 0 ? Nine :
+(RankBitsCommonWithoutTopFourBits & 0b000000100000000) != 0 ? Eight :
+(RankBitsCommonWithoutTopFourBits & 0b000000010000000) != 0 ? Seven :
+(RankBitsCommonWithoutTopFourBits & 0b000000001000000) != 0 ? Six :
+(RankBitsCommonWithoutTopFourBits & 0b000000000100000) != 0 ? Five :
+(RankBitsCommonWithoutTopFourBits & 0b000000000010000) != 0 ? Four :
+(RankBitsCommonWithoutTopFourBits & 0b000000000001000) != 0 ? Three :
+(RankBitsCommonWithoutTopFourBits & 0b000000000000100) != 0 ? Two :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+##FlopCardPairedOnTurn##
+WHEN IsPreflop RETURN false FORCE
+WHEN FirstFlopCard == TurnCard
+OR SecondFlopCard == TurnCard
+OR ThirdFlopCard == TurnCard RETURN true FORCE
+
+##FlushPossible##
+WHEN isomaha RETURN Omaha_FlushPossible FORCE
+WHEN Others RETURN (nsuitedcommon >= 3) FORCE
+
+##FlushDrawPossible##
+WHEN isomaha RETURN Omaha_FlushDrawPossible FORCE
+WHEN Others RETURN (nsuitedcommon >= 2) FORCE
+
+##FlushOnBoard##
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit == TurnSuit AND FirstFlopSuit == RiverSuit) RETURN true FORCE
+
+##FlushPossibleOnFlop##
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopSuit == SecondFlopSuit AND FirstFlopSuit == ThirdFlopSuit) RETURN true FORCE
+
+##FlushPossibleOnTurn##
+WHEN IsPreflop RETURN false FORCE
+WHEN  FlushPossibleOnFlop
+OR (FirstFlopSuit  == SecondFlopSuit AND FirstFlopSuit  == TurnSuit)
+OR (FirstFlopSuit  == ThirdFlopSuit  AND FirstFlopSuit  == TurnSuit)
+OR (SecondFlopSuit == ThirdFlopSuit  AND SecondFlopSuit == TurnSuit) RETURN true FORCE
+
+##FourCardsToWheelOnBoard##
+BitCount(rankbitscommon & 0b0000000000111110) >= 4
+
+##FourOfOneSuitOnTurn##
+WHEN IsPreflop RETURN false FORCE
+WHEN ((FirstFlopSuit == SecondFlopSuit) AND (ThirdFlopSuit == TurnSuit) AND (FirstFlopSuit == TurnSuit)) RETURN true FORCE
+
+##FourthBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopThreeBits & 0b100000000000000) != 0 ? ace :
+(RankBitsCommonWithoutTopThreeBits & 0b010000000000000) != 0 ? king :
+(RankBitsCommonWithoutTopThreeBits & 0b001000000000000) != 0 ? queen :
+(RankBitsCommonWithoutTopThreeBits & 0b000100000000000) != 0 ? jack :
+(RankBitsCommonWithoutTopThreeBits & 0b000010000000000) != 0 ? ten :
+(RankBitsCommonWithoutTopThreeBits & 0b000001000000000) != 0 ? Nine :
+(RankBitsCommonWithoutTopThreeBits & 0b000000100000000) != 0 ? Eight :
+(RankBitsCommonWithoutTopThreeBits & 0b000000010000000) != 0 ? Seven :
+(RankBitsCommonWithoutTopThreeBits & 0b000000001000000) != 0 ? Six :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000100000) != 0 ? Five :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000010000) != 0 ? Four :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000001000) != 0 ? Three :
+(RankBitsCommonWithoutTopThreeBits & 0b000000000000100) != 0 ? Two :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+##FullHouseOnBoard##
+(pokervalcommon & fullhouse)
+
+##HighestRankOnFlop##
+[(FirstFlopCard >= SecondFlopCard) AND (FirstFlopCard >= ThirdFlopCard)] ? FirstFlopCard :
+[(SecondFlopCard >= FirstFlopCard) AND (SecondFlopCard >= ThirdFlopCard)] ? SecondFlopCard :
+[(ThirdFlopCard >= FirstFlopCard) AND (ThirdFlopCard >= SecondFlopCard)] ? ThirdFlopCard :
+-1
+
+##HighestRankOnTurn##
+((TurnCard > HighestRankOnFlop) ? TurnCard : HighestRankOnFlop)
+
+##KingPresentOnFlop##
+   (FirstFlopCard == king)
+OR (SecondFlopCard == king)
+OR (ThirdFlopCard == king)
+
+##LowCardsOnBoard##
+BitCount(RankBitsCommonLowCardsOnly)
+
+##LowestBitOfRankBitsCommon##
+(1<<ranklocommon)
+
+##MoreThanOneStraightPossibleOnFlop##
+StraightPossibleOnFlop AND NOT ExactlyOneStraightPossibleOnFlop
+
+##MoreThanOneStraightPossibleOnRiver##
+(betround == river AND (NumberOfStraightsPossibleOnRiver > 1))
+
+##NumberOfStraightsPossibleOnTurn##
+// First part checks if there is a straight possible (max 2 cards missing)
+// Second part checks that there is no higher "6-card" straight possible
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
+  (BitCount((RankBitsCommonTurn >> 10) & 0x1f) >= 3 AND (((RankBitsCommonTurn >> 10) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  9) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  9) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  8) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  8) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  7) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  7) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  6) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  6) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  5) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  5) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  4) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  4) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  3) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  3) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  2) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  2) & 0x20) != 0x20)? 1 : 0)
++ (BitCount((RankBitsCommonTurn >>  1) & 0x1f) >= 3 AND (((RankBitsCommonTurn >>  1) & 0x20) != 0x20)? 1 : 0)
+
+##NumberOfStraightsPossibleOnRiver##
+// First part checks if there is a straight possible (max 2 cards missing)
+// Second part checks that there is no higher "6-card" straight possible
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=17905
+  (BitCount((RankBitsCommonRiver >> 10) & 0x1f) >= 3 AND (((RankBitsCommonRiver >> 10) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  9) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  9) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  8) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  8) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  7) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  7) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  6) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  6) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  5) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  5) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  4) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  4) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  3) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  3) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  2) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  2) & 0x20) != 0x20) ? 1 : 0)
++ (BitCount((RankBitsCommonRiver >>  1) & 0x1f) >= 3 AND (((RankBitsCommonRiver >>  1) & 0x20) != 0x20) ? 1 : 0)
+
+##MoreThanOneOneCardStraightPossible##
+DoubleGutShotOnBoard OR OpenEndedStraightDrawOnBoard
+
+##MoreThanOneStraightPossibleOnTurn##
+(NumberOfStraightsPossibleOnTurn > 1)
+
+##NumberOfOneCardStraightsPossibleOnTurn##
+  (OneCardStraightPossibleOnTurn_AceHigh   ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_KingHigh  ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_QueenHigh ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_JackHigh  ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_TenHigh   ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_NineHigh  ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_EightHigh ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_SevenHigh ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_SixHigh   ? 1 : 0)
++ (OneCardStraightPossibleOnTurn_FiveHigh  ? 1 : 0)
+
+##NutsOnBoard##
+// This function got designed for Hold'em,
+// it is practically meaning-less for Omaha.
+nhands == nhandsti
+
+##OneCardFlushPossible##
+(nsuitedcommon >= 4)
+
+##OneCardStraightFlushPossible##
+(nstraightflushfillcommon <= 1)
+
+##StraightFlushOnBoard##
+(nstraightflushfillcommon ==0)
+
+##OneCardStraightPossible##
+(nstraightfillcommon <= 1)
+
+##OneCardStraightPossibleOnTurn##
+(NumberOfOneCardStraightsPossibleOnTurn >= 1)
+
+##Only1OneCardStraightPossible##
+OneCardStraightPossible AND NOT MoreThanOneOneCardStraightPossible
+
+##OpenEndedStraightDrawOnBoard##
+   board$KQJT
+OR board$QJT9
+OR board$JT98
+OR board$T987
+OR board$9876
+OR board$8765
+OR board$7654
+OR board$6543
+OR board$5432
+
+##TripsOnBoardOnFlop##
+WHEN (LowestFlopCard < 2) RETURN false FORCE
+WHEN (LowestFlopCard = TopFlopCard) RETURN true FORCE
+
+##OpenEndedStraightDrawPossibleOnFlop##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20413
+WHEN (TopFlopCard <= 2) RETURN false FORCE
+WHEN (SecondTopFlopCard < 2) RETURN false FORCE
+WHEN (LowestFlopCard < 2) RETURN false FORCE
+WHEN TripsOnBoardOnFlop RETURN false FORCE
+WHEN [(TopFlopCard - SecondTopFlopCard <= 3) AND (TopFlopCard != SecondTopFlopCard) AND (TopFlopCard != ace)] RETURN true FORCE
+WHEN [(SecondTopFlopCard - LowestFlopCard <= 3) AND (SecondTopFlopCard != LowestFlopCard)] RETURN true FORCE
+// Two special cases of double-gutshots that don't get caught by the code above: AQ8 and 73A
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=217&t=22507
+//                           AKQJT98765432A-      AKQJT98765432A-
+WHEN (RankBitsCommonFlop & 0b101000100000000) = 0b101000100000000 RETURN true FORCE
+WHEN (RankBitsCommonFlop & 0b000000010001010) = 0b000000010001010 RETURN true FORCE
+
+##IndividualOvercardsOnBoard##
+// Works like OvercardsOnBoard, except that it counts cards only once
+BitCount[rankbitscommon >> (rankhiplayer + 1)]
+
+##OvercardsOnBoard##
+   ((FirstFlopCard  > rankhiplayer) ? 1 : 0)
++ ((SecondFlopCard > rankhiplayer) ? 1 : 0)
++ ((ThirdFlopCard  > rankhiplayer) ? 1 : 0)
++ ((TurnCard       > rankhiplayer) ? 1 : 0)
++ ((RiverCard      > rankhiplayer) ? 1 : 0)
+
+##PairOnBoard##
+RankOfTopPairOnBoard > 0
+
+##PairOnFlop##
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopCard == SecondFlopCard OR SecondFlopCard == ThirdFlopCard OR FirstFlopCard == ThirdFlopCard) RETURN true FORCE
+
+##LowestFlopCard##
+FirstFlopCard  <= SecondFlopCard AND FirstFlopCard  <=  ThirdFlopCard  ? FirstFlopCard :
+SecondFlopCard <= FirstFlopCard  AND SecondFlopCard <=  ThirdFlopCard  ? SecondFlopCard :
+ThirdFlopCard  <= FirstFlopCard  AND ThirdFlopCard  <=  SecondFlopCard ? ThirdFlopCard : 
+-1
+
+##LowestFlopCardPairedOnTurn##
+(LowestFlopCard == TurnCard) 
+
+##OnlyOneStraightPossible##
+StraightPossible
+AND NOT [MoreThanOneStraightPossibleOnFlop
+  OR MoreThanOneStraightPossibleOnTurn
+  OR MoreThanOneStraightPossibleOnRiver]
+
+##PairOnTurn##
+WHEN IsPreflop RETURN false FORCE
+WHEN PairOnFlop
+OR TopFlopCardPairedOnTurn
+OR SecondTopFlopCardPairedOnTurn
+OR LowestFlopCardPairedOnTurn RETURN true FORCE
+
+##QuadsOnBoard##
+WHEN isomaha RETURN Omaha_QuadsOnBoard FORCE
+WHEN Others RETURN (nrankedcommon == 4) FORCE
+
+##QueenPresentOnFlop##
+   (FirstFlopCard==queen)
+OR (SecondFlopCard==queen)
+OR (ThirdFlopCard==queen)
+
+##RankBitsCommonWithoutLowestBit##
+// we negate lowest-bit and then do an and-operation
+rankbitscommon & ~LowestBitOfRankBitsCommon
+
+##RankBitsCommonBoardPairs##
+RankBitsCommonTopBoardPair | RankBitsCommonBottomBoardPair
+
+##RankBitsCommonWithoutPairs##
+rankbitscommon & (~RankBitsCommonBoardPairs)
+
+##HighestUnpairedBoardCard##
+(RankBitsCommonWithoutPairs >> ace)   & 1 ? ace   :
+(RankBitsCommonWithoutPairs >> king)  & 1 ? king  :
+(RankBitsCommonWithoutPairs >> queen) & 1 ? queen :
+(RankBitsCommonWithoutPairs >> jack)  & 1 ? jack  :
+(RankBitsCommonWithoutPairs >> ten)   & 1 ? ten   :
+(RankBitsCommonWithoutPairs >> Nine)  & 1 ? Nine  :
+(RankBitsCommonWithoutPairs >> Eight) & 1 ? Eight :
+(RankBitsCommonWithoutPairs >> Seven) & 1 ? Seven :
+(RankBitsCommonWithoutPairs >> Six)   & 1 ? Six   :
+(RankBitsCommonWithoutPairs >> Five)  & 1 ? Five  :
+(RankBitsCommonWithoutPairs >> Four)  & 1 ? Four  :
+(RankBitsCommonWithoutPairs >> Three) & 1 ? Three :
+(RankBitsCommonWithoutPairs >> Two)   & 1 ? Two   : 0
+
+##RiverCardIsOvercardToBoard##
+[   RiverCard > FirstFlopCard
+AND RiverCard > SecondFlopCard
+AND RiverCard > ThirdFlopCard
+AND RiverCard > TurnCard ]
+
+##SecondTopFlopCard##
+PairOnFlop ? SecondTopFlopCard_PairOnFlop :
+NOT PairOnFlop ? SecondTopFlopCard_UnpairedFlop :
+-1
+
+##SecondTopFlopCardPairedOnRiver##
+(SecondTopFlopCard == RiverCard)
+
+##SecondTopFlopCardPairedOnTurn##
+(SecondTopFlopCard == TurnCard)
+
+##RankbitsOpponentsAndBoard_DominantSuitCommon##
+Srankbitsavailable BitOr RankbitsCommon_DominantSuitCommon
+
+##RankTripsOnBoard##
+WHEN IsPreflop RETURN false FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == SecondFlopCard AND SecondFlopCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN FirstFlopCard == TurnCard AND TurnCard == RiverCard RETURN  FirstFlopCard FORCE
+WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard RETURN  SecondFlopCard FORCE
+WHEN SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == RiverCard RETURN  SecondFlopCard FORCE
+WHEN SecondFlopCard == TurnCard AND TurnCard == RiverCard RETURN  SecondFlopCard FORCE
+WHEN ThirdFlopCard == TurnCard AND TurnCard == RiverCard RETURN  ThirdFlopCard FORCE
+
+
+##QuadsPossibleByOthers##
+WHEN NOT PairOnBoard  RETURN false FORCE
+WHEN RankOfTopPairOnBoard==RankOfBottomPairOnBoard AND HaveTrips RETURN false FORCE
+WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND HaveTopTrips AND HaveBottomTrips RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##StraightFlushPossibleByOthers##
+// .......................................................AKQJT98765432a-             ...............................................................AKQJT98765432a-       
+   [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b111110000000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b111110000000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b011111000000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b011111000000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b001111100000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b001111100000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000111110000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000111110000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000011111000000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000011111000000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000001111100000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000001111100000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000111110000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000111110000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000011111000) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000011111000) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000001111100) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000001111100) == 5)]
+OR [(BitCount (RankbitsCommon_DominantSuitCommon BitAnd 0b000000000111110) >= 3) AND (BitCount(RankbitsOpponentsAndBoard_DominantSuitCommon BitAnd 0b000000000111110) == 5)]
+
+##SuitsOnBoard##
+IsFlop  ? SuitsOnFlop :
+IsTurn  ? SuitsOnTurn :
+IsRiver ? SuitsOnRiver :
+HINT_SuitsOnBoard_Undefined_For_This_Betting_Round
+
+##SuitsOnFlop##
+(betround < flop) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+[ (FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit) ? 1 :
+ ((FirstFlopSuit == SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit AND FirstFlopSuit != SecondFlopSuit) OR (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit == ThirdFlopSuit)) ? 2 :
+  (FirstFlopSuit != SecondFlopSuit AND SecondFlopSuit != ThirdFlopSuit AND FirstFlopSuit != ThirdFlopSuit) ? 3 : ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY]
+
+##SuitsOnRiver##
+(betround < river) ? HINT_SuitsOnBoard_Undefined_For_This_Betting_Round : 
+[ SuitsOnTurn
+  + (((RiverSuit != FirstFlopSuit) AND (RiverSuit != SecondFlopSuit) AND (RiverSuit != ThirdFlopSuit) AND (RiverSuit != TurnSuit)) ? 1 : 0)]
+  
+##SuitsOnTurn##
+WHEN (betround < turn) RETURN HINT_SuitsOnBoard_Undefined_For_This_Betting_Round FORCE
+WHEN (TurnSuit == FirstFlopSuit)  RETURN SuitsOnFlop FORCE
+WHEN (TurnSuit == SecondFlopSuit) RETURN SuitsOnFlop FORCE
+WHEN (TurnSuit == ThirdFlopSuit)  RETURN SuitsOnFlop FORCE
+WHEN Others RETURN (SuitsOnFlop + 1) FORCE 
+  
+##StraightFlushPossible##
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankbitsCommon_DominantSuitCommon >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
+
+##StraightOnBoard##
+(nstraightcommon >= 5)
+
+##StraightPossible##
+(nstraightfillcommon <= 2)
+
+##SecondBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopBit & 0b100000000000000) != 0 ? ace   :
+(RankBitsCommonWithoutTopBit & 0b010000000000000) != 0 ? king  :
+(RankBitsCommonWithoutTopBit & 0b001000000000000) != 0 ? queen :
+(RankBitsCommonWithoutTopBit & 0b000100000000000) != 0 ? jack  :
+(RankBitsCommonWithoutTopBit & 0b000010000000000) != 0 ? ten   :
+(RankBitsCommonWithoutTopBit & 0b000001000000000) != 0 ? Nine  :
+(RankBitsCommonWithoutTopBit & 0b000000100000000) != 0 ? Eight :
+(RankBitsCommonWithoutTopBit & 0b000000010000000) != 0 ? Seven :
+(RankBitsCommonWithoutTopBit & 0b000000001000000) != 0 ? Six   :
+(RankBitsCommonWithoutTopBit & 0b000000000100000) != 0 ? Five  :
+(RankBitsCommonWithoutTopBit & 0b000000000010000) != 0 ? Four  :
+(RankBitsCommonWithoutTopBit & 0b000000000001000) != 0 ? Three :
+(RankBitsCommonWithoutTopBit & 0b000000000000100) != 0 ? Two   :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+##StraightPossibleOnFlop##
+WHEN (BitCount((RankBitsCommonFlop >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonFlop >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
+
+##StraightPossibleOnTurn##
+WHEN (BitCount((RankBitsCommonTurn >> 10) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  9) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  8) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  7) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  6) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  5) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  4) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  3) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  2) BitAnd 0x1f) >= 3) RETURN true FORCE
+WHEN (BitCount((RankBitsCommonTurn >>  1) BitAnd 0x1f) >= 3) RETURN true FORCE
+
+##ThirdBestBoardCard##
+// Only considering individual ranks, paired cards get ignored this way
+// 14 (ace) can't happen, but anyway...
+(RankBitsCommonWithoutTopTwoBits & 0b100000000000000) != 0 ? ace :
+(RankBitsCommonWithoutTopTwoBits & 0b010000000000000) != 0 ? king :
+(RankBitsCommonWithoutTopTwoBits & 0b001000000000000) != 0 ? queen :
+(RankBitsCommonWithoutTopTwoBits & 0b000100000000000) != 0 ? jack :
+(RankBitsCommonWithoutTopTwoBits & 0b000010000000000) != 0 ? ten :
+(RankBitsCommonWithoutTopTwoBits & 0b000001000000000) != 0 ? Nine :
+(RankBitsCommonWithoutTopTwoBits & 0b000000100000000) != 0 ? Eight :
+(RankBitsCommonWithoutTopTwoBits & 0b000000010000000) != 0 ? Seven :
+(RankBitsCommonWithoutTopTwoBits & 0b000000001000000) != 0 ? Six :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000100000) != 0 ? Five :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000010000) != 0 ? Four :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000001000) != 0 ? Three :
+(RankBitsCommonWithoutTopTwoBits & 0b000000000000100) != 0 ? Two :
+// Last two bits are ace (low) and unused.
+// Both ignored.
+-1
+
+##ThreeCardStraightOnBoard##
+nstraightcommon >= 3
+
+##TopFlopCard##
+FirstFlopCard >= SecondFlopCard AND FirstFlopCard >= ThirdFlopCard ? FirstFlopCard :
+SecondFlopCard >= FirstFlopCard AND SecondFlopCard >= ThirdFlopCard ? SecondFlopCard :
+ThirdFlopCard >= FirstFlopCard AND ThirdFlopCard >= SecondFlopCard ? ThirdFlopCard :
+ERROR_THIS_SHOULD_NOT_HAPPEN__THERE_SEEMS_TO_BE_A_PROBLEM_IN_THE_LIBRARY
+
+##TopFlopCardPairedOnRiver##
+WHEN IsPreflop RETURN false FORCE
+WHEN (TopFlopCard == RiverCard) RETURN true FORCE
+
+##TopFlopCardPairedOnTurn##
+WHEN IsPreflop RETURN false FORCE
+WHEN (TopFlopCard == TurnCard) RETURN true FORCE
+
+##TripsOnBoard##
+WHEN isomaha RETURN Omaha_TripsOnBoard FORCE
+WHEN Others RETURN (nrankedcommon >= 3) FORCE
+
+##TripsOnBoardOnTurn##
+WHEN IsPreflop RETURN false FORCE
+WHEN (FirstFlopCard == SecondFlopCard AND SecondFlopCard == ThirdFlopCard)
+OR (FirstFlopCard == SecondFlopCard AND SecondFlopCard == TurnCard)
+OR (FirstFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard)
+OR (SecondFlopCard == ThirdFlopCard AND ThirdFlopCard == TurnCard) RETURN true FORCE
+
+##TurnCardIsOvercardToBoard##
+[   TurnCard > FirstFlopCard
+AND TurnCard > SecondFlopCard
+AND TurnCard > ThirdFlopCard ]
+
+##TurnCardPaired##
+WHEN IsPreflop RETURN false FORCE
+WHEN (TurnCard == RiverCard) RETURN true FORCE
+
+##TwoOfOneSuitPresentOnFlop##
+WHEN IsPreflop RETURN false FORCE
+WHEN ((FirstFlopSuit == SecondFlopSuit) OR (FirstFlopSuit == ThirdFlopSuit) OR (SecondFlopSuit == ThirdFlopSuit)) RETURN true FORCE
+
+##TwoPairOnBoard##
+WHEN RankOfTopPairOnBoard > RankOfBottomPairOnBoard AND RankOfBottomPairOnBoard > 0 RETURN true FORCE
+
+##TwoPairOnBoardOnTurn##
+   (betround>flop AND $$cr0==$$cr1 AND $$cr2==$$cr3 AND $$cr0!=$$cr2)
+OR (betround>flop AND $$cr0==$$cr2 AND $$cr1==$$cr3 AND $$cr0!=$$cr1)
+OR (betround>flop AND $$cr0==$$cr3 AND $$cr1==$$cr2 AND $$cr0!=$$cr1)
+
+##UncoordinatedFlop##
+NOT PairOnFlop
+// No possible flush: guaranteed by the next condition...
+// three different suits
+AND (SuitsOnFlop == 3)
+AND NOT StraightPossibleOnFlop
+AND NOT OpenEndedStraightDrawPossibleOnFlop
+
+##WheelPossible##
+(BitCount(rankbitscommon & 0b111110) >= 3)

@@ -1,27 +1,28 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "MemoryLogging.h"
 
-#include "CPreferences.h"
-#include "debug.h"
+
+
 #include <psapi.h>
 #include "Windows.h"
 
+int last_working_set_size = 0;
+
 void LogMemoryUsage(char *message) {
-  if (!preferences.debug_memory_usage()) return;
-  write_log(true, "[MemoryLogging] %s\n", message);
+  if (!Preferences()->debug_memory_usage()) return;
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms683180%28v=vs.85%29.aspx
   DWORD process_ID = GetCurrentProcessId();
   // http://msdn.microsoft.com/de-de/library/windows/desktop/ms682050%28v=vs.85%29.aspx 
@@ -31,10 +32,16 @@ void LogMemoryUsage(char *message) {
                                 FALSE, process_ID);
   assert(NULL != hProcess);
   if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
-    write_log(true, "[MemoryLogging] WorkingSetSize:     %09d\n", 
-      pmc.WorkingSetSize);
-    write_log(true, "[MemoryLogging] PeakWorkingSetSize: %09d\n", 
-      pmc.PeakWorkingSetSize);
+    int peal_working_set_size = pmc.PeakWorkingSetSize;
+    int working_set_size = pmc.WorkingSetSize;
+    int delta_working_set_size = working_set_size - last_working_set_size;
+    last_working_set_size = working_set_size;
+    write_log(true, "[MemoryLogging] WorkingSetSize: %9d    [%9d]\n", 
+      working_set_size, delta_working_set_size);
   }
+  // First log the memory-usage, then log the message.
+  // This way we see the memory-usage before and after an event
+  // and can more easy read the logs.
+  write_log(true, "[MemoryLogging] %s\n", message);
   CloseHandle(hProcess);
 }

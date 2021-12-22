@@ -1,11 +1,11 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Scraping the poker-table and providing access to the scraped data.
 //  As the CScraper is low-level and quite large we created 
@@ -13,7 +13,7 @@
 //  like "UserHasCards()".
 //  Better use that interface to access scraper-data whenever possible.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CARD_H
 #define INC_CARD_H
@@ -41,6 +41,7 @@ class Card {
   bool IsAnyCard();    // Card or cardback
  public:
   CString ToString();
+  CString ToHTML();
  private:
   int _value;
 };

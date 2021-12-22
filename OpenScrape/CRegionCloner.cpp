@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -19,10 +19,10 @@
 #include <math.h>
 #include "..\CTablemap\CTablemap.h"
 #include "..\CTablemap\CTablemapAccess.h"
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "OpenScrape.h"
 
-const int k_number_of_circular_cloneable_regions = 32;
+const int k_number_of_circular_cloneable_regions = 39;
 
 // 1st string: name of 0-region
 // 2nd string: prefix before number
@@ -35,12 +35,20 @@ const CString circular_cloneable_regions[k_number_of_circular_cloneable_regions]
  {"p0cardback",        "p", "cardback"},
  {"p0cardface0",       "p", "cardface0"},
  {"p0cardface1",       "p", "cardface1"},
+ {"p0cardface2",       "p", "cardface2" },
+ {"p0cardface3",       "p", "cardface3" },
  {"p0cardface0nocard", "p", "cardface0nocard"},
  {"p0cardface1nocard", "p", "cardface1nocard"},
+ {"p0cardface2nocard", "p", "cardface2nocard" },
+ {"p0cardface3nocard", "p", "cardface3nocard" },
  {"p0cardface0rank",   "p", "cardface0rank"},
  {"p0cardface0suit",   "p", "cardface0suit"},
  {"p0cardface1rank",   "p", "cardface1rank"},
  {"p0cardface1suit",   "p", "cardface1suit"},
+ {"p0cardface2rank",   "p", "cardface2rank" },
+ {"p0cardface2suit",   "p", "cardface2suit" },
+ {"p0cardface3rank",   "p", "cardface3rank" },
+ {"p0cardface3suit",   "p", "cardface3suit" },
  {"p0dealer",          "p", "dealer",},
  {"p0name",            "p", "name"},
  {"p0colourcode",      "p", "colourcode"},
@@ -82,8 +90,8 @@ CRegionCloner::~CRegionCloner()
 
 bool CRegionCloner::TableSizeUndefined()
 {
-	return ((p_tablemap_access->GetClientSizeX() <= 0)
-		|| (p_tablemap_access->GetClientSizeY() <= 0));
+	return false; /* !!! To do ((p_tablemap_access->GetClientSizeX() <= 0)
+		|| (p_tablemap_access->GetClientSizeY() <= 0)); */
 }
 
 CString CRegionCloner::CreateName(CString prefix, int number, CString postfix)
@@ -97,8 +105,7 @@ CString CRegionCloner::CreateName(CString prefix, int number, CString postfix)
 	return CString(new_symbol_name);
 }
 
-void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int number_of_regions)
-{
+void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int number_of_regions) {
 	// Calculates the position for N regions,
 	// horizontally aligned and symmetrically to the middle of the table,
 	// with equal distance to each other.
@@ -106,14 +113,15 @@ void CRegionCloner::CalculateLinearRegions(STablemapRegion first_region, int num
 	assert(number_of_regions <= k_max_number_of_regions_to_clone); 
 
 	int width_of_region = first_region.right - first_region.left;
-	int space_for_remaining_regions = p_tablemap_access->GetClientSizeX()
+  int target_size_X, dummy;
+  p_tablemap_access->GetClientSize("targetsize", &target_size_X, &dummy);
+	int space_for_remaining_regions = target_size_X;
 		- first_region.left // distance to the left of first region
 		- first_region.left // distance to the right of last region
 		- width_of_region;
 	int delta_X_to_next_region = space_for_remaining_regions
 		/ (number_of_regions - 1);
-	for (int i=0; i<number_of_regions; i++)
-	{
+	for (int i=0; i<number_of_regions; i++)	{
 		// Align horizontally, don't change the first region
 		linear_region_positions[i].left = first_region.left
 			+ i * delta_X_to_next_region;
@@ -132,11 +140,15 @@ void CRegionCloner::CalculateCircularRegions(STablemapRegion first_region, int n
 	assert(number_of_regions >= 1);
 	assert(number_of_regions <= k_max_number_of_regions_to_clone); 
 
+  int target_size_X;
+  int target_size_Y;
+  p_tablemap_access->GetClientSize("targetsize", &target_size_X, &target_size_Y);
+
 	int center_x_of_region = 0.5 * (first_region.left + first_region.right);
 	int center_y_of_region = 0.5 * (first_region.top + first_region.bottom);
 
-	int center_x_of_table  = 0.5 * p_tablemap_access->GetClientSizeX();
-	int center_y_of_table  = 0.5 * p_tablemap_access->GetClientSizeY();
+	int center_x_of_table  = 0.5 * target_size_X;
+	int center_y_of_table  = 0.5 * target_size_Y;
 
 	int delta_x_between_centers = center_x_of_table - center_x_of_region;
 	int delta_y_between_centers = center_y_of_table - center_y_of_region;
@@ -205,7 +217,7 @@ void CRegionCloner::CalculateCircularRegionsForFirstCloneableObject() {
 		if (p_tablemap_access->GetTableMapRegion(
 			  circular_cloneable_regions[i][0], // name of region
 			  &region_to_be_cloned)) {
-			CalculateCircularRegions(region_to_be_cloned, k_max_number_of_players);
+			CalculateCircularRegions(region_to_be_cloned, kMaxNumberOfPlayers);
 			break;
 		}
 	}
@@ -307,7 +319,7 @@ void CRegionCloner::CloneCircularCloneableRegions() {
 		//CalculateDistanceToFirstCloneableRegion(region_to_be_cloned);
 
 		// Start with player 1 and keep player 0 as is
-		for (int p=1; p<k_max_number_of_players; p++)	{	
+		for (int p=1; p<kMaxNumberOfPlayers; p++)	{	
 			STablemapRegion new_region, existing_region;
 		  //	ApplyNextCircularRegionPosition(region_to_be_cloned, &new_region, p);
 

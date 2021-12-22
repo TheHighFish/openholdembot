@@ -1,0 +1,4 @@
+LIBRARY	globals
+EXPORTS
+InitGlobals
+Preferences

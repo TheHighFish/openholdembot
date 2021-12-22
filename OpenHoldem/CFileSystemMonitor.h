@@ -1,20 +1,28 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
-// Purpose:
+// Purpose: Monitorinf the scraper directory for
+//   * changed files
+//   * new files
+//   * renamed files
+//   and providing a method to check for changes.
+//   The autoconnector will then automatically 
+//   reload all tablemaps on the next attempt to connect
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_CFILESYSTEM_MONITOR_H
 #define INC_CFILESYSTEM_MONITOR_H
 
-class CFileSystemMonitor {
+#include "CSpaceOptimizedGlobalObject.h"
+
+class CFileSystemMonitor : public CSpaceOptimizedGlobalObject {
  public:
 	CFileSystemMonitor();
 	~CFileSystemMonitor();

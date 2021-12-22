@@ -1,0 +1,141 @@
+//*****************************************************************************
+//
+// Change-log of the Termita-SNG--bot
+//
+//*****************************************************************************
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           http://code.google.com/p/openholdembot/
+//   Download page:         https://sites.google.com/site/openholdempokerbot/downloads
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Main author: Gecko 
+//
+// Co-author:   ThehighFish
+//   (adaptions for OpenHoldem 12.x, documentation, simplification,          
+//    extending preflop to full-ring)
+//
+//*****************************************************************************
+//
+// Changes
+// =======
+//   * removed postflop-logic that contained code-snippets from Zulu
+//     (potential copyright-infringement) in favour of Gecko-logic.
+//   * hand-categories turned from hand-expressions to hand-lists
+//   * created extra categories for HU / ITM / bubble / early play.
+//   * replaced user-variables like user_CutOff by OpenPPL
+//     position-symbols like InCutOff.
+//   * replaced version identifier by comment
+//   * replaced user_Opponent_ALL_IN by OpponentIsAllin
+//   * removed options for
+//       * playing AA / KK multiway
+//       * limping any two multiway
+//       * playing bubble like 3-handed (AND vice versa)
+//       * playing 3-handed like HeadsUp (AND vice versa)
+//     in order to get reasonable AND simple strategy 
+//   * replaced user-variable user_TheMoney by new OpenPPL-symbol InTheMoney
+//   * replaced user-variable user_Bubble by new OpenPPL-symbol IsBubble
+//   * removed superfluous variable user_true
+//   * Replaced user_FullRing AND user_HeadsUp by
+//     OpenPPL-symbols HandIsFullRing HandIsHeadsUp 
+//   * removed variables userEarlyRaiser and user_BigBlind_We_Limped
+//     which was only used in already removed postflop-play
+//   * replaced user_MP / InEarlyPosition by InMiddlePosition / InEarlyPosition
+//   * replaced user_RaiseQuad-logic by RaiseBy (4 * amountToCall) FORCE
+//   * removed all casino-specific code in favour of automatic detection 
+//     of blind-level and tournament stage.
+//   * replaced user variables user_GameState_Early, ... by functions
+//     f$EarlyStage, f$MiddleStage, f$LateStage
+//   * replaced variable user_BLA_None by f4FirstAction
+//   * Removed lots of now superfluous "InTheMoney"-variabled 
+//     for stacksize-ranges of various players
+//   * Replayed InTheMoney_BigStack, InTheMoney_MiddleStack 
+//     and InTheMoney_SmallStack by user-defined functions
+//   * Removed stacksize-variables for the bubble,
+//     with one exception they were unused
+//   * Simplified calculation if effectibe-stacksize-variables for headsup-play,
+//     using EffectiveMaxStacksizeOfActiveOpponents
+//   * Replaceed (InSmallBlind OR InBigBlind) by InTheBlinds
+//   * Replaceed (InCutOff OR InButton) by InLatePosition
+//   * Restructured the code, introducing extra-functions for
+//     headsup, ITM, bubble and full-ring play
+//   * Removed option to limp any two in SB in early stage
+//   * Restructued the code, intriducing
+//       f$Termita_SNG_Preflop_HeadsUp
+//       f$Termita_SNG_Preflop_InTheMoney
+//       f$Termita_SNG_Preflop_Bubble
+//       f$Termita_SNG_Preflop_EarlyStage
+//       f$Termita_SNG_Preflop_Fullring
+//   * Added raise vs sit-outs
+//   * Added Termita prefold
+//   * Tidied HU removed unnecessary lines
+//   * Replaced any remaning user variables with functions
+//   * Removed possibility of a situation qualifying for more than one stage/section 
+//   * Created OpponentSignificantAllin, using instead of OpponentIsAllin for some cases
+//   * Created late stage and...
+		  // Created late stage list based open push fold and added lists
+		  // Created late stage list based re-push and squeeze and added lists
+//   * In Early Stage
+		  // Only playing Cat2 from BigBlind or SmallBlind I increased that a little 
+		  // Added SmallBlind complete and new lists
+		  // Added Call From BigBlind and new lists
+	  // In early stage the current code will re-raise by 3BB if facing a raise or 3Bet
+		  // As 3BB is too small for a 3Bet I increased it - considering this increase we wont
+		  // want to fold too often so I made some changes
+		  // these changes need review
+//  * Avoiding 4Bet pots
+		// We fold listCat3 and 4 when faced with a 3Bet after we open raise
+		// But we 4Bet a 3Bet if an opponent open raises
+		// If we avoid 4Bet pots we start it only makes sense to avoid
+		// them if started by other players, also it is easier to fold
+		// those as we have less invested
+		// I stopped it raising 3Bet pots with less than Cat2 hands 
+	
+//   * In middle stage 
+	// Only playing Cat2 from BigBlind increased that a little 
+	// Increased 3Bet size
+	// Added SmallBlind complete for SetMining PotShots etc, with new lists
+	// Added call from BigBlind and new lists
+	// Avoid 4Bet pots as in early stage 
+//   *  In Bubble
+	// Tidied code
+	// Added some short-stack push fold, should I add re-push
+	// Bubble play needs some thought, I have kept as close as possible to original
+		// If we play against an allin we only call never push to try to
+		// isolate and also avoid a re-raise after we call maybe we should
+		// push some of these depending on stack/pot size
+		// When no opponent is allin we always RaiseMax maybe we should
+		// consider some standard raises if deep stacked?
+		// we definitely need to consider this if the profile was to be used in
+		// MTTs Freerolls or MTTSnG
+//   * Most sections deal with OpponentIsAllin before normal play but sometimes the blocks
+	// for this didn't close so OpponentIsAllin was also dealt with in normal play stopped that
+	
+//   * Extend some play against multiway or opponent allin for late and middle stages 
+
+//   * Changed 'MaxStillToActStackSize < 100% StackSize' To 'Not f$We_Are_Covered' in bubble
+	// It doesn't make any difference now but just to have a direct contradiction
+	// in case of future changes or user changes
+//   * Created 'TheBiggestActiveOpponentsStack' Unlike 'MaxStacksizeOfActiveOpponents' this
+	// includes current bets - using it for full stack comparison instead of effective 
+//   * user_Bubble_We_Are_Covered I couldn't see it defined in the Termita I downloaded
+	// Created user symbol 'f$We_Are_Covered' and based it on 'TheBiggestActiveOpponentsStack'
+	// Although I think originally this was based on 'MaxStillToActStackSize'
+//   * 'AverageStackSize' is based on effective pot size so I created
+	// 'TableAverageStackAtStartOfHand'
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 
+//   * 

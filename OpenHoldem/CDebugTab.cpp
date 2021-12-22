@@ -1,20 +1,21 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CDebugTab.h"
 
-#include "CPreferences.h"
+#include "CFormulaParser.h"
+
 
 CDebugTab *p_debug_tab = NULL; 
 
@@ -30,15 +31,19 @@ CDebugTab *p_debug_tab = NULL;
 CString _expression_texts[kMaxSizeOfDebugTab];
 TPParseTreeNode _expressions[kMaxSizeOfDebugTab];
 
-CDebugTab::CDebugTab() {
+CDebugTab::CDebugTab() : COHScriptObject("f$debug", "", kNoSourceFileForThisCode, kUndefinedZero) {
   // Name is alwayss the same and required for function lookup
-  _name = "f$debug";
+  _name = CString("f$debug");
   _number_of_expressions = 0;
   Clear();
 }
 
 CDebugTab::~CDebugTab() {
   Clear();
+}
+
+void CDebugTab::Parse() {
+  p_formula_parser->ParseDebugTab(_function_text);
 }
 
 CString CDebugTab::EvaluateAll() {
@@ -56,16 +61,19 @@ CString CDebugTab::EvaluateAll() {
 }
 
 void CDebugTab::Clear() {
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Clear()\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Clear()\n");
   assert(_number_of_expressions >= 0);
   assert(_number_of_expressions <= kMaxSizeOfDebugTab);
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Going to delete expressions\n");
   for (int i=0; i<kMaxSizeOfDebugTab; ++i) {
     _expression_texts[i] = "";
+    // No longer deleting any parse-trees here,
+    // as parse-trees get handled by CMemoryPool
+    _expressions[i] = NULL;
   }
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Expressions deleted\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Expressions deleted\n");
   _number_of_expressions = 0;
-  write_log(preferences.debug_alltherest(), "[CDebugTab] Done\n");
+  write_log(Preferences()->debug_alltherest(), "[CDebugTab] Done\n");
 }
 
 void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expression) {
@@ -82,22 +90,15 @@ void CDebugTab::AddExpression(CString expression_text, TPParseTreeNode expressio
   ++_number_of_expressions;
 }
 
+void* CDebugTab::operator new(size_t size) {
+  assert(PMemoryPoolParser() != NULL);
+  write_log(Preferences()->debug_memory_usage(), "[CDebugTab] Allocating %i bytes\n", size);
+  return p_memory_pool_global->Allocate(size);
+}
+
 CString CDebugTab::function_text() {
   // It seems we need the current _function_text for parsing,
   // if changed in the editor, so we can't construct a new 
   // clean one from the old parsed data.
   return _function_text; 
-  /* !!
-  // Clean function text,
-  // nicely formatted without results
-  CString function_text;
-  for (int i=0; i<_number_of_expressions; ++i) {
-    function_text += " = ";
-    if (_expression_texts[i] != "") {
-      function_text += _expression_texts[i];
-    }
-    function_text += "\n";
-  }
-  return function_text;
-  */
 }

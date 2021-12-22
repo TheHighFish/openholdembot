@@ -1,0 +1,255 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+//
+// TO BE REMOVED
+//
+
+##OpponentStacksizeHeadsUp##
+StackSize_headsupchair
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh##
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh##
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh##
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh##
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh##
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh##
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh##
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh##
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six  :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh##
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##HighCardOfBestPossibleStraight##
+BitCount(rankbitscommon & 0b111110000000000) >= 3 ? ace   :
+BitCount(rankbitscommon & 0b011111000000000) >= 3 ? king  :
+BitCount(rankbitscommon & 0b001111100000000) >= 3 ? queen :
+BitCount(rankbitscommon & 0b000111110000000) >= 3 ? jack  :
+BitCount(rankbitscommon & 0b000011111000000) >= 3 ? ten   :
+BitCount(rankbitscommon & 0b000001111100000) >= 3 ? Nine  :
+BitCount(rankbitscommon & 0b000000111110000) >= 3 ? Eight :
+BitCount(rankbitscommon & 0b000000011111000) >= 3 ? Seven :
+BitCount(rankbitscommon & 0b000000001111100) >= 3 ? Six   :
+BitCount(rankbitscommon & 0b000000000111110) >= 3 ? Five  :
+-1
+
+##HighCardOfSecondBestPossibleStraight##
+(HighCardOfBestPossibleStraight == ace)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsAceHigh   :
+(HighCardOfBestPossibleStraight == king)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsKingHigh  :
+(HighCardOfBestPossibleStraight == queen) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsQueenHigh :
+(HighCardOfBestPossibleStraight == jack)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsJackHigh  :
+(HighCardOfBestPossibleStraight == ten)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsTenHigh   :
+(HighCardOfBestPossibleStraight == Nine)  ? HighCardOfSecondBestPossibleStraightIfBestStraightIsNineHigh  :
+(HighCardOfBestPossibleStraight == Eight) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsEightHigh :
+(HighCardOfBestPossibleStraight == Seven) ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSevenHigh :
+(HighCardOfBestPossibleStraight == Six)   ? HighCardOfSecondBestPossibleStraightIfBestStraightIsSixHigh   :
+HINT_Such_A_Straight_Does_Not_Exist
+
+//
+// Temp replacement for the srankbits-symbols
+//
+// To be replaced by a new symbol-engine
+//
+
+##UndefinedDominantSuit##
+// Using -2 here, so that it doesn't match the suit of "no card"
+-2
+
+##DominantSuit##
+WHEN BitCount(suitbitscommon_clubs)    + BitCount(suitbitsplayer_clubs)    >= 4 RETURN clubs    FORCE
+WHEN BitCount(suitbitscommon_diamonds) + BitCount(suitbitsplayer_diamonds) >= 4 RETURN diamonds FORCE
+WHEN BitCount(suitbitscommon_hearts)   + BitCount(suitbitsplayer_hearts)   >= 4 RETURN hearts   FORCE
+WHEN BitCount(suitbitscommon_spades)   + BitCount(suitbitsplayer_spades)   >= 4 RETURN spades   FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_clubs)    + BitCount(suitbitsplayer_clubs)    >= 3 RETURN clubs    FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_diamonds) + BitCount(suitbitsplayer_diamonds) >= 3 RETURN diamonds FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_hearts)   + BitCount(suitbitsplayer_hearts)   >= 3 RETURN hearts   FORCE
+WHEN IsFlop AND BitCount(suitbitscommon_spades)   + BitCount(suitbitsplayer_spades)   >= 3 RETURN spades   FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##DominantSuitPlayer##
+WHEN SuitsInHand == 2 RETURN FirstHoleCardSuit FORCE
+WHEN FirstHoleCardSuit  == DominantSuit RETURN DominantSuit FORCE
+WHEN SecondHoleCardSuit == DominantSuit RETURN DominantSuit FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##DominantSuitCommon##
+// First real domination
+WHEN BitCount(suitbitscommon_clubs)    >= 3 RETURN clubs    FORCE
+WHEN BitCount(suitbitscommon_diamonds) >= 3 RETURN diamonds FORCE
+WHEN BitCount(suitbitscommon_hearts)   >= 3 RETURN hearts   FORCE
+WHEN BitCount(suitbitscommon_spades)   >= 3 RETURN spades   FORCE
+// Then nearly domination
+// There might be 2 times 2 card of 1 suits
+// We especially don't want to return this suit in case of 2 and 3,
+// that's why we have to handle real domination first.
+WHEN BitCount(suitbitscommon_clubs)    >= 2 RETURN clubs    FORCE
+WHEN BitCount(suitbitscommon_diamonds) >= 2 RETURN diamonds FORCE
+WHEN BitCount(suitbitscommon_hearts)   >= 2 RETURN hearts   FORCE
+WHEN BitCount(suitbitscommon_spades)   >= 2 RETURN spades   FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##TwoDominantSuitsOnBoard##
+WHEN BitCount(suitbitscommon_clubs)    == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_diamonds) == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_hearts)   == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_spades)   == 1 RETURN false FORCE
+WHEN BitCount(suitbitscommon_clubs)    >= 3 RETURN false FORCE
+WHEN BitCount(suitbitscommon_diamonds) >= 3 RETURN false FORCE
+WHEN BitCount(suitbitscommon_hearts)   >= 3 RETURN false FORCE
+WHEN BitCount(suitbitscommon_spades)   >= 3 RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##SecondDominantSuitCommon##
+WHEN NOT TwoDominantSuitsOnBoard RETURN UndefinedDominantSuit FORCE
+WHEN NOT IsTurn RETURN UndefinedDominantSuit FORCE
+// At least one card of the 2nd dominant suit must be on the flop
+WHEN SuitOfFirstFlopCard  != DominantSuitCommon RETURN SuitOfFirstFlopCard  FORCE
+WHEN SuitOfSecondFlopCard != DominantSuitCommon RETURN SuitOfSecondFlopCard FORCE
+WHEN SuitOfThirdFlopCard  != DominantSuitCommon RETURN SuitOfThirdFlopCard  FORCE
+WHEN Others RETURN UndefinedDominantSuit FORCE
+
+##RankbitsCommon_DominantSuit##
+      [(FirstFlopSuit == DominantSuit)  ? (1 << RankOfFirstFlopCard) : 0]
+BitOr [(SecondFlopSuit == DominantSuit) ? (1 << RankOfSecondFlopCard) : 0]
+BitOr [(ThirdFlopSuit == DominantSuit)  ? (1 << RankOfThirdFlopCard) : 0]
+BitOr [(TurnSuit == DominantSuit)       ? (1 << RankOfTurnCard) : 0]
+BitOr [(RiverSuit == DominantSuit)      ? (1 << RankOfRiverCard) : 0]
+
+##RankbitsPlayer_DominantSuit##
+      [(FirstHoleCardSuit == DominantSuit)  ? (1 << RankOfFirstHoleCard) : 0]
+BitOr [(SecondHoleCardSuit == DominantSuit) ? (1 << RankOfSecondHoleCard) : 0]
+BitOr [(ThirdHoleCardSuit == DominantSuit)  ? (1 << RankOfThirdHoleCard) : 0]
+BitOr [(FourthHoleCardSuit == DominantSuit) ? (1 << RankOfFourthHoleCard) : 0]
+
+##Rankbits_DominantSuit##
+      RankbitsCommon_DominantSuit
+BitOr RankbitsPlayer_DominantSuit
+
+##RankHiPlayer_DominantSuit##
+// Holdem only ATM
+WHEN ((rankhiplayer == RankOfFirstHoleCard) AND (FirstHoleCardSuit == DominantSuit)) RETURN rankhiplayer FORCE
+WHEN ((rankhiplayer == RankOfSecondHoleCard) AND (SecondHoleCardSuit == DominantSuit)) RETURN rankhiplayer FORCE
+WHEN Others RETURN rankloplayer FORCE
+
+##RankbitsCommon_DominantSuitCommon##
+      [(FirstFlopSuit == DominantSuitCommon)  ? (1 << RankOfFirstFlopCard) : 0]
+BitOr [(SecondFlopSuit == DominantSuitCommon) ? (1 << RankOfSecondFlopCard) : 0]
+BitOr [(ThirdFlopSuit == DominantSuitCommon)  ? (1 << RankOfThirdFlopCard) : 0]
+BitOr [(TurnSuit == DominantSuitCommon)       ? (1 << RankOfTurnCard) : 0]
+BitOr [(RiverSuit == DominantSuitCommon)      ? (1 << RankOfRiverCard) : 0]

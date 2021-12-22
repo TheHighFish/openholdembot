@@ -1,33 +1,31 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // OpenHoldemDoc.cpp : implementation of the COpenHoldemDoc class
 //
 
 #include "stdafx.h"
 #include "CAutoplayer.h"
-#include "CDllExtension.h"
 #include "CFormulaParser.h"
 #include "CFunctionCollection.h"
 #include "COpenHoldemHopperCommunication.h"
 #include "COpenHoldemTitle.h"
-#include "CPreferences.h"
+
 #include "DialogFormulaScintilla.h"
 #include "MainFrm.h"
-#include "OH_MessageBox.h"
+#include "..\DLLs\WindowFunctions_DLL\window_functions.h"
 #include "OpenHoldem.h"
 #include "OpenHoldemDoc.h"
-
 
 // COpenHoldemDoc
 IMPLEMENT_DYNCREATE(COpenHoldemDoc, CDocument)
@@ -37,6 +35,7 @@ END_MESSAGE_MAP()
 
 // COpenHoldemDoc construction/destruction
 COpenHoldemDoc::COpenHoldemDoc() {
+	write_log(Preferences()->debug_openholdem(), "[COpenHoldemDoc] Going to call  p_function_collection->DeleteAll\n");
 	p_function_collection->DeleteAll(false, true);
 }
 
@@ -49,7 +48,7 @@ BOOL COpenHoldemDoc::SaveModified()
 	{
 		if (m_formulaScintillaDlg->m_dirty)
 		{
-			if (OH_MessageBox_Interactive(
+			if (MessageBox_Interactive(
 				"The Formula Editor has un-applied changes.\n"
 				"Really exit?", 
 				"Formula Editor", MB_ICONWARNING|MB_YESNO) == IDNO)
@@ -59,24 +58,21 @@ BOOL COpenHoldemDoc::SaveModified()
 		}
 
 		// Kill the formula dialog
-		if(m_formulaScintillaDlg) 
-			m_formulaScintillaDlg->DestroyWindow();
-
+    if (m_formulaScintillaDlg) {
+      m_formulaScintillaDlg->DestroyWindow();
+    }
 	}
 	return CDocument::SaveModified();
 }
 
 BOOL COpenHoldemDoc::OnNewDocument() {
-	if (!CDocument::OnNewDocument())
-		return FALSE;
-
+  if (!CDocument::OnNewDocument()) {
+    return FALSE;
+  }
 	// Default bot
 	p_function_collection->SetEmptyDefaultBot();
 	SetModifiedFlag(false);
 	p_openholdem_title->UpdateTitle();
-
-  // Try to (re)load dll
-	p_dll_extension->Load("");
 	return true;
 }
 
@@ -118,17 +114,23 @@ void COpenHoldemDoc::Serialize(CArchive& ar)
 		//
 		if (p_autoplayer->autoplayer_engaged())
 		{
-			OH_MessageBox_Interactive("Can't load formula while autoplayer engaged.", "ERROR", 0);
+			MessageBox_Interactive("Can't load formula while autoplayer engaged.", "ERROR", 0);
 			return;
 		}
 		// Read ohf file
     assert(p_formula_parser != NULL);
+		write_log(Preferences()->debug_openholdem(), "[COpenHoldemDoc::Serialize] Going to call p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic \n");
 		p_formula_parser->ParseFormulaFileWithUserDefinedBotLogic(ar);
 		SetModifiedFlag(false);
 		p_openholdem_title->UpdateTitle();
-
-    // Try to (re)load (new) dll
-		p_dll_extension->Load("");
+		// Check if Debug Action Trace Profile is used
+		if (!init_load) {
+			if (ar.GetFile()->GetFilePath().Right(1) == "d")
+				theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_CHECKED);
+			else
+				theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_ADDACTIONS, MF_UNCHECKED);
+		}
+		init_load = FALSE;
 	}
 }
 

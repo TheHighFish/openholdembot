@@ -1,0 +1,1409 @@
+##notes##
+  * Removed unused functions like f$allin and old WinHoldem-functions like f$swag
+  * Removed unused lists (all two!)
+  * OpenPPL-ification
+    - introduced f$preflop .. f$river and split the original code accordingly
+	- replaced these functions further by Winngy_FixedLimit_Preflop, ...
+	  for integration as a default-bot.
+    - eeplaced all br==2 by Isflop, same for the other betting-rounds
+  * Turned WinHoldems f$play to f$sitin / f$sitout / f$leave
+  * renamed f$P to Winngy_Prwin_number_of_opponents
+  * Vebosity:
+    - renamed f$NESTR -> f$NoEasyStraightDraw
+	- f$spl -> InCutOff
+	- f$spd -> InButton
+	- f$spm -> InMiddleposition
+	- f$spe -> InEarlyPosition
+  * introducing f$callshort and f$raisshort
+    in order to support the old, removed symbols
+  * replaced a didswag by didrais, as this is a FL-bot
+  * replaced pt_icon by new functions:
+    f$OpponentIsLoosePassive, f$OpponentIsSemiLoosePassiveAggressive
+	and f$OpponentIsLooseAggressive
+  * Simplified f$Raiser_pfr, which uses nowthe multiplexer
+  
+##f$sitin##
+// SITIN RULE - Based on players 
+1                                   // 0=off 1=on 
+&& issittingout                     // sitting out
+&& (IsFlop || IsTurn)               // flop or turn 
+&& nchairsdealtright==2             // about to be big blind 
+&& nopponentsdealt>=5               // 5 or more opponents
+
+##f$sitout##
+// SITOUT RULE - Based on players 
+[ 1                                   // 0=off 1=on 
+  && issittingin                      // sitting in
+  && IsFlop && nopponentsdealt<=5     // Getting short          
+] OR
+// SITOUT RULE - based on Time 
+[ 0                                   // 0=off 1=on 
+  && issittingin                      // sitting in 
+  && (IsFlop || IsTurn)               // flop or turn 
+  &&  elapsed>21600                   // playing 6 hours
+]
+
+##f$leave##
+// LEAVE RULE - Game broken up 
+[ 1                                   // 0=off 1=on 
+  && issittingout                     // sitting out 
+  && nopponentsdealt<=2               // super short handed
+  && (IsFlop || IsTurn)               // flop or turn  
+] 
+OR
+// LEAVE RULE - Wait around, but get out before you get booted 
+[ 1                                   // 0=off 1=on 
+  && issittingout                     // sitting out 
+  && elapsedauto>=100                 // dynamic rule  
+       *nopponentsdealt               // 100 seconds times opponents dealt
+  && (IsFlop || IsTurn)                 // flop or turn  
+]
+
+##Winngy_Prwin_number_of_opponents##
+(nopponentsplaying<=1) ? 1 :
+IsPreflop ? nopponentsdealt :
+IsFlop    ? ((nplayersround2-1)+((ncallbets*2)-(didraisround2*2))+((nbetsround1-didraisround1)*.8)) :
+IsTurn    ? ((nplayersround3-1)+((ncallbets*2)-(didraisround3*2))+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) :
+IsRiver   ? ((nplayersround4-1)+((ncallbets*2)-(didraisround4*2))+(nbetsround3-didraisround3)+(nbetsround2-didraisround2)+((nbetsround1-didraisround1)*.8)) : 1
+
+##f$prwin_number_of_iterations##
+50000
+
+##Winngy_FixedLimit_Preflop##
+WHEN NOT (f$Fold OR f$NoRaise)
+   WHEN f$RaisePreflop RaiseMin FORCE
+   WHEN ((f$defendblinds > 1) OR (f$stealblinds > 1)) RaiseMin FORCE
+WHEN NOT f$Fold   
+   WHEN f$CallPreflop Call FORCE
+   WHEN (f$defendblinds OR f$stealblinds) Call FORCE
+WHEN Others
+   WHEN Others Fold FORCE
+
+##Winngy_FixedLimit_Flop##
+WHEN NOT (f$Fold OR f$NoRaise)
+   WHEN f$RaisePostflop RaiseMin FORCE
+   WHEN ((f$defendblinds > 1) OR (f$stealblinds > 1)) RaiseMin FORCE
+WHEN NOT f$Fold
+   WHEN f$CallPostflop Call FORCE
+   WHEN (f$defendblinds OR f$stealblinds) Call FORCE
+WHEN Others
+   WHEN Others Fold FORCE
+
+##Winngy_FixedLimit_Turn##
+WHEN NOT (f$Fold OR f$NoRaise)
+   WHEN f$RaisePostflop RaiseMin FORCE
+   WHEN ((f$defendblinds > 1) OR (f$stealblinds > 1)) RaiseMin FORCE
+WHEN NOT f$Fold
+   WHEN f$CallPostflop Call FORCE
+   WHEN (f$defendblinds OR f$stealblinds) Call FORCE
+WHEN Others
+   WHEN Others Fold FORCE
+
+##Winngy_FixedLimit_River##
+WHEN NOT (f$Fold OR f$NoRaise)
+   WHEN f$RaisePostflop RaiseMin FORCE
+   WHEN f$RaiseRiver RaiseMin FORCE
+   WHEN ((f$defendblinds > 1) OR (f$stealblinds > 1)) RaiseMin FORCE
+WHEN NOT f$Fold
+   WHEN f$CallPostflop Call FORCE
+   WHEN (f$defendblinds OR f$stealblinds) Call FORCE
+WHEN Others
+   WHEN Others Fold FORCE
+
+##f$RaisePreflop##
+// ROUND ONE - Pre Flop
+// We will play the recommended openers from "Small Stakes Hold 'em by Miller Sklansky and Malmuth.
+// If we know we have a multiway pot play a few more hands using their recommended loose table openers.
+// Othertherwise we will adhere to recomendations for tight small stakes tables.
+  f$tight_openers>=2                      // SSH tight openers to raise normally
+     || {f$loose_openers>=2 && (                // SSH loose openers to raise when         
+             nopponentsplaying>2 && (           // + minimum three opponents are still in the hand
+                  nopponentsbetting>3           // + minimum two opponents plus blinds have put chips in pot
+               || (dealposition<3 &&            //   or if blind, minimum two opponents plus other blind 
+                  nopponentsbetting>2)          //   put chips in pot 
+                                    )
+          || floppct>=0.50                  // 50%+ average saw flop at this table over last 30 minutes
+                             )     
+        }
+	 
+##f$CallPreflop##
+// ROUND ONE - Pre Flop
+// We will play the recommended openers from "Small Stakes Hold 'em by Miller Sklansky and Malmuth.
+// If we know we have a multiway pot play a few more hands using their recommended loose table openers.
+// Othertherwise we will adhere to recomendations for tight small stakes tables.
+	 f$tight_openers>=1                      // SSH tight openers to call normally
+  || f$loose_openers>=1 && (                 // SSH loose openers to call when                  
+		  {nopponentsplaying>=3 && (         // + minimum three opponents are still in the hand
+			   nopponentsbetting>=4          // + minimum two opponents plus blinds have put chips in pot
+			|| ((dealposition==1||dealposition==2) &&                     //   or if blind, minimum two opponents plus other blind 
+			   nopponentsbetting>=3)         //   put chips in pot 
+			) &&                             // 
+		  nbetsround<=2 && (                 // + pot has not been raised and reraised (3 bet)
+			   callposition>=2               // + not cold calling uncalled raise unless
+			|| ($AQs||$AJs||$KQs)            //   $AQs $AJs or $KQs. 
+			)
+		  }                                  // or
+	   || floppct>=0.50                  // 50%+ average saw flop at this table over last 30 minutes
+	   )
+  || didrais && nbetstocall<3                // previously raised and call less than 3 bets
+  || didcall && nbetstocall<2                // previously called and call less than 2 bets  << cout v0009a
+
+##f$RaisePostflop##
+   (f$rais_FTR_BigPot )                     //Made hands
+|| (f$rais_FTR_Aggro)                       //Bluffs , c-bets
+|| (f$follow_thru>1) && f$Stop_Raise==0     //C-bets but only when against players who co-operate  
+|| (IsRiver && nraisbets<2 && f$raise_the_chaser)  
+
+##f$RaiseRiver##
+   (f$value_to_raise>f$cost_to_fold)
+&& (f$value_to_raise>f$value_to_call) 
+&& (pokerval - pokervalcommon >= 16400000) // raise river with %
+              
+##f$CallRiver##
+   (f$value_to_call>f$cost_to_fold) 
+&& (pokerval - pokervalcommon >= 16400000)                                              
+
+##f$CallPostflop##
+   (f$call_FTR_BigPot )                               //Made Hands
+|| (f$DRAWS)                                          //Drawing Hands    
+|| (f$GENERAL_HAND_CALLS)                             //Catch Alls
+|| ((didcall||didrais) && !IsRiver && nbetstocall<=1)   //c-call
+|| (f$follow_thru>0)                                  //C-bets but only when against players who co-operate  
+
+
+##f$NoEasyStraightDraw##
+(nstraightcommon<=2 && nstraightfillcommon>=3) 
+|| (nbetsround1>=2 
+    && (     (nstraightfillcommon==1 && nstraightcommon==4 && (`(rankbitscommon&0x007f))==4)   // 6543 
+          || (nstraightfillcommon==1 && nstraightcommon==3 && (`(rankbitscommon&0x007c))==4)   // 6542, 6432
+       ) 
+   )
+
+##f$SAFEBOARD##
+[nrankedcommon<2 && 
+ nsuitedcommon<3 && 
+ nstraightcommon<3 && 
+ nstraightfillcommon>1 ]
+&& !(betround>flop && rankhicommon==14 && rankhicommon>rankhiplayer)
+
+##f$strength_straightflush##
+isstraightflush || isroyalflush ?
+
+// Hand strength evaluator - returns a value from 1-5, 5 representing the strongest hand
+
+isroyalflush && !(pokervalcommon&royalflush)                         ? 5 : // Nuts
+isstraightflush && nhandshi==0 && !(pokervalcommon&straightflush)    ? 5 : // Nuts 
+isstraightflush && !(pokervalcommon&straightflush)                   ? 3 : // I may not have the highest, board does not have a str8flush
+isstraightflush && (pokervalcommon&straightflush)                    ? 2 : // I may not have the highest, board does have a str8flush
+isroyalflush && (pokervalcommon&royalflush)                          ? 1 : // Chop pot
+0
+
+: 0
+
+##f$strength_quads##
+isfourofakind ?
+
+isfourofakind && nhandshi==0 && !(pokervalcommon&fourofakind)        ? 5 : // Nuts
+isfourofakind && nhandshi==0 && (pokervalcommon&fourofakind)         ? 5 : // Nuts
+isfourofakind && !(pokervalcommon&fourofakind)                       ? 3 : // I may not have the highest, board does not have quads
+isfourofakind && (pokervalcommon&fourofakind)                        ? 1 : // Board has quads, I don't have best kicker
+0
+
+: 0
+
+##f$strength_fullhouse##
+isfullhouse ? 
+
+((0
+// Board paired, I have pocket pair and top side full house, pocket pair is higher than non-participating board cards  
+// e.g. QQ/QTT53
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0b11100) && trank==((pokervalcommon>>8)&0xf) ]
+// Board paired, I have pocket pair and top side full house, pocket pair is lower than non-participating board cards  
+// e.g. QQ/QTTA3
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pcbits&0b11100) && trank<((pokervalcommon>>8)&0xf) ]
+// Board paired, I have pocket pair and bottom side full house, pocket pair is higher than non-participating board cards
+// e.g. QQ/QKKT6
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pcbits&0b11100) && trank==((pokervalcommon>>8)&0xf) ]
+// Board paired, I have pocket pair and bottom side full house, pocket pair is lower than non-participating board cards
+// e.g. QQ/QKKA6
+|| [ isfullhouse && ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pcbits&0b11100) && trank<((pokervalcommon>>8)&0xf) ]
+) ? 5 :
+
+(0
+// Board paired, I don't have pocket pair, I have top side full house, pair is higher than non-participating board cards
+// e.g. QJ/QQJ53
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pokerval&0xf)==((pokervalcommon>>8)&0xf) ]
+// Board paired, I don't have pocket pair, I have top side full house, pair is lower than non-participating board cards  
+// e.g. QJ/QQJA3
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)>(pokerval&15) && (pokerval&0xf)<((pokervalcommon>>8)&0xf) ]
+// Board paired, I don't have pocket pair, I have bottom side full house, pair is higher than non-participating board cards
+// e.g. QJ/QJJ53
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pokerval&0xf)==((pokervalcommon>>8)&0xf) ]
+// Board paired, I don't have pocket pair, I have bottom side full house, pair is lower than non-participating board cards
+// e.g. QJ/QJJ53
+|| [ isfullhouse && !ispair && nrankedcommon==2 && !(pokervalcommon&twopair)
+  && ((pokerval>>8)&15)<(pokerval&15) && (pokerval&0xf)<((pokervalcommon>>8)&0xf) ] 
+// Board has two pair, I have top trips 
+// e.g. QT/QQJJ8 
+|| [ isfullhouse && (pokervalcommon&twopair) && 
+  ( ((pokervalcommon>>16)&0x0f)==$$pr0 || ((pokervalcommon>>16)&0x0f)==$$pr1 ) ]
+) ? 4 :
+
+(0
+) ? 3 :
+
+(0
+// Board trips, I have pocket pair higher than non-participating board cards
+// e.g. QQ/JJJ92
+|| [ isfullhouse && ispair && nrankedcommon==3 && (pcbits&0b00011) && $$pr0>((pokervalcommon>>4)&0xf) ]
+// Board trips, only one of my hole cards participates, the pair rank is higher than non-participating board cards
+// e.g. QT/999T8
+|| [ isfullhouse && nrankedcommon==3 && (`(pcbits&0b00011))==1 && (pokerval&0xf)==((pokervalcommon>>4)&0xf) ]
+) ? 2 :
+
+(0
+// Board trips, I have pocket pair lower than non-participating board cards
+// e.g. QQ/JJJK2
+|| [ isfullhouse && ispair && nrankedcommon==3 && (pcbits&0b00011) && $$pr0<((pokervalcommon>>4)&0xf) ]
+// Board trips, only one of my hole cards participates, the pair rank is lower than non-participating board cards
+// e.g. QT/999TK
+|| [ isfullhouse && nrankedcommon==3 && (`(pcbits&0b00011))==1 && (pokerval&0xf)<((pokervalcommon>>4)&0xf) ]
+// Board has full house
+|| [ isfullhouse && (pokervalcommon&fullhouse) ]
+) ? 1 : 0 )
+
+: 0
+
+##f$strength_flush##
+isflush ?
+
+// Big raise
+((
+0
+|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon==1 
+     && nstraightflushfillcommon>=3 ]  // nuts
+) ? 5 :
+
+// Medium raise
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)<=1 && nrankedcommon==1 && nsuitedcommon<=4 ] // one card can beat my flush
+|| [ ishiflush && (!(pokervalcommon&flush) || pokerval>pokervalcommon) && nrankedcommon<=2 
+     && nstraightflushfillcommon>=2 ]
+) ? 4 :
+
+// Small raise
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)<=2 && nrankedcommon==1 && nsuitedcommon<=4 ] // two cards can beat my flush
+) ? 3 :
+
+// Call
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)>=3 && nrankedcommon==1 && nsuitedcommon<=4 ] // three or more cards can beat my flush
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)<=2 && nrankedcommon==2 && nsuitedcommon<=4 ] // two or less cards can beat my flush, board paired
+) ? 2 :
+
+// Don't call these
+(
+0
+|| [ isflush && `((~srankbits&0x7fff)>>srankhiplayer)>=4 && nsuitedcommon<=4 ] // four or more cards can beat my flush
+|| [ isflush && nrankedcommon>=3 ] // board has trips or more
+|| [ isflush && pokerval<pokervalcommon && (pokervalcommon&flush) ] // board has flush, my cards don't help
+) ? 1 :
+0)
+
+// FlushDiscount
+- ( 
+0
++ (pokervalcommon&twopair?2:0)
+)
+
+: 0
+
+##f$strength_straight##
+isstraight ?
+
+({0
+//Board 3 to a straight, cards in rank 1 and rank 2 (high end)
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>12)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>12)&0xf))))]
+//Board 3 to a straight, cards in rank 1 and rank 3
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>8)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>8)&0xf))))]
+//Board 3 to a straight, cards in rank 1 and rank 4
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+//Board 4 to a straight, card used in rank 1, nut straight with an ace
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr0==14)) || (($$pr1==((pokerval>>16)&0xf))&&($$pr1==14))) ]
+//Board 4 to a straight, card used in rank 2, nut straight with a king
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr0==13)) || (($$pr1==((pokerval>>12)&0xf))&&($$pr1==13))) ]
+//Board 4 to a straight, card used in rank 3, nut straight with a queen
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr0==12)) || (($$pr1==((pokerval>>8)&0xf))&&($$pr1==12))) ]
+//Board 4 to a straight, card used in rank 4, nut straight with a jack
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>4)&0xf))&&($$pr0==11)) || (($$pr1==((pokerval>>4)&0xf))&&($$pr1==11))) ]
+//Board 4 to a straight, card used in rank 5, nut straight with a ten
+|| [ isstraight && nstraightfillcommon==1 && ((($$pr0==((pokerval>>0)&0xf))&&($$pr0==10)) || (($$pr1==((pokerval>>0)&0xf))&&($$pr1==10))) ]
+//Board 3 to a straight, nut straights
+|| [ isstraight && nstraightfillcommon==2 && rankloplayer>=10 ]
+} ? 5 :
+
+{0
+//Board 3 to a straight, cards in rank 1 and rank 5
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>16)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>16)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 3 to a straight, cards in rank 2 and rank 3
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>8)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+//Board 3 to a straight, cards in rank 2 and rank 4
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+} ? 4 :
+
+{0
+//Board 3 to a straight, cards in rank 2 and rank 5
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>12)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>12)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 3 to a straight, cards in rank 3 and rank 4
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr1==((pokerval>>4)&0xf))) || (($$pr1==((pokerval>>8)&0xf))&&($$pr0==((pokerval>>4)&0xf))))]
+//Board 3 to a straight, cards in rank 3 and rank 5
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>8)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>8)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 3 to a straight, cards in rank 4 and rank 5 (idiot end)
+|| [ isstraight && nstraightfillcommon==2 && ((($$pr0==((pokerval>>4)&0xf))&&($$pr1==((pokerval>>0)&0xf))) || (($$pr1==((pokerval>>4)&0xf))&&($$pr0==((pokerval>>0)&0xf))))]
+//Board 4 to a straight, card used in rank 1
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>16)&0xf)) || ($$pr1==((pokerval>>16)&0xf))) ]
+//Board 4 to a straight, card used in rank 2
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>12)&0xf)) || ($$pr1==((pokerval>>12)&0xf))) ]
+} ? 3 :
+
+{0
+//Board 4 to a straight, card used in rank 3
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>8)&0xf)) || ($$pr1==((pokerval>>8)&0xf))) ]
+//Board 4 to a straight, card used in rank 4
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>4)&0xf)) || ($$pr1==((pokerval>>4)&0xf))) ]
+} ? 2 :
+
+{0
+//Board 4 to a straight, card used in rank 5
+|| [ isstraight && nstraightfillcommon==1 && (($$pr0==((pokerval>>0)&0xf)) || ($$pr1==((pokerval>>0)&0xf))) ]
+//Board has straight
+|| [ isstraight && nstraightfillcommon==0 ]
+} ? 1 : 0)
+
+// StraightDiscount
+- ( 
+0
++(nsuitedcommon>=3)*2 
++(nsuitedcommon>=4) 
++(nrankedcommon>=2) 
++(nrankedcommon>=3) 
++(pokervalcommon&twopair?2:0)
+// Negate flush discount if we have a good flush draw 
+- ( nsuitedcommon==3 && nsuited==4 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 )
+)
+
+: 0
+
+##f$strength_trips##
+isthreeofakind ? 
+
+({0
+//Board has No Pair and you have top set
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer==rankhicommon]
+
+} ? 5 :
+
+{0
+//Board has No Pair and you have middle set
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer<rankhicommon && rankhiplayer>ranklocommon ] 
+ 
+//Board has Pair and you have Trips w/ good kicker (used as 4th ranked card)
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>4)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>4)&0xf))) ] 
+} ? 4 :
+
+{0
+//Board has Pair and you have Trips w/ moderate kicker (used as 5th ranked card)
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1==((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0==((pokerval>>0)&0xf))) ] 
+
+//Board has No Pair and you have bottom set
+|| [ nrankedcommon==1 && ispair && isthreeofakind && rankhiplayer==ranklocommon ] 
+//Board not paired catch all
+|| [ isthreeofakind && nrankedcommon==1 ]
+} ? 3 :
+
+{0
+//Board has Pair and you have Trips w/ poor kicker (not used)
+|| [ nrankedcommon==2 && isthreeofakind && ((trank==$$pr0 && $$pr1<((pokerval>>0)&0xf))||(trank==$$pr1 && $$pr0<((pokerval>>0)&0xf))) ] 
+//Board has 3OAK good kickers
+|| [ isthreeofakind && nrankedcommon==3 && rankhiplayer>=13 && rankloplayer>=10 ]
+//Board has pair catch all
+|| [ isthreeofakind && nrankedcommon==2 ]
+} ? 2 :
+
+{0
+//Board has 3OAK catch all
+|| [ isthreeofakind && nrankedcommon==3 ]
+} ? 1 : 0)
+
+// TripsDiscount
+- (
+0
++(nsuitedcommon>=3)*2
++(nsuitedcommon>=4)
++(!f$NoEasyStraightDraw)*2
++(nstraightfillcommon<=1 || nstraightcommon>=4)
+)
+
+: 0
+
+##f$strength_twopair##
+istwopair ?
+
+({0
+ //Board has No Pair and you have Top two pairs
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>4)&15) ] 
+} ? 5 :
+
+{0
+//Board has No Pair and you have Top and bottom pair
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)<((pokerval>>16)&15) && (pokerval&15)>((pokerval>>4)&15) ] 
+//Board has No Pair and you have Middle two pairs
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>8)&15) && (pokerval&15)>((pokerval>>4)&15) && !(rankloplayer==ranklocommon) ]
+//Rainbow board
+|| [ istwopair && f$SAFEBOARD ]
+} ? 4 :
+
+{0
+//Board has Pair and you have Overpair
+|| [ nrankedcommon==2 && istwopair && ($$pr0==((pokerval>>16)&0xf) || $$pr1==((pokerval>>16)&0xf)) ] 
+
+|| [ nrankedcommon==2 && istwopair && ispair && $$pr0>trankcommon ] 
+//Board has No Pair and you have Bottom two pairs
+|| [ nrankedcommon==1 && istwopair && (pokerval&15)>((pokerval>>16)&15) ] 
+} ? 3 :
+
+{0
+//Board has Pair and you have Underpair
+|| [ nrankedcommon==2 && istwopair && ispair && (pokervalcommon < twopair) && $$pr0<trankcommon ] 
+//Board has Pair and you have Two pairs w/ good kicker (A-T)
+|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)>=10 ] 
+} ? 2 :
+
+{0
+//Board has two pair and you have only two pair
+|| [ nrankedcommon==2 && istwopair && (pokervalcommon & twopair) ]
+//Board has Pair and you have Two pairs w/ poor kicker (9-2)
+|| [ nrankedcommon==2 && (pokervalcommon < twopair) && istwopair && !ispair && (pokerval&15)<=9 ] 
+//Catch all
+|| [ istwopair ]
+} ? 1 : 0) 
+
+// TwoPairDiscount
+- (
+0
++(nsuitedcommon>=3)*2
++(nsuitedcommon>=4)
++(!f$NoEasyStraightDraw)*2
++(nstraightfillcommon<=1 || nstraightcommon>=4)
+)
+
+: 0
+
+##f$strength_onepair##
+isonepair ? 
+
+((0
+//Board has No Pair and you have Overpair 10's or better
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon && rankloplayer>9] 
+//Board has No Pair and you have Top pair Ace w/ good kicker (K-T) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
+//Board has No Pair and you have Top pair King w/ good kicker (A-T) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
+) ? 5 :
+
+(0
+//Board has No Pair and you have Overpair 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank>trankcommon ] 
+//Board has No Pair and you have Top pair Queen or lower w/ good kicker (A-T) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1>=10)||(trank==$$pr1 && $$pr0>=10)} ] 
+//Board has No Pair and you have Top pair Ace w/ poor kicker (9-2) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==14 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
+) ? 4 :
+
+(0
+//Board has No Pair and you have Midpair 1 overcard 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)<trank ] 
+//Board has No Pair and you have Top pair King w/ poor kicker (9-2) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank==13 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
+//Board has No Pair and you have Middle pair w/ overcard kicker 
+|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ] 
+) ? 3 :
+
+(0
+//Board has No Pair and you have Top pair Queen or lower w/ poor kicker (9-2) 
+|| [ nrankedcommon==1 && ishipair && pokerval<twopair && trank<=12 && {(trank==$$pr0 && $$pr1<=9)||(trank==$$pr1 && $$pr0<=9)} ] 
+//Board has No Pair and you have Midpair 2 overcard 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && ((pokerval>>8)&15)>trank && ((pokerval>>4)&15)>trank ] 
+//Board has No Pair and you have Bottom pair w/ overcard kicker 
+|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1>trankcommon)||(trank==$$pr1 && $$pr0>trankcommon)} ] 
+//Board has Pair and you have "Two overcards w/Ace" 
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==14 && rankloplayer>=10 && !ispair ] 
+//Board has Pair and you have "Two overcards w/ King" 
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon  && rankhiplayer==13 && rankloplayer>=10 && !ispair ] 
+) ? 2 :
+
+(0
+//Board has No Pair and you have Underpair 
+|| [ nrankedcommon==1 && ispair && pokerval<twopair && trank<(pokerval&15) ] 
+//Board has No Pair and you have Middle pair w/ poor kicker 
+|| [ nrankedcommon==1 && ismidpair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ] 
+//Board has No Pair and you have Bottom pair w/ poor kicker 
+|| [ nrankedcommon==1 && islopair && pokerval<twopair && !ispair && {(trank==$$pr0 && $$pr1<trankcommon)||(trank==$$pr1 && $$pr0<trankcommon)} ] 
+//Board has Pair and you have Two overcards
+|| [ nrankedcommon==2 && rankloplayer>rankhicommon ] 
+//Board has Pair and you have "One overcard w/Ace (A9-A2)" 
+|| [ nrankedcommon==2 && rankhiplayer==14 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ] 
+//Board has Pair and you have "One overcard w/ King (K9-K2)" 
+|| [ nrankedcommon==2 && rankhiplayer==13 && pokerval<twopair && rankloplayer<=9 && rankloplayer<rankhicommon ] 
+//Board has Pair and you have Two small cards 
+|| [ nrankedcommon==2 && !ispair && pokerval<twopair && rankhiplayer<=9 ] 
+) ? 1 : 0)
+
+// OnePairDiscount
+- (
+0
++(nsuitedcommon>=3)*2
++(nsuitedcommon>=4)
++(!f$NoEasyStraightDraw)*2
++(nstraightfillcommon<=1 || nstraightcommon>=4)
++(nopponentsplaying>2)
++didrais
+)
+
+: 0
+
+##f$strength_hicard##
+ishicard ? 0 : 0
+
+
+##f$dpe##
+ // dynamic position early
+[ betposition==1 || betposition/nplayersplaying <=(1/2) ]
+
+##f$dpm##
+// dynamic middle position
+[ betposition/nplayersplaying > (1/2) &&
+  betposition/nplayersplaying <=(3/4) &&
+  betposition!=nplayersplaying             
+]
+
+##f$dpl##
+ // dynamic late position
+[ betposition/nplayersplaying >(3/4) ]
+
+##f$dpd##
+ // dynamic dealer position
+[ betposition==nplayersplaying ]
+
+##f$DP##
+
+nplayersdealt==10 ? ( 
+dealposition==3 ? 3 : 
+dealposition==4 ? 3 : 
+dealposition==5 ? 3 :  0): 
+
+nplayersdealt==9 ? ( 
+dealposition==3 ? 3 : 
+dealposition==4 ? 3 :  0): 
+
+nplayersdealt==8 ? ( 
+dealposition==3 ? 3 : 0):  0
+
+##f$PF3Bet_Raise##
+// 3-Bets top 70% of raiser's pre-flop raise range 
+(f$Raiser_pfr * 169 * 0.70)
+
+##f$Raiser_pfr##
+WHEN pt_hands_raischair < 30 RETURN 0.10 FORCE
+WHEN Others RETURN pt_pfr_raischair FORCE
+
+##f$tight_openers##
+// OPENING HANDS TO RAISE (5 or less players on average flop)
+      [ IsPreflop && (                      
+             InEarlyPosition && ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )          
+               || ( $AA || $KK || $QQ || $AKs )            
+               ) 
+          || InMiddlePosition && (      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ  || $ATs || $KQ || $KJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || InCutOff && (                      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK  || $AQ || $AJ  || $AT || $A9s || $A8s || $KQ || $KJs || $KTs || $QJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || (dealposition==1)  && (              
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                          
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )          
+               || ( $AA || $KK || $QQ || $AKs )            
+               )                
+          || (dealposition==2)  && ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                      
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                                  
+               || ( $AA || $KK || $QQ || $AKs )                
+               ) 
+          ) 
+     ] 
+? 2 : 
+// OPENING HANDS TO CALL (5 or less players on average flop) 
+     [ IsPreflop && ( 
+           InEarlyPosition && ( 
+                nbetsround<=1 && ( (ispair && trank>=7) || (issuited && rankloplayer>=10) || $AK || $AQ || $AJ || $KQ || $QTs ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )          
+             || ( $AA || $KK || $QQ || $AKs ) 
+             )              
+        || InMiddlePosition && (      
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || $98s || $Ax && rankloplayer>=10 || $KQ || $KJ  ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )            
+             || ( $AA || $KK || $QQ || $AKs )    
+             ) 
+        || InCutOff && (  
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || (issuited && isconnector && rankloplayer>=4) || rankloplayer>=10 ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )            
+             || ( $AA || $KK || $QQ || $AKs )    
+             ) 
+        || (dealposition==1)  && (                
+                nbetsround<=1 && ( ispair || issuited || rankloplayer>=10 )              
+             || nbetsround<=2 && ( 
+                     ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs ) 
+                  || ( callposition>=2 && ispair ) 
+                  )                
+             || ( $AA || $KK || $QQ || $AKs )            
+             )    
+        || (dealposition==2)  && ( 
+                nbetsround<=2 && ( ispair || $Axs || (issuited && rankloplayer>=9) || (issuited && isconnector && rankloplayer>=4) || rankloplayer>=12 || $AJ )                        
+             || ( $AA || $KK || $QQ || $AKs )                
+             ) 
+        ) 
+     ] 
+? 1 : 
+0
+
+##f$loose_openers##
+// OPENING HANDS TO RAISE (6 or more players on average flop)
+     [ IsPreflop && (                      
+             InEarlyPosition &&  ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ || $ATs || $KQ || $KJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ )          
+               || ( $AA || $KK || $QQ || $AKs )            
+               ) 
+          || InMiddlePosition && (      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ || $ATs || $KQ || $KJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ )                    
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || InCutOff && nopponentsbetting>=6 && (                      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $88 || $AK  || $AQ || $AJ  || $KQ || (issuited && rankloplayer>=10) || $A9s || $A8s || $K9s ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs || $KQs )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || InCutOff && (                      
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ  || $AT || $A9s || $A8s || $KQ || $KJs || $KTs || $QJs ) 
+               || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK )                      
+               || ( $AA || $KK || $QQ || $AKs )  
+               ) 
+          || (dealposition==1)  && (              
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                          
+               || ( $AA || $KK || $QQ || $JJ || $TT || $AK )                                  
+               )            
+          || (dealposition==2)  && ( 
+                  nbetsround<=1 && ( $AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJs || $ATs || $KQs || $KJs )                      
+               || ( $AA || $KK || $QQ || $JJ || $TT || $AK )                                  
+               ) 
+          ) 
+     ] 
+? 2 : 
+// OPENING HANDS TO CALL (6 or more players on average flop) 
+     [ IsPreflop && ( 
+           InEarlyPosition && ( 
+                nbetsround<=1 && ( ispair || $Axs || $Kxs || (issuited && rankloplayer>=9) || $98s || $AK || $AQ || $AJ || $AT || $KQ || $KJ ) 
+             || nbetsround<=2 && ( ispair || (issuited && rankloplayer>=10 && !$QTs) || $AK || $AQ )            
+             || ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQs || $AJs || $KQs ) 
+             )              
+        || InMiddlePosition && (      
+                nbetsround<=1 && ( ispair || $Axs || $Kxs || (issuited && rankloplayer>=9) || $98s || $AK || $AQ || $AJ || $AT || $KQ || $KJ ) 
+             || nbetsround<=2 && ( ispair || (issuited && rankloplayer>=10 && !$QTs) || $AK || $AQ )              
+             || ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQs || $AJs || $KQs )  
+             ) 
+        || InCutOff && nopponentsbetting>=5 && (  
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || $Q8s || $J8s || $J7s || (issuited && (rankhiplayer-2>=rankloplayer) && rankloplayer>=3) || rankloplayer>=10 ) 
+             || nbetsround<=2 && ( ispair || issuited && rankloplayer>=10 || $Axs || (issuited && isconnector && rankloplayer>=6) || $AK || $AQ )            
+             || ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQs || $AJs || $KQs )    
+             ) 
+        || InCutOff && (  
+                nbetsround<=1 && ( ispair || $Axs || (issuited && rankloplayer>=9) || (issuited && isconnector && rankloplayer>=4) || rankloplayer>=10 ) 
+             || nbetsround<=2 && ( $AA || $KK || $QQ || $JJ || $TT || $AK || $AQ || $AJs )            
+             || ( $AA || $KK || $QQ || $AKs )    
+             ) 
+        || (dealposition==1)  && (                
+                nbetsround<=1 && ( ispair || rankloplayer>=10 )          
+             || ( ispair || (issuited && rankloplayer>=10 && !$QTs) || $AK || $AQ )              
+             )    
+        || (dealposition==2)  && ( ispair || $Axs || (issuited && rankloplayer>=9) || $Q8s || $J8s || $J7s || (issuited && (rankhiplayer-2>=rankloplayer) && rankloplayer>=3) || $AK || $AQ || $AJ || $KQ )                        
+        ) 
+     ] 
+? 1 : 
+0
+
+##f$defendblinds##
+// last change 8/22/2006 cout v0008a
+// Defend Blinds 
+   [IsPreflop && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+   nraisbets<=2 &&  (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || (issuited && isconnector && rankloplayer>4)
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [IsFlop && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    didraisround1 && !didcallround1 && 
+    NOT f$OpponentIsLooseAggressive && (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [IsTurn && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    nbetsround<2 && (
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ] 
+// nobody hit their draws, so bluff/opponent often CAN'T call, even if they doubt we have it. 
+|| [IsRiver && dealposition<=2 && nbetsround<1 &&
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    f$openboard && (    
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ]  
+? 2 :
+   [IsPreflop && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+   nraisbets<=2 &&  (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || (issuited && isconnector && rankloplayer>4)
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+
+|| [IsFlop && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    didraisround1 && !didcallround1 && 
+    f$OpponentIsLooseAggressive && (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [IsTurn && dealposition<=2 && 
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    nbetsround<2 && (
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ] 
+// nobody hit their draws, so bluff/opponent often CAN'T call, even if they doubt we have it. 
+|| [IsRiver && dealposition<=2 && nbetsround<1 &&
+   (dealpositionrais==1||dealpositionrais>nplayersdealt-2) &&
+    f$openboard && (    
+        ispair
+     || nsuited==4
+     || nstraightfill==1
+     )
+   ]  
+? 1 :
+0
+
+/*
+// last change 8/18/2006 Winngy v0003
+   [IsPreflop && dealposition==1 && nplayersplaying<=3 && dealpositionrais==nplayersdealt     && !didcall && handrank169<30 && nraisbets==3] //Defend our small blind - button raise 
+|| [IsPreflop && dealposition==1 && nplayersplaying<=3 && dealpositionrais==(nplayersdealt-1) && !didcall && handrank169<25 && nraisbets==3] //Defend our small blind - cutoff raise 
+|| [IsPreflop && dealposition==2 && nplayersplaying==2 && dealpositionrais==1		  && !didcall && handrank169<35 && nraisbets==3] //Defend our big blind - sblind raise 
+|| [IsPreflop && dealposition==2 && nplayersplaying<=3 && dealpositionrais==nplayersdealt     && !didcall && handrank169<30 && nraisbets==3] //Defend our big blind - button raise 
+|| [IsPreflop && dealposition==2 && nplayersplaying<=3 && dealpositionrais==(nplayersdealt-1) && !didcall && handrank169<25 && nraisbets==3] //Defend our big blind - cutoff raise
+*/
+
+##f$stealblinds##
+// last change 8/22/2006 cout v0008a
+// Steal Blinds 
+   [IsPreflop && (InCutOff||dealposition==1) && nraisbets<=2 && nopponentscalling==0 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10 && issuited
+     || rankloplayer>=10 && InButton  
+     || (issuited && isconnector && rankloplayer>4 && InButton)
+     || $Kxs && rankloplayer>8 && InButton
+     )
+   ] 
+|| [IsFlop && (InCutOff||dealposition==1) && 
+    (dealpositionrais<=2||dealpositionrais>=nplayersdealt-1) && 
+    nbetsround1<=2 && nopponentsplaying<=1 && 
+    didraisround1 && !didcallround1 && (
+        pokerval>onepair
+     ||(nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))
+     || $Axs && nsuited>2 
+     || rankloplayer>=10 && (nstraight>2||nstraightfill<2)
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && nsuited>3 
+     )
+   ] 
+|| [IsTurn && (InCutOff|dealposition==1) && 
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) && 
+    nbetsround<1 && (
+        ispair
+     || nsuited==4
+     || nstraight==4
+     || nstraightfill==1 && InButton
+     )
+   ] 
+// nobody hit their draws so semi-bluffers often CAN'T call, even if they doubt we have it. 
+|| [IsRiver && (InButton||dealposition==1) && call<=0 &&
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) &&  
+    f$SAFEBOARD && pokerval>onepair
+   ]
+? 2 :
+   [IsPreflop && didrais && (InCutOff||dealposition==1) && ncallbets<2 && nopponentscalling==0 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10 
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [IsFlop && didrais && (InCutOff||dealposition==1) && 
+    (dealpositionrais<=2||dealpositionrais>=nplayersdealt-1) && 
+    nbetsround1<=2 && nopponentsplaying<=1 && 
+    didraisround1 && !didcallround1 && (
+        ispair
+     || $Axs
+     || rankloplayer>=10
+     || {(issuited && isconnector && rankloplayer>=5) && (nstraightfill<2||nsuited>3||(nstraightfill==2 && nsuited==3))}
+     || $Kxs && rankloplayer>8
+     )
+   ] 
+|| [IsTurn && didrais && (InCutOff||dealposition==1) && 
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) && 
+    nbetsround<1 && (
+        ispair
+     || nsuited==4
+     || nstraight==4
+     )
+   ] 
+|| [IsRiver && (InCutOff||dealposition==1) && 
+    (dealpositionrais<=2||(dealpositionrais>=(nplayersdealt-1))) &&  
+    f$SAFEBOARD && pokerval>onepair
+   ]
+? 1 :
+0
+
+##f$first_into_pot##
+IsPreflop ? [potplayer<=sblind+bblind] : potplayer<=0.1
+
+##f$draw_flop##
+IsPostflop && (
+   $$cs0==$$cs1
+|| $$cs0==$$cs2
+|| $$cs1==$$cs2   
+|| ($$cr0-1)==$$cr1   
+|| ($$cr0-1)==$$cr2   
+|| ($$cr1-1)==$$cr2
+|| ($$cr0+1)==$$cr1
+|| ($$cr0+1)==$$cr2
+|| ($$cr1+1)==$$cr2
+|| ($$cr0-2)==$$cr1
+|| ($$cr0-2)==$$cr2
+|| ($$cr1-2)==$$cr2
+|| ($$cr0+2)==$$cr1
+|| ($$cr0+2)==$$cr2
+|| ($$cr1+2)==$$cr2
+|| ($$cr0-3)==$$cr1
+|| ($$cr0-3)==$$cr2
+|| ($$cr1-3)==$$cr2
+|| ($$cr0+3)==$$cr1
+|| ($$cr0+3)==$$cr2
+|| ($$cr1+3)==$$cr2
+        )
+
+##f$draw_turn##
+betround>flop && (
+   $$cs0==$$cs1
+|| $$cs0==$$cs2
+|| $$cs0==$$cs3
+|| $$cs1==$$cs2
+|| $$cs1==$$cs3
+|| $$cs2==$$cs3
+|| ($$cr0-1)==$$cr1    
+|| ($$cr0-1)==$$cr2    
+|| ($$cr0-1)==$$cr3
+|| ($$cr1-1)==$$cr2
+|| ($$cr1-1)==$$cr3
+|| ($$cr2-1)==$$cr3
+|| ($$cr0+1)==$$cr1
+|| ($$cr0+1)==$$cr2
+|| ($$cr0+1)==$$cr3
+|| ($$cr1+1)==$$cr2
+|| ($$cr1+1)==$$cr3
+|| ($$cr2+1)==$$cr3
+|| ($$cr0-2)==$$cr1
+|| ($$cr0-2)==$$cr2
+|| ($$cr0-2)==$$cr3
+|| ($$cr1-2)==$$cr2
+|| ($$cr1-2)==$$cr3
+|| ($$cr2-2)==$$cr3
+|| ($$cr0+2)==$$cr1
+|| ($$cr0+2)==$$cr2
+|| ($$cr0+2)==$$cr3
+|| ($$cr1+2)==$$cr2
+|| ($$cr1+2)==$$cr3
+|| ($$cr2+2)==$$cr3
+|| ($$cr0-3)==$$cr1
+|| ($$cr0-3)==$$cr2
+|| ($$cr0-3)==$$cr3
+|| ($$cr1-3)==$$cr2
+|| ($$cr1-3)==$$cr3
+|| ($$cr2-3)==$$cr3
+|| ($$cr0+3)==$$cr1
+|| ($$cr0+3)==$$cr2
+|| ($$cr0+3)==$$cr3
+|| ($$cr1+3)==$$cr2
+|| ($$cr1+3)==$$cr3
+|| ($$cr2+3)==$$cr3
+      )
+
+##f$rais_FTR_BigPot##
+// This file is not to be changed except by Winngy
+0
+//-----------------------------------------------------------------
+|| f$strength_straightflush  >=2 
+//-----------------------------------------------------------------
+|| f$strength_quads          >=2 
+//-----------------------------------------------------------------
+|| f$strength_fullhouse      >=3 
+|| f$strength_fullhouse      >=2 && nraisbets<=1
+//-----------------------------------------------------------------
+|| f$strength_flush          >=4 
+|| f$strength_flush          >=3 && nraisbets<=1
+//-----------------------------------------------------------------
+|| f$strength_straight       >=4
+|| f$strength_straight       >=3 && nraisbets<=1 
+|| isstraight && nstraightfillcommon==2 && nraisbets<=1
+//-----------------------------------------------------------------
+|| f$strength_trips          >=4 
+|| f$strength_trips          >=3 && nraisbets<=1
+//-----------------------------------------------------------------
+|| f$strength_twopair        >=4 
+|| f$strength_twopair        >=3 && nraisbets<=1
+//-----------------------------------------------------------------
+|| f$strength_onepair        >=5 && (IsFlop||!didrais)
+|| f$strength_onepair        >=4 && nraisbets<=1 
+//-----------------------------------------------------------------
+
+##f$call_FTR_BigPot##
+// This file is not to be changed except by Winngy
+0
+//-----------------------------------------------------------------
+|| f$strength_straightflush  >=1 
+//-----------------------------------------------------------------
+|| f$strength_quads          >=2 
+//-----------------------------------------------------------------
+|| f$strength_fullhouse      >=4 
+|| f$strength_fullhouse      >=3 && ncallbets<=2
+|| f$strength_fullhouse      >=2 && ncallbets<=1 
+|| f$strength_fullhouse      >=2 && (didcall||didrais) && nbetstocall==1
+//-----------------------------------------------------------------
+|| f$strength_flush          >=4
+|| f$strength_flush          >=3 && ncallbets<=2
+|| f$strength_flush          >=2 && ncallbets<=1
+|| f$strength_flush          >=2 && (didcall||didrais) && nbetstocall==1
+//-----------------------------------------------------------------
+|| f$strength_straight       >=4
+|| f$strength_straight       >=3 && ncallbets<=2
+|| isstraight && nstraightfillcommon==2  && ncallbets<=2
+|| f$strength_straight       >=2 && ncallbets<=1
+|| f$strength_straight       >=2 && (didcall||didrais) && nbetstocall==1
+//-----------------------------------------------------------------
+|| f$strength_trips          >=4 
+|| f$strength_trips          >=3 && ncallbets<=2
+|| f$strength_trips          >=2 && ncallbets<=1
+|| f$strength_trips          >=2 && (didcall||didrais) && nbetstocall==1
+//-----------------------------------------------------------------
+|| f$strength_twopair        >=4
+|| f$strength_twopair        >=3 && ncallbets<=2
+|| f$strength_twopair        >=2 && ncallbets<=1
+|| f$strength_twopair        >=2 && (didcall||didrais) && nbetstocall==1
+//-----------------------------------------------------------------
+|| f$strength_onepair        >=4
+|| f$strength_onepair        >=3 && ncallbets<=1
+|| f$strength_onepair        >=3 && (didcall||didrais) && nbetstocall==1
+//-----------------------------------------------------------------
+
+##f$GENERAL_HAND_CALLS##
+0
+|| [IsPostflop && didrais && (prwinnow**nopponentsplaying)>.50]//call if I raised and have anything
+|| [IsPostflop && (prwinnow**nopponentsplaying)>.55 && nbetstocall<=1]//calls weaker hands I couldn't bet
+|| [IsPostflop && (prwin+prtie)>=(.800-(nopponentsplaying*.025))] //call with good hands regardless
+|| [(IsFlop || IsTurn) && NOuts>=8 && nbetstocall==1]
+|| [IsRiver && nopponentsplaying<=2 && (prwinnow**nopponentsplaying)>.55 && (nbetstocall==1||didrais)]
+|| [IsRiver && (prwinnow**nopponentsplaying)>.55 && nbetstocall==1 && pot/call>7]
+|| [IsRiver && nbetstocall<=1.1 && prwin>=0.05]
+|| [IsRiver && didchec && didraisround2 && !didcallround2 && didraisround3 && !didcallround3 && nbetstocall<=1.1 && nopponentsplaying<=2]
+|| [IsRiver && didrais && nbetstocall<=1.1 && pokerval>onepair && !ismidpair && !islopair]
+// Catch alls
+|| nhandshi==0
+|| prwinnow>=0.90
+|| prwin>=0.90
+//-------------------------------------------------------------------------------------------------------------------
+
+##f$cost_to_fold##
+[((prwin*pot) + (prtie*(pot/2)))]
+
+##f$value_to_call##
+[(((prwin * (pot+f$callshort))+(prtie * (pot+f$callshort/2)))-(prlos * call))]
+
+##f$value_to_raise##
+[(((prwin * (pot+f$raisshort))+(prtie * (pot+f$raisshort/2)))-(prlos * (call+bet)))]
+
+##f$follow_thru##
+   [nbetsround<1 && f$openboard && (rankhiplayer>rankhicommon||pokerval>onepair) && (
+        (IsFlop  && didraisround1 && !didcallround1 && (f$DRAWS||f$call_FTR_BigPot||f$GENERAL_HAND_CALLS))
+     || (IsTurn  && didraisround2 && rankhicommon<14 && !didcallround2 && (f$DRAWS||f$call_FTR_BigPot||f$GENERAL_HAND_CALLS))
+     || (IsRiver  && didraisround3 && !didcallround3 && nopponentsplaying<3 && nbetsround<1 && f$draw_flop)
+     )  
+   ]
+|| [IsRiver && nbetsround<1 && ishandup]
+|| [IsRiver && nbetsround<1 && f$draw_flop && f$openboard]
+? 2 :
+   [ncallbets==1 && f$openboard && (rankhiplayer>=rankhicommon||pokerval>onepair||f$DRAWS) && (
+        (IsFlop  && didraisround2)
+     || (IsTurn  && didraisround3)
+     )
+   ]
+? 1 :
+0
+
+##f$raise_the_chaser##
+0
+|| [f$OpponentIsLoosePassive && pokerval>onepair && nsuitedcommon<4 && nstraightfillcommon>1 && nrankedcommon<2]
+
+##f$rais_FTR_Aggro##
+0 
+|| [IsFlop && nraisbets==2 && didraisround1 && nopponentsplaying==1]
+|| [IsFlop && nraisbets==1 && didraisround1 && !didcallround1 && f$openboard && 
+   ((nopponentsplaying<=4  && f$dpd) ||(nopponentsplaying<=3 && f$dpl  )||( f$dpm && randomround<=.5))]
+|| [IsFlop && nraisbets==1 && didraisround1 && !didcallround1 && nopponentsplaying<=4 && f$rainbowboard]
+|| [IsFlop && didraisround1 && !didcallround1 && nopponentsplaying<=4 && nraisbets<=1 && ( f$SAFEBOARD || NOuts>=3 || $AX || nopponentsplaying==1)] 
+|| [IsFlop && didraisround1 && !didcallround1 && nopponentsplaying<=2 && nraisbets<=2 && $AX] 
+|| [IsFlop && didchec && nplayersround==2 && randomround<=0.10] 
+|| [IsFlop && (NOuts/ncardsunknown)>=(1/nplayersplaying)&& nraisbets<3] 
+|| [IsFlop && (NOuts/ncardsunknown)>=(1/nplayersplaying)] 
+|| [IsFlop && nsuited==4 && nsuitedcommon==2 && nrankedcommon<3 && nraisbets==1] 
+|| [IsFlop && nsuited==4 && nsuitedcommon==2 && `((~srankbits&0x7fff)>>srankhiplayer)<=2 && nrankedcommon<3 && nraisbets<=2] 
+|| [IsFlop && nstraight==4 && nstraightcommon<=2 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon<=2 && nrankedcommon<3 && nraisbets==1] 
+|| [IsFlop && (NOuts/ncardsunknown)>((bet+call)/(pot+f$ImpliedOdds))&& nraisbets==1] 
+|| [IsFlop && (((dealposition==1||dealposition==2) && (f$SAFEBOARD || (nrankedcommon==2 && trank<7))) || (betposition/nplayersplaying>=0.75)) && ncallbets==0 && nplayersround<=4 && randomround<=0.10] 
+
+|| [IsTurn && didchec && nplayersround==2 && randomround<=0.10] 
+|| [IsTurn && didraisround2 && !didcallround2 && nopponentsplaying<=3 && nraisbets<=1 && (f$SAFEBOARD || NOuts>=3 || $AX || nopponentsplaying==1) && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
+|| [IsTurn && nbetsround2==0 && nbetsround3==0 && betposition==nplayersplaying && randomround<=0.90 && nplayersround<=4] 
+|| [IsTurn && (betposition/nplayersplaying>=0.75) && nbetsround2<=1 && nraisbets==1 && nplayersround<=4 && randomround<=0.10] 
+|| [IsTurn && (NOuts/ncardsunknown)>=(1/nplayersplaying)] 
+|| [IsTurn && (NOuts/ncardsunknown)>((bet+call)/(pot+f$ImpliedOdds)) && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
+|| [IsTurn && (NOuts/ncardsunknown)>=(1/nplayersplaying) && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
+|| [IsTurn && nsuited==4 && nsuitedcommon==2 && nraisbets==1 && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
+|| [IsTurn && nsuited==4 && nsuitedcommon==3 && `((~srankbits&0x7fff)>>srankhiplayer)==0 && nraisbets<=2 && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
+|| [IsTurn && nstraight==4 && nstraightcommon<=2 && !(srankbits&16386 && srankbits&8196) && nsuitedcommon<=2 && nrankedcommon<3 && nraisbets==1 && !(betposition==nplayersplaying && didraisround2 && NOuts<8)] 
+
+|| [IsRiver && (betposition/nplayersplaying>=0.75) && nbetsround2<=1 && nraisbets==1 && nplayersround<=4 && randomround<=0.10] 
+|| [IsRiver && didraisround3 && !didcallround3 && nopponentsplaying<=2 && nbetsround4==0 && nsuitedcommon==2 && ($$cs0==$$cs1 || $$cs0==$$cs2 || $$cs1==$$cs2)]		
+|| [IsRiver && didraisround3 && !didcallround3 && nopponentsplaying<=2 && nraisbets<=1 && nsuitedcommon==2 && ($$cs0==$$cs1 || $$cs0==$$cs2 || $$cs1==$$cs2)]
+|| [IsRiver && didraisround3 && !didcallround3 && nopponentsplaying<=2 && nraisbets<=1 && (f$SAFEBOARD || $Ax || nopponentsplaying==1)]
+
+##f$ImpliedOdds##
+IsFlop ? ((nopponentsbetting*.50)*bet4*1.5) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4*1.25) : 
+IsTurn ? ((nopponentsbetting*.50)*bet4) + (((nplayersplaying-1-nopponentsbetting)*.275)*bet4) : 0
+
+##f$DRAWS##
+// last change 8/21/2006 Winngy v0007
+//Drawing Hands 
+
+0
+|| [(IsFlop||IsTurn) && (NOuts/ncardsunknown) >= (call/(pot+f$ImpliedOdds)) ]
+
+
+//Nut Flush Draw
+|| [(IsFlop||IsTurn) && nsuited==4 
+    && `((~srankbits&0x7fff)>>srankhiplayer)==0 
+    && nsuitedcommon==2
+    && nraisbets<=2]
+
+//Pair and Flush Draw
+|| [(IsFlop||IsTurn) && prwinnow >.40 
+   && nsuited==4 && nsuited>nsuitedcommon 
+   && isonepair && (pokervalcommon < onepair)
+   && nraisbets<=2]
+
+//Second Nut Flush Draw
+|| [(IsFlop||IsTurn) && nsuited==4 
+   && `((~srankbits&0x7fff)>>srankhiplayer)==1 
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
+
+//Third Nut Flush Draw
+|| [(IsFlop||IsTurn) && nsuited==4 
+   && `((~srankbits&0x7fff)>>srankhiplayer)==2 
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
+
+//Good Flush Draw
+|| [(IsFlop||IsTurn) && nsuited==4 
+   && nsuitedcommon==2 
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]//call good flush draws
+
+//Good Straight Draw
+|| [(IsFlop||IsTurn) && nstraight==4 && nstraightcommon <= 2
+   && ((1.2/(prwin + prtie/2)-1) < ((pot + (f$callshort *.3))/call))]
+
+//Call draw that was raised
+|| [(IsFlop||IsTurn) && (didrais||didcall) 
+   && ((nsuited==4 && nsuitedcommon==2)||(nstraight==4 && nstraightcommon==2)) 
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
+
+//COMBOS DRAWS...pair and draw
+
+//Pair and Flush Draw
+|| [(IsFlop||IsTurn) && prwinnow >.40 
+   && nsuited==4 && nsuited>nsuitedcommon 
+   && isonepair && (pokervalcommon < onepair)
+   && (((1.5/prwin)-1) < ((pot + (f$callshort *.3))/call))]
+
+//Pair and Straight Draw
+|| [(IsFlop||IsTurn) && prwinnow >.40 
+   && nstraight==4 && nstraight>nstraightcommon 
+   && isonepair && (pokervalcommon < onepair)
+   && (((1.5/prwin)-1) < ((pot + (f$callshort *.3))/call))]
+
+//Straight and Flush Draw
+|| [(IsFlop||IsTurn) && nsuited==4 
+   && nsuited>nsuitedcommon && nstraight==4 
+   && nstraight>nstraightcommon 
+   && (((1.2/prwin)-1) < ((pot + (f$callshort *.3))/call))]
+
+##f$kicker_rank##
+(nranked==2 && nrankedcommon==1) ? 
+  (trank==rankhiplayer? 
+   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
+   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 
+(nranked==3 && nrankedcommon==2) ? 
+  (trank==rankhiplayer? 
+   `((~rankbits&0x7ffe)>>rankloplayer)+1: 
+   `((~rankbits&0x7ffe)>>rankhiplayer)+1 ) : 0
+
+##f$rainbowboard##
+// The safest board, no pair, no draws to a straight or flush 
+[ nsuitedcommon==1 && nstraightfillcommon>=3 && nrankedcommon==1 ]
+
+##f$openboard##
+// impossible to have a boat ,flush, or straight; top set is nuts 
+[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon>=3 ]
+
+##f$straightboard##
+// impossible to have a boat or flush; straight is nuts 
+[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon==2 ]
+
+##f$flushboard##
+// impossible to have 1 to a straightflush,  no boat 
+[ nrankedcommon==1 && nsuitedcommon==3 && nstraightflushfillcommon>=2 ]
+
+##f$boatboard##
+// board includes a pair; impossible to have one to a  straightflush; 4 of kind is nuts 
+[ nrankedcommon==2 && nstraightflushfillcommon>=2 && pokervalcommon<twopair ]
+
+##f$2pairboard##
+//board has two pair
+[ pokervalcommon>=twopair && pokervalcommon<threeofakind ]
+
+##f$tripsboard##
+// impossible to have a straightflush; 3 common on board; 4-kind is nuts 
+[ nrankedcommon==3 && nstraightflushfillcommon>=3 ]
+
+##f$4cardstraightboard##
+// impossible to have a boat or flush; 4 card straight on board; straight is nuts 
+[ nrankedcommon==1 && nsuitedcommon<=2 && nstraightfillcommon<=1 ]
+
+##f$4cardflushboard##
+// impossible to have a straightflush or boat; 4-card flush on board; flush is nuts 
+[ nrankedcommon==1 && nsuitedcommon>=4 && nstraightflushfillcommon>=2 ]
+
+##f$4sfboard##
+// 4 towards a straightflush on board; 
+[ nstraightflushfillcommon==1 ]
+
+##f$tpairtk##
+// you hold the top pair with top kicker 
+[ ishipair && pokerval < twopair && ((trank >= 8 && trank <= 13) 
+&& {(trank == $$pr0 && $$pr1 == 14) 
+|| (trank == $$pr1 && $$pr0 == 14)} 
+|| trank == 14 && {(trank == $$pr0 && $$pr1 == 13) 
+|| (trank == $$pr1 && $$pr0 == 13)} ) ]
+
+##f$overpair##
+// you hold pocket pair 9 or higher and all cards on board are lower then your pair 
+[ rankhiplayer > rankhicommon && ( $AA ||$KK || $QQ || $JJ || $TT || $99 ) ]
+
+##f$top2pair##
+// you hold the two highest pairs on board 
+[ istwopair && (pokerval&15)<((pokerval>>4) & 15) ]
+
+##f$topset##
+ispair && trank==rankhicommon
+
+##f$set##
+isthreeofakind && ispair
+
+##f$topboat##
+[  isfullhouse && pokervalcommon&twopair && pcbits&28 
+|| isfullhouse && ispair && pokervalcommon&onepair && trank>trankcommon 
+|| isfullhouse && pokervalplayer<onepair && nranked==3 && nrankedcommon==2 
+&& trank>=trankcommon && trankcommon>=$$pr0 && trankcommon>=$$pr1 ]
+
+##f$tripstk##
+// Player cards are not paired, but player has the highest three of a kind, and the highest possible kicker 
+// with no pair in hand, ( 3 of a kind and not fullhouse with A kicker or AAA with K kicker ) 
+[ nrankedcommon==2 && isthreeofakind && pokerval<fullhouse 
+ && ((trank>=2 && trank<=13) && {(trank==$$pr0 && $$pr1==14)||(trank==$$pr1 && $$pr0==14)} 
+   ||trank==14 && {(trank==$$pr0 && $$pr1==13)||(trank==$$pr1 && $$pr0==13)} ) ]
+
+##f$Stop_Raise##
+##f$Stop_Raise##
+// last changed 08/21/2006 cout 0200 GMT-6
+0
+// To prevent follow-thru continuation of improper starting hands caused by various reasons including player playing with mouse
+||[IsFlop && !($AA || $KK || $QQ || $JJ || $TT || $99 || $AK || $AQ || $AJ || $AT || $A9s || $A8s || $KQ || $KJs || $KTs || $QJs)]
+
+// 38% of the players to whom I had a net loss at the 3/6 level were either sLPA or calling stations using Winngy's autorate rules 
+||[didraisround1 && !didcallround1 && didraisround2 && !didcallround2 && nopponentsplaying==1 && !f$rais_FTR_BigPot && f$OpponentIsSemiLoosePassiveAggressive && (IsTurn||(IsRiver && didraisround3 && !didcallround3))]
+
+##f$NoRaise##
+0
+
+// Slow play AA or KK if under the gun 15% of the time
+|| [IsPreflop && !didcall && ($AA || $KK) && dealposition==3 && randomround<=0.15]
+
+// Don't re-raise post flop if not one pair or better if implied odds do not have expected value 
+|| [IsPostflop && didrais && (pokerval<onepair && (NOuts/ncardsunknown) < ((call+bet)/(pot+f$ImpliedOdds)))]
+
+// Don't re-raise post flop if checkraised this betting round 
+|| [IsPostflop && (ncurrentbets>0 && nbetstocall>0 && dealpositionrais<dealposition && ncallbets==2 && prwin<0.85)]
+|| [IsPostflop && didrais && !didcall && dealpositionrais<dealposition && prwin<0.85]
+
+// Don't re-raise if there is an obvious threat on the board 
+|| [IsPostflop && didrais && (
+          (pokerval<threeofakind && (nsuitedcommon>=3 || nrankedcommon==2 || nstraightfillcommon<=2)) 
+       || (isthreeofakind && (nsuitedcommon>=3 || nstraightfillcommon<=2)) 
+       || (isstraight && (nsuitedcommon>=3 || nrankedcommon==2)) 
+       || (isflush && nrankedcommon==2)
+       )
+   ]
+
+// Round four.  Board paired on the river. Do not raise unless top full house or better.  
+|| [IsRiver && pokerval<fourofakind && !f$topboat && nrankedcommon==2 && ($$cr4==$$cr0 || $$cr4==$$cr1 || $$cr4==$$cr2 || $$cr4==$$cr3)]
+
+##f$Fold##
+0
+// Fold garbage after bluff raise if reraised and not paired, no redraws and no strategical reason to call or raise
+|| [IsPostflop && call>0 && didrais && pokerval<onepair && !f$DRAWS  && f$follow_thru==0]
+
+// You have one pair (not a pocket pair) and there is an ace on the board.  Your highest card is less than an ace.
+// You do not have a redraw.  Two or more opponents have bet and raised making it two bets to you.  Don't be stupid.
+|| [ IsTurn && !ispair && isonepair && nrankedcommon==1 && rankhicommon==14 && trank<=13 && nopponentsbetting>=2 && nbetsround>=2 && !f$DRAWS  ]
+
+// Round two.  You have pair (even top pair) and no kicker.  Opponents could have flush draw and possible backdoor straight.  
+|| [ IsFlop && !f$DRAWS && isonepair && pokerval<twopair && nsuitedcommon==2 && nstraightfillcommon==3 && f$kicker_rank<1 && ncallbets>0 ] 
+
+
+// Round two. You have top pair eight or less and top kicker vs a possible made opponent straight 
+// Do not call unless dynamic dealer and only one bet.
+|| [ IsFlop && $Ax && rankloplayer<9 && ishipair && trank==rankloplayer && ( 
+         nstraightfillcommon==2 && (
+            nsuited<=2 && (
+                ncallbets>1 
+             || nstraightcommon==3 
+             || ncallbets==1 && (
+                    !f$dpd
+                 || f$dpd && 
+                    nsuitedcommon<=2 && (
+                        (nstraightcommon==2 && call>(pot*(4/47)) ) 
+                     || (nstraightcommon==1 && call>(pot*(5/47)) )   
+                     )
+                 )
+             )
+         || (nsuited==3 && ncallbets==1 && nsuitedcommon<=2 && nstraightcommon==2 && f$dpd && call>(pot*(5.5/47)) ) 
+         || nstraightcommon==3 
+         )
+     )
+   ]
+
+// Round two. Player has a pocket pair.  Flop is a pair (even if lower than player's pockets) and an overcard. 
+// Fold to any bet. If first in this round bet once.  If raised fold anything less than top fullhouse. 
+// Raiser likely has paired the high card or tripped the pair.  Let's not get involved in the hand. We could lose a bundle.  .
+// We could be betting dead and opponent has at least 5 NOuts to beat us now and will likely have 8 NOuts to beat us on the turn.
+// || [IsFlop && ispair && !isfourofakind && rankhicommon>trank && (pokerval<=fullhouse) && !f$topboat].
+
+// Round three.  Round two was capped. Board paired on the turn. You have two pair or less.   
+// Fold to any bet.  If first in this round bet once.  If raised fold anything less than trips.
+|| [IsTurn && nbetsround2==4.00 && pokerval<threeofakind && !f$top2pair && nrankedcommon==2 && ($$cr3==$$cr0 || $$cr3==$$cr1 || $$cr3==$$cr2)]
+
+// Round four.  We have been leaking a lot of big bets at the river calling hand call.  Our win percentage with less than a pair is near zero.
+|| [IsRiver && randomround<.75 && pokerval<onepair && call>0] // add profiling
+
+##f$callshort##
+  [(playersplayingbits BitAnd 0b0000000001) ? (ncallbets * bet - currentbet0) : 0]  
++ [(playersplayingbits BitAnd 0b0000000010) ? (ncallbets * bet - currentbet1) : 0]  
++ [(playersplayingbits BitAnd 0b0000000100) ? (ncallbets * bet - currentbet2) : 0] 
++ [(playersplayingbits BitAnd 0b0000001000) ? (ncallbets * bet - currentbet3) : 0] 
++ [(playersplayingbits BitAnd 0b0000010000) ? (ncallbets * bet - currentbet4) : 0] 
++ [(playersplayingbits BitAnd 0b0000100000) ? (ncallbets * bet - currentbet5) : 0] 
++ [(playersplayingbits BitAnd 0b0001000000) ? (ncallbets * bet - currentbet6) : 0] 
++ [(playersplayingbits BitAnd 0b0010000000) ? (ncallbets * bet - currentbet7) : 0] 
++ [(playersplayingbits BitAnd 0b0100000000) ? (ncallbets * bet - currentbet8) : 0] 
++ [(playersplayingbits BitAnd 0b1000000000) ? (ncallbets * bet - currentbet9) : 0] 
+
+##f$raisshort##
+f$callshort + (bet * nplayersplaying)
+
+##f$OpponentIsLoosePassive##
+WHEN (nplayersdealt >  6) AND (pt_vpip_headsupchair > 0.25) AND (pt_total_af_headsupchair < 1.5) RETURN true FORCE
+WHEN (nplayersdealt <= 6) AND (pt_vpip_headsupchair > 0.30) AND (pt_total_af_headsupchair < 1.5) RETURN true FORCE
+
+##f$OpponentIsSemiLoosePassiveAggressive##
+WHEN (pt_vpip_headsupchair - pt_pfr_headsupchair > 0.1) AND (pt_total_af_headsupchair > 2.0) RETURN true FORCE
+
+##f$OpponentIsLooseAggressive##
+WHEN (nplayersdealt >  6) AND (pt_vpip_headsupchair > 0.25) AND (pt_total_af_headsupchair > 2.0) RETURN true FORCE
+WHEN (nplayersdealt <= 6) AND (pt_vpip_headsupchair > 0.30) AND (pt_total_af_headsupchair > 2.0) RETURN true FORCE

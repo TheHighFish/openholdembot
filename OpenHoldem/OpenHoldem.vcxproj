@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -23,6 +23,7 @@
     <ProjectGuid>{4B4F8898-50C6-4F07-8771-B140482DBA69}</ProjectGuid>
     <RootNamespace>pokbot</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'" Label="Configuration">
@@ -30,17 +31,23 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v140_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -69,6 +76,14 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">false</GenerateManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CodeAnalysisRuleSet>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Team Tools\Static Analysis Tools\Rule Sets\NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -77,7 +92,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Program Files\Visual Leak Detector\include;..\pokereval\include;..\pokereval\include\inlines;..\postgres;..\winmgr;..\hscroll-list-box;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;..\pokereval\include;..\pokereval\include\inlines;..\postgres;..\winmgr;..\hscroll-list-box;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;OEMRESOURCE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -85,8 +100,11 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -94,7 +112,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msvcrtd.lib;imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>libc.lib;libcmt.lib;msvcrt.lib;libcd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -104,6 +122,9 @@
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalLibraryDirectories>C:\Program Files\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -135,7 +156,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;psapi.lib;$(OutDir)Preferences.lib;$(OutDir)globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;$(OutDir)pokertracker_query_definitions.lib;$(OutDir)Reference User DLL.lib;$(OutDir)window_functions.lib;$(OutDir)string_functions.lib;$(OutDir)debug.lib;$(OutDir)GameStateValidation.lib;$(OutDir)files.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -144,6 +165,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">
     <Midl>
@@ -170,8 +194,8 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>imm32.lib;psapi.lib;..\dbghelp\dbghelp.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)OpenHoldem.exe</OutputFile>
+      <AdditionalDependencies>imm32.lib;psapi.lib;..\Release\Preferences.lib;..\Release\globals.lib;secur32.lib;..\scintilla\bin\SciLexer.lib;..\pokereval\Release\poker-eval.lib;..\lib\libpq.lib;..\lib\PerlEz.lib;..\Release\pokertracker_query_definitions.lib;..\Release\Reference User DLL.lib;..\Release\window_functions.lib;..\Release\string_functions.lib;..\Release\debug.lib;..\Release\GameStateValidation.lib;..\Release\files.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName).exe</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <StackReserveSize>8388608</StackReserveSize>
@@ -179,13 +203,23 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="2DBarGraph.cpp" />
+    <ClCompile Include="2DLineGraph.cpp" />
+    <ClCompile Include="2DPieGraph.cpp" />
     <ClCompile Include="AllinAdjustment.cpp" />
     <ClCompile Include="BetpotCalculations.cpp" />
+    <ClCompile Include="CAllinSlider.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CAutoplayerButton.cpp" />
+    <ClCompile Include="CBetsizeInputBox.cpp" />
     <ClCompile Include="CBlindGuesser.cpp" />
     <ClCompile Include="CBlindLevels.cpp" />
+    <ClCompile Include="CCasinoHotkey.cpp" />
     <ClCompile Include="CFileSystemMonitor.cpp" />
     <ClCompile Include="CFlagsToolbar.cpp" />
     <ClCompile Include="CHandHistoryAction.cpp" />
@@ -194,38 +228,65 @@
     <ClCompile Include="CHandHistoryUncontested.cpp" />
     <ClCompile Include="CHandHistoryWriter.cpp" />
     <ClCompile Include="CHandresetDetector.cpp" />
+    <ClCompile Include="CHeartbeatDelay.cpp" />
     <ClCompile Include="CHeartbeatThread.cpp" />
+    <ClCompile Include="CHyperLink.cpp" />
     <ClCompile Include="CLevDistance.cpp" />
     <ClCompile Include="CLimitScraper.cpp" />
+    <ClCompile Include="CMemoryPool.cpp" />
     <ClCompile Include="CMyMutex.cpp" />
     <ClCompile Include="COcclusionCheck.cpp" />
+    <ClCompile Include="CParseTreeOperatorNode.cpp" />
+    <ClCompile Include="CParseTreeTerminalNode.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeEndOfFunction.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeFixedAction.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeBetsizeAction.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeIdentifier.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeNumber.cpp" />
+    <ClCompile Include="CParseTreeTerminalNodeUserVariable.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPopupHandler.cpp" />
-    <ClCompile Include="CPreferences.cpp" />
     <ClCompile Include="crc32hash.cpp" />
-    <ClCompile Include="CScrapedActionInterface.cpp" />
+    <ClCompile Include="CScrapedMoney.cpp" />
     <ClCompile Include="CSelftestParserEvaluator.cpp" />
+    <ClCompile Include="CShankySymbolNameTranslator.cpp" />
+    <ClCompile Include="CSpaceOptimizedFormulaObject.cpp" />
+    <ClCompile Include="CSymbolEngineCallers.cpp" />
     <ClCompile Include="CSymbolEngineCasino.cpp" />
     <ClCompile Include="CSymbolEngineChairs.cpp" />
+    <ClCompile Include="CSymbolEngineChecksBetsFolds.cpp" />
     <ClCompile Include="CSymbolEngineColourCodes.cpp" />
+    <ClCompile Include="CSymbolengineConstants.cpp" />
     <ClCompile Include="CSymbolEngineGameType.cpp" />
     <ClCompile Include="CSymbolEngineICM.cpp" />
     <ClCompile Include="CSymbolengineIsRush.cpp" />
     <ClCompile Include="CSymbolEngineMTTInfo.cpp" />
+    <ClCompile Include="CSymbolEngineMultiplexer.cpp" />
+    <ClCompile Include="CSymbolengineNutFullHouseOrFourOfAKind.cpp" />
     <ClCompile Include="CSymbolengineOpenPPL.cpp" />
     <ClCompile Include="CSymbolEnginePokerAction.cpp" />
+    <ClCompile Include="CSymbolEngineRaisers.cpp" />
     <ClCompile Include="CSymbolengineTableStats.cpp" />
+    <ClCompile Include="CSymbolengineUserDLL.cpp" />
     <ClCompile Include="CSymbolEngineVersus.cpp" />
+    <ClCompile Include="CSymbolEngineFormulaSwitching.cpp" />
     <ClCompile Include="CTableState.cpp" />
+    <ClCompile Include="CTableTitle.cpp" />
+    <ClCompile Include="CTitleEvaluator.cpp" />
     <ClCompile Include="CValidator.cpp" />
     <ClCompile Include="CWhiteInfoBox.cpp" />
-    <ClCompile Include="debug.cpp" />
+    <ClCompile Include="DialogSelectActions.cpp" />
+    <ClCompile Include="GraphObject.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MD5_Checksum.cpp" />
     <ClCompile Include="Median.cpp" />
     <ClCompile Include="MemoryLogging.cpp" />
+    <ClCompile Include="mtrand.cpp" />
     <ClCompile Include="OpenHoldem.cpp" />
     <ClCompile Include="OpenHoldemDoc.cpp" />
+    <ClCompile Include="COpenHoldemStarter.cpp" />
+    <ClCompile Include="CWatchdog.cpp" />
+    <ClCompile Include="RtaWindow.cpp" />
     <ClCompile Include="Singletons.cpp" />
     <ClCompile Include="SLimitInfo.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -236,7 +297,6 @@
     <ClCompile Include="..\winmgr\SizerBar.cpp" />
     <ClCompile Include="..\winmgr\WinMgr.cpp" />
     <ClCompile Include="..\winmgr\WinRect.cpp" />
-    <ClCompile Include="..\hscroll-list-box\HScrollListBox.cpp" />
     <ClCompile Include="..\CTransform\pdiff\CompareArgs.cpp" />
     <ClCompile Include="..\CTransform\CTransform.cpp" />
     <ClCompile Include="..\CTransform\hash\lookup3.cpp" />
@@ -253,8 +313,6 @@
     <ClCompile Include="DialogSAPrefs16.cpp" />
     <ClCompile Include="DialogSAPrefs17.cpp" />
     <ClCompile Include="DialogSAPrefs18.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="DialogSAPrefs19.cpp" />
     <ClCompile Include="DialogSAPrefs2.cpp" />
@@ -264,16 +322,9 @@
     <ClCompile Include="DialogSAPrefs3.cpp" />
     <ClCompile Include="DialogSAPrefs4.cpp" />
     <ClCompile Include="DialogSAPrefs6.cpp" />
-    <ClCompile Include="DialogSAPrefs7.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="DialogSAPrefs7.cpp" />
     <ClCompile Include="DialogSAPrefs8.cpp" />
-    <ClCompile Include="DialogSAPrefs9.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - Optimized|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="DialogSAPrefs9.cpp" />
     <ClCompile Include="SAPrefsDialog.cpp" />
     <ClCompile Include="SAPrefsStatic.cpp" />
     <ClCompile Include="SAPrefsSubDlg.cpp" />
@@ -284,7 +335,6 @@
     <ClCompile Include="DialogRename.cpp" />
     <ClCompile Include="DialogScraperOutput.cpp" />
     <ClCompile Include="MyCToolBar.cpp" />
-    <ClCompile Include="OH_MessageBox.cpp" />
     <ClCompile Include="OpenHoldemView.cpp" />
     <ClCompile Include="ScintillaWnd.cpp" />
     <ClCompile Include="VerifyFunctionAndListNames.cpp" />
@@ -295,13 +345,13 @@
     <ClCompile Include="CEngineContainer.cpp" />
     <ClCompile Include="Chair$Symbols.cpp" />
     <ClCompile Include="UnknownSymbols.cpp" />
-    <ClCompile Include="CGameState.cpp" />
     <ClCompile Include="CSymbolEngineActiveDealtPlaying.cpp" />
     <ClCompile Include="CSymbolEngineAutoplayer.cpp" />
     <ClCompile Include="CSymbolEngineBlinds.cpp" />
     <ClCompile Include="CSymbolEngineCards.cpp" />
     <ClCompile Include="CSymbolEngineChipAmounts.cpp" />
     <ClCompile Include="CSymbolengineDealerchair.cpp" />
+    <ClCompile Include="CSymbolengineDebug.cpp" />
     <ClCompile Include="CSymbolEngineEventLogging.cpp" />
     <ClCompile Include="CSymbolEngineHandrank.cpp" />
     <ClCompile Include="CSymbolEngineHistory.cpp" />
@@ -315,7 +365,6 @@
     <ClCompile Include="CSymbolEnginePokerval.cpp" />
     <ClCompile Include="CSymbolEnginePositions.cpp" />
     <ClCompile Include="CSymbolEnginePrwin.cpp" />
-    <ClCompile Include="CSymbolEngineRaisersCallers.cpp" />
     <ClCompile Include="CSymbolEngineRandom.cpp" />
     <ClCompile Include="CSymbolEngineReplayFrameController.cpp" />
     <ClCompile Include="CSymbolEngineTableLimits.cpp" />
@@ -335,10 +384,9 @@
     <ClCompile Include="PokerChat.cpp" />
     <ClCompile Include="SwagAdjustment.cpp" />
     <ClCompile Include="CAutoConnector.cpp" />
-    <ClCompile Include="CAutoConnectorThread.cpp" />
     <ClCompile Include="CTableMapLoader.cpp" />
     <ClCompile Include="CTablePositioner.cpp" />
-    <ClCompile Include="CDllExtension.cpp" />
+    <ClCompile Include="CTablepointChecker.cpp" />
     <ClCompile Include="CPokerTrackerLookUp.cpp" />
     <ClCompile Include="CPokerTrackerThread.cpp" />
     <ClCompile Include="CIteratorThread.cpp" />
@@ -347,17 +395,11 @@
     <ClCompile Include="Bitmaps.cpp" />
     <ClCompile Include="CLazyScraper.cpp" />
     <ClCompile Include="CScraper.cpp" />
-    <ClCompile Include="CScraperAccess.cpp" />
-    <ClCompile Include="CScraperPreprocessor.cpp" />
     <ClCompile Include="CardFunctions.cpp" />
-    <ClCompile Include="CFilenames.cpp" />
     <ClCompile Include="CStringHashtableTemplate.cpp" />
     <ClCompile Include="CStringMatch.cpp" />
-    <ClCompile Include="MagicNumbers.cpp" />
     <ClCompile Include="NumericalFunctions.cpp" />
-    <ClCompile Include="StringFunctions.cpp" />
     <ClCompile Include="WebSafeColours.cpp" />
-    <ClCompile Include="WindowFunctions.cpp" />
     <ClCompile Include="CFormulaFileSplitter.cpp" />
     <ClCompile Include="CFormulaParser.cpp" />
     <ClCompile Include="CParseErrors.cpp" />
@@ -384,6 +426,8 @@
     <ClCompile Include="COHScriptObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\StringFunctionsDLL\string_functions.cpp" />
+    <None Include="OpenHoldem.def" />
     <None Include="Validator_Rules\consistency_checks_action_symbols_inline.cpp_" />
     <None Include="Validator_Rules\consistency_checks_autoplayer_inline.cpp_" />
     <None Include="Validator_Rules\consistency_checks_bets_inline.cpp_" />
@@ -453,11 +497,19 @@
     <None Include="..\Checklist_Release_OpenPPL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
+    <ClInclude Include="2DBarGraph.h" />
+    <ClInclude Include="2DLineGraph.h" />
+    <ClInclude Include="2DPieGraph.h" />
     <ClInclude Include="AllinAdjustment.h" />
     <ClInclude Include="BetpotCalculations.h" />
+    <ClInclude Include="CAllinSlider.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="CAutoplayerButton.h" />
+    <ClInclude Include="CBetsizeInputBox.h" />
     <ClInclude Include="CBlindGuesser.h" />
     <ClInclude Include="CBlindLevels.h" />
+    <ClInclude Include="CCasinoHotkey.h" />
     <ClInclude Include="CFileSystemMonitor.h" />
     <ClInclude Include="CFlagsToolbar.h" />
     <ClInclude Include="CGrammar.h" />
@@ -467,47 +519,73 @@
     <ClInclude Include="CHandHistoryUncontested.h" />
     <ClInclude Include="CHandHistoryWriter.h" />
     <ClInclude Include="CHandresetDetector.h" />
+    <ClInclude Include="CHeartbeatDelay.h" />
     <ClInclude Include="CHeartbeatThread.h" />
+    <ClInclude Include="CHyperLink.h" />
     <ClInclude Include="CLazyScraper.h" />
     <ClInclude Include="CLevDistance.h" />
     <ClInclude Include="CLimitScraper.h" />
+    <ClInclude Include="CMemoryPool.h" />
     <ClInclude Include="CMyMutex.h" />
     <ClInclude Include="COcclusionCheck.h" />
+    <ClInclude Include="CParseTreeOperatorNode.h" />
+    <ClInclude Include="CParseTreeTerminalNode.h" />
+    <ClInclude Include="CParseTreeTerminalNodeEndOfFunction.h" />
+    <ClInclude Include="CParseTreeTerminalNodeFixedAction.h" />
+    <ClInclude Include="CParseTreeTerminalNodeBetsizeAction.h" />
+    <ClInclude Include="CParseTreeTerminalNodeIdentifier.h" />
+    <ClInclude Include="CParseTreeTerminalNodeNumber.h" />
+    <ClInclude Include="CParseTreeTerminalNodeuserVariable.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPopupHandler.h" />
-    <ClInclude Include="CPreferences.h" />
     <ClInclude Include="crc32hash.h" />
-    <ClInclude Include="CScrapedActionInterface.h" />
+    <ClInclude Include="CScrapedMoney.h" />
     <ClInclude Include="CSelftestParserEvaluator.h" />
+    <ClInclude Include="CShankySymbolNameTranslator.h" />
+    <ClInclude Include="CSpaceOptimizedFormulalObject.h" />
+    <ClInclude Include="CSpaceOptimizedGlobalObject.h" />
+    <ClInclude Include="CSymbolEngineCallers.h" />
     <ClInclude Include="CSymbolEngineCasino.h" />
     <ClInclude Include="CSymbolengineChairs.h" />
+    <ClInclude Include="CSymbolEngineChecksBetsFolds.h" />
     <ClInclude Include="CSymbolengineColourCodes.h" />
+    <ClInclude Include="CSymbolengineConstants.h" />
     <ClInclude Include="CSymbolEngineGameType.h" />
     <ClInclude Include="CSymbolEngineICM.h" />
     <ClInclude Include="CSymbolEngineIsRush.h" />
     <ClInclude Include="CSymbolengineMTTInfo.h" />
+    <ClInclude Include="CSymbolengineMultiplexer.h" />
+    <ClInclude Include="CSymbolengineNutFullhouseOrFourOfAKind.h" />
     <ClInclude Include="CSymbolEngineOpenPPL.h" />
     <ClInclude Include="CSymbolEnginePokerAction.h" />
+    <ClInclude Include="CSymbolEngineRaisers.h" />
     <ClInclude Include="CSymbolengineTableStats.h" />
+    <ClInclude Include="CSymbolengineUserDLL.h" />
     <ClInclude Include="CSymbolengineVersus.h" />
+    <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
     <ClInclude Include="CTableState.h" />
+    <ClInclude Include="CTableTitle.h" />
+    <ClInclude Include="CTitleEvaluator.h" />
     <ClInclude Include="CValidator.h" />
     <ClInclude Include="CWhiteInfoBox.h" />
-    <ClInclude Include="debug.h" />
+    <ClInclude Include="DialogSelectActions.h" />
+    <ClInclude Include="GraphObject.h" />
     <ClInclude Include="MD5_Checksum.h" />
     <ClInclude Include="Median.h" />
     <ClInclude Include="MemoryLogging.h" />
+    <ClInclude Include="mtrand.h" />
     <ClInclude Include="MyCToolBar.h" />
-    <ClInclude Include="OH_MessageBox.h" />
     <ClInclude Include="OpenHoldem.h" />
     <ClInclude Include="OpenHoldemDoc.h" />
+    <ClInclude Include="COpenHoldemStarter.h" />
+    <ClInclude Include="CWatchdog.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="RtaWindow.h" />
     <ClInclude Include="Singletons.h" />
     <ClInclude Include="SLimitInfo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\winmgr\SizerBar.h" />
     <ClInclude Include="..\winmgr\WinMgr.h" />
-    <ClInclude Include="..\hscroll-list-box\HScrollListBox.h" />
     <ClInclude Include="..\pokereval\include\combinations.h" />
     <ClInclude Include="..\pokereval\include\deck.h" />
     <ClInclude Include="..\pokereval\include\deck_std.h" />
@@ -544,7 +622,6 @@
     <ClInclude Include="..\StructsDefines\structs_defines.h" />
     <ClInclude Include="CBetroundCalculator.h" />
     <ClInclude Include="CEngineContainer.h" />
-    <ClInclude Include="CGameState.h" />
     <ClInclude Include="Chair$Symbols.h" />
     <ClInclude Include="CVirtualSymbolEngine.h" />
     <ClInclude Include="UnknownSymbols.h" />
@@ -554,6 +631,7 @@
     <ClInclude Include="CSymbolEngineCards.h" />
     <ClInclude Include="CSymbolEngineChipAmounts.h" />
     <ClInclude Include="CSymbolEngineDealerchair.h" />
+    <ClInclude Include="CSymbolEngineDebug.h" />
     <ClInclude Include="CSymbolEngineEventLogging.h" />
     <ClInclude Include="CSymbolEngineHandrank.h" />
     <ClInclude Include="CSymbolEngineHistory.h" />
@@ -567,7 +645,6 @@
     <ClInclude Include="CSymbolEnginePokerval.h" />
     <ClInclude Include="CSymbolEnginePositions.h" />
     <ClInclude Include="CSymbolEnginePrwin.h" />
-    <ClInclude Include="CSymbolEngineRaisersCallers.h" />
     <ClInclude Include="CSymbolEngineRandom.h" />
     <ClInclude Include="CSymbolEngineReplayFrameController.h" />
     <ClInclude Include="CSymbolEngineTableLimits.h" />
@@ -615,7 +692,6 @@
     <ClInclude Include="CSessionCounter.h" />
     <ClInclude Include="CSharedMem.h" />
     <ClInclude Include="..\CCritSec\CCritSec.h" />
-    <ClInclude Include="CDllExtension.h" />
     <ClInclude Include="CPokerTrackerLookUp.h" />
     <ClInclude Include="CPokerTrackerThread.h" />
     <ClInclude Include="BringKeyboard.h" />
@@ -627,9 +703,9 @@
     <ClInclude Include="PokerChat.hpp" />
     <ClInclude Include="SwagAdjustment.h" />
     <ClInclude Include="CAutoConnector.h" />
-    <ClInclude Include="CAutoConnectorThread.h" />
     <ClInclude Include="CTableMapLoader.h" />
     <ClInclude Include="CTablePositioner.h" />
+    <ClInclude Include="CTablepointChecker.h" />
     <ClInclude Include="CConfigurationCheck.h" />
     <ClInclude Include="CProblemSolver.h" />
     <ClInclude Include="CVersionInfo.h" />
@@ -638,21 +714,15 @@
     <ClInclude Include="CReplayFrame.h" />
     <ClInclude Include="Bitmaps.h" />
     <ClInclude Include="CScraper.h" />
-    <ClInclude Include="CScraperAccess.h" />
-    <ClInclude Include="CScraperPreprocessor.h" />
     <ClInclude Include="..\CTablemap\CTablemap.h" />
     <ClInclude Include="..\CTablemap\CTableMapAccess.h" />
     <ClInclude Include="CTablemapCompletenessChecker.h" />
     <ClInclude Include="CardFunctions.h" />
-    <ClInclude Include="CFilenames.h" />
     <ClInclude Include="CStringHashtableTemplate.h" />
     <ClInclude Include="CStringMatch.h" />
     <ClInclude Include="FloatingPoint_Comparisions.h" />
-    <ClInclude Include="MagicNumbers.h" />
     <ClInclude Include="NumericalFunctions.h" />
-    <ClInclude Include="StringFunctions.h" />
     <ClInclude Include="WebSafeColours.h" />
-    <ClInclude Include="WindowFunctions.h" />
     <ClInclude Include="CFormulaFileSplitter.h" />
     <ClInclude Include="CFormulaParser.h" />
     <ClInclude Include="CParseErrors.h" />

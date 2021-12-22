@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -25,7 +25,9 @@
 #include "CRegionCloner.h"
 #include "DialogCopyRegion.h"
 #include "DialogSelectTable.h"
+#include "DialogTableMap.h"
 #include "global.h"
+#include "ListOfSymbols.h"
 #include "OpenScrape.h"
 #include "OpenScrapeDoc.h"
 #include "OpenScrapeView.h"
@@ -38,6 +40,7 @@
 // CMainFrame
 
 const int kHotkeyRefresh = 1234;
+DWORD fdwMenu;
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
@@ -52,6 +55,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND(ID_VIEW_NEXT, &CMainFrame::OnViewNext)
 	ON_BN_CLICKED(ID_MAIN_TOOLBAR_NEXT, &CMainFrame::OnViewNext)
 	ON_COMMAND(ID_TOOLS_CLONEREGIONS, &CMainFrame::OnToolsCloneRegions)
+	ON_COMMAND(ID_TOOLS_COLLECTFONTS, &CMainFrame::OnToolsCollectFonts)
 
 	ON_COMMAND(ID_EDIT_UPDATEHASHES, &CMainFrame::OnEditUpdatehashes)
 	ON_WM_TIMER()
@@ -60,10 +64,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DUPLICATEREGION, &CMainFrame::OnUpdateEditDuplicateregion)
 	ON_COMMAND(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnGroupregionsBytype)
 	ON_COMMAND(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnGroupregionsByname)
-	ON_COMMAND(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnViewUngroupregions)
 	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYTYPE, &CMainFrame::OnUpdateGroupregionsBytype)
 	ON_UPDATE_COMMAND_UI(ID_GROUPREGIONS_BYNAME, &CMainFrame::OnUpdateGroupregionsByname)
-	ON_UPDATE_COMMAND_UI(ID_VIEW_UNGROUPREGIONS, &CMainFrame::OnUpdateViewUngroupregions)
 END_MESSAGE_MAP()
 
 static UINT openscrape_indicators[] =
@@ -81,8 +83,6 @@ static UINT openscrape_indicators[] =
 /////////////////////////////////////////////////////
 
 CMainFrame::CMainFrame() {
-	__SEH_SET_EXCEPTION_HANDLER
-
 	// Save startup directory
   ::GetCurrentDirectory(sizeof(_startup_path) - 1, _startup_path);
   // https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309%28v=vs.85%29.aspx
@@ -141,13 +141,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-
-	// Set toolbar button status
-	//m_wndToolBar.GetToolBarCtrl().EnableButton(ID_MAIN_TOOLBAR_GREENCIRCLE, true);
-
 	// Start timer that blinks selected region
 	SetTimer(BLINKER_TIMER, 500, 0);
-
 	return 0;
 }
 
@@ -262,6 +257,7 @@ void CMainFrame::OnViewConnecttowindow()
 	if (number_of_tablemaps==0) 
 	{
 		MessageBox("No valid windows found", "Cannot find window", MB_OK);
+		ForceRedraw();
 	}
 	else 
 	{
@@ -283,8 +279,13 @@ void CMainFrame::OnViewConnecttowindow()
 			SaveBmpPbits();
 			ResizeWindow(pDoc);	
 		}
+		ForceRedraw();
+
+	// Instruct table-map dialog to collect fonts
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+	if (fdwMenu & MF_CHECKED)
+		theApp.m_TableMapDlg->CollectFonts();
 	}
-	ForceRedraw();
 }
 
 void CMainFrame::OnEditUpdatehashes()
@@ -359,11 +360,11 @@ void CMainFrame::OnEditDuplicateregion()
 	}
 
 	// Add them to the dialog
-	for (int i=0; i<num_r$strings; i++)
+	for (int i=0; i<list_of_regions.size(); i++)
 	{
-		bool add_it = (strstr(r$strings[i], target.GetString())!=NULL);
+		bool add_it = (strstr(list_of_regions[i], target.GetString())!=NULL);
 
-		CString s = r$strings[i];
+		CString s = list_of_regions[i];
 		for (RMapCI r_iter=p_tablemap->r$()->begin(); r_iter!=p_tablemap->r$()->end(); r_iter++)
 		{
 			if (r_iter->second.name == s)  
@@ -371,7 +372,7 @@ void CMainFrame::OnEditDuplicateregion()
 		}
 
 		if (add_it)
-			dlgcopyregion.candidates.Add(r$strings[i]);
+			dlgcopyregion.candidates.Add(list_of_regions[i]);
 	}
 
 	// Show dialog if there are any strings left to add
@@ -429,14 +430,18 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
 	COpenScrapeDoc			*pDoc = COpenScrapeDoc::GetDocument();
 	COpenScrapeView			*pView = COpenScrapeView::GetView();
-
+  if (!pDoc) {
+    return;
+  }
+  if (!pView) {
+    return;
+  }
 	if (nIDEvent == BLINKER_TIMER) 
 	{
 		pDoc->blink_on = !pDoc->blink_on;
 		pView->blink_rect();
 
 	}
-
 	CFrameWnd::OnTimer(nIDEvent);
 }
 
@@ -513,6 +518,11 @@ void CMainFrame::OnViewRefresh()
 
 		ForceRedraw();		
 		BringOpenScrapeBackToFront();
+
+	// Instruct table-map dialog to collect fonts
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+	if (fdwMenu & MF_CHECKED)
+			theApp.m_TableMapDlg->CollectFonts();
 	}
 
 	else 
@@ -521,11 +531,24 @@ void CMainFrame::OnViewRefresh()
 	}
 }
 
+void CMainFrame::CheckIfOHReplayRunning() {
+  // Just a quick and dirty test if a process named "OHReplay.exe" exists.
+  // Even some experienced botters didn't know what OHReplay
+  // and these buttons are good for.
+  //!!!!
+  return;
+  {
+    MessageBox("Unable to switch to preious / next replay-frame.\n"
+      "Not connected to OHReplay\n",
+      "Warning", 0);
+  }
+}
+
 void CMainFrame::OnViewPrev()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect;
-
+  CheckIfOHReplayRunning();
 	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
 		// bring attached window to front
@@ -588,6 +611,11 @@ void CMainFrame::OnViewPrev()
 		theApp.m_TableMapDlg->update_display();
 		ForceRedraw();
 		BringOpenScrapeBackToFront();
+
+		// Instruct table-map dialog to collect fonts
+		fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+		if (fdwMenu & MF_CHECKED)
+			theApp.m_TableMapDlg->CollectFonts();
 	}
 
 	else 
@@ -600,7 +628,7 @@ void CMainFrame::OnViewNext()
 {
 	COpenScrapeDoc		*pDoc = COpenScrapeDoc::GetDocument();
 	RECT				crect;
-
+  CheckIfOHReplayRunning();
 	if (pDoc->attached_hwnd && IsWindow(pDoc->attached_hwnd))
 	{
 		// bring attached window to front
@@ -651,6 +679,11 @@ void CMainFrame::OnViewNext()
 		theApp.m_TableMapDlg->update_display();
 		ForceRedraw();
 		BringOpenScrapeBackToFront();
+
+		// Instruct table-map dialog to collect fonts
+		fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+		if (fdwMenu & MF_CHECKED)
+			theApp.m_TableMapDlg->CollectFonts();
 	}
 
 	else 
@@ -664,6 +697,21 @@ void CMainFrame::OnToolsCloneRegions()
 	CRegionCloner *p_region__cloner = new(CRegionCloner);
 	p_region__cloner->CloneRegions();
 	delete(p_region__cloner);
+}
+
+void CMainFrame::OnToolsCollectFonts()
+{
+	// Instruct table-map dialog to collect fonts
+	fdwMenu = theApp.m_pMainWnd->GetMenu()->GetMenuState(ID_TOOLS_COLLECTFONTS, MF_BYCOMMAND);
+	if (!(fdwMenu & MF_CHECKED))
+	{
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_COLLECTFONTS, MF_CHECKED);
+		theApp.m_TableMapDlg->CollectFonts();
+	}
+	else {
+		theApp.m_pMainWnd->GetMenu()->CheckMenuItem(ID_TOOLS_COLLECTFONTS, MF_UNCHECKED);
+		MessageBox("Automatic fonts collection stopped.", "Fonts collector");
+	}
 }
 
 void CMainFrame::OnGroupregionsBytype()
@@ -691,20 +739,6 @@ void CMainFrame::OnGroupregionsByname()
 	theApp.m_TableMapDlg->region_grouping = BY_NAME;
 	theApp.m_TableMapDlg->UngroupRegions();
 	theApp.m_TableMapDlg->GroupRegions();
-
-	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetTypeNode("Regions");
-	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
-}
-
-void CMainFrame::OnViewUngroupregions()
-{
-	Registry		reg;
-	reg.read_reg();
-	reg.region_grouping = UNGROUPED;
-	reg.write_reg();
-
-	theApp.m_TableMapDlg->region_grouping = UNGROUPED;
-	theApp.m_TableMapDlg->UngroupRegions();
 
 	HTREEITEM hRegionNode = theApp.m_TableMapDlg->GetTypeNode("Regions");
 	theApp.m_TableMapDlg->m_TableMapTree.SortChildren(hRegionNode);
@@ -758,11 +792,6 @@ void CMainFrame::OnUpdateGroupregionsBytype(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateGroupregionsByname(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==BY_NAME);
-}
-
-void CMainFrame::OnUpdateViewUngroupregions(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(theApp.m_TableMapDlg->region_grouping==UNGROUPED);
 }
 
 void CMainFrame::SaveBmpPbits(void)
@@ -822,7 +851,6 @@ void CMainFrame::SaveBmpPbits(void)
 	DeleteDC(hdcScreen);
 }
 
-// TODO!! Why here? Used by auto-connector
 CArray <STableList, STableList>		g_tlist; 
 
 BOOL CALLBACK EnumProcTopLevelWindowList(HWND hwnd, LPARAM lparam) 

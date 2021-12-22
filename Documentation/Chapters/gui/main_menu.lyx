@@ -230,52 +230,7 @@ Shoot Replay-Frame
 \end_layout
 
 \begin_layout Subsection*
-DLL
-\end_layout
 
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename images/menu_DLL.JPG
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The DLL menu has just 2 menu-items:
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Load
-\emph default
-: this will load the standard DLL specified in the Preferences.
- After the DLL got loaded the menu will change to 
-\emph on
-Unload
-\emph default
-.
-\end_layout
-
-\begin_layout Itemize
-
-\emph on
-Load Specific File
-\emph default
-: this will open a file dialog to select the DLL to be loaded
 \end_layout
 
 \begin_layout Subsection*

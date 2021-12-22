@@ -1,29 +1,46 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose: Finding best matches to partially known blind-levels
+//   * some casinos don't display blinds at all
+//   * others display garbage like 0/0
+//   * others display the first level in tournaments, 
+//     then freeze and overpaint the titlebar with something 
+//     that looks like a title
+//   * some display sb/bb, some display bb/BB 
+//     and others use the same title-format for both, depending on game-type
+//   * ...
+//   There are no easy solutions unfortunately if you want to make OH work 
+//   at every casino out there.
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CBlindLevels.h"
 
-#include "CPreferences.h"
+
 
 // Small-blind, big-blind, big-bet
 const int kNumberOfValuesPerLevel =   3; 
-const int kNumberOfBlindLevels    = 189;
+const int kNumberOfBlindLevels    = 207;
 const int kLastBlindLevel         = kNumberOfBlindLevels - 1;
 
 // http://www.maxinmontreal.com/forums/viewtopic.php?f=117&t=17380&start=60&p=125232&view=show#p125232
 const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
-  {{        0.01,         0.02,         0.04},
+  {// Below levels for 
+   //   * real-money online cash-games
+   //   * real online tournaments 
+   //   * other sane-looking blind-levels
+   // in increasing order.
+   // Very special blind-levels for offline-casinos
+   // out of order at the very end.
+   {        0.01,         0.02,         0.04},
    {        0.01,         0.02,         0.05},
    {        0.02,         0.04,         0.08},
    {        0.02,         0.05,         0.10},
@@ -38,6 +55,7 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {        0.10,         0.20,         0.40},
    {        0.10,         0.25,         0.50},
    {        0.12,         0.25,         0.50},
+   {        0.15,         0.25,         0.50},
    {        0.15,         0.30,         0.60},
    {        0.25,         0.50,         1.00},
    {        0.50,         1.00,         2.00},
@@ -48,6 +66,7 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {        4.00,         8.00,        16.00},
    {        5.00,        10.00,        20.00},
    {       10.00,        20.00,        40.00},
+   {       15.00,        25.00,        50.00},
    {       15.00,        30.00,        60.00},
    {       20.00,        40.00,        80.00},
    {       25.00,        50.00,       100.00},
@@ -70,9 +89,6 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    {      110.00,       220.00,       440.00},
    {      120.00,       240.00,       480.00},
    {      125.00,       250.00,       500.00},
-   // Below some big bets are missing (undefined)
-   // because these levels exist only in tournaments,
-   // but not in fixed-limit cash-games.
    {      130.00,       260.00,       520.00},
    {      140.00,       280.00,       560.00},
    {      150.00,       300.00,       600.00},
@@ -214,7 +230,31 @@ const double kBlindLevels[kNumberOfBlindLevels][kNumberOfValuesPerLevel] =
    { 27500000.00,  55000000.00, 110000000.00},
    { 30000000.00,  60000000.00, 120000000.00},
    { 40000000.00,  80000000.00, 160000000.00},
-   { 50000000.00, 100000000.00, 200000000.00}};
+   { 50000000.00, 100000000.00, 200000000.00},
+   // Non-standard blind-levels of a Georgian casino
+   // http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=19516
+   // We put them out of order to avoid problems
+   // with completion.of partially known blinds
+   // of other real casinos with more common levels.
+   { 0.10,         0.10,         0.10 },
+   { 0.25,         0.25,         0.25 },
+   { 0.50,         0.50,         0.50 },
+   { 1.00,         1.00,         1.00 },
+   { 2.00,         2.00,         2.00 },
+   { 5.00,         5.00,         5.00 },
+   { 10.00,        10.00,        10.00 },
+   // Finally special blind-levels like 1/1 and 1000/3000
+   // from offline-simulators like DDPoker.
+   {        1.00,         1.00,         2.00},
+   {        2.00,         3.00,         6.00},
+   {        3.00,         5.00,        10.00},
+   {       10.00,        15.00,        30.00},
+   {       15.00,        25.00,        50.00},
+   {       25.00,        25.00,        50.00},
+   {       50.00,        75.00,       150.00},
+   {     2000.00,      5000.00,     10000.00}, 
+   {     1000.00,      3000.00,      6000.00},
+};
 
 CBlindLevels::CBlindLevels () {
 }
@@ -231,7 +271,7 @@ bool CBlindLevels::BlindsMatchBlindLevelPerfectly(
   if ((sblind > 0) && (sblind != kBlindLevels[level][0])) return false;                                      
   if ((bblind > 0) && (bblind != kBlindLevels[level][1])) return false;  
   if ((bbet   > 0) && (bbet   != kBlindLevels[level][2])) return false;  
-  write_log(preferences.debug_table_limits(), 
+  write_log(Preferences()->debug_table_limits(), 
     "[CBlindLevels] Perfect match found\n");
   return true;
 }
@@ -250,7 +290,7 @@ bool CBlindLevels::BlindsMatchBlindLevelPartially(
     success = true;
   } 
   if (success) {
-    write_log(preferences.debug_table_limits(), 
+    write_log(Preferences()->debug_table_limits(), 
       "[CBlindLevels] Partial match found\n");
     return true;
   }
@@ -261,12 +301,12 @@ bool CBlindLevels::BlindsMatchBlindLevelPartially(
 // Output: guessed levels
 // Return: true if success, otherwise false
 bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double *bbet) {
-  write_log(preferences.debug_table_limits(), 
+  write_log(Preferences()->debug_table_limits(), 
     "[CBlindLevels] Trying to find best matching blind-level for %.2f / %.2f / %.2f\n",
     *sblind, *bblind, *bbet);
   // Complete fail first: nothing to guess
   if ((*sblind <= 0) && (*bblind <= 0) && (*bbet <= 0)) {
-    write_log(preferences.debug_table_limits(), 
+    write_log(Preferences()->debug_table_limits(), 
       "[CBlindLevels] No match because of bad input\n");
     return false;
   }
@@ -276,7 +316,7 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
       *sblind = kBlindLevels[i][0];
       *bblind = kBlindLevels[i][1];
       *bbet   = kBlindLevels[i][2];
-      write_log(preferences.debug_table_limits(), 
+      write_log(Preferences()->debug_table_limits(), 
         "[CBlindLevels] Blinds recognized as %.2f / %.2f / %.2f\n", 
         *sblind, *bblind, *bbet);
       return true; 
@@ -287,7 +327,7 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
       *sblind = kBlindLevels[i][0];
       *bblind = kBlindLevels[i][1];
       *bbet   = kBlindLevels[i][2];
-      write_log(preferences.debug_table_limits(), 
+      write_log(Preferences()->debug_table_limits(), 
         "[CBlindLevels] Blinds recognized as %.2f / %.2f / %.2f\n", 
         *sblind, *bblind, *bbet);
       return true; 
@@ -296,7 +336,7 @@ bool CBlindLevels::BestMatchingBlindLevel(double *sblind, double *bblind, double
   // Nothing found
   // Keep everything as is.
   // Then another module can take these values and guess
-  write_log(preferences.debug_table_limits(), 
+  write_log(Preferences()->debug_table_limits(), 
       "[CBlindLevels] No match. Another module shall guess,\n");
   return false;
 }
@@ -309,16 +349,16 @@ double CBlindLevels::GetNextSmallerOrEqualBlindOnList(double guessed_blind) {
       && (kBlindLevels[kLastBlindLevel][1] > 0)
       && (guessed_blind >= kBlindLevels[kLastBlindLevel][0]) 
       && (guessed_blind <= kBlindLevels[kLastBlindLevel][1])) {
-    write_log(preferences.debug_table_limits(), 
+    write_log(Preferences()->debug_table_limits(), 
       "[CBlindLevels] Best match for %.2f -> %.2f\n",
       guessed_blind, kBlindLevels[kLastBlindLevel][1]);
     return kBlindLevels[kLastBlindLevel][1];
   }
   // Then all small blinds downwards
   for (int i=kLastBlindLevel; i>=0; ++i) {
-    if ((kBlindLevels[i] > 0)
+    if ((kBlindLevels[i][0] > 0)
         && (guessed_blind <= kBlindLevels[i][0])) {
-      write_log(preferences.debug_table_limits(), 
+      write_log(Preferences()->debug_table_limits(), 
         "[CBlindLevels] Best match for %.2f -> %.2f\n",
         guessed_blind, kBlindLevels[i][0]);
       return kBlindLevels[i][0];

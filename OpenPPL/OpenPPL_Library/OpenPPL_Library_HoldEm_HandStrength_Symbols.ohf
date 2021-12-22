@@ -1,0 +1,1265 @@
+##OpenPPL_License_Text##
+//*****************************************************************************
+//
+// OpenPPL Library
+//   Supporting functions for OpenPPL.
+//   These functions will be loaded by OpenHoldem in the background
+//   and will be available both for OpenPPL and OH-script users.
+//   This library is mostly written in OH-script,
+//   but it can be extended by OpenPPL-functions, as both formats are 100% compatible.
+//
+// OpenPPL is part of the OpenHoldem project
+//   Source code:           https://github.com/OpenHoldem/openholdembot/
+//   Source code:           https://github.com/OpenHoldem/openholdembot/releases
+//   Forums:                http://www.maxinmontreal.com/forums/index.php
+//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//
+// The original PPL (Poker Programming Language) got invented by
+//   Shanky Bonusbots:      http://bonusbots.com/support/index.php
+//
+// Required OpenHoldem version: 11.2.0 or later
+//
+// Contributors:
+//   Bob3456
+//   ChuckNeverMuck
+//   CoolBotMe123
+//   CrumbleSunday
+//   Dr.Kaktuz
+//   Efu
+//   Fn101
+//   Fqfq	
+//   Gecko
+//   JConner
+//   Johnny
+//   JokeDoke
+//   KaeKruse
+//   Kyo
+//   Lavezzi
+//   MerzkiyTipon
+//   Morello
+//   MrRuder
+//   Narfal
+//   Nik0
+//   NPNG
+//   Poker_Dog
+//   Postenjak
+//   Rambam
+//   Relhby
+//   Salem
+//   Satanikut
+//   Stangelnator
+//   SteveG1963
+//   Strikles
+//   SuperBlak
+//   TheHighFish
+//   ThemAndMe
+//   Want2Learn
+//   Zolp
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// OpenPPL - HandStrength Symbols
+//
+//*****************************************************************************
+
+##HoldEm_HadOverPairOnFlop##
+[   ispair
+AND RankOfFirstHoleCard > FirstFlopCard
+AND RankOfFirstHoleCard > SecondFlopCard
+AND RankOfFirstHoleCard > ThirdFlopCard ]
+
+##HoldEm_HadOverPairOnTurn##
+[   ispair
+AND RankOfFirstHoleCard > FirstFlopCard
+AND RankOfFirstHoleCard > SecondFlopCard
+AND RankOfFirstHoleCard > ThirdFlopCard 
+AND RankOfFirstHoleCard > TurnCard ]
+
+##HoldEm_HadSecondOverPairOnFlop##
+    ispair
+AND rankhiplayer < TopFlopCard
+AND rankhiplayer > SecondTopFlopCard
+
+##HoldEm_HadSecondOverPairOnTurn##
+HadSecondOverPairOnFlop AND (($$cr3==TopFlopCard)OR ($$cr3<TopFlopCard))
+
+##HoldEm_HadPairOnFlop##
+// Pair in the hand
+WHEN ispair RETURN true FORCE
+// Pairing the board
+WHEN FirstHoleCardPairsTheFlop  RETURN true FORCE
+WHEN SecondHoleCardPairsTheFlop RETURN true FORCE 
+
+##HoldEm_HadPairOnTurn##
+// We already had a pair at the flop...
+WHEN HadPairOnFlop RETURN true FORCE
+// ...or got a new one at the turn
+WHEN (RankOfFirstHoleCard == TurnCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == TurnCard) RETURN true FORCE
+// But we ignore FlopCardPairedOnTurn
+// because we only want to consider pairs
+// where we contribute at least one hole-card.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=20297
+
+##HoldEm_HadSetOnFlop##
+PairInHand AND (RankOfFirstHoleCard==$$cr0 OR RankOfFirstHoleCard==$$cr1 OR RankOfFirstHoleCard==$$cr2) 
+
+##HoldEm_HadSetOnTurn##
+HadSetOnFlop OR (PairInHand AND RankOfFirstHoleCard==$$cr3) 
+
+##HoldEm_HadTopPairOnFlop##
+[(RankOfFirstHoleCard == HighestRankOnFlop) OR (RankOfSecondHoleCard == HighestRankOnFlop)]
+
+##HoldEm_HadSecondTopPairOnFlop##
+[(RankOfFirstHoleCard == SecondTopFlopCard) OR (RankOfSecondHoleCard == SecondTopFlopCard)]
+
+##HoldEm_HadTopPairOnTurn##
+[ RankOfFirstHoleCard==HighestRankOnTurn OR RankOfSecondHoleCard==HighestRankOnTurn ]
+
+##FirstHoleCardPairsTheFlop##
+WHEN (RankOfFirstHoleCard  == FirstFlopCard)  RETURN true FORCE
+WHEN (RankOfFirstHoleCard  == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfFirstHoleCard  == ThirdFlopCard)  RETURN true FORCE
+WHEN Others RETURN false FORCE
+
+##SecondHoleCardPairsTheFlop##
+WHEN (RankOfSecondHoleCard  == FirstFlopCard)  RETURN true FORCE
+WHEN (RankOfSecondHoleCard  == SecondFlopCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard  == ThirdFlopCard)  RETURN true FORCE
+WHEN Others RETURN false FORCE
+
+##HoldEm_HadTwoPairOnFlop##
+WHEN FirstHoleCardPairsTheFlop AND SecondHoleCardPairsTheFlop AND NOT ispair RETURN true FORCE
+WHEN Others RETURN false FORCE
+
+##HaveGoodBackdoorStraightDrawAKQJT##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b111110000000000) = 3) RETURN false FORCE
+// Idiot-end does not matter here, we draw to the nuts
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b111110000000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDrawKQJT9##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b011111000000000) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b011110000000000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b011111000000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDrawQJT98##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b001111100000000) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b001111000000000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b001111100000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDrawJT987##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000111110000000) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000111100000000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000111110000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDrawT9876##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000011111000000) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000011110000000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000011111000000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDraw98765##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000001111100000) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000001111000000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000001111100000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDraw87654##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000111110000) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000111100000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000111110000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDraw76543##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000011111000) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000011110000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000011111000) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDraw65432##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000001111100) = 3) RETURN false FORCE
+// We have to contribute both hole-cards, but not the idiot-end.
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000001111000) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000001111100) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGoodBackdoorStraightDraw54321##
+WHEN betround != flop RETURN false FORCE
+// Preventing backdoor-draws that are shared on the board
+WHEN (BitCount(rankbitscommon BitAnd 0b000000000111110) = 3) RETURN false FORCE
+// We have to contribute both hole-cards.
+// contrary to the other functions we allow the idiot-end.
+// for a backdoor-wheeldraw to an A2345-straight
+// a) because AX(s) will be in our range quite offen
+// b) because an opponent only dominates us 
+//    if he holds 6X (X = 2..5) and hits (quite unlikely).
+// ....................................AKQJT98765432a-
+WHEN (BitCount(rankbitsplayer BitAnd 0b000000000111110) != 2) RETURN false FORCE
+// Hole-cards and board-cards must contribute three cards to a straight.
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b000000000111110) != 3) RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HoldEm_HaveBackdoorStraightDraw##
+// This code only consider backdoor-straightdraws,
+// where we contribute both cards, not to the idiot end
+// (with the exception of A2345, see HaveGoodBackdoorStraightDraw54321).
+// This is not perfect, as there are other draws like backdoor-double-gutshots
+// like 34..7..TJ that are harder to hit and where we contribute only one 
+// (or no) card in some cases.
+// We don't consider them here.
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=12301
+   HaveGoodBackdoorStraightDrawAKQJT
+OR HaveGoodBackdoorStraightDrawKQJT9
+OR HaveGoodBackdoorStraightDrawQJT98
+OR HaveGoodBackdoorStraightDrawJT987
+OR HaveGoodBackdoorStraightDrawT9876
+OR HaveGoodBackdoorStraightDraw98765
+OR HaveGoodBackdoorStraightDraw87654
+OR HaveGoodBackdoorStraightDraw76543
+OR HaveGoodBackdoorStraightDraw65432
+OR HaveGoodBackdoorStraightDraw54321
+
+##HoldEm_HaveSecondBestKicker##
+(NumberOfBetterKickers == 1)
+
+
+##HoldEm_HaveSecondBestOverPair##
+    ($KK
+AND FirstFlopCard < king
+AND SecondFlopCard < king
+AND ThirdFlopCard < king
+AND TurnCard < king
+AND RiverCard < king)
+
+
+##HoldEm_HaveSecondNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 1)]
+
+##HoldEm_HaveSecondNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 1)
+
+##HoldEm_HaveSecondNutStraight##
+HaveStraight AND (NumberOfPossibleBetterStraights == 1)
+
+##HoldEm_HaveSecondOverPair##
+ispair AND (RankOfFirstHoleCard < BestBoardCard) AND (RankOfFirstHoleCard > SecondBestBoardCard)
+
+##HoldEm_HaveSecondTopPair##
+RankOfFirstHoleCard == SecondBestBoardCard OR RankOfSecondHoleCard == SecondBestBoardCard
+
+##HoldEm_HaveSecondTopSet##
+ispair AND RankOfFirstHoleCard == SecondBestBoardCard
+
+##HoldEm_HaveThirdBestKicker##
+(NumberOfBetterKickers == 2)
+
+
+##HoldEm_HaveThirdBestOverPair##
+    $QQ
+AND FirstFlopCard < queen
+AND SecondFlopCard < queen
+AND ThirdFlopCard < queen
+AND TurnCard < queen
+AND RiverCard < queen
+
+##HoldEm_HaveThirdNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 2)]
+
+##HoldEm_HaveThirdNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 2)
+
+##HoldEm_HaveThirdOverPair##
+ispair AND (RankOfFirstHoleCard < SecondBestBoardCard) AND (RankOfFirstHoleCard > ThirdBestBoardCard)
+
+##HoldEm_HaveThirdTopPair##
+RankOfFirstHoleCard == ThirdBestBoardCard OR RankOfSecondHoleCard == ThirdBestBoardCard
+
+##HoldEm_HaveFifthTopPair##
+RankOfFirstHoleCard == FifthBestBoardCard OR RankOfSecondHoleCard == FifthBestBoardCard 
+
+##HoldEm_HaveThirdTopSet##
+ispair AND RankOfFirstHoleCard == ThirdBestBoardCard
+
+##HoldEm_HaveFourthNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 3)]
+
+##HoldEm_HaveFourthNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 3)
+
+##HoldEm_HaveFourthOverPair##
+ispair AND (RankOfFirstHoleCard < ThirdBestBoardCard) AND (RankOfFirstHoleCard > FourthBestBoardCard)
+
+##HoldEm_HaveFourthTopPair##
+RankOfFirstHoleCard == FourthBestBoardCard OR RankOfSecondHoleCard == FourthBestBoardCard
+
+##HoldEm_HaveFourthTopSet##
+ispair AND RankOfFirstHoleCard == FourthBestBoardCard
+
+##HoldEm_HaveFifthNutFlush##
+[HaveFlush AND (NumberOfUnknownSuitedOvercards == 4)]
+
+##HoldEm_HaveFifthNutFlushDraw##
+HaveFlushDraw AND (NumberOfUnknownSuitedOvercards == 4)
+
+##HoldEm_HaveFifthOverPair##
+ispair AND (RankOfFirstHoleCard < FourthBestBoardCard) AND (RankOfFirstHoleCard > FifthBestBoardCard)
+
+##HoldEm_HaveBackdoorFlushDrawContributingTwoCards##
+    IsFlop
+AND (nsuited >= 3)
+AND (FirstHoleCardSuit  == DominantSuit)
+AND (SecondHoleCardSuit == DominantSuit)
+
+##HoldEm_HaveBackdoorNutFlushDraw##
+    IsFlop
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 0)
+
+##HoldEm_HaveBackdoorSecondNutFlushDraw##
+    IsFlop
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 1)
+
+##HoldEm_HaveBackdoorThirdNutFlushDraw##
+    IsFlop
+AND (nsuited >= 3)
+AND (nsuited > nsuitedcommon) 
+AND (NumberOfUnknownSuitedOvercards == 2)
+
+##HoldEm_HaveBackdoorFlushDraw##
+   HaveBackdoorFlushDrawContributingTwoCards
+OR HaveBackdoorNutFlushDraw
+OR HaveBackdoorSecondNutFlushDraw
+
+##HoldEm_HaveBestKicker##
+(NumberOfBetterKickers == 0)
+
+
+##HoldEm_HaveBestOverPair##
+   ($AA
+AND FirstFlopCard < ace
+AND SecondFlopCard < ace
+AND ThirdFlopCard < ace
+AND TurnCard < ace
+AND RiverCard < ace)
+
+
+##LowestBoardCard##
+ranklocommon
+
+##SecondLowestBoardCard##
+(RankBitsCommonWithoutLowestBit & 0b000000000000100) == 0b000000000000100 ? Two   :
+(RankBitsCommonWithoutLowestBit & 0b000000000001000) == 0b000000000001000 ? Three :
+(RankBitsCommonWithoutLowestBit & 0b000000000010000) == 0b000000000010000 ? Four  :
+(RankBitsCommonWithoutLowestBit & 0b000000000100000) == 0b000000000100000 ? Five  :
+(RankBitsCommonWithoutLowestBit & 0b000000001000000) == 0b000000001000000 ? Six   :
+(RankBitsCommonWithoutLowestBit & 0b000000010000000) == 0b000000010000000 ? Seven :
+(RankBitsCommonWithoutLowestBit & 0b000000100000000) == 0b000000100000000 ? Eight :
+(RankBitsCommonWithoutLowestBit & 0b000001000000000) == 0b000001000000000 ? Nine  :
+(RankBitsCommonWithoutLowestBit & 0b000010000000000) == 0b000010000000000 ? ten   :
+(RankBitsCommonWithoutLowestBit & 0b000100000000000) == 0b000100000000000 ? jack  :
+(RankBitsCommonWithoutLowestBit & 0b001000000000000) == 0b001000000000000 ? queen :
+(RankBitsCommonWithoutLowestBit & 0b010000000000000) == 0b010000000000000 ? king  :
+(RankBitsCommonWithoutLowestBit & 0b100000000000000) == 0b100000000000000 ? ace   :
+-1
+
+##HoldEm_HaveBottomPair##
+WHEN (RankOfFirstHoleCard  == LowestBoardCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == LowestBoardCard) RETURN true FORCE
+
+##HoldEm_HaveSecondBottomPair##
+WHEN (RankOfFirstHoleCard  == SecondLowestBoardCard) RETURN true FORCE
+WHEN (RankOfSecondHoleCard == SecondLowestBoardCard) RETURN true FORCE
+
+##HoldEm_HaveBottomSet##
+WHEN ispair AND HaveBottomPair RETURN true FORCE
+
+##HoldEm_HaveBottomTrips##
+WHEN RankOfFirstHoleCard  == RankOfBottomPairOnBoard RETURN true FORCE
+WHEN RankOfSecondHoleCard == RankOfBottomPairOnBoard RETURN true FORCE
+
+##HoldEm_HaveBottomTwoPair##
+WHEN HaveBottomPair AND HaveSecondBottomPair RETURN true FORCE
+
+##HoldEm_HaveDoubleGutshotDraw##
+NumberOfInsideStraightDraws >= 2 
+
+##NumberOfInsideStraightDraws##
+//This function checks for the number of 
+//gutshots we have, without and idiot-end.
+  HaveGutshotToAKQJTStraight
++ HaveGutshotToKQJT9Straight
++ HaveGutshotToQJT98Straight
++ HaveGutshotToJT987Straight
++ HaveGutshotToT9876Straight
++ HaveGutshotTo98765Straight
++ HaveGutshotTo87654Straight
++ HaveGutshotTo76543Straight
++ HaveGutshotTo65432Straight
++ HaveGutshotTo5432AStraight
+
+##HaveGutshotToAKQJTStraight##
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 10) & 0b11111) != 4 RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HaveGutshotToKQJT9Straight##
+//Preventing the continuation of previous gutshots,
+//e.g. when we are holding Qx on a board AKT9.
+WHEN HaveGutshotToAKQJTStraight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 9) & 0b11111) != 4 RETURN false FORCE
+//This prevents holding K9, Q9, J9, T9 and the hi-card already paired,
+//or any gutshot-draw where we only contribute with one card and it's a 9, 
+//e.g. when we are holding J9 on a board KQJ, or 9x on KJT.
+WHEN BitCount((rankbitscommon >> 9) & 0b11110) <= 2 RETURN true FORCE
+
+##HaveGutshotToQJT98Straight##
+//Preventing the continuation of previous gutshot,
+//e.g. when we are holding Jx on a board KQ98.
+WHEN HaveGutshotToKQJT9Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 8) & 0b11111) != 4 RETURN false FORCE
+//This prevents holding Q8, J8, T8, 98 and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a 8, 
+//e.g. when we are holding T8 on a board QJT, or 8x in QT9.
+WHEN BitCount((rankbitscommon >> 8) & 0b11110) <= 2 RETURN true FORCE 
+
+##HaveGutshotToJT987Straight##
+//Preventing the continuation of previous gutshot.
+//e.g. when we are holding Tx on a board QJ87.
+WHEN HaveGutshotToQJT98Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 7) & 0b11111)!= 4 RETURN false FORCE
+//This prevents holding J7, T7, 97, 87 and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a 7, 
+//e.g. when we are holding 97 on a board JT9, or 7x in J98.
+WHEN BitCount((rankbitscommon >> 7) & 0b11110) <= 2 RETURN true FORCE
+
+##HaveGutshotToT9876Straight##
+//Preventing the continuation of previous gutshot.
+//e.g. when we are holding 9x on a board JT76.
+WHEN HaveGutshotToJT987Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 6) & 0b11111) != 4 RETURN false FORCE 
+//This prevents holding T6, 96, 86, 76 and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a 6, 
+//e.g. when we are holding 86 on a board T98, or 6x in T87.
+WHEN BitCount((rankbitscommon >> 6) & 0b11110) <= 2 RETURN true FORCE
+
+##HaveGutshotTo98765Straight##
+//Preventing the continuation of previous gutshot.
+//e.g. when we are holding 8x on a board T965.
+WHEN HaveGutshotToT9876Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 5) & 0b11111) != 4 RETURN false FORCE 
+//This prevents holding 95, 85, 75, 65 and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a 5, 
+//e.g. when we are holding 75 on a board 987, or 5x in 976.
+WHEN (BitCount((rankbitscommon >> 5) & 0b11110) <= 2) RETURN true FORCE
+
+##HaveGutshotTo87654Straight##
+//Preventing the continuation of previous gutshot.
+//e.g. when we are holding 7x on a board 9854.
+WHEN HaveGutshotTo98765Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 4) & 0b11111) != 4 RETURN false FORCE 
+//This prevents holding 84, 74, 64, 54 and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a 4, 
+//e.g. when we are holding 64 on a board 876, or 4x in 865.
+WHEN (BitCount((rankbitscommon >> 4) & 0b11110) <= 2) RETURN true FORCE
+
+##HaveGutshotTo76543Straight##
+//Preventing the continuation of previous gutshot.
+//e.g. when we are holding 6x on a board 8743.
+WHEN HaveGutshotTo87654Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 3) & 0b11111) != 4 RETURN false FORCE 
+//This prevents holding 73, 63, 53, 43 and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a 3, 
+//e.g. when we are holding 53 on a board 765, or 3x in 754.
+WHEN BitCount((rankbitscommon >> 3) & 0b11110) <= 2 RETURN true FORCE
+
+##HaveGutshotTo65432Straight##
+//Preventing the continuation of previous gutshot.
+//e.g. when we are holding 5x on a board 7632.
+WHEN HaveGutshotTo76543Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 2) & 0b11111) != 4 RETURN false FORCE 
+//This prevents holding 62, 52, 42, 32 and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a 2,
+//e.g. when we are holding 42 on a board 654, or 2x in 643.
+WHEN BitCount((rankbitscommon >> 2) & 0b11110) <= 2 RETURN true FORCE
+
+##HaveGutshotTo5432AStraight##
+//Preventing the continuation of previous gutshot.
+//e.g. when we are holding 4x on a board 652A.
+WHEN HaveGutshotTo65432Straight RETURN false FORCE
+WHEN HaveOpenEndedStraightDraw OR OneCardStraightPossible RETURN false FORCE
+WHEN BitCount((rankbits >> 1) & 0b11111) != 4 RETURN false FORCE 
+//This prevents holding 5A, 4A, 3A, 2A and the hi-card already paired, 
+//or any gutshot-draw where we only contribute with one card and it's a A, 
+//e.g. when we are holding 3A on a board 543, or Ax in 532.
+WHEN BitCount((rankbitscommon >> 1) & 0b11110) <= 2 RETURN true FORCE
+
+##HoldEm_HaveFlush##
+(nsuited >= 5)
+
+##HoldEm_HaveFlushDraw##
+// Modified, because Shanky BonusBots definition is not very practical
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=259&t=17463
+// 
+// Good one, contributing 2 cards
+WHEN HaveFlushDrawContributingTwoCards RETURN true FORCE		
+// Best one
+WHEN HaveNutFlushDraw RETURN true FORCE	
+// Contributing only single card:
+WHEN HaveGoodFlushDrawContributingOnlyOneCard RETURN true FORCE	
+
+##HoldEm_HaveFlushDrawContributingTwoCards##
+WHEN ((nsuited == 4) AND (nsuitedcommon == 2)) RETURN true FORCE
+
+##HoldEm_HaveGoodFlushDrawContributingOnlyOneCard##
+WHEN (nsuited != 4) RETURN false FORCE	
+WHEN (nsuitedcommon != 3) RETURN false FORCE
+// The quality of flush-draws with just one card in hand
+// depends on the probability of an opponent holding a better card
+// depends on the number of opponents.
+// http://www.maxinmontreal.com/forums/viewforum.php?f=156
+// Headsup: at least fifth-best
+WHEN ((nopponentsplaying = 1) AND (NumberOfUnknownSuitedOvercards <= 4)) RETURN true FORCE
+// 3-handed: at least third-best
+WHEN ((nopponentsplaying = 2) AND (NumberOfUnknownSuitedOvercards <= 2)) RETURN true FORCE
+// 4-handed: at least second-best
+WHEN ((nopponentsplaying = 3) AND (NumberOfUnknownSuitedOvercards <= 1)) RETURN true FORCE
+
+##HoldEm_HaveFullHouse##
+isfullhouse OR HaveQuads
+
+##HoldEm_HaveNutFlush##
+    HaveNutStraightFlush
+OR [HaveFlush AND (NumberOfUnknownSuitedOvercards == 0)]
+
+##HoldEm_HaveNutFlushCard##
+(NumberOfUnknownSuitedOvercards == 0)
+
+##HoldEm_HaveNutFlushDraw##
+    HaveNutStraightFlush
+OR [(nsuited >= 4) AND (NumberOfUnknownSuitedOvercards == 0)]
+
+##HoldEm_HaveNutStraight##
+[ishistraight OR HaveNutStraightFlush]
+
+##HoldEm_MyKicker##
+WHEN isfourofakind  RETURN MadeHandFifthCardRank  FORCE
+WHEN istwopair      RETURN MadeHandFifthCardRank  FORCE
+WHEN isthreeofakind RETURN MadeHandFourthCardRank FORCE
+WHEN isonepair      RETURN MadeHandThirdCardRank  FORCE
+WHEN Others         RETURN ERROR_You_Dont_Have_Any_Kicker FORCE
+
+##HoldEm_NumberOfBetterKickers##
+// Cards better than my kicker...
+[(ace - MyKicker)
+// ...minus the cards in my 5-card-hand which are better than my kicker
+// (We have to shift the kicker out of rankbitspoker, therefore +1)
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=17922
+- (BitCount(rankbitspoker >> (MyKicker + 1)))]
+
+##RankBitsCommonWithAdditionalAce##
+rankbitscommon | 0b100000000000010
+
+##RankBitsCommonWithAdditionalKing##
+rankbitscommon | 0b010000000000000
+
+##RankBitsCommonWithAdditionalQueen##
+rankbitscommon | 0b001000000000000
+
+##RankBitsCommonWithAdditionalJack##
+rankbitscommon | 0b000100000000000
+
+##RankBitsCommonWithAdditionalTen##
+rankbitscommon | 0b000010000000000
+
+##RankBitsCommonWithAdditionalNine##
+rankbitscommon | 0b000001000000000
+
+##RankBitsCommonWithAdditionalEight##
+rankbitscommon | 0b000000100000000
+
+##RankBitsCommonWithAdditionalSeven##
+rankbitscommon | 0b000000010000000
+
+##RankBitsCommonWithAdditionalSix##
+rankbitscommon | 0b000000001000000
+
+##RankBitsCommonWithAdditionalFive##
+rankbitscommon | 0b000000000100000
+
+##RankBitsCommonWithAdditionalFour##
+rankbitscommon | 0b000000000010000
+
+##RankBitsCommonWithAdditionalThree##
+rankbitscommon | 0b000000000001000
+
+##RankBitsCommonWithAdditionalTwo##
+rankbitscommon | 0b000000000000100
+
+##BestPossibleStraightForVillainIfAceHitsTheBoard##
+// First we check if a better straight is already possible
+// independent of all cards that might hit the board
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=156&t=20666
+WHEN HighCardOfBestPossibleStraight >= ace RETURN HighCardOfBestPossibleStraight FORCE
+// Then we check ace-high...
+WHEN BitCount(RankBitsCommonWithAdditionalAce BitAnd 0b111110000000000) >= 3 RETURN ace FORCE
+// ...and the wheel with ace-low
+// Check if better straight available
+WHEN HighCardOfBestPossibleStraight >= Six RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalAce BitAnd 0b000000000111110) >= 3 RETURN Five FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfKingHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= ace RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalKing BitAnd 0b111110000000000) >= 3 RETURN ace FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalKing BitAnd 0b011111000000000) >= 3 RETURN king FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfQueenHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= ace RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalQueen BitAnd 0b111110000000000) >= 3 RETURN ace FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalQueen BitAnd 0b011111000000000) >= 3 RETURN king FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalQueen BitAnd 0b001111100000000) >= 3 RETURN queen FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfJackHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= ace RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b111110000000000) >= 3 RETURN ace FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b011111000000000) >= 3 RETURN king FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b001111100000000) >= 3 RETURN queen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalJack BitAnd 0b000111110000000) >= 3 RETURN jack FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfTenHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= ace RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b111110000000000) >= 3 RETURN ace FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b011111000000000) >= 3 RETURN king FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b001111100000000) >= 3 RETURN queen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b000111110000000) >= 3 RETURN jack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTen BitAnd 0b000011111000000) >= 3 RETURN ten FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfNineHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= king RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b011111000000000) >= 3 RETURN king FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b001111100000000) >= 3 RETURN queen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b000111110000000) >= 3 RETURN jack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b000011111000000) >= 3 RETURN ten FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalNine BitAnd 0b000001111100000) >= 3 RETURN Nine FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfEightHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= queen RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b001111100000000) >= 3 RETURN queen FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000111110000000) >= 3 RETURN jack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000011111000000) >= 3 RETURN ten FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000001111100000) >= 3 RETURN Nine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalEight BitAnd 0b000000111110000) >= 3 RETURN Eight FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfSevenHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= jack RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000111110000000) >= 3 RETURN jack FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000011111000000) >= 3 RETURN ten FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000001111100000) >= 3 RETURN Nine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000000111110000) >= 3 RETURN Eight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSeven BitAnd 0b000000011111000) >= 3 RETURN Seven FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfSixHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= ten RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000011111000000) >= 3 RETURN ten FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000001111100000) >= 3 RETURN Nine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000000111110000) >= 3 RETURN Eight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000000011111000) >= 3 RETURN Seven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalSix BitAnd 0b000000001111100) >= 3 RETURN Six FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfFiveHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= Nine RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000001111100000) >= 3 RETURN Nine FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000111110000) >= 3 RETURN Eight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000011111000) >= 3 RETURN Seven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000001111100) >= 3 RETURN Six FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFive BitAnd 0b000000000111110) >= 3 RETURN Five FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfFourHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= Eight RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000111110000) >= 3 RETURN Eight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000011111000) >= 3 RETURN Seven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000001111100) >= 3 RETURN Six FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalFour BitAnd 0b000000000111110) >= 3 RETURN Five FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfThreeHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= Seven RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalThree BitAnd 0b000000011111000) >= 3 RETURN Seven FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalThree BitAnd 0b000000001111100) >= 3 RETURN Six FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalThree BitAnd 0b000000000111110) >= 3 RETURN Five FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##BestPossibleStraightForVillainIfTwoHitsTheBoard##
+WHEN HighCardOfBestPossibleStraight >= Six RETURN HighCardOfBestPossibleStraight FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTwo BitAnd 0b000000001111100) >= 3 RETURN Six FORCE
+WHEN BitCount(RankBitsCommonWithAdditionalTwo BitAnd 0b000000000111110) >= 3 RETURN Five FORCE
+WHEN Others RETURN HINT_Such_A_Straight_Does_Not_Exist FORCE
+
+##RankBitsWithAdditionalAce##
+rankbits | 0b100000000000010
+
+##RankBitsWithAdditionalKing##
+rankbits | 0b010000000000000
+
+##RankBitsWithAdditionalQueen##
+rankbits | 0b001000000000000
+
+##RankBitsWithAdditionalJack##
+rankbits | 0b000100000000000
+
+##RankBitsWithAdditionalTen##
+rankbits | 0b000010000000000
+
+##RankBitsWithAdditionalNine##
+rankbits | 0b000001000000000
+
+##RankBitsWithAdditionalEight##
+rankbits | 0b000000100000000
+
+##RankBitsWithAdditionalSeven##
+rankbits | 0b000000010000000
+
+##RankBitsWithAdditionalSix##
+rankbits | 0b000000001000000
+
+##RankBitsWithAdditionalFive##
+rankbits | 0b000000000100000
+
+##RankBitsWithAdditionalFour##
+rankbits | 0b000000000010000
+
+##RankBitsWithAdditionalThree##
+rankbits | 0b000000000001000
+
+##RankBitsWithAdditionalTwo##
+rankbits | 0b000000000000100
+
+##BestPossibleStraightForUsIfAceHitsTheBoard##
+BitCount(RankBitsWithAdditionalAce & 0b111110000000000) >= 5 ? ace :
+// We can ignore all straights without an ace here
+BitCount(RankBitsWithAdditionalAce & 0b000000000111110) >= 5 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfKingHitsTheBoard##
+BitCount(RankBitsWithAdditionalKing & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalKing & 0b011111000000000) >= 5 ? king :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfQueenHitsTheBoard##
+BitCount(RankBitsWithAdditionalQueen & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalQueen & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalQueen & 0b001111100000000) >= 5 ? queen :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfJackHitsTheBoard##
+BitCount(RankBitsWithAdditionalJack & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalJack & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalJack & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalJack & 0b000111110000000) >= 5 ? jack :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfTenHitsTheBoard##
+BitCount(RankBitsWithAdditionalTen & 0b111110000000000) >= 5 ? ace :
+BitCount(RankBitsWithAdditionalTen & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalTen & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalTen & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalTen & 0b000011111000000) >= 5 ? ten :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfNineHitsTheBoard##
+BitCount(RankBitsWithAdditionalNine & 0b011111000000000) >= 5 ? king :
+BitCount(RankBitsWithAdditionalNine & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalNine & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalNine & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalNine & 0b000001111100000) >= 5 ? Nine :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfEightHitsTheBoard##
+BitCount(RankBitsWithAdditionalEight & 0b001111100000000) >= 5 ? queen :
+BitCount(RankBitsWithAdditionalEight & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalEight & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalEight & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalEight & 0b000000111110000) >= 5 ? Eight :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfSevenHitsTheBoard##
+BitCount(RankBitsWithAdditionalSeven & 0b000111110000000) >= 5 ? jack :
+BitCount(RankBitsWithAdditionalSeven & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalSeven & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalSeven & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalSeven & 0b000000011111000) >= 5 ? Seven :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfSixHitsTheBoard##
+BitCount(RankBitsWithAdditionalSix & 0b000011111000000) >= 5 ? ten :
+BitCount(RankBitsWithAdditionalSix & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalSix & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalSix & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalSix & 0b000000001111100) >= 5 ? Six :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfFiveHitsTheBoard##
+BitCount(RankBitsWithAdditionalFive & 0b000001111100000) >= 5 ? Nine :
+BitCount(RankBitsWithAdditionalFive & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalFive & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalFive & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalFive & 0b000000000111110) >= 5 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfFourHitsTheBoard##
+BitCount(RankBitsWithAdditionalFour & 0b000000111110000) >= 5 ? Eight :
+BitCount(RankBitsWithAdditionalFour & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalFour & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalFour & 0b000000000111110) >= 5 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfThreeHitsTheBoard##
+BitCount(RankBitsWithAdditionalThree & 0b000000011111000) >= 5 ? Seven :
+BitCount(RankBitsWithAdditionalThree & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalThree & 0b000000000111110) >= 5 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##BestPossibleStraightForUsIfTwoHitsTheBoard##
+BitCount(RankBitsWithAdditionalTwo & 0b000000001111100) >= 5 ? Six :
+BitCount(RankBitsWithAdditionalTwo & 0b000000000111110) >= 5 ? Five :
+HINT_Such_A_Straight_Does_Not_Exist
+
+##GetBestPossibleStraightIfAceHitsTheBoard##
+    (BestPossibleStraightForUsIfAceHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfAceHitsTheBoard >= BestPossibleStraightForVillainIfAceHitsTheBoard)
+
+##GetBestPossibleStraightIfKingHitsTheBoard##
+    (BestPossibleStraightForUsIfKingHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfKingHitsTheBoard >= BestPossibleStraightForVillainIfKingHitsTheBoard)
+
+##GetBestPossibleStraightIfQueenHitsTheBoard##
+    (BestPossibleStraightForUsIfQueenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfQueenHitsTheBoard >= BestPossibleStraightForVillainIfQueenHitsTheBoard)
+
+##GetBestPossibleStraightIfJackHitsTheBoard##
+    (BestPossibleStraightForUsIfJackHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfJackHitsTheBoard >= BestPossibleStraightForVillainIfJackHitsTheBoard)
+
+##GetBestPossibleStraightIfTenHitsTheBoard##
+    (BestPossibleStraightForUsIfTenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfTenHitsTheBoard >= BestPossibleStraightForVillainIfTenHitsTheBoard)
+
+##GetBestPossibleStraightIfNineHitsTheBoard##
+    (BestPossibleStraightForUsIfNineHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfNineHitsTheBoard >= BestPossibleStraightForVillainIfNineHitsTheBoard)
+
+##GetBestPossibleStraightIfEightHitsTheBoard##
+    (BestPossibleStraightForUsIfEightHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfEightHitsTheBoard >= BestPossibleStraightForVillainIfEightHitsTheBoard)
+
+##GetBestPossibleStraightIfSevenHitsTheBoard##
+    (BestPossibleStraightForUsIfSevenHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfSevenHitsTheBoard >= BestPossibleStraightForVillainIfSevenHitsTheBoard)
+
+##GetBestPossibleStraightIfSixHitsTheBoard##
+    (BestPossibleStraightForUsIfSixHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfSixHitsTheBoard >= BestPossibleStraightForVillainIfSixHitsTheBoard)
+
+##GetBestPossibleStraightIfFiveHitsTheBoard##
+    (BestPossibleStraightForUsIfFiveHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfFiveHitsTheBoard >= BestPossibleStraightForVillainIfFiveHitsTheBoard)
+
+##GetBestPossibleStraightIfFourHitsTheBoard##
+    (BestPossibleStraightForUsIfFourHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfFourHitsTheBoard >= BestPossibleStraightForVillainIfFourHitsTheBoard)
+
+##GetBestPossibleStraightIfThreeHitsTheBoard##
+    (BestPossibleStraightForUsIfThreeHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfThreeHitsTheBoard >= BestPossibleStraightForVillainIfThreeHitsTheBoard)
+
+##GetBestPossibleStraightIfTwoHitsTheBoard##
+    (BestPossibleStraightForUsIfTwoHitsTheBoard != -1)
+AND (BestPossibleStraightForUsIfTwoHitsTheBoard >= BestPossibleStraightForVillainIfTwoHitsTheBoard)
+
+##NumberOfCardranksThatGiveUsTheBestPossibleStraight##
+  GetBestPossibleStraightIfAceHitsTheBoard
++ GetBestPossibleStraightIfKingHitsTheBoard
++ GetBestPossibleStraightIfQueenHitsTheBoard
++ GetBestPossibleStraightIfJackHitsTheBoard
++ GetBestPossibleStraightIfTenHitsTheBoard
++ GetBestPossibleStraightIfNineHitsTheBoard
++ GetBestPossibleStraightIfEightHitsTheBoard
++ GetBestPossibleStraightIfSevenHitsTheBoard
++ GetBestPossibleStraightIfSixHitsTheBoard
++ GetBestPossibleStraightIfFiveHitsTheBoard
++ GetBestPossibleStraightIfFourHitsTheBoard
++ GetBestPossibleStraightIfThreeHitsTheBoard
++ GetBestPossibleStraightIfTwoHitsTheBoard
+
+##HoldEm_HaveNutStraightDraw##
+WHEN FlushDrawPossible RETURN HINT_No_NutStraightDraw_Due_To_Possible_FlushDraw FORCE
+WHEN HaveNutStraight RETURN true FORCE
+WHEN HaveUnDiscountedNutStraightDraw RETURN true FORCE
+
+##HoldEm_HaveUnDiscountedNutStraightDraw##
+(NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 2) 
+
+##HoldEm_HaveInsideNutStraightDraw##
+   (NumberOfCardranksThatGiveUsTheBestPossibleStraight >= 1)
+AND NOT HaveStraight
+
+##HoldEm_HaveInsideStraightDraw##
+WHEN HaveDoubleGutshotDraw Return false FORCE
+WHEN (NumberOfInsideStraightDraws == 1) RETURN true FORCE
+
+##HoldEm_HigherStraightFlushPossible##
+// Main idea:
+// I already use 3 (out of up to 5) SF-cards at the board.
+// The guy with the higher flush also has to use at least 3.
+// Therefore we have to share at least 1 card.
+// (at my higher end and at his bottom end.
+// Therefore a SF must be possible with the 5 cards above my flush-card
+// and at least 3 of these 5 cards must be at the board.
+isroyalflush ? false :
+NOT isstraightflush ? HINT_You_Dont_Have_a_StraightFlush__Dont_Call_This_Function :
+(BitCount((RankbitsCommon_DominantSuit >> RankHiPlayer_DominantSuit) & 0b111110) >= 3)
+
+##HoldEm_HaveNutStraightFlush##
+// nhandshi seems to be wrong for bottom straightflushes without an easy fix:
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=17571
+// Therefore we do no longer use it here.
+isstraightflush AND NOT HigherStraightFlushPossible
+
+##HoldEm_HaveOpenEndedStraightDraw##
+[  ((rankbits >> 0) & 0b111100) == 0b111100 // 5432
+OR ((rankbits >> 1) & 0b111100) == 0b111100 // 6543
+OR ((rankbits >> 2) & 0b111100) == 0b111100 // 7654
+OR ((rankbits >> 3) & 0b111100) == 0b111100 // 8765
+OR ((rankbits >> 4) & 0b111100) == 0b111100 // 9876
+OR ((rankbits >> 5) & 0b111100) == 0b111100 // T987
+OR ((rankbits >> 6) & 0b111100) == 0b111100 // JT98
+OR ((rankbits >> 7) & 0b111100) == 0b111100 // QJT9
+OR ((rankbits >> 8) & 0b111100) == 0b111100 // KQJT 
+] AND NOT HaveStraight
+
+##HoldEm_HaveQuads##
+[ isfourofakind AND (nrankedcommon < 4) ]
+
+##HoldEm_HaveNutQuads##
+WHEN NOT isfourofakind RETURN false FORCE
+WHEN PairInHand AND RankOfFirstHoleCard==RankOfTopPairOnBoard RETURN true FORCE
+WHEN NOT PairInHand AND TripsOnBoard AND TripsRank==RankOfTopPairOnBoard RETURN true FORCE
+WHEN NOT QuadsOnBoard RETURN false FORCE
+WHEN hand$A RETURN true FORCE
+WHEN hand$K AND RankOfTopPairOnBoard == ace RETURN true FORCE
+// Split pot scenarios
+WHEN RankOfTopPairOnBoard < ace AND BestBoardCard == ace RETURN true FORCE
+WHEN RankOfTopPairOnBoard == ace AND SecondBestBoardCard == king RETURN true FORCE
+
+##HoldEm_HaveOverPair##
+ispair AND (rankhiplayer > rankhicommon)
+
+
+##HoldEm_HavePair##
+[  RankOfFirstHoleCard==RankOfSecondHoleCard
+OR RankOfFirstHoleCard==FirstFlopCard 
+OR RankOfFirstHoleCard==SecondFlopCard 
+OR RankOfFirstHoleCard==ThirdFlopCard 
+OR RankOfFirstHoleCard==TurnCard 
+OR RankOfFirstHoleCard==RiverCard
+OR RankOfSecondHoleCard==FirstFlopCard 
+OR RankOfSecondHoleCard==SecondFlopCard 
+OR RankOfSecondHoleCard==ThirdFlopCard 
+OR RankOfSecondHoleCard==TurnCard 
+OR RankOfSecondHoleCard==RiverCard ]
+
+##HoldEm_HavePocketPair##
+ispair
+
+##HoldEm_HaveRunnerRunnerFlushAtRiver##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=112&t=20307&p=143536#p143536
+    HaveFlush
+AND IsRiver
+AND (nsuited == 5)
+AND (SuitsOnFlop >= 2)
+AND (TurnSuit==RiverSuit) 
+
+##HoldEm_HaveSet##
+[  ispair
+AND (  FirstHoleCardPairsTheFlop 
+    OR (RankOfFirstHoleCard == TurnCard) 
+    OR (RankOfFirstHoleCard == RiverCard)) ]
+
+##HoldEm_HaveTopTrips##
+(NOT ispair AND (RankOfFirstHoleCard == RankOfTopPairOnBoard OR RankOfSecondHoleCard == RankOfTopPairOnBoard))
+
+##HoldEm_HaveTrips##
+WHEN ispair RETURN false FORCE
+WHEN (rankhiplayer == RankOfTopPairOnBoard) RETURN true FORCE
+WHEN (rankloplayer == RankOfTopPairOnBoard) RETURN true FORCE
+WHEN (rankhiplayer == RankOfBottomPairOnBoard) RETURN true FORCE
+WHEN (rankloplayer == RankOfBottomPairOnBoard) RETURN true FORCE
+
+##TripsRank##
+WHEN NOT HaveTrips RETURN false FORCE
+WHEN (((rankbitsplayer >> RankOfTopPairOnBoard)    & 1) == 1) RETURN RankOfTopPairOnBoard FORCE
+WHEN (((rankbitsplayer >> RankOfBottomPairOnBoard) & 1) == 1) RETURN RankOfBottomPairOnBoard FORCE
+
+##TripsKickerRank##
+WHEN HaveTrips AND TripsRank==RankOfFirstHoleCard  RETURN RankOfSecondHoleCard FORCE
+WHEN HaveTrips AND TripsRank==RankOfSecondHoleCard RETURN RankOfFirstHoleCard FORCE
+
+##HoldEm_HaveStraight##
+(nstraightfill == 0)
+
+##HoldEm_HaveStraightDraw##
+   (HaveOpenEndedStraightDraw OR HaveDoubleGutshotDraw)
+AND NOT HaveStraight 
+
+##HoldEm_HaveStraightFlush##
+(isstraightflush OR isroyalflush)
+
+##CommonCard0Paired##
+(FirstFlopCard == SecondFlopCard OR FirstFlopCard == ThirdFlopCard OR FirstFlopCard == TurnCard OR FirstFlopCard == RiverCard)
+
+##CommonCard1Paired##
+(SecondFlopCard == FirstFlopCard OR SecondFlopCard == ThirdFlopCard OR SecondFlopCard == TurnCard OR SecondFlopCard == RiverCard)
+
+##CommonCard2Paired##
+(ThirdFlopCard == FirstFlopCard OR ThirdFlopCard == SecondFlopCard OR ThirdFlopCard == TurnCard OR ThirdFlopCard == RiverCard)
+
+##CommonCard3Paired##
+(TurnCard == FirstFlopCard OR TurnCard == SecondFlopCard OR TurnCard == ThirdFlopCard OR TurnCard == RiverCard)
+
+##CommonCard4Paired##
+(RiverCard == FirstFlopCard OR RiverCard == SecondFlopCard OR RiverCard == ThirdFlopCard OR FirstFlopCard == TurnCard)
+
+##RankBitsCommonTopBoardPair##
+// Rankbits
+// AKQJT98765432a-
+// So we have to shift 1 to the left just by the rank of the card
+WHEN (RankOfTopPairOnBoard > 0) RETURN  (1 << RankOfTopPairOnBoard) FORCE
+WHEN Others RETURN 0 FORCE
+
+##RankBitsCommonBottomBoardPair##
+// Rankbits
+// AKQJT98765432a-
+// So we have to shift 1 to the left just by the rank of the card
+// So we have to shift 1 to the left just by the rank of the card
+WHEN (RankOfBottomPairOnBoard > 0) RETURN  (1 << RankOfBottomPairOnBoard) FORCE
+WHEN Others RETURN 0 FORCE
+
+##HoldEm_HaveTopNonBoardPairedPair##
+   [(betround >= flop) AND (RankOfFirstHoleCard == HighestUnpairedBoardCard)]
+OR [(betround >= flop) AND (RankOfSecondHoleCard == HighestUnpairedBoardCard)]
+
+##HoldEm_HaveTopPair##
+[ RankOfFirstHoleCard==rankhicommon OR RankOfSecondHoleCard==rankhicommon ]
+
+##TopPairKickerRank##
+WHEN HaveTopPair AND RankOfFirstHoleCard  == rankhicommon RETURN RankOfSecondHoleCard  FORCE
+WHEN HaveTopPair AND RankOfSecondHoleCard == rankhicommon RETURN RankOfFirstHoleCard FORCE
+WHEN Others RETURN 0 FORCE
+
+##HoldEm_HaveTopSet##
+(ispair AND (rankhiplayer == rankhicommon))
+
+##HoldEm_HaveTopTwoPair##
+(HaveTopPair AND HaveSecondTopPair)
+
+##RankbitsCommonWithoutAceLow##
+// Don't count ace twice in HaveTwoPair
+// bit0 is unused
+// bit 2 is ace low
+rankbitscommon & ConstAllRanksWithoutAceLow
+
+##HoldEm_HaveTwoPair##
+// Both our cards must pair the board,
+// the hand-strenght might even be better, e.g. a full-house.
+WHEN PairInHand RETURN false FORCE
+WHEN NOT FirstHoleCardPairsTheBoard RETURN false FORCE
+WHEN NOT SecondHoleCardPairsTheBoard RETURN false FORCE
+// Check for higher pairs on board that devalue our "three pairs"
+WHEN RankOfTopPairOnBoard > rankloplayer RETURN false FORCE
+WHEN Others RETURN true FORCE
+
+##HoldEm_HaveUnderPair##
+[ ispair AND rankhiplayer<ranklocommon ]
+
+##HigherHoleCardInPokerVal##
+WHEN ((pcbits BitAnd 0b10000) > 0) RETURN FirstCardOfPokerVal  FORCE
+WHEN ((pcbits BitAnd 0b01000) > 0) RETURN SecondCardOfPokerVal FORCE
+WHEN ((pcbits BitAnd 0b00100) > 0) RETURN ThirdCardOfPokerVal  FORCE
+WHEN ((pcbits BitAnd 0b00010) > 0) RETURN FourthCardOfPokerVal FORCE
+WHEN ((pcbits BitAnd 0b00001) > 0) RETURN FifthCardOfPokerVal  FORCE
+
+##HigherHoleCardInPokerValPaired##
+   (HigherHoleCardInPokerVal == FirstFlopCard)
+OR (HigherHoleCardInPokerVal == SecondFlopCard)
+OR (HigherHoleCardInPokerVal == ThirdFlopCard)
+OR (HigherHoleCardInPokerVal == TurnCard)
+OR (HigherHoleCardInPokerVal == RiverCard)
+
+##HoldEm_HaveUnderStraight##
+// http://www.maxinmontreal.com/forums/viewtopic.php?f=297&t=19504
+WHEN (nstraightfill > 0) RETURN false FORCE
+WHEN HaveNutStraight  RETURN false FORCE
+WHEN StraightOnBoard  RETURN false FORCE
+WHEN (pcbits == 0b00011) RETURN true FORCE
+WHEN (pcbits == 0b00001) RETURN true FORCE
+WHEN (HigherHoleCardInPokerValPaired AND (pcbits BitAnd 0b00001 == 0b00001)) RETURN true FORCE
+
+##HoldEm_HaveWeakBackdoorStraightDraw##
+WHEN HaveBackdoorStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 2) RETURN true FORCE
+
+##HoldEm_HaveWeakDoubleGutshotDraw##
+WHEN HaveStraight RETURN false FORCE
+WHEN HaveDoubleGutshotDraw RETURN false FORCE
+// 5-card double gutshot
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b101110100000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b010111010000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b001011101000000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000101110100000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000010111010000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000001011101000) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000101110100) == 5) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000010111010) == 5) RETURN true FORCE
+// 6-card double gutshot
+// ..............................AKQJT98765432a-
+WHEN (BitCount(rankbits BitAnd 0b110110110000000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b011011011000000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b001101101100000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000110110110000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000011011011000) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000001101101100) == 6) RETURN true FORCE
+WHEN (BitCount(rankbits BitAnd 0b000000110110110) == 6) RETURN true FORCE
+
+##HoldEm_HaveWeakFlush##
+WHEN HaveFlush RETURN false FORCE
+WHEN (nsuited >= 5) RETURN true FORCE
+
+##HoldEm_HaveWeakFlushDraw##
+WHEN HaveFlushDraw RETURN false FORCE
+WHEN (nsuited == 4) RETURN true FORCE
+
+##HoldEm_HaveWeakInsideStraightDraw##
+WHEN HaveStraight RETURN false FORCE
+WHEN HaveStraightDraw RETURN false FORCE
+WHEN HaveInsideStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 1) RETURN true FORCE
+
+##HoldEm_HaveWeakStraight##
+WHEN HaveStraight RETURN false FORCE
+WHEN (nstraightfill <= 0) RETURN true FORCE
+
+##HoldEm_HaveWeakStraightDraw##
+WHEN HaveStraightDraw RETURN false FORCE
+WHEN (nstraightfill == 1) RETURN true FORCE
+
+##NumberOfUnknownSuitedOvercards##
+// Suited unknown overcards to holecards,
+// e.g. on Board Ah Th, in Hand Jh 9h => 2 suited overcards: Kh Qh.
+BitCount(Srankbitsavailable >> RankHiPlayer_DominantSuit)
+
+##RankOfPairOfFullHouse##
+// The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)
+// XXXX are the rank of the set
+// YYYY are the rank of the pair
+(pokerval & 0b1111)
+
+##RankOfSetOfFullHouse##
+// The last 20 bits of pokerval look like XXXX XXXX XXXX YYYY YYYY (see docu)
+// XXXX are the rank of the set
+// YYYY are the rank of the pair
+((pokerval >> 12) & 0b1111)
+
+##HoldEm_Overcards##
+((RankOfFirstHoleCard > rankhicommon)  AND (RankOfSecondHoleCard > rankhicommon))  ? 2 :
+((RankOfFirstHoleCard > rankhicommon)  OR (RankOfSecondHoleCard > rankhicommon))  ? 1 :
+((RankOfFirstHoleCard <= rankhicommon) AND (RankOfSecondHoleCard <= rankhicommon)) ? 0 : 0
+
+##HoldEm_PairInHand##
+ispair
+
+##HoldEm_RunnerRunnerFlushPossibleAtRiver##
+(IsRiver AND (nsuitedcommon == 3) AND (SuitsOnFlop != 1) AND (TurnSuit == RiverSuit))
+
+##HoldEm_SuitsInHand##
+(FirstHoleCardSuit == SecondHoleCardSuit) ? 1 :
+(FirstHoleCardSuit != SecondHoleCardSuit) ? 2 :
+0

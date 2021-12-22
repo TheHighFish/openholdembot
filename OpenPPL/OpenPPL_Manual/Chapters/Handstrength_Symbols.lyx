@@ -96,10 +96,10 @@ PairOnBoard
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="97" columns="2">
+<lyxtabular version="3" rows="104" columns="2">
 <features rotate="0" islongtable="true" longtabularalignment="center">
 <column alignment="left" valignment="top" width="40text%">
-<column alignment="left" valignment="top" width="55text%">
+<column alignment="left" valignment="middle" width="55text%">
 <row>
 <cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
@@ -334,7 +334,7 @@ HadSecondOverPairOnTurn
 \begin_inset Text
 
 \begin_layout Plain Layout
-We had 2nd over pair on flop
+We had 2nd over pair on turn
 \end_layout
 
 \end_inset
@@ -394,7 +394,11 @@ HaveSecondBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the best or second best kicker
+We have the best or second best kicker.
+\end_layout
+
+\begin_layout Plain Layout
+For Shanky-compatibility please see HaveBestKickerOrBetter.
 \end_layout
 
 \end_inset
@@ -414,7 +418,7 @@ HaveSecondBestOverPairOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the second best overpair (KK with A on board) or a stronger hand
+We have the second best overpair (KK) or a stronger hand
 \end_layout
 
 \end_inset
@@ -575,7 +579,11 @@ HaveThirdBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the third best kicker or better
+We have the third best, second best or very best kicker.
+\end_layout
+
+\begin_layout Plain Layout
+For Shanky-compatibility please see HaveBestKickerOrBetter.
 \end_layout
 
 \end_inset
@@ -595,7 +603,7 @@ HaveThirdBestOverPairOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the third best overpair or a better hand
+We have the third best overpair (QQ) or a better hand
 \end_layout
 
 \end_inset
@@ -655,7 +663,8 @@ HaveThirdOverPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the Third highest overpair
+We have a hole pair which is between the 2nd highest board card and the
+ 3rd highest card rank on board
 \end_layout
 
 \end_inset
@@ -755,7 +764,8 @@ HaveFourthOverPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the Fourth overpair
+We have a hole pair which is between the 3rd highest board card and the
+ 4tf highest card rank on board
 \end_layout
 
 \end_inset
@@ -855,7 +865,8 @@ HaveFifthOverPair
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the Fifth overpair
+We have a hole pair which is between the 4th highest board card and the
+ 5th highest card rank on board
 \end_layout
 
 \end_inset
@@ -1028,7 +1039,28 @@ HaveBestKickerOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-We have the best kicker or a better hand
+
+\emph on
+Deprecated!
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+OrBetter
+\begin_inset Quotes erd
+\end_inset
+
+ means in the Shanky-world: any better hand, including any pair, any set,
+ even straights, whereas in the Openholdem world HaveXBestKickerOrBetter
+ considers only kickers.
+ If you use this function that mentions better hands than best kicker in
+ its name OpenHoldem will switch all kicker-functions to Shanky-style behaviour.
+\end_layout
+
+\begin_layout Plain Layout
+Not recommended, symbol exists for compatibility only.
 \end_layout
 
 \end_inset
@@ -1048,7 +1080,7 @@ HaveBestOverPairOrBetter
 \begin_inset Text
 
 \begin_layout Plain Layout
-Have the best overpair or a better hand
+Have the best overpair (AA) or a better hand
 \end_layout
 
 \end_inset
@@ -1394,7 +1426,18 @@ HaveNutStraightDraw
 \begin_layout Plain Layout
 True, if we have a draw to the best straight; this means: if we hit, no
  better straight is possible.
- E.g.87 at a board of 643.
+ E.g.87 at a board of 653.
+ A nut straight draw requires 
+\begin_inset Quotes eld
+\end_inset
+
+at least 7 outs
+\begin_inset Quotes erd
+\end_inset
+
+ according to Shankys definition.
+ Therefore straight draws get discounted if there is a flush draw possible.
+ Use HaveUnDiscountedNutStraightDraw if you don't worry about possible flushes.
 \end_layout
 
 \end_inset
@@ -1798,6 +1841,148 @@ HaveUnderStraight
 
 \begin_layout Plain Layout
 We have the lower part of a straight
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveWeakBackdoorStraightDraw
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+These symbolsdescribe hands that are so weak that we don't consider them
+ as regular holdings, e.g.
+ the single-card idiot-end of a straight or a shared flush-draw at the board.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveWeakDoubleGutshotDraw
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveWeakFlush
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveWeakFlushDraw
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveWeakInsideStraightDraw
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveWeakStraight
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HaveWeakStraightDraw
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset

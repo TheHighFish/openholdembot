@@ -1,38 +1,38 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #include "stdafx.h"
 #include "CSymbolEnginePokerAction.h"
 
 #include "CBetroundCalculator.h"
+#include "CEngineContainer.h"
 #include "CPokerTrackerLookUp.h"
 #include "CSymbolEngineActiveDealtPlaying.h"
 #include "CSymbolEngineChipAmounts.h"
 #include "CSymbolEngineDealerchair.h"
 #include "CSymbolEnginePositions.h"
-#include "CSymbolEngineRaisersCallers.h"
-
-CSymbolEnginePokerAction *p_symbol_engine_poker_action = NULL;
+#include "CSymbolEngineRaisers.h"
+#include "..\DLLs\StringFunctions_DLL\string_functions.h"
 
 CSymbolEnginePokerAction::CSymbolEnginePokerAction() {
   // The values of some symbol-engines depend on other engines.
 	// As the engines get later called in the order of initialization
 	// we assure correct ordering by checking if they are initialized.
-	assert(p_symbol_engine_active_dealt_playing != NULL);
-  assert(p_symbol_engine_chip_amounts != NULL);
-  assert(p_symbol_engine_dealerchair != NULL);
-  assert(p_symbol_engine_positions != NULL);
-  assert(p_symbol_engine_raisers_callers != NULL);
+	assert(p_engine_container->symbol_engine_active_dealt_playing() != NULL);
+  assert(p_engine_container->symbol_engine_chip_amounts() != NULL);
+  assert(p_engine_container->symbol_engine_dealerchair() != NULL);
+  assert(p_engine_container->symbol_engine_positions() != NULL);
+  assert(p_engine_container->symbol_engine_raisers() != NULL);
 }
 
 CSymbolEnginePokerAction::~CSymbolEnginePokerAction() {
@@ -41,24 +41,24 @@ CSymbolEnginePokerAction::~CSymbolEnginePokerAction() {
 void CSymbolEnginePokerAction::InitOnStartup() {
 }
 
-void CSymbolEnginePokerAction::ResetOnConnection() {
+void CSymbolEnginePokerAction::UpdateOnConnection() {
 }
 
-void CSymbolEnginePokerAction::ResetOnHandreset() {
+void CSymbolEnginePokerAction::UpdateOnHandreset() {
 }
 
-void CSymbolEnginePokerAction::ResetOnNewRound() {
+void CSymbolEnginePokerAction::UpdateOnNewRound() {
 }
 
-void CSymbolEnginePokerAction::ResetOnMyTurn() {
+void CSymbolEnginePokerAction::UpdateOnMyTurn() {
 }
 
-void CSymbolEnginePokerAction::ResetOnHeartbeat() {
+void CSymbolEnginePokerAction::UpdateOnHeartbeat() {
 }
 
 const int CSymbolEnginePokerAction::PreflopPos() {
-	int		sym_nplayersdealt = p_symbol_engine_active_dealt_playing->nplayersdealt();
-	int		sym_dealposition  = p_symbol_engine_positions->dealposition();
+	int		sym_nplayersdealt = p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt();
+	int		sym_dealposition  = p_engine_container->symbol_engine_positions()->dealposition();
 	
 
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
@@ -127,8 +127,8 @@ const int CSymbolEnginePokerAction::PreflopPos() {
 }
 const int CSymbolEnginePokerAction::PreflopRaisPos() {
 	int		e = SUCCESS;
-	int		sym_nplayersdealt    = p_symbol_engine_active_dealt_playing->nplayersdealt();
-	int		sym_dealpositionrais = p_symbol_engine_positions->dealpositionrais();
+	int		sym_nplayersdealt    = p_engine_container->symbol_engine_active_dealt_playing()->nplayersdealt();
+	int		sym_dealpositionrais = p_engine_container->symbol_engine_positions()->dealpositionrais();
 	
 	//SB=1 BB=2 Early=3 Middle=4 Late=5 Dealer=6
 	return
@@ -197,8 +197,8 @@ const int CSymbolEnginePokerAction::PreflopRaisPos() {
 }
 const int CSymbolEnginePokerAction::PostflopPos() {
 	int		e = SUCCESS;
-	int		sym_nplayersplaying = p_symbol_engine_active_dealt_playing->nplayersplaying();
-	int		sym_betposition     = p_symbol_engine_positions->betposition();
+	int		sym_nplayersplaying = p_engine_container->symbol_engine_active_dealt_playing()->nplayersplaying();
+	int		sym_betposition     = p_engine_container->symbol_engine_positions()->betposition();
 
 	//first=1 early=2 middle=3 late=4 last=5
 	return
@@ -260,16 +260,16 @@ const int CSymbolEnginePokerAction::PostflopPos() {
 
 const bool CSymbolEnginePokerAction::FirstIntoPot() {
   if (p_betround_calculator->betround() == kBetroundPreflop) 	{
-		return (p_symbol_engine_chip_amounts->potplayer() <= p_symbol_engine_tablelimits->sblind() + p_symbol_engine_tablelimits->bblind()); 
+		return (p_engine_container->symbol_engine_chip_amounts()->potplayer() <= p_engine_container->symbol_engine_tablelimits()->sblind() + p_engine_container->symbol_engine_tablelimits()->bblind()); 
 	}	else {
-		return (p_symbol_engine_chip_amounts->potplayer() == 0);
+		return (p_engine_container->symbol_engine_chip_amounts()->potplayer() == 0);
 	}
 }
 
 const int CSymbolEnginePokerAction::BetPosition(const int chairnum) {
 	int		betpos = 0;
-	int		sym_dealerchair        = p_symbol_engine_dealerchair->dealerchair();
-	int		sym_playersplayingbits = p_symbol_engine_active_dealt_playing->playersplayingbits();
+	int		sym_dealerchair        = p_engine_container->symbol_engine_dealerchair()->dealerchair();
+	int		sym_playersplayingbits = p_engine_container->symbol_engine_active_dealt_playing()->playersplayingbits();
 
 	if (chairnum<0 || chairnum>9)
 		return betpos;
@@ -290,31 +290,31 @@ const int CSymbolEnginePokerAction::BetPosition(const int chairnum) {
 
 const int CSymbolEnginePokerAction::DealPosition(const int chairnum) {
 	int		dealposchair = 0 ;
-	int		sym_dealerchair      = p_symbol_engine_dealerchair->dealerchair();
-	int		sym_playersdealtbits = p_symbol_engine_active_dealt_playing->playersdealtbits();
+	int		sym_dealerchair      = p_engine_container->symbol_engine_dealerchair()->dealerchair();
+	int		sym_playersdealtbits = p_engine_container->symbol_engine_active_dealt_playing()->playersdealtbits();
 
-	if (chairnum<0 || chairnum>9)
-		return dealposchair;
-
-	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; i++)
-	{
-		if (IsBitSet(sym_playersdealtbits, (i%10)))
-			dealposchair++;
-
-		if (i%10==chairnum)
-			break;
+  if (chairnum < 0 || chairnum>9) {
+    return dealposchair;
+  }
+	for (int i=sym_dealerchair+1; i<=sym_dealerchair+10; i++) {
+    if (IsBitSet(sym_playersdealtbits, (i % 10))) {
+      dealposchair++;
+    }
+    if (i % 10 == chairnum) {
+      break;
+    }
 	}
 	return (IsBitSet(sym_playersdealtbits, chairnum)) ? dealposchair : 0 ;
 }
 
 const bool CSymbolEnginePokerAction::AgchairAfter() {
-	if (!p_symbol_engine_userchair->userchair_confirmed())
+	if (!p_engine_container->symbol_engine_userchair()->userchair_confirmed())
 	{
 		return false;
 	}
-	if (p_symbol_engine_raisers_callers->raischair() >=0 )
+	if (p_engine_container->symbol_engine_raisers()->raischair() >=0 )
 	{
-		return (BetPosition(p_symbol_engine_raisers_callers->raischair()) > p_symbol_engine_positions->betposition());
+		return (BetPosition(p_engine_container->symbol_engine_raisers()->raischair()) > p_engine_container->symbol_engine_positions()->betposition());
 	}
 	else
 	{
@@ -322,7 +322,7 @@ const bool CSymbolEnginePokerAction::AgchairAfter() {
 	}
 }
 
-bool CSymbolEnginePokerAction::EvaluateSymbol(const char *name, double *result, bool log/* = false*/) {
+bool CSymbolEnginePokerAction::EvaluateSymbol(const CString name, double *result, bool log/* = false*/) {
   if (memcmp(name,"ac_", 3) != 0) {
     // Symbol of a different symbol-engine
     return false;
@@ -348,11 +348,11 @@ bool CSymbolEnginePokerAction::EvaluateSymbol(const char *name, double *result, 
     return true;
   }
 	if (memcmp(name,"ac_betpos", 9) == 0)	{
-    *result = BetPosition(name[9]-'0');
+    *result = BetPosition(RightDigitCharacterToNumber(name));
     return true;
   }
 	if (memcmp(name,"ac_dealpos", 10) == 0) {
-    *result = DealPosition(name[10]-'0');
+    *result = DealPosition(RightDigitCharacterToNumber(name));
     return true;
   }
   // Invalid symbol
@@ -363,8 +363,8 @@ bool CSymbolEnginePokerAction::EvaluateSymbol(const char *name, double *result, 
 CString CSymbolEnginePokerAction::SymbolsProvided() {
   CString list_of_symbols = "ac_agchair_after "
     "ac_prefloprais_pos ac_postflop_pos ac_first_into_pot ";
-  list_of_symbols += RangeOfSymbols("ac_betpos%i", k_first_chair, k_last_chair);
-  list_of_symbols += RangeOfSymbols("ac_dealpos%i", k_first_chair, k_last_chair);
+  list_of_symbols += RangeOfSymbols("ac_betpos%i", kFirstChair, kLastChair);
+  list_of_symbols += RangeOfSymbols("ac_dealpos%i", kFirstChair, kLastChair);
   return list_of_symbols;
 }
 

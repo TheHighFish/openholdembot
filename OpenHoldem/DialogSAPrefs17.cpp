@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 // DialogSAPrefs1.cpp : implementation file
 //
@@ -18,7 +18,7 @@
 
 #include "SAPrefsSubDlg.h"
 #include "DialogSAPrefs17.h"
-#include "CPreferences.h"
+
 
 // CDlgSAPrefs17 dialog
 
@@ -37,7 +37,6 @@ void CDlgSAPrefs17::DoDataExchange(CDataExchange* pDX)
 {
 	CSAPrefsSubDlg::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_CONFIGURATION_INPUT_SETTINGS, m_ConfigurationInputSettings_Button);
-	DDX_Control(pDX, IDC_CONFIGURATION_THEME_SETTINGS, m_ConfigurationThemeSettings_Button);
 	DDX_Control(pDX, IDC_CONFIGURATION_FONT_SETTINGS, m_ConfigurationFontSettings_Button);
 }
 
@@ -49,9 +48,8 @@ END_MESSAGE_MAP()
 BOOL CDlgSAPrefs17::OnInitDialog()
 {
 	CSAPrefsSubDlg::OnInitDialog();
-	m_ConfigurationInputSettings_Button.SetCheck(preferences.configurationcheck_input_settings() != 0);
-	m_ConfigurationThemeSettings_Button.SetCheck(preferences.configurationcheck_theme_settings() != 0);
-	m_ConfigurationFontSettings_Button.SetCheck(preferences.configurationcheck_font_settings() != 0);
+	m_ConfigurationInputSettings_Button.SetCheck(Preferences()->configurationcheck_input_settings() != 0);
+	m_ConfigurationFontSettings_Button.SetCheck(Preferences()->configurationcheck_font_settings() != 0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
@@ -59,9 +57,8 @@ BOOL CDlgSAPrefs17::OnInitDialog()
 
 void CDlgSAPrefs17::OnOK()
 {
-	preferences.SetValue(k_prefs_configurationcheck_input_settings, m_ConfigurationInputSettings_Button.GetCheck());
-	preferences.SetValue(k_prefs_configurationcheck_theme_settings, m_ConfigurationThemeSettings_Button.GetCheck());
-	preferences.SetValue(k_prefs_configurationcheck_font_settings, m_ConfigurationFontSettings_Button.GetCheck());
+	Preferences()->SetValue(k_prefs_configurationcheck_input_settings, m_ConfigurationInputSettings_Button.GetCheck());
+	Preferences()->SetValue(k_prefs_configurationcheck_font_settings, m_ConfigurationFontSettings_Button.GetCheck());
 	CSAPrefsSubDlg::OnOK();
 }
 

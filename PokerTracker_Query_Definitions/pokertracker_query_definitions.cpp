@@ -1,9 +1,9 @@
 //******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
 //******************************************************************************
 //
@@ -43,7 +43,7 @@
 #include "pokertracker_query_definitions.h"
 
 #include <atlstr.h>
-#include "..\OpenHoldem\MagicNumbers.h"
+#include "..\Shared\MagicNumbers\MagicNumbers.h"
 #include "..\OpenHoldem\NumericalFunctions.h"
 #include "PokerTracker_Queries_Version_4.h"
 
@@ -59,25 +59,23 @@ const char* const k_tournament_infix = "tourney";
 const char* const k_cashgame_infix = "cash";
 
 // Values of all stats for all players
-double stats[k_number_of_pokertracker_stats][k_max_number_of_players];
+double stats[k_number_of_pokertracker_stats][kMaxNumberOfPlayers];
 
 POKERTRACKER_DLL_API CString PT_DLL_GetQuery(
 	    int stats_index, 
       bool isomaha, 
       bool istournament,
 	    int site_id, 
-      CString player_name) {
+      CString player_name,
+      double big_blind) {
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
 	CString query = query_definitions[stats_index].query;
-
 	CString site_id_as_string;
 	site_id_as_string.Format("%i", site_id);
-
 	query.Replace("%SITEID%", site_id_as_string);
 	query.Replace("%SCREENNAME%", player_name);
 	query.Replace("%GAMETYPE%", (isomaha ? k_omaha_id : k_holdem_id) );
 	query.Replace("%TYPE%", (istournament ? k_tournament_infix : k_cashgame_infix));
-	
 	return query;
 }
 
@@ -115,15 +113,7 @@ CString PureSymbolName(CString symbol_name) {
 		char last_character = symbol_name[symbol_name.GetLength() - 1];
 		if (isdigit(last_character)) {
 			symbol_name = symbol_name.Left(symbol_name.GetLength() - 1);
-		}	else {
-      for (int i=0; i<kNumberOfPokerTrackerPostfixes; ++i) {
-        int length = strlen(kPokerTrackerPostfixes[i]);
-        if(symbol_name.Right(length) == kPokerTrackerPostfixes[i]) {
-			    symbol_name = symbol_name.Left(symbol_name.GetLength() - length);
-          break;
-        }
-      }
-	  }
+		}	
   }
   return symbol_name;
 }
@@ -145,7 +135,7 @@ int GetIndex(CString symbol_name) {
 POKERTRACKER_DLL_API double	PT_DLL_GetStat(CString symbol_name, int chair) {
 	assert(symbol_name != "");
 	symbol_name = PureSymbolName(symbol_name);
-	AssertRange(chair, k_first_chair, k_last_chair);
+	AssertRange(chair, kFirstChair, kLastChair);
 	int stats_index = GetIndex(symbol_name);
 	if (stats_index == kUndefined) {
 		return kUndefined;
@@ -155,7 +145,7 @@ POKERTRACKER_DLL_API double	PT_DLL_GetStat(CString symbol_name, int chair) {
 
 POKERTRACKER_DLL_API void PT_DLL_SetStat(int stats_index, int chair, double value) {
 	AssertRange(stats_index, 0, (k_number_of_pokertracker_stats - 1));
-	AssertRange(chair, k_first_chair, k_last_chair);
+	AssertRange(chair, kFirstChair, kLastChair);
 	stats[stats_index][chair] = value;
 }
 
@@ -164,14 +154,14 @@ POKERTRACKER_DLL_API bool PT_DLL_IsValidSymbol(CString symbol_name) {
 }
 
 POKERTRACKER_DLL_API void PT_DLL_ClearPlayerStats(int chair) {
-	AssertRange(chair, k_first_chair, k_last_chair);
+	AssertRange(chair, kFirstChair, kLastChair);
 	for (int i=0; i<k_number_of_pokertracker_stats; ++i) {
 		PT_DLL_SetStat(i, chair, kUndefined);
 	}
 }
 
 POKERTRACKER_DLL_API void PT_DLL_ClearAllPlayerStats() {
-	for (int i=0; i<k_max_number_of_players; ++i) {
+	for (int i=0; i<kMaxNumberOfPlayers; ++i) {
 		PT_DLL_ClearPlayerStats(i);
 	}
 }

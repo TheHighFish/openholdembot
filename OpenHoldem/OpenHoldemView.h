@@ -1,15 +1,15 @@
-//*******************************************************************************
+//******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//*******************************************************************************
+//******************************************************************************
 //
 // Purpose:
 //
-//*******************************************************************************
+//******************************************************************************
 
 #ifndef INC_OPENHOLDEMVIEW_H
 #define INC_OPENHOLDEMVIEW_H
@@ -37,7 +37,7 @@ class COpenHoldemView : public CView {
 	// private functions and variables - not available via accessors or mutators
 	void UpdateDisplay(const bool update_all);
 	void DrawButtonIndicators();
-	void DrawSpecificButtonIndicator(const int button_num, const char ch, const int left, const int top, const int right, const int bottom);
+	void DrawSpecificButtonIndicator(const char ch, const bool on_off, const int left, const int top, const int right, const int bottom);
 	void DrawSeatedActiveCircle(const int chair);
 	void DrawCard(Card *card, const int left, const int top, const int right, const int bottom, const bool pl_card);
 	void DrawDealerButton(const int chair); 
@@ -51,14 +51,14 @@ class COpenHoldemView : public CView {
 	double	_sblind_last, _bblind_last, _lim_last, _ante_last, _pot_last;
 	int	    _iterator_thread_progress_last;
 	int	    _card_common_last[kNumberOfCommunityCards];
-	int	    _card_player_last[k_max_number_of_players][kNumberOfCardsPerPlayer];
-	bool		_seated_last[k_max_number_of_players];
-	bool	  _active_last[k_max_number_of_players];
-	CString	_playername_last[k_max_number_of_players];
-	bool		_dealer_last[k_max_number_of_players]; 
+	int	    _card_player_last[kMaxNumberOfPlayers][kMaxNumberOfCardsPerPlayer];
+	bool		_seated_last[kMaxNumberOfPlayers];
+	bool	  _active_last[kMaxNumberOfPlayers];
+	CString	_playername_last[kMaxNumberOfPlayers];
+	bool		_dealer_last[kMaxNumberOfPlayers]; 
 	bool    _istournament_last; 
-	double  _playerbalance_last[k_max_number_of_players]; 
-	double  _playerbet_last[k_max_number_of_players];
+	double  _playerbalance_last[kMaxNumberOfPlayers]; 
+	double  _playerbet_last[kMaxNumberOfPlayers];
 	LOGFONT	_logfont;
 	CPen		_black_pen, _green_pen, _red_pen, _blue_pen, _white_dot_pen, _null_pen;
 	CBrush	_white_brush, _gray_brush, _red_brush, _yellow_brush;

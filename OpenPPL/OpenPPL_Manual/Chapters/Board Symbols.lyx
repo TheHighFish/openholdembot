@@ -1017,7 +1017,7 @@ There are at least three connected cards on the board
 \begin_inset Text
 
 \begin_layout Plain Layout
-TopFlopCardPairedonRiver
+TopFlopCardPairedOnRiver
 \end_layout
 
 \end_inset
@@ -1037,7 +1037,7 @@ The card with the highest rank on the Flop paired on the River
 \begin_inset Text
 
 \begin_layout Plain Layout
-TopFlopCardPairedonTurn
+TopFlopCardPairedOnTurn
 \end_layout
 
 \end_inset

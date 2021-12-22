@@ -1,15 +1,15 @@
-//********************************************************************************
+//*******************************************************************************
 //
 // This file is part of the OpenHoldem project
-//   Download page:         http://code.google.com/p/openholdembot/
-//   Forums:                http://www.maxinmontreal.com/forums/index.php
-//   Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
+//    Source code:           https://github.com/OpenHoldem/openholdembot/
+//    Forums:                http://www.maxinmontreal.com/forums/index.php
+//    Licensed under GPL v3: http://www.gnu.org/licenses/gpl.html
 //
-//********************************************************************************
+//*******************************************************************************
 //
 // Purpose:
 //
-//********************************************************************************
+//*******************************************************************************
 
 
 #include "stdafx.h"
@@ -41,7 +41,7 @@ bool CTablemapAccess::GetButtonRect(CString button_name, RECT *_rect)
 bool CTablemapAccess::GetTableMapRect(CString rect_name, RECT *_rect)
 {
 	/*
-		r$ : Finds tablemap regions (i3_edit, i3_slider, i3_handle, iXbutton, i86button, i86Xbutton)
+		r$ : Finds tablemap regions (i3_edit, i3_slider, i3_handle, iXbutton, i86Xbutton)
 		and inserts details into RECT parameter
 	*/
 
@@ -63,7 +63,7 @@ bool CTablemapAccess::GetTableMapRect(CString rect_name, RECT *_rect)
 bool CTablemapAccess::GetTableMapRegion(CString region_name, STablemapRegion *_region)
 {
 	/*
-		r$ : Finds tablemap regions (i3_edit, i3_slider, i3_handle, iXbutton, i86button, i86Xbutton)
+		r$ : Finds tablemap regions (i3_edit, i3_slider, i3_handle, iXbutton, i86Xbutton)
 		and inserts details into region parameter
 	*/
 
@@ -108,24 +108,19 @@ bool CTablemapAccess::SetTitleText(CString title_name, CString &destination)
 	return false;
 }
 
-bool CTablemapAccess::SetClientSize(CString size_name, int &width, int &height)
-{
+bool CTablemapAccess::GetClientSize(CString size_name, int *width, int *height) {
 	/*
 		z$ : Extract client size
 		required by Autoconnector
 	*/
-
-	width = 0; height = 0;
-	ZMapCI z_iter = p_tablemap->z$()->find(size_name);
-
-	if (z_iter != p_tablemap->z$()->end())
-	{
-		width = z_iter->second.width;
-		height = z_iter->second.height;
-
-		return true;
+  ZMapCI z_iter = p_tablemap->z$()->find(size_name);
+  if (z_iter != p_tablemap->z$()->end()) {
+		*width = z_iter->second.width;
+		*height = z_iter->second.height;
+    return true;
 	}
-
+  *width = 0; 
+  *height = 0;
 	return false;
 }
 
@@ -149,12 +144,3 @@ unsigned int CTablemapAccess::GetClientSize(CString size_name, dim dimension)
 	return 0;
 }
 
-unsigned int CTablemapAccess::GetClientSizeX()
-{
-	return GetClientSize("clientsize", width);
-}
-
-unsigned int CTablemapAccess::GetClientSizeY()
-{
-	return GetClientSize("clientsize", height);
-}
