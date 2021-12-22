@@ -492,7 +492,6 @@
   <ItemGroup>
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
     <ClInclude Include="AllinAdjustment.h" />
-    <ClInclude Include="AlphaChannel.h" />
     <ClInclude Include="BetpotCalculations.h" />
     <ClInclude Include="CAllinSlider.h" />
     <ClInclude Include="Card.h" />

@@ -429,7 +429,6 @@
     <ClInclude Include="COHScriptObject.h" />
     <ClInclude Include="CSymbolEngineFormulaSwitching.h" />
     <ClInclude Include="..\Shared\MagicNumbers\MagicNumbers.h" />
-    <ClInclude Include="AlphaChannel.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenHoldem.rc" />
