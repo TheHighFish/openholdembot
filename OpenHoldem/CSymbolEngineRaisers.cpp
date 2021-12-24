@@ -278,8 +278,48 @@ void CSymbolEngineRaisers::CalculateRaisers() {
 		++_nopponentstruelyraising;
 		_raischair = chair;
 		assert(chair != p_engine_container->symbol_engine_userchair()->userchair());
-		if (_firstraiser_chair == kUndefined) {
-			_firstraiser_chair = chair;
+		// First raiser chair detection fail in case hero is bb and last raiser is sb
+		// http://www.maxinmontreal.com/forums/viewtopic.php?f=111&t=22541
+		// If we did not acted yet and rasier are more than 1 ispecting all palying players (again) 
+		if ((!p_engine_container->symbol_engine_history()->DidAct()) && (p_engine_container->symbol_engine_autoplayer()->ismyturn())) {
+			write_log(Preferences()->debug_symbolengine(),
+				"[CSymbolEngineRaisers] Updating Firstraiser \n");
+			if (_nopponentstruelyraising > 1) {
+				write_log(Preferences()->debug_symbolengine(),
+					"[CSymbolEngineRaisers] More than one raiser acted before our first orbit \n");
+				int Flag = 0;
+				double MinActualBet = 0;
+
+				for (int h = 0; h < p_tablemap->nchairs(); h++) {
+
+					if (!p_table_state->Player(h)->HasAnyCards())
+						continue;
+
+					if (p_table_state->Player(h)->_bet.GetValue() >= (p_engine_container->symbol_engine_tablelimits()->bblind() * 2) && Flag == 0)
+					{
+						_firstraiser_chair = h;
+						Flag = 1;
+						MinActualBet = p_table_state->Player(h)->_bet.GetValue();
+						write_log(Preferences()->debug_symbolengine(),
+							"[CSymbolEngineRaisers] Rasier detected assigned as Firstraiser %d bet %.2f\n",
+							h, MinActualBet);
+					}
+
+					if ((p_table_state->Player(h)->_bet.GetValue() < MinActualBet) && (p_table_state->Player(h)->_bet.GetValue() >= p_engine_container->symbol_engine_tablelimits()->bblind() * 2) && Flag == 1)
+					{
+						_firstraiser_chair = h;
+						MinActualBet = p_table_state->Player(h)->_bet.GetValue();
+						write_log(Preferences()->debug_symbolengine(),
+							"[CSymbolEngineRaisers] Updating firstraiser %d bet %.2f\n",
+							h, MinActualBet);
+					}
+				}
+			}
+			else {
+				write_log(Preferences()->debug_symbolengine(),
+					"[CSymbolEngineRaisers] FirstRaiser Kundef - Fisrt Riaser to Opponent %i\n", chair);
+				_firstraiser_chair = chair;
+			}
 		}
 		AssertRange(_raischair, kUndefined, kLastChair);
 		_lastraised[BETROUND] = _raischair;
