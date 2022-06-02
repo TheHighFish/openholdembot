@@ -1,4 +1,13 @@
-﻿﻿v﻿14.0.2.0 2021-12-24
+﻿﻿v﻿14.0.x.x XXXX-XX-XX
+====================
+BUG FIXES:
+- Fix for Web Colour Transform. Regions were added instead of substracted,
+  so GetPixel() always returned CLR_INVALID (0xFFFFFFFF or 16777215)
+  because pixels were not within the boundaries of the current clipping region.
+  Thanks to cold12zera and Stars83 for reporting.
+  [Salem] 
+
+﻿v﻿14.0.2.0 2021-12-24
 ====================
 
 BUG FIXES:
